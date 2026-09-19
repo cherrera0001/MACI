@@ -1,0 +1,320 @@
+# Curriculum del tutor personal de Ciencia de Datos
+#
+# Archivo ESTATICO: define el plan de estudio. El tutor NO lo modifica.
+# El avance se registra aparte, en progreso.yaml.
+#
+# material_local  -> rutas verificadas dentro de este repositorio
+# sin_material_local: true -> depende de NotebookLM o fuentes externas
+
+meta:
+  alumno: Cristobal Herrera
+  asignatura: Fundamentos de Ciencia de Datos (T2-2026)
+  universidad: Universidad de Concepcion
+  proyecto_ancla: Prediccion de precios de propiedades en Melbourne, 2016 -> 2017
+  notebooklm:
+    nombre: Fundamentals of Data Science Syllabus
+    id: 97ce114e-2371-44eb-85b5-527cd28180cb
+    url: https://notebook.google.com/notebook/97ce114e-2371-44eb-85b5-527cd28180cb
+    nota: >-
+      El cuaderno contiene mas material del que sugiere su titulo. Al conectarse,
+      el tutor debe listar sus fuentes reales y enriquecer las referencias de cada
+      concepto, en vez de asumir que contiene.
+
+# Cifras reales del proyecto Melbourne, para usarlas como ejemplo concreto.
+# Verificadas en 05_RESULTADOS/resultados_temporal.json, clave "meta".
+hechos_del_proyecto:
+  filas_train_2016: 6336
+  filas_test_2017: 7244
+  features_numericas: [Rooms, Distance, Bedroom2, Bathroom, Car, Landsize, Lattitude, Longtitude, Propertycount]
+  features_categoricas: [Type, Method, Regionname]
+  excluidas: [Suburb, Postcode, Address, SellerG, CouncilArea, Date, BuildingArea, YearBuilt]
+  target: Price
+  pct_test_suburbio_nuevo: 29.11
+  precio_mediana_2016: 900000.0
+  precio_mediana_2017: 910000.0
+  semillas: [0, 1, 2, 3, 4]
+  modelo_final: HistGradientBoosting sobre log1p(Price)
+  mae_2017: 185449
+  r2_2017: 0.765
+  modelos_comparados:
+    - Baseline (mediana)
+    - Ridge (lineal)
+    - Arbol de decision
+    - Random Forest
+    - Gradient Boosting
+    - HistGradientBoosting
+  nota_targets: cada modelo fue evaluado dos veces, sobre Price crudo y sobre log1p(Price)
+
+conceptos:
+
+  - id: fundamentos_ciencia_datos
+    nombre: Fundamentos de Ciencia de Datos
+    orden: 1
+    prerrequisitos: []
+    por_que_importa: Define que problema resuelve un modelo, y cuando no hace falta ninguno.
+    material_local:
+      - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
+      - 01_DOCUMENTACION/02_CURSO/guia_fcd_texto.txt
+    pregunta_diagnostico: >-
+      Tu modelo predice el precio de una casa en Melbourne. Un tasador humano
+      tambien lo hace. Que aporta el modelo que el tasador no, y que aporta el
+      tasador que el modelo no?
+
+  - id: datos_features_target
+    nombre: Datos, filas, columnas, features y target
+    orden: 2
+    prerrequisitos: [fundamentos_ciencia_datos]
+    por_que_importa: Sin separar feature de target no se puede razonar sobre fuga de informacion.
+    material_local:
+      - 04_DATOS/housing_dashai_2016_2017.csv
+      - 05_RESULTADOS/resultados_temporal.json
+    pregunta_diagnostico: >-
+      En tu dataset de Melbourne, Price es el target y Rooms es una feature.
+      Por que Date quedo excluida de las features, si es una columna con
+      informacion real sobre cada venta?
+
+  - id: eda
+    nombre: Analisis exploratorio de datos (EDA)
+    orden: 3
+    prerrequisitos: [datos_features_target]
+    por_que_importa: Es donde se detectan los problemas que despues arruinan el modelo.
+    material_local:
+      - 06_ENTREGABLES/visualizaciones/
+      - 03_CODIGO/housing_visualizations.py
+    pregunta_diagnostico: >-
+      La mediana de precio fue 900.000 en 2016 y 910.000 en 2017. Que te dice
+      ese numero sobre la dificultad de predecir 2017 con un modelo entrenado
+      en 2016? Y que no te dice?
+
+  - id: limpieza_preparacion
+    nombre: Limpieza y preparacion de datos
+    orden: 4
+    prerrequisitos: [eda]
+    por_que_importa: Decidir que columna se excluye es una decision de modelado, no de limpieza.
+    material_local:
+      - 03_CODIGO/preparar_dashai.py
+      - 05_RESULTADOS/auditoria_dashai_vs_crudo.json
+    pregunta_diagnostico: >-
+      Excluiste BuildingArea y YearBuilt de tu modelo. Da una razon por la que
+      excluir una columna con informacion util puede mejorar el resultado.
+
+  - id: train_validation_test
+    nombre: Train / validation / test
+    orden: 5
+    prerrequisitos: [datos_features_target]
+    por_que_importa: >-
+      El nucleo del proyecto. Tu split es temporal y no aleatorio, y esa
+      eleccion decide todo lo demas.
+    material_local:
+      - 05_RESULTADOS/dashai_split_indices.json
+      - 03_CODIGO/modelamiento_temporal.py
+      - 99_ARCHIVO/_obsoleto_split_aleatorio/
+    pregunta_diagnostico: >-
+      Tienes dos versiones del mismo proyecto: una con split aleatorio que
+      reportaba 81% y otra con split temporal 2016 a 2017. Cual mide mejor lo
+      que de verdad importa, y por que la otra parecia mejor?
+
+  - id: validacion_cruzada
+    nombre: Validacion cruzada
+    orden: 6
+    prerrequisitos: [train_validation_test]
+    por_que_importa: Permite elegir modelo sin tocar el conjunto de test.
+    material_local:
+      - 03_CODIGO/modelamiento_temporal.py
+      - 05_RESULTADOS/resultados_temporal.json
+    pregunta_diagnostico: >-
+      Hiciste validacion cruzada dentro de 2016 y recien despues miraste 2017.
+      Que habria pasado si eliges el modelo mirando directamente el resultado
+      de 2017?
+
+  - id: generalizacion
+    nombre: Generalizacion
+    orden: 7
+    prerrequisitos: [train_validation_test]
+    por_que_importa: >-
+      El 29,1% de suburbios nuevos en el test es un caso real y medido de
+      generalizacion dura.
+    material_local:
+      - 05_RESULTADOS/resultados_temporal.json
+      - 05_RESULTADOS/comparacion_estadistica.json
+    pregunta_diagnostico: >-
+      El 29,1% de las propiedades de 2017 estan en suburbios que no aparecen en
+      2016. Como puede tu modelo predecir el precio de una casa en un suburbio
+      que nunca vio?
+
+  - id: overfitting_underfitting
+    nombre: Overfitting y underfitting
+    orden: 8
+    prerrequisitos: [generalizacion, validacion_cruzada]
+    por_que_importa: >-
+      Tienes 6 modelos de complejidad creciente ya medidos: la curva es
+      observable en tus propios numeros, no teorica.
+    material_local:
+      - 05_RESULTADOS/resultados_temporal.json
+      - 99_ARCHIVO/_obsoleto_split_aleatorio/
+    pregunta_diagnostico: >-
+      Un arbol de decision sin limitar acierta casi perfecto en train y falla en
+      test. Un baseline de mediana falla parecido en ambos. Cual sobreajusta,
+      cual subajusta, y como los distingues solo mirando esos dos numeros?
+
+  - id: regresion
+    nombre: Regresion
+    orden: 9
+    prerrequisitos: [overfitting_underfitting]
+    por_que_importa: Es tu proyecto. MAE 185.449 AUD y R2 0,765 son tus propias cifras.
+    material_local:
+      - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
+      - 05_RESULTADOS/predicciones_2017.csv
+      - 03_CODIGO/bootstrap_comparacion.py
+    pregunta_diagnostico: >-
+      Tu MAE en 2017 es 185.449 AUD sobre una mediana de 910.000. Es bueno o
+      malo? Defiende la respuesta con un argumento que no sea "depende".
+
+  - id: clasificacion
+    nombre: Clasificacion
+    orden: 10
+    prerrequisitos: [regresion]
+    por_que_importa: "Cambia la naturaleza del error: ya no existe cerca, hay acierto o fallo."
+    material_local:
+      - 02_PROYECTO_FCD/Desafio/REPORT.md
+      - 02_PROYECTO_FCD/Desafio/src/
+    pregunta_diagnostico: >-
+      En Galaxy Zoo clasificas 3 clases: ambigua, espiral y eliptica. Por que no
+      puedes usar MAE aqui, si tambien podrias restar numeros de clase?
+
+  - id: matriz_confusion
+    nombre: Matriz de confusion
+    orden: 11
+    prerrequisitos: [clasificacion]
+    por_que_importa: Es la fuente de la que salen accuracy, precision, recall y F1.
+    material_local:
+      - 02_PROYECTO_FCD/Desafio/REPORT.md
+      - 02_PROYECTO_FCD/Desafio/src/04_class0_analysis.py
+    pregunta_diagnostico: >-
+      En tu matriz de Galaxy Zoo, que celda dice cuantas galaxias espirales
+      fueron clasificadas como elipticas? Y por que ese error puede importar mas
+      que el inverso?
+
+  - id: metricas_clasificacion
+    nombre: Accuracy, precision, recall y F1
+    orden: 12
+    prerrequisitos: [matriz_confusion]
+    por_que_importa: La metrica oficial de tu desafio es F1-macro y no accuracy. Esa eleccion tiene motivo.
+    material_local:
+      - 02_PROYECTO_FCD/Desafio/REPORT.md
+      - 02_PROYECTO_FCD/Desafio/src/05_decision_rule.py
+    pregunta_diagnostico: >-
+      La metrica oficial de Galaxy Zoo es F1-macro y no accuracy. Que problema
+      concreto de ese dataset hace que accuracy sea enganosa?
+
+  - id: roc_auc
+    nombre: ROC y AUC
+    orden: 13
+    prerrequisitos: [metricas_clasificacion]
+    prioritario: true
+    por_que_importa: >-
+      Vacio ya identificado por escrito: el expediente del Certamen 2 marca la
+      pregunta 9 (cifras de AUC) como no evidenciada.
+    material_local:
+      - 02_PROYECTO_FCD/Desafio/REPORT.md
+      - 01_DOCUMENTACION/01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md
+    pregunta_diagnostico: >-
+      Un modelo tiene AUC 0,90 y accuracy 0,60. Otro tiene AUC 0,70 y accuracy
+      0,85. Es posible? Si lo es, que mide cada metrica que la otra no?
+
+  - id: arboles_decision
+    nombre: Arboles de decision
+    orden: 14
+    prerrequisitos: [overfitting_underfitting]
+    por_que_importa: La pieza base de los tres modelos que siguen.
+    material_local:
+      - 05_RESULTADOS/resultados_temporal.json
+    pregunta_diagnostico: >-
+      Un arbol parte los datos con preguntas del tipo "Rooms <= 3?". Como decide
+      cual pregunta hacer primero?
+
+  - id: random_forest
+    nombre: Random Forest
+    orden: 15
+    prerrequisitos: [arboles_decision]
+    por_que_importa: >-
+      Primer ensemble. Introduce la idea de que promediar modelos mediocres
+      supera al mejor individual.
+    material_local:
+      - 05_RESULTADOS/resultados_temporal.json
+      - 05_RESULTADOS/comparacion_estadistica.json
+    pregunta_diagnostico: >-
+      Si un arbol solo sobreajusta, por que 300 arboles sobreajustados
+      promediados sobreajustan menos?
+
+  - id: gradient_boosting
+    nombre: Gradient Boosting
+    orden: 16
+    prerrequisitos: [random_forest]
+    por_que_importa: Es tu modelo final. HistGradientBoosting gano la comparacion.
+    material_local:
+      - 05_RESULTADOS/resultados_temporal.json
+      - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
+    pregunta_diagnostico: >-
+      Random Forest entrena sus arboles en paralelo e independientes. Gradient
+      Boosting los entrena en secuencia. Que hace cada arbol nuevo del boosting
+      que no hace ninguno del forest?
+
+  - id: ensembles
+    nombre: Ensembles
+    orden: 17
+    prerrequisitos: [gradient_boosting]
+    por_que_importa: Generaliza el patron. Tu desafio incluye analisis de diversidad.
+    material_local:
+      - 02_PROYECTO_FCD/Desafio/src/08_ensemble.py
+      - 02_PROYECTO_FCD/Desafio/src/06_hierarchical.py
+    pregunta_diagnostico: >-
+      Combinas dos modelos que aciertan 80% cada uno. En que caso el ensemble
+      supera el 80%, y en que caso no gana nada?
+
+  - id: redes_neuronales
+    nombre: Redes neuronales
+    orden: 18
+    prerrequisitos: [gradient_boosting]
+    por_que_importa: "Cambio de paradigma: el modelo aprende sus propias features."
+    sin_material_local: true
+    material_local: []
+    pregunta_diagnostico: >-
+      En tus modelos de Melbourne tu elegiste las features. Que hace distinto
+      una red neuronal con las features?
+
+  - id: deep_learning
+    nombre: Deep learning
+    orden: 19
+    prerrequisitos: [redes_neuronales]
+    por_que_importa: Explica por que en datos tabulares sigue ganando el boosting y en vision o texto no.
+    sin_material_local: true
+    material_local: []
+    pregunta_diagnostico: >-
+      Para tus datos tabulares de Melbourne, el boosting le gana a una red
+      profunda. Por que, si el deep learning domina en imagenes y texto?
+
+  - id: llm
+    nombre: Modelos de lenguaje (LLM)
+    orden: 20
+    prerrequisitos: [deep_learning]
+    por_que_importa: Base para entender que es y que no es un agente.
+    sin_material_local: true
+    material_local: []
+    pregunta_diagnostico: >-
+      Un LLM predice el siguiente token. Como puede algo asi responder una
+      pregunta que nunca vio escrita?
+
+  - id: agentes_ia
+    nombre: Agentes de IA
+    orden: 21
+    prerrequisitos: [llm]
+    por_que_importa: Cierra el circulo. Este tutor es un agente y podras auditarlo por dentro.
+    sin_material_local: true
+    material_local:
+      - .claude/skills/tutor/SKILL.md
+      - .mcp.json
+    pregunta_diagnostico: >-
+      Este tutor consulta tu cuaderno de NotebookLM por MCP y escribe tu progreso
+      en un archivo. Que lo hace un agente y no simplemente un chatbot con
+      documentos adjuntos?

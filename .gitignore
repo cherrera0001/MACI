@@ -24,3 +24,10 @@ Desktop.ini
 
 # Temporales de Office
 *.tmp
+
+# Credenciales de NotebookLM / Gemini Notebook (viven en ~/.notebooklm, nunca aqui)
+.notebooklm/
+storage_state.json
+master_token.json
+auth.json
+*.cookies
