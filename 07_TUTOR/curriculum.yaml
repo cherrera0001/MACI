@@ -15,10 +15,43 @@ meta:
     nombre: Fundamentals of Data Science Syllabus
     id: 97ce114e-2371-44eb-85b5-527cd28180cb
     url: https://notebook.google.com/notebook/97ce114e-2371-44eb-85b5-527cd28180cb
+    # Inventario verificado el 2026-09-18 con: notebooklm source list
+    total_fuentes: 66
+    por_tipo: {web_page: 32, pdf: 29, docx: 3, markdown: 2}
+    # Material de la asignatura y documentos UdeC presentes en el cuaderno.
+    # Son la fuente PRIORITARIA: mandan sobre cualquier otra referencia.
+    material_asignatura:
+      - Syllabus Fundamentos de Ciencia de Datos.docx
+      - FCD-2026-2_02_CienciaDeDatos.pdf
+      - FCD-2026-2_03_CienciaDeDatosEnLaPractica.pdf
+      - FCD-2026-2_04_CalidadDeDatos.pdf
+      - FCD-2026-2_05_AnalisisExploratorio.pdf
+      - FCD-2026-2_07_Clasificacion.pdf
+      - FCD-2026-2_08_DL_LLMs_Agents.pdf
+      - Resumen_Clase6_Regresion.pdf
+      - Resumen_Clase8_DL_LLMs_Agentes.pdf
+      - Guia_Autoestudio_Completa_Fundamentos_de_Ciencia_de_Datos.docx
+      - Guia_Estudio_Potenciada_Fundamentos_Ciencia_de_Datos.docx
+    documentos_udec:
+      - DIPLOMA EN CIENCIA DE DATOS FUNDAMENTOS - Ingenieria UdeC
+      - Deteccion de fraude transaccional mediante modelos de aprendizaje automatico (UdeC)
+      - Edad de jubilacion en Chile, regresion lineal vs simbolica (UdeC)
+      - Modelo predictivo interpretable de ingreso monetario con XGBoost y SHAP (UdeC)
+      - Predecir la probabilidad de incumplimiento, regresion sobre el intervalo unitario (UdeC)
+      - Deep Learning - Magister en Ciencias de la Computacion
+    libros_y_papers:
+      - Gareth James, Witten, Hastie, Tibshirani (ISLR) - Berkeley Statistics
+      - OpenIntro Statistics
+      - "XGBoost: A Scalable Tree Boosting System (arXiv)"
+      - 50 Years of Data Science (Donoho)
+      - FAIR Principles
+      - Scikit-learn User Guide (model selection, model evaluation, learning curves)
     nota: >-
-      El cuaderno contiene mas material del que sugiere su titulo. Al conectarse,
-      el tutor debe listar sus fuentes reales y enriquecer las referencias de cada
-      concepto, en vez de asumir que contiene.
+      Los 4 conceptos marcados sin_material_local NO estan descubiertos: el
+      cuaderno los cubre con FCD-2026-2_08_DL_LLMs_Agents.pdf,
+      Resumen_Clase8_DL_LLMs_Agentes.pdf y el PDF de Deep Learning del Magister.
+      Lo que falta para ellos es material propio ejecutado por el alumno, no
+      fuentes. Al ensenarlos, citar el cuaderno en vez de caer en [GENERAL].
 
 # Cifras reales del proyecto Melbourne, para usarlas como ejemplo concreto.
 # Verificadas en 05_RESULTADOS/resultados_temporal.json, clave "meta".

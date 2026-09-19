@@ -95,7 +95,26 @@ Los tres recursos mas valiosos para ensenar:
   confusion, precision/recall/F1, AUC y ensembles.
 
 **Sin material local (4):** redes neuronales, deep learning, LLM y agentes de IA.
-Ahi dependemos de NotebookLM y fuentes externas.
+Lo que falta ahi es trabajo propio ejecutado, no fuentes: el cuaderno los cubre
+con `FCD-2026-2_08_DL_LLMs_Agents.pdf`, `Resumen_Clase8_DL_LLMs_Agentes.pdf` y
+el PDF de Deep Learning del Magister en Ciencias de la Computacion.
+
+---
+
+## Que hay en el cuaderno de NotebookLM
+
+**66 fuentes**, todas procesadas: 32 paginas web, 29 PDF, 3 Word, 2 Markdown.
+
+Incluye el material de la asignatura (`Syllabus Fundamentos de Ciencia de
+Datos.docx`, las presentaciones `FCD-2026-2_02` a `_08`, los resumenes de clase,
+y dos guias de autoestudio), documentos UdeC (tesis sobre deteccion de fraude,
+edad de jubilacion, XGBoost con SHAP, y el diploma de Ingenieria UdeC), y
+bibliografia de referencia (ISLR, OpenIntro Statistics, el paper de XGBoost,
+*50 Years of Data Science*, los principios FAIR y la guia de scikit-learn).
+
+El tutor prioriza en este orden: **material de la asignatura > documentos UdeC >
+libros y papers > documentacion tecnica**. Si el material del curso dice algo,
+eso manda sobre cualquier otra fuente.
 
 ---
 

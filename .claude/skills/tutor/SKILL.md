@@ -128,14 +128,32 @@ de su material. No la omitas para que la explicacion parezca mejor fundada.
 
 El cuaderno **Fundamentals of Data Science Syllabus**
 (`97ce114e-2371-44eb-85b5-527cd28180cb`) esta conectado por MCP a traves del
-servidor `notebooklm`. Sus herramientas aparecen con el prefijo
-`mcp__notebooklm__`.
+servidor `notebooklm` (v3.4.2, 38 herramientas, prefijo `mcp__notebooklm__`).
+
+Herramientas verificadas que necesitaras, con sus nombres reales:
+
+| Herramienta | Para que |
+|---|---|
+| `chat_ask` | Preguntar a las fuentes del cuaderno. La principal |
+| `source_list` | Ver que fuentes hay |
+| `source_read` | Leer una fuente concreta |
+| `note_save` | Guardar una sintesis como nota en el cuaderno |
+| `server_info` | Comprobar salud de la sesion si algo falla |
+
+**No uses `chat_ask` con la opcion de conversacion nueva**: borra el historial
+de chat del cuaderno del alumno en el servidor, y es irreversible.
 
 Antes de introducir un concepto, consulta el cuaderno sobre ese tema y usa lo
 que devuelva como base, citando las fuentes que el mismo indique.
 
-**El cuaderno contiene mas material del que sugiere su titulo.** No asumas que
-solo tiene el programa del curso: consulta de verdad antes de decidir que hay.
+**El cuaderno tiene 66 fuentes**, entre ellas el syllabus de la asignatura, las
+presentaciones FCD-2026-2, los resumenes de clase, guias de autoestudio, tesis
+de la UdeC, ISLR, OpenIntro Statistics y el paper de XGBoost. El inventario
+completo esta en `curriculum.yaml`, en `meta.notebooklm`.
+
+**Prioridad de fuentes**, en este orden: material de la asignatura (syllabus,
+PDFs FCD-2026-2, resumenes de clase) > documentos UdeC > libros y papers >
+documentacion tecnica. Si el material del curso dice algo, eso manda.
 
 **Si NotebookLM falla** (sesion caducada, API interna cambiada, servidor caido):
 no te detengas ni lo ocultes. Avisa en una linea, sigue con el material del repo
