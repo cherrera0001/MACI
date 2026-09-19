@@ -15,9 +15,72 @@
 
 meta:
   creado: 2026-09-18
-  total_observados: 0
+  total_observados: 2
 
-observados: []
+observados:
+
+  - id: sobreajuste_como_etiqueta_de_toda_degradacion
+    concepto: train_validation_test
+    veces: 1
+    fechas: [2026-09-18]
+    dijo: "entonces, podemos hablar de un sobreajuste"
+    confusion_de_fondo: >-
+      Usa "sobreajuste" como explicacion de cualquier empeoramiento sobre datos
+      nuevos. El sobreajuste se diagnostica comparando TRAIN contra VALIDACION.
+      La tabla que se le mostro compara VALIDACION contra TEST: en ambas columnas
+      el modelo esta viendo datos que nunca uso para entrenar, asi que la brecha
+      entre ellas tiene otra causa (cambio de distribucion entre 2016 y 2017).
+      Ademas nombrar la etiqueta no es explicar el mecanismo.
+    desmontaje_que_funciono: >-
+      Mostrarle que AMBAS columnas de la tabla (CV 2016 y test 2017) son datos
+      que el modelo nunca uso para entrenar. El sobreajuste se diagnostica train
+      contra validacion; si en las dos columnas los datos son inéditos, la
+      brecha entre ellas tiene otra causa. Lo acepto y reoriento solo.
+    estado: resuelto
+
+  # ANULADO. Este registro fue un error de Guillito, no de Cristobal.
+  # Se le mostro una tabla recortada a 3 filas de 12, ocultando justamente las
+  # de Random Forest y Gradient Boosting, y acto seguido se le corrigio con un
+  # "ya los probaste" que el no podia verificar. Su reaccion fue correcta:
+  # desconfio de la tabla y exigio los datos completos. Al verlos, identifico
+  # sus cifras sin ayuda. No se contabiliza como error suyo.
+  - id: no_reconoce_sus_propios_resultados
+    concepto: train_validation_test
+    veces: 0
+    fechas: [2026-09-18]
+    dijo: >-
+      "un modelo que deberias validar, o que deberia probar es gradient boosting,
+      o random forest"
+    confusion_de_fondo: >-
+      Atribuido inicialmente a que leia la tabla como ejercicio hipotetico. La
+      causa real fue la tabla truncada que se le presento. Con las 12 filas a la
+      vista reconocio sus resultados de inmediato y recordo correctamente el
+      R2 0,719 y el MAE 205.546 de su Trabajo N2.
+    desmontaje_que_funciono: >-
+      Mostrar la tabla completa. Leccion para Guillito: no recortar evidencia
+      del alumno para ilustrar un punto, y nunca corregirlo con datos que no
+      tiene delante.
+    estado: anulado
+
+  - id: categoria_desconocida_en_vez_de_extrapolacion
+    concepto: train_validation_test
+    veces: 1
+    fechas: [2026-09-18]
+    dijo: >-
+      "pero hay sobre 170 barrios nuevos, y codigos postales" (como explicacion
+      de la degradacion en 2017)
+    confusion_de_fondo: >-
+      Identifica el fenomeno correcto -172 suburbios nuevos, cifra exacta- pero
+      le atribuye el mecanismo equivocado. Supone que el modelo falla ante una
+      categoria que no vio. Pero Suburb y Postcode estan EXCLUIDAS del modelo:
+      nunca las leyo. El mecanismo real es extrapolacion geografica: 831 de
+      2.109 filas nuevas caen fuera del rango de latitud de 2016 y 1.092 fuera
+      del de longitud. El modelo predice donde no tiene datos.
+    desmontaje_que_funciono: >-
+      Recordarle la lista de features excluidas y calcular en vivo los rangos de
+      Lattitude/Longtitude de 2016 frente a las filas nuevas de 2017. Ver los
+      831 y 1.092 hace visible que el problema es geometrico, no categorico.
+    estado: resuelto
 
 # Formato de cada entrada de 'observados':
 #

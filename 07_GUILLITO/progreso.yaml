@@ -42,18 +42,18 @@ meta:
   tutor: Guillito
   asignatura: Fundamentos de Ciencia de Datos (T2-2026), Universidad de Concepcion
   creado: 2026-09-18
-  ultima_sesion: null
-  sesiones_totales: 0
+  ultima_sesion: 2026-09-18
+  sesiones_totales: 1
   diagnostico_inicial_hecho: false
 
 resumen:
   DOMINADO: 0
   COMPRENDIDO: 0
-  COMPRENSION_PARCIAL: 0
+  COMPRENSION_PARCIAL: 1
   EN_ESTUDIO: 0
   REQUIERE_REPASO: 0
-  NO_ESTUDIADO: 21
-  siguiente_recomendado: null
+  NO_ESTUDIADO: 20
+  siguiente_recomendado: train_validation_test
 
 conceptos:
 
@@ -94,13 +94,28 @@ conceptos:
     ultima_verificacion: null
 
   - id: train_validation_test
-    estado: NO_ESTUDIADO
+    estado: COMPRENSION_PARCIAL
     evidencias:
-      explicar: null
+      explicar:
+        fecha: 2026-09-18
+        detalle: >-
+          Identifico el fenomeno correcto sin ayuda: "hay sobre 170 barrios
+          nuevos" (son 172, cifra exacta). Ligo la degradacion en 2017 a la
+          aparicion de zonas ausentes en 2016. Hueco: atribuyo el efecto a
+          categorias desconocidas, sin advertir que Suburb y Postcode NO son
+          features del modelo. El mecanismo real es extrapolacion en
+          Lattitude/Longtitude. Explicacion correcta en direccion, incompleta
+          en mecanismo.
       aplicar: null
       transferir: null
-    sesiones: 0
-    ultima_verificacion: null
+    sesiones: 1
+    ultima_verificacion: 2026-09-18
+    nota: >-
+      Sesion 1 (2026-09-18). Falta APLICAR y TRANSFERIR. Pendiente para la
+      proxima: verificar transferencia con un caso de otro dominio (Galaxy Zoo
+      o externo), no con Melbourne. Pregunta abierta que el mismo planteo y que
+      sirve de ejercicio real: si anade CouncilArea (18,9% nulos en 2017),
+      donde debe medir la mejora para no quemar el test.
 
   - id: validacion_cruzada
     estado: NO_ESTUDIADO
