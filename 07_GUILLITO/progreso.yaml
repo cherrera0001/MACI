@@ -42,18 +42,18 @@ meta:
   tutor: Guillito
   asignatura: Fundamentos de Ciencia de Datos (T2-2026), Universidad de Concepcion
   creado: 2026-09-18
-  ultima_sesion: 2026-09-18
-  sesiones_totales: 1
+  ultima_sesion: 2026-09-19
+  sesiones_totales: 2
   diagnostico_inicial_hecho: false
 
 resumen:
   DOMINADO: 0
   COMPRENDIDO: 1
-  COMPRENSION_PARCIAL: 0
+  COMPRENSION_PARCIAL: 1
   EN_ESTUDIO: 0
   REQUIERE_REPASO: 0
-  NO_ESTUDIADO: 20
-  siguiente_recomendado: train_validation_test
+  NO_ESTUDIADO: 19
+  siguiente_recomendado: generalizacion
 
 conceptos:
 
@@ -136,13 +136,27 @@ conceptos:
     ultima_verificacion: null
 
   - id: generalizacion
-    estado: NO_ESTUDIADO
+    estado: COMPRENSION_PARCIAL
     evidencias:
-      explicar: null
+      explicar:
+        fecha: 2026-09-19
+        detalle: >-
+          Distribution shift explicado correctamente y con el mecanismo, no solo
+          la etiqueta: "es optimista, porque en 2016 CouncilArea siempre esta
+          disponible". Identifico la direccion del sesgo (optimista, no
+          pesimista) y la causa (la CV dentro de 2016 solo puede medir el
+          escenario en que la feature esta presente al 100%). Antes habia
+          llegado solo a nombrar "sobreajuste"; aqui explica el mecanismo.
       aplicar: null
       transferir: null
-    sesiones: 0
-    ultima_verificacion: null
+    sesiones: 1
+    ultima_verificacion: 2026-09-19
+    nota: >-
+      Cubierto el caso de distribution shift por DISPONIBILIDAD de una feature.
+      Falta el caso por cambio de relacion features-target, y falta APLICAR y
+      TRANSFERIR. Segunda etapa abierta: trasladar un modelo de Melbourne 2016 a
+      Gran Concepcion es un problema de generalizacion entre poblaciones,
+      lugares y epocas distintas. Ver 07_GUILLITO/osint_gran_concepcion.md.
 
   - id: overfitting_underfitting
     estado: NO_ESTUDIADO

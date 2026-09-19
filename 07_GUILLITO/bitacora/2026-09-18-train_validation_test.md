@@ -129,3 +129,39 @@ Estado: `COMPRENSION_PARCIAL`.
 Ejercicio de APLICAR surgido de su propia pregunta: si añade `CouncilArea`
 (18,9 % de nulos en 2017), dónde debe medir la mejora para no quemar el test.
 Después, TRANSFERIR con un caso de otro dominio, no de Melbourne.
+
+---
+
+## Sesión 2 — 2026-09-19 · distribution shift
+
+**Enseñado:** por qué validar CouncilArea solo dentro de 2016 da una impresión
+incompleta. Verificación en vivo sobre `housing_data.csv`:
+
+```
+2016: 0,00 % faltante · 19 categorías
+2017: 18,90 % faltante · 33 categorías, 14 nunca vistas
+
+Lo que el modelo puede leer en 2017:
+  valor conocido     5.182   71,5 %
+  valor FALTANTE     1.369   18,9 %
+  valor DESCONOCIDO    693    9,6 %
+  sin información    2.062   28,5 %
+```
+
+Corrección a la cifra que se venía manejando: no es 18,9 %, es **28,5 %**. El
+`OneHotEncoder(handle_unknown='ignore')` convierte una categoría no vista en un
+vector de ceros, indistinguible de un faltante.
+
+**Respuesta de Cristóbal:** *"Es optimista, porque en 2016 CouncilArea siempre
+está disponible."*
+
+Correcta, con el mecanismo y con la dirección del sesgo. `generalizacion` pasa a
+`COMPRENSION_PARCIAL` con evidencia de EXPLICAR.
+
+**No se ejecutó** el experimento A/B de los seis modelos. Detenido a petición
+del alumno: la prioridad es su aprendizaje, no optimizar el modelo.
+
+**Abierto:** etapa 2 — OSINT sobre datos reales del Gran Concepción. Informe en
+`07_GUILLITO/osint_gran_concepcion.md`. Pregunta pendiente de respuesta sobre
+hasta qué nivel (inferencia / predicción evaluable / validación externa)
+permiten llegar las fuentes encontradas.
