@@ -48,8 +48,8 @@ meta:
 
 resumen:
   DOMINADO: 0
-  COMPRENDIDO: 0
-  COMPRENSION_PARCIAL: 1
+  COMPRENDIDO: 1
+  COMPRENSION_PARCIAL: 0
   EN_ESTUDIO: 0
   REQUIERE_REPASO: 0
   NO_ESTUDIADO: 20
@@ -94,7 +94,7 @@ conceptos:
     ultima_verificacion: null
 
   - id: train_validation_test
-    estado: COMPRENSION_PARCIAL
+    estado: COMPRENDIDO
     evidencias:
       explicar:
         fecha: 2026-09-18
@@ -106,16 +106,25 @@ conceptos:
           features del modelo. El mecanismo real es extrapolacion en
           Lattitude/Longtitude. Explicacion correcta en direccion, incompleta
           en mecanismo.
-      aplicar: null
+      aplicar:
+        fecha: 2026-09-18
+        detalle: >-
+          Diseno correcto del experimento CouncilArea sin ayuda: "entreno con
+          5.702, comparo en los 634 y no toco 2017". Identifico los tres
+          elementos -donde entrenar, donde decidir, que dejar intacto- y
+          sostuvo la separacion. Ademas corrigio por su cuenta una imprecision
+          propia: entendio que el 18,9% son valores FALTANTES de CouncilArea en
+          2017 y no datos adicionales que se puedan "sumar". Esa distincion no
+          se la dio Guillito.
       transferir: null
     sesiones: 1
     ultima_verificacion: 2026-09-18
     nota: >-
-      Sesion 1 (2026-09-18). Falta APLICAR y TRANSFERIR. Pendiente para la
-      proxima: verificar transferencia con un caso de otro dominio (Galaxy Zoo
-      o externo), no con Melbourne. Pregunta abierta que el mismo planteo y que
-      sirve de ejercicio real: si anade CouncilArea (18,9% nulos en 2017),
-      donde debe medir la mejora para no quemar el test.
+      Sesion 1 (2026-09-18). EXPLICAR y APLICAR cumplidos. Falta TRANSFERIR:
+      debe disenar el mismo tipo de experimento en un dominio distinto de
+      Melbourne. Dataset de transferencia entregado en
+      07_GUILLITO/transferencia/. NO marcar DOMINADO hasta que resuelva ese
+      caso sin recibir la solucion.
 
   - id: validacion_cruzada
     estado: NO_ESTUDIADO
