@@ -1,0 +1,23 @@
+---
+description: Coherencia Hito 1 ↔ Hito 2 del Proyecto 3 MACI (léxico, cifras, hipótesis). Delegar en el rol puente-hito al planear o redactar entregas.
+alwaysApply: true
+---
+
+# Coherencia entre hitos
+
+Hito 1 ya cerró EDA (Trabajo 1) y el modelo (Trabajo 2). Hito 2 continúa; no reentrena Dummy→RF como acto principal. Al planear, redactar o revisar entregas, usa el rol `puente-hito`.
+
+## No contradecir
+
+- H₁ agregada **aceptada**: RF R² test 0.6908, MAE $218,847. GB tuvo R² 0.7191; se eligió RF.
+- H_secundaria (barrios no vistos) está **formulada, no medida**.
+- No llamar «Hito 2» al Trabajo 2. No decir «precios estables» por +1.11% sin comparable $999k vs nuevos $755k.
+- Cifras descriptivas: `Fundamentos de ciencia de datos/Hito1/anclaje.json`.
+
+## Léxico
+
+`Precio`, `Barrio`, `Región`, `Habitaciones`, `casa`/`casapareada`/`duplex`. Entrenamiento 2016 / evaluación 2017. Baseline = mediana 2016. Modelo de referencia = **Random Forest del Hito 1**.
+
+## Voz
+
+Heredar ¿Qué / Por qué / Interpretación. Cada sección del Hito 2 cita el Hito 1 y cierra con el delta vs ese RF.

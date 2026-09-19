@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Estado de ejecucion (no reproducible / especifico de la maquina)
+05_RESULTADOS/dashai_state.json
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+*.swp
+~$*
+
+# Temporales de Office
+*.tmp

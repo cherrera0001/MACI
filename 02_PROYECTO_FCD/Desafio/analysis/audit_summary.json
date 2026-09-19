@@ -1,0 +1,270 @@
+{
+  "train_shape": [
+    1000,
+    90
+  ],
+  "test_shape": [
+    10000,
+    86
+  ],
+  "cols_solo_train": [
+    "label",
+    "objID",
+    "p_cs",
+    "p_el"
+  ],
+  "cols_solo_test": [],
+  "nulos_train": 0,
+  "nulos_test": 0,
+  "duplicados_train": 0,
+  "ID_unico_train": true,
+  "ID_unico_test": true,
+  "overlap_ID_train_test": 0,
+  "distribucion_clases": {
+    "0": 96,
+    "1": 227,
+    "2": 677
+  },
+  "distribucion_clases_pct": {
+    "0": 9.6,
+    "1": 22.7,
+    "2": 67.7
+  },
+  "columnas_constantes": [
+    "sciencePrimary",
+    "legacyPrimary",
+    "seguePrimary",
+    "segue1Primary",
+    "segue2Primary",
+    "bossPrimary",
+    "sdssPrimary",
+    "mode",
+    "nChild",
+    "resolveStatus"
+  ],
+  "n_features_base": 75,
+  "label_derivable_de_p_cs_p_el": {
+    "regla": "1 si p_cs>=0.5; 2 si p_el>=0.5; 0 en otro caso",
+    "coincidencia": 0.998,
+    "discrepancias": 2,
+    "nota": "las discrepancias son empates exactos p_cs=p_el=0.5"
+  },
+  "max_voto_por_clase": {
+    "0": 0.493,
+    "1": 1.0,
+    "2": 1.0
+  },
+  "filas_con_centinela_-9999": {
+    "train": 2,
+    "test": 20
+  },
+  "techo_auc_marginal": {
+    "0_vs_resto": 0.754,
+    "1_vs_2": 0.9041
+  },
+  "top5_drift_train_test": [
+    {
+      "columna": "cx",
+      "ks_train_test": 0.317
+    },
+    {
+      "columna": "cy",
+      "ks_train_test": 0.3118
+    },
+    {
+      "columna": "extinction_z",
+      "ks_train_test": 0.2904
+    },
+    {
+      "columna": "extinction_u",
+      "ks_train_test": 0.2904
+    },
+    {
+      "columna": "extinction_i",
+      "ks_train_test": 0.2904
+    }
+  ],
+  "n_pares_correlacion_mayor_098": 34,
+  "pares_correlacion_mayor_098": [
+    [
+      "psfMagErr_r",
+      "fiberMagErr_r",
+      0.992
+    ],
+    [
+      "fiberMag_r",
+      "fiberMag_i",
+      0.9836
+    ],
+    [
+      "fiberMag_i",
+      "fiberMag_z",
+      0.9914
+    ],
+    [
+      "petroMag_g",
+      "cModelMag_g",
+      0.9833
+    ],
+    [
+      "petroMag_r",
+      "modelMag_r",
+      0.9909
+    ],
+    [
+      "petroMag_r",
+      "cModelMag_r",
+      0.9946
+    ],
+    [
+      "petroMag_r",
+      "dered_r",
+      0.9886
+    ],
+    [
+      "petroMag_i",
+      "modelMag_i",
+      0.9812
+    ],
+    [
+      "petroMag_i",
+      "cModelMag_i",
+      0.9963
+    ],
+    [
+      "petroMag_i",
+      "dered_i",
+      0.9804
+    ],
+    [
+      "modelMag_u",
+      "dered_u",
+      0.9968
+    ],
+    [
+      "modelMag_g",
+      "cModelMag_g",
+      0.9931
+    ],
+    [
+      "modelMag_g",
+      "dered_g",
+      0.9966
+    ],
+    [
+      "modelMag_r",
+      "cModelMag_r",
+      0.9973
+    ],
+    [
+      "modelMag_r",
+      "dered_r",
+      0.9973
+    ],
+    [
+      "modelMag_i",
+      "cModelMag_i",
+      0.9855
+    ],
+    [
+      "modelMag_i",
+      "dered_i",
+      0.9986
+    ],
+    [
+      "modelMag_z",
+      "cModelMag_z",
+      0.9873
+    ],
+    [
+      "modelMag_z",
+      "dered_z",
+      0.9992
+    ],
+    [
+      "cModelMag_g",
+      "dered_g",
+      0.9908
+    ],
+    [
+      "cModelMag_r",
+      "dered_r",
+      0.9948
+    ],
+    [
+      "cModelMag_i",
+      "dered_i",
+      0.9845
+    ],
+    [
+      "cModelMag_z",
+      "dered_z",
+      0.9863
+    ],
+    [
+      "calibStatus_i",
+      "calibStatus_z",
+      0.9888
+    ],
+    [
+      "extinction_u",
+      "extinction_g",
+      1.0
+    ],
+    [
+      "extinction_u",
+      "extinction_r",
+      1.0
+    ],
+    [
+      "extinction_u",
+      "extinction_i",
+      1.0
+    ],
+    [
+      "extinction_u",
+      "extinction_z",
+      1.0
+    ],
+    [
+      "extinction_g",
+      "extinction_r",
+      1.0
+    ],
+    [
+      "extinction_g",
+      "extinction_i",
+      1.0
+    ],
+    [
+      "extinction_g",
+      "extinction_z",
+      1.0
+    ],
+    [
+      "extinction_r",
+      "extinction_i",
+      1.0
+    ],
+    [
+      "extinction_r",
+      "extinction_z",
+      1.0
+    ],
+    [
+      "extinction_i",
+      "extinction_z",
+      1.0
+    ]
+  ],
+  "geometria_clase0": {
+    "frac_entre_top20_discriminantes": 0.6,
+    "frac_entre_todas": 0.267,
+    "t_rel_mediano_top20": 0.855,
+    "dispersion_mediana": {
+      "clase0": 1.229,
+      "clase1": 0.75,
+      "clase2": 0.954
+    }
+  }
+}

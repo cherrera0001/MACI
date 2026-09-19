@@ -1,0 +1,386 @@
+--- a/Trabajo_N1_FUNDAMENTOS_EDA_CORREGIDO.py
++++ b/Trabajo_N1_FUNDAMENTOS_EDA_CORREGIDO.py
+@@ -556,52 +556,63 @@
+ 
+ # %%
+-def describe_correlation(r):
+-    if pd.isna(r):
+-        return "No calculable"
+-    magnitude = abs(r)
+-    if magnitude < 0.20:
+-        level = "muy débil"
+-    elif magnitude < 0.40:
+-        level = "débil"
+-    elif magnitude < 0.60:
+-        level = "moderada"
+-    elif magnitude < 0.80:
+-        level = "fuerte"
+-    else:
+-        level = "muy fuerte"
+-    direction = "positiva" if r > 0 else "negativa" if r < 0 else "nula"
+-    return f"{direction}, {level}"
+-
+-if DATA_AVAILABLE:
+-    numeric_df = df.select_dtypes(include=[np.number])
+-    correlation_matrix = numeric_df.corr()
+-
+-    print("Matriz de correlación numérica:")
++# (a) HALLAZGO DESCRIPTIVO — Pearson, réplica del CorrelationMatrixExplorer de DashAI (dataset 22).
++#     Solo las 8 columnas que DashAI tipó numéricas. Fuera del heatmap (DashAI las tipó categóricas/texto):
++#     Bathroom, Bedroom2, Car, Propertycount, Postcode, Suburb, Type, Method, Regionname, CouncilArea, Date, Address, SellerG.
++#     Todas las filas; sin escalar, sin one-hot, sin train_test_split; NO dropna() global.
++#     Nulos: el pairwise puro NO reproduce la matriz del explorador (falla en las 6 celdas con BuildingArea/YearBuilt);
++#     sí la reproduce (±0,0005) rellenar los nulos de esas dos columnas con la media sin outliers (cercas de Tukey,
++#     = lower_bound/upper_bound de numeric_stats de DashAI). Se autoverifica contra las 15 celdas del explorador.
++# (b) DECISIÓN DE MODELO (Hito 1), separada de (a): Random Forest, train 2016 / test 2017; fuera BuildingArea (47,50 % nulos)
++#     y YearBuilt (39,58 % nulos) POR NULOS, no por r≈0 (YearBuilt–Price = −0,262, 2.ª |r| con Price); fuera CouncilArea y
++#     Suburb one-hot (172 barrios nuevos en 2017); entran Distance, Lattitude, Longtitude, Rooms (+ Type/Regionname categóricas).
++COLS_DASHAI = ["BuildingArea", "Distance", "Landsize", "Lattitude", "Longtitude", "Price", "Rooms", "YearBuilt"]
++UMBRAL_FUERTE_DASHAI = 0.5
++ACEPTACION_DASHAI = {("Price", "Rooms"): 0.497, ("Price", "YearBuilt"): -0.262, ("Price", "Lattitude"): -0.213,
++                     ("Price", "Longtitude"): 0.204, ("Price", "Distance"): -0.163, ("Price", "BuildingArea"): 0.070,
++                     ("Price", "Landsize"): 0.037, ("Lattitude", "Longtitude"): -0.358, ("Rooms", "Distance"): 0.294,
++                     ("Distance", "Longtitude"): 0.239, ("Distance", "YearBuilt"): 0.193, ("BuildingArea", "Landsize"): 0.094,
++                     ("BuildingArea", "Rooms"): 0.093, ("Landsize", "Distance"): 0.025, ("YearBuilt", "Rooms"): -0.052}
++
++def relleno_media_sin_outliers(s):
++    q1, q3 = s.quantile(0.25), s.quantile(0.75); iqr = q3 - q1
++    return float(s[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)].mean())
++
++if DATA_AVAILABLE:
++    d = df[COLS_DASHAI].apply(pd.to_numeric, errors="coerce")
++    rellenos = {}
++    for c in COLS_DASHAI:
++        if d[c].isna().any():
++            rellenos[c] = relleno_media_sin_outliers(d[c])
++            d[c] = d[c].fillna(rellenos[c])
++    correlation_matrix = d.corr(method="pearson")
++
++    trunc3 = lambda x: round(float(x), 3)  # 3 decimales redondeados como DashAI; única celda en frontera: Price–Landsize 0.03750745 (DashAI muestra 0.037)
++    print(f"Matriz de correlación Pearson (método explorador DashAI, 8 numéricas, n = {len(d):,}):")
+     print(correlation_matrix.round(3).to_string())
+-
+-    if "Price" in correlation_matrix.columns:
+-        price_correlations = (
+-            correlation_matrix["Price"]
+-            .drop(labels=["Price"], errors="ignore")
+-            .dropna()
+-            .sort_values(key=lambda s: s.abs(), ascending=False)
+-        )
+-        correlation_table = pd.DataFrame({
+-            "Variable": price_correlations.index,
+-            "Correlación con Price": price_correlations.values,
+-            "Interpretación exploratoria": [describe_correlation(r) for r in price_correlations.values],
+-        })
+-        print("\nCorrelaciones específicas con Price:")
+-        print(correlation_table.to_string(index=False))
+-
+-        if {"Rooms", "Bedroom2"}.issubset(correlation_matrix.columns):
+-            print(f"\nCorrelación Rooms-Bedroom2: {correlation_matrix.loc['Rooms', 'Bedroom2']:.4f}")
+-else:
+-    print("NO VERIFICABLE CON LOS DATOS DISPONIBLES.")
+-
+-# %% [markdown]
+-# **Resultado observado:** se priorizan las correlaciones de variables numéricas con `Price` en lugar de interpretar una matriz completa sin foco.
+-#
+-# **Interpretación exploratoria:** magnitudes altas pueden señalar variables descriptivamente relacionadas con el precio; una correlación alta entre dos explicativas, como `Rooms` y `Bedroom2`, puede sugerir redundancia.
++    print(f"\nRellenos aplicados a nulos (media sin outliers): { {k: round(v, 2) for k, v in rellenos.items()} }")
++
++    ranking = correlation_matrix["Price"].drop("Price")
++    ranking = ranking.reindex(ranking.abs().sort_values(ascending=False).index)
++    print("\nRanking |r| vs Price:")
++    for k, v in ranking.items():
++        print(f"  {k:13s} {trunc3(v):+.3f}")
++    fuertes = [(a, b, round(float(correlation_matrix.loc[a, b]), 3)) for i, a in enumerate(COLS_DASHAI)
++               for b in COLS_DASHAI[i + 1:] if abs(correlation_matrix.loc[a, b]) > UMBRAL_FUERTE_DASHAI]
++    print(f"\nCeldas con |r| > {UMBRAL_FUERTE_DASHAI} fuera de la diagonal: {fuertes if fuertes else 'ninguna'} "
++          f"(la mayor: Price–Rooms = {correlation_matrix.loc['Price', 'Rooms']:.3f})")
++
++    desvios = {f"{a}-{b}": round(float(correlation_matrix.loc[a, b] - v), 4) for (a, b), v in ACEPTACION_DASHAI.items()
++               if abs(correlation_matrix.loc[a, b] - v) > 0.0006}
++    assert not desvios, f"NO REPRODUCE LA MATRIZ DE DASHAI: {desvios}"
++    print("Autoverificación contra las 15 celdas del explorador DashAI: OK")
++else:
++    print("NO VERIFICABLE CON LOS DATOS DISPONIBLES.")
++
++# %% [markdown]
++# **Resultado observado (DashAI, dataset 22):** ninguna celda fuera de la diagonal supera |r| > 0,5; la mayor es `Rooms`–`Price` = 0,497.
++# Ranking |r| con `Price`: Rooms 0,497 · YearBuilt −0,262 · Lattitude −0,213 · Longtitude 0,204 · Distance −0,163 · BuildingArea 0,070 · Landsize 0,037.
++#
++# **Interpretación exploratoria:** `YearBuilt` es la 2.ª |r| con `Price`; queda fuera del modelo por nulos (39,58 %), no por falta de señal.
++# Las tres variables locacionales superan a `BuildingArea` y `Landsize`. `Type`, `Bathroom`, `Bedroom2`, `Car` no tienen r aquí: DashAI no las tipó numéricas.
+ #
+ # **Límite:** correlación lineal no equivale a causalidad y una correlación cercana a cero no descarta relaciones no lineales.
+
+--- a/anclaje.py
++++ b/anclaje.py
+@@ -275,4 +275,48 @@
+ }
+ 
++# ── CORRELACION (metodo del explorador DashAI, dataset 22) ───────────────────
++# (a) Hallazgo descriptivo. Solo las 8 columnas que DashAI tipo numericas; todas las filas; sin escalar,
++#     sin one-hot, sin split. Nulos de BuildingArea/YearBuilt -> media sin outliers (cercas de Tukey);
++#     el pairwise puro NO reproduce la matriz del explorador. Se verifica contra las 15 celdas leidas en DashAI.
++# (b) La decision de modelo (RF; fuera BuildingArea/YearBuilt por nulos, no por r) vive en 'ausencias'/'cascada'.
++COLS_DASHAI = ["BuildingArea", "Distance", "Landsize", "Lattitude", "Longtitude", "Price", "Rooms", "YearBuilt"]
++FUERA_HEATMAP = ["Bathroom", "Bedroom2", "Car", "Propertycount", "Postcode", "Suburb", "Type", "Method",
++                 "Regionname", "CouncilArea", "Date", "Address", "SellerG"]
++ACEPTACION_DASHAI = {("Price", "Rooms"): 0.497, ("Price", "YearBuilt"): -0.262, ("Price", "Lattitude"): -0.213,
++                     ("Price", "Longtitude"): 0.204, ("Price", "Distance"): -0.163, ("Price", "BuildingArea"): 0.070,
++                     ("Price", "Landsize"): 0.037, ("Lattitude", "Longtitude"): -0.358, ("Rooms", "Distance"): 0.294,
++                     ("Distance", "Longtitude"): 0.239, ("Distance", "YearBuilt"): 0.193, ("BuildingArea", "Landsize"): 0.094,
++                     ("BuildingArea", "Rooms"): 0.093, ("Landsize", "Distance"): 0.025, ("YearBuilt", "Rooms"): -0.052}
++
++def _media_sin_outliers(s):
++    q1, q3 = s.quantile(0.25), s.quantile(0.75); iqr = q3 - q1
++    return float(s[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)].mean())
++
++_d = df[COLS_DASHAI].astype(float)
++_rell = {}
++for c in COLS_DASHAI:
++    if _d[c].isna().any():
++        _rell[c] = _media_sin_outliers(_d[c]); _d[c] = _d[c].fillna(_rell[c])
++_m = _d.corr(method="pearson")
++_desv = {f"{a}-{b}": round(float(_m.loc[a, b] - v), 4) for (a, b), v in ACEPTACION_DASHAI.items() if abs(_m.loc[a, b] - v) > 0.0006}
++assert not _desv, f"CORRELACION NO REPRODUCE DASHAI: {_desv}"
++_rank = _m["Price"].drop("Price"); _rank = _rank.reindex(_rank.abs().sort_values(ascending=False).index)
++_t3 = lambda x: round(float(x), 3)   # DashAI muestra 3 decimales redondeados; unica celda en frontera: Price-Landsize 0.03750745 (DashAI 0.037)
++A["correlacion_dashai"] = {
++    "presentacion": "3 decimales redondeados como DashAI; celda en frontera Price-Landsize=0.03750745 (DashAI muestra 0.037; splits.json 0.0375); 'matriz_6dec' conserva el valor completo",
++    "fuente": "CorrelationMatrixExplorer DashAI, dataset id 22 (housing_data.csv)",
++    "metodo": "pearson; 8 columnas numericas de DashAI; todas las filas; nulos BuildingArea/YearBuilt -> media sin outliers (Tukey)",
++    "n_filas": int(len(_d)), "columnas": COLS_DASHAI, "fuera_del_heatmap": FUERA_HEATMAP,
++    "rellenos_nulos": {k: round(v, 4) for k, v in _rell.items()},
++    "matriz": {a: {b: _t3(_m.loc[a, b]) for b in _m.columns} for a in _m.index},
++    "matriz_6dec": {a: {b: round(float(_m.loc[a, b]), 6) for b in _m.columns} for a in _m.index},
++    "ranking_abs_r_vs_Price": [{"variable": k, "r": _t3(v)} for k, v in _rank.items()],
++    "umbral_fuerte": 0.5,
++    "pares_fuertes": [(a, b, round(float(_m.loc[a, b]), 3)) for i, a in enumerate(COLS_DASHAI) for b in COLS_DASHAI[i + 1:]
++                      if abs(_m.loc[a, b]) > 0.5],
++    "r_max_fuera_diagonal": {"par": "Price-Rooms", "r": _t3(_m.loc["Price", "Rooms"])},
++    "verificado_contra_dashai": True,
++}
++
+ # ── DESCRIPCION DE DATOS ─────────────────────────────────────────────────────
+ A["datos"] = {
+
+--- a/housing_visualizations.py
++++ b/housing_visualizations.py
+@@ -302,6 +302,10 @@
+ # 10. VISUALIZACIÓN 9: MATRIZ DE CORRELACIÓN
+ # ============================================================================
+-numeric_cols = ['Price', 'Rooms', 'Distance', 'Bedroom2', 'Bathroom', 'Car', 'YearBuilt']
+-corr_data = df[numeric_cols].dropna().corr()
++# Método del explorador de DashAI (dataset 22): solo las 8 columnas que DashAI tipó numéricas (Bedroom2/Bathroom/Car
++# NO entran: DashAI las tipó categóricas), todas las filas, sin dropna() global; nulos de BuildingArea/YearBuilt ->
++# media sin outliers (cercas de Tukey). Bloque canónico y autoverificación: F:\MACI\correlacion_dashai.py
++from correlacion_dashai import matriz_dashai, verificar, COLS_DASHAI
++corr_data, _ = matriz_dashai(df, COLS_DASHAI)
++verificar(corr_data)
+ 
+ fig9 = go.Figure(data=go.Heatmap(
+@@ -318,5 +322,5 @@
+ 
+ fig9.update_layout(
+-    title="MATRIZ DE CORRELACIÓN DE CARACTERÍSTICAS",
++    title="MATRIZ DE CORRELACIÓN PEARSON — 8 numéricas, método explorador DashAI (dataset 22)",
+     height=600,
+     width=700
+
+--- a/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell YiCO2ZNfcwZL
++++ b/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell YiCO2ZNfcwZL
+@@ -1,3 +1,10 @@
+-**9. Matriz de Correlación:**
++**9. Matriz de Correlación (Pearson, método del explorador de DashAI — dataset 22):**
+ 
+-**Interpretación exploratoria:** magnitudes altas pueden señalar variables descriptivamente relacionadas con el precio; una correlación alta entre dos explicativas, como `Rooms` y `Bedroom2`, puede sugerir redundancia.
++Se replica exactamente lo que hace el `CorrelationMatrixExplorer` de DashAI sobre `housing_data.csv` (13.580 × 21, id 22):
++
++- Entran **solo las 8 columnas que DashAI tipó numéricas**: `Tamaño de construcción`, `Distancia`, `Tamaño de tierra`, `Latitud`, `Longitud`, `Precio`, `Habitaciones`, `Año de construcción`.
++- **No entran** (DashAI las tipó categóricas/texto): `Baños`, `Habitaciones2`, `Automóviles`, `Cantidad de propiedades`, `Postcode`, `Barrio`, `Tipo`, `Método`, `Región`, `Comuna`, `Fecha`, `Dirección`, `Vendedor`. Por eso `Tipo` **no tiene r** en este heatmap: su relación con `Precio` se lee en las medianas de la Evidencia C.
++- Todas las filas; sin escalar, sin one-hot, sin `train_test_split`.
++- Umbral "fuerte" de DashAI: |r| > 0,5. **Ninguna** celda fuera de la diagonal lo cumple; la mayor es `Habitaciones`–`Precio` = 0,497 (la más alta, no "fuerte").
++
++**Interpretación exploratoria:** el ranking |r| vs `Precio` ordena la señal lineal disponible; una r baja no descarta relaciones no lineales ni implica ausencia de utilidad en un modelo de árboles.
+
+--- a/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell E5KxhZI5NOlz
++++ b/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell E5KxhZI5NOlz
+@@ -1,42 +1,71 @@
+-def describe_correlation(r):
+-    if pd.isna(r):
+-        return "No calculable"
+-    magnitude = abs(r)
+-    if magnitude < 0.20:
+-        level = "muy débil"
+-    elif magnitude < 0.40:
+-        level = "débil"
+-    elif magnitude < 0.60:
+-        level = "moderada"
+-    elif magnitude < 0.80:
+-        level = "fuerte"
+-    else:
+-        level = "muy fuerte"
+-    direction = "positiva" if r > 0 else "negativa" if r < 0 else "nula"
+-    return f"{direction}, {level}"
++# ============================================================================================
++# (a) HALLAZGO DESCRIPTIVO — Pearson, réplica del explorador de DashAI (dataset 22, housing_data.csv)
++#     · Solo las 8 columnas que DashAI tipó numéricas. Fuera del heatmap (DashAI las tipó categóricas/
++#       texto): Baños, Habitaciones2, Automóviles, Cantidad de propiedades, Postcode, Barrio, Tipo,
++#       Método, Región, Comuna, Fecha, Dirección, Vendedor.
++#     · Todas las filas (13.580). Sin escalar, sin one-hot, sin train_test_split. NO dropna() global.
++#     · Nulos: verificado contra la matriz del explorador, el Pearson "pairwise" puro NO la reproduce
++#       (falla en las 6 celdas que tocan Tamaño de construcción / Año de construcción). Sí la reproduce
++#       (±0,0005) rellenar los nulos de esas dos columnas con la MEDIA SIN OUTLIERS (cercas de Tukey,
++#       las mismas lower_bound/upper_bound que DashAI guarda en numeric_stats). Se autoverifica abajo.
++#     · Presentación: 3 decimales redondeados, como DashAI. Única celda en frontera: Precio–Tamaño de
++#       tierra = 0,03750745 (float64 → 0,038; DashAI muestra 0,037 y su splits.json guarda 0,0375).
++#     · Umbral "fuerte" de DashAI: |r| > 0,5.
++# (b) DECISIÓN DE MODELO (Hito 1) — NO se mezcla con (a):
++#     · Random Forest; partición temporal train 2016 / test 2017 (no se cambia).
++#     · Fuera del modelo: Tamaño de construcción (47,50 % nulos) y Año de construcción (39,58 % nulos)
++#       POR NULOS, no por r≈0 (Año de construcción–Precio = −0,262 es la 2.ª |r| con Precio);
++#       Comuna (nulos + niveles nuevos); Barrio one-hot (172 barrios nuevos en 2017).
++#     · Entran: Distancia, Latitud, Longitud, Habitaciones (+ Tipo y Región como categóricas).
++# ============================================================================================
++COLS_DASHAI = {  # nombre en este notebook -> nombre en DashAI/CSV (Lattitude/Longtitude son los del CSV; no se "corrigen")
++    "Tamaño de construcción": "BuildingArea", "Distancia": "Distance", "Tamaño de tierra": "Landsize",
++    "Latitud": "Lattitude", "Longitud": "Longtitude", "Precio": "Price", "Habitaciones": "Rooms",
++    "Año de construcción": "YearBuilt",
++}
++UMBRAL_FUERTE_DASHAI = 0.5
++ACEPTACION_DASHAI = {  # celdas leídas en el explorador de DashAI (dataset 22), 3 decimales
++    ("Price", "Rooms"): 0.497, ("Price", "YearBuilt"): -0.262, ("Price", "Lattitude"): -0.213,
++    ("Price", "Longtitude"): 0.204, ("Price", "Distance"): -0.163, ("Price", "BuildingArea"): 0.070,
++    ("Price", "Landsize"): 0.037, ("Lattitude", "Longtitude"): -0.358, ("Rooms", "Distance"): 0.294,
++    ("Distance", "Longtitude"): 0.239, ("Distance", "YearBuilt"): 0.193, ("BuildingArea", "Landsize"): 0.094,
++    ("BuildingArea", "Rooms"): 0.093, ("Landsize", "Distance"): 0.025, ("YearBuilt", "Rooms"): -0.052,
++}
++
++def relleno_media_sin_outliers(s):
++    q1, q3 = s.quantile(0.25), s.quantile(0.75); iqr = q3 - q1
++    return float(s[(s >= q1 - 1.5 * iqr) & (s <= q3 + 1.5 * iqr)].mean())
+ 
+ if DATA_AVAILABLE:
+-    numeric_df = df.select_dtypes(include=[np.number])
+-    correlation_matrix = numeric_df.corr()
++    d = df[list(COLS_DASHAI)].apply(pd.to_numeric, errors="coerce")
++    rellenos = {}
++    for c in d.columns:
++        if d[c].isna().any():
++            rellenos[c] = relleno_media_sin_outliers(d[c])
++            d[c] = d[c].fillna(rellenos[c])
++    correlation_matrix = d.corr(method="pearson")
+ 
+-    print("Matriz de correlación numérica:")
++    print(f"Matriz de correlación Pearson (método explorador DashAI, 8 numéricas, n = {len(d):,}):")
+     print(correlation_matrix.round(3).to_string())
++    print(f"\nRellenos aplicados a nulos (media sin outliers): { {k: round(v, 2) for k, v in rellenos.items()} }")
++    print(f"Nota: Precio–Tamaño de tierra = {correlation_matrix.loc['Precio', 'Tamaño de tierra']:.8f} está en frontera de redondeo (DashAI muestra 0,037).")
+ 
+-    if "Price" in correlation_matrix.columns:
+-        price_correlations = (
+-            correlation_matrix["Price"]
+-            .drop(labels=["Price"], errors="ignore")
+-            .dropna()
+-            .sort_values(key=lambda s: s.abs(), ascending=False)
+-        )
+-        correlation_table = pd.DataFrame({
+-            "Variable": price_correlations.index,
+-            "Correlación con Price": price_correlations.values,
+-            "Interpretación exploratoria": [describe_correlation(r) for r in price_correlations.values],
+-        })
+-        print("\nCorrelaciones específicas con Price:")
+-        print(correlation_table.to_string(index=False))
++    ranking = correlation_matrix["Precio"].drop("Precio")
++    ranking = ranking.reindex(ranking.abs().sort_values(ascending=False).index)
++    print("\nRanking |r| vs Precio:")
++    for k, v in ranking.items():
++        print(f"  {k:24s} ({COLS_DASHAI[k]:12s}) {v:+.3f}")
+ 
+-        if {"Rooms", "Bedroom2"}.issubset(correlation_matrix.columns):
+-            print(f"\nCorrelación Rooms-Bedroom2: {correlation_matrix.loc['Rooms', 'Bedroom2']:.4f}")
++    fuertes = [(a, b, round(float(correlation_matrix.loc[a, b]), 3))
++               for i, a in enumerate(correlation_matrix.columns) for b in correlation_matrix.columns[i + 1:]
++               if abs(correlation_matrix.loc[a, b]) > UMBRAL_FUERTE_DASHAI]
++    print(f"\nCeldas con |r| > {UMBRAL_FUERTE_DASHAI} fuera de la diagonal: {fuertes if fuertes else 'ninguna'} "
++          f"(la mayor: Habitaciones–Precio = {correlation_matrix.loc['Habitaciones', 'Precio']:.3f})")
++
++    # Autoverificación contra el explorador de DashAI: si no calza, el método está mal (no se redondea a mano).
++    m_en = correlation_matrix.rename(index=COLS_DASHAI, columns=COLS_DASHAI)
++    desvios = {f"{a}-{b}": round(float(m_en.loc[a, b] - v), 4) for (a, b), v in ACEPTACION_DASHAI.items()
++               if abs(m_en.loc[a, b] - v) > 0.0006}
++    assert not desvios, f"NO REPRODUCE LA MATRIZ DE DASHAI: {desvios}"
++    print("Autoverificación contra las 15 celdas del explorador DashAI: OK")
+ else:
+
+--- a/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell F8n7zhuEoLLa
++++ b/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell F8n7zhuEoLLa
+@@ -2,5 +2,11 @@
+ 
+-plt.figure(figsize=(12, 10)) # Ajustar el tamaño para una mejor visualización
+-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=.5)
+-plt.title('Mapa de Calor de la Matriz de Correlación')
+-plt.show()
++# Heatmap de la MISMA matriz de la celda anterior (8 numéricas de DashAI). Escala fija [-1, 1] para no exagerar
++# visualmente r bajas; ninguna celda supera el umbral |r| > 0,5 de DashAI.
++if DATA_AVAILABLE:
++    plt.figure(figsize=(9, 7))
++    sns.heatmap(correlation_matrix, annot=True, fmt=".3f", cmap="coolwarm", vmin=-1, vmax=1, linewidths=.5)
++    plt.title("Pearson — 8 columnas numéricas (método explorador DashAI, dataset 22)")
++    plt.tight_layout()
++    plt.show()
++else:
++    print("NO VERIFICABLE CON LOS DATOS DISPONIBLES.")
+
+--- a/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell x915sO1iNOlz
++++ b/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell x915sO1iNOlz
+@@ -3,4 +3,2 @@
+ Encontramos que el número de habitaciones entrega información relevante sobre el precio. Por ejemplo, una propiedad de una habitación tiene un precio mediano de 385 mil, mientras que una de cuatro habitaciones alcanza aproximadamente 1,285 millones. Esto nos muestra que las características físicas de la propiedad contienen información que potencialmente puede utilizar un modelo para estimar su precio.
+-
+-La correlación entre Habitaciones y Precio es 0,497, una relación positiva moderada.
+ 
+@@ -15,11 +13,19 @@
+ 
+-También aparecen otras relaciones interesantes:
++**Correlaciones de Pearson con `Precio` (explorador de DashAI, dataset 22; solo las 8 columnas que DashAI tipó numéricas):**
+ 
+-1. Habitaciones: 0,497 (fuerte)
+-2. Habitaciones2: 0,476 (fuerte)
+-3. Baños: 0,467 (fuerte)
+-4. Año de construcción: -0,324 (pobre)
+-5. Automóviles: 0,239 (regular)
+-6. Distancia: -0,163 (pobre)
++| Variable | r con `Precio` |
++|---|---:|
++| Habitaciones | 0,497 |
++| Año de construcción | −0,262 |
++| Latitud | −0,213 |
++| Longitud | 0,204 |
++| Distancia | −0,163 |
++| Tamaño de construcción | 0,070 |
++| Tamaño de tierra | 0,037 |
+ 
+-Como se observa, no todas tienen la misma fuerza, pero en conjunto muestran que el precio no está completamente desconectado de las características disponibles, en cuanto al espacio físico de los inmuebles.
++Lecturas:
++- Con el umbral de DashAI (|r| > 0,5) **ninguna** correlación es "fuerte"; `Habitaciones`–`Precio` = 0,497 es la **más alta**.
++- `Año de construcción` es la **segunda** |r| con `Precio` (−0,262). Se deja fuera del modelo por sus nulos (39,58 %), no por falta de señal; lo mismo `Tamaño de construcción` (47,50 % nulos).
++- `Baños`, `Habitaciones2` y `Automóviles` no aparecen: DashAI las tipó categóricas y no entran en este heatmap. `Tipo` tampoco: es categórica y se lee por medianas (Evidencia C).
++
++Como se observa, no todas tienen la misma fuerza, pero en conjunto muestran que el precio no está desconectado de las características disponibles.
+
+--- a/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell _wL2mOpPNOlz
++++ b/V2_Trabajo_N1_FUNDAMENTOS.ipynb::cell _wL2mOpPNOlz
+@@ -2,6 +2,10 @@
+ 
+-También encontramos una señal asociada a la ubicación. La distancia presenta una relación negativa con el precio, lo que sugiere que la localización podría aportar información al modelo. Sin embargo, la relación es relativamente débil, por lo que no sería suficiente utilizar únicamente esta variable.
++La ubicación entra en la matriz de DashAI por tres columnas numéricas y las tres muestran señal lineal con `Precio`:
+ 
+-- Correlación Distancia–Precio = -0,163.
++- `Latitud`–`Precio` = −0,213
++- `Longitud`–`Precio` = 0,204
++- `Distancia`–`Precio` = −0,163
+ 
+-Esto significa que, en términos generales, a mayor distancia, el precio tiende a disminuir, aunque la distancia por sí sola no explica mucho.
++En esta matriz la ubicación **no es la señal de menor impacto**: las tres |r| locacionales superan a `Tamaño de construcción` (0,070) y `Tamaño de tierra` (0,037). A mayor distancia al centro financiero el precio tiende a bajar, y la latitud/longitud capturan la dirección (norte–sur / este–oeste) en que cambian los precios. Ninguna de las tres supera el umbral |r| > 0,5 de DashAI: la ubicación aporta, pero por sí sola no explica el precio. `Latitud`–`Longitud` = −0,358 indica que no son intercambiables entre sí.
++
++Esta es la razón por la que, en el modelo, la ubicación se representa con `Distancia`, `Latitud` y `Longitud` (continuas, existen para los 172 barrios nuevos de 2017) y no con `Barrio` one-hot.

@@ -1,0 +1,124 @@
+{
+  "sha256": "3e449c3e95088da8a3a6b10331a5703f2c951d0740f317f97ed9baf0db1fd9f8",
+  "n_filas": 13580,
+  "nulos_crudo": {
+    "Car": 62,
+    "BuildingArea": 6450,
+    "YearBuilt": 5375,
+    "CouncilArea": 1369
+  },
+  "duplicados_fila_completa": 0,
+  "duplicados_sin_Date": 18,
+  "desfase_dashai_duplicados": "DashAI=19; pandas sin Date=18. No redondear a 19.",
+  "buildingarea": {
+    "crudo": {
+      "n": 353,
+      "q1": 93.0,
+      "q3": 174.0,
+      "lo": -28.5,
+      "hi": 295.5,
+      "mediana": 126.0,
+      "media": 151.96764988779805
+    },
+    "imputado_mediana": {
+      "n": 5565,
+      "q1": 122.0,
+      "q3": 129.94,
+      "lo": 110.09,
+      "hi": 141.85,
+      "mediana": 126.0,
+      "media": 139.63397229013256
+    }
+  },
+  "yearbuilt": {
+    "crudo": {
+      "n": 6,
+      "q1": 1940.0,
+      "q3": 1999.0,
+      "lo": 1851.5,
+      "hi": 2087.5,
+      "mediana": 1970.0,
+      "media": 1964.6842169408897
+    },
+    "imputado_mediana": {
+      "n": 3975,
+      "q1": 1960.0,
+      "q3": 1975.0,
+      "lo": 1937.5,
+      "hi": 1997.5,
+      "mediana": 1970.0,
+      "media": 1966.7882179675994
+    }
+  },
+  "tabla": [
+    {
+      "indicador": "Filas duplicadas (todas las columnas)",
+      "dashai": 19,
+      "crudo": 0,
+      "veredicto": "artefacto",
+      "nota": "sin Date: 18 (DashAI 19; pandas 18). No borrar. Reventas en anclaje."
+    },
+    {
+      "indicador": "Valores faltantes",
+      "dashai": "0 (informe de calidad)",
+      "crudo": {
+        "Car": 62,
+        "BuildingArea": 6450,
+        "YearBuilt": 5375,
+        "CouncilArea": 1369
+      },
+      "veredicto": "artefacto",
+      "nota": "Si DashAI ve 0 nulos, la vista ya está imputada."
+    },
+    {
+      "indicador": "BuildingArea atípicos IQR",
+      "dashai": 5565,
+      "crudo": 353,
+      "veredicto": "artefacto",
+      "nota": "imputado-mediana = 5565; Q1/Q3 crudo 93/174 vs 122.00/129.94"
+    },
+    {
+      "indicador": "YearBuilt atípicos IQR",
+      "dashai": 3975,
+      "crudo": 6,
+      "veredicto": "artefacto",
+      "nota": "imputado-mediana = 3975; crudo mediana 1970 vs imputada 1970"
+    },
+    {
+      "indicador": "Propertycount alta cardinalidad",
+      "dashai": "categórica, 311 niveles",
+      "crudo": 311,
+      "veredicto": "no actuar",
+      "nota": "Entero (Cantidad_Propiedades). No one-hot. Suburb=314 y Postcode=198 sí son cardinalidad de OHE."
+    },
+    {
+      "indicador": "log(Price) / recorte IQR Price",
+      "dashai": "skew 2.24; 612 atípicos; 'aplica log'",
+      "crudo": "skew 2.24; IQR n=612",
+      "veredicto": "real / no actuar",
+      "nota": "Asimetría real. No log-target ni borrar cola. RF Hito 1 en Precio original."
+    },
+    {
+      "indicador": "IQR Rooms / geo",
+      "dashai": "Rooms 682; Lat 262; Long 408; Dist 411",
+      "crudo": {
+        "Rooms": 682,
+        "Lattitude": 262,
+        "Longtitude": 408,
+        "Distance": 411
+      },
+      "veredicto": "real / no actuar",
+      "nota": "5–10 habitaciones y coordenadas son válidas. No drop."
+    },
+    {
+      "indicador": "Distance / Price skew (crudo)",
+      "dashai": "Distance 1.68; Price 2.24",
+      "crudo": {
+        "Distance": 1.68,
+        "Price": 2.24
+      },
+      "veredicto": "real",
+      "nota": "Describir. No transformar el target para 'arreglar' DashAI."
+    }
+  ]
+}

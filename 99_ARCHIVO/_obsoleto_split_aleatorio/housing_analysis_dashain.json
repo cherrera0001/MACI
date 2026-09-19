@@ -1,0 +1,230 @@
+{
+  "dataset_info": {
+    "total_records": 13580,
+    "features_count": 13,
+    "date_range": "2016-2017",
+    "price_statistics": {
+      "min": 85000.0,
+      "max": 9000000.0,
+      "mean": 1075684.079455081,
+      "median": 903000.0,
+      "std": 639310.724296018
+    }
+  },
+  "model_performance": {
+    "algorithm": "Gradient Boosting",
+    "r2_score": 0.8116274683469016,
+    "rmse": 273540.0871811791,
+    "mae": 173722.91727353202,
+    "train_size": 10864,
+    "test_size": 2716
+  },
+  "feature_importance": {
+    "features": [
+      "Rooms",
+      "Bedroom2",
+      "Bathroom",
+      "Car",
+      "Landsize",
+      "BuildingArea",
+      "YearBuilt",
+      "Distance",
+      "Propertycount",
+      "Type_encoded",
+      "Method_encoded",
+      "Regionname_encoded",
+      "CouncilArea_encoded"
+    ],
+    "importances": [
+      0.14218974131811712,
+      0.006534936986996284,
+      0.09283207772707816,
+      0.007950652584766451,
+      0.09721001997742844,
+      0.08001497548162408,
+      0.046083320955818984,
+      0.18790881638556967,
+      0.025540585092613036,
+      0.1088210696436792,
+      0.0038805664520466503,
+      0.14624063729826497,
+      0.05479260009599692
+    ],
+    "top_5": [
+      [
+        "Distance",
+        0.18790881638556967
+      ],
+      [
+        "Regionname_encoded",
+        0.14624063729826497
+      ],
+      [
+        "Rooms",
+        0.14218974131811712
+      ],
+      [
+        "Type_encoded",
+        0.1088210696436792
+      ],
+      [
+        "Landsize",
+        0.09721001997742844
+      ]
+    ]
+  },
+  "predictions_summary": {
+    "total_predictions": 2716,
+    "error_stats": {
+      "mean_error": 173722.91727353202,
+      "max_error": 2088137.672970065,
+      "min_error": 69.86269058368634,
+      "percentile_25": 47611.95177899378,
+      "percentile_50": 109905.67120983495,
+      "percentile_75": 217177.82608812174,
+      "percentile_95": 543761.2144727615
+    },
+    "accuracy_ranges": {
+      "within_50k": 25.846833578792346,
+      "within_100k": 46.72312223858616,
+      "within_150k": 60.898379970544916,
+      "within_200k": 72.42268041237114
+    }
+  },
+  "property_types": {
+    "h": {
+      "count": 9449,
+      "mean": 1242664.761138745,
+      "median": 1080000.0,
+      "min": 131000.0,
+      "max": 9000000.0
+    },
+    "u": {
+      "count": 3017,
+      "mean": 605127.4845873384,
+      "median": 560000.0,
+      "min": 85000.0,
+      "max": 3625000.0
+    },
+    "t": {
+      "count": 1114,
+      "mean": 933735.0538599641,
+      "median": 846750.0,
+      "min": 300000.0,
+      "max": 3475000.0
+    }
+  },
+  "regions": {
+    "Northern Metropolitan": {
+      "count": 3890,
+      "mean": 898171.0822622108,
+      "median": 806250.0,
+      "min": 145000.0,
+      "max": 4525000.0
+    },
+    "Western Metropolitan": {
+      "count": 2948,
+      "mean": 866420.5200135686,
+      "median": 793000.0,
+      "min": 85000.0,
+      "max": 3900000.0
+    },
+    "Southern Metropolitan": {
+      "count": 4695,
+      "mean": 1372963.3693290735,
+      "median": 1250000.0,
+      "min": 131000.0,
+      "max": 8000000.0
+    },
+    "Eastern Metropolitan": {
+      "count": 1471,
+      "mean": 1104079.6342624065,
+      "median": 1010000.0,
+      "min": 288000.0,
+      "max": 4000000.0
+    },
+    "South-Eastern Metropolitan": {
+      "count": 450,
+      "mean": 922943.7844444445,
+      "median": 850000.0,
+      "min": 266000.0,
+      "max": 9000000.0
+    },
+    "Eastern Victoria": {
+      "count": 53,
+      "mean": 699980.7924528302,
+      "median": 670000.0,
+      "min": 400000.0,
+      "max": 1085000.0
+    },
+    "Northern Victoria": {
+      "count": 41,
+      "mean": 594829.268292683,
+      "median": 540000.0,
+      "min": 330000.0,
+      "max": 1355000.0
+    },
+    "Western Victoria": {
+      "count": 32,
+      "mean": 397523.4375,
+      "median": 400000.0,
+      "min": 280500.0,
+      "max": 710000.0
+    }
+  },
+  "distance_analysis": {
+    "0-5km": {
+      "count": 2212,
+      "mean": 1136863.670886076,
+      "median": 1000000.0
+    },
+    "5-10km": {
+      "count": 5122,
+      "mean": 1158791.486723936,
+      "median": 970000.0
+    },
+    "10-15km": {
+      "count": 4568,
+      "mean": 1037066.8857267951,
+      "median": 875000.0
+    },
+    "15-20km": {
+      "count": 921,
+      "mean": 929446.9098805645,
+      "median": 806000.0
+    },
+    "20-30km": {
+      "count": 544,
+      "mean": 789070.3492647059,
+      "median": 750000.0
+    },
+    "30-50km": {
+      "count": 213,
+      "mean": 634370.6854460094,
+      "median": 605000.0
+    }
+  },
+  "example_predictions": [
+    {
+      "name": "Casa 3 cuartos, 10 km",
+      "predicted_price": 889202.9730588985,
+      "range_low": 711362.3784471188,
+      "range_high": 1067043.5676706783,
+      "confidence": "85%"
+    },
+    {
+      "name": "Unidad 2 cuartos, 2 km",
+      "predicted_price": 692728.9692740685,
+      "range_low": 554183.1754192548,
+      "range_high": 831274.7631288822,
+      "confidence": "85%"
+    },
+    {
+      "name": "Casa 5 cuartos, 8 km",
+      "predicted_price": 1353233.5740706387,
+      "range_low": 1082586.859256511,
+      "range_high": 1623880.2888847664,
+      "confidence": "85%"
+    }
+  ]
+}

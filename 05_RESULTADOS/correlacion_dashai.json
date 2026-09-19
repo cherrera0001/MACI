@@ -1,0 +1,231 @@
+{
+  "metodo": "pearson; 8 columnas numericas DashAI; todas las filas; nulos BuildingArea/YearBuilt -> media sin outliers (Tukey)",
+  "n_filas": 13580,
+  "columnas": [
+    "BuildingArea",
+    "Distance",
+    "Landsize",
+    "Lattitude",
+    "Longtitude",
+    "Price",
+    "Rooms",
+    "YearBuilt"
+  ],
+  "fuera_del_heatmap": [
+    "Bathroom",
+    "Bedroom2",
+    "Car",
+    "Propertycount",
+    "Postcode",
+    "Suburb",
+    "Type",
+    "Method",
+    "Regionname",
+    "CouncilArea",
+    "Date",
+    "Address",
+    "SellerG"
+  ],
+  "rellenos_nulos": {
+    "BuildingArea": 130.5965,
+    "YearBuilt": 1964.8503
+  },
+  "presentacion": "3 decimales redondeados (como DashAI). Celda en frontera: Price-Landsize=0.03750745 (DashAI muestra 0.037; splits.json de DashAI guarda 0.0375). 'matriz_6dec' conserva el valor completo",
+  "matriz": {
+    "BuildingArea": {
+      "BuildingArea": 1.0,
+      "Distance": 0.074,
+      "Landsize": 0.094,
+      "Lattitude": 0.032,
+      "Longtitude": -0.018,
+      "Price": 0.07,
+      "Rooms": 0.093,
+      "YearBuilt": 0.003
+    },
+    "Distance": {
+      "BuildingArea": 0.074,
+      "Distance": 1.0,
+      "Landsize": 0.025,
+      "Lattitude": -0.131,
+      "Longtitude": 0.239,
+      "Price": -0.163,
+      "Rooms": 0.294,
+      "YearBuilt": 0.193
+    },
+    "Landsize": {
+      "BuildingArea": 0.094,
+      "Distance": 0.025,
+      "Landsize": 1.0,
+      "Lattitude": 0.01,
+      "Longtitude": 0.011,
+      "Price": 0.038,
+      "Rooms": 0.026,
+      "YearBuilt": 0.007
+    },
+    "Lattitude": {
+      "BuildingArea": 0.032,
+      "Distance": -0.131,
+      "Landsize": 0.01,
+      "Lattitude": 1.0,
+      "Longtitude": -0.358,
+      "Price": -0.213,
+      "Rooms": 0.016,
+      "YearBuilt": 0.047
+    },
+    "Longtitude": {
+      "BuildingArea": -0.018,
+      "Distance": 0.239,
+      "Landsize": 0.011,
+      "Lattitude": -0.358,
+      "Longtitude": 1.0,
+      "Price": 0.204,
+      "Rooms": 0.101,
+      "YearBuilt": -0.003
+    },
+    "Price": {
+      "BuildingArea": 0.07,
+      "Distance": -0.163,
+      "Landsize": 0.038,
+      "Lattitude": -0.213,
+      "Longtitude": 0.204,
+      "Price": 1.0,
+      "Rooms": 0.497,
+      "YearBuilt": -0.262
+    },
+    "Rooms": {
+      "BuildingArea": 0.093,
+      "Distance": 0.294,
+      "Landsize": 0.026,
+      "Lattitude": 0.016,
+      "Longtitude": 0.101,
+      "Price": 0.497,
+      "Rooms": 1.0,
+      "YearBuilt": -0.052
+    },
+    "YearBuilt": {
+      "BuildingArea": 0.003,
+      "Distance": 0.193,
+      "Landsize": 0.007,
+      "Lattitude": 0.047,
+      "Longtitude": -0.003,
+      "Price": -0.262,
+      "Rooms": -0.052,
+      "YearBuilt": 1.0
+    }
+  },
+  "matriz_6dec": {
+    "BuildingArea": {
+      "BuildingArea": 1.0,
+      "Distance": 0.073978,
+      "Landsize": 0.094137,
+      "Lattitude": 0.032204,
+      "Longtitude": -0.018413,
+      "Price": 0.069734,
+      "Rooms": 0.09252,
+      "YearBuilt": 0.00271
+    },
+    "Distance": {
+      "BuildingArea": 0.073978,
+      "Distance": 1.0,
+      "Landsize": 0.025004,
+      "Lattitude": -0.130723,
+      "Longtitude": 0.239425,
+      "Price": -0.162522,
+      "Rooms": 0.294203,
+      "YearBuilt": 0.193258
+    },
+    "Landsize": {
+      "BuildingArea": 0.094137,
+      "Distance": 0.025004,
+      "Landsize": 1.0,
+      "Lattitude": 0.009695,
+      "Longtitude": 0.010833,
+      "Price": 0.037507,
+      "Rooms": 0.025678,
+      "YearBuilt": 0.007108
+    },
+    "Lattitude": {
+      "BuildingArea": 0.032204,
+      "Distance": -0.130723,
+      "Landsize": 0.009695,
+      "Lattitude": 1.0,
+      "Longtitude": -0.357634,
+      "Price": -0.212934,
+      "Rooms": 0.015948,
+      "YearBuilt": 0.046937
+    },
+    "Longtitude": {
+      "BuildingArea": -0.018413,
+      "Distance": 0.239425,
+      "Landsize": 0.010833,
+      "Lattitude": -0.357634,
+      "Longtitude": 1.0,
+      "Price": 0.203656,
+      "Rooms": 0.100771,
+      "YearBuilt": -0.002604
+    },
+    "Price": {
+      "BuildingArea": 0.069734,
+      "Distance": -0.162522,
+      "Landsize": 0.037507,
+      "Lattitude": -0.212934,
+      "Longtitude": 0.203656,
+      "Price": 1.0,
+      "Rooms": 0.496634,
+      "YearBuilt": -0.262089
+    },
+    "Rooms": {
+      "BuildingArea": 0.09252,
+      "Distance": 0.294203,
+      "Landsize": 0.025678,
+      "Lattitude": 0.015948,
+      "Longtitude": 0.100771,
+      "Price": 0.496634,
+      "Rooms": 1.0,
+      "YearBuilt": -0.052101
+    },
+    "YearBuilt": {
+      "BuildingArea": 0.00271,
+      "Distance": 0.193258,
+      "Landsize": 0.007108,
+      "Lattitude": 0.046937,
+      "Longtitude": -0.002604,
+      "Price": -0.262089,
+      "Rooms": -0.052101,
+      "YearBuilt": 1.0
+    }
+  },
+  "ranking_abs_r_vs_Price": [
+    {
+      "variable": "Rooms",
+      "r": 0.497
+    },
+    {
+      "variable": "YearBuilt",
+      "r": -0.262
+    },
+    {
+      "variable": "Lattitude",
+      "r": -0.213
+    },
+    {
+      "variable": "Longtitude",
+      "r": 0.204
+    },
+    {
+      "variable": "Distance",
+      "r": -0.163
+    },
+    {
+      "variable": "BuildingArea",
+      "r": 0.07
+    },
+    {
+      "variable": "Landsize",
+      "r": 0.038
+    }
+  ],
+  "umbral_fuerte": 0.5,
+  "pares_fuertes": [],
+  "verificado_contra_dashai": true
+}

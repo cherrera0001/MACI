@@ -1,0 +1,122 @@
+{
+  "01 Lineal (OLS)": {
+    "run_id": 19,
+    "job_id": "313c13cb-4440-4479-8cb1-4eed7464a13e",
+    "model": "LinearRegression",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 269981.2396892672,
+      "RMSE": 397218.4585403281,
+      "R2": 0.626356986842221,
+      "MedianAbsoluteError": 200349.0987330377
+    },
+    "test_metrics": {
+      "MAE": 297316.97755649773,
+      "RMSE": 457459.6236587579,
+      "R2": 0.4722368762114998,
+      "MedianAbsoluteError": 208245.42989373207
+    },
+    "run_status": 3
+  },
+  "02 Ridge": {
+    "run_id": 20,
+    "job_id": "23e1d144-809f-4499-b49f-25868d109707",
+    "model": "RidgeRegression",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 270217.00894716155,
+      "RMSE": 397284.562503751,
+      "R2": 0.6262326152842728,
+      "MedianAbsoluteError": 200689.84974046052
+    },
+    "test_metrics": {
+      "MAE": 295982.8244755232,
+      "RMSE": 454472.3098318309,
+      "R2": 0.47910719323840534,
+      "MedianAbsoluteError": 208221.15372252464
+    },
+    "run_status": 3
+  },
+  "03 Arbol de decision": {
+    "run_id": 21,
+    "job_id": "28ff7047-24ae-4ec1-8bb2-68330288cea9",
+    "model": "DecisionTreeRegression",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 329.8842511399509,
+      "RMSE": 6583.712751040605,
+      "R2": 0.9998973545340005,
+      "MedianAbsoluteError": 0.0
+    },
+    "test_metrics": {
+      "MAE": 286088.3152954169,
+      "RMSE": 466126.22894945554,
+      "R2": 0.4520504334635066,
+      "MedianAbsoluteError": 175000.0
+    },
+    "run_status": 3
+  },
+  "04 Random Forest (default)": {
+    "run_id": 22,
+    "job_id": "0126c43a-a58a-4c5e-a619-6513038c89c0",
+    "model": "RandomForestRegression",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 63652.76972432397,
+      "RMSE": 107490.89088492718,
+      "R2": 0.972638408994063,
+      "MedianAbsoluteError": 37187.5
+    },
+    "test_metrics": {
+      "MAE": 218986.27635507873,
+      "RMSE": 354663.5439330625,
+      "R2": 0.682775586068272,
+      "MedianAbsoluteError": 133277.5
+    },
+    "run_status": 3
+  },
+  "05 Gradient Boosting (default)": {
+    "run_id": 23,
+    "job_id": "6d16244c-ff7c-415e-8d20-89bcdf3cd8e8",
+    "model": "GradientBoostingR",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 176045.8473135001,
+      "RMSE": 275201.44941454055,
+      "R2": 0.8206507949729986,
+      "MedianAbsoluteError": 114396.40307066584
+    },
+    "test_metrics": {
+      "MAE": 212760.47986167826,
+      "RMSE": 338848.2291718379,
+      "R2": 0.7104364144921875,
+      "MedianAbsoluteError": 137892.45625150157
+    },
+    "run_status": 3
+  },
+  "06 HistGradientBoosting (default)": {
+    "run_id": 24,
+    "job_id": "94a160f8-a0d2-4c26-814e-f6da964e1aed",
+    "model": "HistGradientBoostingRegression",
+    "status": "finished",
+    "error": null,
+    "train_metrics": {
+      "MAE": 124909.31733174062,
+      "RMSE": 190747.39875228776,
+      "R2": 0.9138380993567097,
+      "MedianAbsoluteError": 84589.84457730703
+    },
+    "test_metrics": {
+      "MAE": 202176.6596852353,
+      "RMSE": 324403.68621870765,
+      "R2": 0.7345974655129515,
+      "MedianAbsoluteError": 130145.11852646322
+    },
+    "run_status": 3
+  }
+}

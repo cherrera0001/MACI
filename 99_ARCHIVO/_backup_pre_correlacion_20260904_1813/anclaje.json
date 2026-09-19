@@ -1,0 +1,506 @@
+{
+  "procedencia": {
+    "archivo": "housing_data.csv",
+    "sha256": "3e449c3e95088da8a3a6b10331a5703f2c951d0740f317f97ed9baf0db1fd9f8",
+    "bytes": 2091239,
+    "filas": 13580,
+    "columnas": 21,
+    "columna_indice_arrastrada": [],
+    "fecha_min": "2016-01-28",
+    "fecha_max": "2017-09-23",
+    "duplicados_fila_completa": 0,
+    "snapshot_kagglehub_filas": 18396,
+    "semilla": 20260810
+  },
+  "L10_fecha": {
+    "filas_dia_mayor_12": 8442,
+    "rango_dayfirst": [
+      "2016-01-28",
+      "2017-09-23"
+    ],
+    "rango_mesprimero": [
+      "2016-03-09",
+      "2017-12-08"
+    ],
+    "nat_mesprimero": 8442,
+    "mezcla_mesprimero": {
+      "2016": 2472,
+      "2017": 2666
+    }
+  },
+  "particion": {
+    "n_2016": 6336,
+    "n_2017": 7244,
+    "pct_2016": 46.7,
+    "pct_2017": 53.3,
+    "mensual": {
+      "2016-01": 2,
+      "2016-02": 26,
+      "2016-04": 318,
+      "2016-05": 899,
+      "2016-06": 732,
+      "2016-07": 446,
+      "2016-08": 716,
+      "2016-09": 925,
+      "2016-10": 551,
+      "2016-11": 1114,
+      "2016-12": 607,
+      "2017-02": 417,
+      "2017-03": 678,
+      "2017-04": 631,
+      "2017-05": 1130,
+      "2017-06": 1098,
+      "2017-07": 1536,
+      "2017-08": 834,
+      "2017-09": 920
+    },
+    "meses_presentes_2016": [
+      1,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "meses_presentes_2017": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "meses_ausentes_2016": [
+      3
+    ],
+    "meses_ausentes_2017": [
+      1
+    ]
+  },
+  "ausencias": {
+    "por_columna": {
+      "Car": 62,
+      "BuildingArea": 6450,
+      "YearBuilt": 5375,
+      "CouncilArea": 1369
+    },
+    "columnas_completas": 17,
+    "tasa_por_anio": {
+      "Car": {
+        "2016": 0.0,
+        "2017": 0.9,
+        "n_2016": 0,
+        "n_2017": 62
+      },
+      "CouncilArea": {
+        "2016": 0.0,
+        "2017": 18.9,
+        "n_2016": 0,
+        "n_2017": 1369
+      },
+      "YearBuilt": {
+        "2016": 34.6,
+        "2017": 43.9,
+        "n_2016": 2194,
+        "n_2017": 3181
+      },
+      "BuildingArea": {
+        "2016": 43.1,
+        "2017": 51.3,
+        "n_2016": 2732,
+        "n_2017": 3718
+      }
+    }
+  },
+  "cascada": [
+    {
+      "politica": "(0) sin politica",
+      "filas": 13580,
+      "n_2016": 6336,
+      "n_2017": 7244,
+      "pct_2016": 46.7,
+      "pct_2017": 53.3,
+      "mediana_2016": 900000,
+      "mediana_2017": 910000
+    },
+    {
+      "politica": "(b1) subset geo-estructural",
+      "filas": 13580,
+      "n_2016": 6336,
+      "n_2017": 7244,
+      "pct_2016": 46.7,
+      "pct_2017": 53.3,
+      "mediana_2016": 900000,
+      "mediana_2017": 910000
+    },
+    {
+      "politica": "(b2) + Car",
+      "filas": 13518,
+      "n_2016": 6336,
+      "n_2017": 7182,
+      "pct_2016": 46.9,
+      "pct_2017": 53.1,
+      "mediana_2016": 900000,
+      "mediana_2017": 906000
+    },
+    {
+      "politica": "(b3) + CouncilArea",
+      "filas": 12211,
+      "n_2016": 6336,
+      "n_2017": 5875,
+      "pct_2016": 51.9,
+      "pct_2017": 48.1,
+      "mediana_2016": 900000,
+      "mediana_2017": 885000
+    },
+    {
+      "politica": "(b4) + YearBuilt",
+      "filas": 7448,
+      "n_2016": 4142,
+      "n_2017": 3306,
+      "pct_2016": 55.6,
+      "pct_2017": 44.4,
+      "mediana_2016": 900000,
+      "mediana_2017": 835000
+    },
+    {
+      "politica": "(a) global = (b5)",
+      "filas": 6196,
+      "n_2016": 3483,
+      "n_2017": 2713,
+      "pct_2016": 56.2,
+      "pct_2017": 43.8,
+      "mediana_2016": 909000,
+      "mediana_2017": 841000
+    }
+  ],
+  "identidad": {
+    "con_Address": {
+      "llave": "Address",
+      "propiedades_repetidas": 193,
+      "filas_repetidas": 395,
+      "propiedades_cruzan_corte": 85,
+      "filas_cruzan_corte": 176,
+      "filas_duplicado_exacto": 2
+    },
+    "con_Suburb_Address": {
+      "llave": "Suburb+Address",
+      "propiedades_repetidas": 112,
+      "filas_repetidas": 226,
+      "propiedades_cruzan_corte": 36,
+      "filas_cruzan_corte": 73,
+      "filas_duplicado_exacto": 2
+    },
+    "con_Suburb_Address_Postcode": {
+      "llave": "Suburb+Address+Postcode",
+      "propiedades_repetidas": 112,
+      "filas_repetidas": 226,
+      "propiedades_cruzan_corte": 36,
+      "filas_cruzan_corte": 73,
+      "filas_duplicado_exacto": 2
+    },
+    "sobreconteo_pct_propiedades": 72.0,
+    "sobreconteo_pct_cruce": 136.0
+  },
+  "reventas": {
+    "propiedades": 36,
+    "filas": 73,
+    "filas_en_2017": 37,
+    "pct_de_2017": 0.51,
+    "revalorizacion_mediana_pct": 7.2,
+    "revalorizacion_media_pct": 17.1,
+    "revalorizacion_min_pct": -12.0,
+    "revalorizacion_max_pct": 102.0,
+    "n_2017_depurado": 7207
+  },
+  "cota": {
+    "mediana_2016": 900000,
+    "mediana_2017": 910000,
+    "deriva_mediana_pct": 1.11,
+    "mae_const2016_sobre2017": 431649.0,
+    "mae_oraculo2017_sobre2017": 431564.0,
+    "mae_const2016_sobre2016": 449122.0,
+    "mae_por_Type_sobre2017": 394385.0,
+    "media_2016": 1072954,
+    "media_2017": 1078071,
+    "desv_2017": 629742,
+    "price_min": 85000,
+    "price_max": 9000000,
+    "brecha_oraculo_pesos": 85.0,
+    "brecha_oraculo_pct": 0.02,
+    "mejora_Type_pct": 8.6
+  },
+  "no_vistos": {
+    "Suburb": {
+      "niveles_2016": 142,
+      "niveles_2017": 313,
+      "niveles_nuevos": 172,
+      "filas_2017_afectadas": 2109,
+      "pct_2017": 29.1,
+      "mediana_precio_visto": 999000,
+      "mediana_precio_nuevo": 755000,
+      "distancia_mediana_visto": 8.0,
+      "distancia_mediana_nuevo": 17.9,
+      "total_suburbios": 314
+    },
+    "SellerG": {
+      "niveles_2016": 175,
+      "niveles_2017": 216,
+      "niveles_nuevos": 93,
+      "filas_2017_afectadas": 230,
+      "pct_2017": 3.2
+    },
+    "CouncilArea": {
+      "niveles_2016": 19,
+      "niveles_2017": 33,
+      "niveles_nuevos": 14,
+      "filas_2017_afectadas": 693,
+      "pct_2017": 9.6
+    },
+    "Postcode": {
+      "niveles_2016": 94,
+      "niveles_2017": 197,
+      "niveles_nuevos": 104,
+      "filas_2017_afectadas": 1937,
+      "pct_2017": 26.7
+    },
+    "Regionname": {
+      "niveles_2016": 5,
+      "niveles_2017": 8,
+      "niveles_nuevos": 3,
+      "filas_2017_afectadas": 126,
+      "pct_2017": 1.7
+    },
+    "Type": {
+      "niveles_2016": 3,
+      "niveles_2017": 3,
+      "niveles_nuevos": 0,
+      "filas_2017_afectadas": 0,
+      "pct_2017": 0.0
+    }
+  },
+  "composicion": {
+    "mediana_2016": 900000,
+    "mediana_2017_total": 910000,
+    "mediana_2017_comparable": 999000,
+    "n_2017_comparable": 5135,
+    "deriva_agregada_pct": 1.11,
+    "deriva_comparable_pct": 11.0,
+    "distancia_mediana_2016": 8.8,
+    "distancia_mediana_2017": 10.5,
+    "por_tipo": {
+      "h": {
+        "mediana_2016": 1111000,
+        "mediana_2017_comparable": 1246750,
+        "mediana_2017_total": 1045000,
+        "var_comparable_pct": 12.2,
+        "var_total_pct": -5.9
+      },
+      "u": {
+        "mediana_2016": 540000,
+        "mediana_2017_comparable": 580000,
+        "mediana_2017_total": 585000,
+        "var_comparable_pct": 7.4,
+        "var_total_pct": 8.3
+      },
+      "t": {
+        "mediana_2016": 820000,
+        "mediana_2017_comparable": 897500,
+        "mediana_2017_total": 880000,
+        "var_comparable_pct": 9.5,
+        "var_total_pct": 7.3
+      }
+    },
+    "mix_tipo": {
+      "h": {
+        "pct_2016": 65.8,
+        "pct_2017": 72.9
+      },
+      "u": {
+        "pct_2016": 25.7,
+        "pct_2017": 19.1
+      },
+      "t": {
+        "pct_2016": 8.5,
+        "pct_2017": 8.0
+      }
+    }
+  },
+  "plausibilidad": {
+    "YearBuilt_min": 1196,
+    "YearBuilt_max": 2018,
+    "YearBuilt_anteriores_1850": 2,
+    "YearBuilt_posteriores_venta": 6,
+    "Landsize_cero": 1939,
+    "Landsize_cero_pct": 14.3,
+    "Landsize_max": 433014,
+    "BuildingArea_cero": 17,
+    "BuildingArea_mayor_Landsize": 1323,
+    "Bedroom2_cero": 16,
+    "Bathroom_cero": 34,
+    "Rooms_distinto_Bedroom2": 676,
+    "Distance_nulos": 0,
+    "Distance_max": 48.1
+  },
+  "datos": {
+    "tipos": {
+      "h": 9449,
+      "u": 3017,
+      "t": 1114
+    },
+    "n_suburbios": 314,
+    "n_regiones": 8,
+    "n_vendedores": 268,
+    "n_metodos": 5,
+    "rooms_min": 1,
+    "rooms_max": 10,
+    "enunciado_declara_atributos": 21,
+    "enunciado_enumera_atributos": 15,
+    "por_region": [
+      {
+        "region": "Southern Metropolitan",
+        "n": 4695,
+        "mediana": 1250000
+      },
+      {
+        "region": "Northern Metropolitan",
+        "n": 3890,
+        "mediana": 806250
+      },
+      {
+        "region": "Western Metropolitan",
+        "n": 2948,
+        "mediana": 793000
+      },
+      {
+        "region": "Eastern Metropolitan",
+        "n": 1471,
+        "mediana": 1010000
+      },
+      {
+        "region": "South-Eastern Metropolitan",
+        "n": 450,
+        "mediana": 850000
+      },
+      {
+        "region": "Eastern Victoria",
+        "n": 53,
+        "mediana": 670000
+      },
+      {
+        "region": "Northern Victoria",
+        "n": 41,
+        "mediana": 540000
+      },
+      {
+        "region": "Western Victoria",
+        "n": 32,
+        "mediana": 400000
+      }
+    ]
+  },
+  "serie_mensual": [
+    {
+      "mes": "2016-01",
+      "mediana": 1009000,
+      "n": 2
+    },
+    {
+      "mes": "2016-02",
+      "mediana": 890000,
+      "n": 26
+    },
+    {
+      "mes": "2016-04",
+      "mediana": 839500,
+      "n": 318
+    },
+    {
+      "mes": "2016-05",
+      "mediana": 880000,
+      "n": 899
+    },
+    {
+      "mes": "2016-06",
+      "mediana": 855500,
+      "n": 732
+    },
+    {
+      "mes": "2016-07",
+      "mediana": 830000,
+      "n": 446
+    },
+    {
+      "mes": "2016-08",
+      "mediana": 883000,
+      "n": 716
+    },
+    {
+      "mes": "2016-09",
+      "mediana": 930000,
+      "n": 925
+    },
+    {
+      "mes": "2016-10",
+      "mediana": 920000,
+      "n": 551
+    },
+    {
+      "mes": "2016-11",
+      "mediana": 923000,
+      "n": 1114
+    },
+    {
+      "mes": "2016-12",
+      "mediana": 960000,
+      "n": 607
+    },
+    {
+      "mes": "2017-02",
+      "mediana": 967000,
+      "n": 417
+    },
+    {
+      "mes": "2017-03",
+      "mediana": 946000,
+      "n": 678
+    },
+    {
+      "mes": "2017-04",
+      "mediana": 917500,
+      "n": 631
+    },
+    {
+      "mes": "2017-05",
+      "mediana": 960000,
+      "n": 1130
+    },
+    {
+      "mes": "2017-06",
+      "mediana": 916500,
+      "n": 1098
+    },
+    {
+      "mes": "2017-07",
+      "mediana": 755000,
+      "n": 1536
+    },
+    {
+      "mes": "2017-08",
+      "mediana": 1016750,
+      "n": 834
+    },
+    {
+      "mes": "2017-09",
+      "mediana": 1000000,
+      "n": 920
+    }
+  ]
+}
