@@ -1,0 +1,247 @@
+# Memoria pedagogica de Cristobal
+#
+# UNICA fuente de verdad del avance. Guillito escribe aqui, y solo aqui.
+# El plan de estudio vive en curriculum.yaml y no se toca.
+# Los errores concretos viven en errores_conceptuales.yaml.
+#
+# ---------------------------------------------------------------------------
+# LOS SEIS ESTADOS
+#
+#   NO_ESTUDIADO          No visto todavia.
+#   EN_ESTUDIO            Guillito lo explico. Nada verificado aun.
+#   COMPRENSION_PARCIAL   Lo explica, pero con huecos o imprecisiones.
+#   COMPRENDIDO           Explica y aplica correctamente.
+#   DOMINADO              Explica, aplica Y transfiere a un problema nuevo.
+#   REQUIERE_REPASO       Lo sabia y fallo en una re-verificacion posterior.
+#
+# ---------------------------------------------------------------------------
+# CADENA DE EVIDENCIA
+#
+#   EXPLICAR  ->  APLICAR  ->  TRANSFERIR
+#
+#   explicar     Lo explico con sus palabras, sin leer, sin que se lo dictaran.
+#   aplicar      Resolvio un caso del mismo dominio, sin recibir la respuesta.
+#   transferir   Resolvio un caso de OTRO dominio que no habia visto.
+#
+#   DOMINADO exige las TRES. No hay atajo.
+#
+# QUE NO ES EVIDENCIA
+#   - Decir "entendi", "claro" o "tiene sentido".
+#   - Repetir la explicacion de Guillito con otras palabras.
+#   - Acertar despues de recibir la respuesta o una pista muy fuerte.
+#   - Acertar por el motivo equivocado.
+#
+#   Si solo hay su palabra de que entendio, el estado es EN_ESTUDIO.
+#
+# Cada evidencia se registra como {fecha: AAAA-MM-DD, detalle: "que hizo"},
+# no como true. Un booleano no es auditable; una linea de detalle si.
+# ---------------------------------------------------------------------------
+
+meta:
+  alumno: Cristobal Herrera
+  tutor: Guillito
+  asignatura: Fundamentos de Ciencia de Datos (T2-2026), Universidad de Concepcion
+  creado: 2026-09-18
+  ultima_sesion: null
+  sesiones_totales: 0
+  diagnostico_inicial_hecho: false
+
+resumen:
+  DOMINADO: 0
+  COMPRENDIDO: 0
+  COMPRENSION_PARCIAL: 0
+  EN_ESTUDIO: 0
+  REQUIERE_REPASO: 0
+  NO_ESTUDIADO: 21
+  siguiente_recomendado: null
+
+conceptos:
+
+  - id: fundamentos_ciencia_datos
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: datos_features_target
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: eda
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: limpieza_preparacion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: train_validation_test
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: validacion_cruzada
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: generalizacion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: overfitting_underfitting
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: regresion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: clasificacion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: matriz_confusion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: metricas_clasificacion
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: roc_auc
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: arboles_decision
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: random_forest
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: gradient_boosting
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: ensembles
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: redes_neuronales
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: deep_learning
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: llm
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null
+
+  - id: agentes_ia
+    estado: NO_ESTUDIADO
+    evidencias:
+      explicar: null
+      aplicar: null
+      transferir: null
+    sesiones: 0
+    ultima_verificacion: null

@@ -345,7 +345,7 @@ conceptos:
     por_que_importa: Cierra el circulo. Este tutor es un agente y podras auditarlo por dentro.
     sin_material_local: true
     material_local:
-      - .claude/skills/tutor/SKILL.md
+      - .claude/skills/guillito/SKILL.md
       - .mcp.json
     pregunta_diagnostico: >-
       Este tutor consulta tu cuaderno de NotebookLM por MCP y escribe tu progreso

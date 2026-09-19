@@ -66,12 +66,37 @@ F:\MACI\
 │   ├── Pitch_Hito2_v2.pptx / .pdf      presentación Hito 2
 │   └── visualizaciones\viz_1..10.html  visualizaciones interactivas
 │
+├── 07_GUILLITO\                ← tutor personal de Ciencia de Datos
+│   ├── 00_LEEME.md                 cómo se usa
+│   ├── curriculum.yaml             21 conceptos, orden, prerrequisitos, material
+│   ├── progreso.yaml               estado y cadena de evidencia por concepto
+│   ├── errores_conceptuales.yaml   errores observados + patrones a vigilar
+│   └── bitacora\                   una entrada por sesión
+│
 └── 99_ARCHIVO\                     ← conservado a propósito, no es basura
     ├── _obsoleto_split_aleatorio\      versión invalidada + el README que explica por qué
     ├── _backup_pre_correlacion_...\    respaldo puntual
     ├── _pitch_img\ · _pitch_v2_png\    imágenes de las presentaciones
     └── CORRELACION_DIFF.patch
 ```
+
+---
+
+## Guillito — tutor personal
+
+Abre Claude Code en `F:\MACI` y escribe, por ejemplo:
+
+```
+Guillito, quiero aprender validación cruzada
+```
+
+Guillito consulta el cuaderno de NotebookLM y el material del repositorio,
+explica, pregunta, **espera tu respuesta**, analiza tu razonamiento y registra el
+avance en `07_GUILLITO/progreso.yaml`. Un concepto solo llega a `DOMINADO` con
+las tres evidencias: explicar, aplicar y transferir a un problema nuevo.
+
+Estado de aprendizaje: `/guillito-progreso`. Detalle completo en
+[`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md).
 
 ---
 
