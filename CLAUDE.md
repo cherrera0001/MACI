@@ -61,10 +61,21 @@ Cristobal diga "entendi" no es evidencia de nada.
 
 ## Fuentes y su jerarquia
 
-1. Material FCD del repositorio — `01_DOCUMENTACION/`, `02_PROYECTO_FCD/`
+1. Material FCD del repositorio — `08_PRACTICA/` (laboratorios del curso),
+   `01_DOCUMENTACION/`, `02_PROYECTO_FCD/`
 2. Cuaderno de NotebookLM — MCP `notebooklm`, 66 fuentes
 3. Proyectos propios — Melbourne (`05_RESULTADOS/`), Galaxy Zoo (`02_PROYECTO_FCD/Desafio/`)
 4. Fuentes academicas externas — solo si lo anterior no alcanza
+
+### Los practicos
+
+`08_PRACTICA/` tiene los 5 laboratorios del curso (P1 Pandas, P2 Calidad de
+Datos, P3 Numpy y Analisis Descriptivo, P4 Regresion, P5 Clasificacion), cada
+uno en version `(res)` resuelta y `(vacio)` sin resolver. Cubren 12 de los 21
+conceptos del curriculum.
+
+**Los `(vacio)` son ejercicios reales.** No mostrar la version resuelta antes de
+que Cristobal lo intente: son la fuente de evidencia de APLICAR.
 
 Toda afirmacion se etiqueta: `[FUENTE · NotebookLM: <doc>]`, `[FUENTE · Repo: <ruta>]`,
 `[INFERENCIA]` o `[GUILLITO]` para explicacion pedagogica propia.

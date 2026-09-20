@@ -53,6 +53,67 @@ meta:
       Lo que falta para ellos es material propio ejecutado por el alumno, no
       fuentes. Al ensenarlos, citar el cuaderno en vez de caer en [GENERAL].
 
+# Laboratorios de la asignatura. Fuente de PRIORIDAD 1 segun spec.md G5:
+# es el tratamiento oficial del curso, manda sobre cualquier otra referencia.
+#
+# Cada practico tiene dos versiones:
+#   res    resuelta, con salidas. Material de consulta.
+#   vacio  enunciados sin resolver. EJERCICIOS REALES.
+#
+# Regla para Guillito: los (vacio) son la fuente de evidencia de APLICAR.
+# Resolver uno sin mirar el (res) es prueba genuina de comprension. NUNCA
+# mostrarle la version resuelta de un ejercicio antes de que lo intente.
+practicos:
+  P1:
+    nombre: Laboratorio Pandas
+    res: "08_PRACTICA/[P1]Laboratorio_Pandas_(res).ipynb"
+    vacio: "08_PRACTICA/2026_[P1]Laboratorio_Pandas_(vacio).ipynb"
+    contenido: >-
+      Series y DataFrames, acceso y modificacion, cargar y guardar, merge,
+      describe, filtrar, operaciones, ordenar, groupby. 10 ejercicios.
+    conceptos: [datos_features_target, eda]
+  P2:
+    nombre: Calidad de Datos
+    res: "08_PRACTICA/2026_[P2]Calidad_de_Datos(res).ipynb"
+    vacio: "08_PRACTICA/2026_[P2]Calidad_de_Datos(vacio).ipynb"
+    contenido: >-
+      Duplicados de filas y de indices, valores fuera de rango, valores
+      faltantes (reemplazar frente a eliminar), datos no utiles,
+      inconsistencias, tipos de dato incorrectos.
+    conceptos: [limpieza_preparacion]
+  P3:
+    nombre: Numpy y Analisis Descriptivo
+    res: "08_PRACTICA/2026_[P3]Numpy_+_Análisis_Descriptivo_(res).ipynb"
+    vacio: "08_PRACTICA/2026_[P3]Numpy_+_Análisis_Descriptivo_(vacio).ipynb"
+    contenido: >-
+      Arreglos Numpy y conversion desde DataFrame. Analisis descriptivo:
+      centralidad, extension, describe. Visualizacion con Matplotlib.
+    conceptos: [eda]
+  P4:
+    nombre: Regresion
+    res: "08_PRACTICA/2026_[P4]Regresión(res).ipynb"
+    vacio: "08_PRACTICA/2026_[P4]Regresión(vacio).ipynb"
+    contenido: >-
+      Regresion lineal y construccion manual de la funcion desde los
+      coeficientes. Metricas de evaluacion. Dataset California Housing de
+      sklearn. Regresion polinomial. Validacion cruzada. SESGO Y VARIANZA.
+    conceptos: [regresion, train_validation_test, validacion_cruzada, overfitting_underfitting]
+    nota: >-
+      El practico mas denso del programa. Su apartado de sesgo y varianza es la
+      base teorica del fenomeno que ya se observo empiricamente en Melbourne.
+  P5:
+    nombre: Clasificacion
+    res: "08_PRACTICA/2026_[P5]Clasificación(res) (1).ipynb"
+    vacio: "08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb"
+    contenido: >-
+      Codificacion de categoricas a mano, get_dummies y LabelEncoder. Concepto
+      de clasificacion y significado de TP, TN, FP y FN. Modelos SVM con varios
+      kernels, arbol de decision con visualizacion, y Random Forest.
+    conceptos: [clasificacion, matriz_confusion, metricas_clasificacion, arboles_decision, random_forest]
+    fuera_de_curriculum: >-
+      SVM no esta entre los 21 conceptos del programa. Material disponible,
+      pero no concepto a dominar.
+
 # Cifras reales del proyecto Melbourne, para usarlas como ejemplo concreto.
 # Verificadas en 05_RESULTADOS/resultados_temporal.json, clave "meta".
 hechos_del_proyecto:

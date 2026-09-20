@@ -66,6 +66,12 @@ F:\MACI\
 │   ├── Pitch_Hito2_v2.pptx / .pdf      presentación Hito 2
 │   └── visualizaciones\viz_1..10.html  visualizaciones interactivas
 │
+├── 08_PRACTICA\                ← laboratorios de la asignatura
+│   ├── 00_LEEME.md                 contenido de cada práctico y qué concepto cubre
+│   ├── [P1..P5] (res).ipynb        resueltos, material de consulta
+│   ├── [P1..P5] (vacio).ipynb      sin resolver: los ejercicios
+│   └── _markdown\                  conversión para NotebookLM
+│
 ├── 07_GUILLITO\                ← tutor personal de Ciencia de Datos
 │   ├── 00_LEEME.md                 cómo se usa
 │   ├── curriculum.yaml             21 conceptos, orden, prerrequisitos, material
