@@ -3,7 +3,9 @@
 Reconstruido desde las evaluaciones **reales** del repositorio, no desde lo que
 "suele" preguntarse en Ciencia de Datos.
 
-**Fuente principal:** Certamen 2, 11 preguntas, con ficha completa en
+**Fuente principal:** Certamen 2 — **10 preguntas numeradas en Canvas más un
+«Espaciador» de 0 puntos**; el expediente las agrupa como 11 fichas, con ficha
+completa en
 `01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md`.
 **Complementos:** guía de estudio del profesor, Trabajos 1 y 2, Desafío Galaxy
 Zoo, y los 5 prácticos de `08_PRACTICA/`.
@@ -131,7 +133,9 @@ una sola pregunta de desarrollo, con la tabla a la vista y resoluble en papel.
 
 ### Por qué `overfitting_underfitting` va primero
 
-1. **Mayor peso**: 3 de 11 preguntas, más que ningún otro concepto.
+1. **Mayor peso**: 3 de las 10 preguntas numeradas —sobreajuste V/F, causas del
+   sobreajuste y regresión polinomial—, que suman **2,0 de los 7 puntos**. Más
+   que ningún otro concepto.
 2. **Evidencia documentada de dificultad**: el error
    `sobreajuste_como_etiqueta_de_toda_degradacion` está registrado en
    `errores_conceptuales.yaml` — usó "sobreajuste" como etiqueta para cualquier

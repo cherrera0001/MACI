@@ -45,7 +45,8 @@ Dos casos reales, datos a la vista, resolubles en papel. Fuente:
 
 ### Certamen 2 — modelamiento y evaluación
 
-11 preguntas con ficha completa en
+11 fichas -10 preguntas numeradas en Canvas mas un Espaciador de 0 puntos-
+con ficha completa en
 `01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md`.
 
 ---

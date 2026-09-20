@@ -2,7 +2,19 @@
 
 ## Qué es esto
 
-Un análisis de **si el material local de `F:\MACI` permite reconstruir un proceso de comprensión** que explique cómo se resolvieron las 11 preguntas del Certamen 2 de Fundamentos de Ciencia de Datos (28 de agosto de 2026).
+Un análisis de **si el material local de `F:\MACI` permite reconstruir un proceso de comprensión** que explique cómo se resolvieron las preguntas del Certamen 2 de Fundamentos de Ciencia de Datos (28 de agosto de 2026).
+
+> **Corrección estructural, 2026-09-20.** Este expediente y todos sus documentos
+> hablan de **11 preguntas**. El registro de Canvas muestra **10 preguntas
+> numeradas más un «Espaciador»** (`text_only_question`, **0 puntos**) que
+> contiene el ítem de la matriz de confusión. Desde ese ítem en adelante, la
+> numeración de estos documentos va **corrida en uno** respecto del sistema:
+> lo que aquí es P8/P9/P10/P11 es en Canvas Espaciador/P8/P9/P10.
+>
+> Los análisis de contenido **siguen siendo válidos** —los temas y su
+> tratamiento no cambian—, pero **no cites números de pregunta**: nómbralas por
+> tema. Evidencia en
+> [`../../07_GUILLITO/visual/certamen_2.html`](../../07_GUILLITO/visual/certamen_2.html).
 
 ## Qué NO es
 

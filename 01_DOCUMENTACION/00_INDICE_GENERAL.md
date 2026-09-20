@@ -16,13 +16,16 @@ Carpeta: [`01_CERTAMEN2/`](01_CERTAMEN2/)
 |---|---|---|---|
 | 0 | [`00_LEEME.md`](01_CERTAMEN2/00_LEEME.md) | Qué es este expediente, qué afirma y qué no | Siempre primero |
 | 1 | [`01_ANALISIS_RECONSTRUCCION_CERTAMEN.md`](01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md) | Análisis completo en 5 fases | Documento principal |
-| 2 | [`02_MAPA_PROCESO_ESTUDIO.md`](01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md) | Matriz de las 11 preguntas + patrones | Vista de conjunto |
+| 2 | [`02_MAPA_PROCESO_ESTUDIO.md`](01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md) | Matriz de las 11 fichas del expediente + patrones | Vista de conjunto |
 | 3 | [`03_DEFENSA_ORAL_CERTAMEN.md`](01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md) | Guion oral por pregunta | Preparar instancia oral |
 | 4 | [`Certamen2_Reconstruccion_Completa.docx`](01_CERTAMEN2/Certamen2_Reconstruccion_Completa.docx) | Los tres md consolidados en un Word | Lectura / impresión única |
 | 5 | [`AUDITORIA_FORENSE_FECHAS_DOCUMENTOS.md`](01_CERTAMEN2/AUDITORIA_FORENSE_FECHAS_DOCUMENTOS.md) | Fechas observables (FS, OOXML, PDF); qué se puede y no se puede afirmar | Solo cronología de archivos |
 | — | [`fuentes/`](01_CERTAMEN2/fuentes/) | Originales: respuestas (Recuperado automáticamente), guía `.docx` / `.pdf`, y otros adjuntos | Referencia; no editar |
 
-**Conclusión del expediente, en una línea:** el material local permite reconstruir **parcialmente** un proceso de comprensión — con doble anclaje (guía de estudio + trabajo propio) en seis de las once preguntas, anclaje solo en la guía en otras, y zonas que ningún archivo explica del todo (secuencia temporal del estudio; cifras AUC de P9).
+**Conclusión del expediente, en una línea:** el material local permite reconstruir **parcialmente** un proceso de comprensión — con doble anclaje (guía de estudio + trabajo propio) en seis de las once fichas, anclaje solo en la guía en otras, y zonas que ningún archivo explica del todo (secuencia temporal del estudio; cifras AUC de P9).
+
+> **Corrección estructural, 2026-09-20.** El expediente trabaja con **11 fichas**, pero el registro real de Canvas muestra **10 preguntas numeradas más un «Espaciador»** de tipo `text_only_question` y **0 puntos** —el ítem de la matriz de confusión—. Desde ahí, la numeración del expediente va **corrida en uno** respecto del sistema. Detalle y evidencia en
+> [`07_GUILLITO/visual/certamen_2.html`](../07_GUILLITO/visual/certamen_2.html). Al hablar de una pregunta, **nómbrala por tema, no por número**.
 
 ---
 
