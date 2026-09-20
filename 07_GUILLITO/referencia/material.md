@@ -90,10 +90,49 @@ aportan nada por esa columna.
 
 ## Galaxy Zoo — clasificación
 
-`02_PROYECTO_FCD/Desafio/REPORT.md`
+`04_DATOS/GZ_mini_challenge_{train,test}.csv` · informe en
+`02_PROYECTO_FCD/Desafio/REPORT.md` · detalle en `04_DATOS/00_LEEME.md`
 
-Tres clases (ambigua, espiral, elíptica), métrica oficial **F1-macro**. Única
-fuente propia de matriz de confusión, precision/recall/F1, AUC y ensembles.
+Tres clases, métrica oficial **F1-macro**. Única fuente propia de matriz de
+confusión, precision/recall/F1, AUC y ensembles.
+
+### Cifras reales, verificadas sobre el CSV
+
+```
+train  1.000 × 90        test  10.000 × 86     cero nulos
+```
+
+| Clase | Qué es | Filas | % |
+|---|---|---|---|
+| 0 | No decidible · votación ambigua | 96 | **9,6 %** |
+| 1 | Espiral | 227 | 22,7 % |
+| 2 | Elíptica | 677 | **67,7 %** |
+
+**Desbalance 7,1×.** Un modelo que responda siempre «elíptica» acierta el
+67,7 % sin aprender nada — y ahí está la razón de que la métrica oficial sea
+F1-macro y no exactitud. **Es el ejemplo real para enseñar métricas de
+clasificación**, mejor que cualquiera inventado.
+
+### Dos trampas reales en estos datos
+
+**1 · Features que no existen al predecir.** `p_el` y `p_cs` —las fracciones de
+voto humano— están en train y **no en test**:
+
+| Clase | `p_el` | `p_cs` |
+|---|---|---|
+| 0 | 0,356 | 0,271 |
+| 1 | 0,212 | **0,739** |
+| 2 | **0,735** | 0,139 |
+
+Son muy informativas y **no se pueden usar**: un modelo entrenado con ellas no
+podría ejecutarse sobre el test. Mismo problema que `costo_combustible_clp` del
+dataset sintético de transferencia, pero real.
+
+**2 · Por qué la clase 0 es la difícil.** Sus dos medias son bajas: ninguna
+domina. La clase 0 no es otro tipo de galaxia — es *«los humanos no se pusieron
+de acuerdo»*. Reconocer **ausencia de consenso** es señal mucho más débil que
+reconocer una forma, y con solo 9,6 % de representación es la clase que hunde
+el F1-macro.
 
 ---
 
