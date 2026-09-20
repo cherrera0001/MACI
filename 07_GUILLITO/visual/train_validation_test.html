@@ -19,6 +19,16 @@
   .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
   .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
   .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;
+           margin:1.1rem 0;font-size:.94rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
   table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
   th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
   th{background:var(--fondo);font-weight:600}
@@ -54,6 +64,37 @@ toda la IA: la <strong>validación cruzada</strong> —holdout, submuestreo
 aleatorio, K-Fold y bootstrap—, junto con la distinción entre parámetros e
 hiperparámetros y los tres conjuntos entrenamiento / validación / test."
 <span class="f">Resumen de la Clase 6 · <code>11_PRESENTACIÓN/_markdown/</code></span>
+</div>
+
+<div class="grafo">
+  <span class="n">Datos, features y target</span> →
+  <span class="n aqui">Train / validation / test</span> →
+  <span class="n">Generalización</span> ·
+  <span class="n">Validación cruzada</span> →
+  <span class="n">…y 9 conceptos más</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás, y por qué este es el que más sostiene.</strong>
+Viene de <em>datos, features y target</em>. Habilita directamente la
+generalización y la validación cruzada, e indirectamente los árboles, los
+ensambles, el boosting y todo el bloque de modelos.
+<strong>Once conceptos quedan bloqueados si este no se entiende</strong> —de los
+21 del programa, solo los dos fundacionales bloquean más.<br><br>
+Su peso en la evaluación es <em>medio</em>, pero con una nota importante: es
+<strong>transversal</strong>. No tiene una pregunta propia reservada; se cuela
+dentro de casi todas. Estudiarlo por lo que puntúa es leer mal el mapa.
+</div>
+
+<div class="tension">
+<strong>La trampa de la validación cruzada.</strong> Tu profesor la llama «la
+técnica más importante de toda la IA» y el programa casi no la pregunta: su
+peso de evaluación es <em>bajo</em>, y cuando aparece lo hace
+<em>como remedio, no como pregunta propia</em> —la respuesta a «¿y cómo
+arreglas el sobreajuste?», nunca el enunciado.<br><br>
+Esa asimetría es real y conviene que la sepas: <strong>es fundacional pero poco
+preguntada, y nueve conceptos posteriores la necesitan.</strong> Si decides cuánto
+estudiar mirando solo el certamen, esta es exactamente la que vas a subestimar.
 </div>
 
 <h2>1 · El problema, con el caso del profesor</h2>
@@ -201,6 +242,29 @@ y el modelo veía el futuro durante el entrenamiento.
 <tr><td>Tratar la validación cruzada como una métrica</td><td>«El CV dio 0,8» — CV es un método, no un número que se reporta</td></tr>
 <tr><td>Reportar el error de validación como final</td><td>El conjunto con que elegiste no puede medir</td></tr>
 </table>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero te dice: <em>«hice K-Fold con mezcla sobre los datos de Melbourne y
+me dio mejor error que tu corte temporal, así que mi validación es más
+robusta»</em>.<br><br>
+<strong>¿Tiene razón? Justifícalo, y di qué le está pasando a su estimación —no
+solo que está mal, sino por dónde entra el problema.</strong><br><br>
+Pista de dónde mirar: el <strong>29,1 %</strong> del test que son suburbios
+inexistentes en el train no desaparece porque mezcles; se reparte. Es el formato
+exacto de tu profesor: verdadero o falso, <em>con justificación</em>.
+</div>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong> Este concepto es la puerta de dos caminos:
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué pasa
+    cuando el modelo se enfrenta a datos que nunca vio. Es el concepto que este
+    habilita directamente, y donde el 29,1 % de suburbios nuevos cobra sentido.</li>
+<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    antes de partir los datos hay que saber qué tipo de problema tienes.</li>
+</ul>
+</div>
 
 <footer>
 Generado por Guillito · <code>07_GUILLITO/visual/train_validation_test.html</code><br>

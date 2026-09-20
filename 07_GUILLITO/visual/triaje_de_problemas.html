@@ -274,23 +274,28 @@ const FIN={
  reg:{c:'#059669',t:'Regresión',
    d:'El target es un número continuo. Los valores intermedios tienen sentido: entre 300 y 400 kg existe 350.',
    m:'MAE, RMSE, R². <strong>No</strong> exactitud ni precision: en regresión no existe «acertar».',
-   ojo:'Antes de reportar R², recuerda que 0 significa «igual de bueno que predecir el promedio», y puede ser negativo.'},
+   ojo:'Antes de reportar R², recuerda que 0 significa «igual de bueno que predecir el promedio», y puede ser negativo.',
+   ver:[['clase6_regresion.html','la clase completa de regresión'],['regresion_y_costo.html','el laboratorio de la función de coste']]},
  bin_eq:{c:'#2563eb',t:'Clasificación binaria, clases equilibradas',
    d:'Dos categorías repartidas de forma parecida.',
    m:'Exactitud <strong>sí</strong> es informativa aquí. Acompáñala de la matriz de confusión.',
-   ojo:'Aun con clases equilibradas, decide si un falso positivo y un falso negativo cuestan lo mismo. Casi nunca cuestan igual.'},
+   ojo:'Aun con clases equilibradas, decide si un falso positivo y un falso negativo cuestan lo mismo. Casi nunca cuestan igual.',
+   ver:[['matriz_confusion.html','las cinco métricas y su denominador']]},
  bin_des:{c:'#d97706',t:'Clasificación binaria, clases desbalanceadas',
    d:'Dos categorías, una mucho más rara. Fraude, enfermedades, fallas.',
    m:'<strong>F1, precision y recall.</strong> La exactitud engaña: decir siempre «no» acierta casi siempre y no detecta a nadie.',
-   ojo:'Di explícitamente cuál es la clase positiva y por qué. Es lo primero que se evalúa.'},
+   ojo:'Di explícitamente cuál es la clase positiva y por qué. Es lo primero que se evalúa.',
+   ver:[['matriz_confusion.html','mueve la prevalencia y mira qué le pasa a la precisión']]},
  bin_ns:{c:'#7c3aed',t:'Clasificación binaria — primero mira el reparto',
    d:'No puedes elegir métrica sin saber cómo están repartidas las clases.',
    m:'Cuenta cuántos hay de cada una. Recién entonces decides.',
-   ojo:'Esto no es un rodeo: elegir métrica sin mirar el balance es el error que el certamen castiga.'},
+   ojo:'Esto no es un rodeo: elegir métrica sin mirar el balance es el error que el certamen castiga.',
+   ver:[['matriz_confusion.html','el efecto del desbalance sobre la exactitud']]},
  multi:{c:'#2563eb',t:'Clasificación multiclase',
    d:'Tres o más categorías. Galaxy Zoo es exactamente esto: ambigua, espiral, elíptica.',
    m:'<strong>F1-macro</strong> y matriz de confusión por clase. Macro promedia las clases, así que una clase rara pesa igual que una frecuente.',
-   ojo:'Si las clases se llaman 1, 2 y 3, siguen siendo categorías. No es regresión.'},
+   ojo:'Si las clases se llaman 1, 2 y 3, siguen siendo categorías. No es regresión.',
+   ver:[['matriz_confusion.html','la matriz por clase, con Galaxy Zoo como segundo caso']]},
  seg:{c:'#7c3aed',t:'Segmentación (no supervisado)',
    d:'<strong>No hay target.</strong> Nadie te dio las respuestas correctas: el algoritmo agrupa por parecido.',
    m:'Silueta, inercia. <strong>No</strong> exactitud ni MAE: no hay contra qué compararse.',
@@ -298,11 +303,13 @@ const FIN={
  eda:{c:'#6b7280',t:'Análisis exploratorio',
    d:'No hay que predecir nada: hay que entender qué hay.',
    m:'Centralidad, dispersión, distribuciones, correlaciones, gráficos.',
-   ojo:'Correlación no es causalidad. Es de las cosas más preguntadas.'},
+   ojo:'Correlación no es causalidad. Es de las cosas más preguntadas.',
+   ver:[['certamen_1.html','el EDA es lo que más pesa en el Certamen 1']]},
  limp:{c:'#dc2626',t:'Calidad y limpieza de datos',
    d:'La tabla tiene problemas estructurales antes de poder hacer nada con ella.',
    m:'No hay métrica: hay criterios. Una fila = una observación. Una columna = un tipo de cosa. Los centinelas a nulo.',
-   ojo:'Es la pregunta mejor pagada del Certamen 1 — la 9B vale 2,0 puntos, más que las ocho cerradas juntas.'}
+   ojo:'Es la pregunta mejor pagada del Certamen 1 — la 9B vale 2,0 puntos, más que las ocho cerradas juntas.',
+   ver:[['certamen_1.html','la 9B, con el formato exacto en que se pregunta']]}
 };
 
 let nodo='inicio';
@@ -327,7 +334,10 @@ function fin(k){
   r.innerHTML=`<h4 style="color:${f.c}">${f.t}</h4>
     <p>${f.d}</p>
     <p><strong>Se mide con:</strong> ${f.m}</p>
-    <p style="margin-bottom:0"><strong>Ojo:</strong> ${f.ojo}</p>`;
+    <p><strong>Ojo:</strong> ${f.ojo}</p>
+    ${f.ver ? `<p style="margin-bottom:0;padding-top:.6rem;border-top:1px dashed ${f.c}55">
+      <strong>Para estudiarlo:</strong> ` + f.ver.map(([h,t])=>`<a href="${h}" style="color:${f.c}"><code>${h}</code></a> — ${t}`).join('<br>') + `</p>` : ''}
+    ${k==='seg' ? '' : `<p style="margin-bottom:0;font-size:.88rem;color:#666">Y en cualquiera de estos casos, cómo validarlo: <a href="train_validation_test.html"><code>train_validation_test.html</code></a>.</p>`}`;
   r.classList.add('on');
 }
 $('reiniciar').onclick=()=>{nodo='inicio';pinta();};
