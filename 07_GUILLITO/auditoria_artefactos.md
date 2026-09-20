@@ -178,3 +178,71 @@ falta se añade encima.
 
 Tampoco propone forzar interacción ni matemática donde no aportan. El triaje y
 los certámenes están bien como están.
+
+---
+
+# Cierre del plan
+
+**2026-09-20, misma fecha · añadido después de ejecutar las seis acciones**
+
+Lo de arriba es el diagnóstico y se deja intacto. Esto es qué se hizo con él.
+
+## Medición después
+
+```
+artefacto                  KB  slid  pred  inv  grafo  href
+-----------------------------------------------------------
+certamen_1                 24     0     0    0      0     5
+certamen_2                 26     0     0    0      0     8
+clase6_regresion           23     3     1    1      1     1
+generalizacion             25     2     1    1      1     3
+matriz_confusion           32     5     4    1      2     3
+regresion_y_costo          19     3     1    1      1     1
+train_validation_test      17     0     0    0      1     2
+triaje_de_problemas        18     0     0    0      0     1
+```
+
+`href` es la columna nueva: enlaces a otros artefactos, que antes no existían.
+En `triaje_de_problemas` el 1 es literal —los enlaces de sus ocho desenlaces se
+generan en JavaScript desde una sola plantilla.
+
+**[EVIDENCIA]** El hallazgo sistemático quedó corregido donde correspondía: el
+camino inverso pasó de **0 de 8** a estar en los cuatro artefactos con contenido
+matemático. Los otros cuatro no lo llevan, y es deliberado —dos son certámenes y
+uno es un árbol de decisión.
+
+## Las seis acciones
+
+| # | Acción | Estado |
+|---|---|---|
+| 1 | Predicción en controles causales | **Hecha** — matriz_confusion (4), generalizacion, clase6_regresion, regresion_y_costo |
+| 2 | Camino inverso desde la ecuación | **Hecha** — los 4 con matemática |
+| 3 | Desarmar las fórmulas de clasificación | **Hecha** — matriz_confusion, con etiquetas de rol |
+| 4 | Situar cada concepto en el grafo | **Hecha** — los 6 conceptuales |
+| 5 | Enlaces cruzados entre artefactos | **Hecha** — los 8, sin enlaces rotos |
+| 6 | Pedirle producir algo | **Hecha** — los 6 conceptuales |
+
+## Lo que se decidió no hacer, y por qué
+
+**[INFERENCIA]** Tres omisiones son deliberadas, no deuda pendiente:
+
+- **Sin sliders en `train_validation_test`.** Su valor está en la visualización
+  de los cuatro métodos de validación, que se entiende mirándola. Una perilla
+  aquí sería interacción por interacción.
+- **Sin ecuaciones en `triaje_de_problemas`.** Es un árbol de decisión sobre
+  tipos de problema. Forzarle matemática sería cumplir una lista.
+- **Sin bloque de grafo en los dos certámenes.** Su función es entrenar formato
+  y distinción, no explicar conceptos. Sí llevan enlaces, que era lo que les
+  faltaba de verdad.
+
+## Lo que sigue abierto
+
+**[NO EVIDENCIADO]** Tres conceptos que aparecen como desenlace del triaje no
+tienen artefacto propio: **segmentación (no supervisado)**, **EDA** y **calidad
+y limpieza de datos**. Los dos últimos pesan en el Certamen 1 —la 9B, de 2,0
+puntos, es de limpieza— y hoy solo se cubren enlazando al certamen resuelto.
+Es la brecha más clara del conjunto.
+
+**[NO EVIDENCIADO]** La dimensión `transferencia` seguía marcada como débil en
+el diagnóstico y ninguna de las seis acciones la atacaba de frente. Sigue
+sostenida por un solo dataset, el de logística.
