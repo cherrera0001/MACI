@@ -138,8 +138,13 @@ if ($codigo -ne 0) {
     exit $codigo
 }
 
-# git push -u con URL explicita no fija el upstream: se hace aparte.
+# git push -u con una URL explicita apunta el upstream a esa URL con el token
+# dentro, no a 'origin'. Se corrige aparte: primero hay que traer la referencia
+# remota, porque 'origin/main' puede no existir aun en local.
+$ErrorActionPreference = 'Continue'
+& git fetch origin main 2>&1 | Out-Null
 & git branch --set-upstream-to=origin/main main 2>&1 | Out-Null
+$ErrorActionPreference = $previo
 
 Write-Host ""
 Write-Host "Listo. Commits en https://github.com/$usuario/MACI" -ForegroundColor Green
