@@ -122,9 +122,12 @@ Write-Host "Subiendo commits..." -ForegroundColor Cyan
 # NativeCommandError y aborta el script pese a que el push fue correcto.
 # Se baja la preferencia solo alrededor de la llamada y se juzga por el
 # codigo de salida, que es la unica senal fiable.
+# Sin -u: 'git push -u <url>' escribe la URL COMPLETA -token incluido- en
+# .git/config como upstream de la rama. El upstream se fija despues, contra
+# origin, que no lleva credenciales.
 $previo = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
-$salida = & git push -u $url main 2>&1
+$salida = & git push $url main 2>&1
 $codigo = $LASTEXITCODE
 $ErrorActionPreference = $previo
 
@@ -146,6 +149,15 @@ $ErrorActionPreference = 'Continue'
 & git branch --set-upstream-to=origin/main main 2>&1 | Out-Null
 $ErrorActionPreference = $previo
 
+# Red de seguridad: ninguna operacion debe dejar el token escrito en disco.
+if (Select-String -Path '.git/config' -Pattern 'ghp_|github_pat_' -Quiet) {
+    Write-Host ""
+    Write-Host "ALERTA: quedo un token escrito en .git/config. Limpialo con:" -ForegroundColor Red
+    Write-Host "  git config --unset branch.main.remote" -ForegroundColor Red
+    Write-Host "  git config branch.main.remote origin" -ForegroundColor Red
+    exit 1
+}
+
 Write-Host ""
 Write-Host "Listo. Commits en https://github.com/$usuario/MACI" -ForegroundColor Green
-Write-Host "El remote sigue siendo el normal; el token solo se uso para esta subida." -ForegroundColor DarkGray
+Write-Host "El token solo se uso en memoria: no quedo en .git/config ni en el historial." -ForegroundColor DarkGray
