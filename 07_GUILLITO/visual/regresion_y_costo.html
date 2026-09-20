@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Regresión y función de costo · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--gris:#9ca3af}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.65 "Segoe UI",system-ui,sans-serif}
+  main{max-width:860px;margin:0 auto}
+  h1{font-size:1.6rem;margin:0 0 .3rem}
+  h2{font-size:1.15rem;margin:2.5rem 0 .6rem;padding-top:1.2rem;
+     border-top:1px solid var(--linea)}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;
+         padding:1.2rem;margin:1rem 0}
+  canvas{width:100%;height:auto;display:block;touch-action:none}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem 1rem;
+        align-items:center;margin-top:1rem}
+  .ctrl label{font-weight:600;font-size:.9rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:600;
+               min-width:5.5rem;text-align:right}
+  input[type=range]{width:100%}
+  .marcador{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;
+            margin-top:1rem;text-align:center}
+  .marcador div{background:var(--fondo);border-radius:8px;padding:.7rem .4rem}
+  .marcador .n{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .marcador .e{font-size:.78rem;color:var(--suave);text-transform:uppercase;
+               letter-spacing:.04em}
+  .nota{background:#fffbeb;border-left:3px solid #f59e0b;padding:.8rem 1rem;
+        margin:1rem 0;font-size:.93rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1rem;
+         margin:1rem 0}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;
+         padding:.5rem 1rem;font-size:.9rem;cursor:pointer;font-weight:600}
+  button:hover{background:#1d4ed8}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
+  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
+         color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Regresión, función de costo y R²</h1>
+<p class="sub">Mueve la recta con las barras. Todo se recalcula solo.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase 6</p>
+
+<h2>El problema, sin matemáticas</h2>
+
+<p>Una faena minera quiere saber <strong>cuánto combustible gasta un camión
+según la carga que transporta</strong>. Sirve para presupuestar, para detectar
+camiones que gastan de más, y para planificar.</p>
+
+<p>Registraron ocho viajes. Cada punto del gráfico es un viaje: la carga en
+toneladas y los litros que consumió.</p>
+
+<p><strong>La pregunta:</strong> si mañana sale un camión con 34 toneladas,
+¿cuántos litros va a gastar? No tenemos ese dato. Hay que estimarlo.</p>
+
+<div class="panel">
+  <canvas id="lienzo" width="820" height="440"></canvas>
+
+  <div class="ctrl">
+    <label for="m">Pendiente</label>
+    <input type="range" id="m" min="0" max="6" step="0.05" value="1.2">
+    <output id="mOut">1,20</output>
+
+    <label for="b">Punto de partida</label>
+    <input type="range" id="b" min="-20" max="80" step="0.5" value="20">
+    <output id="bOut">20,0</output>
+  </div>
+
+  <div class="marcador">
+    <div><div class="n" id="mse">–</div><div class="e">Costo (MSE)</div></div>
+    <div><div class="n" id="r2">–</div><div class="e">R²</div></div>
+    <div><div class="n" id="pred">–</div><div class="e">Litros si 34 t</div></div>
+  </div>
+
+  <p style="margin-top:1rem"><button id="mejor">Buscar la mejor recta</button>
+  <span style="color:var(--suave);font-size:.88rem;margin-left:.6rem">
+  Eso es «minimizar el riesgo»</span></p>
+</div>
+
+<h2>1 · Qué es cada cosa en el gráfico</h2>
+
+<table>
+<tr><th>En el gráfico</th><th>Nombre técnico</th><th>Qué es en la faena</th></tr>
+<tr><td>Puntos azules</td><td>Datos observados</td><td>Los ocho viajes que sí se registraron</td></tr>
+<tr><td>Recta negra</td><td>Modelo lineal</td><td>Tu regla para estimar viajes futuros</td></tr>
+<tr><td>Líneas rojas</td><td>Residuos</td><td>Cuánto te equivocas en cada viaje</td></tr>
+<tr><td>Línea gris punteada</td><td>La media</td><td>La predicción más tonta: «siempre el promedio»</td></tr>
+</table>
+
+<div class="clave">
+<strong>La recta tiene solo dos números.</strong> El punto de partida (dónde
+arranca) y la pendiente (cuánto sube por cada tonelada). Entrenar un modelo
+lineal es encontrar esos dos números. Nada más.
+</div>
+
+<h2>2 · La función de costo</h2>
+
+<p>Hay infinitas rectas posibles. Para elegir una necesitas
+<strong>un número que diga qué tan mala es</strong>.</p>
+
+<p>Ese número se construye así: para cada viaje mides el largo de su línea roja
+—cuánto te equivocaste—, lo elevas al cuadrado, y promedias los ocho.</p>
+
+<p><strong>¿Por qué al cuadrado?</strong> Dos razones prácticas:</p>
+<ul>
+<li>Si no, errar <code>+10</code> litros y <code>−10</code> litros se cancelaría
+y parecería que no fallaste</li>
+<li>Castiga más los errores grandes: equivocarte en 10 litros pesa 100;
+en 1 litro pesa 1. Fallar feo una vez es peor que fallar poquito varias</li>
+</ul>
+
+<div class="nota">
+<strong>Compruébalo.</strong> Mueve la pendiente hasta que la recta pase lejos de
+los puntos. El costo se dispara. Acércala y baja. <em>El costo es literalmente
+lo que estás viendo</em>: qué tan largas son las líneas rojas.
+</div>
+
+<h2>3 · Minimizar el riesgo</h2>
+
+<p>Ahora que tienes un número que mide lo mala que es cada recta, el problema
+deja de ser vago y se vuelve concreto: <strong>busca los dos números que hacen
+ese costo lo más pequeño posible.</strong></p>
+
+<p>Eso es todo lo que significa «minimizar el riesgo». Pulsa el botón y la
+computadora lo hace — para una recta hay una fórmula exacta, no hace falta
+tantear.</p>
+
+<div class="nota">
+<strong>El detalle que importa.</strong> Minimizas el error sobre
+<em>los ocho viajes que tienes</em>, no sobre todos los viajes posibles. Por eso
+se llama riesgo <strong>empírico</strong>. Y de ahí sale el sobreajuste: una
+recta puede quedar perfecta para esos ocho y fallar con el noveno.
+</div>
+
+<h2>4 · R²: comparado con no hacer nada</h2>
+
+<p>El costo está en «litros al cuadrado», que no significa nada para nadie.
+R² responde otra pregunta, y esa sí se entiende:</p>
+
+<p style="font-size:1.05rem"><strong>¿Cuánto mejor lo hago que si dijera siempre
+el promedio?</strong></p>
+
+<p>La línea gris punteada del gráfico es ese «siempre el promedio». Es el rival
+a batir, y no se mueve: <strong>depende solo de los datos, no de tu recta.</strong></p>
+
+<table>
+<tr><th>R²</th><th>Qué significa</th></tr>
+<tr><td class="num">1,00</td><td>Error cero. La recta pasa por todos los puntos</td></tr>
+<tr><td class="num">0,90</td><td>Tu error es el 10 % del que tendrías con el promedio</td></tr>
+<tr><td class="num">0,00</td><td><strong>Igual de bueno que decir siempre el promedio</strong></td></tr>
+<tr><td class="num">−0,08</td><td><strong>Peor que el promedio.</strong> Es el baseline de tu proyecto Melbourne</td></tr>
+</table>
+
+<div class="clave">
+<strong>R² = 0 no es «no acertó nada».</strong> Es «no aportó nada sobre decir el
+promedio». Y puede ser negativo, porque siempre puedes hacerlo peor que no
+pensar.
+</div>
+
+<div class="nota">
+<strong>Por eso no se entrena minimizando R².</strong> El rival —la línea gris—
+está fijo. Lo único que tu recta mueve son las líneas rojas. Así que minimizar
+R² y minimizar el costo <em>son la misma operación</em>. Escribirlo de la otra
+forma no agrega nada.
+</div>
+
+<h2>5 · Pruébalo tú</h2>
+
+<ol>
+<li>Pon la pendiente en <strong>0</strong>. La recta queda horizontal. Ajusta el
+punto de partida hasta el R² más alto que consigas. <em>¿A qué valor se acerca?
+¿Dónde queda la recta?</em></li>
+<li>Pulsa <strong>Buscar la mejor recta</strong> y anota el costo.</li>
+<li>Mueve la pendiente <strong>0,2</strong> hacia arriba. Mira cuánto sube el
+costo con ese cambio mínimo.</li>
+</ol>
+
+<footer>
+Generado por Guillito · <code>07_GUILLITO/visual/regresion_y_costo.html</code><br>
+Datos sintéticos, construidos para que el fenómeno se vea. Funciona sin conexión.
+</footer>
+
+</main>
+
+<script>
+// Ocho viajes: carga en toneladas, consumo en litros.
+const D = [[12,48],[18,62],[22,74],[26,79],[30,96],[35,104],[40,121],[45,128]];
+const medY = D.reduce((s,p)=>s+p[1],0)/D.length;
+
+const cv = document.getElementById('lienzo'), cx = cv.getContext('2d');
+const $ = id => document.getElementById(id);
+const fmt = (n,d=2) => n.toFixed(d).replace('.',',');
+
+// Márgenes y escalas
+const M = {l:62,r:24,t:24,b:52};
+const xMin=5, xMax=50, yMin=0, yMax=150;
+const px = x => M.l + (x-xMin)/(xMax-xMin)*(cv.width-M.l-M.r);
+const py = y => cv.height-M.b - (y-yMin)/(yMax-yMin)*(cv.height-M.t-M.b);
+
+function metricas(m,b){
+  let ssRes=0, ssTot=0;
+  for(const [x,y] of D){
+    const yh = m*x+b;
+    ssRes += (y-yh)**2;
+    ssTot += (y-medY)**2;
+  }
+  return {mse: ssRes/D.length, r2: 1-ssRes/ssTot};
+}
+
+// Mínimos cuadrados ordinarios: solución exacta.
+function mco(){
+  const n=D.length;
+  const sx=D.reduce((s,p)=>s+p[0],0), sy=D.reduce((s,p)=>s+p[1],0);
+  const sxy=D.reduce((s,p)=>s+p[0]*p[1],0), sxx=D.reduce((s,p)=>s+p[0]**2,0);
+  const m=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+  return {m, b:(sy-m*sx)/n};
+}
+
+function dibujar(){
+  const m=+$('m').value, b=+$('b').value;
+  cx.clearRect(0,0,cv.width,cv.height);
+
+  // Rejilla y ejes
+  cx.strokeStyle='#e8e6e3'; cx.lineWidth=1; cx.font='12px system-ui';
+  cx.fillStyle='#666'; cx.textAlign='right';
+  for(let y=0;y<=150;y+=30){
+    cx.beginPath(); cx.moveTo(M.l,py(y)); cx.lineTo(cv.width-M.r,py(y)); cx.stroke();
+    cx.fillText(y,M.l-9,py(y)+4);
+  }
+  cx.textAlign='center';
+  for(let x=10;x<=50;x+=10){
+    cx.beginPath(); cx.moveTo(px(x),M.t); cx.lineTo(px(x),cv.height-M.b); cx.stroke();
+    cx.fillText(x,px(x),cv.height-M.b+20);
+  }
+  cx.fillStyle='#444'; cx.font='600 13px system-ui';
+  cx.fillText('Carga transportada (toneladas)',cv.width/2,cv.height-14);
+  cx.save(); cx.translate(16,cv.height/2); cx.rotate(-Math.PI/2);
+  cx.fillText('Combustible (litros)',0,0); cx.restore();
+
+  // Media: el rival a batir
+  cx.strokeStyle='#9ca3af'; cx.setLineDash([7,5]); cx.lineWidth=2;
+  cx.beginPath(); cx.moveTo(M.l,py(medY)); cx.lineTo(cv.width-M.r,py(medY)); cx.stroke();
+  cx.setLineDash([]);
+  cx.fillStyle='#6b7280'; cx.textAlign='left'; cx.font='12px system-ui';
+  cx.fillText('promedio · '+fmt(medY,1)+' L',M.l+8,py(medY)-8);
+
+  // Residuos
+  cx.strokeStyle='#dc2626'; cx.lineWidth=2;
+  for(const [x,y] of D){
+    cx.beginPath(); cx.moveTo(px(x),py(y)); cx.lineTo(px(x),py(m*x+b)); cx.stroke();
+  }
+
+  // La recta
+  cx.strokeStyle='#1a1a1a'; cx.lineWidth=2.5;
+  cx.beginPath(); cx.moveTo(px(xMin),py(m*xMin+b)); cx.lineTo(px(xMax),py(m*xMax+b)); cx.stroke();
+
+  // Puntos
+  for(const [x,y] of D){
+    cx.fillStyle='#2563eb'; cx.beginPath();
+    cx.arc(px(x),py(y),6,0,7); cx.fill();
+    cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
+  }
+
+  // Predicción para 34 t
+  const yp = m*34+b;
+  cx.fillStyle='#059669'; cx.beginPath();
+  cx.arc(px(34),py(yp),7,0,7); cx.fill();
+  cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
+
+  const r = metricas(m,b);
+  $('mOut').textContent = fmt(m);
+  $('bOut').textContent = fmt(b,1);
+  $('mse').textContent  = fmt(r.mse,1);
+  $('r2').textContent   = fmt(r.r2,3);
+  $('pred').textContent = fmt(yp,1);
+  $('r2').style.color   = r.r2 < 0 ? '#dc2626' : (r.r2 > .9 ? '#059669' : '#1a1a1a');
+}
+
+$('m').oninput = $('b').oninput = dibujar;
+$('mejor').onclick = () => {
+  const o = mco();
+  $('m').value = o.m; $('b').value = o.b;
+  dibujar();
+};
+dibujar();
+</script>
+</body>
+</html>

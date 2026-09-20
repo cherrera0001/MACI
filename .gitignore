@@ -36,3 +36,12 @@ auth.json
 .env
 .env.*
 !.env.example
+
+# Grabaciones de clase: pesan cientos de MB. Se versionan las transcripciones,
+# no los videos.
+09_CLASES/video/
+*.mp4
+*.mkv
+*.webm
+10_GRABACIÓN_CLASES/
+*.zip

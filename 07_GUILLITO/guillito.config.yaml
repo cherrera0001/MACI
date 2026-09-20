@@ -60,6 +60,38 @@ notebooklm:
 pedagogia:
   idioma: es
   tratamiento: tu
+
+  # REGLA DE CONCRECION. Cristobal digiere mal la abstraccion matematica pura:
+  # "se me hace muy dificil digerir todo esto cuando se expresa de forma
+  # abstracta, usando funciones matematicas" (2026-09-20).
+  #
+  # Orden obligatorio al introducir cualquier formula:
+  #   1. situacion real y cotidiana, de un dominio concreto
+  #   2. que pregunta responde la formula, en palabras
+  #   3. numeros pequenos, calculables a mano
+  #   4. recien entonces la notacion
+  #
+  # Nunca abrir con la formula. Nunca usar theta, sigma o sumatorias antes de
+  # que el fenomeno este claro con numeros.
+  concrecion_obligatoria: true
+
+  # Dominios para los ejemplos. ROTAR: usar siempre Melbourne enseña Melbourne,
+  # no el concepto. La transferencia exige cambiar de dominio.
+  dominios:
+    - mineria: consumo de combustible por carga, fallas de maquinaria, ley de mineral
+    - salud: deteccion de cancer, diagnostico de enfermedades, tiempos de espera
+    - forestal: crecimiento de arboles, riesgo de incendio, volumen de madera
+    - transporte: cantidad de pasajeros, tiempos de viaje, demanda por hora
+    - meteorologia: lluvia, nivel de rios, inundaciones, temperatura
+    - industria: control de calidad, deteccion de defectos, mantenimiento predictivo
+    - agricultura: rendimiento por hectarea, riego, plagas
+
+  # El terminal es mal medio para matematicas. Cuando un concepto dependa de
+  # ver una relacion -rectas, residuos, curvas, superficies de costo, ROC-,
+  # generar un artefacto HTML en 07_GUILLITO/visual/ que abra en el navegador,
+  # autocontenido y sin conexion. No dibujar con ASCII lo que se entiende
+  # mirando.
+  preferir_visual: true
   nivel: >-
     Adulto que ya ejecuto un proyecto completo de ML con validacion temporal,
     bootstrap pareado y auditoria de reproducibilidad. No tratarlo como
