@@ -5,7 +5,7 @@
 <title>Clase 6 · Regresión · Guillito</title>
 <style>
   :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706}
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
   *{box-sizing:border-box}
   body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
        font:16px/1.7 "Segoe UI",system-ui,sans-serif}
@@ -58,6 +58,37 @@
         margin:2.5rem 0 1rem}
   .preg h2{color:#fff;border:0;margin:0 0 .8rem;padding:0}
   .preg strong{color:#fbbf24}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .ecu .formula .num{color:var(--verde);font-weight:700}
+  .ecu .formula .den{color:var(--azul);font-weight:700}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
          color:var(--suave);font-size:.85rem}
 </style>
@@ -68,6 +99,30 @@
 <h1>Clase 6 · Regresión</h1>
 <p class="sub">Modelo lineal · función de costo · minimizar el riesgo · R²<br>
 Fundamentos de Ciencia de Datos · UdeC</p>
+
+
+<div class="grafo">
+  <span class="n">Limpieza de datos</span> →
+  <span class="n aqui">Regresión</span> →
+  <span class="n">Sobreajuste</span> →
+  <span class="n">Generalización</span> →
+  <span class="n">Validación</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> La regresión es el punto donde el curso se vuelve
+modelamiento. Tu profesor lo dice en clase: <em>«los conceptos fundamentales que
+se ven en regresión se aplican después en clasificación y sucesivamente en
+modelos de IA más complejos»</em>.<br><br>
+Se pregunta <strong>poco</strong> de forma directa en los certámenes — y es de
+donde sale todo lo demás. No lo estudies por puntaje.
+</div>
+
+<div class="vecino">
+<strong>Este documento es la clase completa.</strong> Si lo que quieres es
+experimentar con la función de coste —mover la recta y ver el error crecer—,
+abre <a href="regresion_y_costo.html"><code>regresion_y_costo.html</code></a>, que es el laboratorio.
+</div>
 
 <h2>El ejemplo es de tu profesor</h2>
 
@@ -175,6 +230,15 @@ sobreajuste.
 
 <h2>5 · Pruébalo</h2>
 
+<div class="pred" data-p="pend">
+  <div class="q">Antes de tocar nada: si <strong>aumentas «cuánto sube»</strong>
+  y dejas «dónde empieza» fijo, ¿qué le pasa a la recta?</div>
+  <button data-r="gira">Gira, se hace más inclinada</button>
+  <button data-r="sube">Sube entera, paralela</button>
+  <button data-r="ambas">Las dos cosas</button>
+  <div class="veredicto"></div>
+</div>
+
 <div class="panel">
   <canvas id="lienzo" width="840" height="460"></canvas>
 
@@ -226,16 +290,93 @@ gráfico, y <strong>no se mueve</strong>: depende solo de los datos.</p>
 promedio». Y puede ser negativo, porque siempre se puede hacer peor que no pensar.
 </div>
 
-<h2>7 · La notación, ahora que ya sabes qué dice</h2>
+<h2>7 · La notación, desarmada</h2>
 
-<div class="calc">Y  =  θ₀  +  θ₁·X  +  ε
+<div class="ecu">
+  <div class="formula">Y = &theta;&#8320; + &theta;&#8321;&middot;X + &epsilon;</div>
+  <table>
+  <tr><th>Símbolo</th><th>Qué es con los árboles</th><th>Rol</th></tr>
+  <tr><td><strong>Y</strong></td><td>El peso que quieres predecir</td><td><span class="rol r-dato">es el target</span></td></tr>
+  <tr><td><strong>X</strong></td><td>El radio del tronco, que sí puedes medir</td><td><span class="rol r-dato">es un dato</span></td></tr>
+  <tr><td><strong>&theta;&#8320;</strong></td><td>Dónde empieza la recta</td><td><span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td><strong>&theta;&#8321;</strong></td><td>Kilos que gana por cada centímetro</td><td><span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td><strong>&epsilon;</strong></td><td>Lo que la recta no logra explicar</td><td><span class="rol r-dato">no se controla</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem">En tu Práctica 4 esos dos números
+  salieron <code>&theta;&#8321; = 82,13</code> y <code>&theta;&#8320; = 0,2588</code>.
+  <strong>Eso es todo el modelo.</strong></p>
+</div>
 
-θ₀  dónde empieza
-θ₁  cuánto sube por cada centímetro de radio
-ε   lo que la recta no logra explicar</div>
+<div class="ecu">
+  <div class="formula">MSE = (1/n) &middot; &Sigma; (<span class="num">y&#7522;</span> &minus; <span class="den">&#375;&#7522;</span>)&sup2;</div>
+  <table>
+  <tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>y&#7522;</strong></td><td>El peso <strong>real</strong> del árbol i</td><td><span class="rol r-dato">es un dato</span></td></tr>
+  <tr><td><strong>&#375;&#7522;</strong></td><td>El peso que <strong>predijo</strong> la recta</td><td><span class="rol r-aprende">sale del modelo</span></td></tr>
+  <tr><td><strong>y&#7522; &minus; &#375;&#7522;</strong></td><td>El error en ese árbol</td><td><span class="rol r-aprende">es lo que se minimiza</span></td></tr>
+  <tr><td><strong>( )&sup2;</strong></td><td>Elevar al cuadrado</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td><strong>&Sigma; y 1/n</strong></td><td>Sumar los n errores y promediar</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>El sombrero de &#375; es la
+  convención de todo el curso:</strong> con sombrero es lo predicho, sin sombrero
+  es lo real. Y el cuadrado no viene de la naturaleza — es una elección, que
+  podría haber sido el valor absoluto, y entonces tendrías MAE.</p>
+</div>
 
-<p>Es la misma frase de antes, escrita corto. En tu Práctica 4 esos dos números
-salieron <code>θ₁ = 82,13</code> y <code>θ₀ = 0,2588</code>.</p>
+<h2>8 · Camino inverso: te dan la fórmula</h2>
+
+<p>En la prueba no te van a contar lo de los árboles: te van a escribir esto. Haz
+el recorrido al revés.</p>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.25rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    R&sup2; = 1 &minus; SS<sub>res</sub> / SS<sub>tot</sub>
+  </div>
+
+  <details>
+    <summary>1 &middot; ¿Qué hay en el numerador?</summary>
+    <p><code>SS<sub>res</sub></code> es la suma de los errores de <strong>tu
+    modelo</strong>, al cuadrado. Son las líneas rojas del gráfico de arriba,
+    elevadas y sumadas.</p>
+    <p style="margin-bottom:0">Es lo único de esta fórmula que tu modelo puede mover.</p>
+  </details>
+
+  <details>
+    <summary>2 &middot; ¿Y en el denominador?</summary>
+    <p><code>SS<sub>tot</sub></code> es lo mismo, pero para un modelo que ignora el
+    radio y responde <strong>siempre el peso promedio</strong>. Es la línea gris
+    punteada.</p>
+    <p style="margin-bottom:0"><strong>No depende de tu modelo.</strong> Está fijado
+    por los datos antes de que entrenes nada.</p>
+  </details>
+
+  <details>
+    <summary>3 &middot; Entonces, ¿qué es el cociente?</summary>
+    <p>Qué fracción del error del modelo tonto conservas. Si vale 0,1, tu error es
+    el 10 % del suyo.</p>
+    <p style="margin-bottom:0">Y el <code>1 &minus;</code> lo da vuelta para que más
+    alto sea mejor: <strong>R&sup2; = 0,90</strong> significa «mi error es el 10 %
+    del que tendría sin pensar».</p>
+  </details>
+
+  <details>
+    <summary>4 &middot; ¿Por qué puede ser negativo?</summary>
+    <p>Si <code>SS<sub>res</sub></code> supera a <code>SS<sub>tot</sub></code>, el
+    cociente pasa de 1 y la resta se vuelve negativa. Significa que <strong>lo haces
+    peor que responder el promedio</strong>.</p>
+    <p style="margin-bottom:0">Tu baseline de Melbourne dio <strong>&minus;0,080</strong>:
+    predecir siempre la mediana de 2016 sobre datos de 2017 fue peor que no pensar.</p>
+  </details>
+
+  <details>
+    <summary>5 &middot; ¿Y por qué no se entrena minimizando R&sup2;?</summary>
+    <p>Porque <code>SS<sub>tot</sub></code> es una constante. Lo único variable es
+    <code>SS<sub>res</sub></code>, que es exactamente lo que el MSE ya minimiza.</p>
+    <p style="margin-bottom:0"><strong>Minimizar R&sup2; y minimizar el MSE son la
+    misma operación</strong>, escrita distinto.</p>
+  </details>
+</div>
 
 <div class="preg">
 <h2>Tu pregunta</h2>
@@ -244,8 +385,10 @@ salieron <code>θ₁ = 82,13</code> y <code>θ₀ = 0,2588</code>.</p>
 <p>Revisas tus datos: los 20 árboles que cortaste tenían radios
 <strong>entre 8 y 22 cm</strong>.</p>
 <p style="margin-bottom:0"><strong>¿Le entregas la predicción? Justifica.</strong></p>
-<p style="font-size:.88rem;color:#a8a29e;margin-top:1rem;margin-bottom:0">
+<p style="font-size:.88rem;color:#a8a29e;margin-top:1rem">
 Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
+<p style="margin-bottom:0;border-top:1px solid #44403c;padding-top:1rem">
+<strong>Y explícaselo a alguien:</strong> un compañero dice <em>«si &theta;&#8321; es 82,13, entonces un árbol de radio cero pesaría 82 kilos»</em>. ¿Tiene razón? Justifícalo nombrando qué símbolo responde esa pregunta.</p>
 </div>
 
 <footer>
@@ -265,6 +408,23 @@ let verExt=false;
 
 const cv=document.getElementById('lienzo'),cx=cv.getContext('2d');
 const $=id=>document.getElementById(id);
+
+const PREDQ={pend:{txt:{
+ gira:'<strong>Correcto.</strong> &theta;&#8321; es la pendiente: controla la inclinaci\u00f3n. El punto donde la recta cruza el eje vertical lo fija &theta;&#8320;, que no tocaste, as\u00ed que la recta pivota sobre \u00e9l.',
+ sube:'<strong>No.</strong> Eso es lo que hace &theta;&#8320;, el punto de partida: mueve la recta entera sin cambiar su inclinaci\u00f3n. &theta;&#8321; cambia cu\u00e1nto sube por cada cent\u00edmetro, o sea el \u00e1ngulo.',
+ ambas:'<strong>No.</strong> Cada par\u00e1metro hace una cosa y solo una: &theta;&#8320; desplaza, &theta;&#8321; inclina. Que los dos cambien el dibujo no significa que hagan lo mismo. Pru\u00e9balo: mueve solo uno.'}}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PREDQ[k].txt[b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
+
 const fmt=(n,d=2)=>n.toFixed(d).replace('.',',');
 
 const M={l:64,r:22,t:22,b:52};

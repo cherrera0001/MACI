@@ -5,7 +5,7 @@
 <title>Regresión y función de costo · Guillito</title>
 <style>
   :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--gris:#9ca3af}
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--gris:#9ca3af;--ambar:#d97706;--morado:#7c3aed}
   *{box-sizing:border-box}
   body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
        font:16px/1.65 "Segoe UI",system-ui,sans-serif}
@@ -41,6 +41,37 @@
   th{background:var(--fondo);font-weight:600}
   td.num{text-align:right;font-variant-numeric:tabular-nums}
   code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
          color:var(--suave);font-size:.85rem}
 </style>
@@ -51,6 +82,21 @@
 <h1>Regresión, función de costo y R²</h1>
 <p class="sub">Mueve la recta con las barras. Todo se recalcula solo.<br>
 Fundamentos de Ciencia de Datos · UdeC · Clase 6</p>
+
+
+<div class="grafo">
+  <span class="n">Limpieza de datos</span> &rarr;
+  <span class="n aqui">Regresión &middot; función de coste</span> &rarr;
+  <span class="n">Sobreajuste</span> &rarr;
+  <span class="n">Generalización</span>
+</div>
+
+<div class="vecino">
+<strong>Esto es el laboratorio.</strong> Aquí solo se experimenta con la función
+de coste: mover la recta y ver el error. Si lo que buscas es la <em>clase
+completa</em> &mdash;qué es regresión, de dónde sale la notación, qué significa
+cada símbolo&mdash; abre <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a>.
+</div>
 
 <h2>El problema, sin matemáticas</h2>
 
@@ -63,6 +109,15 @@ toneladas y los litros que consumió.</p>
 
 <p><strong>La pregunta:</strong> si mañana sale un camión con 34 toneladas,
 ¿cuántos litros va a gastar? No tenemos ese dato. Hay que estimarlo.</p>
+
+<div class="pred" data-p="costo">
+  <div class="q">Antes de tocar nada: si mueves la recta hasta que pase
+  <strong>exactamente por un punto</strong>, ¿qué le pasa al costo?</div>
+  <button data-r="cero">Baja a cero</button>
+  <button data-r="depende">Depende de los otros siete</button>
+  <button data-r="minimo">Llega a su mínimo</button>
+  <div class="veredicto"></div>
+</div>
 
 <div class="panel">
   <canvas id="lienzo" width="820" height="440"></canvas>
@@ -175,6 +230,66 @@ R² y minimizar el costo <em>son la misma operación</em>. Escribirlo de la otra
 forma no agrega nada.
 </div>
 
+<h2>4b &middot; La fórmula del coste, desarmada</h2>
+
+<div class="ecu">
+  <div class="formula">MSE = (1/n) &middot; &Sigma; (y&#7522; &minus; &#375;&#7522;)&sup2;</div>
+  <table>
+  <tr><th>Parte</th><th>Qué es aquí</th><th>Rol</th></tr>
+  <tr><td><strong>y&#7522;</strong></td><td>Los litros que gastó de verdad el viaje i</td><td><span class="rol r-dato">es un dato</span></td></tr>
+  <tr><td><strong>&#375;&#7522;</strong></td><td>Los litros que predice tu recta</td><td><span class="rol r-aprende">sale del modelo</span></td></tr>
+  <tr><td><strong>y&#7522; &minus; &#375;&#7522;</strong></td><td>El largo de la línea roja del viaje i</td><td><span class="rol r-aprende">es el residuo</span></td></tr>
+  <tr><td><strong>( )&sup2;</strong></td><td>Que no se cancelen, y castigar más lo grande</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td><strong>&Sigma;</strong> y <strong>1/n</strong></td><td>Sumar los 8 viajes y promediar</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>Dos de las cinco partes son
+  decisiones tuyas, no verdades.</strong> Cambiar el cuadrado por valor absoluto
+  te da el MAE, y entonces los errores grandes dejan de pesar más. Ninguna de las
+  dos es «la correcta»: responden a preguntas distintas.</p>
+</div>
+
+<h2>4c &middot; Camino inverso: te dan la fórmula</h2>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    MSE = (1/n) &middot; &Sigma; (y&#7522; &minus; &#375;&#7522;)&sup2;
+  </div>
+
+  <details>
+    <summary>1 &middot; ¿Qué objeto del gráfico es cada término?</summary>
+    <p>Cada <code>(y&#7522; &minus; &#375;&#7522;)</code> es <strong>una línea roja</strong>.
+    Hay ocho, una por viaje. El cuadrado las convierte en áreas, la suma las junta
+    y el <code>1/n</code> devuelve un promedio.</p>
+    <p style="margin-bottom:0">Mover la recta cambia las ocho a la vez. Por eso el
+    número salta tanto.</p>
+  </details>
+
+  <details>
+    <summary>2 &middot; ¿Qué pasaría sin el cuadrado?</summary>
+    <p>Errar +10 y &minus;10 litros sumaría cero, y una recta pésima parecería
+    perfecta. El cuadrado impide que los errores se anulen entre sí.</p>
+    <p style="margin-bottom:0">Compruébalo: pon la recta atravesando la nube por el
+    medio pero muy inclinada. Los residuos son enormes y de signos opuestos.</p>
+  </details>
+
+  <details>
+    <summary>3 &middot; ¿En qué unidades está el resultado?</summary>
+    <p>En <strong>litros al cuadrado</strong>, que no significa nada para nadie. Por
+    eso existe el R&sup2;: traduce el coste a una escala interpretable comparándolo
+    con el modelo que responde siempre el promedio.</p>
+  </details>
+
+  <details>
+    <summary>4 &middot; ¿Y cómo se encuentra el mínimo?</summary>
+    <p>Para una recta hay <strong>fórmula exacta</strong> &mdash;mínimos cuadrados
+    ordinarios&mdash;, así que no hace falta tantear. El botón de abajo la aplica.</p>
+    <p style="margin-bottom:0">Eso es <em>minimizar el riesgo empírico</em>: elegir
+    los parámetros que hacen mínimo el coste <strong>sobre los datos que tienes</strong>.
+    La palabra «empírico» es la que abre la puerta al sobreajuste.</p>
+  </details>
+</div>
+
 <h2>5 · Pruébalo tú</h2>
 
 <ol>
@@ -185,6 +300,14 @@ punto de partida hasta el R² más alto que consigas. <em>¿A qué valor se acer
 <li>Mueve la pendiente <strong>0,2</strong> hacia arriba. Mira cuánto sube el
 costo con ese cambio mínimo.</li>
 </ol>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero propone: <em>«usemos la suma de los errores sin elevarlos al
+cuadrado, así el número queda en litros y se entiende mejor»</em>.<br><br>
+<strong>¿Tiene razón en algo? ¿En qué se equivoca?</strong> Justifícalo con lo que
+pasa cuando un error es positivo y otro negativo.
+</div>
 
 <footer>
 Generado por Guillito · <code>07_GUILLITO/visual/regresion_y_costo.html</code><br>
@@ -197,6 +320,23 @@ Datos sintéticos, construidos para que el fenómeno se vea. Funciona sin conexi
 // Ocho viajes: carga en toneladas, consumo en litros.
 const D = [[12,48],[18,62],[22,74],[26,79],[30,96],[35,104],[40,121],[45,128]];
 const medY = D.reduce((s,p)=>s+p[1],0)/D.length;
+
+
+const PREDC={costo:{txt:{
+ depende:'<strong>Correcto.</strong> El coste promedia los ocho viajes. Clavar uno solo no dice nada: la recta puede pasar exacta por un punto y estar lejísimos de los otros siete, con un coste altísimo.',
+ cero:'<strong>No.</strong> Eso ser\u00eda cierto con un solo dato. Con ocho, el coste es el promedio de los ocho errores: acertar uno deja los otros siete intactos. Pru\u00e9balo &mdash; pasa la recta justo por un punto y mira el n\u00famero.',
+ minimo:'<strong>No.</strong> El m\u00ednimo no tiene por qu\u00e9 pasar por ning\u00fan punto. Pulsa <em>Buscar la mejor recta</em> y f\u00edjate: la soluci\u00f3n \u00f3ptima no toca ninguno exactamente, porque equilibra los ocho.'}}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PREDC[k].txt[b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
 
 const cv = document.getElementById('lienzo'), cx = cv.getContext('2d');
 const $ = id => document.getElementById(id);
