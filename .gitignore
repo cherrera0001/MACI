@@ -31,3 +31,8 @@ storage_state.json
 master_token.json
 auth.json
 *.cookies
+
+# Variables de entorno con secretos — NUNCA se versionan
+.env
+.env.*
+!.env.example
