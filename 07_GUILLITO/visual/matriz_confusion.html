@@ -82,6 +82,12 @@
 
   #expl{margin-top:1.1rem;padding:.9rem 1.1rem;background:var(--fondo);border-radius:8px;
         font-size:.93rem;min-height:3.2rem}
+  /* Matriz 3x3 de Galaxy Zoo */
+  td.gz{cursor:pointer;font-variant-numeric:tabular-nums;font-weight:600;transition:.12s}
+  td.gz:hover{background:#eff6ff}
+  td.gz.ok{background:#d1fae5;color:#065f46}
+  td.gz.sel{outline:2px solid var(--tinta);outline-offset:-2px}
+  #gzMtz th{text-align:center}
   button.acc{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
              font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
   button.acc:hover{background:#1d4ed8}
@@ -335,7 +341,122 @@ Con enfermedades raras, decir «no» a todas acierta casi siempre — y no detec
 <strong>F1-macro</strong> y no exactitud.
 </div>
 
-<h2>6 · Procedimiento para el papel</h2>
+<h2>6 · Segundo caso: tus galaxias</h2>
+
+<p>La mamografía enseña una cosa que Galaxy Zoo no: que un falso positivo y un
+falso negativo <strong>cuestan distinto</strong>. Pero tiene un límite — solo
+tiene dos clases.</p>
+
+<p>Tu desafío tiene tres, y con eso aparecen dos ideas nuevas: cómo se ve una
+matriz de <strong>3×3</strong>, y qué significa promediar métricas
+<strong>por clase</strong>.</p>
+
+<div class="grafo" style="background:#f0fdf4;border-left-color:var(--verde)">
+  <span style="font-size:.86rem"><strong>Datos reales.</strong>
+  <code>04_DATOS/GZ_mini_challenge_train.csv</code> · resultados de
+  <code>02_PROYECTO_FCD/Desafio/REPORT.md</code></span>
+</div>
+
+<h3>El reparto de clases, antes de mirar el modelo</h3>
+
+<table>
+<tr><th>Clase</th><th>Qué es</th><th>Filas</th><th>%</th></tr>
+<tr><td><strong>0</strong></td><td>No decidible · los humanos no se pusieron de acuerdo</td><td class="num">96</td><td class="num">9,6 %</td></tr>
+<tr><td><strong>1</strong></td><td>Espiral</td><td class="num">227</td><td class="num">22,7 %</td></tr>
+<tr><td><strong>2</strong></td><td>Elíptica</td><td class="num">677</td><td class="num">67,7 %</td></tr>
+</table>
+
+<div class="pred" data-p="gz">
+  <div class="q">Antes de ver nada: un modelo que responda <strong>siempre
+  «elíptica»</strong>, sin mirar la galaxia, ¿qué <strong>exactitud</strong>
+  obtiene?</div>
+  <button data-r="33">Un 33 %, hay tres clases</button>
+  <button data-r="50">Alrededor del 50 %</button>
+  <button data-r="68">Un 67,7 %</button>
+  <div class="veredicto"></div>
+</div>
+
+<h3>Tu matriz real, 3×3</h3>
+
+<p>Filas = lo que la galaxia <strong>era</strong>. Columnas = lo que el modelo
+<strong>dijo</strong>. Pulsa una celda.</p>
+
+<div class="panel">
+  <table id="gzMtz" style="text-align:center;max-width:560px;margin:0 auto">
+  <tr><th></th><th>pred 0</th><th>pred 1</th><th>pred 2</th><th style="background:#f1f0ee">total real</th></tr>
+  <tr><th>real 0</th>
+      <td class="gz ok" data-i="0" data-j="0">25</td>
+      <td class="gz" data-i="0" data-j="1">36</td>
+      <td class="gz" data-i="0" data-j="2">35</td>
+      <td class="num" style="background:#f1f0ee"><strong>96</strong></td></tr>
+  <tr><th>real 1</th>
+      <td class="gz" data-i="1" data-j="0">18</td>
+      <td class="gz ok" data-i="1" data-j="1">176</td>
+      <td class="gz" data-i="1" data-j="2">33</td>
+      <td class="num" style="background:#f1f0ee"><strong>227</strong></td></tr>
+  <tr><th>real 2</th>
+      <td class="gz" data-i="2" data-j="0">39</td>
+      <td class="gz" data-i="2" data-j="1">65</td>
+      <td class="gz ok" data-i="2" data-j="2">573</td>
+      <td class="num" style="background:#f1f0ee"><strong>677</strong></td></tr>
+  <tr><th style="background:#f1f0ee">total predicho</th>
+      <td class="num" style="background:#f1f0ee"><strong>82</strong></td>
+      <td class="num" style="background:#f1f0ee"><strong>277</strong></td>
+      <td class="num" style="background:#f1f0ee"><strong>641</strong></td>
+      <td class="num" style="background:#e5e3e0"><strong>1.000</strong></td></tr>
+  </table>
+  <div id="gzExpl" style="margin-top:1rem;padding:.9rem 1.1rem;background:var(--fondo);
+       border-radius:8px;font-size:.93rem;min-height:3rem">Pulsa una celda de la matriz.</div>
+</div>
+
+<div class="clave">
+<strong>Con tres clases, TP y FP dejan de ser absolutos.</strong> Se vuelven
+relativos a la clase que estés mirando. Para la clase 0, los 25 de la diagonal
+son sus TP; los 18 y 39 de su columna son sus FP; los 36 y 35 de su fila son sus
+FN. <strong>Las mismas cuatro casillas, una vez por clase.</strong>
+</div>
+
+<h3>Las métricas, por clase</h3>
+
+<table>
+<tr><th>Clase</th><th>Precisión</th><th>Sensibilidad</th><th>F1</th><th>Cómo sale la precisión</th></tr>
+<tr><td><strong>0</strong></td><td class="num">0,3049</td><td class="num">0,2604</td><td class="num"><strong>0,2809</strong></td><td class="num">25 / 82</td></tr>
+<tr><td><strong>1</strong></td><td class="num">0,6354</td><td class="num">0,7753</td><td class="num">0,6984</td><td class="num">176 / 277</td></tr>
+<tr><td><strong>2</strong></td><td class="num">0,8939</td><td class="num">0,8464</td><td class="num">0,8695</td><td class="num">573 / 641</td></tr>
+</table>
+
+<h3>Y ahora la comparación que importa</h3>
+
+<div class="panel" style="text-align:center">
+  <div class="met" style="max-width:520px;margin:0 auto">
+    <div><div class="n" style="color:var(--rojo)">77,4 %</div><div class="e">Exactitud</div><div class="f">(25+176+573)/1000</div></div>
+    <div><div class="n" style="color:var(--verde)">0,6163</div><div class="e">F1-macro</div><div class="f">(0,281+0,698+0,870)/3</div></div>
+    <div><div class="n" style="color:var(--suave)">67,7 %</div><div class="e">Modelo tonto</div><div class="f">siempre clase 2</div></div>
+  </div>
+</div>
+
+<div class="peligro">
+<strong>Mira los tres números juntos.</strong><br><br>
+La exactitud dice <strong>77,4 %</strong>, que suena bien. Pero el modelo tonto
+—responder siempre «elíptica»— ya saca <strong>67,7 %</strong>. Todo el trabajo
+del modelo aporta <strong>menos de 10 puntos</strong> de exactitud.<br><br>
+El F1-macro dice <strong>0,6163</strong> y es más honesto, porque promedia las
+tres clases por igual. La clase 0 tiene F1 <strong>0,2809</strong> — y arrastra
+el promedio hacia abajo en vez de esconderse detrás del 67,7 % de la clase
+mayoritaria.
+</div>
+
+<div class="nota">
+<strong>Por qué la clase 0 es tan difícil, y no es culpa del modelo.</strong><br><br>
+La clase 0 no es «otro tipo de galaxia»: es <em>«los votos humanos estaban
+divididos»</em>. Sus fracciones de voto medias son 0,356 y 0,271 —
+<strong>ninguna domina</strong>.<br><br>
+El modelo tendría que aprender a reconocer <strong>ausencia de consenso</strong>,
+que es una señal mucho más débil que una forma. Con 96 ejemplos de 1.000, no
+alcanza.
+</div>
+
+<h2>7 · Procedimiento para el papel</h2>
 
 <pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
 1. Declarar cuál es la CLASE POSITIVA        "positivo = tiene cáncer"
@@ -454,6 +575,39 @@ $('bEquil').onclick=()=>{$('prev').value=50;$('sens').value=80;$('espe').value=9
   $('expl').innerHTML='<strong>Clases equilibradas.</strong> Con mitad y mitad, la exactitud vuelve a significar algo. La métrica no es buena o mala en abstracto: depende del reparto de clases.';};
 
 calc();
+
+// ---------- Segundo caso: Galaxy Zoo ----------
+PRED.gz={correcta:'68', txt:{
+ '68':'<strong>Correcto.</strong> La clase 2 es el 67,7 % de los datos, así que responder siempre «elíptica» acierta exactamente esa proporción. <strong>Sin haber mirado una sola galaxia.</strong> Ése es el listón que hay que superar, no el 33 %.',
+ '33':'<strong>No.</strong> El 33 % sería si las tres clases estuvieran repartidas por igual. No lo están: la clase 2 es el 67,7 %. Responder siempre la mayoritaria acierta esa proporción.',
+ '50':'<strong>No.</strong> Con tres clases desbalanceadas el número sale del reparto, no de una intuición: la clase 2 es el 67,7 %, así que responder siempre «elíptica» acierta el 67,7 %.'}};
+
+const GZ={
+ nombres:['0 · no decidible','1 · espiral','2 · elíptica'],
+ fila:[96,227,677], col:[82,277,641],
+ celda:[[25,36,35],[18,176,33],[39,65,573]]
+};
+document.querySelectorAll('td.gz').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('td.gz').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel');
+    const i=+c.dataset.i, j=+c.dataset.j, v=GZ.celda[i][j];
+    const real=GZ.nombres[i], pred=GZ.nombres[j];
+    let h;
+    if(i===j){
+      h=`<strong>${v} aciertos.</strong> Galaxias que eran <em>${real}</em> y el modelo dijo <em>${pred}</em>.<br>`+
+        `Son los <strong>TP de la clase ${i}</strong>: ${v} de ${GZ.fila[i]} reales (sensibilidad `+
+        `${(v/GZ.fila[i]).toFixed(4).replace('.',',')}) y ${v} de ${GZ.col[j]} predichas `+
+        `(precisión ${(v/GZ.col[j]).toFixed(4).replace('.',',')}).`;
+    } else {
+      h=`<strong>${v} errores.</strong> Eran <em>${real}</em> y el modelo dijo <em>${pred}</em>.<br>`+
+        `Para la <strong>clase ${i}</strong> son <strong>falsos negativos</strong>: se le escaparon. `+
+        `Para la <strong>clase ${j}</strong> son <strong>falsos positivos</strong>: las reclamó sin serlo.<br>`+
+        `<em>La misma casilla es FN para una clase y FP para otra. Eso es lo que cambia al pasar de dos clases a tres.</em>`;
+    }
+    document.getElementById('gzExpl').innerHTML=h;
+  };
+});
 </script>
 </body>
 </html>
