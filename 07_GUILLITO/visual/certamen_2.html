@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Certamen 2 resuelto · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:920px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.4rem 0 .7rem;padding-top:1.2rem;border-top:1px solid var(--linea)}
+  .sub{color:var(--suave);margin:0 0 1.8rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
+  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+
+  .preg{background:#fff;border:1px solid var(--linea);border-radius:10px;
+        padding:1.2rem 1.4rem;margin:1.1rem 0}
+  .cab{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.7rem}
+  .num{background:var(--tinta);color:#fff;width:2.1rem;height:2.1rem;border-radius:50%;
+       display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;flex:none}
+  .tema{font-weight:700;font-size:1.02rem}
+  .eti{font-size:.7rem;font-weight:700;padding:.16rem .5rem;border-radius:20px;
+       text-transform:uppercase;letter-spacing:.03em}
+  .b-ev{background:#ede9fe;color:#5b21b6}
+  .b-an{background:#dbeafe;color:#1e40af}
+  .b-ap{background:#d1fae5;color:#065f46}
+  .b-cr{background:#fce7f3;color:#9d174d}
+  .enun{background:var(--fondo);border-radius:8px;padding:.85rem 1rem;margin:.5rem 0 .9rem;
+        font-size:.96rem}
+  details{border-top:1px dashed var(--linea);padding-top:.8rem;margin-top:.5rem}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);font-size:.92rem;
+          list-style:none;user-select:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);
+       font-weight:700;margin-top:1rem;margin-bottom:.15rem}
+  .dist{background:#f5f3ff;border-left:3px solid var(--morado);padding:.6rem .9rem;
+        margin:.5rem 0;font-size:.93rem}
+  ol.pasos{margin:.4rem 0 .4rem 1.1rem;padding:0}
+  ol.pasos li{margin:.25rem 0}
+  .resp{background:#f0fdf4;border-left:3px solid var(--verde);padding:.7rem 1rem;margin:.5rem 0}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:7px;padding:.8rem 1rem;
+          margin-top:.8rem;font-size:.92rem}
+  .repreg strong{color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Certamen 2 · resuelto pregunta por pregunta</h1>
+<p class="sub">11 preguntas reales, con el método antes que la respuesta.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<div class="peligro">
+<strong>Cómo usar esto.</strong> Lee el enunciado, resuélvelo, y recién entonces
+abre la solución. Leerla primero se siente productivo y no enseña nada — el
+efecto está bien documentado.
+</div>
+
+<h2>Antes de empezar: cómo evalúa</h2>
+
+<p>Las 11 fichas de este certamen comparten un campo <strong>sin excepción</strong>:
+*distinción conceptual clave*. Cada pregunta se resuelve separando dos conceptos
+que se parecen.</p>
+
+<div class="clave">
+<strong>No evalúa definiciones. Evalúa discriminación.</strong><br>
+Saber qué es el sobreajuste no basta: hay que distinguirlo del subajuste y del
+error alto, que se parecen y no son lo mismo.
+</div>
+
+<table>
+<tr><th>Nivel cognitivo</th><th>Preguntas</th><th>Formato que lo delata</th></tr>
+<tr><td><span class="eti b-ev">Evaluar</span></td><td>P1, P2, P11</td><td>V/F <strong>con justificación</strong>, declarar supuestos</td></tr>
+<tr><td><span class="eti b-an">Analizar</span></td><td>P3, P4, P5, P6, P7, P9</td><td>«¿cuál es incorrecta?», comparar modelos</td></tr>
+<tr><td><span class="eti b-ap">Aplicar</span></td><td>P8</td><td>Calcular desde una figura</td></tr>
+</table>
+
+<h2>Las 11 preguntas</h2>
+
+<!-- P1 -->
+<div class="preg">
+  <div class="cab"><div class="num">1</div><div class="tema">Ensambles y diversidad</div>
+    <span class="eti b-ev">Evaluar</span></div>
+  <div class="enun"><strong>Verdadero o falso, justificando:</strong> «Utilizar un
+  modelo compuesto por varios modelos exactamente iguales y que predicen
+  exactamente lo mismo suele predecir mejor que cada modelo por separado.»</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    El mecanismo por el que un ensamble mejora: la <strong>descorrelación de errores</strong>.
+    <div class="dist"><strong>La distinción:</strong> número de modelos ≠ diversidad de modelos.</div>
+    <div class="lbl">Cómo se deriva</div>
+    <ol class="pasos">
+      <li>Modelos idénticos producen predicciones idénticas</li>
+      <li>Predicciones idénticas producen errores idénticos</li>
+      <li>Promediar valores iguales devuelve el mismo valor</li>
+      <li>El ensamble equivale a un solo modelo: no mejora nada</li>
+    </ol>
+    <div class="resp"><strong>Falso.</strong> Un ensamble mejora cuando sus componentes
+    fallan en filas distintas. Promediar reduce varianza solo si los errores no
+    están perfectamente correlacionados. Si son idénticos, la diversidad es cero
+    y no hay nada que promediar.</div>
+    <div class="lbl">Error típico</div>
+    Creer que «más modelos» es lo que mejora. Lo que mejora es que
+    <em>discrepen</em>.
+    <div class="repreg"><strong>Repregunta:</strong> combinas dos modelos que aciertan
+    80 % cada uno. ¿En qué caso el ensamble supera el 80 %, y en cuál no gana nada?</div>
+  </details>
+</div>
+
+<!-- P2 -->
+<div class="preg">
+  <div class="cab"><div class="num">2</div><div class="tema">Sobreajuste y generalización</div>
+    <span class="eti b-ev">Evaluar</span></div>
+  <div class="enun"><strong>Verdadero o falso, justificando:</strong> «El sobreajuste
+  ocurre cuando el modelo predice correctamente sobre el conjunto de
+  entrenamiento, pero no es capaz de generalizar para datos que no ha visto antes.»</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    La definición <strong>operativa</strong> del sobreajuste: no qué es en abstracto,
+    sino cómo se reconoce.
+    <div class="dist"><strong>La distinción:</strong> sobreajuste (bueno dentro, malo
+    fuera) ≠ subajuste (malo en ambos) ≠ error alto sin más.</div>
+    <div class="lbl">Cómo se deriva</div>
+    El patrón que describe el enunciado —alto en entrenamiento, bajo fuera— es
+    exactamente el síntoma de haber ajustado ruido en vez de señal.
+    <div class="resp"><strong>Verdadero.</strong> El modelo aprendió particularidades
+    del conjunto de entrenamiento que no se repiten fuera.</div>
+    <div class="lbl">Error típico</div>
+    Diagnosticar mirando <strong>un solo número</strong>. El sobreajuste es una
+    <em>brecha</em> entre dos mediciones, nunca un valor aislado.
+    <div class="repreg"><strong>Repregunta:</strong> un modelo tiene R² de 0,41 en
+    entrenamiento y 0,39 en prueba. ¿Sobreajusta?</div>
+  </details>
+</div>
+
+<!-- P3 -->
+<div class="preg">
+  <div class="cab"><div class="num">3</div><div class="tema">Causas del sobreajuste</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">Selección múltiple sobre afirmaciones de sobreajuste. Una de
+  ellas sostiene que <strong>aumentar el número de atributos evitaría el
+  sobreajuste</strong>. ¿Cuál es incorrecta?</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Causas, diagnóstico y consecuencias del sobreajuste, evaluando cada afirmación
+    por <strong>su propio mecanismo</strong> en vez de por intuición general.
+    <div class="dist"><strong>La distinción:</strong> más <strong>filas</strong>
+    (reduce el sobreajuste) ≠ más <strong>columnas</strong> (lo aumenta, si no
+    traen señal).</div>
+    <div class="lbl">Cómo se deriva</div>
+    <ol class="pasos">
+      <li>Más filas = más evidencia por parámetro → el ruido deja de ser ajustable</li>
+      <li>Más columnas = más parámetros con la misma evidencia → más capacidad de memorizar</li>
+      <li>La afirmación invierte la relación evidencia/parámetros</li>
+    </ol>
+    <div class="resp"><strong>La incorrecta es la de los atributos.</strong> Añadir
+    columnas que no traen señal <em>aumenta</em> el riesgo de sobreajuste, no lo
+    reduce.</div>
+    <div class="lbl">Error típico</div>
+    Leer «más datos» sin distinguir en qué dirección. En lenguaje corriente las
+    dos cosas suenan igual y tienen efectos opuestos.
+    <div class="repreg"><strong>Repregunta:</strong> en tu proyecto Melbourne,
+    <code>Suburb</code> se descartó por tener 311 categorías. ¿Qué tipo de «más
+    datos» era eso?</div>
+  </details>
+</div>
+
+<!-- P4 -->
+<div class="preg">
+  <div class="cab"><div class="num">4</div><div class="tema">Métricas de clasificación</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">De las siguientes cantidades, ¿cuál <strong>no</strong> es una
+  métrica de evaluación de un clasificador?<br>
+  AUC · ganancia de pureza · FPR · exactitud · <strong>varianza</strong></div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Una taxonomía: distinguir <strong>métrica de evaluación</strong> / <strong>criterio
+    de entrenamiento</strong> / <strong>estadístico descriptivo</strong>.
+    <div class="dist"><strong>La distinción:</strong> una cantidad que describe un
+    <strong>clasificador</strong> ≠ una que describe una <strong>variable</strong>.</div>
+    <div class="lbl">Cómo se deriva</div>
+    Pregúntate de cada una: <em>¿existe sin que haya clases?</em>
+    <ul style="margin:.3rem 0 .3rem 1.1rem">
+      <li>AUC, FPR, exactitud: solo existen dentro de un problema de clasificación</li>
+      <li>Ganancia de pureza: criterio de división de un árbol — entrenamiento, no evaluación</li>
+      <li><strong>Varianza: existe con o sin clases.</strong> Describe una variable</li>
+    </ul>
+    <div class="resp"><strong>La varianza.</strong> Es un estadístico descriptivo de
+    una variable, no una métrica de rendimiento de un clasificador.</div>
+    <div class="lbl">Error típico</div>
+    Confundir lo que el algoritmo <strong>minimiza</strong> con lo que tú
+    <strong>reportas</strong>. La ganancia de pureza guía el entrenamiento; no se
+    reporta como desempeño.
+    <div class="repreg"><strong>Repregunta:</strong> ¿el MSE es métrica de evaluación,
+    criterio de entrenamiento, o ambos? ¿Y el R²?</div>
+  </details>
+</div>
+
+<!-- P5 -->
+<div class="preg">
+  <div class="cab"><div class="num">5</div><div class="tema">LLM y agentes</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">Seleccionar la afirmación correcta sobre LLM y agentes.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    La diferencia entre un <strong>modelo</strong> y un <strong>sistema</strong> que lo
+    usa como componente.
+    <div class="dist"><strong>La distinción:</strong> generar texto ≠ ejecutar acciones
+    y observar su resultado.</div>
+    <div class="lbl">Cómo se deriva</div>
+    Por eliminación de los tres distractores habituales: que un LLM garantice
+    hechos recientes (no: tiene fecha de corte), que colabore por sí solo, o que
+    lo definitorio sea la escala de entrenamiento.
+    <div class="resp">La correcta señala que un <strong>agente</strong> puede usar
+    herramientas, almacenar conocimiento y ejecutar acciones, mientras un
+    <strong>LLM</strong> se orienta a procesar información y generar texto.</div>
+    <div class="lbl">Error típico</div>
+    Pensar que «agente» es un LLM más grande o mejor. Lo definitorio es el
+    <strong>bucle de acción</strong>: herramientas, ejecución, observación del
+    resultado.
+    <div class="repreg"><strong>Repregunta:</strong> Guillito consulta tu cuaderno por
+    MCP y escribe tu progreso en un archivo. ¿Qué lo hace agente y no un chatbot
+    con documentos?</div>
+  </details>
+</div>
+
+<!-- P6 -->
+<div class="preg">
+  <div class="cab"><div class="num">6</div><div class="tema">Revoluciones de la IA</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">¿Cuáles están entre las revoluciones recientes impulsadas por
+  <strong>redes neuronales</strong>?<br>
+  Procesamiento de lenguaje natural · computación en la nube · bases de datos
+  relacionales · detección de objetos en imágenes</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Atribución causal: qué avance es <em>producto de</em> las redes neuronales y qué
+    avance solo las <em>habilita</em>.
+    <div class="dist"><strong>La distinción:</strong> <strong>causa</strong> (redes → PLN,
+    visión) ≠ <strong>condición habilitante</strong> (nube → entrenamiento a escala).</div>
+    <div class="lbl">Cómo se deriva</div>
+    De cada ítem, pregúntate <em>qué lo hizo avanzar</em>. La dirección de la flecha
+    decide.
+    <div class="resp"><strong>PLN y detección de objetos.</strong> La nube es
+    infraestructura que hizo posible entrenar, no una técnica de IA. Las bases
+    de datos relacionales son almacenamiento, y no son recientes.</div>
+    <div class="lbl">Error típico</div>
+    Marcar la nube porque «está relacionada con la IA». Estar relacionado no es
+    ser la causa.
+    <div class="repreg"><strong>Repregunta:</strong> las GPU, ¿son causa o condición
+    habilitante?</div>
+  </details>
+</div>
+
+<!-- P7 -->
+<div class="preg">
+  <div class="cab"><div class="num">7</div><div class="tema">Regresión polinomial</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">Evaluar si el ajuste polinomial de una curva a <strong>cinco
+  árboles</strong> es correcto, y proponer mejoras.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Diagnóstico visual de sobreajuste, y remedios distinguidos
+    <strong>por su mecanismo</strong>.
+    <div class="dist"><strong>Dos distinciones:</strong> error de entrenamiento ≠ calidad
+    del modelo · bajar el grado (<strong>elimina</strong> términos) ≠ regularizar
+    (los <strong>amortigua</strong>).</div>
+    <div class="lbl">Cómo se deriva</div>
+    <ol class="pasos">
+      <li>Un polinomio de grado n−1 interpola n puntos <strong>siempre</strong></li>
+      <li>Pasar por los cinco puntos no es evidencia de nada</li>
+      <li>Las oscilaciones pronunciadas contradicen un fenómeno que debe ser suave</li>
+      <li>Diagnóstico: grado demasiado alto, el modelo memoriza</li>
+    </ol>
+    <div class="resp">El ajuste <strong>no es adecuado</strong>. Cuatro mejoras, cada
+    una por un mecanismo distinto:
+    <ul style="margin:.3rem 0 0 1.1rem">
+      <li><strong>Bajar el grado</strong> — quita capacidad</li>
+      <li><strong>Más observaciones</strong> — más evidencia por parámetro</li>
+      <li><strong>Validación cruzada</strong> — no reduce el sobreajuste: lo <em>detecta</em></li>
+      <li><strong>Regularizar</strong> (Ridge o Lasso) — encoge coeficientes sin eliminarlos</li>
+    </ul></div>
+    <div class="lbl">Error típico</div>
+    Ver error de entrenamiento cero y concluir que el modelo es bueno. Es
+    exactamente al revés.
+    <div class="repreg"><strong>Repregunta:</strong> ¿por qué la validación cruzada
+    no es un remedio del sobreajuste en el mismo sentido que la regularización?</div>
+  </details>
+</div>
+
+<!-- P8 -->
+<div class="preg">
+  <div class="cab"><div class="num">8</div><div class="tema">Matriz de confusión</div>
+    <span class="eti b-ap">Aplicar</span></div>
+  <div class="enun">Para el modelo representado por la <strong>línea verde
+  punteada</strong>, calcular la matriz de confusión, exactitud, precisión, TPR y
+  FPR, <strong>explicando los supuestos</strong>.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Construir la matriz desde una frontera geométrica y derivar métricas sabiendo
+    <strong>sobre qué denominador</strong> se calcula cada una.
+    <div class="dist"><strong>La distinción:</strong> precisión (÷ predichos positivos)
+    ≠ sensibilidad (÷ positivos reales) ≠ exactitud (÷ total). Y
+    <strong>FPR ≠ 1 − precisión</strong>.</div>
+    <div class="lbl">Cómo se deriva</div>
+    <ol class="pasos">
+      <li><strong>Declarar la convención</strong> antes de contar: qué clase es
+      positiva y qué lado predice positivo. Sin esto, «falso positivo» no significa nada</li>
+      <li>Cada punto cae en una de cuatro casillas</li>
+      <li>Contar, y <strong>verificar los marginales</strong>: filas 15 y 35, columnas
+      16 y 34, total 50</li>
+      <li>Elegir el denominador según la métrica</li>
+      <li>Interpretar en lenguaje del problema</li>
+    </ol>
+    <div class="resp">Con círculos = positivos y lado izquierdo = predicción positiva:
+    <strong>VP 12 · FN 3 · FP 4 · VN 31</strong>
+    <table style="margin-top:.5rem">
+    <tr><th>Métrica</th><th>Cálculo</th><th>Resultado</th></tr>
+    <tr><td>Exactitud</td><td class="num">(12+31)/50</td><td class="num">86,0 %</td></tr>
+    <tr><td>Precisión</td><td class="num">12/(12+4)</td><td class="num">75,0 %</td></tr>
+    <tr><td>TPR</td><td class="num">12/(12+3)</td><td class="num">80,0 %</td></tr>
+    <tr><td>FPR</td><td class="num">4/(4+31)</td><td class="num">11,4 %</td></tr>
+    </table>
+    <p style="margin:.5rem 0 0">Lectura: el modelo es <em>conservador</em> con los
+    círculos — falla más al declararlos que al encontrarlos.</p></div>
+    <div class="lbl">Error típico</div>
+    Confundir precisión con exactitud, y precisión con sensibilidad. Las tres
+    incluyen la palabra «acertar» en lenguaje corriente. <strong>Lo único que las
+    separa es el denominador.</strong>
+    <div class="nota" style="margin-top:.7rem"><strong>Contrafactual que conviene saber:</strong>
+    si los triángulos fueran la clase positiva, la exactitud seguiría siendo 86 %
+    —es simétrica— pero la precisión pasaría a 91 %, la TPR a 89 % y la FPR a 20 %.
+    Por eso la convención <strong>debe declararse</strong>: sin ella la respuesta es
+    irreproducible.</div>
+    <div class="repreg"><strong>Repregunta:</strong> si mueves la línea a la derecha,
+    ¿qué le pasa a la TPR y a la FPR?</div>
+  </details>
+</div>
+
+<!-- P9 -->
+<div class="preg">
+  <div class="cab"><div class="num">9</div><div class="tema">Curva ROC</div>
+    <span class="eti b-an">Analizar</span></div>
+  <div class="enun">Calcular TPR y FPR para dos modelos con distintos umbrales y
+  determinar <strong>cuál es mejor</strong>.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Leer una ROC como <strong>familia de operaciones del mismo modelo</strong> a
+    distintos umbrales, y comparar clasificadores sin fijar uno.
+    <div class="dist"><strong>La distinción:</strong> comparar un <strong>punto de
+    operación</strong> ≠ comparar un <strong>modelo</strong>.</div>
+    <div class="lbl">Cómo se deriva</div>
+    <table style="margin:.4rem 0">
+    <tr><th>Umbral</th><th>Modelo 1 (TPR/FPR)</th><th>Modelo 2 (TPR/FPR)</th><th>¿Quién domina?</th></tr>
+    <tr><td>bajo</td><td class="num">0,95 / 0,34</td><td class="num">0,88 / 0,51</td><td>Modelo 1</td></tr>
+    <tr><td>medio</td><td class="num">0,80 / 0,14</td><td class="num">0,70 / 0,23</td><td>Modelo 1</td></tr>
+    <tr><td>alto</td><td class="num">0,45 / 0,03</td><td class="num">0,38 / 0,06</td><td>Modelo 1</td></tr>
+    </table>
+    <p>El Modelo 1 tiene <strong>mayor TPR y menor FPR en los tres</strong>: lo domina
+    por completo. Su curva está enteramente por encima.</p>
+    <div class="resp"><strong>Modelo 1.</strong> Domina en todos los umbrales, así que
+    la conclusión no depende de dónde se opere. Su curva queda más cerca de la
+    esquina superior izquierda, y su AUC es mayor.</div>
+    <div class="lbl">Error típico</div>
+    Comparar los dos modelos en <strong>un solo umbral</strong> y concluir. Un modelo
+    es una curva, no un punto. Si las curvas se cruzan, no hay ganador absoluto:
+    depende del punto de operación.
+    <div class="peligro" style="margin-top:.7rem"><strong>Advertencia sobre este caso.</strong>
+    Las cifras de AUC de la respuesta entregada —0,78 frente a 0,68— <strong>no son
+    derivables</strong> de los datos disponibles y contradicen la propia tabla del
+    documento. El <em>método</em> de comparación es correcto; esas dos cifras
+    concretas no están respaldadas. Está registrado así en tu expediente.</div>
+    <div class="repreg"><strong>Repregunta:</strong> si al subir el umbral la TPR baja,
+    ¿qué le pasa a la FPR, y por qué?</div>
+  </details>
+</div>
+
+<!-- P10 -->
+<div class="preg">
+  <div class="cab"><div class="num">10</div><div class="tema">Punto base</div>
+    <span class="eti b-ev">Evaluar</span></div>
+  <div class="enun">Seleccionar la alternativa correspondiente al punto base.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    No es evaluable sin la figura. Pero <strong>la conducta correcta sí lo es</strong>.
+    <div class="dist"><strong>La distinción:</strong> declarar un vacío ≠ producir una
+    respuesta plausible.</div>
+    <div class="resp">La respuesta correcta fue <strong>declarar que no era posible
+    responder</strong> con el material disponible, en vez de inventar algo verosímil.</div>
+    <div class="lbl">Por qué esto puntúa</div>
+    Un resultado sin respaldo es irreproducible. Decir «no dispongo del dato» es
+    una respuesta profesional; rellenar con lo plausible no lo es. Es la misma
+    conducta que el informe del Proyecto 3 aplica en su fe de erratas.
+    <div class="repreg"><strong>Repregunta:</strong> ¿en qué se diferencia «no sé» de
+    «no es posible determinarlo con estos datos»?</div>
+  </details>
+</div>
+
+<!-- P11 -->
+<div class="preg">
+  <div class="cab"><div class="num">11</div><div class="tema">Comentarios y supuestos</div>
+    <span class="eti b-ev">Evaluar</span></div>
+  <div class="enun">Ingrese cualquier comentario o supuesto realizado.</div>
+  <details><summary>Ver solución</summary>
+    <div class="lbl">Qué evalúa</div>
+    Honestidad metodológica: separar lo medido de lo supuesto.
+    <div class="dist"><strong>Tres capas que deben quedar visibles:</strong>
+    <strong>medido</strong> / <strong>supuesto</strong> / <strong>no disponible</strong>.</div>
+    <div class="resp">Declarar los supuestos de interpretación de las figuras —qué
+    clase es positiva, qué lado de la línea predice positivo—, advertir que los
+    conteos de P8 y los umbrales de P9 dependen de lectura visual y deben
+    verificarse con la figura original, y explicar el criterio usado en P7.</div>
+    <div class="lbl">Por qué existe esta pregunta</div>
+    Porque <strong>un resultado numérico sin supuesto declarado es
+    irreproducible</strong>. Si dos personas leen la misma figura con convenciones
+    distintas, obtienen métricas distintas y ambas «correctas».
+    <div class="nota" style="margin-top:.7rem">Aquí se gana o se pierde en las
+    <em>otras</em> preguntas. Un cálculo impecable sin convención declarada es
+    atacable; uno modesto con supuestos explícitos, defendible.</div>
+    <div class="repreg"><strong>Repregunta:</strong> en el experimento de CouncilArea,
+    ¿cuál fue el supuesto que hubo que declarar antes de decidir?</div>
+  </details>
+</div>
+
+<h2>Los seis errores que este formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Dónde aparece</th></tr>
+<tr><td>Diagnosticar mirando un solo número</td><td>P2, P7</td></tr>
+<tr><td>Confundir más filas con más columnas</td><td>P3</td></tr>
+<tr><td>Usar el denominador equivocado</td><td>P8</td></tr>
+<tr><td>Creer que FPR = 1 − precisión</td><td>P8</td></tr>
+<tr><td>Comparar modelos en un solo umbral</td><td>P9</td></tr>
+<tr><td>Responder algo plausible sin el dato</td><td>P10, P11</td></tr>
+</table>
+
+<footer>
+Generado por Guillito · <code>07_GUILLITO/visual/certamen_2.html</code><br>
+Fuente: <code>01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md</code>.
+La advertencia sobre las cifras de AUC de P9 proviene de ese mismo expediente.
+Funciona sin conexión.
+</footer>
+
+</main>
+</body>
+</html>
