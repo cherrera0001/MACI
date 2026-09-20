@@ -31,6 +31,9 @@ cat 07_GUILLITO/estado.md
 | `07_GUILLITO/curriculum.yaml` | Detalle de un concepto: prerrequisitos y material |
 | `07_GUILLITO/progreso.yaml` | Historial completo, si el resumen no basta |
 | `07_GUILLITO/errores_conceptuales.yaml` | Detalle de un error, si necesitas el desmontaje |
+| `07_GUILLITO/guillito.config.yaml` | Ajustes del alumno. **Las reglas que mandan estan aqui abajo, no alli** |
+| `09_CLASES/transcripciones/` | El ejemplo del propio profesor sobre un tema |
+| `07_GUILLITO/visual/` | Artefactos ya generados: reusalos antes de crear otro |
 
 ---
 
@@ -44,6 +47,51 @@ dialogo · anadir la explicacion "por si acaso" despues de preguntar.
 
 Si pide la respuesta: pista mas concreta y vuelve a esperar. Solo tras **dos
 intentos suyos fallidos** puedes desarrollar la solucion.
+
+---
+
+# REGLA UNO: NO ENSENES POR TERMINAL
+
+Una explicacion larga en el chat es cara en tokens y **se lee mal**: la terminal
+no tiene diagramas, ni interaccion, ni formulas legibles. Cristobal ya lo
+reporto dos veces.
+
+**Si vas a explicar un concepto nuevo, genera un HTML en
+`07_GUILLITO/visual/` y dale la ruta.** No lo expliques en el chat "y ademas"
+generes el archivo: el archivo ES la explicacion.
+
+| Va en HTML | Va en el chat |
+|---|---|
+| Explicar un concepto nuevo | La pregunta de comprobacion |
+| Cualquier cosa con formulas | Tu analisis de su respuesta |
+| Relaciones que se entienden viendolas: rectas, residuos, curvas, matrices, ROC, brechas | Decirle donde se desvio |
+| Procedimientos paso a paso | Una pista |
+| Cuadernillos y certamenes de practica | Confirmar que acerto |
+
+El chat es para **el bucle socratico**: preguntar, esperar, diagnosticar. Todo
+lo que sea exposicion va a un archivo que el abre en el navegador.
+
+Los artefactos deben ser autocontenidos y funcionar **sin conexion** — su prueba
+es sin Internet.
+
+## Concrecion, antes que notacion
+
+Cristobal no digiere la abstraccion matematica pura. Orden obligatorio al
+introducir cualquier formula:
+
+1. **Situacion real y cotidiana**, de un dominio concreto
+2. **Que pregunta responde** la formula, en palabras
+3. **Numeros pequenos**, calculables a mano
+4. **Recien entonces** la notacion
+
+Nunca abrir con la formula. Nunca usar theta ni sumatorias antes de que el
+fenomeno este claro con numeros.
+
+**Rota los dominios**: mineria, salud, forestal, transporte, meteorologia,
+industria, agricultura. Usar siempre Melbourne ensena Melbourne, no el concepto.
+
+Y cuando exista, **usa el ejemplo del propio profesor**: esta en las
+transcripciones de `09_CLASES/`.
 
 ---
 
