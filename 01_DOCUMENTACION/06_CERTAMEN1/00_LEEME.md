@@ -98,6 +98,36 @@ jerárquicos.
 **Ambos casos son entrenamiento de primera calidad** porque tienen los datos a
 la vista y se resuelven en papel.
 
+### La 9B no es una pregunta nueva
+
+**[EVIDENCIA]** La 9B es una **variante del ejercicio de la lámina 27** de la
+clase 4 (`11_PRESENTACIÓN/FCD-2026-2_04_CalidadDeDatos.pdf`), que plantea la
+misma tabla de consumo de camiones con días como filas separadoras. La
+**lámina 28 contiene la respuesta del propio profesor**:
+
+| Su pregunta | Su respuesta |
+|---|---|
+| ¿Cuáles son las variables en este conjunto de datos? | Día, Camión, Consumo |
+| ¿Qué objeto o evento estamos midiendo? | Consumo |
+
+Y su tabla destino es `ID · Día · Camión · Consumo`. Cuatro columnas, sin tabla
+de hechos ni de dimensiones.
+
+Dos consecuencias para corregir la respuesta del compañero:
+
+1. **El profesor conserva los ceros.** En su ejercicio hay consumos de 0 y no los
+   borra ni los imputa. Un cero es una medición que resultó cero. El compañero
+   **no menciona el `0` del conductor enfermo en ningún momento**, y esa es la
+   distinción central de la pregunta frente al centinela `-999`.
+2. **En su ejercicio conviven 3500 y 3600 con valores de 350, y no los llama
+   errores.** El compañero afirma que el `2900` «sugiere un error de ingreso de
+   datos o una falla de sensor»: eso es **[INFERENCIA]** presentada como
+   hallazgo.
+
+El método del profesor, repetido en las láminas 23 a 28, son dos preguntas:
+*¿qué objeto o evento estamos midiendo?* y *¿cuáles son las variables?*. No usa
+el vocabulario de *tidy data* ni de pandas.
+
 ---
 
 ## Lo que no sabemos
