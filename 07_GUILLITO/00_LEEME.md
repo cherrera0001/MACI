@@ -8,6 +8,11 @@ Contrato completo y garantías verificables: [`../spec.md`](../spec.md).
 
 ---
 
+
+> **¿Quieres entender cómo está construido, no cómo se usa?**
+> [`ARQUITECTURA.md`](ARQUITECTURA.md) — componentes, los tres planos de
+> datos, qué invariantes lo sostienen y qué cuesta cada decisión.
+
 ## Cómo se usa
 
 Abre Claude Code en `F:\MACI` y habla:

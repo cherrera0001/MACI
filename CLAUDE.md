@@ -59,6 +59,7 @@ ahi.
 | Archivo | Que es |
 |---|---|
 | `07_GUILLITO/00_LEEME.md` | Instrucciones de uso. **Empezar aqui** |
+| `07_GUILLITO/ARQUITECTURA.md` | Como esta construido: componentes, flujo de datos e invariantes |
 | `07_GUILLITO/curriculum.yaml` | ESTATICO. 21 conceptos, prerrequisitos, material, practicos |
 | `07_GUILLITO/progreso.yaml` | DINAMICO. Estado y cadena de evidencia |
 | `07_GUILLITO/errores_conceptuales.yaml` | Errores observados + patrones a vigilar |

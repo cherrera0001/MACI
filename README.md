@@ -9,7 +9,31 @@ asignatura, la reconstrucción documental del Certamen 2, y **Guillito**, un tut
 personal de Ciencia de Datos construido sobre este mismo material.
 
 **Punto de entrada:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)
+· **Orden documental:** [`01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md`](01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md)
 · **Contrato de Guillito:** [`spec.md`](spec.md)
+
+---
+
+## Orden documental / Cómo leer
+
+Arquitectura **repo-nativa** (sin Obsidian como segunda verdad):
+
+1. Este `README.md`
+2. [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md) — mapa por necesidad
+3. El `00_LEEME.md` del dominio
+4. Canónicos del dominio (informe, análisis, JSON de resultados)
+5. `fuentes/` o `99_ARCHIVO/` solo como evidencia / histórico
+
+| Si necesitas… | Abre… |
+|---|---|
+| Orientarte | [`00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md) |
+| Protocolo (qué es canónico, dónde va lo nuevo) | [`00_ORDEN_DOCUMENTAL.md`](01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md) |
+| Drift README↔disco | [`DIAGNOSTICO_DRIFT.md`](01_DOCUMENTACION/DIAGNOSTICO_DRIFT.md) · `python 03_CODIGO/auditar_drift_documental.py` |
+| Certamen 2 | [`01_CERTAMEN2/00_LEEME.md`](01_DOCUMENTACION/01_CERTAMEN2/00_LEEME.md) |
+| Proyecto 3 | [`03_PROYECTO_MELBOURNE/00_LEEME.md`](01_DOCUMENTACION/03_PROYECTO_MELBOURNE/00_LEEME.md) |
+| Guillito | [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md) |
+
+**Obsidian MCP / GitHub MCP:** no implementados. El mismo árbol se navega en GitHub con estos links relativos; estudio asistido ya usa NotebookLM (`.mcp.json`).
 
 ---
 
@@ -27,11 +51,14 @@ F:\MACI\
 │
 ├── 01_DOCUMENTACION\               ← EMPEZAR AQUÍ
 │   ├── 00_INDICE_GENERAL.md            mapa completo, paso a paso
+│   ├── 00_ORDEN_DOCUMENTAL.md          protocolo: canónicos, capas, dónde va lo nuevo
+│   ├── DIAGNOSTICO_DRIFT.md            README/índice vs disco
 │   ├── 01_CERTAMEN2\                   reconstrucción del Certamen 2 + Word final
 │   ├── 02_CURSO\                       enunciados y guía metodológica
 │   ├── 03_PROYECTO_MELBOURNE\          índice del Proyecto 3
 │   ├── 04_DESAFIO_GALAXYZOO\           índice del desafío de clasificación
-│   └── 05_HISTORICO\                   versiones invalidadas y por qué
+│   ├── 05_HISTORICO\                   versiones invalidadas y por qué
+│   └── 06_CERTAMEN1\                   material de compañero (enunciados útiles; respuestas no verificadas)
 │
 ├── 02_PROYECTO_FCD\                ← material del curso
 │   ├── Hito1\                          notebooks EDA y modelamiento + anclaje.json
@@ -46,14 +73,17 @@ F:\MACI\
 │   ├── preparar_dashai.py              prepara el dataset para DashAI
 │   ├── dashai_driver.py                réplica del modelamiento en DashAI
 │   ├── generar_informe.py              → 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
-│   ├── generar_pitch_v2.py             → PITCH_HITO2_REVISION.md + .pptx
+│   ├── generar_pitch_v2.py             → 06_ENTREGABLES/PITCH_HITO2_REVISION.md + .pptx
 │   ├── housing_visualizations.py       → visualizaciones/viz_*.html
 │   ├── auditoria_dashai_vs_crudo.py    auditoría de consistencia
 │   ├── correlacion_dashai.py           análisis de correlación
+│   ├── auditar_drift_documental.py     checklist de rutas canónicas del orden documental
 │   └── _migrar_rutas.py                registro auditable de la migración
 │
 ├── 04_DATOS\
-│   └── housing_dashai_2016_2017.csv    dataset preprocesado subido a DashAI
+│   ├── 00_LEEME.md                     qué hay en datos
+│   ├── housing_dashai_2016_2017.csv    dataset preprocesado subido a DashAI
+│   └── GZ_mini_challenge_*.csv         train/test Galaxy Zoo (mini)
 │
 ├── 05_RESULTADOS\                  ← salidas de los scripts, ninguna a mano
 │   ├── resultados_temporal.json        6 modelos × 2 targets × 5 semillas
@@ -88,16 +118,19 @@ F:\MACI\
 │   ├── osint_*.md                      fuentes públicas de Ñuble y Gran Concepción
 │   └── bitacora\                       una entrada por sesión
 │
-├── 09_CLASES\                      ← clases transcritas
-│   └── transcripciones\                .md con marcas de tiempo + .txt para grep
-│
-├── 10_GRABACIÓN_CLASES\            ← vídeos originales. NO se versionan
-│
 ├── 08_PRACTICA\                    ← laboratorios de la asignatura
 │   ├── 00_LEEME.md                     contenido y concepto que cubre cada uno
 │   ├── [P1..P5] (res).ipynb            resueltos, material de consulta
 │   ├── [P1..P5] (vacio).ipynb          sin resolver: los ejercicios
 │   └── _markdown\                      conversión para NotebookLM
+│
+├── 09_CLASES\                      ← clases transcritas
+│   └── transcripciones\                .md con marcas de tiempo + .txt para grep
+│
+├── 10_GRABACIÓN_CLASES\            ← vídeos originales. NO se versionan
+│
+├── 11_PRESENTACIÓN\                ← diapositivas / markdown de clases
+│   └── _markdown\                      FCD-2026-2_* y resúmenes de clase
 │
 └── 99_ARCHIVO\                     ← conservado a propósito, no es basura
     ├── _obsoleto_split_aleatorio\      versión invalidada + por qué
@@ -105,6 +138,8 @@ F:\MACI\
     ├── _pitch_img\ · _pitch_v2_png\    imágenes de las presentaciones
     └── CORRELACION_DIFF.patch
 ```
+
+> **Nota:** existe una carpeta legacy `DOCUMENTACION\` (sin `01_`). No es canónica; usar siempre `01_DOCUMENTACION\`.
 
 ---
 
