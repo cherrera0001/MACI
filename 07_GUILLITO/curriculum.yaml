@@ -254,7 +254,11 @@ conceptos:
   - id: regresion
     nombre: Regresion
     orden: 9
-    prerrequisitos: [overfitting_underfitting]
+    # Corregido el 2026-09-20. Antes declaraba overfitting_underfitting como
+    # prerrequisito, y esta al reves: el profesor enseña regresion en la Clase 6
+    # e introduce el sobreajuste DENTRO de ella, via regresion polinomial. El
+    # error lo expuso el grafo conceptual al hacerse recorrible.
+    prerrequisitos: [datos_features_target]
     por_que_importa: Es tu proyecto. MAE 185.449 AUD y R2 0,765 son tus propias cifras.
     material_local:
       - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md

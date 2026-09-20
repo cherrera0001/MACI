@@ -22,6 +22,32 @@ interaccion, sin formulas legibles.
 
 ---
 
+# RAZONA ANTES DE CONSTRUIR
+
+**No crees interaccion por crear interaccion.** Ni analogia por crear analogia,
+ni ecuaciones para cumplir una lista. Cada representacion debe cumplir una
+funcion, y si no la cumple, sobra.
+
+Antes de escribir una linea, responde:
+
+```
+OBJETIVO                 que tiene que poder hacer despues que no puede ahora
+REPRESENTACION FALTANTE  cual de las representaciones no tiene todavia
+RELACION A HACER VISIBLE que conexion entre dos cosas quiero que vea
+INTERACCION UTIL         que deberia poder manipular, y por que ESO
+MATEMATICA ASOCIADA      que ecuacion representa lo que va a observar
+CONEXION CON EL GRAFO    de donde viene este concepto y que depende de el
+EVIDENCIA DE COMPRENSION que tendria que producir el para demostrar que entendio
+```
+
+Si alguna queda sin respuesta clara, **el artefacto todavia no esta disenado**.
+
+Y el medio puede no ser HTML. Un diagrama, una tabla, un ejemplo trabajado en el
+chat o un script en Python pueden ser mejores segun el concepto. El HTML gana
+cuando hay una **relacion que se entiende moviendola**.
+
+---
+
 # ANTES DE ESCRIBIR
 
 **1. Mira si ya existe.** `07_GUILLITO/visual/` puede tener uno del mismo
@@ -41,19 +67,38 @@ repositorio vale mas que uno inventado.
 
 ---
 
-# LA REGLA DE CONCRECION
+# MULTIPLES REPRESENTACIONES
 
-Cristobal no digiere la abstraccion matematica pura. Orden **obligatorio**:
+**La hipotesis:** Cristobal aprende cuando puede construir conexiones entre
+varias representaciones del mismo concepto y recorrerlas **en ambos sentidos**.
+No es que no digiera la matematica: una representacion suelta no se conecta con
+nada.
 
 ```
-1. SITUACION REAL      un problema de un dominio concreto, cotidiano
-2. QUE PREGUNTA RESPONDE   en palabras, sin simbolos
-3. NUMEROS PEQUENOS    calculables a mano, que se puedan seguir
-4. LA NOTACION         recien aqui, y presentada como "esto mismo, escrito corto"
+REALIDAD → INTUICION → VISUAL → EXPERIMENTO → NUMEROS → NOTACION
+         → ECUACION → INTERPRETACION → APLICACION → TRANSFERENCIA
 ```
 
-**Nunca abras con la formula.** Nunca uses theta ni sumatorias antes de que el
-fenomeno este claro con numeros.
+Un artefacto esta bien hecho cuando **cubre varias representaciones y hace
+visibles los puentes entre ellas**, no cuando las presenta en cierto orden.
+
+## Las ecuaciones no se esconden
+
+Si theta, sumatorias, derivadas o matrices pertenecen al concepto, **aparecen**.
+Lo que nunca aparece es un simbolo desconectado. Para cada ecuacion importante:
+
+```
+que problema resuelve · de donde sale · que significa cada simbolo
+que es dato · que aprende el modelo · que decide la persona
+ejemplo numerico pequeno · como se ve · que pasa al mover una variable
+que significa el resultado · que limitaciones tiene
+```
+
+## El camino inverso
+
+Incluye al menos un momento donde se parta **de la ecuacion** y se reconstruya
+el fenomeno. En una prueba se la van a entregar escrita, y hay que saber
+desarmarla.
 
 **Rota los dominios**: mineria, salud, forestal, transporte, meteorologia,
 industria, agricultura. Usar siempre Melbourne ensena Melbourne, no el concepto.
@@ -64,29 +109,47 @@ un parrafo lo que tres tablas no logran.
 
 ---
 
-# LOS CONTROLES DEBEN HACER PENSAR
+# LOS CONTROLES
 
-**Un slider sin prediccion previa es un juguete.** El alumno puede moverlo
-veinte minutos, ver numeros cambiar y no haber formulado una sola hipotesis.
-
-Patron obligatorio en **todo** control interactivo:
+El modelo general:
 
 ```
-1. PREDICE   pregunta cerrada ANTES de habilitar el control
-                "si aumentas la pendiente dejando el intercepto fijo,
-                 la recta sube, gira, o se desplaza?"
-2. MUEVE     el control se habilita al responder
-3. OBSERVA   el efecto ocurre a la vista
-4. EXPLICA   "ocurrio lo que esperabas? que termino lo produjo?"
+PREDECIR / EXPLORAR → MANIPULAR → OBSERVAR → EXPLICAR → FORMALIZAR → TRANSFERIR
 ```
 
-La prediccion obliga a comprometerse con un modelo mental. Sin ese compromiso
-previo no hay nada que confirmar ni que romper, y por tanto no hay aprendizaje:
-solo animacion.
+Se puede entrar por cualquier punto segun el objetivo.
 
-Implementacion: el control arranca `disabled`, con la pregunta al lado y dos o
-tres botones de respuesta. Al elegir, se habilita. Tras la primera interaccion
-aparece el contraste entre lo que predijo y lo que paso.
+## Dos tipos de control, y cada uno sirve para algo
+
+| Tipo | Cuando | Que pide |
+|---|---|---|
+| **Con prediccion** | El control representa una **relacion causal que vale la pena anticipar** | Invita a predecir antes de mover |
+| **Exploratorio** | Buscar patrones, inspeccionar distribuciones, comparar escenarios, tantear un umbral | Libertad total, sin friccion |
+
+**Predecir es un patron preferente, no una obligacion.** Un umbral que se mueve
+para descubrir donde se cruzan dos curvas no gana nada con una pregunta previa:
+la gana el que quiere entender **por que** moverlo produce ese efecto.
+
+Elige por la naturaleza del control:
+
+- «Si aumentas la pendiente dejando el intercepto fijo, ¿la recta sube, gira o
+  se desplaza?» → **con prediccion**. Hay una relacion causal concreta
+- «Mueve el umbral y mira donde el modelo empieza a fallar» → **exploratorio**
+
+## Como invitar sin bloquear
+
+**Nunca dejes un control `disabled` esperando una respuesta.** Eso convierte la
+pedagogia en barrera, que es justo lo que hay que evitar.
+
+En su lugar:
+
+- La pregunta va **destacada al lado** del control, visible antes de tocarlo
+- El control **funciona desde el primer momento**
+- Si responde, se registra la prediccion y **despues de mover** aparece el
+  contraste: *"predijiste que giraria, y giro. ¿Que termino lo produjo?"*
+- Si no responde, se puede mover igual — y la pregunta sigue ahi para volver
+
+La prediccion se gana por interes, no por obstruccion.
 
 ---
 

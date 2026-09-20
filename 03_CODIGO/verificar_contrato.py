@@ -74,27 +74,64 @@ def g8_reglas_donde_se_leen():
     return OK, f"SKILL.md referencia la config; {reglas} marcas de regla en ella"
 
 
-def g9_exposicion_en_archivo():
-    """Cada concepto con material de estudio debe tener artefacto o guia."""
+def g9_exposicion_consultable():
+    """Cada concepto trabajado deja material consultable. El medio es libre."""
     import yaml
-    cur = yaml.safe_load(leer("07_GUILLITO/curriculum.yaml"))
     pro = yaml.safe_load(leer("07_GUILLITO/progreso.yaml"))
     tocados = [c["id"] for c in pro["conceptos"] if c["estado"] != "NO_ESTUDIADO"]
     if not tocados:
         return OK, "ningun concepto iniciado todavia"
 
+    # Cualquier medio vale: HTML, guia, cuadernillo o bitacora con desarrollo.
     material = " ".join(
         os.path.basename(p) for p in
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "visual", "*.html")) +
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "guias", "*.md")) +
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "cuadernillos", "*.md"))
+        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "visual", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "guias", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "cuadernillos", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "bitacora", "*"))
     ).lower()
 
     sin = [c for c in tocados
            if not any(t in material for t in c.split("_") if len(t) > 4)]
     if sin:
-        return FALLO, "conceptos trabajados sin artefacto: " + ", ".join(sin)
+        return FALLO, "conceptos trabajados sin material consultable: " + ", ".join(sin)
     return OK, f"los {len(tocados)} conceptos trabajados tienen material"
+
+
+def g12_dos_prioridades():
+    """El grafo debe traer ambas dimensiones, y estar al dia."""
+    import yaml
+    g = leer("07_GUILLITO/grafo.yaml")
+    if g is None:
+        return FALLO, "no existe grafo.yaml; ejecutar grafo_conceptual.py"
+    doc = yaml.safe_load(g)
+    cs = doc.get("conceptos", {})
+    faltan = [cid for cid, d in cs.items()
+              if "importancia_curricular" not in d or "prioridad_evaluacion" not in d]
+    if faltan:
+        return FALLO, f"{len(faltan)} conceptos sin las dos prioridades"
+
+    gp = os.path.join(RAIZ, "07_GUILLITO", "grafo.yaml")
+    cp = os.path.join(RAIZ, "07_GUILLITO", "curriculum.yaml")
+    if os.path.getmtime(cp) > os.path.getmtime(gp) + 5:
+        return FALLO, "curriculum.yaml es mas nuevo que grafo.yaml: regenerar"
+
+    tens = sum(1 for d in cs.values() if d.get("tension"))
+    return OK, f"{len(cs)} conceptos con ambas prioridades; {tens} con tension declarada"
+
+
+def g13_sin_deficiencia_inferida():
+    """Nada debe marcarse como bajo o fallido sin evidencia registrada."""
+    import yaml
+    err = yaml.safe_load(leer("07_GUILLITO/errores_conceptuales.yaml"))
+    malos = []
+    for o in (err.get("observados") or []):
+        if not (o.get("dijo") or "").strip():
+            malos.append(f"{o.get('id')} sin cita de lo que dijo")
+    if malos:
+        return FALLO, "errores sin evidencia textual: " + "; ".join(malos[:3])
+    n = len(err.get("observados") or [])
+    return OK, f"{n} errores observados, todos con evidencia textual"
 
 
 def memoria_dominado_con_evidencia():
@@ -162,7 +199,9 @@ def rutas_declaradas_existen():
 COMPROBACIONES = [
     ("G1  no simula respuestas",      g1_no_simula_respuestas),
     ("G8  reglas donde se leen",      g8_reglas_donde_se_leen),
-    ("G9  exposicion en archivo",     g9_exposicion_en_archivo),
+    ("G9  exposicion consultable",    g9_exposicion_consultable),
+    ("G12 dos prioridades",           g12_dos_prioridades),
+    ("G13 sin deficiencia inferida",  g13_sin_deficiencia_inferida),
     ("Memoria  DOMINADO con evidencia", memoria_dominado_con_evidencia),
     ("Seguridad  sin secretos",       seguridad_sin_secretos),
     ("Estado  resumen al dia",        estado_al_dia),

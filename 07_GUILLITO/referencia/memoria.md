@@ -15,7 +15,41 @@ Cargar al cerrar sesión, para registrar el progreso.
 | `DOMINADO` | Explica, aplica, interpreta resultados **y** transfiere |
 | `REQUIERE_REPASO` | Lo sabía y falló en una re-verificación |
 
-## La cadena de evidencia
+## Las ocho dimensiones de comprensión
+
+Un concepto no se entiende «en general»: se entiende **por representación**. Y
+se puede dominar una y no otra — explicar bien la idea y no saber calcularla, o
+calcular perfecto sin saber qué significa el resultado.
+
+| Dimensión | Se demuestra cuando |
+|---|---|
+| `intuicion` | Explica el fenómeno sin jerga, con sus palabras |
+| `visual` | Lee un gráfico del concepto, o dice qué debería verse |
+| `matematica` | Lee la ecuación y dice qué hace cada símbolo |
+| `calculo` | Obtiene el número a mano, con datos pequeños |
+| `interpretacion` | Dice qué significa el resultado **y qué no** |
+| `aplicacion` | Lo usa en un problema del mismo dominio |
+| `transferencia` | Lo usa en un dominio distinto, descubriendo que aplica |
+| `explicacion` | Se lo explica a alguien más, o defiende su razonamiento |
+
+### El valor por defecto es `DESCONOCIDO`
+
+```
+DESCONOCIDO   no hay evidencia. NO es lo mismo que bajo
+LOGRADO       hay evidencia concreta, con fecha y detalle
+PARCIAL       lo hizo con ayuda, o con un hueco identificado
+FALLIDO       hay evidencia de que no lo logró
+```
+
+**Nunca marques `FALLIDO` por ausencia de evidencia.** Que nunca se le haya
+pedido calcular algo no significa que no sepa: significa que no se sabe. Inferir
+una deficiencia de un silencio es el error más fácil y el más injusto.
+
+### Cómo se relaciona con los estados
+
+Los estados siguen siendo los seis de siempre. Las dimensiones son el **detalle
+de por qué** un concepto está donde está, y sirven para decidir qué representación
+falta.
 
 ```
 EXPLICAR  →  APLICAR  →  INTERPRETAR  →  TRANSFERIR
@@ -64,9 +98,28 @@ detectarlo es para lo que sirve el registro.
 Registra el error **concreto**, no "tuvo dificultades". Campos: `concepto`,
 `dijo`, `confusion_de_fondo`, `desmontaje_que_funciono`, `estado`.
 
-**Distingue fallo conceptual de fallo de procedimiento.** Si entiende el
-concepto pero se saltó un paso, márcalo con `distincion_no_es_conceptual: true`
-y una nota — para que una sesión futura no le reexplique lo que ya sabe.
+#### Cinco tipos, y no se tratan igual
+
+| `tipo` | Qué pasó | Cómo se corrige |
+|---|---|---|
+| `conceptual` | No entiende la idea | Reexplicar **por otra representación** |
+| `procedimental` | La entiende y se saltó un paso | **Exigir el paso**, no reexplicar |
+| `interpretacion` | Calculó bien y leyó mal el resultado | Trabajar el puente cálculo → significado |
+| `puente_faltante` | Domina dos representaciones y no las conecta | Construir el puente, no repetir ninguna de las dos |
+| `evidencia_insuficiente` | No se sabe qué falló | **No clasificar.** Volver a preguntar |
+
+Confundirlos hace perder sesiones. Reexplicar un concepto que ya entiende, por
+un fallo de procedimiento, es el desperdicio más caro — y ya ocurrió una vez.
+
+#### Un error no es un rasgo
+
+**Nunca conviertas un error puntual en una característica permanente del
+alumno.** «Falló precision vs recall el 19 de septiembre» es un hecho. «Le
+cuesta la estadística» es una etiqueta que contamina todas las sesiones
+siguientes y que ninguna evidencia sostiene.
+
+Si un error reaparece tres veces, es un modelo mental equivocado — eso sí se
+registra. Una vez, es una vez.
 
 Si un error reaparece, incrementa `veces` y añade la fecha. Tres veces no es un
 despiste: es un modelo mental equivocado que hay que atacar de frente.
@@ -80,6 +133,44 @@ Dos secciones que **no se mezclan**:
 
 Una entrada por sesión: qué se enseñó, los problemas planteados, lo que
 respondió, dónde estuvo el desvío, y el siguiente paso.
+
+---
+
+## El segundo loop: Guillito también aprende
+
+Cuando una explicación no funciona, el problema puede estar en el alumno **o en
+la explicación**. Asumir siempre lo primero impide mejorar.
+
+```
+ENSEÑAR → OBSERVAR → DETECTAR FRICCIÓN → FORMULAR HIPÓTESIS PEDAGÓGICA
+        → CAMBIAR REPRESENTACIÓN → REENSEÑAR → VERIFICAR → REGISTRAR
+```
+
+**Detectar fricción** es notar que algo no pasó: respondió con la etiqueta y no
+con el mecanismo, acertó sin poder explicar por qué, o pidió que repitieras.
+
+**Formular hipótesis pedagógica** es decir *qué representación falta*, no *qué
+le falta a él*:
+
+| En vez de | Escribe |
+|---|---|
+| «no entiende el sobreajuste» | «tiene la intuición y no el criterio de diagnóstico: le falta el puente visual→numérico» |
+| «le cuesta la notación» | «lee la ecuación pero no conecta θ₁ con la pendiente que ve en el gráfico» |
+
+**Cambiar representación** es probar por otra vía, no repetir más despacio.
+
+### Registrar también lo que funcionó
+
+Esto es la mitad que suele olvidarse. En `bitacora/`, junto al error:
+
+```
+lo que no funciono:  la tabla de formulas; siguio confundiendo los denominadores
+lo que si funciono:  verlo como "de que universo divido" con los 50 puntos
+                     de la figura delante
+representacion util: visual + numerica juntas; la formula sola no bastaba
+```
+
+Sin ese registro, la próxima sesión vuelve a probar lo que ya falló.
 
 ### Y al terminar
 
