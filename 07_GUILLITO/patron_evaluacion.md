@@ -39,6 +39,8 @@ esa discriminación, no el recitado.
 
 ## 2 · Distribución temática
 
+### Certamen 2 — modelamiento y evaluación
+
 | Bloque | Preguntas | Peso |
 |---|---|---|
 | **Sobreajuste, generalización, validación, ensambles** | P1, P2, P3, P7 | **36 %** |
@@ -46,8 +48,35 @@ esa discriminación, no el recitado.
 | Panorama de IA: LLM, agentes, redes neuronales | P5, P6 | 18 % |
 | Conducta metodológica: supuestos y vacíos | P10, P11 | 18 % |
 
-Más de un tercio del certamen gira sobre sobreajuste y validación. Un cuarto,
-sobre métricas de clasificación. Juntos: **63 %**.
+Más de un tercio gira sobre sobreajuste y validación. Un cuarto, sobre métricas
+de clasificación. Juntos: **63 %**.
+
+### Certamen 1 — fundamentos, adquisición y calidad
+
+Fuente: `01_DOCUMENTACION/06_CERTAMEN1/`. **Material de un compañero: los
+enunciados son fiables, las respuestas NO están verificadas.** Ver el 00_LEEME
+de esa carpeta.
+
+| # | Formato | Pts | Tema |
+|---|---|---|---|
+| 1-4 | V/F con justificación | 0,5 c/u | Campo interdisciplinario · *data-driven* frente a *data-informed* · rol del líder · ciclo de vida iterativo |
+| 5-8 | Selección múltiple | 0,5 c/u | Webscraping · tipo de problema · reclutamiento · Big Data (las "V") |
+| 9A | Desarrollo con tabla | — | Calidad y estructura de datos tabulares |
+| **9B** | **Desarrollo con tabla** | **2,0** | **Caso minero: consumo de combustible** |
+| 10 | Retroalimentación | 0 | — |
+
+**Dato que reordena las prioridades:** la 9B vale **2,0 puntos**, más que las
+ocho preguntas cerradas juntas. El desarrollo de calidad de datos pesa mucho
+más de lo que sugería el Certamen 2 por sí solo.
+
+### Los dos certámenes juntos
+
+| | Certamen 1 | Certamen 2 |
+|---|---|---|
+| Enfoque | Fundamentos, adquisición, calidad | Modelamiento, evaluación |
+| Formato dominante | V/F + selección múltiple + **desarrollo con tabla** | V/F + selección múltiple + lectura de figuras |
+
+Cubren bloques distintos y entre ambos mapean casi todo el curso.
 
 ---
 
@@ -83,16 +112,22 @@ Deducidos de las distinciones que cada pregunta exige:
 
 ## 5 · Cruce con el progreso actual
 
-| Concepto | Peso en el certamen | Estado en `progreso.yaml` | Prioridad |
+| Concepto | Peso en los certámenes | Estado en `progreso.yaml` | Prioridad |
 |---|---|---|---|
-| `overfitting_underfitting` | P2, P3, P7 — **3 preguntas** | `NO_ESTUDIADO` | **1** |
-| `matriz_confusion` | P8 — cálculo manual | `NO_ESTUDIADO` | **2** |
-| `metricas_clasificacion` | P4, P8 | `NO_ESTUDIADO` | **3** |
-| `roc_auc` | P9 | `NO_ESTUDIADO` | **4** |
-| `ensembles` | P1 | `NO_ESTUDIADO` | **5** |
+| `overfitting_underfitting` | C2: P2, P3, P7 — **3 preguntas** | `NO_ESTUDIADO` | **1** |
+| `limpieza_preparacion` | C1: **9A + 9B, la 9B vale 2,0 pts** | `NO_ESTUDIADO` | **2** |
+| `matriz_confusion` | C2: P8 — cálculo manual | `NO_ESTUDIADO` | **3** |
+| `metricas_clasificacion` | C2: P4, P8 | `NO_ESTUDIADO` | **4** |
+| `roc_auc` | C2: P9 | `NO_ESTUDIADO` | **5** |
+| `ensembles` | C2: P1 | `NO_ESTUDIADO` | 6 |
+| `fundamentos_ciencia_datos` | C1: P1-P4, P7 | `NO_ESTUDIADO` | 7 — conceptual, poco cálculo |
+| `datos_features_target` | C1: P6, P9A | `NO_ESTUDIADO` | 8 |
 | `generalizacion` | transversal | `COMPRENSION_PARCIAL` | prerrequisito cubierto |
 | `train_validation_test` | transversal | `COMPRENDIDO` | prerrequisito cubierto |
-| `llm`, `agentes_ia` | P5, P6 | `NO_ESTUDIADO` | 6 — menor peso, menos material |
+| `llm`, `agentes_ia` | C2: P5, P6 | `NO_ESTUDIADO` | 9 — menos material propio |
+
+`limpieza_preparacion` sube al segundo lugar por el peso de la 9B: dos puntos en
+una sola pregunta de desarrollo, con la tabla a la vista y resoluble en papel.
 
 ### Por qué `overfitting_underfitting` va primero
 
