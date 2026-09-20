@@ -1,31 +1,33 @@
-# F:\MACI — Índice maestro del repositorio
+# MACI — Fundamentos de Ciencia de Datos
 
-Repositorio de trabajo de **Fundamentos de Ciencia de Datos (T2-2026)**, Universidad de Concepción.
-Contiene el proyecto semestral (Proyecto 3 — predicción de precios de propiedades en Melbourne), un desafío de clasificación (Galaxy Zoo), y la reconstrucción documental del Certamen 2.
+Repositorio de trabajo de **Cristóbal Herrera** para Fundamentos de Ciencia de
+Datos (T2-2026), Universidad de Concepción.
 
-**Punto de entrada recomendado:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)
+Contiene el proyecto semestral (Proyecto 3 — predicción de precios de propiedades
+en Melbourne), un desafío de clasificación (Galaxy Zoo), los laboratorios de la
+asignatura, la reconstrucción documental del Certamen 2, y **Guillito**, un tutor
+personal de Ciencia de Datos construido sobre este mismo material.
+
+**Punto de entrada:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)
+· **Contrato de Guillito:** [`spec.md`](spec.md)
 
 ---
 
 ## Estructura
 
-Nueve entradas en la raíz. Ningún documento suelto.
-
 ```
 F:\MACI\
 │
 ├── README.md                       ← este archivo
+├── CLAUDE.md                       ← contexto para Claude Code; activa a Guillito
+├── spec.md                         ← contrato de Guillito: garantías y verificación
+├── .mcp.json                       ← conexión MCP a NotebookLM (sin secretos)
+├── .env / .env.example             ← token de GitHub; .env NUNCA se versiona
+├── push_github.ps1                 ← push con token desde .env, sin filtrar secretos
 │
 ├── 01_DOCUMENTACION\               ← EMPEZAR AQUÍ
 │   ├── 00_INDICE_GENERAL.md            mapa completo, paso a paso
 │   ├── 01_CERTAMEN2\                   reconstrucción del Certamen 2 + Word final
-│   │   ├── 00_LEEME.md
-│   │   ├── 01_ANALISIS_RECONSTRUCCION_CERTAMEN.md
-│   │   ├── 02_MAPA_PROCESO_ESTUDIO.md
-│   │   ├── 03_DEFENSA_ORAL_CERTAMEN.md
-│   │   ├── Certamen2_Reconstruccion_Completa.docx   ← el Word
-│   │   ├── _construir_word.py          regenera el Word desde los .md
-│   │   └── fuentes\                    los dos originales, intactos
 │   ├── 02_CURSO\                       enunciados y guía metodológica
 │   ├── 03_PROYECTO_MELBOURNE\          índice del Proyecto 3
 │   ├── 04_DESAFIO_GALAXYZOO\           índice del desafío de clasificación
@@ -38,27 +40,29 @@ F:\MACI\
 ├── 03_CODIGO\                      ← scripts del pipeline
 │   ├── modelamiento_temporal.py        jerarquía de modelos, CV 2016, test 2017
 │   ├── bootstrap_comparacion.py        bootstrap pareado, segmentos, permutación
+│   ├── experimento_councilarea.py      experimento controlado A vs B
+│   ├── experimento_councilarea_todos_modelos.py   extensión a los 6 modelos
+│   ├── practica_a_markdown.py          convierte los prácticos para NotebookLM
 │   ├── preparar_dashai.py              prepara el dataset para DashAI
 │   ├── dashai_driver.py                réplica del modelamiento en DashAI
 │   ├── generar_informe.py              → 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
-│   ├── generar_pitch_v2.py             → 06_ENTREGABLES/PITCH_HITO2_REVISION.md + .pptx
-│   ├── housing_visualizations.py       → 06_ENTREGABLES/visualizaciones/viz_*.html
+│   ├── generar_pitch_v2.py             → PITCH_HITO2_REVISION.md + .pptx
+│   ├── housing_visualizations.py       → visualizaciones/viz_*.html
 │   ├── auditoria_dashai_vs_crudo.py    auditoría de consistencia
 │   ├── correlacion_dashai.py           análisis de correlación
-│   └── _migrar_rutas.py                registro auditable de la migración de rutas
+│   └── _migrar_rutas.py                registro auditable de la migración
 │
 ├── 04_DATOS\
 │   └── housing_dashai_2016_2017.csv    dataset preprocesado subido a DashAI
 │
 ├── 05_RESULTADOS\                  ← salidas de los scripts, ninguna a mano
 │   ├── resultados_temporal.json        6 modelos × 2 targets × 5 semillas
-│   ├── comparacion_estadistica.json    IC bootstrap, error por segmento, importancias
-│   ├── dashai_resultados.json          runs de DashAI
-│   ├── dashai_split_indices.json       índices del split manual
-│   ├── dashai_state.json               estado de la sesión DashAI
+│   ├── comparacion_estadistica.json    IC bootstrap, error por segmento
+│   ├── experimento_councilarea_*.json  experimento A vs B, con fecha
+│   ├── dashai_*.json                   runs, split e índices de DashAI
 │   ├── correlacion_dashai.json         matriz de correlación replicada
 │   ├── auditoria_dashai_vs_crudo.json  auditoría de consistencia
-│   └── predicciones_2017.csv           predicciones fila a fila del modelo final
+│   └── predicciones_2017.csv           predicciones fila a fila
 │
 ├── 06_ENTREGABLES\
 │   ├── INFORME_MODELO_FCD_P3.md        informe final del modelamiento
@@ -66,21 +70,24 @@ F:\MACI\
 │   ├── Pitch_Hito2_v2.pptx / .pdf      presentación Hito 2
 │   └── visualizaciones\viz_1..10.html  visualizaciones interactivas
 │
-├── 08_PRACTICA\                ← laboratorios de la asignatura
-│   ├── 00_LEEME.md                 contenido de cada práctico y qué concepto cubre
-│   ├── [P1..P5] (res).ipynb        resueltos, material de consulta
-│   ├── [P1..P5] (vacio).ipynb      sin resolver: los ejercicios
-│   └── _markdown\                  conversión para NotebookLM
+├── 07_GUILLITO\                    ← tutor personal de Ciencia de Datos
+│   ├── 00_LEEME.md                     cómo se usa
+│   ├── curriculum.yaml                 21 conceptos, prerrequisitos, material
+│   ├── progreso.yaml                   estado y cadena de evidencia
+│   ├── errores_conceptuales.yaml       errores observados + patrones a vigilar
+│   ├── osint_nuble.md                  catálogo de fuentes públicas de Ñuble
+│   ├── osint_gran_concepcion.md        fuentes del Gran Concepción
+│   ├── transferencia\                  dataset sintético para prueba de transferencia
+│   └── bitacora\                       una entrada por sesión
 │
-├── 07_GUILLITO\                ← tutor personal de Ciencia de Datos
-│   ├── 00_LEEME.md                 cómo se usa
-│   ├── curriculum.yaml             21 conceptos, orden, prerrequisitos, material
-│   ├── progreso.yaml               estado y cadena de evidencia por concepto
-│   ├── errores_conceptuales.yaml   errores observados + patrones a vigilar
-│   └── bitacora\                   una entrada por sesión
+├── 08_PRACTICA\                    ← laboratorios de la asignatura
+│   ├── 00_LEEME.md                     contenido y concepto que cubre cada uno
+│   ├── [P1..P5] (res).ipynb            resueltos, material de consulta
+│   ├── [P1..P5] (vacio).ipynb          sin resolver: los ejercicios
+│   └── _markdown\                      conversión para NotebookLM
 │
 └── 99_ARCHIVO\                     ← conservado a propósito, no es basura
-    ├── _obsoleto_split_aleatorio\      versión invalidada + el README que explica por qué
+    ├── _obsoleto_split_aleatorio\      versión invalidada + por qué
     ├── _backup_pre_correlacion_...\    respaldo puntual
     ├── _pitch_img\ · _pitch_v2_png\    imágenes de las presentaciones
     └── CORRELACION_DIFF.patch
@@ -96,27 +103,136 @@ Abre Claude Code en `F:\MACI` y escribe, por ejemplo:
 Guillito, quiero aprender validación cruzada
 ```
 
-Guillito consulta el cuaderno de NotebookLM y el material del repositorio,
+Guillito consulta tu cuaderno de NotebookLM y el material del repositorio,
 explica, pregunta, **espera tu respuesta**, analiza tu razonamiento y registra el
-avance en `07_GUILLITO/progreso.yaml`. Un concepto solo llega a `DOMINADO` con
-las tres evidencias: explicar, aplicar y transferir a un problema nuevo.
+avance. Un concepto solo llega a `DOMINADO` con cuatro evidencias: explicar,
+aplicar, interpretar resultados y transferir a otro problema.
 
-Estado de aprendizaje: `/guillito-progreso`. Detalle completo en
-[`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md).
+| Comando | Qué hace |
+|---|---|
+| `/guillito` | Abre sesión de estudio |
+| `/guillito-progreso` | Informe de estado. Solo lectura |
+
+Detalle en [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md). Garantías y
+método en [`spec.md`](spec.md).
+
+### Estados de aprendizaje
+
+```
+NO_ESTUDIADO → EN_ESTUDIO → COMPRENSION_PARCIAL → COMPRENDIDO → DOMINADO
+                                                          ↓
+                                                  REQUIERE_REPASO
+```
+
+Decir "entendí" no es evidencia de nada. La regla completa está en `spec.md` §3.
 
 ---
 
-## Reproducir el proyecto completo
+## Fuentes
+
+Jerarquía, de mayor a menor prioridad:
+
+1. **Laboratorios de la asignatura** — `08_PRACTICA/`, 5 prácticos que cubren
+   12 de los 21 conceptos
+2. **Cuaderno de NotebookLM** — *Fundamentals of Data Science Syllabus*,
+   **71 fuentes**: syllabus, presentaciones `FCD-2026-2_*`, resúmenes de clase,
+   guías de autoestudio, tesis UdeC, ISLR, OpenIntro, el paper de XGBoost
+3. **Proyectos propios** — Melbourne y Galaxy Zoo
+4. **Fuentes académicas externas** — solo si lo anterior no alcanza
+
+Toda afirmación de Guillito lleva etiqueta de origen: `[FUENTE · NotebookLM: …]`,
+`[FUENTE · Repo: …]`, `[INFERENCIA]` o `[GUILLITO]` para explicación propia.
+
+### Los prácticos
+
+| | Tema | Conceptos que cubre |
+|---|---|---|
+| P1 | Pandas | `datos_features_target`, `eda` |
+| P2 | Calidad de Datos | `limpieza_preparacion` |
+| P3 | Numpy y Análisis Descriptivo | `eda` |
+| P4 | Regresión | `regresion`, `train_validation_test`, `validacion_cruzada`, `overfitting_underfitting` |
+| P5 | Clasificación | `clasificacion`, `matriz_confusion`, `metricas_clasificacion`, `arboles_decision`, `random_forest` |
+
+Las versiones `(vacio)` son **ejercicios sin resolver** y se reservan como
+evidencia de APLICAR. Guillito no muestra la versión resuelta antes de que los
+intentes.
+
+### NotebookLM
+
+Conectado por MCP mediante [`notebooklm-py`](https://github.com/teng-lin/notebooklm-py)
+(MIT). Google **no ofrece API oficial para cuentas personales** — la integración
+usa APIs internas no documentadas con cookies de sesión, que **caducan cada
+pocas semanas**. Guillito no depende de ella: si falla, avisa y sigue con el
+material local.
+
+Credenciales en `~/.notebooklm/`, **nunca** en el repositorio. Reautenticar:
+
+```bash
+notebooklm login --browser msedge    # Playwright abre Edge con perfil aislado
+notebooklm auth check --test --json  # debe devolver "status": "ok"
+```
+
+---
+
+## Resultados del Proyecto 3 — Melbourne
+
+Verificados en [`05_RESULTADOS/resultados_temporal.json`](05_RESULTADOS/resultados_temporal.json).
+Entrenamiento con 6.336 propiedades de 2016, evaluación sobre 7.244 de 2017.
+
+| Modelo | CV 2016 MAE | Test 2017 MAE | Test R² |
+|---|---|---|---|
+| Baseline (mediana) | 449.160 | 431.649 | −0,080 |
+| Ridge | 270.617 | 294.789 | 0,476 |
+| Árbol de decisión | 224.982 | 250.771 | 0,609 |
+| Random Forest | 174.525 | 216.400 | 0,696 |
+| Gradient Boosting | 169.034 | 204.348 | 0,727 |
+| HistGradientBoosting | 165.064 | 196.287 | 0,742 |
+| Random Forest · log | 170.467 | 206.843 | 0,711 |
+| Gradient Boosting · log | 161.499 | 192.441 | 0,747 |
+| **HistGradientBoosting · log** | **159.777** | **188.218** | **0,757** |
+
+Ridge sobre target logarítmico da R² **−17,0**: al deshacer el `expm1` sobre
+valores extremos las predicciones se disparan. Es un resultado real y conviene
+saber explicarlo.
+
+**Dato clave de generalización:** el **29,1 %** de las propiedades de 2017 están
+en suburbios que no existen en 2016.
+
+### Experimento CouncilArea
+
+[`05_RESULTADOS/experimento_councilarea_2026-09-18.json`](05_RESULTADOS/)
+
+Experimento controlado: A sin `CouncilArea`, B idéntico salvo esa columna.
+En validación cruzada dentro de 2016, B mejora 599 AUD (0,38 %) y gana 20 de 25
+comparaciones pareadas.
+
+**Decisión: se conserva A.** El análisis de faltantes lo explica — `CouncilArea`
+tiene 0,0 % de nulos en 2016 y 18,9 % en 2017, y 14 de sus 33 categorías de 2017
+nunca aparecen en 2016. Sumando ambas cosas, el **28,5 %** de las filas de 2017
+no aportan información por esa columna. La validación en 2016 midió la feature
+en condiciones que no se dan en 2017.
+
+---
+
+## Reproducir el proyecto
 
 Ejecutar **desde `F:\MACI`** (no desde `03_CODIGO`), en este orden:
 
 ```bash
-python 03_CODIGO/modelamiento_temporal.py     # jerarquía de modelos, CV en 2016, test 2017
+python 03_CODIGO/modelamiento_temporal.py     # jerarquía de modelos, CV 2016, test 2017
 python 03_CODIGO/bootstrap_comparacion.py     # bootstrap pareado, segmentos, permutación
 python 03_CODIGO/preparar_dashai.py
 python 03_CODIGO/dashai_driver.py all         # réplica independiente en DashAI
 python 03_CODIGO/generar_informe.py           # informe final
 python 03_CODIGO/generar_pitch_v2.py          # revisión del pitch + presentación
+```
+
+Experimento controlado (la fase 3 exige `--config` explícito para que 2017 no se
+toque por accidente):
+
+```bash
+python 03_CODIGO/experimento_councilarea.py fase1
+python 03_CODIGO/experimento_councilarea.py fase3 --config A
 ```
 
 Regenerar el Word del expediente del certamen:
@@ -127,10 +243,37 @@ python 01_DOCUMENTACION/01_CERTAMEN2/_construir_word.py
 
 ---
 
-## Nota sobre la reestructuración (15-09-2026)
+## Subir cambios a GitHub
 
-El repositorio tenía 45 entradas sueltas en la raíz. Se reorganizó por función: documentación, material del curso, código, datos, resultados, entregables y archivo histórico.
+```powershell
+.\push_github.ps1
+```
 
-**Las rutas de los scripts fueron migradas** para que el pipeline siga funcionando. El script `03_CODIGO/_migrar_rutas.py` conserva la lista exacta de los 9 archivos tocados y los reemplazos aplicados; se dejó en el repositorio como registro auditable en vez de borrarlo. La migración se verificó de dos formas: las 45 referencias a archivos resuelven correctamente, y `generar_informe.py` se ejecutó de extremo a extremo produciendo el informe sin errores.
+Lee el token desde `.env`, valida que pertenezca a `cherrera0001`, comprueba
+permiso de escritura y sube. El token **nunca** pasa por la línea de comandos ni
+queda en `.git/config`, y se redacta de cualquier mensaje de error.
 
-**Ningún archivo original fue modificado.** Los dos documentos del certamen —el de respuestas y la guía de estudio— están intactos en `01_DOCUMENTACION\01_CERTAMEN2\fuentes\`.
+`.env` está en `.gitignore`. Verificar en cualquier momento:
+
+```bash
+git check-ignore -v .env
+git ls-files | grep -iE "storage_state|master_token|auth\.json|cookie|\.env$"   # debe salir vacío
+```
+
+---
+
+## Notas de mantenimiento
+
+**Reestructuración (15-09-2026).** El repositorio tenía 45 entradas sueltas en la
+raíz. Se reorganizó por función. Las rutas de los scripts fueron migradas y
+`03_CODIGO/_migrar_rutas.py` conserva la lista exacta de archivos tocados como
+registro auditable. La migración se verificó de dos formas: las 45 referencias
+resuelven correctamente, y `generar_informe.py` se ejecutó de extremo a extremo.
+
+**Ningún archivo original fue modificado.** Los dos documentos del certamen están
+intactos en `01_DOCUMENTACION\01_CERTAMEN2\fuentes\`.
+
+**Discrepancia conocida.** Tres documentos dan cifras algo distintas para el
+mismo modelo final: `resultados_temporal.json` (MAE 188.218, R² 0,757),
+`00_INDICE_GENERAL.md` (185.449 / 0,765) e `INFORME_MODELO_FCD_P3.md` (R² 0,78).
+El JSON es la fuente reproducible.
