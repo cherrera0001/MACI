@@ -1,0 +1,112 @@
+# Indice de clases transcritas
+#
+# Generado por 03_CODIGO/integrar_clase.py. No editar a mano.
+#
+# Para cada clase: que conceptos del curriculum aparecen y en que
+# minuto se mencionan por primera vez. Permite ir directo al momento
+# en que el profesor trato un tema, en vez de leer 85 KB.
+#
+# Las marcas de tiempo son de la transcripcion automatica: pueden
+# desviarse unos segundos del video original.
+
+meta:
+  creado: '2026-09-20'
+  actualizado: '2026-09-20'
+  total_clases: 2
+clases:
+  02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
+    archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
+    plano: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      fundamentos_ciencia_datos:
+        menciones: 18
+        primera_marca: 0:00:00
+      limpieza_preparacion:
+        menciones: 9
+        primera_marca: '1:52:47'
+      train_validation_test:
+        menciones: 7
+        primera_marca: '1:57:28'
+      generalizacion:
+        menciones: 7
+        primera_marca: '2:43:33'
+      agentes_ia:
+        menciones: 5
+        primera_marca: '1:54:52'
+      datos_features_target:
+        menciones: 3
+        primera_marca: 0:19:18
+      clasificacion:
+        menciones: 3
+        primera_marca: '2:54:34'
+      metricas_clasificacion:
+        menciones: 3
+        primera_marca: 0:32:42
+      arboles_decision:
+        menciones: 3
+        primera_marca: '3:05:56'
+      deep_learning:
+        menciones: 1
+        primera_marca: '2:20:43'
+      llm:
+        menciones: 1
+        primera_marca: '1:55:32'
+    notebooklm: null
+  2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos:
+    archivo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md
+    plano: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      datos_features_target:
+        menciones: 48
+        primera_marca: 0:00:09
+      arboles_decision:
+        menciones: 19
+        primera_marca: '1:19:06'
+      metricas_clasificacion:
+        menciones: 18
+        primera_marca: 0:48:06
+      matriz_confusion:
+        menciones: 17
+        primera_marca: 0:49:48
+      clasificacion:
+        menciones: 16
+        primera_marca: 0:00:32
+      roc_auc:
+        menciones: 12
+        primera_marca: '1:05:45'
+      random_forest:
+        menciones: 11
+        primera_marca: '1:28:59'
+      eda:
+        menciones: 10
+        primera_marca: 0:31:49
+      train_validation_test:
+        menciones: 10
+        primera_marca: 0:03:48
+      redes_neuronales:
+        menciones: 10
+        primera_marca: '1:03:15'
+      generalizacion:
+        menciones: 8
+        primera_marca: 0:03:29
+      regresion:
+        menciones: 7
+        primera_marca: 0:02:36
+      fundamentos_ciencia_datos:
+        menciones: 5
+        primera_marca: 0:00:00
+      validacion_cruzada:
+        menciones: 5
+        primera_marca: '1:03:59'
+      deep_learning:
+        menciones: 3
+        primera_marca: '1:35:48'
+      limpieza_preparacion:
+        menciones: 1
+        primera_marca: 0:00:50
+      llm:
+        menciones: 1
+        primera_marca: '1:35:48'
+    notebooklm: null

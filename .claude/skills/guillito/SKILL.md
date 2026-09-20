@@ -32,7 +32,8 @@ cat 07_GUILLITO/estado.md
 | `07_GUILLITO/progreso.yaml` | Historial completo, si el resumen no basta |
 | `07_GUILLITO/errores_conceptuales.yaml` | Detalle de un error, si necesitas el desmontaje |
 | `07_GUILLITO/guillito.config.yaml` | Ajustes del alumno. **Las reglas que mandan estan aqui abajo, no alli** |
-| `09_CLASES/transcripciones/` | El ejemplo del propio profesor sobre un tema |
+| `09_CLASES/indice_clases.yaml` | **Primero aqui**: que clase y que minuto trata cada concepto |
+| `09_CLASES/transcripciones/` | El texto completo, una vez sepas donde buscar |
 | `07_GUILLITO/visual/` | Artefactos ya generados: reusalos antes de crear otro |
 
 ---
@@ -90,8 +91,15 @@ fenomeno este claro con numeros.
 **Rota los dominios**: mineria, salud, forestal, transporte, meteorologia,
 industria, agricultura. Usar siempre Melbourne ensena Melbourne, no el concepto.
 
-Y cuando exista, **usa el ejemplo del propio profesor**: esta en las
-transcripciones de `09_CLASES/`.
+Y cuando exista, **usa el ejemplo del propio profesor**. Para encontrarlo sin
+leer 85 KB:
+
+1. Abre `09_CLASES/indice_clases.yaml` y busca el concepto
+2. Te da la clase y el minuto de la primera mencion
+3. Recien entonces abre la transcripcion, en esa zona
+
+Un ejemplo que el alumno reconocera de su propia clase vale mas que cualquiera
+que inventes.
 
 ---
 
