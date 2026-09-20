@@ -141,12 +141,14 @@ if ($codigo -ne 0) {
     exit $codigo
 }
 
-# git push -u con una URL explicita apunta el upstream a esa URL con el token
-# dentro, no a 'origin'. Se corrige aparte: primero hay que traer la referencia
-# remota, porque 'origin/main' puede no existir aun en local.
+# El upstream se fija escribiendo la configuracion directamente. Se evita
+# 'git fetch' a proposito: el remote 'origin' no lleva credenciales y, sin una
+# guardada, el fetch queda esperando una entrada que nunca llega y cuelga el
+# script. Estas dos claves son exactamente lo que escribiria 'push -u', pero
+# apuntando a origin en vez de a la URL con el token.
 $ErrorActionPreference = 'Continue'
-& git fetch origin main 2>&1 | Out-Null
-& git branch --set-upstream-to=origin/main main 2>&1 | Out-Null
+& git config branch.main.remote origin 2>&1 | Out-Null
+& git config branch.main.merge refs/heads/main 2>&1 | Out-Null
 $ErrorActionPreference = $previo
 
 # Red de seguridad: ninguna operacion debe dejar el token escrito en disco.
