@@ -45,3 +45,6 @@ auth.json
 *.webm
 10_GRABACIÓN_CLASES/
 *.zip
+
+# Presentaciones originales: se versiona el texto extraido, no los PDF de 20 MB
+11_PRESENTACIÓN/*.pdf

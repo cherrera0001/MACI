@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Triaje · ¿Qué tipo de problema tengo delante? · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;
+        --morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;
+     border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;
+        margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);
+           margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;
+         margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;
+        margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;
+           margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;
+        vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+
+  /* Ciclo */
+  .ciclo{display:flex;flex-wrap:wrap;gap:.45rem;margin:1.2rem 0;align-items:stretch}
+  .etapa{flex:1 1 110px;background:#fff;border:2px solid var(--linea);
+         border-radius:9px;padding:.7rem .5rem;text-align:center;cursor:pointer;
+         transition:.14s}
+  .etapa:hover{border-color:var(--azul);transform:translateY(-2px)}
+  .etapa.on{border-color:var(--azul);background:#eff6ff}
+  .etapa .n{font-size:.68rem;color:var(--suave);font-weight:700}
+  .etapa .t{font-size:.86rem;font-weight:600;margin-top:.2rem;line-height:1.25}
+  #detalle{background:#fff;border:1px solid var(--linea);border-radius:9px;
+           padding:1.1rem 1.3rem;margin-top:.8rem;min-height:8rem}
+  #detalle h4{margin:0 0 .5rem;font-size:1.05rem}
+  #detalle .lbl{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;
+                color:var(--suave);font-weight:700;margin-top:.9rem}
+
+  /* Triaje */
+  .paso{background:#fff;border:1px solid var(--linea);border-radius:9px;
+        padding:1.1rem 1.3rem;margin:.8rem 0}
+  .paso .q{font-weight:700;margin-bottom:.7rem}
+  .op{display:block;width:100%;text-align:left;background:var(--fondo);
+      border:2px solid transparent;border-radius:7px;padding:.6rem .8rem;
+      margin:.3rem 0;cursor:pointer;font:inherit;font-size:.93rem}
+  .op:hover{border-color:var(--azul);background:#eff6ff}
+  #resultado{border-radius:9px;padding:1.2rem 1.4rem;margin-top:1rem;display:none}
+  #resultado.on{display:block}
+  #resultado h4{margin:0 0 .6rem;font-size:1.15rem}
+  button.re{background:#6b7280;color:#fff;border:0;border-radius:7px;
+            padding:.45rem .9rem;cursor:pointer;font-weight:600;font-size:.86rem}
+  button.re:hover{background:#4b5563}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
+         color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>¿Qué tipo de problema tengo delante?</h1>
+<p class="sub">El paso que va antes de todos los demás.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<p>La mayoría de los errores en una prueba no vienen de calcular mal. Vienen de
+<strong>resolver el problema equivocado</strong>: aplicar validación cruzada
+donde correspondía un corte temporal, usar exactitud donde correspondía F1, o
+tratar como modelamiento algo que era limpieza.</p>
+
+<p>Esta página entrena eso: <strong>reconocer</strong>, antes de resolver.</p>
+
+<h2>1 · ¿En qué etapa del ciclo estoy?</h2>
+
+<div class="cita">
+"El ciclo de la ciencia de datos comienza con un requerimiento o pregunta,
+después recolectamos datos, limpiamos los datos, exploramos, modelamos,
+visualizamos de alguna forma los resultados de nuestro modelo para comunicarlo y
+luego tomar decisiones. Y finalmente el modelo se pone en marcha y después
+volvemos al requerimiento. <strong>La flechita apunta para los dos lados</strong>,
+porque a veces uno está modelando y de repente se da cuenta de que el modelo no
+funciona bien y tiene que volver a explorar los datos."
+<span class="f">Tu profesor, transcripción de clase · <code>09_CLASES/transcripciones/</code></span>
+</div>
+
+<p>Pulsa una etapa para ver qué se hace ahí y qué <strong>no</strong>:</p>
+
+<div class="ciclo" id="ciclo"></div>
+<div id="detalle">Pulsa una etapa del ciclo.</div>
+
+<div class="clave">
+<strong>La confusión más común: limpieza frente a modelamiento.</strong><br>
+Si estás decidiendo <em>qué hacer con un dato que falta o está mal</em>, es
+limpieza. Si estás decidiendo <em>qué algoritmo usar o qué tan complejo hacerlo</em>,
+es modelamiento. Excluir una columna puede ser cualquiera de las dos: si la
+excluyes porque está sucia, es limpieza; si la excluyes porque mete ruido en el
+modelo, es modelamiento.
+</div>
+
+<h2>2 · Triaje: responde y te digo qué tienes</h2>
+
+<div class="paso" id="preg">
+  <div class="q" id="q"></div>
+  <div id="ops"></div>
+</div>
+<div id="resultado"></div>
+<p><button class="re" id="reiniciar">Empezar de nuevo</button></p>
+
+<h2>3 · La tabla que resuelve el 90 %</h2>
+
+<table>
+<tr><th>Si te piden…</th><th>Es…</th><th>Porque el target es…</th><th>Se mide con</th></tr>
+<tr><td>El precio de una casa</td><td><strong>Regresión</strong></td><td>Un número continuo</td><td>MAE, RMSE, R²</td></tr>
+<tr><td>Horas que tardará una entrega</td><td><strong>Regresión</strong></td><td>Un número continuo</td><td>MAE, RMSE, R²</td></tr>
+<tr><td>Si un correo es spam</td><td><strong>Clasificación binaria</strong></td><td>Dos categorías</td><td>Matriz, precision, recall, F1, AUC</td></tr>
+<tr><td>Si una galaxia es espiral, elíptica o ambigua</td><td><strong>Clasificación multiclase</strong></td><td>Tres categorías</td><td>F1-macro, matriz</td></tr>
+<tr><td>Agrupar clientes parecidos, sin etiquetas previas</td><td><strong>Segmentación</strong></td><td><strong>No hay target</strong></td><td>Silueta, inercia</td></tr>
+<tr><td>Calidad del material: baja, media o alta</td><td><strong>Clasificación multiclase</strong></td><td>Tres categorías ordenadas</td><td>F1-macro, matriz</td></tr>
+</table>
+
+<div class="peligro">
+<strong>La trampa de los números que no son números.</strong> Si las clases se
+llaman <code>1</code>, <code>2</code>, <code>3</code>, siguen siendo categorías.
+Un target numérico no hace que el problema sea regresión: lo que importa es si
+los valores intermedios <em>significan algo</em>. Entre «espiral» y «elíptica»
+no hay un 1,5.
+</div>
+
+<h2>4 · ¿Cómo valido?</h2>
+
+<p>Segunda decisión que se equivoca seguido, y depende de <strong>una sola
+pregunta</strong>:</p>
+
+<table>
+<tr><th>¿Los datos tienen orden temporal?</th><th>Entonces</th><th>Por qué</th></tr>
+<tr><td><strong>No</strong> — cada fila es independiente</td><td>Validación cruzada k-fold, con mezcla</td><td>Aprovecha todos los datos y da una estimación estable</td></tr>
+<tr><td><strong>Sí</strong> — hay fechas y vas a predecir el futuro</td><td><strong>Corte temporal</strong>: entrenar con el pasado, evaluar en el futuro</td><td>Mezclar filtra información del futuro al entrenamiento</td></tr>
+<tr><td>Sí, y además quieres elegir modelo</td><td>CV <strong>dentro</strong> del período de entrenamiento, y el futuro intacto</td><td>Elegir mirando el test lo quema</td></tr>
+</table>
+
+<div class="nota">
+<strong>Tu propio proyecto es el ejemplo.</strong> Melbourne tiene fechas, así
+que el corte es temporal: entrenas con 2016, evalúas en 2017. Y dentro de 2016
+hiciste validación cruzada para elegir el modelo sin tocar 2017.<br><br>
+La versión que guardaste en <code>99_ARCHIVO/_obsoleto_split_aleatorio/</code>
+usó split aleatorio y anunciaba «81 % Precisión». Un número más alto midiendo
+mal.
+</div>
+
+<h2>5 · El procedimiento, para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+ANTE CUALQUIER PROBLEMA, EN ESTE ORDEN
+
+1. ¿QUÉ ME PIDEN?            predecir · describir · agrupar · decidir
+2. ¿HAY TARGET?              no → segmentación, y se acabó
+3. ¿EL TARGET ES…?           número continuo  → REGRESIÓN
+                             categoría        → CLASIFICACIÓN
+4. ¿CUÁNTAS CATEGORÍAS?      dos → binaria · tres o más → multiclase
+5. ¿HAY ORDEN TEMPORAL?      sí → corte temporal · no → k-fold
+6. ¿LAS CLASES ESTÁN…?       equilibradas   → exactitud sirve
+                             desbalanceadas → F1, y decir por qué
+7. ¿QUÉ MÉTRICA?             la que corresponde al tipo, no la que recuerdo
+8. RECIÉN AHORA              calcular
+</pre>
+
+<div class="clave">
+Los pasos 1 a 6 <strong>no requieren calcular nada</strong>. Son lectura del
+enunciado. Si los haces siempre, dejas de resolver el problema equivocado — que
+es el error caro.
+</div>
+
+<h2>6 · Errores de triaje que el formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Cómo se ve</th></tr>
+<tr><td>Tratar clases numéricas como regresión</td><td>Proponer MAE para predecir «1, 2 o 3»</td></tr>
+<tr><td>Split aleatorio con datos temporales</td><td>Métrica optimista que no mide lo que importa</td></tr>
+<tr><td>Exactitud con clases desbalanceadas</td><td>Un modelo que no detecta nada parece excelente</td></tr>
+<tr><td>Confundir limpieza con modelamiento</td><td>Justificar una exclusión con el argumento equivocado</td></tr>
+<tr><td>Elegir el modelo mirando el test</td><td>Ya no queda estimación honesta del error</td></tr>
+<tr><td>Usar validación cruzada como si fuera una métrica</td><td>«El CV dio 0,8» — CV es un método, no un número que se reporta</td></tr>
+</table>
+
+<footer>
+Generado por Guillito · <code>07_GUILLITO/visual/triaje_de_problemas.html</code><br>
+Definiciones del ciclo y de regresión/clasificación tomadas de la transcripción de clase.
+Funciona sin conexión.
+</footer>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+
+/* ---------- Ciclo ---------- */
+const ETAPAS=[
+ {n:'1',t:'Requerimiento',h:'Requerimiento o pregunta',
+  si:'Definir qué se quiere saber y por qué. Traducir una necesidad del negocio en una pregunta que los datos puedan responder.',
+  no:'Todavía no se toca ningún dato. Si ya estás mirando columnas, te saltaste esta etapa.',
+  senal:'«La empresa quiere estimar…», «se necesita predecir…»'},
+ {n:'2',t:'Recolección',h:'Recolectar datos',
+  si:'Conseguir los datos: consultas, archivos, scraping, APIs. Decidir qué fuentes son legítimas y trazables.',
+  no:'No se corrige nada aquí. Los datos llegan como estén.',
+  senal:'«¿De dónde saco…?», «¿esta fuente sirve?»'},
+ {n:'3',t:'Limpieza',h:'Limpiar los datos',
+  si:'Duplicados, valores fuera de rango, faltantes, tipos incorrectos, inconsistencias, códigos centinela como −999. Estructura: una fila = una observación, una columna = un tipo de cosa.',
+  no:'No se elige algoritmo ni se mide rendimiento. Aquí no hay modelo todavía.',
+  senal:'«N/A mezclado con números», «la columna mezcla días y camiones», «−999 significa mantención»'},
+ {n:'4',t:'Exploración',h:'Explorar (EDA)',
+  si:'Mirar distribuciones, centralidad, dispersión, correlaciones, gráficos. Entender qué hay antes de modelar.',
+  no:'No se entrena nada. Un gráfico no es un modelo.',
+  senal:'«¿cómo se distribuye?», «¿hay relación entre…?», histogramas y boxplots'},
+ {n:'5',t:'Modelamiento',h:'Modelar',
+  si:'Elegir tipo de problema, features y target, partir los datos, entrenar, ajustar complejidad, comparar modelos.',
+  no:'No se limpia aquí. Si aparece un dato sucio en esta etapa, se vuelve a la 3 — la flecha va en ambos sentidos.',
+  senal:'«¿qué algoritmo?», «¿qué tan complejo?», «¿sobreajusta?»'},
+ {n:'6',t:'Evaluación',h:'Evaluar y comunicar',
+  si:'Medir sobre datos no vistos, elegir la métrica correcta, interpretar en el lenguaje del problema y comunicarlo.',
+  no:'No se cambia el modelo mirando el test. Si lo haces, el test deja de ser test.',
+  senal:'«¿es bueno este MAE?», «¿cuál llevamos a producción?»'},
+ {n:'7',t:'Puesta en marcha',h:'Puesta en marcha',
+  si:'El modelo entra en operación y se monitorea. Los datos reales cambian con el tiempo.',
+  no:'No termina aquí: vuelve al requerimiento.',
+  senal:'«¿sigue funcionando?», «los datos de este año son distintos»'}
+];
+
+const cont=$('ciclo');
+ETAPAS.forEach((e,i)=>{
+  const d=document.createElement('div');
+  d.className='etapa'; d.innerHTML=`<div class="n">${e.n}</div><div class="t">${e.t}</div>`;
+  d.onclick=()=>{
+    document.querySelectorAll('.etapa').forEach(x=>x.classList.remove('on'));
+    d.classList.add('on');
+    $('detalle').innerHTML=
+      `<h4>${e.h}</h4>
+       <div class="lbl">Qué se hace aquí</div><div>${e.si}</div>
+       <div class="lbl">Qué NO se hace aquí</div><div>${e.no}</div>
+       <div class="lbl">Cómo lo reconoces en un enunciado</div><div><em>${e.senal}</em></div>`;
+  };
+  cont.appendChild(d);
+});
+
+/* ---------- Triaje ---------- */
+const ARBOL={
+ inicio:{q:'¿Qué te piden hacer con los datos?',o:[
+   ['Estimar o predecir algo',       'target'],
+   ['Agrupar cosas parecidas, sin categorías dadas de antemano','seg'],
+   ['Solo describir qué hay',        'eda'],
+   ['Arreglar la tabla antes de nada','limp']]},
+ target:{q:'Eso que hay que predecir, ¿qué clase de valor es?',o:[
+   ['Un número donde los valores intermedios significan algo (precio, horas, kilos)','reg'],
+   ['Una categoría: pertenece a un grupo u otro','clas'],
+   ['Números que son etiquetas: clase 1, clase 2, clase 3','clas']]},
+ clas:{q:'¿Cuántas categorías posibles hay?',o:[
+   ['Dos: sí o no',      'bin'],
+   ['Tres o más',        'multi']]},
+ bin:{q:'¿Cómo están repartidas las clases?',o:[
+   ['Parecidas en cantidad',                 'bin_eq'],
+   ['Una es mucho más rara que la otra',     'bin_des'],
+   ['No lo sé todavía',                      'bin_ns']]}
+};
+
+const FIN={
+ reg:{c:'#059669',t:'Regresión',
+   d:'El target es un número continuo. Los valores intermedios tienen sentido: entre 300 y 400 kg existe 350.',
+   m:'MAE, RMSE, R². <strong>No</strong> exactitud ni precision: en regresión no existe «acertar».',
+   ojo:'Antes de reportar R², recuerda que 0 significa «igual de bueno que predecir el promedio», y puede ser negativo.'},
+ bin_eq:{c:'#2563eb',t:'Clasificación binaria, clases equilibradas',
+   d:'Dos categorías repartidas de forma parecida.',
+   m:'Exactitud <strong>sí</strong> es informativa aquí. Acompáñala de la matriz de confusión.',
+   ojo:'Aun con clases equilibradas, decide si un falso positivo y un falso negativo cuestan lo mismo. Casi nunca cuestan igual.'},
+ bin_des:{c:'#d97706',t:'Clasificación binaria, clases desbalanceadas',
+   d:'Dos categorías, una mucho más rara. Fraude, enfermedades, fallas.',
+   m:'<strong>F1, precision y recall.</strong> La exactitud engaña: decir siempre «no» acierta casi siempre y no detecta a nadie.',
+   ojo:'Di explícitamente cuál es la clase positiva y por qué. Es lo primero que se evalúa.'},
+ bin_ns:{c:'#7c3aed',t:'Clasificación binaria — primero mira el reparto',
+   d:'No puedes elegir métrica sin saber cómo están repartidas las clases.',
+   m:'Cuenta cuántos hay de cada una. Recién entonces decides.',
+   ojo:'Esto no es un rodeo: elegir métrica sin mirar el balance es el error que el certamen castiga.'},
+ multi:{c:'#2563eb',t:'Clasificación multiclase',
+   d:'Tres o más categorías. Galaxy Zoo es exactamente esto: ambigua, espiral, elíptica.',
+   m:'<strong>F1-macro</strong> y matriz de confusión por clase. Macro promedia las clases, así que una clase rara pesa igual que una frecuente.',
+   ojo:'Si las clases se llaman 1, 2 y 3, siguen siendo categorías. No es regresión.'},
+ seg:{c:'#7c3aed',t:'Segmentación (no supervisado)',
+   d:'<strong>No hay target.</strong> Nadie te dio las respuestas correctas: el algoritmo agrupa por parecido.',
+   m:'Silueta, inercia. <strong>No</strong> exactitud ni MAE: no hay contra qué compararse.',
+   ojo:'Si en el enunciado aparece «sabemos que estos son X», hay target y entonces NO es segmentación.'},
+ eda:{c:'#6b7280',t:'Análisis exploratorio',
+   d:'No hay que predecir nada: hay que entender qué hay.',
+   m:'Centralidad, dispersión, distribuciones, correlaciones, gráficos.',
+   ojo:'Correlación no es causalidad. Es de las cosas más preguntadas.'},
+ limp:{c:'#dc2626',t:'Calidad y limpieza de datos',
+   d:'La tabla tiene problemas estructurales antes de poder hacer nada con ella.',
+   m:'No hay métrica: hay criterios. Una fila = una observación. Una columna = un tipo de cosa. Los centinelas a nulo.',
+   ojo:'Es la pregunta mejor pagada del Certamen 1 — la 9B vale 2,0 puntos, más que las ocho cerradas juntas.'}
+};
+
+let nodo='inicio';
+function pinta(){
+  const n=ARBOL[nodo];
+  $('resultado').classList.remove('on');
+  $('preg').style.display='block';
+  $('q').textContent=n.q;
+  $('ops').innerHTML='';
+  n.o.forEach(([texto,destino])=>{
+    const b=document.createElement('button');
+    b.className='op'; b.textContent=texto;
+    b.onclick=()=>{ if(ARBOL[destino]){nodo=destino;pinta();} else fin(destino); };
+    $('ops').appendChild(b);
+  });
+}
+function fin(k){
+  const f=FIN[k];
+  $('preg').style.display='none';
+  const r=$('resultado');
+  r.style.background=f.c+'14'; r.style.borderLeft='4px solid '+f.c;
+  r.innerHTML=`<h4 style="color:${f.c}">${f.t}</h4>
+    <p>${f.d}</p>
+    <p><strong>Se mide con:</strong> ${f.m}</p>
+    <p style="margin-bottom:0"><strong>Ojo:</strong> ${f.ojo}</p>`;
+  r.classList.add('on');
+}
+$('reiniciar').onclick=()=>{nodo='inicio';pinta();};
+pinta();
+</script>
+</body>
+</html>
