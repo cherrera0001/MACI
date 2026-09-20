@@ -12,7 +12,7 @@
 meta:
   creado: '2026-09-20'
   actualizado: '2026-09-20'
-  total_clases: 2
+  total_clases: 3
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -109,4 +109,49 @@ clases:
       llm:
         menciones: 1
         primera_marca: '1:35:48'
+    notebooklm: null
+  2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos:
+    archivo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md
+    plano: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      eda:
+        menciones: 109
+        primera_marca: 0:17:11
+      limpieza_preparacion:
+        menciones: 24
+        primera_marca: 0:13:02
+      clasificacion:
+        menciones: 18
+        primera_marca: 0:47:44
+      datos_features_target:
+        menciones: 12
+        primera_marca: 0:32:45
+      train_validation_test:
+        menciones: 9
+        primera_marca: '1:19:29'
+      fundamentos_ciencia_datos:
+        menciones: 7
+        primera_marca: 0:00:00
+      gradient_boosting:
+        menciones: 7
+        primera_marca: 0:46:06
+      metricas_clasificacion:
+        menciones: 4
+        primera_marca: '1:02:56'
+      roc_auc:
+        menciones: 3
+        primera_marca: '1:25:03'
+      generalizacion:
+        menciones: 2
+        primera_marca: '1:26:31'
+      regresion:
+        menciones: 2
+        primera_marca: '1:56:19'
+      arboles_decision:
+        menciones: 2
+        primera_marca: 0:32:00
+      random_forest:
+        menciones: 2
+        primera_marca: 0:46:19
     notebooklm: null
