@@ -64,11 +64,40 @@ un parrafo lo que tres tablas no logran.
 
 ---
 
+# LOS CONTROLES DEBEN HACER PENSAR
+
+**Un slider sin prediccion previa es un juguete.** El alumno puede moverlo
+veinte minutos, ver numeros cambiar y no haber formulado una sola hipotesis.
+
+Patron obligatorio en **todo** control interactivo:
+
+```
+1. PREDICE   pregunta cerrada ANTES de habilitar el control
+                "si aumentas la pendiente dejando el intercepto fijo,
+                 la recta sube, gira, o se desplaza?"
+2. MUEVE     el control se habilita al responder
+3. OBSERVA   el efecto ocurre a la vista
+4. EXPLICA   "ocurrio lo que esperabas? que termino lo produjo?"
+```
+
+La prediccion obliga a comprometerse con un modelo mental. Sin ese compromiso
+previo no hay nada que confirmar ni que romper, y por tanto no hay aprendizaje:
+solo animacion.
+
+Implementacion: el control arranca `disabled`, con la pregunta al lado y dos o
+tres botones de respuesta. Al elegir, se habilita. Tras la primera interaccion
+aparece el contraste entre lo que predijo y lo que paso.
+
+---
+
 # QUE DEBE TENER EL ARTEFACTO
 
 | Elemento | Por que |
 |---|---|
-| **Interaccion** | Si el concepto es una relacion, tiene que poder moverla y ver el efecto |
+| **Interaccion con prediccion previa** | Ver arriba. Sin el paso 1, no lo incluyas |
+| **La ecuacion, desarmada** | Si el concepto tiene una, aparece: que resuelve, cada simbolo, que es dato, que aprende el modelo, que decide la persona |
+| **El camino inverso** | Un momento donde se parta de la ecuacion y se reconstruya el fenomeno |
+| **Donde encaja** | De que concepto viene y cual depende de el. Consulta `curriculum.yaml`, campo `prerrequisitos` |
 | **Sus propias cifras** | Melbourne, Galaxy Zoo o las transcripciones, citando la ruta |
 | **La distincion del certamen** | Marcada como tal, no diluida en el texto |
 | **Un procedimiento paso a paso** | Corto, para recordarlo en una prueba escrita |
