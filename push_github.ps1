@@ -116,8 +116,17 @@ $url = "https://${usuario}:${token}@github.com/$usuario/MACI.git"
 
 Write-Host ""
 Write-Host "Subiendo commits..." -ForegroundColor Cyan
+
+# git escribe su progreso en stderr incluso cuando termina bien. Con
+# ErrorActionPreference='Stop', PowerShell 5.1 convierte esas lineas en
+# NativeCommandError y aborta el script pese a que el push fue correcto.
+# Se baja la preferencia solo alrededor de la llamada y se juzga por el
+# codigo de salida, que es la unica senal fiable.
+$previo = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 $salida = & git push -u $url main 2>&1
 $codigo = $LASTEXITCODE
+$ErrorActionPreference = $previo
 
 # Nunca imprimir el token si aparece en un mensaje de error.
 $salida = $salida -replace [regex]::Escape($token), '***TOKEN***'
