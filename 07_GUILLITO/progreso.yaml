@@ -159,13 +159,36 @@ conceptos:
       lugares y epocas distintas. Ver 07_GUILLITO/osint_gran_concepcion.md.
 
   - id: overfitting_underfitting
-    estado: NO_ESTUDIADO
+    estado: COMPRENSION_PARCIAL
     evidencias:
-      explicar: null
+      explicar:
+        fecha: 2026-09-19
+        detalle: >-
+          Describio el mecanismo del sobreajuste con sus palabras y sin ayuda:
+          "buenos resultados en entrenamiento, pero con datos nuevos mucho
+          error a diferencia con lo conocido". Avance real frente a la sesion
+          anterior, donde solo uso la etiqueta. Despues aplico los dos
+          criterios en orden -brecha para aislar el sobreajuste, nivel para
+          separar subajuste de ajuste correcto- y diagnostico las tres filas
+          correctamente.
       aplicar: null
       transferir: null
-    sesiones: 0
-    ultima_verificacion: null
+    sesiones: 1
+    ultima_verificacion: 2026-09-19
+    nota: >-
+      NIVEL 1 superado completo. Diagnostico inicial incorrecto por no calcular
+      la brecha; corrigio con andamiaje. Respondio bien b) -"B memoriza pero
+      generaliza peor"- y c) -regularizar amortigua, podar elimina-, que es
+      justo la distincion de la P7 del Certamen 2. Observacion para el papel:
+      no declaro el supuesto de que B fuera un arbol, y el enunciado no lo
+      decia. Es el patron de la P11.
+
+      NIVEL 2 a medias. Diagnostico correctamente las tres filas de un caso con
+      MAE, donde la metrica se invierte -menos es mejor-. No cayo en aplicar la
+      regla de memoria: leyo que significaba el numero antes de restar. Era la
+      trampa del problema. Quedaron sin responder b) y c).
+
+      APLICAR no se acredita hasta completar un nivel 2 entero sin ayuda.
 
   - id: regresion
     estado: NO_ESTUDIADO

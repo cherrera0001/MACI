@@ -15,9 +15,32 @@
 
 meta:
   creado: 2026-09-18
-  total_observados: 2
+  total_observados: 3
 
 observados:
+
+  - id: diagnostica_sin_calcular_la_brecha
+    concepto: overfitting_underfitting
+    veces: 1
+    fechas: [2026-09-19]
+    dijo: >-
+      "A sobreajusta, B subajusta, C esta bien" ante la tabla
+      A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39
+    confusion_de_fondo: >-
+      El mecanismo lo tiene bien: describio el sobreajuste como "buenos
+      resultados en entrenamiento pero mucho error con datos nuevos", que es
+      correcto y es un avance frente al error anterior de usar la etiqueta sin
+      mecanismo. Lo que fallo fue la LECTURA de la tabla: asigno los tres
+      diagnosticos a las filas equivocadas. Describio el patron de B y lo
+      llamo A. No calculo las brechas, que es el paso 2 del procedimiento
+      escrito para esta familia de problemas.
+    distincion_no_es_conceptual: true
+    desmontaje_que_funciono: pendiente
+    estado: abierto
+    nota: >-
+      Importante para Guillito: NO tratarlo como incomprension del concepto.
+      Es un fallo de procedimiento -saltarse el calculo de la brecha- y se
+      corrige exigiendo el paso, no reexplicando sobreajuste.
 
   - id: sobreajuste_como_etiqueta_de_toda_degradacion
     concepto: train_validation_test
