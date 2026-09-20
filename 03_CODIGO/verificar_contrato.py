@@ -135,7 +135,13 @@ def g13_sin_deficiencia_inferida():
 
 
 def memoria_dominado_con_evidencia():
-    """DOMINADO exige las evidencias registradas, no la etiqueta sola."""
+    """DOMINADO exige las CUATRO evidencias de spec.md, no la etiqueta sola.
+
+    La cadena del contrato es:
+        EXPLICAR -> APLICAR EN MELBOURNE -> INTERPRETAR RESULTADOS -> TRANSFERIR
+    Hasta 2026-09-20 esta comprobacion miraba solo tres y se saltaba
+    'interpretar': un concepto podia pasar el test incumpliendo spec.md §3.
+    """
     import yaml
     pro = yaml.safe_load(leer("07_GUILLITO/progreso.yaml"))
     malos = []
@@ -143,7 +149,8 @@ def memoria_dominado_con_evidencia():
         if c["estado"] != "DOMINADO":
             continue
         ev = c.get("evidencias") or {}
-        faltan = [k for k in ("explicar", "aplicar", "transferir") if not ev.get(k)]
+        faltan = [k for k in ("explicar", "aplicar", "interpretar", "transferir")
+                  if not ev.get(k)]
         if faltan:
             malos.append(f"{c['id']} sin {'/'.join(faltan)}")
     if malos:

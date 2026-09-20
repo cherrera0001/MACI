@@ -62,6 +62,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -71,6 +72,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -80,6 +82,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -89,6 +92,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -116,6 +120,7 @@ conceptos:
           propia: entendio que el 18,9% son valores FALTANTES de CouncilArea en
           2017 y no datos adicionales que se puedan "sumar". Esa distincion no
           se la dio Guillito.
+      interpretar: null
       transferir: null
     sesiones: 1
     ultima_verificacion: 2026-09-18
@@ -131,6 +136,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -148,6 +154,7 @@ conceptos:
           escenario en que la feature esta presente al 100%). Antes habia
           llegado solo a nombrar "sobreajuste"; aqui explica el mecanismo.
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 1
     ultima_verificacion: 2026-09-19
@@ -172,6 +179,7 @@ conceptos:
           separar subajuste de ajuste correcto- y diagnostico las tres filas
           correctamente.
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 1
     ultima_verificacion: 2026-09-19
@@ -195,6 +203,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -204,6 +213,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -213,6 +223,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -222,6 +233,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -231,6 +243,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -240,6 +253,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -249,6 +263,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -258,6 +273,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -267,6 +283,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -276,6 +293,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -285,6 +303,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -294,6 +313,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null
@@ -303,6 +323,7 @@ conceptos:
     evidencias:
       explicar: null
       aplicar: null
+      interpretar: null
       transferir: null
     sesiones: 0
     ultima_verificacion: null

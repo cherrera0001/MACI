@@ -337,24 +337,24 @@ EXPLICAR → APLICAR EN MELBOURNE → INTERPRETAR RESULTADOS → TRANSFERIR
 la explicación con otras palabras, acertar tras una pista fuerte, acertar por el
 motivo equivocado, ni responder bien **una sola** pregunta.
 
-> ### ⚠ Deriva contrato–implementación, detectada el 2026-09-20
+> ### ✅ Deriva contrato–implementación, detectada y cerrada el 2026-09-20
 >
-> Las tres fuentes no coinciden:
+> Durante unas horas las tres fuentes no coincidían: `spec.md` exigía cuatro
+> eslabones, mientras `CLAUDE.md` y `verificar_contrato.py` comprobaban tres.
+> **El verificador se saltaba `interpretar`**, así que un concepto podía pasar
+> el test incumpliendo el contrato.
 >
-> | Fuente | Cadena que declara |
+> Resuelto subiendo la implementación al contrato, no al revés:
+>
+> | Archivo | Cambio |
 > |---|---|
-> | `spec.md` §3 — **el contrato** | **cuatro** eslabones (los de arriba) |
-> | `CLAUDE.md` | tres: explicar → aplicar → transferir |
-> | `verificar_contrato.py:146` | tres: `("explicar", "aplicar", "transferir")` |
+> | `verificar_contrato.py` | Comprueba las cuatro, `interpretar` incluida |
+> | `progreso.yaml` | Clave `interpretar` añadida a los 21 conceptos |
+> | `guillito_estado.py` | Cuarta marca: las fichas muestran `EAIT`, no `EAT` |
+> | `CLAUDE.md` | Declara las cuatro, citando `spec.md` §3 |
 >
-> El verificador **no comprueba `interpretar`**. Hoy el fallo es latente —hay 0
-> conceptos en `DOMINADO`—, pero el primero que llegue ahí pasaría el test
-> incumpliendo el contrato.
->
-> No se resolvió por cuenta propia porque **cambia el estándar de dominio**, y
-> esa es una decisión del alumno, no del sistema. Las dos salidas son: subir el
-> verificador y `CLAUDE.md` a cuatro, o bajar `spec.md` a tres declarando por
-> qué. Lo que no puede quedarse es la discrepancia.
+> Verificado inyectando un `DOMINADO` con tres de cuatro evidencias: el test
+> falla con *«sin interpretar»*. La comprobación mide lo que dice medir.
 
 ### Los contrapesos a la evaluación circular
 
@@ -468,9 +468,11 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 - **La numeración de preguntas del Certamen 2 no coincide** con el registro de
   Canvas desde el ítem de matriz de confusión en adelante. Documentado en
   `visual/certamen_2.html`.
-- **`spec.md` y el verificador discrepan sobre `DOMINADO`**: cuatro eslabones
-  contra tres. Ver el recuadro del §9. Es la única deriva contrato–implementación
-  detectada, y está sin resolver a la espera de una decisión.
+- **La deriva de `DOMINADO` está cerrada** (§9), pero fue real: el contrato y
+  su verificador se separaron sin que nada lo detectara. **No hay ningún
+  mecanismo que compruebe que `verificar_contrato.py` sigue midiendo lo que
+  `spec.md` declara** — se encontró leyendo, no corriendo. Es el hueco más
+  incómodo que deja esta arquitectura.
 
 ---
 

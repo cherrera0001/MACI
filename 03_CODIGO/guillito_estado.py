@@ -64,13 +64,14 @@ def main():
         L.append("|---|---|---|")
         for estado, c in activos:
             ev = c.get("evidencias", {}) or {}
-            marcas = "".join("E" if ev.get("explicar") else "·",) + \
-                     ("A" if ev.get("aplicar") else "·") + \
-                     ("T" if ev.get("transferir") else "·")
+            marcas = (("E" if ev.get("explicar") else "·")
+                      + ("A" if ev.get("aplicar") else "·")
+                      + ("I" if ev.get("interpretar") else "·")
+                      + ("T" if ev.get("transferir") else "·"))
             L.append(f"| {nombres.get(c['id'], c['id'])} | `{estado}` | `{marcas}` |")
         L.append("")
-        L.append("Evidencia: **E**xplicar · **A**plicar · **T**ransferir. "
-                 "`DOMINADO` exige las tres mas interpretar resultados.")
+        L.append("Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · "
+                 "**T**ransferir. `DOMINADO` exige las cuatro.")
         L.append("")
 
     # Errores abiertos: los unicos que Guillito debe anticipar

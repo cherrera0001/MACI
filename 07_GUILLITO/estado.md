@@ -12,11 +12,11 @@ Alumno: **Cristobal Herrera** · sesiones: **2** · ultima: 2026-09-19
 
 | Concepto | Estado | Evidencia |
 |---|---|---|
-| Train / validation / test | `COMPRENDIDO` | `EA·` |
-| Generalizacion | `COMPRENSION_PARCIAL` | `E··` |
-| Overfitting y underfitting | `COMPRENSION_PARCIAL` | `E··` |
+| Train / validation / test | `COMPRENDIDO` | `EA··` |
+| Generalizacion | `COMPRENSION_PARCIAL` | `E···` |
+| Overfitting y underfitting | `COMPRENSION_PARCIAL` | `E···` |
 
-Evidencia: **E**xplicar · **A**plicar · **T**ransferir. `DOMINADO` exige las tres mas interpretar resultados.
+Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · **T**ransferir. `DOMINADO` exige las cuatro.
 
 ## Errores abiertos
 

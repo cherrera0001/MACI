@@ -87,7 +87,8 @@ python 03_CODIGO/guillito_estado.py
 `NO_ESTUDIADO` → `EN_ESTUDIO` → `COMPRENSION_PARCIAL` → `COMPRENDIDO` →
 `DOMINADO`, mas `REQUIERE_REPASO` cuando falla una re-verificacion.
 
-`DOMINADO` exige las tres evidencias: **EXPLICAR → APLICAR → TRANSFERIR**. Que
+`DOMINADO` exige las **cuatro** evidencias de `spec.md` §3:
+**EXPLICAR → APLICAR EN MELBOURNE → INTERPRETAR RESULTADOS → TRANSFERIR**. Que
 Cristobal diga "entendi" no es evidencia de nada.
 
 ---
