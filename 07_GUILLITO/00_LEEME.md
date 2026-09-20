@@ -1,33 +1,34 @@
 # 07 · GUILLITO — Tutor personal de Fundamentos de Ciencia de Datos
 
-Guillito enseña los 21 conceptos del programa usando **el material de esta
-asignatura**: el cuaderno de NotebookLM, los documentos del curso, y los
-proyectos Melbourne Housing y Galaxy Zoo como casos prácticos.
+Guillito **no explica conceptos: entrena resolución de problemas.** La prueba es
+escrita, sin Internet, y el criterio de avance es cuántos problemas resuelves
+**solo** — no cuánto contenido se te explicó.
 
-No es un chatbot que responde preguntas. Es un ciclo: diagnostica, explica,
-pregunta, **espera de verdad**, analiza el razonamiento, reexplica por otra vía
-si hace falta, verifica transferencia y registra lo aprendido.
+Contrato completo y garantías verificables: [`../spec.md`](../spec.md).
 
 ---
 
 ## Cómo se usa
 
-Abre Claude Code en `F:\MACI` y habla con él:
+Abre Claude Code en `F:\MACI` y habla:
 
 ```
-Guillito, quiero aprender validación cruzada
+Guillito, quiero entender validación cruzada
 ```
 
-También responde a `explícame overfitting`, `no entiendo ROC`, `repasemos
-regresión`, o al comando directo:
+| Comando | Qué hace | Dónde corre |
+|---|---|---|
+| `/guillito` | Sesión de estudio: problema → tu respuesta → diagnóstico | Conversación |
+| `/guillito-progreso` | Informe de estado. Solo lectura | Conversación |
+| `/guillito-visual <concepto>` | Genera un HTML explicativo | Aislado |
+| `/guillito-corregir` | Corrige un lote de respuestas escritas | Aislado |
 
-| Comando | Qué hace |
-|---|---|
-| `/guillito` | Abre sesión de estudio |
-| `/guillito-progreso` | Informe de estado. Solo lectura, no enseña |
+### Por qué dos corren aislados y dos no
 
-La primera vez ejecuta un diagnóstico de 8 preguntas repartidas por los 21
-conceptos, para no perder tiempo enseñando lo que ya sabes.
+El tutor **no puede** ser un subagente: un subagente no sabe pausar y esperar tu
+respuesta, y ese es su núcleo. En cambio corregir un lote y construir un
+artefacto no necesitan esperarte, así que corren en contexto propio y no gastan
+el de la sesión.
 
 ---
 
@@ -35,20 +36,45 @@ conceptos, para no perder tiempo enseñando lo que ya sabes.
 
 ```
 07_GUILLITO/
-├── 00_LEEME.md                 este archivo
-├── curriculum.yaml             ESTÁTICO — 21 conceptos, orden, prerrequisitos, material
-├── progreso.yaml               DINÁMICO — estado y cadena de evidencia
-├── errores_conceptuales.yaml   errores observados + patrones a vigilar
-└── bitacora/                   una entrada por sesión
-
-.claude/skills/guillito/            el ciclo pedagógico
-.claude/skills/guillito-progreso/   informe de estado
-CLAUDE.md                            hace que Claude Code reconozca a Guillito
-.mcp.json                            conexión a NotebookLM
+├── 00_LEEME.md              este archivo
+├── guillito.config.yaml     DATOS del alumno. Las reglas viven en la skill
+├── curriculum.yaml          21 conceptos: orden, prerrequisitos, material, prácticos
+├── progreso.yaml            estado y cadena de evidencia          ← lo escribe Guillito
+├── errores_conceptuales.yaml  errores observados + patrones vigilados  ← ídem
+├── estado.md                resumen autogenerado, es lo que se inyecta
+├── patron_evaluacion.md     cómo evalúa el profesor, desde sus certámenes reales
+│
+├── referencia/              se carga bajo demanda, no en cada sesión
+│   ├── fuentes.md               jerarquía, etiquetado, NotebookLM
+│   ├── memoria.md               estados, evidencia, qué escribir y dónde
+│   └── material.md              prácticos, certámenes, Melbourne, Galaxy Zoo
+│
+├── visual/                  artefactos HTML para leer en el navegador
+├── guias/                   material de referencia escrito
+├── cuadernillos/            problemas CON solución — enseñan
+├── certamenes/              problemas SIN solución — miden
+├── entregas/                donde dejas tus respuestas para corregir
+├── transferencia/           dataset sintético de otro dominio
+├── bitacora/                una entrada por sesión
+└── osint_*.md               investigación de fuentes públicas (en pausa)
 ```
 
-La separación entre `curriculum.yaml` y `progreso.yaml` es deliberada: el plan no
-cambia con el uso, así una sesión no puede corromperlo.
+---
+
+## Lo que ya puedes abrir
+
+### Visuales interactivos — `visual/`
+
+| Archivo | Qué muestra |
+|---|---|
+| `clase6_regresion.html` | La Clase 6 entera con el ejemplo del profesor: el peso del árbol según el radio del tronco. Incluye la zona sin datos, donde el modelo extrapola |
+| `regresion_y_costo.html` | Camiones mineros. Mueves la recta y ves el costo y el R² cambiar en vivo |
+| `matriz_confusion.html` | Detección de cáncer. Cuatro barras controlan la matriz; tres botones montan las trampas del certamen |
+
+### Material escrito
+
+- `guias/overfitting_underfitting.md` — los dos criterios, la inversión de métrica, remedios por mecanismo, procedimiento de siete pasos
+- `cuadernillos/01_sobreajuste_y_calidad_de_datos.md` — nueve problemas con solución plegable, en los formatos del profesor
 
 ---
 
@@ -59,134 +85,114 @@ Seis estados:
 | Estado | Significado |
 |---|---|
 | `NO_ESTUDIADO` | No visto |
-| `EN_ESTUDIO` | Guillito lo explicó. Nada verificado aún |
-| `COMPRENSION_PARCIAL` | Lo explicas, pero con huecos |
+| `EN_ESTUDIO` | Guillito lo explicó. Nada verificado |
+| `COMPRENSION_PARCIAL` | Lo explicas con huecos, o el mecanismo incompleto |
 | `COMPRENDIDO` | Explicas y aplicas correctamente |
-| `DOMINADO` | Explicas, aplicas **y transfieres** |
+| `DOMINADO` | Explicas, aplicas, interpretas **y** transfieres |
 | `REQUIERE_REPASO` | Lo sabías y fallaste en una re-verificación |
 
 ### La cadena de evidencia
 
 ```
-EXPLICAR  →  APLICAR  →  TRANSFERIR
+EXPLICAR  →  APLICAR  →  INTERPRETAR  →  TRANSFERIR
 ```
 
-| Evidencia | Se cumple cuando |
-|---|---|
-| `EXPLICAR` | Lo explicas con tus palabras, sin leer |
-| `APLICAR` | Resuelves un caso del mismo dominio, sin recibir la respuesta |
-| `TRANSFERIR` | Resuelves un caso de **otro dominio** que no habías visto |
-
-**`DOMINADO` exige las tres.** Decir "entendí" no es evidencia de nada, y
+`DOMINADO` exige las cuatro. **Decir "entendí" no es evidencia de nada**, y
 Guillito tiene instrucción explícita de no aceptarlo. Tampoco cuenta repetir su
-explicación con otras palabras, ni acertar después de una pista muy fuerte, ni
-acertar por el motivo equivocado.
+explicación, ni acertar tras una pista fuerte, ni acertar por el motivo
+equivocado.
 
-Además, cada concepto guarda `ultima_verificacion`: al abrir sesión Guillito
-re-pregunta uno antiguo, y si fallas pasa a `REQUIERE_REPASO`. Es lo que impide
-que el registro solo suba.
+### Tres niveles de problema
 
----
-
-## Errores conceptuales
-
-`errores_conceptuales.yaml` separa dos cosas que no deben mezclarse:
-
-- **`observados`** — errores que cometiste de verdad, con fecha, qué dijiste,
-  cuál es la confusión de fondo y qué explicación funcionó para desmontarla.
-  Si uno reaparece, sube el contador `veces`.
-- **`patrones_vigilados`** — confusiones frecuentes en estos temas que Guillito
-  anticipa. **No son errores tuyos.** Vienen sembrados: R² leído como porcentaje
-  de aciertos, MAE juzgado sin escala, accuracy con clases desbalanceadas, AUC
-  confundido con accuracy, split aleatorio en datos temporales, y otros.
-
-Un error que vuelve tres veces no es un despiste: es un modelo mental
-equivocado, y Guillito debe atacarlo de frente en vez de corregir el síntoma.
+| Nivel | Qué es | Acredita |
+|---|---|---|
+| 1 · Reconocimiento | Del mismo tipo que usa el profesor | — |
+| 2 · Aplicación | Mismo concepto, cambian números o representación | `APLICAR` |
+| 3 · Transferencia | Otro dominio, tú descubres qué aplica | `TRANSFERIR` |
 
 ---
 
-## De dónde sale cada afirmación
+## Cómo evalúa tu profesor
 
-| Etiqueta | Origen |
+Detalle en [`patron_evaluacion.md`](patron_evaluacion.md). El hallazgo central:
+
+**Las 11 fichas del Certamen 2 comparten un mismo campo sin excepción:
+*distinción conceptual clave*.** Cada pregunta se resuelve separando dos
+conceptos vecinos — número de modelos ≠ diversidad, más filas ≠ más columnas,
+precisión ≠ sensibilidad, comparar un punto ≠ comparar un modelo.
+
+**No evalúa definiciones. Evalúa discriminación.**
+
+Peso por bloque:
+
+| Bloque | Peso |
 |---|---|
-| `[FUENTE · NotebookLM: <documento>]` | El cuaderno, citando el documento concreto |
-| `[FUENTE · Repo: <ruta>]` | Tu material, con ruta verificable |
-| `[INFERENCIA]` | Se deriva de lo anterior, pero no está escrito |
-| `[GUILLITO]` | **Explicación pedagógica suya**: analogía, ejemplo inventado |
+| Sobreajuste, generalización, validación, ensambles | **36 %** |
+| Métricas de clasificación | **27 %** |
+| Panorama de IA: LLM, agentes, redes | 18 % |
+| Conducta metodológica | 18 % |
 
-`[GUILLITO]` no es una etiqueta de segunda: una buena analogía es trabajo docente
-legítimo. Pero queda marcada para que no atribuyas al syllabus algo que dijo él.
-
-### Jerarquía de fuentes
-
-1. Material FCD del repositorio
-2. Cuaderno de NotebookLM
-3. Proyectos propios (Melbourne, Galaxy Zoo)
-4. Fuentes académicas externas, solo si lo anterior no alcanza
-
-Dentro del cuaderno: material de la asignatura > documentos UdeC > libros y
-papers > documentación técnica.
+Y en el Certamen 1, la pregunta 9B de calidad de datos **vale 2,0 puntos** —
+más que las ocho preguntas cerradas juntas.
 
 ---
 
-## Material propio por concepto
+## Fuentes
 
-Hay material real para **17 de los 21** conceptos, con 37 rutas verificadas. Las
-cifras de ejemplo salen de `05_RESULTADOS/resultados_temporal.json`: 6.336
-propiedades de 2016 para entrenar, 7.244 de 2017 para evaluar, MAE 185.449 AUD,
-R² 0,765, y **29,1% del test en suburbios que no existen en el train**.
+| Prioridad | Fuente |
+|---|---|
+| 1 | Laboratorios del curso — `08_PRACTICA/`, 12 de los 21 conceptos |
+| 2 | Transcripciones de clase — `09_CLASES/` |
+| 3 | Material FCD del repositorio |
+| 4 | Cuaderno de NotebookLM |
+| 5 | Proyectos propios: Melbourne, Galaxy Zoo |
+| 6 | Fuentes académicas externas |
 
-Los tres recursos más valiosos:
+Toda afirmación lleva etiqueta: `[FUENTE · NotebookLM: …]`, `[FUENTE · Repo: …]`,
+`[INFERENCIA]` o `[GUILLITO]` para explicación pedagógica propia.
 
-- **`99_ARCHIVO/_obsoleto_split_aleatorio/`** — versión anterior que anunciaba
-  *"81% Precisión"* con split aleatorio y fue invalidada por el split temporal.
-  Un error real, propio y documentado: el mejor material posible para entender
-  fuga de información y por qué un número más alto puede ser un modelo peor.
-- **El 29,1% de suburbios nuevos** — generalización medida, no teórica.
-- **`02_PROYECTO_FCD/Desafio/`** (Galaxy Zoo) — única fuente propia de matriz de
-  confusión, precision/recall/F1, AUC y ensembles.
+### Material de terceros
 
-Para redes neuronales, deep learning, LLM y agentes no hay trabajo propio
-ejecutado, pero **sí hay fuentes**: `FCD-2026-2_08_DL_LLMs_Agents.pdf`,
-`Resumen_Clase8_DL_LLMs_Agentes.pdf` y el PDF de Deep Learning del Magíster.
+`01_DOCUMENTACION/06_CERTAMEN1/` procede de un compañero. Los **enunciados** son
+fiables; las **justificaciones no están verificadas** — el documento se titula
+"Pauta Oficial" pero cierra con campos de plantilla sin rellenar.
 
 ---
 
-## El cuaderno de NotebookLM
+## Mantenimiento
 
-**66 fuentes**, todas procesadas: 32 páginas web, 29 PDF, 3 Word, 2 Markdown.
-
-Incluye el material de la asignatura (`Syllabus Fundamentos de Ciencia de
-Datos.docx`, presentaciones `FCD-2026-2_02` a `_08`, resúmenes de clase, dos
-guías de autoestudio), documentos UdeC (tesis de detección de fraude, edad de
-jubilación, XGBoost con SHAP, diploma de Ingeniería UdeC) y bibliografía de
-referencia (ISLR, OpenIntro Statistics, el paper de XGBoost, *50 Years of Data
-Science*, principios FAIR, guía de scikit-learn).
-
-### Limitaciones que conviene conocer
-
-Google **no ofrece API oficial de NotebookLM para cuentas personales** — solo
-para *Gemini Notebook Enterprise*. La integración usa
-[`notebooklm-py`](https://github.com/teng-lin/notebooklm-py) (MIT) sobre **APIs
-internas no documentadas con cookies de sesión**. Por tanto:
-
-- Google puede romperla sin aviso.
-- Las cookies caducan cada pocas semanas.
-- Aplican límites de uso.
-
-Guillito **no depende** de ella: si falla, avisa, sigue con el material del
-repositorio y etiqueta el resto. La degradación está diseñada.
-
-Las credenciales viven en `C:\Users\herre\.notebooklm\`, **fuera del
-repositorio**. Nunca deben entrar en Git.
-
-Re-autenticar cuando caduque:
+Tras cada sesión, Guillito regenera el resumen que se inyecta la próxima vez:
 
 ```bash
-notebooklm login --browser msedge    # Playwright abre Edge con perfil aislado
-notebooklm auth check --json         # debe devolver "status": "ok"
+python 03_CODIGO/guillito_estado.py
 ```
 
-> Nota: importar cookies con `--browser-cookies edge` **no funciona**. Edge y
-> Chrome cifran las cookies con App-Bound Encryption, que ata la clave al
-> proceso del navegador. Usa siempre `--browser msedge`.
+Transcribir una clase nueva:
+
+```bash
+uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
+uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
+```
+
+Reautenticar NotebookLM cuando caduque:
+
+```bash
+notebooklm login --browser msedge
+notebooklm auth check --test --json     # debe devolver "status": "ok"
+```
+
+Guillito **no depende** de NotebookLM: si falla, avisa, sigue con el material
+local y etiqueta el resto.
+
+---
+
+## Para reutilizarlo en otro curso
+
+1. Editar `guillito.config.yaml`: alumno, asignatura, proyectos
+2. Reescribir `curriculum.yaml` con los conceptos del nuevo programa
+3. Vaciar `progreso.yaml`, `errores_conceptuales.yaml` y `bitacora/`
+4. Reconstruir `patron_evaluacion.md` desde las evaluaciones anteriores del
+   nuevo profesor — es lo que más cambia y lo que más rinde
+5. `python 03_CODIGO/guillito_estado.py`
+
+Las skills de `.claude/skills/` **no se tocan**: leen de estos archivos.

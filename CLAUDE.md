@@ -26,8 +26,26 @@ Ejemplos que deben activar a Guillito:
 - "repasemos regresion"
 - `/guillito`
 
-Para ver el estado de aprendizaje sin estudiar: skill `guillito-progreso` o
-`/guillito-progreso`.
+### Las cuatro skills
+
+| Comando | Qué hace | Contexto |
+|---|---|---|
+| `/guillito` | Sesión de estudio: problema → respuesta → diagnóstico | Conversación |
+| `/guillito-progreso` | Informe de estado. Solo lectura | Conversación |
+| `/guillito-visual <concepto>` | Genera un HTML explicativo | Aislado (`fork`) |
+| `/guillito-corregir` | Corrige un lote de respuestas escritas | Aislado (`fork`) |
+
+El tutor **no puede** ser subagente: un subagente no sabe esperar respuesta del
+usuario. Corregir y construir artefactos sí, porque no necesitan esperarlo.
+
+### La exposición va a un archivo, no al chat
+
+Explicar un concepto nuevo genera un HTML en `07_GUILLITO/visual/`. El chat
+queda para el bucle socrático: preguntar, esperar, diagnosticar, dar una pista.
+Es la garantía G9 de `spec.md`.
+
+Y antes de una fórmula: situación real → qué pregunta responde → números
+pequeños → **recién entonces** la notación.
 
 ### La regla que no se rompe
 
@@ -40,14 +58,28 @@ ahi.
 
 | Archivo | Que es |
 |---|---|
-| `07_GUILLITO/curriculum.yaml` | ESTATICO. Los 21 conceptos, orden, prerrequisitos, material |
-| `07_GUILLITO/progreso.yaml` | DINAMICO. Estado por concepto y cadena de evidencia |
+| `07_GUILLITO/00_LEEME.md` | Instrucciones de uso. **Empezar aqui** |
+| `07_GUILLITO/curriculum.yaml` | ESTATICO. 21 conceptos, prerrequisitos, material, practicos |
+| `07_GUILLITO/progreso.yaml` | DINAMICO. Estado y cadena de evidencia |
 | `07_GUILLITO/errores_conceptuales.yaml` | Errores observados + patrones a vigilar |
+| `07_GUILLITO/estado.md` | Resumen autogenerado: **es lo que se inyecta en cada sesion** |
+| `07_GUILLITO/patron_evaluacion.md` | Como evalua el profesor, desde sus certamenes reales |
+| `07_GUILLITO/guillito.config.yaml` | DATOS del alumno. Las reglas viven en la skill |
+| `07_GUILLITO/referencia/` | fuentes, memoria y material. Se cargan bajo demanda |
+| `07_GUILLITO/visual/` | Artefactos HTML para el navegador |
+| `07_GUILLITO/guias/` · `cuadernillos/` · `certamenes/` | Material escrito: referencia, con solucion, sin solucion |
 | `07_GUILLITO/bitacora/` | Una entrada por sesion |
-| `07_GUILLITO/00_LEEME.md` | Instrucciones de uso |
+| `09_CLASES/transcripciones/` | Clases transcritas con faster-whisper |
 
 Solo Guillito escribe en `progreso.yaml`, `errores_conceptuales.yaml` y
 `bitacora/`. `curriculum.yaml` es de solo lectura durante las sesiones.
+
+Tras cada sesion hay que regenerar el resumen, o la siguiente abre con datos
+viejos:
+
+```bash
+python 03_CODIGO/guillito_estado.py
+```
 
 ### Estados y evidencia
 

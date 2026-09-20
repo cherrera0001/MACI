@@ -71,14 +71,27 @@ F:\MACI\
 │   └── visualizaciones\viz_1..10.html  visualizaciones interactivas
 │
 ├── 07_GUILLITO\                    ← tutor personal de Ciencia de Datos
-│   ├── 00_LEEME.md                     cómo se usa
+│   ├── 00_LEEME.md                     cómo se usa — EMPEZAR AQUÍ
+│   ├── guillito.config.yaml            datos del alumno; las reglas van en la skill
 │   ├── curriculum.yaml                 21 conceptos, prerrequisitos, material
 │   ├── progreso.yaml                   estado y cadena de evidencia
 │   ├── errores_conceptuales.yaml       errores observados + patrones a vigilar
-│   ├── osint_nuble.md                  catálogo de fuentes públicas de Ñuble
-│   ├── osint_gran_concepcion.md        fuentes del Gran Concepción
-│   ├── transferencia\                  dataset sintético para prueba de transferencia
+│   ├── estado.md                       resumen autogenerado que se inyecta
+│   ├── patron_evaluacion.md            cómo evalúa el profesor, desde sus certámenes
+│   ├── referencia\                     fuentes, memoria, material — bajo demanda
+│   ├── visual\                         artefactos HTML interactivos
+│   ├── guias\                          material de referencia escrito
+│   ├── cuadernillos\                   problemas CON solución — enseñan
+│   ├── certamenes\                     problemas SIN solución — miden
+│   ├── entregas\                       tus respuestas, para corregir
+│   ├── transferencia\                  dataset sintético de otro dominio
+│   ├── osint_*.md                      fuentes públicas de Ñuble y Gran Concepción
 │   └── bitacora\                       una entrada por sesión
+│
+├── 09_CLASES\                      ← clases transcritas
+│   └── transcripciones\                .md con marcas de tiempo + .txt para grep
+│
+├── 10_GRABACIÓN_CLASES\            ← vídeos originales. NO se versionan
 │
 ├── 08_PRACTICA\                    ← laboratorios de la asignatura
 │   ├── 00_LEEME.md                     contenido y concepto que cubre cada uno
@@ -108,10 +121,20 @@ explica, pregunta, **espera tu respuesta**, analiza tu razonamiento y registra e
 avance. Un concepto solo llega a `DOMINADO` con cuatro evidencias: explicar,
 aplicar, interpretar resultados y transferir a otro problema.
 
-| Comando | Qué hace |
-|---|---|
-| `/guillito` | Abre sesión de estudio |
-| `/guillito-progreso` | Informe de estado. Solo lectura |
+| Comando | Qué hace | Contexto |
+|---|---|---|
+| `/guillito` | Sesión de estudio: problema → tu respuesta → diagnóstico | Conversación |
+| `/guillito-progreso` | Informe de estado. Solo lectura | Conversación |
+| `/guillito-visual <concepto>` | Genera un HTML explicativo | Aislado |
+| `/guillito-corregir` | Corrige un lote de respuestas escritas | Aislado |
+
+El tutor no puede ser un subagente —no sabría esperar tu respuesta—, pero
+corregir y construir artefactos sí corren aislados, sin gastar el contexto de la
+sesión.
+
+**Las explicaciones van a un archivo, no al chat.** Cada concepto genera un HTML
+interactivo en `07_GUILLITO/visual/`, que funciona sin conexión. El chat queda
+para preguntar, esperar y diagnosticar.
 
 Detalle en [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md). Garantías y
 método en [`spec.md`](spec.md).
@@ -142,6 +165,24 @@ Jerarquía, de mayor a menor prioridad:
 
 Toda afirmación de Guillito lleva etiqueta de origen: `[FUENTE · NotebookLM: …]`,
 `[FUENTE · Repo: …]`, `[INFERENCIA]` o `[GUILLITO]` para explicación propia.
+
+### Las clases transcritas
+
+`09_CLASES/transcripciones/` — grabaciones pasadas a texto con
+[`faster-whisper`](https://github.com/SYSTRAN/faster-whisper) en local, sin GPU.
+Dos formatos por clase: `.md` con marcas de tiempo por segmento, y `_plano.txt`
+para buscar con `grep`.
+
+Se versiona la transcripción, **nunca el vídeo**. Transcribir una clase nueva:
+
+```bash
+uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
+uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
+```
+
+Valen como fuente de prioridad alta: contienen los ejemplos del profesor con sus
+propias palabras. La cabecera advierte que son automáticas y pueden errar en
+términos técnicos.
 
 ### Los prácticos
 
