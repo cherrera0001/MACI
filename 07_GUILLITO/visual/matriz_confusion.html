@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Matriz de confusión y métricas · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.65 "Segoe UI",system-ui,sans-serif}
+  main{max-width:880px;margin:0 auto}
+  h1{font-size:1.6rem;margin:0 0 .3rem}
+  h2{font-size:1.15rem;margin:2.5rem 0 .6rem;padding-top:1.2rem;
+     border-top:1px solid var(--linea)}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;
+         padding:1.4rem;margin:1rem 0}
+  .mtz{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;max-width:520px;
+       margin:0 auto}
+  .mtz .cab{display:flex;align-items:center;justify-content:center;
+            font-size:.82rem;font-weight:600;color:var(--suave);padding:.4rem;
+            text-align:center}
+  .celda{border-radius:8px;padding:1rem .6rem;text-align:center;cursor:pointer;
+         transition:transform .12s, box-shadow .12s;border:2px solid transparent}
+  .celda:hover{transform:translateY(-2px);box-shadow:0 4px 12px #0002}
+  .celda.sel{border-color:var(--tinta)}
+  .celda .v{font-size:1.9rem;font-weight:700;font-variant-numeric:tabular-nums;
+            line-height:1.1}
+  .celda .s{font-size:.78rem;font-weight:700;letter-spacing:.06em;margin-top:.2rem}
+  .tp{background:#d1fae5;color:#065f46}
+  .tn{background:#dbeafe;color:#1e3a8a}
+  .fp{background:#fed7aa;color:#9a3412}
+  .fn{background:#fecaca;color:#991b1b}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;
+        align-items:center;margin-top:1.4rem;max-width:520px;margin-inline:auto}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:3rem;
+               text-align:right}
+  input[type=range]{width:100%}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+       gap:.7rem;margin-top:1.4rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.8rem .5rem;
+           text-align:center}
+  .met .n{font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.74rem;color:var(--suave);text-transform:uppercase;
+          letter-spacing:.04em;margin-top:.15rem}
+  .met .f{font-size:.72rem;color:var(--suave);font-family:ui-monospace,monospace;
+          margin-top:.3rem}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.8rem 1rem;
+        margin:1rem 0;font-size:.93rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1rem;
+         margin:1rem 0}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.8rem 1rem;
+           margin:1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
+  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;
+         padding:.45rem .9rem;font-size:.86rem;cursor:pointer;font-weight:600;
+         margin-right:.4rem}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  button.alt:hover{background:#4b5563}
+  #expl{margin-top:1.2rem;padding:.9rem 1.1rem;background:var(--fondo);
+        border-radius:8px;font-size:.93rem;min-height:3.2rem}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
+         color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Matriz de confusión y sus métricas</h1>
+<p class="sub">Pulsa cualquier casilla para entender qué es. Mueve las barras y
+mira qué métrica se rompe.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<h2>El problema, sin matemáticas</h2>
+
+<p>Un laboratorio analiza <strong>mamografías</strong> con un modelo que responde
+una sola cosa: <em>¿hay cáncer, sí o no?</em></p>
+
+<p>Como hay dos respuestas posibles y dos realidades posibles, solo pueden pasar
+cuatro cosas. Esas cuatro cosas son la matriz de confusión — nada más.</p>
+
+<div class="panel">
+  <div class="mtz">
+    <div class="cab"></div>
+    <div class="cab">El modelo dice<br><strong>SÍ hay cáncer</strong></div>
+    <div class="cab">El modelo dice<br><strong>NO hay cáncer</strong></div>
+
+    <div class="cab">Realmente<br><strong>SÍ tiene</strong></div>
+    <div class="celda tp" data-k="tp"><div class="v" id="vTP">–</div><div class="s">TP</div></div>
+    <div class="celda fn" data-k="fn"><div class="v" id="vFN">–</div><div class="s">FN</div></div>
+
+    <div class="cab">Realmente<br><strong>NO tiene</strong></div>
+    <div class="celda fp" data-k="fp"><div class="v" id="vFP">–</div><div class="s">FP</div></div>
+    <div class="celda tn" data-k="tn"><div class="v" id="vTN">–</div><div class="s">TN</div></div>
+  </div>
+
+  <div id="expl">Pulsa una casilla para ver qué significa en el laboratorio.</div>
+
+  <div class="ctrl">
+    <label for="pac">Pacientes analizadas</label>
+    <input type="range" id="pac" min="100" max="2000" step="100" value="1000">
+    <output id="pacOut">1000</output>
+
+    <label for="prev">Cuántas tienen cáncer</label>
+    <input type="range" id="prev" min="1" max="50" step="1" value="10">
+    <output id="prevOut">1,0 %</output>
+
+    <label for="sens">Detecta enfermas</label>
+    <input type="range" id="sens" min="0" max="100" step="1" value="80">
+    <output id="sensOut">80 %</output>
+
+    <label for="espe">Descarta sanas</label>
+    <input type="range" id="espe" min="0" max="100" step="1" value="90">
+    <output id="espeOut">90 %</output>
+  </div>
+
+  <div class="met">
+    <div><div class="n" id="mAcc">–</div><div class="e">Exactitud</div><div class="f">(TP+TN)/todo</div></div>
+    <div><div class="n" id="mPre">–</div><div class="e">Precisión</div><div class="f">TP/(TP+FP)</div></div>
+    <div><div class="n" id="mRec">–</div><div class="e">Sensibilidad</div><div class="f">TP/(TP+FN)</div></div>
+    <div><div class="n" id="mFpr">–</div><div class="e">FPR</div><div class="f">FP/(FP+TN)</div></div>
+    <div><div class="n" id="mF1">–</div><div class="e">F1</div><div class="f">2PR/(P+R)</div></div>
+  </div>
+
+  <p style="margin-top:1.2rem;text-align:center">
+    <button id="bTonto">El modelo tonto</button>
+    <button id="bBueno" class="alt">Un modelo bueno</button>
+    <button id="bEquil" class="alt">Clases equilibradas</button>
+  </p>
+</div>
+
+<h2>1 · Las cuatro casillas, en el laboratorio</h2>
+
+<table>
+<tr><th>Sigla</th><th>Qué pasó</th><th>Consecuencia real</th></tr>
+<tr><td><strong>TP</strong></td><td>Tenía cáncer y el modelo lo detectó</td><td>Se trata a tiempo</td></tr>
+<tr><td><strong>TN</strong></td><td>No tenía y el modelo dijo que no</td><td>Se va tranquila a casa</td></tr>
+<tr><td><strong>FP</strong></td><td>No tenía, pero el modelo dijo que sí</td><td><strong>Falsa alarma.</strong> Angustia y biopsia innecesaria</td></tr>
+<tr><td><strong>FN</strong></td><td>Sí tenía, y el modelo dijo que no</td><td><strong>Cáncer no detectado.</strong> El error grave</td></tr>
+</table>
+
+<div class="clave">
+<strong>Aquí se ve por qué los errores no valen lo mismo.</strong> Un FP cuesta
+una biopsia. Un FN puede costar una vida. Ninguna métrica que mezcle los dos en
+un solo número sabe esto: lo tienes que decidir tú, según el problema.
+</div>
+
+<h2>2 · Lo único que cambia entre métricas: el denominador</h2>
+
+<p>Las cuatro métricas usan casi los mismos números. <strong>Lo que las
+distingue es entre qué dividen</strong>, y eso equivale a qué pregunta responden.</p>
+
+<table>
+<tr><th>Métrica</th><th>Divide entre</th><th>La pregunta que responde</th></tr>
+<tr><td><strong>Exactitud</strong></td><td>Todas las pacientes</td><td>¿Cuántas veces acerté, de todas?</td></tr>
+<tr><td><strong>Precisión</strong></td><td>Las que dije que sí</td><td>De las que marqué, ¿cuántas tenían de verdad?</td></tr>
+<tr><td><strong>Sensibilidad</strong></td><td>Las que sí tenían</td><td>De todas las enfermas, ¿a cuántas encontré?</td></tr>
+<tr><td><strong>FPR</strong></td><td>Las que no tenían</td><td>De las sanas, ¿a cuántas asusté sin motivo?</td></tr>
+</table>
+
+<div class="peligro">
+<strong>FPR no es «uno menos la precisión».</strong> Son cocientes con
+denominadores distintos: FPR divide entre <em>sanas reales</em>; la precisión,
+entre <em>marcadas como enfermas</em>. Confundirlas fue una de las trampas del
+Certamen 2.
+</div>
+
+<h2>3 · Por qué la exactitud engaña</h2>
+
+<p>Pulsa <strong>«El modelo tonto»</strong>: un modelo que dice
+<em>«ninguna tiene cáncer»</em> a todo el mundo, siempre.</p>
+
+<p>Mira su exactitud. Después mira su sensibilidad.</p>
+
+<div class="nota">
+Con enfermedades raras, decir «no» a todas acierta casi siempre — y no detecta a
+<strong>nadie</strong>. Por eso en tu desafío Galaxy Zoo la métrica oficial era
+<strong>F1-macro</strong> y no exactitud: con clases desbalanceadas, la exactitud
+premia al modelo que no aprendió nada.
+</div>
+
+<p>Ahora pulsa <strong>«Clases equilibradas»</strong> y repite. Con mitad y mitad
+la exactitud vuelve a ser informativa. <strong>La métrica no es buena o mala en
+abstracto: depende de cómo están repartidas las clases.</strong></p>
+
+<h2>4 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. Declarar cuál es la CLASE POSITIVA        "positivo = tiene cáncer"
+2. Localizar positivos reales    → fila
+   Localizar positivos predichos → columna
+3. Escribir TP, TN, FP, FN
+4. Verificar que los marginales cierren      filas, columnas y total
+5. Identificar qué métrica piden
+6. Escribir la FÓRMULA antes de sustituir
+7. Sustituir, calcular
+8. Interpretar en palabras del problema      no dejar el número solo
+</pre>
+
+<div class="clave">
+El paso 4 se salta siempre y es gratis: si los cuatro números no suman el total,
+contaste mal, y todo lo que sigue estará mal.
+</div>
+
+<footer>
+Generado por Guillito · <code>07_GUILLITO/visual/matriz_confusion.html</code><br>
+Datos simulados. Funciona sin conexión.
+</footer>
+
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = (n,d=3) => isFinite(n) ? n.toFixed(d).replace('.',',') : '–';
+
+const TXT = {
+  tp:'<strong>TP · Verdadero Positivo.</strong> Tenía cáncer y el modelo lo detectó. Es el acierto que justifica todo el sistema: se trata a tiempo.',
+  tn:'<strong>TN · Verdadero Negativo.</strong> No tenía cáncer y el modelo dijo que no. Acierto silencioso — nadie lo celebra, pero evita biopsias innecesarias.',
+  fp:'<strong>FP · Falso Positivo.</strong> No tenía cáncer y el modelo dijo que sí. Falsa alarma: angustia, biopsia, costo. Molesto, no mortal.',
+  fn:'<strong>FN · Falso Negativo.</strong> Tenía cáncer y el modelo dijo que no. Se va a casa creyéndose sana. <strong>Este es el error que mata</strong>, y el que ninguna métrica global castiga lo suficiente.'
+};
+
+document.querySelectorAll('.celda').forEach(c => {
+  c.onclick = () => {
+    document.querySelectorAll('.celda').forEach(x => x.classList.remove('sel'));
+    c.classList.add('sel');
+    $('expl').innerHTML = TXT[c.dataset.k];
+  };
+});
+
+function calc(){
+  const n     = +$('pac').value;
+  const prev  = +$('prev').value / 1000;   // 0,1 % a 5 %
+  const sens  = +$('sens').value / 100;
+  const espe  = +$('espe').value / 100;
+
+  const enfermas = Math.round(n * prev);
+  const sanas    = n - enfermas;
+  const TP = Math.round(enfermas * sens), FN = enfermas - TP;
+  const TN = Math.round(sanas * espe),    FP = sanas - TN;
+
+  $('vTP').textContent = TP; $('vFN').textContent = FN;
+  $('vFP').textContent = FP; $('vTN').textContent = TN;
+
+  $('pacOut').textContent  = n;
+  $('prevOut').textContent = fmt(prev*100,1) + ' %';
+  $('sensOut').textContent = $('sens').value + ' %';
+  $('espeOut').textContent = $('espe').value + ' %';
+
+  const acc = (TP+TN)/n;
+  const pre = TP+FP ? TP/(TP+FP) : NaN;
+  const rec = TP+FN ? TP/(TP+FN) : NaN;
+  const fpr = FP+TN ? FP/(FP+TN) : NaN;
+  const f1  = (pre+rec) ? 2*pre*rec/(pre+rec) : NaN;
+
+  $('mAcc').textContent = fmt(acc);
+  $('mPre').textContent = fmt(pre);
+  $('mRec').textContent = fmt(rec);
+  $('mFpr').textContent = fmt(fpr);
+  $('mF1').textContent  = fmt(f1);
+
+  // La exactitud alta con sensibilidad baja es la trampa: marcarla.
+  $('mAcc').style.color = (acc > .9 && rec < .3) ? '#dc2626' : '#1a1a1a';
+  $('mRec').style.color = rec < .3 ? '#dc2626' : '#1a1a1a';
+}
+
+['pac','prev','sens','espe'].forEach(id => $(id).oninput = calc);
+
+$('bTonto').onclick = () => {
+  $('prev').value=10; $('sens').value=0; $('espe').value=100; calc();
+  $('expl').innerHTML = '<strong>El modelo tonto.</strong> Dice «no tiene cáncer» a todas. Exactitud altísima, sensibilidad <strong>cero</strong>: no detectó a una sola enferma. Si reportas solo la exactitud, este modelo parece excelente.';
+};
+$('bBueno').onclick = () => {
+  $('prev').value=10; $('sens').value=92; $('espe').value=95; calc();
+  $('expl').innerHTML = '<strong>Un modelo bueno.</strong> Detecta al 92 % de las enfermas y descarta al 95 % de las sanas. Fíjate igual en la precisión: aun así, la mayoría de las que marca como positivas están sanas. Eso pasa siempre con enfermedades raras.';
+};
+$('bEquil').onclick = () => {
+  $('prev').value=50; $('sens').value=80; $('espe').value=90; calc();
+  $('expl').innerHTML = '<strong>Clases equilibradas.</strong> Con la mitad enferma y la mitad sana, la exactitud vuelve a significar algo. La métrica no es buena o mala en abstracto: depende del reparto de las clases.';
+};
+
+calc();
+</script>
+</body>
+</html>
