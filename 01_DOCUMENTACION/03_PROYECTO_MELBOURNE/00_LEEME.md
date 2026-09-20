@@ -10,7 +10,7 @@ Esa frase gobierna todas las decisiones de diseño: obliga a una partición **te
 
 ## Hito 1 — Análisis exploratorio y modelamiento inicial
 
-Ubicación: `..\..\Fundamentos de ciencia de datos\Hito1\`
+Ubicación: [`../../02_PROYECTO_FCD/Hito1/`](../../02_PROYECTO_FCD/Hito1/)
 
 | Archivo | Contenido |
 |---|---|
@@ -25,17 +25,17 @@ Ubicación: `..\..\Fundamentos de ciencia de datos\Hito1\`
 
 ## Hito 2 — Modelamiento final, comparación estadística y réplica
 
-Capa ejecutable, en la raíz `F:\MACI\`. Orden de ejecución:
+Capa ejecutable: scripts en `03_CODIGO/`, ejecutar **desde `F:\MACI`**. Orden:
 
 | # | Script | Salida | Qué hace |
 |---|---|---|---|
-| 1 | `modelamiento_temporal.py` | `resultados_temporal.json` | Seis modelos × dos targets (crudo y `log1p`) × cinco semillas. CV 5-fold dentro de 2016 para seleccionar; test 2017 una sola vez |
-| 2 | `bootstrap_comparacion.py` | `comparacion_estadistica.json`, `predicciones_2017.csv` | Bootstrap pareado con IC 95 % sobre las 7.244 propiedades de 2017, error por segmento, importancia por permutación |
-| 3 | `preparar_dashai.py` + `dashai_driver.py all` | `housing_dashai_2016_2017.csv`, `dashai_resultados.json` | Réplica de la misma partición en DashAI, como verificación independiente del ordenamiento |
-| 4 | `generar_informe.py` | `INFORME_MODELO_FCD_P3.md` | Informe final. **Ningún número escrito a mano** |
-| 5 | `generar_pitch_v2.py` | `PITCH_HITO2_REVISION.md`, `Pitch_Hito2_v2.pptx` | Revisión lámina por lámina y presentación |
-| — | `housing_visualizations.py` | `viz_1..viz_10 (*.html)` | Visualizaciones interactivas |
-| — | `auditoria_dashai_vs_crudo.py`, `correlacion_dashai.py` | `auditoria_*.json`, `correlacion_*.json` | Controles de consistencia |
+| 1 | `03_CODIGO/modelamiento_temporal.py` | `05_RESULTADOS/resultados_temporal.json` | Seis modelos × dos targets (crudo y `log1p`) × cinco semillas. CV 5-fold dentro de 2016; test 2017 una sola vez |
+| 2 | `03_CODIGO/bootstrap_comparacion.py` | `05_RESULTADOS/comparacion_estadistica.json`, `predicciones_2017.csv` | Bootstrap pareado IC 95 % sobre 2017, segmentos, permutación |
+| 3 | `03_CODIGO/preparar_dashai.py` + `dashai_driver.py all` | `04_DATOS/housing_dashai_2016_2017.csv`, `05_RESULTADOS/dashai_*.json` | Réplica independiente en DashAI |
+| 4 | `03_CODIGO/generar_informe.py` | `06_ENTREGABLES/INFORME_MODELO_FCD_P3.md` | Informe final. **Ningún número escrito a mano** |
+| 5 | `03_CODIGO/generar_pitch_v2.py` | `06_ENTREGABLES/PITCH_HITO2_REVISION.md`, `Pitch_Hito2_v2.pptx` | Revisión lámina por lámina y presentación |
+| — | `03_CODIGO/housing_visualizations.py` | `06_ENTREGABLES/visualizaciones/viz_*.html` | Visualizaciones interactivas |
+| — | `auditoria_dashai_vs_crudo.py`, `correlacion_dashai.py` | `05_RESULTADOS/auditoria_*.json`, `correlacion_*.json` | Controles de consistencia |
 
 ---
 
@@ -79,7 +79,7 @@ El ranking por CV dentro de 2016 **coincide** con el ranking en el test de 2017:
 
 | Documento | Ubicación |
 |---|---|
-| Informe final del modelamiento | `..\..\INFORME_MODELO_FCD_P3.md` |
-| Revisión del pitch | `..\..\PITCH_HITO2_REVISION.md` |
-| Presentación Hito 2 | `..\..\Pitch_Hito2_v2.pptx` / `.pdf` |
-| Versión invalidada y su corrección | `..\05_HISTORICO\00_LEEME.md` |
+| Informe final del modelamiento | [`../../06_ENTREGABLES/INFORME_MODELO_FCD_P3.md`](../../06_ENTREGABLES/INFORME_MODELO_FCD_P3.md) |
+| Revisión del pitch | [`../../06_ENTREGABLES/PITCH_HITO2_REVISION.md`](../../06_ENTREGABLES/PITCH_HITO2_REVISION.md) |
+| Presentación Hito 2 | [`../../06_ENTREGABLES/Pitch_Hito2_v2.pptx`](../../06_ENTREGABLES/Pitch_Hito2_v2.pptx) / `.pdf` |
+| Versión invalidada y su corrección | [`../05_HISTORICO/00_LEEME.md`](../05_HISTORICO/00_LEEME.md) |

@@ -50,6 +50,7 @@ El documento declara AUC ≈ 0,78 y ≈ 0,68. Calculando el área por trapecios 
 | 3 | [`03_DEFENSA_ORAL_CERTAMEN.md`](03_DEFENSA_ORAL_CERTAMEN.md) — guion de trabajo por pregunta | 30 min, más práctica en voz alta |
 | 4 | [`01_ANALISIS_RECONSTRUCCION_CERTAMEN.md`](01_ANALISIS_RECONSTRUCCION_CERTAMEN.md) — análisis completo en 5 fases | 60 min |
 | — | [`Certamen2_Reconstruccion_Completa.docx`](Certamen2_Reconstruccion_Completa.docx) — los tres consolidados en un Word | equivalente |
+| — | [`AUDITORIA_FORENSE_FECHAS_DOCUMENTOS.md`](AUDITORIA_FORENSE_FECHAS_DOCUMENTOS.md) — solo si la pregunta es cronología de archivos | técnico |
 
 ## Contenido del certamen (referencia rápida)
 
