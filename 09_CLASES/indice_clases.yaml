@@ -12,7 +12,7 @@
 meta:
   creado: '2026-09-20'
   actualizado: '2026-09-20'
-  total_clases: 6
+  total_clases: 10
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -238,4 +238,115 @@ clases:
       matriz_confusion:
         menciones: 1
         primera_marca: 0:46:39
+    notebooklm: null
+  03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio:
+    archivo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md
+    plano: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      limpieza_preparacion:
+        menciones: 16
+        primera_marca: 0:00:34
+      fundamentos_ciencia_datos:
+        menciones: 9
+        primera_marca: 0:00:00
+      datos_features_target:
+        menciones: 4
+        primera_marca: 0:51:00
+      eda:
+        menciones: 1
+        primera_marca: 0:07:22
+      clasificacion:
+        menciones: 1
+        primera_marca: 0:13:31
+    notebooklm: null
+  04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio:
+    archivo: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio.md
+    plano: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      limpieza_preparacion:
+        menciones: 13
+        primera_marca: 0:10:23
+      eda:
+        menciones: 10
+        primera_marca: '1:16:15'
+      datos_features_target:
+        menciones: 3
+        primera_marca: '1:23:26'
+      fundamentos_ciencia_datos:
+        menciones: 1
+        primera_marca: 0:00:00
+    notebooklm: null
+  04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio:
+    archivo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md
+    plano: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      eda:
+        menciones: 100
+        primera_marca: 0:18:43
+      fundamentos_ciencia_datos:
+        menciones: 7
+        primera_marca: 0:00:00
+      clasificacion:
+        menciones: 7
+        primera_marca: '1:07:48'
+      limpieza_preparacion:
+        menciones: 4
+        primera_marca: 0:08:10
+      datos_features_target:
+        menciones: 3
+        primera_marca: 0:08:31
+      train_validation_test:
+        menciones: 1
+        primera_marca: 0:03:54
+      roc_auc:
+        menciones: 1
+        primera_marca: 0:59:42
+    notebooklm: null
+  2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos:
+    archivo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md
+    plano: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
+    integrada: '2026-09-20'
+    conceptos:
+      redes_neuronales:
+        menciones: 85
+        primera_marca: '1:38:56'
+      agentes_ia:
+        menciones: 48
+        primera_marca: '1:24:49'
+      llm:
+        menciones: 36
+        primera_marca: '1:24:47'
+      deep_learning:
+        menciones: 29
+        primera_marca: '1:24:45'
+      train_validation_test:
+        menciones: 17
+        primera_marca: 0:11:11
+      regresion:
+        menciones: 13
+        primera_marca: '1:58:56'
+      eda:
+        menciones: 12
+        primera_marca: '1:05:54'
+      datos_features_target:
+        menciones: 11
+        primera_marca: '1:38:04'
+      clasificacion:
+        menciones: 8
+        primera_marca: 0:18:45
+      limpieza_preparacion:
+        menciones: 2
+        primera_marca: '1:06:30'
+      fundamentos_ciencia_datos:
+        menciones: 1
+        primera_marca: 0:00:00
+      metricas_clasificacion:
+        menciones: 1
+        primera_marca: '2:29:37'
+      random_forest:
+        menciones: 1
+        primera_marca: '1:50:38'
     notebooklm: null

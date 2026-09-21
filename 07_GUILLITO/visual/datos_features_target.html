@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Datos, filas, columnas, features y target · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none;font-size:.93rem}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.45rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.7rem 1rem;margin:.8rem 0}
+  details summary{cursor:pointer;font-weight:600;font-size:.92rem;color:#374151}
+  details[open] summary{margin-bottom:.6rem;border-bottom:1px solid var(--linea);padding-bottom:.5rem}
+  .cols{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0}
+  .cols button{font-family:ui-monospace,monospace;font-size:.82rem;font-weight:600;
+               background:#fff;color:#374151;border:1.5px solid var(--linea);padding:.4rem .7rem;margin:0}
+  .cols button:hover{border-color:var(--azul);background:#eff6ff}
+  .cols button.esY{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+  .cols button.esX{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+  .ctrl{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin:.7rem 0;font-size:.88rem}
+  .ctrl input[type=range]{flex:1;min-width:180px}
+  .ctrl b{font-variant-numeric:tabular-nums;min-width:3.5rem;display:inline-block}
+  .fuente{font-size:.78rem;color:var(--suave);font-style:normal}
+  .tag{font-size:.68rem;font-weight:700;padding:.1rem .4rem;border-radius:4px;background:#e5e7eb;color:#374151}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Datos, filas, columnas, features y target</h1>
+<p class="sub">Qué es una fila, qué es una columna, y por qué el target no es una
+propiedad de la tabla sino una decisión tuya.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase de recuperación del 15 de julio</p>
+
+<div class="grafo">
+  <span class="n">Fundamentos de ciencia de datos</span> →
+  <span class="n aqui">Datos, filas, columnas, features y target</span> →
+  <span class="n">EDA</span>
+  <span class="n">Limpieza</span>
+  <span class="n">Train/val/test</span>
+  <span class="n">Regresión</span>
+</div>
+<p style="font-size:.9rem;color:var(--suave);margin-top:-.4rem">
+Cuatro conceptos dependen directamente de este. Es el cuello de botella del grafo:
+si no separas feature de target no puedes razonar sobre fuga de información, y sin
+eso el resto del curso se cae.
+<span class="fuente">[FUENTE · Repo: <code>07_GUILLITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>]</span></p>
+
+
+<h2>1 · Las dos preguntas de tu profesor</h2>
+
+<p>No enseña esto con vocabulario de pandas ni de <em>tidy data</em>. Enseña dos
+preguntas, y las repite tabla tras tabla:</p>
+
+<div class="repreg">
+  <strong>1. ¿Qué objeto o evento estamos midiendo?</strong> → eso es una <b>fila</b><br>
+  <strong>2. ¿Cuáles son las variables?</strong> → cada una es una <b>columna</b>
+</div>
+
+<div class="cita">
+  «Cuando los datos están bien estructurados, uno espera que cada registro u
+  observación represente las medidas de un solo objeto o evento. […] Cada una de
+  las medidas que yo hago sobre cada uno de estos objetos o eventos, se les llama
+  una variable o atributo. Cada vez que yo hable de variable o atributo voy a
+  estar hablando de lo mismo. Exactamente lo mismo.»
+  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio_plano.txt</code>]</span>
+</div>
+
+<p>Su ejemplo limpio son <b>cilindros</b>. Cada fila, un cilindro. Las columnas:
+altura, radio, y si le gusta o no. Y ahí suelta un término que sí te pueden
+preguntar:</p>
+
+<div class="cita">
+  «El número de atributos que yo tenga, en este caso tres —altura, radio y me
+  gusta o no— es lo que se le llama la <b>dimensión de los datos</b>. Entonces en
+  este caso son tres dimensiones.»
+  <span class="f">[FUENTE · Repo: transcripción del 15 de julio]</span>
+</div>
+
+<div class="clave">
+  <b>Dimensión de los datos = número de atributos = número de columnas de variables.</b>
+  No es el número de filas. No es el tamaño del archivo. Más adelante lo vas a
+  llamar <code>p</code>, y va a ser el protagonista de la sección 8.
+</div>
+
+<p>Él mismo advierte que el caso limpio es el caso raro:</p>
+
+<div class="cita">
+  «Yo les aseguro que más de alguna vez no les ha tocado los datos así, y ustedes
+  han tenido que transformar los datos en algo así, o les va a tocar. Si no les ha
+  tocado, les va a tocar.»
+  <span class="f">[FUENTE · Repo: transcripción del 15 de julio]</span>
+</div>
+
+<div class="vecino">
+  El caso sucio que usó ese mismo día —la tabla de <b>consumo de combustible de
+  camiones</b>, donde la columna <code>CONSUMO</code> mezcla días, camiones y
+  cantidades— está trabajado a fondo en
+  <code>07_GUILLITO/visual/limpieza_preparacion.html</code>, desde el ángulo de la
+  calidad. Acá lo usamos solo para una cosa: en esa tabla <b>una fila no es una
+  observación</b>, y por eso no se puede modelar hasta reestructurarla.
+  Su respuesta: las variables son <b>Día, Camión y Consumo</b>, y lo que se mide es
+  el consumo de un camión en un día.
+</div>
+
+
+<h2>2 · La anatomía completa de un dataset</h2>
+
+<p>La descripción más limpia de un dataset que se dijo en tu curso vino de una
+presentación de compañeros sobre biopsias de mama:</p>
+
+<div class="cita">
+  «…filas del dataset, el cual contiene <b>32 columnas</b>, donde la primera de
+  ellas corresponde al <b>identificador único</b> de la biopsia, la segunda
+  corresponde a nuestra <b>variable objetivo o target</b>, que es <em>diagnosis</em>,
+  que es binaria, que puede ser M o B, maligno o benigno, y otras <b>30 variables
+  que son predictoras</b>. Es decir, que a partir de estas vamos a tratar de
+  predecir la variable de diagnóstico.»
+  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code>]</span>
+</div>
+
+<p>Ahí está todo. Un dataset tiene <b>tres tipos de columna</b>, y confundirlos es
+lo que se castiga:</p>
+
+<table>
+  <tr><th>Tipo</th><th>Cuántas</th><th>Qué hace</th><th>¿Entra al modelo?</th></tr>
+  <tr>
+    <td><b>Identificador</b></td><td class="num">1</td>
+    <td>Distingue una fila de otra. No mide nada del objeto.</td>
+    <td><b>No.</b> Si entra, el modelo memoriza en vez de aprender</td>
+  </tr>
+  <tr>
+    <td><b>Target</b> (<code>y</code>)</td><td class="num">1</td>
+    <td>Lo que quieres predecir</td>
+    <td><b>Nunca como entrada.</b> Es la salida</td>
+  </tr>
+  <tr>
+    <td><b>Features</b> (<code>X</code>)</td><td class="num">30</td>
+    <td>Lo que usas para predecir</td>
+    <td>Sí — <b>las que tú decidas</b></td>
+  </tr>
+</table>
+
+<p>1 + 1 + 30 = 32. La aritmética cuadra, y esa es la comprobación que puedes hacer
+en cualquier tabla del certamen.</p>
+
+<div class="nota">
+  Sobre el identificador, el profesor fue explícito ese día: <em>«tiene que ser un
+  identificador único; yo no le puedo poner a este “Libre 1” y al siguiente
+  “Libre 1”, porque entonces no puedo identificar exactamente cada uno de ellos»</em>.
+  Un ID repetido no es un detalle cosmético: significa que <b>no sabes qué es una
+  fila</b>.
+  <span class="fuente">[FUENTE · Repo: transcripción del 15 de julio]</span>
+</div>
+
+<details>
+  <summary>Ejercicio · Clasifica estas columnas antes de seguir</summary>
+  <p>Tabla de un hospital, una fila por paciente atendido en urgencias.
+  Columnas: <code>RUT</code>, <code>Edad</code>, <code>Temperatura</code>,
+  <code>Presión</code>, <code>Hora_ingreso</code>, <code>Diagnóstico</code>,
+  <code>Hora_alta</code>. Quieres predecir el diagnóstico al momento del ingreso.</p>
+  <p>¿Cuál es el ID, cuál el target, cuáles features, y cuál columna sobra aunque
+  parezca útil?</p>
+  <details>
+    <summary>Ver respuesta</summary>
+    <ul>
+      <li><b>ID:</b> <code>RUT</code> — identifica, no mide. Fuera del modelo.</li>
+      <li><b>Target:</b> <code>Diagnóstico</code>.</li>
+      <li><b>Features:</b> <code>Edad</code>, <code>Temperatura</code>, <code>Presión</code>.</li>
+      <li><b>La que sobra:</b> <code>Hora_alta</code>. Es información real y
+      verdadera, pero <b>no existe todavía</b> en el momento en que quieres
+      predecir. Usarla es fuga de información: el modelo se vería genial en la
+      tabla y sería inútil en urgencias.</li>
+      <li><code>Hora_ingreso</code> es discutible: sirve si la hora del día
+      cambia el tipo de urgencia, pero es la clase de columna que hay que
+      justificar, no asumir.</li>
+    </ul>
+    <p class="fuente">[GUILLITO] Ejercicio construido para este artefacto. El
+    mecanismo —una columna que no existe al momento de predecir— es el mismo que
+    vas a ver en <code>train_validation_test</code>.</p>
+  </details>
+</details>
+
+
+<h2>3 · El target es una decisión, no una propiedad de la columna</h2>
+
+<p>Esta es la parte que la gente no internaliza. <code>Price</code> no «es» el
+target de Melbourne. Es el target <b>porque tú decidiste preguntar cuánto cuesta
+una propiedad</b>. La misma tabla, con otra pregunta, tiene otro target — y hasta
+cambia de tipo de problema.</p>
+
+<div class="pred" id="pred1">
+  <div class="q">Predice antes de tocar nada: si en vez de <code>Price</code> eliges
+  <code>Type</code> (casa / townhouse / unidad) como target, ¿el problema sigue
+  siendo de regresión?</div>
+  <button data-v="si">Sí, sigue siendo regresión</button>
+  <button data-v="no">No, pasa a ser clasificación</button>
+  <button data-v="ns">No sé todavía</button>
+  <div class="veredicto"></div>
+</div>
+
+<div class="panel">
+  <p class="lbl">Haz clic en una columna para convertirla en el target</p>
+  <div class="cols" id="colsMel"></div>
+  <div class="met">
+    <div><div class="n" id="mTarget">Price</div><div class="e">target (y)</div></div>
+    <div><div class="n" id="mP">6</div><div class="e">features (p)</div></div>
+    <div><div class="n" id="mTipo">Regresión</div><div class="e">tipo de problema</div></div>
+  </div>
+  <div class="clave" style="margin-top:1rem" id="mPregunta"></div>
+  <p style="font-size:.88rem;color:var(--suave);margin:0">
+  Columnas reales de tu dataset de Melbourne, antes del <em>encoding</em>.
+  <span class="fuente">[FUENTE · Repo: <code>03_CODIGO/modelamiento_temporal.py</code>, listas <code>NUM</code> y <code>CAT</code>]</span></p>
+</div>
+
+<div class="clave">
+  Fíjate en lo que <b>no</b> cambió al mover el target: los datos. Ni un número de
+  la tabla se movió. Lo único que cambió fue <b>tu pregunta</b>. Por eso el target
+  no se «descubre» mirando el CSV — se decide antes, cuando defines el problema.
+</div>
+
+<p>Tu profesor lo plantea exactamente así cuando interroga a un grupo:
+<em>«¿cuál es la variable que tú quieres predecir?»</em>. No «cuál es el target»:
+<b>cuál quieres tú</b>.
+<span class="fuente">[FUENTE · Repo: transcripción del 14 de agosto]</span></p>
+
+
+<h2>4 · La ecuación, desarmada</h2>
+
+<p>Todo lo anterior se escribe en una línea, y en el certamen te la pueden entregar
+escrita así, sin la tabla al lado:</p>
+
+<div class="ecu">
+  <div class="f">X ∈ ℝ<sup>n×p</sup> &nbsp;·&nbsp; y ∈ ℝ<sup>n</sup> &nbsp;·&nbsp;
+  ŷ<sub>i</sub> = f̂(x<sub>i1</sub>, x<sub>i2</sub>, …, x<sub>ip</sub>)</div>
+  <p style="font-size:.9rem;margin:.2rem 0 .8rem"><b>Qué problema resuelve:</b>
+  poner nombre a cada parte de la tabla para poder hablar de ellas sin dibujarla.
+  <b>De dónde sale:</b> de escribir la tabla como una matriz — las filas de la
+  matriz son las filas de la tabla.</p>
+  <table class="simb">
+    <tr><th>Símbolo</th><th>Qué es en la tabla</th><th>Rol</th></tr>
+    <tr><td>n</td><td>Número de filas. Cuántos objetos o eventos mediste</td>
+        <td><span class="rol r-dato">DATO</span></td></tr>
+    <tr><td>p</td><td>Número de features. La «dimensión de los datos» de tu profesor</td>
+        <td><span class="rol r-decide">LO DECIDES TÚ</span></td></tr>
+    <tr><td>x<sub>ij</sub></td><td>El valor de la variable <em>j</em> en la observación <em>i</em>. Una celda</td>
+        <td><span class="rol r-dato">DATO</span></td></tr>
+    <tr><td>x<sub>i</sub></td><td>La fila <em>i</em> completa: un objeto descrito por sus p atributos</td>
+        <td><span class="rol r-dato">DATO</span></td></tr>
+    <tr><td>y<sub>i</sub></td><td>El valor real del target para la observación <em>i</em></td>
+        <td><span class="rol r-dato">DATO</span> <span class="rol r-decide">CUÁL COLUMNA, TÚ</span></td></tr>
+    <tr><td>ŷ<sub>i</sub></td><td>Lo que el modelo predice para esa fila. El sombrero significa «estimado»</td>
+        <td><span class="rol r-aprende">SALIDA</span></td></tr>
+    <tr><td>f̂</td><td>La regla que mapea una fila a una predicción</td>
+        <td><span class="rol r-aprende">LO APRENDE EL MODELO</span></td></tr>
+  </table>
+</div>
+
+<div class="clave">
+  Léela una vez más y quédate con esto: <b>n y los valores son dato. p e «y» son
+  decisiones tuyas. f̂ es lo único que aprende el modelo.</b> Ese reparto es el
+  concepto entero.
+</div>
+
+<div class="nota">
+  <b>Qué limitación tiene esta notación:</b> asume que toda fila tiene el mismo
+  significado y las mismas p columnas. Si tu tabla mezcla niveles —un día, un
+  camión y una medición en la misma columna— la notación <em>no aplica todavía</em>.
+  No es que el modelo salga malo: es que no hay X.
+</div>
+
+<h3>Camino inverso: te dan los símbolos, reconstruye el fenómeno</h3>
+
+<p>Te entregan solo esto, sin contexto: <code>n = 6.336</code>, <code>p = 23</code>,
+<code>y</code> continuo en AUD, y <code>ŷ<sub>i</sub> = f̂(x<sub>i1</sub>,…,x<sub>i,23</sub>)</code>.</p>
+
+<details>
+  <summary>Antes de abrir: ¿qué es una fila aquí, qué cuenta p, y qué es y?</summary>
+  <ul>
+    <li><b>Una fila</b> = una <b>venta</b> de una propiedad. Ojo: no una propiedad.
+    Si la misma casa se vendió dos veces, son dos filas. El objeto medido es el
+    <em>evento venta</em>.</li>
+    <li><b>n = 6.336</b> son las ventas de <b>2016</b>, tu conjunto de entrenamiento.
+    Las de 2017 son 7.244 y forman otra matriz.</li>
+    <li><b>p = 23</b> son las columnas numéricas que entran al modelo
+    <em>después</em> del encoding — no las variables conceptuales. Eso se
+    desarma en la sección 6.</li>
+    <li><b>y</b> = <code>Price</code>, en dólares australianos. En el modelo final
+    se entrena sobre <code>log1p(Price)</code>, que sigue siendo el mismo target
+    en otra escala.</li>
+  </ul>
+  <p class="fuente">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code> y <code>03_CODIGO/modelamiento_temporal.py</code>]</p>
+</details>
+
+
+<h2>5 · Cuando una fila no es lo que parece</h2>
+
+<p>La pregunta «¿qué es una fila?» parece trivial hasta que te topas con datos
+industriales de verdad. En tu propio curso pasó, con el dataset de flotación
+minera del Proyecto 1:</p>
+
+<div class="cita">
+  «El dataset posee 24 columnas, de las cuales [23] son numéricas y la 24 es una
+  serie de tiempo. Tenemos aproximadamente 4.100 horas de datos. […] No hay nulos
+  explícitos y hay <b>timestamps repetidos</b>. En este tipo de datos esperaría que
+  el timestamp fuera una variable única, pero nosotros tenemos una hipótesis de
+  cómo trabajar eso. […] Tenemos la variable objetivo, que sería el <b>porcentaje
+  de sílice en el concentrado</b>.»
+  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code>]</span>
+</div>
+
+<div class="tension">
+  <b>Ahí está la tensión, y vale la pena detenerse.</b> Si el timestamp se repite,
+  una fila <b>no</b> es «una hora de planta». Hay varias filas por hora. Entonces
+  ¿qué es una fila? Puede ser una lectura de sensor dentro de esa hora, o una
+  celda de flotación distinta. Hasta que no lo resuelvas, no sabes qué significa
+  <code>n</code>, y cualquier promedio que calcules está promediando cosas que no
+  sabes qué son.
+</div>
+
+<p>Nota también cómo el grupo ordenó las 23 features: las agruparon en variables
+<b>de alimentación</b>, <b>de operación</b> y <b>de concentrado</b>. Agrupar las
+features por su rol en el proceso físico es una buena costumbre — y en flotación
+tiene una consecuencia directa: las variables «de concentrado» se miden
+<em>al final</em> del proceso, igual que el target. Usarlas para predecir el
+sílice del concentrado es la misma trampa que la <code>Hora_alta</code> del
+ejercicio de la sección 2.</p>
+<p class="fuente">[INFERENCIA] Lo de la agrupación es cita de clase. La advertencia
+sobre las variables de concentrado es razonamiento de Guillito a partir del
+mecanismo, no algo que el profesor haya dicho ese día.</p>
+
+
+<h2>6 · Columna ≠ variable: 12 se convierten en 23</h2>
+
+<p>Acá hay una trampa que solo se ve con tus propios datos. Tu modelo de Melbourne
+usa <b>12 variables conceptuales</b>:</p>
+
+<table>
+  <tr><th>Grupo</th><th>Variables</th><th>Cuenta</th></tr>
+  <tr><td><code>NUM</code></td>
+      <td><code>Rooms · Distance · Bedroom2 · Bathroom · Car · Landsize · Lattitude · Longtitude · Propertycount</code></td>
+      <td class="num">9</td></tr>
+  <tr><td><code>CAT</code></td>
+      <td><code>Type · Method · Regionname</code></td>
+      <td class="num">3</td></tr>
+  <tr><td colspan="2"><b>Variables conceptuales</b></td><td class="num"><b>12</b></td></tr>
+</table>
+
+<p>Pero el CSV que entra al modelo tiene <b>23 columnas de features</b>. ¿De dónde
+salen las 11 extra?</p>
+
+<table>
+  <tr><th>Origen</th><th>Qué pasó</th><th>Columnas</th></tr>
+  <tr><td>9 numéricas</td><td>Pasan tal cual</td><td class="num">9</td></tr>
+  <tr><td><code>Car</code> tenía faltantes</td><td>Se imputó la mediana <b>y</b> se agregó <code>Car_missing</code>, que marca dónde se imputó</td><td class="num">+1</td></tr>
+  <tr><td><code>Type</code> (3 valores)</td><td>One-hot → <code>Type_h · Type_t · Type_u</code></td><td class="num">+3</td></tr>
+  <tr><td><code>Method</code> (5 valores)</td><td>One-hot → <code>Method_PI · S · SA · SP · VB</code></td><td class="num">+5</td></tr>
+  <tr><td><code>Regionname</code> (5 valores)</td><td>One-hot → 5 columnas <code>Regionname_*</code></td><td class="num">+5</td></tr>
+  <tr><td colspan="2"><b>Total p</b></td><td class="num"><b>23</b></td></tr>
+</table>
+<p class="fuente">[FUENTE · Repo: encabezado de <code>04_DATOS/housing_dashai_2016_2017.csv</code> y el <code>ColumnTransformer</code> de <code>03_CODIGO/modelamiento_temporal.py</code>]</p>
+
+<div class="clave">
+  <b>Una variable categórica con k valores se convierte en k columnas.</b> Por eso
+  «cuántas variables tiene el modelo» y «cuántas columnas tiene la matriz X» son
+  dos preguntas distintas, con dos respuestas distintas: 12 y 23.
+  <br><br>
+  Y por eso <code>Suburb</code> quedó fuera. Melbourne tiene <b>311 suburbios</b>:
+  meterlo como feature habría sumado 311 columnas de golpe, pasando de p = 23 a
+  p = 334. Eso es lo que estás por mover en la sección siguiente.
+  <span class="fuente">[FUENTE · Repo: <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>, ficha P3: «<em>Suburb descartado por 311 categorías = sobreajuste</em>»]</span>
+</div>
+
+
+<h2>7 · Más filas no es lo mismo que más columnas</h2>
+
+<p>Esta es la distinción que tu profesor evaluó <b>directamente</b> en el Certamen 2,
+pregunta 3. Es fácil de decir y difícil de sentir, así que acá se mueve.</p>
+
+<div class="pred" id="pred2">
+  <div class="q">Predice: dejas n fijo y agregas 100 columnas de <b>puro ruido</b>
+  —números aleatorios sin relación con el precio—. ¿Qué le pasa al R² de
+  <b>entrenamiento</b>?</div>
+  <button data-v="baja">Baja: el ruido estorba</button>
+  <button data-v="igual">Queda igual: el ruido no aporta nada</button>
+  <button data-v="sube">Sube: el modelo lo aprovecha</button>
+  <div class="veredicto"></div>
+</div>
+
+<div class="panel">
+  <div class="ctrl">
+    <label style="min-width:11rem"><b>n</b> = <b id="vn">6336</b> filas</label>
+    <input type="range" id="sn" min="40" max="6336" step="1" value="6336">
+  </div>
+  <div class="ctrl">
+    <label style="min-width:11rem"><b>p</b> = <b id="vp">23</b> features</label>
+    <input type="range" id="sp" min="1" max="400" step="1" value="23">
+  </div>
+  <canvas id="cv" width="860" height="330"></canvas>
+  <div class="met">
+    <div><div class="n" id="mTr">—</div><div class="e">R² entrenamiento</div></div>
+    <div><div class="n" id="mTe">—</div><div class="e">R² en datos nuevos</div></div>
+    <div><div class="n" id="mBr">—</div><div class="e">brecha</div></div>
+    <div><div class="n" id="mRaz">—</div><div class="e">filas por feature (n/p)</div></div>
+  </div>
+  <p style="font-size:.88rem;margin:.9rem 0 0">
+    <button class="alt" id="bMel">Tu modelo real: n=6336, p=23</button>
+    <button class="alt" id="bSub">Con Suburb dentro: n=6336, p=334</button>
+    <button class="alt" id="bPoco">Pocos datos: n=120, p=23</button>
+  </p>
+</div>
+
+<div class="ecu">
+  <p style="font-size:.9rem;margin:0 0 .6rem"><b>Qué está calculando el gráfico.</b>
+  Es el resultado clásico de mínimos cuadrados: agregar columnas sin señal infla el
+  ajuste en entrenamiento en proporción a <code>p/n</code>, y lo castiga fuera.</p>
+  <div class="f">R²<sub>train</sub> ≈ 1 − (1−ρ)(1 − p/n)<br>
+  R²<sub>test</sub> ≈ ρ − (1−ρ)·p/(n−p)</div>
+  <p style="font-size:.88rem;margin:0">Con <code>ρ = 0,76</code>, la fracción del
+  precio que de verdad se puede explicar — el R² que efectivamente alcanzaste en
+  2017. Cuando <code>p/n → 0</code> las dos expresiones colapsan en ρ: sin columnas
+  de sobra, entrenamiento y test coinciden.</p>
+  <p class="fuente" style="margin-top:.6rem">[GUILLITO] Simulación del mecanismo,
+  no una corrida de tu modelo. Sirve para ver la forma de la curva; los números
+  exactos de tu proyecto están en <code>05_RESULTADOS/resultados_temporal.json</code>.</p>
+</div>
+
+<div class="dist">
+  <b>Lo que el gráfico te deja ver, y es lo que se pregunta:</b>
+  <ul style="margin:.5rem 0 0">
+    <li>Mueve <b>n</b> hacia arriba con p fijo → las dos curvas se juntan. <b>Más
+    filas reducen el sobreajuste.</b></li>
+    <li>Mueve <b>p</b> hacia arriba con n fijo → la azul sube, la roja se
+    desploma. <b>Más columnas sin señal lo aumentan.</b></li>
+    <li>Lo que manda no es n ni p por separado, sino <b>n/p</b>: cuánta evidencia
+    tienes por cada cosa que el modelo debe estimar.</li>
+  </ul>
+</div>
+
+<div class="clave">
+  Con tus números: 6.336 / 23 = <b>275 filas por feature</b>. Holgado. Con
+  <code>Suburb</code> dentro serían 6.336 / 334 = <b>19</b>, y la brecha simulada
+  pasa de 0,002 a 0,026: se multiplica por trece, pero <b>sigue siendo chica</b>.
+  Prueba los dos botones y compruébalo.
+</div>
+
+<div class="tension">
+  <b>Entonces, ¿por qué descartar <code>Suburb</code>, si el panel dice que 334
+  columnas con 6.336 filas se aguantan?</b> Porque el conteo de columnas no es el
+  mecanismo completo. Con 311 categorías, muchos suburbios aportan <em>un puñado
+  de ventas cada uno</em>: el modelo estima un efecto por suburbio con casi nada de
+  evidencia detrás. Y peor: el <b>29,1 %</b> de las ventas de 2017 ocurre en
+  suburbios que no existen en 2016, así que esas columnas simplemente <b>no tienen
+  valor</b> cuando más las necesitas.<br><br>
+  Quédate con la forma del argumento: <b>n/p te dice si hay holgura en promedio;
+  no te dice si la hay donde importa.</b> Eso último ya es
+  <code>generalización</code>, y se trabaja allá.
+  <span class="fuente">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code> · [INFERENCIA] la conexión entre ambos mecanismos es razonamiento de Guillito]</span>
+</div>
+
+<div class="peligro">
+  <b>Ojo con sobreextender esto.</b> Tu modelo real usa p = 23 con n = 6.336: la
+  caída de R² entre 2016 y 2017 <em>no</em> la explica el número de columnas —el
+  panel lo muestra, la brecha por p es de 0,002—. La explica que son años
+  distintos. <b>Exceso de features</b> y <b>cambio de distribución</b> son dos
+  mecanismos separados que producen el mismo síntoma, y el certamen te va a pedir
+  distinguirlos. Ya te pasó una vez: llamaste «sobreajuste» a una degradación que
+  no lo era.
+  <span class="fuente">[FUENTE · Repo: <code>07_GUILLITO/errores_conceptuales.yaml</code>, error <code>sobreajuste_como_etiqueta_de_toda_degradacion</code>]</span>
+</div>
+
+
+<h2>8 · Tus ocho columnas excluidas</h2>
+
+<p>Tu modelo de Melbourne descarta ocho columnas que <b>sí</b> existen en el CSV
+original y contienen información real:</p>
+
+<table>
+  <tr><th>Columna</th><th>Por qué quedó fuera</th><th>Tipo de razón</th></tr>
+  <tr><td><code>Address</code></td><td>Es casi un identificador: valor único por fila</td><td>Identifica, no mide</td></tr>
+  <tr><td><code>Suburb</code></td><td>311 categorías → 311 columnas</td><td>Dimensión</td></tr>
+  <tr><td><code>Postcode</code></td><td>Misma información geográfica, ya cubierta por lat/long y Regionname</td><td>Redundante</td></tr>
+  <tr><td><code>CouncilArea</code></td><td>Ídem, geografía repetida</td><td>Redundante</td></tr>
+  <tr><td><code>SellerG</code></td><td>Corredoras que aparecen en 2016 y no en 2017</td><td>No sobrevive al cambio de año</td></tr>
+  <tr><td><code>BuildingArea</code></td><td>Demasiados faltantes</td><td>Calidad</td></tr>
+  <tr><td><code>YearBuilt</code></td><td>Demasiados faltantes</td><td>Calidad</td></tr>
+  <tr><td><code>Date</code></td><td><b>—</b></td><td><b>—</b></td></tr>
+</table>
+<p class="fuente">[FUENTE · Repo: lista <code>EXCLUIDAS</code> de <code>03_CODIGO/modelamiento_temporal.py</code>. Las razones de Suburb y de las de calidad están documentadas; las de redundancia geográfica son [INFERENCIA] a partir del código.]</p>
+
+<div class="repreg">
+  <strong>La fila de <code>Date</code> quedó en blanco a propósito.</strong><br>
+  Esa es tu pregunta de diagnóstico, y es de Guillito, no de este archivo:
+  <em>si <code>Date</code> es una columna con información real sobre cada venta,
+  ¿por qué quedó excluida de las features?</em><br><br>
+  Tienes todo lo necesario para responderla en las secciones 2, 4 y 7. Llévala a
+  la sesión sin buscarla acá: no está.
+</div>
+
+<div class="clave">
+  El punto general, que sí puedes usar ya: <b>que una columna tenga información
+  verdadera no basta para que sea feature.</b> Tiene que existir al momento de
+  predecir, tiene que sobrevivir a datos nuevos, y tiene que valer las columnas
+  que cuesta.
+</div>
+
+
+<h2>9 · La distinción de certamen</h2>
+
+<div class="dist">
+  <b>Certamen 1 · preguntas 9A y 9B (desarrollo, la 9B vale 2,0 puntos)</b><br>
+  <span style="font-size:1.02rem">Fila = <b>objeto o evento medido</b>
+  &nbsp;≠&nbsp; columna = <b>variable o atributo</b></span><br>
+  Te dan una tabla mal estructurada y tienes que nombrar las variables y decir qué
+  se está midiendo. Se castiga responder «las variables son las columnas» cuando
+  una sola columna tiene tres variables adentro.
+</div>
+
+<div class="dist">
+  <b>Certamen 2 · pregunta 3 (elegir la afirmación incorrecta)</b><br>
+  <span style="font-size:1.02rem">Más <b>filas</b> (reduce el sobreajuste)
+  &nbsp;≠&nbsp; más <b>columnas</b> (lo aumenta si no traen señal)</span><br>
+  La afirmación trampa invierte la relación entre evidencia y parámetros. La
+  sección 7 es exactamente esta pregunta, con deslizadores.
+</div>
+
+<p class="fuente">[FUENTE · Repo: <code>07_GUILLITO/patron_evaluacion.md</code> y
+<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</p>
+
+<div class="nota">
+  <b>Cómo evalúa, en una línea:</b> revisando las 11 fichas del Certamen 2 aparece
+  el mismo campo en todas — <em>distinción conceptual clave</em>. No te pide una
+  definición: te pide separar dos cosas que se parecen. Estudiar este concepto
+  como «features son las entradas y target es la salida» no te alcanza para
+  ninguna de las dos preguntas de arriba.
+</div>
+
+
+<h2>10 · Procedimiento para el papel</h2>
+
+<p>Sin computador, con una tabla impresa al frente. Los tres primeros pasos son
+literalmente el método de tu profesor.</p>
+
+<ol class="pasos">
+  <li><b>¿Qué objeto o evento estamos midiendo?</b> Escríbelo como frase completa
+  («el consumo de un camión en un día»), no como sustantivo suelto
+  («camiones»). Eso define qué es una fila.</li>
+  <li><b>¿Cuáles son las variables?</b> Enumérralas. Si una columna contiene dos
+  cosas distintas, cuéntalas como dos variables aunque compartan columna.</li>
+  <li><b>¿Cada fila tiene un identificador único?</b> Si se repite, todavía no
+  sabes qué es una fila. Vuelve al paso 1.</li>
+  <li><b>¿Qué quiero predecir?</b> Esa columna es <code>y</code>. Si la pregunta
+  no está enunciada, dilo: es una decisión, no un hallazgo.</li>
+  <li><b>Las demás son candidatas a <code>X</code>.</b> Candidatas, no features.</li>
+  <li><b>Descarta</b>: las que solo identifican, las que no existirán al momento de
+  predecir, y las que definen cómo partiste los datos.</li>
+  <li><b>Cuenta n y p</b>, y mira la razón <b>n/p</b>. Si p creció por one-hot,
+  cuenta las columnas resultantes, no las variables.</li>
+</ol>
+
+
+<h2>11 · Errores que el formato castiga</h2>
+
+<ul>
+  <li><b>Nombrar el objeto medido como sustantivo suelto.</b> «Camiones» no es la
+  respuesta; «el consumo de un camión en un día» sí. La unidad de observación casi
+  siempre tiene dos o tres calificadores.</li>
+  <li><b>Decir que las variables son las columnas</b> cuando la tabla está mal
+  estructurada. Esa es justo la pregunta.</li>
+  <li><b>Confundir más filas con más columnas</b> al hablar de sobreajuste. Es la
+  trampa explícita de la P3.</li>
+  <li><b>Meter el identificador como feature.</b> El modelo memoriza y el número
+  se ve bien.</li>
+  <li><b>Tratar el target como propiedad de la columna</b> en vez de como decisión
+  derivada de la pregunta.</li>
+  <li><b>Contar p antes del encoding.</b> 12 variables y 23 columnas no son lo
+  mismo, y la diferencia importa justo cuando se discute sobreajuste.</li>
+  <li><b>Usar una columna que no existe al momento de predecir.</b> Fuga de
+  información. Se ve como un modelo excelente y es un modelo inútil.</li>
+  <li><b>Presentar una inferencia como hallazgo.</b> Si un valor es atípico, dilo
+  así: es atípico. Afirmar «hay una falla de sensor» sin evidencia es
+  <em>[INFERENCIA]</em> disfrazada de dato, y tu profesor lo distingue —la ficha
+  P11 del Certamen 2 evalúa exactamente separar lo <b>medido</b> de lo
+  <b>supuesto</b> de lo <b>no disponible</b>.</li>
+</ul>
+
+
+<h2>Antes de cerrar</h2>
+
+<div class="repreg">
+  <strong>Transferencia — dominio nuevo, a propósito.</strong><br><br>
+  Inventario forestal. Cuadrillas recorren un predio y en cada <b>parcela</b> miden
+  todos los árboles: especie, diámetro a la altura del pecho, altura, estado
+  sanitario. Además anotan de la parcela: pendiente, altitud y tipo de suelo.
+  Quieren estimar el <b>volumen de madera aprovechable por hectárea</b>.<br><br>
+  ¿Qué es una fila: un árbol o una parcela? ¿Y qué le pasa a las variables del
+  <em>otro</em> nivel según cuál elijas?
+</div>
+
+<details>
+  <summary>Solo después de haberlo escrito</summary>
+  <p>La pregunta decide la fila. El target es <b>volumen por hectárea</b>, que es
+  una propiedad de la <b>parcela</b>, no de un árbol. Entonces una fila es una
+  parcela.</p>
+  <p>Y eso obliga a mover de nivel las variables del árbol: <code>especie</code>,
+  <code>diámetro</code> y <code>altura</code> no caben tal cual en una fila-parcela,
+  porque hay muchos árboles por parcela. Hay que <b>agregarlas</b>: diámetro medio,
+  altura máxima, número de árboles, proporción de cada especie, porcentaje de
+  árboles sanos. Las variables de la parcela —pendiente, altitud, suelo— entran
+  directas.</p>
+  <p>Si en cambio eligieras el árbol como fila, las variables de parcela se
+  <b>repetirían</b> idénticas en todas las filas de esa parcela, y tus filas
+  dejarían de ser independientes entre sí. Se puede hacer, pero ya no es la misma
+  pregunta.</p>
+  <p><b>Lo que transfiere:</b> el nivel del target fija el nivel de la fila, y todo
+  lo que está en otro nivel hay que subirlo o bajarlo. Es el mismo problema que los
+  timestamps repetidos de la planta de flotación en la sección 5.</p>
+  <p class="fuente">[GUILLITO] Caso construido para este artefacto. Dominio elegido
+  a propósito fuera de Melbourne y de minería.</p>
+</details>
+
+<div class="vecino">
+  <b>Qué sigue.</b> Con esto ya puedes entrar a <code>eda</code> (mirar esas
+  columnas de a una y de a dos) y a <code>limpieza_preparacion</code> (decidir qué
+  hacer con las que están rotas). Y te deja en condiciones de entender por qué
+  <code>train_validation_test</code> es una decisión sobre <b>filas</b>, no sobre
+  columnas.
+</div>
+
+<footer>
+  Guillito · artefacto de estudio · concepto <code>datos_features_target</code>,
+  orden 2 del currículum.<br>
+  Funciona sin conexión. Sin librerías externas, sin fuentes remotas.
+</footer>
+
+</main>
+
+<script>
+/* ---------- utilidades de predicción ---------- */
+function predic(id, correcta, textos){
+  var box = document.getElementById(id);
+  var vd  = box.querySelector('.veredicto');
+  box.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      box.querySelectorAll('button').forEach(function(x){x.classList.remove('elegida');});
+      b.classList.add('elegida');
+      box.dataset.respuesta = b.dataset.v;
+      vd.innerHTML = textos[b.dataset.v];
+      vd.classList.add('on');
+    });
+  });
+}
+
+predic('pred1', 'no', {
+  si : '<b>Revisa.</b> Mueve el target a <code>Type</code> en el panel de abajo y mira el tipo de problema. La pista: ¿qué significaría predecir «2,7» cuando los valores posibles son casa, townhouse y unidad?',
+  no : '<b>Correcto, y el porqué importa.</b> <code>Price</code> es continuo: se puede estar cerca. <code>Type</code> es categórico: o aciertas o no. Cambia el target y cambia la naturaleza del error, las métricas y hasta el modelo.',
+  ns : 'Vale. Mueve el target en el panel de abajo y vuelve a esta pregunta después. La clave está en qué valores puede tomar la columna que elegiste.'
+});
+
+predic('pred2', 'sube', {
+  baja  : '<b>Casi, pero al revés.</b> Eso pasa en <em>datos nuevos</em>, no en entrenamiento. Sobre las mismas filas con que se ajustó, más columnas siempre dan más libertad para pegarse a los datos. Sube p en el panel y mira la curva azul.',
+  igual : '<b>No.</b> Es la intuición más común y es la que castiga la P3. El ruido no aporta señal, pero sí aporta <em>libertad</em>: con más columnas el modelo tiene más formas de calzar las filas que ya vio. Sube p y mira la azul.',
+  sube  : '<b>Exacto — y ese es el problema.</b> Sube porque el modelo aprovecha el ruido para calzar <em>estas</em> filas. Como el ruido no se repite en filas nuevas, el R² de test cae. Ahora sube p y mira la distancia entre las dos curvas.'
+});
+
+/* ---------- 3 · selector de target ---------- */
+var VARS = [
+  {n:'Rooms',        t:'Regresión',     q:'¿Cuántas habitaciones tiene esta propiedad?'},
+  {n:'Distance',     t:'Regresión',     q:'¿A qué distancia del centro está esta propiedad?'},
+  {n:'Bathroom',     t:'Regresión',     q:'¿Cuántos baños tiene esta propiedad?'},
+  {n:'Landsize',     t:'Regresión',     q:'¿Qué superficie de terreno tiene?'},
+  {n:'Type',         t:'Clasificación', q:'¿Es una casa, un townhouse o una unidad?', k:3},
+  {n:'Regionname',   t:'Clasificación', q:'¿En qué región metropolitana está?', k:5},
+  {n:'Price',        t:'Regresión',     q:'¿Cuánto costará esta propiedad?'}
+];
+var yActual = 'Price';
+var cont = document.getElementById('colsMel');
+
+function pintaCols(){
+  cont.innerHTML = '';
+  VARS.forEach(function(v){
+    var b = document.createElement('button');
+    b.textContent = v.n;
+    b.className = (v.n === yActual) ? 'esY' : 'esX';
+    b.title = (v.n === yActual) ? 'Es el target' : 'Haz clic para convertirla en target';
+    b.addEventListener('click', function(){ yActual = v.n; pintaCols(); });
+    cont.appendChild(b);
+  });
+  var v = VARS.filter(function(x){return x.n === yActual;})[0];
+  document.getElementById('mTarget').textContent = v.n;
+  document.getElementById('mP').textContent = VARS.length - 1;
+  document.getElementById('mTipo').textContent = v.t;
+  var extra = v.t === 'Clasificación'
+    ? ' <br><span style="font-size:.9rem">El error deja de tener grados: con ' + v.k +
+      ' clases posibles, o aciertas la clase o no. No existe «te pasaste por poco».</span>'
+    : ' <br><span style="font-size:.9rem">El error tiene magnitud: puedes equivocarte por poco o por mucho, y eso se mide en las mismas unidades de la variable.</span>';
+  document.getElementById('mPregunta').innerHTML =
+    '<b>La pregunta que responde el modelo:</b> «' + v.q + '»' + extra +
+    '<br><span style="font-size:.9rem;color:#666">Las otras 6 variables pasan a ser features. ' +
+    '<b>' + v.n + ' ya no puede estar entre ellas</b>: si el modelo viera el target como entrada, copiaría la respuesta.</span>';
+}
+pintaCols();
+
+/* ---------- 7 · n contra p ---------- */
+var RHO = 0.76;
+var cv  = document.getElementById('cv'), cx = cv.getContext('2d');
+var sn = document.getElementById('sn'), sp = document.getElementById('sp');
+
+function r2train(p,n){ return 1 - (1-RHO)*(1 - p/n); }
+function r2test(p,n){  return (p >= n-1) ? -99 : RHO - (1-RHO)*p/(n-p); }
+
+function dibuja(){
+  var n = +sn.value, p = Math.min(+sp.value, n-2);
+  if (p < 1) p = 1;
+  var W = cv.width, H = cv.height, L = 58, R = 16, T = 18, B = 34;
+  var pMax = Math.min(400, n-2); if (pMax < 2) pMax = 2;
+  var yTop = 1.05, yBot = -0.55;
+  var X  = function(v){ return L + (v/pMax)*(W-L-R); };
+  var Y  = function(v){ return T + (yTop-v)/(yTop-yBot)*(H-T-B); };
+
+  cx.clearRect(0,0,W,H);
+  cx.fillStyle = '#faf9f7'; cx.fillRect(0,0,W,H);
+
+  /* rejilla y eje Y */
+  cx.font = '11px system-ui'; cx.textAlign = 'right'; cx.textBaseline = 'middle';
+  [1,0.75,0.5,0.25,0,-0.25,-0.5].forEach(function(v){
+    cx.strokeStyle = (v===0) ? '#9ca3af' : '#e5e7eb';
+    cx.lineWidth = (v===0) ? 1.2 : 1;
+    cx.beginPath(); cx.moveTo(L, Y(v)); cx.lineTo(W-R, Y(v)); cx.stroke();
+    cx.fillStyle = '#6b7280'; cx.fillText(v.toFixed(2), L-7, Y(v));
+  });
+
+  /* banda: zona donde la brecha ya es grave */
+  cx.fillStyle = 'rgba(220,38,38,.05)';
+  var pGrave = null;
+  for (var q=1; q<=pMax; q++){ if (r2train(q,n)-r2test(q,n) > 0.10){ pGrave = q; break; } }
+  if (pGrave){ cx.fillRect(X(pGrave), T, (W-R)-X(pGrave), H-T-B); }
+
+  /* curvas */
+  function curva(fn, color, ancho){
+    cx.strokeStyle = color; cx.lineWidth = ancho; cx.beginPath();
+    var primero = true;
+    for (var q=1; q<=pMax; q++){
+      var v = fn(q,n); if (v < yBot) v = yBot;
+      if (primero){ cx.moveTo(X(q), Y(v)); primero = false; } else { cx.lineTo(X(q), Y(v)); }
+    }
+    cx.stroke();
+  }
+  curva(r2train, '#2563eb', 2.4);
+  curva(r2test,  '#dc2626', 2.4);
+
+  /* línea vertical en p actual */
+  cx.strokeStyle = '#111'; cx.lineWidth = 1.4; cx.setLineDash([4,4]);
+  cx.beginPath(); cx.moveTo(X(p), T); cx.lineTo(X(p), H-B); cx.stroke();
+  cx.setLineDash([]);
+
+  var tr = r2train(p,n), te = Math.max(r2test(p,n), yBot);
+  [[tr,'#2563eb'],[te,'#dc2626']].forEach(function(d){
+    cx.fillStyle = d[1]; cx.beginPath(); cx.arc(X(p), Y(d[0]), 5, 0, 6.29); cx.fill();
+    cx.strokeStyle = '#fff'; cx.lineWidth = 1.6; cx.stroke();
+  });
+
+  /* eje X */
+  cx.textAlign = 'center'; cx.textBaseline = 'top'; cx.fillStyle = '#6b7280';
+  [1, Math.round(pMax*0.25), Math.round(pMax*0.5), Math.round(pMax*0.75), pMax].forEach(function(q){
+    cx.fillText(q, X(q), H-B+6);
+  });
+  cx.fillStyle = '#374151'; cx.font = '600 11px system-ui';
+  cx.fillText('p  ·  número de features', (L+W-R)/2, H-14);
+
+  /* leyenda */
+  cx.textAlign = 'left'; cx.textBaseline = 'middle'; cx.font = '600 12px system-ui';
+  cx.fillStyle = '#2563eb'; cx.fillRect(L+10, T+10, 16, 3);
+  cx.fillText('R² entrenamiento', L+32, T+11);
+  cx.fillStyle = '#dc2626'; cx.fillRect(L+10, T+30, 16, 3);
+  cx.fillText('R² en datos nuevos', L+32, T+31);
+
+  /* lecturas */
+  document.getElementById('vn').textContent  = n;
+  document.getElementById('vp').textContent  = p;
+  document.getElementById('mTr').textContent = tr.toFixed(3);
+  var teReal = r2test(p,n);
+  document.getElementById('mTe').textContent = (teReal < -5) ? '≪ 0' : teReal.toFixed(3);
+  var br = tr - teReal;
+  var eBr = document.getElementById('mBr');
+  eBr.textContent = (br > 5) ? 'enorme' : br.toFixed(3);
+  eBr.style.color = br > 0.10 ? '#dc2626' : (br > 0.04 ? '#d97706' : '#059669');
+  document.getElementById('mRaz').textContent = (n/p).toFixed(0);
+}
+
+sn.addEventListener('input', dibuja);
+sp.addEventListener('input', dibuja);
+function preset(n,p){ return function(){ sn.value = n; sp.value = p; dibuja(); }; }
+document.getElementById('bMel' ).addEventListener('click', preset(6336, 23));
+document.getElementById('bSub' ).addEventListener('click', preset(6336, 334));
+document.getElementById('bPoco').addEventListener('click', preset(120, 23));
+dibuja();
+window.addEventListener('resize', dibuja);
+</script>
+</body>
+</html>

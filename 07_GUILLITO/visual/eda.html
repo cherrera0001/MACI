@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análisis exploratorio de datos · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:.7rem;margin-top:1.1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
+  .met .n{font-size:1.2rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  .met div.alarma .n{color:var(--rojo)}
+  .met div.bien .n{color:var(--verde)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button:hover{background:#1d4ed8}
+  button.off{background:#e5e7eb;color:#374151}
+  button.off:hover{background:#d1d5db}
+  input[type=range]{width:100%}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.5rem;text-align:right}
+  .pred{background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0 .2rem;font-size:.9rem}
+  .pred b{color:#5b21b6}
+  details{margin:.9rem 0;background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.6rem .9rem}
+  details[open]{padding-bottom:.9rem}
+  summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--azul)}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .grafo .fl{color:var(--morado);font-weight:700}
+  .ec{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;
+      text-align:center;font-size:1.15rem;font-family:"Cambria Math",Cambria,Georgia,serif}
+  .ec .peq{font-size:.82rem;color:var(--suave);display:block;margin-top:.5rem;font-family:inherit}
+  .leyenda{display:flex;gap:1.1rem;flex-wrap:wrap;font-size:.8rem;color:var(--suave);margin-top:.6rem}
+  .leyenda span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
+  .l-media::before{background:#dc2626}
+  .l-mediana::before{background:#059669}
+  .l-s::before{background:#2563eb}
+  .l-p::before{background:#7c3aed}
+  .botonera{margin:.4rem 0 1rem}
+  ol.proc{padding-left:1.3rem}
+  ol.proc li{margin:.4rem 0}
+  .barra{display:flex;align-items:center;gap:.5rem;margin:.3rem 0;font-size:.85rem}
+  .barra .et{width:105px;flex:0 0 auto}
+  .barra .tr{flex:1;height:15px;background:#f1f0ee;border-radius:3px;position:relative;overflow:hidden}
+  .barra .tr i{position:absolute;top:0;bottom:0;background:var(--azul);border-radius:3px}
+  .barra .tr i.neg{background:var(--rojo)}
+  .barra .vl{width:58px;text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto}
+  .cero{position:absolute;top:0;bottom:0;width:1px;background:#9ca3af}
+  @media(max-width:600px){.ctrl{grid-template-columns:1fr}.ctrl output{text-align:left}}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Análisis exploratorio de datos</h1>
+<p class="sub">Mirar los datos antes de modelarlos. Qué te dicen los resúmenes, y sobre todo qué te esconden.</p>
+
+<div class="grafo">
+  <span class="n">Datos, features y target</span>
+  <span class="fl">→</span>
+  <span class="n aqui">EDA</span>
+  <span class="fl">→</span>
+  <span class="n">Limpieza y preparación</span>
+</div>
+<p style="font-size:.88rem;color:var(--suave);margin-top:-.4rem">
+  Primero tienes que saber qué es una fila y qué es una columna. Después de esto viene decidir
+  qué haces con lo que encontraste. <em>El EDA no arregla nada: encuentra.</em>
+  <span style="display:block;margin-top:.3rem">[FUENTE · Repo: <code>07_GUILLITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>]</span>
+</p>
+
+
+<h2>1 · Para qué sirve, según tu profesor</h2>
+
+<div class="cita">
+  «Una de las primeras cosas que uno hace, o que grafica, son las distribuciones. […]
+  Fíjense que acá hay una cola hacia la derecha, que hay poquitos valores que son altos.
+  Eso es lo que me quiere decir a mí es que son valores anómalos: son valores que no son
+  muy probables de que ocurran, pero a veces ocurren.»
+  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md</code> · 0:18:41]</span>
+</div>
+
+<p>Su ejemplo durante toda la clase es una máquina: <strong>vibración</strong> medida en el tiempo,
+y <strong>qué componente falló</strong>. La vibración va más o menos entre 30 y 60, con una cola de
+valores altos poco frecuentes. Y esa cola es justo lo que le interesa: son los momentos previos
+a la falla.</p>
+
+<p>Cuando alguien preguntó para qué sirve graficar, la respuesta del profesor tuvo cuatro partes,
+y conviene que las tengas en ese orden:</p>
+
+<table>
+<tr><th>Para qué</th><th>Qué significa</th></tr>
+<tr><td><strong>Identificar patrones</strong></td><td>Cosas que no se ven en las estadísticas</td></tr>
+<tr><td><strong>Formular hipótesis</strong></td><td>«hay muchos ceros → hay muchos camiones inactivos»</td></tr>
+<tr><td><strong>Decidir el siguiente paso</strong></td><td>De análisis o de modelamiento</td></tr>
+<tr><td><strong>Comunicar</strong></td><td>Dar evidencia… y también persuadir. Ojo con esto último</td></tr>
+</table>
+
+<div class="clave">
+  <strong>La frase que ordena la unidad completa:</strong> el EDA existe porque
+  <strong>los números resumen y al resumir borran</strong>. Todo lo que viene ahora es
+  aprender qué se borró.
+</div>
+
+
+<h2>2 · El resumen no determina la forma</h2>
+
+<p>Tu profesor puso cuatro conjuntos de datos en pantalla. Cada uno tiene dos variables,
+<code>x</code> e <code>y</code>, y once filas. Y los cuatro tienen exactamente el mismo resumen:</p>
+
+<div class="panel">
+  <div class="met">
+    <div><div class="n">9,00</div><div class="e">media de x</div></div>
+    <div><div class="n">7,50</div><div class="e">media de y</div></div>
+    <div><div class="n">3,32</div><div class="e">desv. est. de x</div></div>
+    <div><div class="n">2,03</div><div class="e">desv. est. de y</div></div>
+    <div><div class="n">0,816</div><div class="e">correlación</div></div>
+    <div><div class="n">y = 3 + 0,5x</div><div class="e">recta ajustada</div></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--suave);margin:.8rem 0 0">
+    Estos seis números <strong>no cambian</strong> al apretar los botones de abajo.
+    Verificados sobre el cuarteto de Anscombe; las cifras coinciden con la lámina del profesor.
+  </p>
+</div>
+
+<div class="pred">
+  <b>Antes de apretar nada, decide:</b> si los cuatro conjuntos tienen la misma media, la misma
+  desviación estándar, la misma correlación y la misma recta ajustada… ¿los cuatro gráficos se van
+  a parecer entre sí? Contesta <em>sí</em> o <em>no</em> en voz alta. Después mira.
+</div>
+
+<div class="panel">
+  <div class="botonera">
+    <button id="an1" class="an">Conjunto 1</button>
+    <button id="an2" class="an off">Conjunto 2</button>
+    <button id="an3" class="an off">Conjunto 3</button>
+    <button id="an4" class="an off">Conjunto 4</button>
+    <button id="anAll" class="off">Ver los cuatro</button>
+  </div>
+  <canvas id="cAns" width="860" height="380"></canvas>
+  <p id="anTxt" style="font-size:.9rem;margin:.8rem 0 0"></p>
+</div>
+
+<details>
+<summary>Ya los viste. ¿Qué pasó con tu predicción?</summary>
+<p>Si dijiste que sí, acabas de descubrir el motivo por el que existe esta unidad. Los cuatro
+conjuntos son radicalmente distintos:</p>
+<ul>
+<li><strong>1</strong> — una relación lineal con ruido. Es el único donde la recta describe lo que pasa.</li>
+<li><strong>2</strong> — una <em>curva</em>. La recta es la mejor línea recta posible, y aun así es la
+descripción equivocada del fenómeno.</li>
+<li><strong>3</strong> — una recta perfecta más <em>un solo</em> punto anómalo. Ese punto solo tuerce la recta.</li>
+<li><strong>4</strong> — diez puntos con el mismo valor de <code>x</code> y uno lejos. La correlación de
+0,816 la produce ese único punto: sin él no hay ninguna relación que medir.</li>
+</ul>
+<p class="cita" style="font-style:normal">
+  «La media, la mediana, la distribución estándar, los percentiles sí nos ayudan, pero
+  <strong>no son suficientes</strong> como para darnos un contexto real de lo que estamos midiendo.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 0:42:51]</span>
+</p>
+</details>
+
+<div class="clave">
+  <strong>Lo que esto te habilita a decir:</strong> un resumen estadístico es una <em>proyección</em>
+  de los datos, y muchas nubes de puntos distintas proyectan lo mismo. Por eso se grafica:
+  no por estética, sino porque el resumen es matemáticamente incapaz de distinguirlas.
+</div>
+
+
+<h2>3 · Centralidad: dónde está el medio</h2>
+
+<table>
+<tr><th>Estadístico</th><th>Cómo se calcula</th><th>Cuándo lo usas</th></tr>
+<tr><td><strong>Media</strong> (promedio)</td><td>Sumas todo y divides por <code>n</code></td>
+    <td>Distribución simétrica y sin valores extremos</td></tr>
+<tr><td><strong>Mediana</strong></td><td>Ordenas y tomas el del medio (o el promedio de los dos del medio)</td>
+    <td>Hay cola o valores anómalos. Es el <strong>percentil 50</strong></td></tr>
+<tr><td><strong>Moda</strong></td><td>El valor que aparece más seguido</td>
+    <td>Variable <strong>categórica</strong>: única opción disponible</td></tr>
+</table>
+
+<h3>La razón por la que la moda existe</h3>
+
+<div class="cita">
+  «Para variables categóricas no tenemos una noción de orden, entonces no las puedo ordenar
+  y entonces no puedo calcular el histograma. Entonces lo que se hace es que se calcula la moda,
+  que es el valor que aparece más seguido. […] Yo no puedo decir el ornitorrinco viene antes
+  que el conejo.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 0:24:59 y 0:27:29]</span>
+</div>
+
+<p>En su ejemplo: <em>¿qué componente de la máquina falló?</em> Componente 1, 2, 3 o 4. No hay orden
+—la 3 no es «más» que la 2—, así que no hay histograma, no hay media, no hay desviación estándar.
+Solo frecuencias, y la moda fue la <strong>componente 2</strong>.</p>
+
+<div class="clave">
+  <strong>Esta es la distinción que arrastra todo lo demás:</strong> variable numérica → tiene orden →
+  histograma, media, desviación. Variable categórica → no tiene orden → frecuencias, moda, gráfico
+  de barras. Si te ves calculando el promedio de una categórica, algo se rompió antes.
+</div>
+
+<div class="nota">
+  <strong>El corolario que preguntó en clase:</strong> barras frente a líneas. Una línea invita a
+  <em>interpolar</em> —entre 10 y 12 años tiene sentido imaginar los 11—. Entre «hombre» y «mujer»
+  no hay nada al medio. Categórica → barras. Numérica ordenada → línea.
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: transcripción del 17 de julio · 1:05:32]</span>
+</div>
+
+
+<h2>4 · Extensión: qué tan representativo es ese medio</h2>
+
+<p>Saber dónde está el centro no basta. Dos distribuciones con la <strong>misma</strong> mediana pueden
+ser una compacta y la otra desparramada, y en ese caso la mediana significa cosas distintas en cada una.</p>
+
+<table>
+<tr><th>Medida</th><th>Fórmula</th><th>Qué aporta</th><th>Qué le falta</th></tr>
+<tr><td>Rango</td><td>máx − mín</td><td>El ancho total, en un número</td><td>Lo fija un solo dato en cada extremo</td></tr>
+<tr><td>Varianza</td><td>s²</td><td>Desviación media al cuadrado</td><td>Unidades al cuadrado: no se puede interpretar</td></tr>
+<tr><td>Desviación estándar</td><td>s = √s²</td><td>En las unidades de la variable</td><td><strong>No dice hacia qué lado</strong></td></tr>
+<tr><td>Percentiles</td><td>P5, P25, P50…</td><td>Sí dicen el lado</td><td>Hay que calcular varios</td></tr>
+</table>
+
+<h3>La varianza, desarmada</h3>
+
+<div class="ec">
+  s² = <span style="display:inline-block;vertical-align:middle;text-align:center">
+    <span style="display:block;border-bottom:1px solid var(--tinta);padding:0 .3rem">1</span>
+    <span style="display:block;padding:0 .3rem">n − 1</span></span>
+  · ∑<sub>i=1</sub><sup>n</sup> (x<sub>i</sub> − x̄)²
+  <span class="peq">varianza muestral</span>
+</div>
+
+<table>
+<tr><th>Pieza</th><th>Qué es</th></tr>
+<tr><td><code>x<sub>i</sub></code></td><td><strong>Dato.</strong> El valor de la observación <em>i</em>. Lo mediste</td></tr>
+<tr><td><code>x̄</code></td><td><strong>Se calcula desde los datos.</strong> La media. No la eliges</td></tr>
+<tr><td><code>n</code></td><td><strong>Dato.</strong> Cuántas observaciones tienes</td></tr>
+<tr><td><code>(x<sub>i</sub> − x̄)</code></td><td>La distancia de cada dato al centro. Es lo que queremos promediar</td></tr>
+<tr><td>El cuadrado</td><td>Dos razones, abajo</td></tr>
+<tr><td><code>n − 1</code></td><td>Corrección de sesgo, abajo</td></tr>
+<tr><td>Qué decides tú</td><td><strong>Qué variable medir</strong>, y si al final reportas <code>s</code> o percentiles</td></tr>
+</table>
+
+<h3>¿Por qué el cuadrado, y no el valor absoluto?</h3>
+
+<p>El profesor dio dos razones y la segunda es la que se olvida:</p>
+<ol>
+<li><strong>Para que sea positivo.</strong> Si sumaras las distancias con signo, las de arriba
+cancelarían las de abajo y siempre te daría cero. El cuadrado es «como una excusa» —palabras
+suyas— para volverlas positivas. El valor absoluto también serviría para esto.</li>
+<li><strong>Para hacerla <em>más</em> sensible a los valores anómalos, a propósito.</strong>
+Una distancia grande al cuadrado crece mucho más rápido que la misma distancia sin elevar.
+Un dato lejano pesa desproporcionadamente, y eso es deliberado: se quiere que un valor extremo
+grite.</li>
+</ol>
+
+<h3>¿Por qué <code>n − 1</code> y no <code>n</code>?</h3>
+
+<div class="cita">
+  «Si tú divides por <code>n</code>, entonces este estimador, que es la varianza, se sesga.
+  […] Lo que uno esperaría es que cuando <code>n</code> se vaya a infinito, entonces este sea
+  el valor real de la varianza. Pero no te da el valor real si es que tú no le pones el menos uno.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 0:32:35 y 0:35:06]</span>
+</div>
+
+<p>La idea: no tienes acceso a la varianza real de la población, solo a una muestra. La fórmula es
+un <strong>estimador</strong>. Con <code>n − 1</code>, al crecer la muestra converge al valor real;
+con <code>n</code>, converge a un valor equivocado aunque tuvieras datos infinitos. Con <code>n</code>
+grande la diferencia es despreciable; con <code>n</code> chico es enorme.</p>
+
+<h3>¿Por qué la raíz?</h3>
+
+<p>Unidades. Si mides vibración en mm/s, la varianza queda en <strong>mm²/s²</strong>, que no significa
+nada físico. La raíz devuelve la cantidad a mm/s, y recién ahí puedes decir «la mayoría de las máquinas
+están a ±6 mm/s del promedio».</p>
+
+<details>
+<summary>Ejemplo numérico chico — hazlo a mano antes de abrir</summary>
+<p>Vibración de cinco máquinas: <strong>38, 40, 41, 42, 44</strong>.</p>
+<ol>
+<li>Media: (38+40+41+42+44) / 5 = 205 / 5 = <strong>41</strong></li>
+<li>Desviaciones: −3, −1, 0, +1, +3 &nbsp;→&nbsp; suman 0 (siempre suman 0, por eso el cuadrado)</li>
+<li>Cuadrados: 9, 1, 0, 1, 9 &nbsp;→&nbsp; suma = <strong>20</strong></li>
+<li>Varianza: 20 / (5 − 1) = <strong>5</strong> &nbsp;[mm²/s²]</li>
+<li>Desviación estándar: √5 = <strong>2,24</strong> &nbsp;[mm/s]</li>
+</ol>
+<p>Ahora cambia el 44 por un <strong>74</strong> —una máquina a punto de fallar—:</p>
+<ul>
+<li>Media: 235 / 5 = <strong>47</strong> (se movió 6 unidades)</li>
+<li>Mediana: sigue siendo <strong>41</strong> (no se movió nada)</li>
+<li>Cuadrados: 81, 49, 36, 25, 729 → suma 920 → s² = 230 → s = <strong>15,17</strong></li>
+</ul>
+<p>Un solo dato multiplicó la desviación estándar por casi 7. Fíjate en el 729: ese único término aporta
+el 79 % de la suma. Eso es la sensibilidad a los anómalos de la que habla el profesor, y aquí se ve
+el número exacto.</p>
+</details>
+
+
+<h2>5 · La desviación estándar no tiene lado. Los percentiles sí</h2>
+
+<p>Este es el hallazgo central de la clase, y es lo que hace que los percentiles no sean un adorno.</p>
+
+<div class="cita">
+  «La desviación estándar no te dice hacia qué lado está la asimetría de la distribución. O sea,
+  no me dice “tengo una cola más larga hacia la derecha o hacia la izquierda”. […] Lo que uno sí
+  puede hacer es calcular los percentiles.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 0:37:37]</span>
+</div>
+
+<p>Y dio el método concreto para leerlo: compara la distancia de <strong>media − s a P5</strong> con la
+distancia de <strong>media + s a P95</strong>. Si una es mucho mayor que la otra, por ese lado está la cola.</p>
+
+<div class="pred">
+  <b>Predice antes de mover el control:</b> vas a estirar la cola de la distribución de vibración hacia
+  la derecha. Luego vas a apretar «reflejar», que da vuelta la distribución como un espejo: la cola queda
+  a la izquierda. <strong>¿El valor de <code>s</code> va a cambiar al reflejar?</strong> Piénsalo antes.
+</div>
+
+<div class="panel">
+  <div class="ctrl">
+    <label for="sk">Estirar la cola derecha</label>
+    <input type="range" id="sk" min="0" max="150" value="0" step="5">
+    <output id="oSk">simétrica</output>
+  </div>
+  <div class="botonera" style="margin-top:.7rem">
+    <button id="bEsp" class="off">Reflejar (espejo)</button>
+    <button id="bReset" class="off">Volver al inicio</button>
+  </div>
+  <canvas id="cVib" width="860" height="300"></canvas>
+  <div class="leyenda">
+    <span class="l-media">media</span>
+    <span class="l-mediana">mediana</span>
+    <span class="l-s">media ± s</span>
+    <span class="l-p">P5 y P95</span>
+  </div>
+  <div class="met">
+    <div><div class="n" id="vMedia">—</div><div class="e">media</div></div>
+    <div><div class="n" id="vMediana">—</div><div class="e">mediana</div></div>
+    <div><div class="n" id="vS">—</div><div class="e">desv. estándar</div></div>
+    <div><div class="n" id="vP5">—</div><div class="e">P5</div></div>
+    <div><div class="n" id="vP95">—</div><div class="e">P95</div></div>
+  </div>
+  <h3 style="margin-top:1.4rem">Las dos distancias del profesor</h3>
+  <div class="barra"><span class="et">(media−s) a P5</span><span class="tr"><i id="bIzq"></i></span><span class="vl" id="vIzq">—</span></div>
+  <div class="barra"><span class="et">(media+s) a P95</span><span class="tr"><i id="bDer"></i></span><span class="vl" id="vDer">—</span></div>
+  <p id="vDiag" style="font-size:.92rem;margin:.9rem 0 0;font-weight:600"></p>
+  <p style="font-size:.8rem;color:var(--suave);margin:.5rem 0 0">
+    240 mediciones de vibración, centradas en 41. Muestra fija: los números son reproducibles.
+    [GUILLITO · construido sobre el ejemplo de vibración de la clase del 17 de julio]
+  </p>
+</div>
+
+<details>
+<summary>La respuesta a la predicción</summary>
+<p><strong><code>s</code> no cambia al reflejar.</strong> Ni un decimal. Reflejar es restar cada dato
+de un valor fijo, y eso conserva todas las distancias al centro —que es lo único que mide la varianza—.
+La media y la mediana sí se reflejan, y P5 y P95 se intercambian.</p>
+<p>Entonces tienes dos distribuciones que <em>son</em> distintas —una con la cola a la derecha, otra a la
+izquierda— y que comparten exactamente el mismo <code>s</code>. Ese número, solo, no puede distinguirlas.
+Las distancias a P5 y P95 sí: se dan vuelta.</p>
+<p class="clave" style="margin-bottom:0"><strong>Regla para llevarte:</strong>
+la desviación estándar mide <em>cuánto</em>. Los percentiles miden <em>cuánto y hacia dónde</em>.</p>
+</details>
+
+
+<h2>6 · Camino inverso: te dan cinco números, sin gráfico</h2>
+
+<p>En una prueba escrita no vas a tener el histograma. Vas a tener una tabla. Estos son los números
+reales de tu propio proyecto: los precios de las 7.244 propiedades de Melbourne vendidas en 2017,
+el conjunto de prueba con el que evaluaste tus seis modelos.</p>
+
+<table>
+<tr><th>Estadístico</th><th class="num">Valor (AUD)</th></tr>
+<tr><td>n</td><td class="num">7.244</td></tr>
+<tr><td>Media</td><td class="num">1.078.072</td></tr>
+<tr><td>Mediana</td><td class="num">910.000</td></tr>
+<tr><td>Desviación estándar</td><td class="num">629.743</td></tr>
+<tr><td>Mínimo</td><td class="num">131.000</td></tr>
+<tr><td>P5</td><td class="num">420.000</td></tr>
+<tr><td>P95</td><td class="num">2.260.000</td></tr>
+<tr><td>Máximo</td><td class="num">9.000.000</td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--suave);margin-top:-.5rem">
+  [FUENTE · Repo: calculado sobre <code>05_RESULTADOS/predicciones_2017.csv</code>, columna <code>Price</code>.
+  La mediana de 910.000 coincide con <code>meta.precio_mediana_2017</code> de <code>resultados_temporal.json</code>]
+</p>
+
+<div class="pred">
+  <b>Antes de seguir leyendo,</b> escribe en una hoja qué forma tiene esta distribución y por qué.
+  Tienes todo lo necesario. No mires el gráfico de más abajo todavía.
+</div>
+
+<details>
+<summary>Cómo se reconstruye la forma desde esos números</summary>
+<ol class="proc">
+<li><strong>Media contra mediana.</strong> 1.078.072 &gt; 910.000. La media está arriba de la mediana
+→ hay cola hacia la <strong>derecha</strong>. Primera señal, y ya alcanza para sospechar.</li>
+<li><strong>Distancia izquierda.</strong> media − s = 1.078.072 − 629.743 = <strong>448.329</strong>.
+P5 = 420.000. Diferencia: <strong>28.329</strong>.</li>
+<li><strong>Distancia derecha.</strong> media + s = <strong>1.707.815</strong>. P95 = 2.260.000.
+Diferencia: <strong>552.185</strong>.</li>
+<li><strong>Compara.</strong> 552.185 frente a 28.329: el lado derecho tiene <strong>19 veces</strong> más
+recorrido sobrante. Cola derecha confirmada, y fuerte.</li>
+<li><strong>Los extremos.</strong> mediana − mín = 779.000. máx − mediana = 8.090.000. Diez veces más.</li>
+<li><strong>Traduce a una frase del problema.</strong> «Hay muchas casas baratas y unas pocas mansiones
+que estiran el promedio.»</li>
+</ol>
+<p class="clave" style="margin-bottom:0"><strong>La consecuencia que duele:</strong> el
+<strong>61,5 %</strong> de las propiedades de 2017 se vendió por <em>menos</em> que el «precio promedio»
+de 1.078.072. Si un cliente te pregunta «¿cuánto cuesta una casa en Melbourne?» y le dices el promedio,
+le das un número que seis de cada diez casas no alcanzan. La mediana de 910.000 es la respuesta honesta.</p>
+</details>
+
+<h3>Y ahora sí, el gráfico</h3>
+
+<div class="panel">
+  <div class="botonera">
+    <button id="bCrudo">Price (crudo)</button>
+    <button id="bLog" class="off">log1p(Price)</button>
+  </div>
+  <canvas id="cMel" width="860" height="300"></canvas>
+  <div class="met" id="melMet"></div>
+  <p id="melTxt" style="font-size:.9rem;margin:.9rem 0 0"></p>
+</div>
+
+<div class="clave">
+  <strong>Esto no es una curiosidad: es la decisión de modelado que tomaste.</strong>
+  Tu modelo final, HistGradientBoosting, no se entrenó sobre <code>Price</code> sino sobre
+  <code>log1p(Price)</code>. El motivo está en los números de arriba: en escala logarítmica la
+  media (13,754) y la mediana (13,721) casi coinciden, y el 52,5 % de los datos queda bajo la media
+  en vez del 61,5 %. La asimetría desaparece.
+  <span style="display:block;margin-top:.4rem;font-size:.88rem">
+  <strong>Una decisión de EDA se convirtió en una decisión de modelo.</strong> Eso es lo que el EDA
+  produce: no gráficos bonitos, decisiones.</span>
+</div>
+
+<div class="peligro">
+  <strong>Pero el log no es gratis, y tu propio repositorio lo demuestra.</strong>
+  Ridge sobre <code>log1p(Price)</code> dio <strong>R² = −17,0</strong>: al deshacer la transformación
+  con <code>expm1</code>, los errores sobre los valores extremos se disparan exponencialmente.
+  La misma transformación que ayuda a un modelo de árboles destruye a uno lineal.
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">
+  [FUENTE · Repo: <code>07_GUILLITO/referencia/material.md</code> y <code>05_RESULTADOS/resultados_temporal.json</code>]</span>
+</div>
+
+
+<h2>7 · Dos variables a la vez</h2>
+
+<p>Hasta aquí, una variable por vez. El paso siguiente es preguntar si dos se mueven juntas.
+La herramienta es el <strong>scatter plot</strong>, y el número es la <strong>correlación</strong>.</p>
+
+<div class="cita">
+  «En el eje X estoy mostrando la altura y en el eje Y el peso, y de inmediato puedo generar una
+  hipótesis: a medida que aumenta la altura de las personas aumenta el peso. Y entonces, si yo
+  quisiera estimar el peso de las personas, podría tratar de hacerlo a través de la altura.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 1:02:32]</span>
+</div>
+
+<p>Ahí está el puente completo: <em>graficas → ves una relación → formulas una hipótesis →
+propones un modelo</em>. El EDA es lo que te dice qué features vale la pena probar.</p>
+
+<h3>Tus propias correlaciones</h3>
+
+<p>Correlación de Pearson de cada variable numérica con <code>Price</code>, sobre las 13.580 filas
+de Melbourne:</p>
+
+<table>
+<tr><th>Variable</th><th class="num">r con Price</th><th>Lectura</th></tr>
+<tr><td>Rooms</td><td class="num"><strong>0,497</strong></td><td>La más alta de todas, y aun así explica poco sola</td></tr>
+<tr><td>YearBuilt</td><td class="num">−0,262</td><td>Negativa: las más antiguas tienden a ser más caras</td></tr>
+<tr><td>Lattitude</td><td class="num">−0,213</td><td>Geografía pura: más al sur, más caro</td></tr>
+<tr><td>Longtitude</td><td class="num">0,204</td><td>Ídem, en el otro eje</td></tr>
+<tr><td>Distance</td><td class="num">−0,163</td><td>Más lejos del centro, más barato</td></tr>
+<tr><td>BuildingArea</td><td class="num">0,070</td><td>Sospechosamente baja. Ver la nota</td></tr>
+<tr><td>Landsize</td><td class="num"><strong>0,038</strong></td><td>El tamaño del terreno casi no predice el precio</td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--suave);margin-top:-.5rem">
+  [FUENTE · Repo: <code>05_RESULTADOS/correlacion_dashai.json</code>, n = 13.580]
+</p>
+
+<div class="nota">
+  <strong>Por qué <code>BuildingArea</code> da 0,070 y no hay que creerle.</strong>
+  Esa columna tenía muchos nulos, y se rellenaron todos con un mismo valor constante (130,60 m²).
+  Cientos de filas con un valor idéntico e inventado aplastan cualquier correlación hacia cero.
+  El 0,070 describe <em>el dataset después de imputar</em>, no el mundo.
+  <span style="display:block;margin-top:.3rem"><strong>Moraleja de EDA:</strong> un coeficiente bajo
+  puede venir del fenómeno o puede venir de lo que le hiciste al dato. Antes de descartar una variable
+  por su correlación, mira cuántos nulos tenía.</span>
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: el propio
+  <code>correlacion_dashai.json</code> declara <code>rellenos_nulos: BuildingArea = 130,5965</code>]</span>
+</div>
+
+<h3>Correlación ≠ causalidad</h3>
+
+<p>El profesor se detuvo aquí más de lo que el programa exigía, y contó dos historias.</p>
+
+<div class="cita">
+  «Cuando sube la temperatura se empiezan a vender más helados. Y entonces alguien podría decir:
+  “oye, cada vez que se venden helados empieza a subir la temperatura, entonces la causa de que
+  haga calor hoy día es que hemos comprado mucho helado, paremos de comprar helado”.»
+  <span class="f">[FUENTE · Repo: transcripción del 17 de julio · 0:56:01]</span>
+</div>
+
+<p>La segunda es mejor, porque es real. Un colega suyo recibió un análisis que no le convencía.
+Para desarmarlo, se conectó a la base de recursos humanos, sacó el <strong>dígito verificador</strong>
+del RUT de todos los trabajadores y lo correlacionó con la variable de interés.
+<strong>El dígito verificador correlacionaba más</strong> que el análisis del otro ingeniero.
+Su conclusión irónica: «ya, contratemos más gente con estos dígitos verificadores».</p>
+
+<div class="clave">
+  <strong>Las tres cosas que te deja esa anécdota:</strong>
+  <ol style="margin:.5rem 0 0">
+  <li>Una correlación alta <strong>no es evidencia</strong> de nada por sí sola. Necesitas un
+  <em>mecanismo</em> que explique por qué una cosa movería a la otra.</li>
+  <li>Con muchas columnas, <strong>algo va a correlacionar por puro azar</strong>. Mientras más
+  variables pruebas, más seguro es que encuentres una espuria.</li>
+  <li>Existen los <strong>confusores</strong>: una tercera variable que no mediste y que mueve a las
+  otras dos. Ves que suben juntas y no ves la causa real.</li>
+  </ol>
+</div>
+
+<div class="nota">
+  <strong>Y el caso extremo ya lo viste arriba:</strong> el conjunto 4 de Anscombe tiene correlación
+  0,816 producida por <em>un solo punto</em>. Diez observaciones idénticas más una lejos.
+  Si reportas ese 0,816 sin haber graficado, estás reportando un artefacto.
+</div>
+
+
+<h2>8 · Integridad visual</h2>
+
+<p>El profesor dedicó un bloque a gráficos que engañan, y usó un caso chileno: un gráfico de gobierno
+donde un eje truncado convertía una variación pequeña en lo que parecía «casi un 50 %».
+Su criterio de referencia es el de <strong>Tufte</strong>: transmitir el mayor número de ideas,
+en el menor tiempo, con la menor cantidad de tinta, en el menor espacio.</p>
+
+<div class="clave">
+  El punto que subrayó no es «no mientas». Es: <strong>alguien va a intentar persuadirte a ti con un
+  gráfico</strong>, y tienes que mirar el eje antes que la forma. Un eje que no parte en cero, una escala
+  cambiada a la mitad o un intervalo desigual son las tres maneras habituales.
+</div>
+
+<div class="nota">
+  El ejemplo que aportó una compañera y que él aprobó: «el 25 % de los accidentes laborales se reportan
+  un lunes» suena alarmante hasta que recuerdas que <strong>hay 7 días</strong> y que el reparto uniforme
+  daría 14,3 % por día. El 25 % es alto, sí, pero menos de lo que la frase insinúa —y el titular omite
+  justamente el denominador. <em>Mismo error que el profesor castiga en métricas de clasificación:
+  el problema es siempre el denominador que no te muestran.</em>
+</div>
+
+
+<h2>9 · La distinción de certamen</h2>
+
+<div class="peligro">
+  <strong>Pregunta 4 del Certamen 2.</strong> Te dan una lista de cantidades y tienes que decir cuál
+  <em>no</em> pertenece al grupo. Entre ellas aparecen precisión, sensibilidad, FPR, AUC… y
+  <strong>varianza</strong>.
+  <span style="display:block;margin-top:.5rem">La distinción que decide la respuesta:
+  <strong>una cantidad que describe un clasificador ≠ una cantidad que describe una variable</strong>.
+  Precisión, sensibilidad, FPR y AUC <em>solo existen</em> si hay un clasificador y clases verdaderas
+  contra las que comparar. La varianza existe con o sin clases: es un estadístico descriptivo de una
+  columna. Por eso se excluye.</span>
+  <span style="display:block;margin-top:.4rem;font-size:.85rem">[FUENTE · Repo:
+  <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>, ficha P4]</span>
+</div>
+
+<p>Las otras distinciones de esta unidad, en el formato en que el profesor las pregunta:</p>
+
+<table>
+<tr><th>No confundas</th><th>Con</th><th>Lo que decide</th></tr>
+<tr><td>Media</td><td>Mediana</td><td>La media se arrastra hacia la cola; la mediana no. Con asimetría, reporta mediana</td></tr>
+<tr><td>Varianza</td><td>Desviación estándar</td><td>Las unidades. La varianza está al cuadrado y no se interpreta</td></tr>
+<tr><td>Desviación estándar</td><td>Percentiles</td><td><code>s</code> dice cuánto; los percentiles dicen cuánto <strong>y hacia dónde</strong></td></tr>
+<tr><td>Variable numérica</td><td>Variable categórica</td><td>Orden. Sin orden no hay histograma ni media: solo frecuencias y moda</td></tr>
+<tr><td>Gráfico de barras</td><td>Gráfico de líneas</td><td>Si puedes interpolar entre dos valores del eje X, línea. Si no, barras</td></tr>
+<tr><td>Correlación</td><td>Causalidad</td><td>El mecanismo. Sin mecanismo, <code>r</code> alto no es evidencia</td></tr>
+<tr><td>Resumen estadístico</td><td>Forma de la distribución</td><td>Anscombe: cuatro formas distintas, un solo resumen</td></tr>
+<tr><td>Un estadístico descriptivo</td><td>Una métrica de evaluación</td><td>Qué objeto describe: una variable o un modelo</td></tr>
+</table>
+
+
+<h2>10 · Procedimiento para el papel</h2>
+
+<p>Te dan una tabla de números o una figura y te piden describirla. Esto es lo que haces, en orden:</p>
+
+<ol class="proc">
+<li><strong>Clasifica cada columna:</strong> ¿numérica o categórica? Esto decide todas las herramientas
+que puedes usar después.</li>
+<li><strong>Para las categóricas:</strong> frecuencias y moda. Nada más. Si hay una categoría que se lleva
+casi todo, dilo: es desbalance.</li>
+<li><strong>Para las numéricas, el centro:</strong> media y mediana. <em>Las dos, siempre.</em>
+La comparación entre ambas es gratis y es tu primer diagnóstico.</li>
+<li><strong>Decide la asimetría:</strong> media &gt; mediana → cola derecha. media &lt; mediana → cola
+izquierda. media ≈ mediana → simétrica.</li>
+<li><strong>La extensión:</strong> rango y desviación estándar. Pregúntate si <code>s</code> es grande
+<em>comparado con la media</em>: <code>s</code> = 629.743 sobre una media de 1.078.072 es más de la mitad.
+Eso es una distribución muy ancha.</li>
+<li><strong>Confirma con percentiles:</strong> compara (media − s) contra P5 y (media + s) contra P95.
+La diferencia mayor marca el lado de la cola.</li>
+<li><strong>Mira los extremos:</strong> ¿el máximo está a una distancia razonable del P95, o está diez
+veces más lejos? Si está lejísimos, hay atípicos y hay que decidir qué hacer con ellos.</li>
+<li><strong>Escribe la conclusión en palabras del problema</strong>, no en jerga.
+No «la distribución presenta asimetría positiva» sino «hay muchas casas baratas y unas pocas mansiones
+que estiran el promedio».</li>
+<li><strong>Nombra la consecuencia práctica:</strong> qué estadístico reportarías, qué variable
+transformarías, qué hipótesis probarías después. El EDA termina en una decisión.</li>
+</ol>
+
+
+<h2>11 · Errores que el formato castiga</h2>
+
+<ul>
+<li><strong>Reportar la media de una distribución con cola</strong> y presentarla como «lo típico».
+En Melbourne 2017, seis de cada diez casas están bajo esa media.</li>
+<li><strong>Calcular media o desviación estándar de una variable categórica.</strong> Si codificaste
+las regiones como 1, 2, 3, su promedio de 2,4 no significa nada.</li>
+<li><strong>Creer que <code>s</code> te dice hacia qué lado está la cola.</strong> No lo hace, y dos
+distribuciones espejo lo prueban con el mismo <code>s</code>.</li>
+<li><strong>Interpretar la varianza en las unidades de la variable.</strong> Está al cuadrado.</li>
+<li><strong>Dividir por <code>n</code> al calcular la varianza muestral.</strong> Va <code>n − 1</code>.</li>
+<li><strong>Concluir desde un resumen sin haber graficado.</strong> Anscombe es literalmente el
+contraejemplo que el profesor mostró en pantalla.</li>
+<li><strong>Leer una correlación alta como causa.</strong> Falta el mecanismo, y puede ser azar
+o un confusor.</li>
+<li><strong>Descartar una variable por su correlación baja sin revisar sus nulos.</strong>
+Imputar con una constante empuja <code>r</code> hacia cero artificialmente.</li>
+<li><strong>Usar líneas para variables categóricas.</strong> La línea afirma que se puede interpolar,
+y no se puede.</li>
+<li><strong>Confundir un estadístico descriptivo con una métrica de evaluación.</strong>
+Es la P4 completa.</li>
+</ul>
+
+<h2>Antes de cerrar</h2>
+
+<div class="pred">
+  <b>Para responderle a Guillito:</b> te doy dos columnas de un dataset de sensores de una planta.
+  La columna <code>temperatura</code> tiene media 78,4 y mediana 78,1. La columna
+  <code>horas_hasta_falla</code> tiene media 412 y mediana 190.
+  <strong>Sin ningún gráfico: ¿cuál de las dos transformarías antes de modelar, y qué estadístico
+  reportarías de cada una?</strong> Justifica con el criterio, no con el resultado.
+</div>
+
+<p style="font-size:.85rem;color:var(--suave);margin-top:2.5rem;border-top:1px solid var(--linea);padding-top:1rem">
+Etiquetas: las citas del profesor son [FUENTE · Repo] sobre las transcripciones de
+<code>09_CLASES/</code>. Las cifras de Melbourne son [FUENTE · Repo] sobre
+<code>05_RESULTADOS/</code>. El cuarteto de Anscombe es el dataset canónico, verificado contra las
+cifras de la lámina del profesor. Las analogías, el orden pedagógico y los ejercicios son [GUILLITO].
+</p>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- utilidades ---------- */
+function pct(a, p){                    // percentil con interpolación lineal (como numpy)
+  var s = a.slice().sort(function(x,y){return x-y;});
+  var i = (s.length - 1) * p / 100;
+  var lo = Math.floor(i), hi = Math.ceil(i);
+  if (lo === hi) return s[lo];
+  return s[lo] + (s[hi] - s[lo]) * (i - lo);
+}
+function media(a){ var t=0; for(var i=0;i<a.length;i++) t+=a[i]; return t/a.length; }
+function desv(a){ var m=media(a),t=0; for(var i=0;i<a.length;i++){var d=a[i]-m; t+=d*d;} return Math.sqrt(t/(a.length-1)); }
+function mediana(a){ return pct(a,50); }
+function fmt(x,d){
+  var s = x.toFixed(d===undefined?2:d);
+  var p = s.split(".");
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return p.length>1 ? p[0]+","+p[1] : p[0];
+}
+function prep(cv){                     // canvas nítido en pantallas hidpi
+  var r = window.devicePixelRatio || 1;
+  var w = cv.width, h = cv.height;
+  if (cv.dataset.done !== "1"){
+    cv.style.height = "auto";
+    cv.width = w * r; cv.height = h * r;
+    cv.dataset.w = w; cv.dataset.h = h; cv.dataset.done = "1";
+  }
+  var ctx = cv.getContext("2d");
+  ctx.setTransform(r,0,0,r,0,0);
+  ctx.clearRect(0,0,+cv.dataset.w,+cv.dataset.h);
+  return {ctx: ctx, W: +cv.dataset.w, H: +cv.dataset.h};
+}
+
+/* =========================================================
+   2 · CUARTETO DE ANSCOMBE
+   ========================================================= */
+var AX  = [10,8,13,9,11,14,6,4,12,7,5];
+var AX4 = [8,8,8,8,8,8,8,19,8,8,8];
+var AY  = {
+  1:[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68],
+  2:[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74],
+  3:[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],
+  4:[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89]
+};
+var ATXT = {
+  1:"Conjunto 1 — una relación lineal con ruido. Es el único de los cuatro donde la recta y = 3 + 0,5x describe de verdad lo que pasa.",
+  2:"Conjunto 2 — una curva, no una recta. La recta ajustada es la mejor línea recta posible y aun así es la descripción equivocada del fenómeno.",
+  3:"Conjunto 3 — una recta casi perfecta y UN punto anómalo. Ese punto solo tuerce la recta ajustada y baja la correlación.",
+  4:"Conjunto 4 — diez puntos con el mismo valor de x y uno lejos. La correlación de 0,816 la produce ese único punto: sin él no hay ninguna relación que medir.",
+  0:"Los cuatro a la vez. Mismo resumen de seis números, cuatro fenómenos distintos. Eso es lo que un resumen NO puede distinguir."
+};
+var anSel = 1;
+
+function anMarco(ctx,x0,y0,w,h,titulo){
+  ctx.strokeStyle="#d8d8d8"; ctx.lineWidth=1;
+  ctx.strokeRect(x0,y0,w,h);
+  if(titulo){ ctx.fillStyle="#666"; ctx.font="600 11px system-ui"; ctx.textAlign="left";
+    ctx.fillText(titulo, x0+6, y0+14); }
+}
+function anPlot(ctx,x0,y0,w,h,xs,ys,titulo){
+  anMarco(ctx,x0,y0,w,h,titulo);
+  var xmin=2, xmax=20, ymin=2, ymax=13.5;
+  function px(v){ return x0 + (v-xmin)/(xmax-xmin)*w; }
+  function py(v){ return y0 + h - (v-ymin)/(ymax-ymin)*h; }
+  // recta compartida y = 3 + 0.5x
+  ctx.strokeStyle="#2563eb"; ctx.lineWidth=1.6; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(px(xmin), py(3+0.5*xmin)); ctx.lineTo(px(xmax), py(3+0.5*xmax)); ctx.stroke();
+  ctx.setLineDash([]);
+  // puntos
+  ctx.fillStyle="#dc2626";
+  for(var i=0;i<xs.length;i++){
+    ctx.beginPath(); ctx.arc(px(xs[i]), py(ys[i]), 4, 0, 6.2832); ctx.fill();
+  }
+}
+function anDraw(){
+  var c = prep(document.getElementById("cAns"));
+  var ctx = c.ctx;
+  if (anSel === 0){
+    var w=(c.W-30)/2 - 6, h=(c.H-30)/2 - 6;
+    anPlot(ctx,10,10,w,h, AX, AY[1], "conjunto 1");
+    anPlot(ctx,20+w,10,w,h, AX, AY[2], "conjunto 2");
+    anPlot(ctx,10,20+h,w,h, AX, AY[3], "conjunto 3");
+    anPlot(ctx,20+w,20+h,w,h, AX4, AY[4], "conjunto 4");
+  } else {
+    var xs = (anSel===4) ? AX4 : AX;
+    anPlot(ctx, 10, 10, c.W-20, c.H-20, xs, AY[anSel], "conjunto "+anSel);
+    ctx.fillStyle="#2563eb"; ctx.font="600 12px system-ui"; ctx.textAlign="right";
+    ctx.fillText("y = 3 + 0,5x   ·   r = 0,816", c.W-18, c.H-18);
+  }
+  document.getElementById("anTxt").textContent = ATXT[anSel];
+  ["an1","an2","an3","an4"].forEach(function(id,k){
+    document.getElementById(id).className = "an" + (anSel===k+1 ? "" : " off");
+  });
+  document.getElementById("anAll").className = (anSel===0 ? "" : "off");
+}
+[1,2,3,4].forEach(function(k){
+  document.getElementById("an"+k).addEventListener("click", function(){ anSel=k; anDraw(); });
+});
+document.getElementById("anAll").addEventListener("click", function(){ anSel=0; anDraw(); });
+
+/* =========================================================
+   5 · VIBRACIÓN: ASIMETRÍA, s Y PERCENTILES
+   ========================================================= */
+var Z = [0.167,0.497,-0.140,-0.825,-0.340,-0.937,0.232,1.655,-0.382,-0.525,0.710,0.562,0.282,-0.869,0.133,0.938,-1.329,-0.343,-1.948,-1.268,-1.882,-0.096,-1.244,0.467,0.339,-0.043,-2.632,-0.434,0.111,0.291,-1.536,-0.366,-0.923,-0.734,1.345,-0.732,0.129,1.148,-0.484,0.041,0.288,0.236,-1.197,0.250,1.676,-1.555,1.121,0.298,-0.548,2.389,1.013,-1.168,0.248,0.806,-0.045,0.924,0.091,0.907,1.764,-0.586,0.391,-0.350,0.307,-1.154,-0.479,-0.053,1.164,1.438,-1.306,-0.718,0.884,-2.050,-0.350,0.057,1.563,0.932,-0.199,-0.244,-0.113,1.859,-0.311,-0.172,0.557,0.031,-0.054,-1.073,0.152,-0.328,1.462,0.891,0.138,0.908,-0.213,1.335,0.159,0.814,-1.270,0.551,-1.711,-2.097,-0.173,-0.835,0.348,2.661,-0.759,-0.528,0.394,0.713,-0.031,-0.064,0.946,0.743,-0.984,0.077,0.204,-1.007,0.454,-0.789,1.246,0.379,0.264,-0.492,0.033,-2.056,-1.092,0.569,-2.201,1.106,-1.776,1.006,-0.775,1.031,0.311,-1.543,1.554,1.768,0.092,-0.139,-0.012,-0.919,1.386,-0.438,0.108,-0.717,-0.531,-1.255,1.563,-0.006,1.239,0.180,-0.607,-0.198,-0.458,0.174,-0.252,-0.168,-1.367,-0.732,2.004,-0.581,-1.007,0.540,1.730,-1.451,-0.067,-0.537,-1.792,0.982,0.139,0.245,-0.671,0.671,-0.434,0.006,-1.067,-1.187,1.650,-0.398,0.489,0.128,-0.325,-0.399,0.866,-0.170,-0.003,0.190,1.473,0.922,0.591,-0.461,-1.371,1.221,1.240,0.009,0.768,1.034,1.089,1.189,-0.341,1.849,-1.221,1.123,0.714,1.136,2.254,1.815,-1.108,-1.712,1.073,-0.963,0.151,1.099,-1.662,-2.180,0.453,0.215,-0.108,0.208,-0.791,-1.517,-0.020,-0.915,-1.662,0.727,0.097,0.617,-0.934,-0.566,-0.945,-0.820,0.382,-0.705,0.561,0.543,2.416,-1.383,1.152,0.066,0.150,-1.446];
+var CENTRO = 41, ESCALA = 6;
+var vibK = 0, vibEsp = false;
+
+function vibMuestra(){
+  var out = [], i, d;
+  for(i=0;i<Z.length;i++){
+    d = ESCALA * Z[i];
+    if (d > 0) d = d * (1 + vibK);               // estira solo el lado derecho
+    out.push(CENTRO + d);
+  }
+  if (vibEsp){                                   // reflexión exacta en torno a CENTRO
+    for(i=0;i<out.length;i++) out[i] = 2*CENTRO - out[i];
+  }
+  return out;
+}
+
+function vibDraw(){
+  var a = vibMuestra();
+  var m = media(a), md = mediana(a), s = desv(a);
+  var p5 = pct(a,5), p95 = pct(a,95);
+  var dIzq = Math.abs((m - s) - p5), dDer = Math.abs(p95 - (m + s));
+
+  document.getElementById("vMedia").textContent   = fmt(m,1);
+  document.getElementById("vMediana").textContent = fmt(md,1);
+  document.getElementById("vS").textContent       = fmt(s,2);
+  document.getElementById("vP5").textContent      = fmt(p5,1);
+  document.getElementById("vP95").textContent     = fmt(p95,1);
+
+  var maxd = Math.max(dIzq, dDer, 0.5);
+  document.getElementById("bIzq").style.width = (dIzq/maxd*100)+"%";
+  document.getElementById("bDer").style.width = (dDer/maxd*100)+"%";
+  document.getElementById("bIzq").className = (dIzq > dDer*1.25) ? "neg" : "";
+  document.getElementById("bDer").className = (dDer > dIzq*1.25) ? "neg" : "";
+  document.getElementById("vIzq").textContent = fmt(dIzq,2);
+  document.getElementById("vDer").textContent = fmt(dDer,2);
+
+  var dg = document.getElementById("vDiag");
+  if (Math.abs(dDer - dIzq) < 0.6){
+    dg.style.color = "#059669";
+    dg.textContent = "Las dos distancias son casi iguales → distribución simétrica. Aquí media y mediana prácticamente coinciden, y s te sirve sola: no hay lado que informar.";
+  } else if (dDer > dIzq){
+    dg.style.color = "#dc2626";
+    dg.textContent = "La distancia de la derecha es " + (dDer/Math.max(dIzq,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la DERECHA. Y fíjate: media (" + fmt(m,1) + ") > mediana (" + fmt(md,1) + ").";
+  } else {
+    dg.style.color = "#dc2626";
+    dg.textContent = "La distancia de la izquierda es " + (dIzq/Math.max(dDer,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la IZQUIERDA. Y fíjate: media (" + fmt(m,1) + ") < mediana (" + fmt(md,1) + ").";
+  }
+
+  /* histograma */
+  var c = prep(document.getElementById("cVib")), ctx = c.ctx;
+  var lo = 0, hi = 82, nb = 41, bw = (hi-lo)/nb;
+  var bins = new Array(nb); for(var i=0;i<nb;i++) bins[i]=0;
+  for(i=0;i<a.length;i++){
+    var k = Math.floor((a[i]-lo)/bw);
+    if(k<0) k=0; if(k>=nb) k=nb-1;
+    bins[k]++;
+  }
+  var mx = 0; for(i=0;i<nb;i++) if(bins[i]>mx) mx=bins[i];
+  var L=42, R=12, T=14, B=34, W=c.W-L-R, H=c.H-T-B;
+  function px(v){ return L + (v-lo)/(hi-lo)*W; }
+
+  ctx.fillStyle="#93c5fd";
+  for(i=0;i<nb;i++){
+    if(!bins[i]) continue;
+    var bh = bins[i]/mx*H;
+    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
+  }
+  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
+  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
+  for(var v=0; v<=80; v+=10){ ctx.fillText(v, px(v), T+H+16); }
+  ctx.fillText("vibración (mm/s)", L+W/2, T+H+31);
+
+  function linea(v,color,etq,dash,arriba){
+    if(v<lo||v>hi) return;
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(px(v),T); ctx.lineTo(px(v),T+H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
+    ctx.fillText(etq, px(v), arriba ? T+10 : T+22);
+  }
+  linea(p5,  "#7c3aed","P5", [3,3], true);
+  linea(p95, "#7c3aed","P95",[3,3], true);
+  linea(m-s, "#2563eb","−s", [5,4], false);
+  linea(m+s, "#2563eb","+s", [5,4], false);
+  linea(md,  "#059669","mediana", null, true);
+  linea(m,   "#dc2626","media",   null, false);
+}
+
+var sk = document.getElementById("sk");
+sk.addEventListener("input", function(){
+  vibK = (+sk.value)/100;
+  document.getElementById("oSk").textContent = vibK === 0
+    ? "simétrica"
+    : "×" + (1+vibK).toFixed(2).replace(".",",");
+  vibDraw();
+});
+document.getElementById("bEsp").addEventListener("click", function(){
+  vibEsp = !vibEsp;
+  this.className = vibEsp ? "" : "off";
+  this.textContent = vibEsp ? "Reflejando (espejo activo)" : "Reflejar (espejo)";
+  vibDraw();
+});
+document.getElementById("bReset").addEventListener("click", function(){
+  vibK = 0; vibEsp = false; sk.value = 0;
+  document.getElementById("oSk").textContent = "simétrica";
+  var b = document.getElementById("bEsp");
+  b.className = "off"; b.textContent = "Reflejar (espejo)";
+  vibDraw();
+});
+
+/* =========================================================
+   6 · MELBOURNE 2017: CRUDO FRENTE A LOG
+   ========================================================= */
+/* Histogramas reales calculados sobre 05_RESULTADOS/predicciones_2017.csv (n = 7.244) */
+var MEL_CRUDO = {
+  bins: [0,5,55,220,428,632,777,691,707,588,402,345,424,358,273,203,198,156,124,117,75,55,66,49,40,47,27,26,24,15,22,18],
+  extra: 77, lo: 0, ancho: 100000,
+  ticks: [0,500000,1000000,1500000,2000000,2500000,3000000],
+  eje: function(v){ return (v/1000000).toFixed(1).replace(".",",") + "M"; },
+  et: "precio de venta (AUD)"
+};
+var MEL_LOG = {
+  bins: [1,3,6,19,85,181,366,672,1010,1148,996,955,728,530,269,156,77,24,9,6,2,1],
+  extra: 0, lo: 11.7, ancho: 0.2,
+  ticks: [12,13,14,15,16],
+  eje: function(v){ return v.toFixed(0); },
+  et: "log1p(precio)"
+};
+var MEL_STATS = {
+  crudo: {media:1078071.708, mediana:910000, s:629742.8217, p5:420000, p95:2260000, bajo:61.5, d:0},
+  log:   {media:13.7542,   mediana:13.7212, s:0.5137,  p5:12.9480, p95:14.6309, bajo:52.5, d:4}
+};
+var melSel = "crudo";
+
+function melDraw(){
+  var D = (melSel==="crudo") ? MEL_CRUDO : MEL_LOG;
+  var S = MEL_STATS[melSel];
+  var c = prep(document.getElementById("cMel")), ctx = c.ctx;
+  var nb = D.bins.length;
+  var hi = D.lo + nb*D.ancho;
+  var mx = 0; for(var i=0;i<nb;i++) if(D.bins[i]>mx) mx=D.bins[i];
+  var L=42,R=12,T=14,B=34,W=c.W-L-R,H=c.H-T-B;
+  function px(v){ return L + (v-D.lo)/(hi-D.lo)*W; }
+
+  ctx.fillStyle = (melSel==="crudo") ? "#fca5a5" : "#86efac";
+  for(i=0;i<nb;i++){
+    if(!D.bins[i]) continue;
+    var bh = D.bins[i]/mx*H;
+    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
+  }
+  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
+  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
+  for(var t=0; t<D.ticks.length; t++){
+    var tv = D.ticks[t];
+    if(tv < D.lo || tv > hi) continue;
+    ctx.fillText(D.eje(tv), px(tv), T+H+16);
+  }
+  ctx.fillText(D.et, L+W/2, T+H+31);
+
+  if(D.extra){
+    ctx.fillStyle="#991b1b"; ctx.font="600 11px system-ui"; ctx.textAlign="right";
+    ctx.fillText("↑ y 77 casas más, hasta 9,0M", L+W-6, T+18);
+  }
+  function linea(val,color,etq,dash,arriba){
+    if(val<D.lo||val>hi) return;
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(px(val),T); ctx.lineTo(px(val),T+H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
+    ctx.fillText(etq, px(val), arriba ? T+10 : T+24);
+  }
+  linea(S.p5,"#7c3aed","P5",[3,3],true);
+  linea(S.p95,"#7c3aed","P95",[3,3],true);
+  linea(S.media - S.s,"#2563eb","−s",[5,4],false);
+  linea(S.media + S.s,"#2563eb","+s",[5,4],false);
+  linea(S.mediana,"#059669","mediana",null,true);
+  linea(S.media,"#dc2626","media",null,false);
+
+  var dIzq = Math.abs((S.media - S.s) - S.p5);
+  var dDer = Math.abs(S.p95 - (S.media + S.s));
+  var raz  = (dDer/dIzq);
+  document.getElementById("melMet").innerHTML =
+    '<div><div class="n">'+fmt(S.media,S.d)+'</div><div class="e">media</div></div>' +
+    '<div><div class="n">'+fmt(S.mediana,S.d)+'</div><div class="e">mediana</div></div>' +
+    '<div><div class="n">'+fmt(S.s,S.d===0?0:4)+'</div><div class="e">desv. estándar</div></div>' +
+    '<div><div class="n">'+fmt(dIzq,S.d===0?0:4)+'</div><div class="e">(media−s) a P5</div></div>' +
+    '<div><div class="n">'+fmt(dDer,S.d===0?0:4)+'</div><div class="e">(media+s) a P95</div></div>' +
+    '<div class="'+(melSel==="crudo"?"alarma":"bien")+'"><div class="n">'+S.bajo.toFixed(1).replace(".",",")+' %</div><div class="e">bajo la media</div></div>';
+
+  document.getElementById("melTxt").innerHTML = (melSel==="crudo")
+    ? "<strong>Crudo.</strong> La media (roja) está claramente a la derecha de la mediana (verde). La distancia de la derecha es <strong>"+raz.toFixed(0)+" veces</strong> la de la izquierda. Y hay 77 casas fuera del gráfico, algunas hasta 9,0 millones. <strong>El 61,5 % de las propiedades cuesta menos que el promedio.</strong>"
+    : "<strong>En logaritmo.</strong> Media y mediana casi se tocan, y las dos distancias son comparables ("+raz.toFixed(1).replace(".",",")+"×, contra 19× en la escala cruda). La cola se comprimió. <strong>Ahora el 52,5 % queda bajo la media:</strong> casi la mitad exacta, que es lo que uno espera de una distribución simétrica. Por eso entrenaste sobre <code>log1p(Price)</code>.";
+
+  document.getElementById("bCrudo").className = (melSel==="crudo") ? "" : "off";
+  document.getElementById("bLog").className   = (melSel==="log")   ? "" : "off";
+}
+document.getElementById("bCrudo").addEventListener("click", function(){ melSel="crudo"; melDraw(); });
+document.getElementById("bLog").addEventListener("click",   function(){ melSel="log";   melDraw(); });
+
+/* ---------- arranque ---------- */
+anDraw();
+vibDraw();
+melDraw();
+window.addEventListener("resize", function(){ anDraw(); vibDraw(); melDraw(); });
+
+})();
+</script>
+</body>
+</html>
