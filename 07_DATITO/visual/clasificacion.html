@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clasificación — cuando la etiqueta no es un número</title>
+<style>
+  :root{
+    --tinta:#1c1f24;
+    --tinta2:#4a5058;
+    --papel:#fbfaf7;
+    --caja:#ffffff;
+    --linea:#ddd8cf;
+    --perro:#8a5a12;
+    --perro-bg:#f6eddc;
+    --gato:#2b5d8c;
+    --gato-bg:#e3ecf4;
+    --acierto:#2f6b46;
+    --error:#9b3226;
+    --error-bg:#f6e6e3;
+    --total:#5a4a78;
+    --total-bg:#ece8f3;
+    --aviso:#7a5b00;
+    --aviso-bg:#fdf6e0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--papel); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16.5px; line-height:1.62;
+  }
+  .hoja{max-width:860px; margin:0 auto; padding:34px 26px 90px}
+  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
+  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
+  .ruta{color:var(--tinta2); font-size:.86rem; margin:14px 0 0; font-variant-numeric:tabular-nums}
+  h2{font-size:1.22rem; margin:52px 0 12px; padding-top:18px; border-top:1px solid var(--linea); letter-spacing:-.01em}
+  h3{font-size:1.02rem; margin:26px 0 8px}
+  p{margin:0 0 13px}
+  ul,ol{margin:0 0 13px; padding-left:22px}
+  li{margin:0 0 6px}
+  code,.mono{font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace; font-size:.93em}
+  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
+  .caja.tenue{background:#f5f3ee}
+  .aviso{background:var(--aviso-bg); border:1px solid #e8d9a8; border-left:4px solid #c9a227; border-radius:6px; padding:14px 17px; margin:20px 0}
+  .aviso .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--aviso); font-weight:700; display:block; margin-bottom:5px}
+  .certamen{background:#efe9f5; border:1px solid #d5c9e4; border-left:4px solid var(--total); border-radius:6px; padding:14px 17px; margin:20px 0}
+  .certamen .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--total); font-weight:700; display:block; margin-bottom:5px}
+  .prof{background:#f2f5f2; border:1px solid #cfdbd2; border-left:4px solid var(--acierto); border-radius:6px; padding:14px 17px; margin:20px 0}
+  .prof .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--acierto); font-weight:700; display:block; margin-bottom:5px}
+  .prof q{font-style:italic}
+  .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
+  .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
+
+  .eq{
+    background:#f3f1ec; border:1px solid var(--linea); border-radius:7px;
+    padding:15px 18px; margin:14px 0; text-align:center;
+    font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
+    font-size:1.04rem; overflow-x:auto;
+  }
+  .eq .nota{display:block; font-family:inherit; font-size:.8rem; color:var(--tinta2); margin-top:8px}
+  .frac{display:inline-block; vertical-align:middle; text-align:center; margin:0 3px}
+  .frac .num{display:block; padding:0 8px 2px; border-bottom:1.6px solid var(--tinta)}
+  .frac .den{display:block; padding:3px 8px 0}
+  .cperro{color:var(--perro); font-weight:700}
+  .cgato{color:var(--gato); font-weight:700}
+  .cmal{color:var(--error); font-weight:700}
+  .cok{color:var(--acierto); font-weight:700}
+
+  .panel{background:var(--caja); border:1px solid var(--linea); border-radius:10px; padding:20px 22px; margin:22px 0}
+  .ctl{margin:16px 0 4px}
+  .ctl label{display:block; font-size:.88rem; font-weight:600; margin-bottom:5px}
+  .ctl label .v{float:right; font-variant-numeric:tabular-nums; color:var(--tinta2); font-weight:400}
+  input[type=range]{width:100%; margin:0; accent-color:var(--tinta)}
+  canvas{display:block; width:100%; height:auto; border:1px solid var(--linea); border-radius:7px; background:#fff; cursor:crosshair}
+  .btn{font:inherit; font-size:.88rem; padding:7px 14px; border-radius:7px; cursor:pointer;
+       border:1.5px solid var(--tinta); background:var(--tinta); color:#fff}
+  .btn.sec{background:#fff; color:var(--tinta2); border-color:var(--linea)}
+  .btn.sec:hover{border-color:#bbb4a8; color:var(--tinta)}
+  .btnfila{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 4px}
+
+  .lect{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:9px; margin:16px 0 0}
+  .met{border:1px solid var(--linea); border-radius:7px; padding:10px 11px; background:#fff}
+  .met .n{font-size:.73rem; letter-spacing:.05em; text-transform:uppercase; color:var(--tinta2); display:block}
+  .met .c{font-size:1.34rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.25}
+  .met .d{font-size:.75rem; color:var(--tinta2); display:block; line-height:1.35}
+  .met.destaca{background:var(--aviso-bg); border-color:#e8d9a8}
+  .met.mala{background:var(--error-bg); border-color:#e3c3bc}
+  .met.mala .c{color:var(--error)}
+
+  .pred{background:var(--aviso-bg); border:1px solid #e8d9a8; border-radius:7px; padding:13px 16px; margin:16px 0}
+  .pred .q{font-size:.92rem; font-weight:600; margin:0 0 9px}
+  .pred .ops{display:flex; flex-wrap:wrap; gap:7px}
+  .bpred{font:inherit; font-size:.86rem; padding:6px 12px; border-radius:6px; cursor:pointer; border:1.5px solid #ddd0a4; background:#fff; color:var(--tinta)}
+  .bpred[aria-pressed="true"]{background:var(--aviso); color:#fff; border-color:var(--aviso)}
+  .contraste{font-size:.91rem; margin:11px 0 0; padding-top:10px; border-top:1px dashed #ddd0a4; display:none}
+  .contraste.on{display:block}
+
+  .bmet{font:inherit; font-size:.85rem; padding:6px 12px; border-radius:20px; cursor:pointer;
+        border:1.5px solid var(--linea); background:#fff; color:var(--tinta2); transition:all .15s}
+  .bmet:hover{border-color:#bbb4a8; color:var(--tinta)}
+  .bmet[aria-pressed="true"]{background:var(--tinta); color:#fff; border-color:var(--tinta)}
+
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:.91rem}
+  th,td{border:1px solid var(--linea); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:#f3f1ec; font-weight:600; font-size:.85rem}
+  td.num{font-variant-numeric:tabular-nums; white-space:nowrap; text-align:right}
+  td.mid{text-align:center}
+  tr.res td{background:var(--aviso-bg); font-weight:600}
+
+  details{border:1px solid var(--linea); border-radius:7px; padding:11px 15px; margin:14px 0; background:#fff}
+  details[open]{background:#f8f7f3}
+  summary{cursor:pointer; font-weight:600; font-size:.93rem}
+  summary::marker{color:var(--tinta2)}
+  details .cuerpo{margin-top:12px; padding-top:11px; border-top:1px solid var(--linea)}
+
+  .grafo{display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.87rem; margin:14px 0}
+  .nodo{border:1px solid var(--linea); border-radius:16px; padding:5px 13px; background:#fff; color:var(--tinta2)}
+  .nodo.aqui{background:var(--tinta); color:#fff; border-color:var(--tinta); font-weight:600}
+  .flecha{color:var(--tinta2)}
+
+  .pasos{counter-reset:p; list-style:none; padding-left:0}
+  .pasos li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:11px}
+  .pasos li::before{
+    content:counter(p); position:absolute; left:0; top:1px; width:23px; height:23px;
+    border-radius:50%; background:var(--tinta); color:#fff; font-size:.79rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .dos{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0}
+  .lado{border:1px solid var(--linea); border-radius:8px; padding:14px 16px; background:#fff}
+  .lado h4{margin:0 0 7px; font-size:.95rem}
+  .lado.r{border-top:3px solid var(--gato)}
+  .lado.c{border-top:3px solid var(--perro)}
+  @media(max-width:620px){
+    .dos{grid-template-columns:1fr}
+    .hoja{padding:24px 16px 70px}
+  }
+</style>
+</head>
+<body>
+<div class="hoja">
+
+<h1>Clasificación</h1>
+<p class="sub">La misma ecuación que en regresión. Lo que cambia es <strong>qué haces con el número que sale</strong>.</p>
+<p class="ruta">Datito · concepto 10 del currículum · prerrequisito: regresión</p>
+
+<div class="grafo" style="margin-top:22px">
+  <span class="nodo">regresión</span><span class="flecha">→</span>
+  <span class="nodo aqui">clasificación</span><span class="flecha">→</span>
+  <span class="nodo">matriz de confusión</span><span class="flecha">→</span>
+  <span class="nodo">precisión · recall · F1</span><span class="flecha">→</span>
+  <span class="nodo">ROC y AUC</span>
+</div>
+<p class="fuente">Estructura de <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>. Este documento se detiene justo antes de la matriz de confusión: ese concepto ya lo tienes en <code>07_DATITO/visual/matriz_confusion.html</code> y las métricas en <code>metricas_clasificacion.html</code>. Aquí no se repiten.</p>
+
+
+<h2>1 · La situación, antes de cualquier fórmula</h2>
+
+<p>Sales a terreno con una huincha. A cada animal que encuentras le mides dos cosas: <strong>el tamaño del animal</strong> y <strong>el tamaño de la oreja</strong>. Y anotas si es perro o gato, porque lo estás viendo.</p>
+
+<p>Vuelves con una tabla de 28 filas. Mañana te van a pasar las medidas de un animal que no viste, sin decirte qué es, y tienes que responder: <strong>perro o gato</strong>.</p>
+
+<div class="prof">
+  <span class="et">Este ejemplo es de tu profesor, no inventado</span>
+  <q>Digamos que yo estoy midiendo el tamaño del animal y el tamaño de las orejas… entonces yo quiero después ajustar un modelo que digamos que podría hacer algo como esto: digo todo lo que está hacia arriba es perro y todo lo que está hacia abajo es gato.</q>
+  <p class="fuente" style="margin-top:9px">Clase del 7 de agosto de 2026 · <code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code></p>
+</div>
+
+<p>Fíjate en lo que acaba de cambiar respecto a Melbourne. Allí tu modelo respondía <em>910.000 AUD</em> y el error era <em>una distancia</em>: fallaste por 188.218 AUD. Aquí tu modelo responde <em>perro</em>. No existe fallar por poco. <strong>O es perro, o no lo es.</strong></p>
+
+<div class="aviso">
+  <span class="et">La idea que hay que llevarse</span>
+  En regresión predices <strong>cuánto</strong>. En clasificación predices <strong>cuál</strong>. Y como «cuál» no vive en una recta numérica, todo lo que medía distancias —MAE, RMSE, R²— deja de tener sentido y hay que construir otra forma de contar los errores.
+</div>
+
+
+<h2>2 · Por qué no puedes usar MAE aquí</h2>
+
+<p>Objeción razonable: <em>si a las clases les pongo números —0, 1, 2— ya puedo restarlas. ¿Por qué no calculo el MAE y listo?</em></p>
+
+<p>Porque para que una resta signifique algo, los números tienen que traer dos cosas: <strong>orden</strong> y <strong>distancia</strong>. Las categorías no traen ninguna de las dos.</p>
+
+<div class="prof">
+  <span class="et">Tu profesor, respondiendo esto mismo en clase</span>
+  <q>Una categoría es perro, gato, conejo; un número es 1, 2, 3, 4, 5, 6… La diferencia es que la variable categórica no tiene una noción de orden. Si digo perro, gato, conejo, yo no puedo decir el perro viene antes que el gato.</q>
+  <p style="margin:9px 0 0">Y de un compañero, en la misma clase: <q>una variable numérica tiene sentido interpolarla, mientras una categórica no; entre 1 y 2 puedo decir que hay 1,5, pero entre perro y gato no hay nada.</q></p>
+</div>
+
+<h3>Y esto no es filosofía: lo puedes ver fallar con tus propios datos</h3>
+
+<p>Esta es la matriz de confusión real de tu desafío Galaxy Zoo, modelo CatBoost, 1.000 galaxias OOF. Tres clases: <strong>ambigua</strong>, <strong>espiral</strong>, <strong>elíptica</strong>.</p>
+
+<p class="fuente" style="margin-bottom:16px">Cifras verificadas en <code>02_PROYECTO_FCD/Desafio/REPORT.md</code> §«OOF CatBoost, argmax normal».</p>
+
+<div class="pred" id="predMae">
+  <p class="q">Antes de tocar nada. Voy a cambiar <strong>qué número le toca a cada clase</strong> —nada más que eso, el modelo y sus 1.000 predicciones quedan idénticos—. ¿Qué se mueve?</p>
+  <div class="ops" role="group" aria-label="Predicción MAE">
+    <button class="bpred" data-p="ninguna" aria-pressed="false">Ninguna de las dos</button>
+    <button class="bpred" data-p="exac" aria-pressed="false">Solo la exactitud</button>
+    <button class="bpred" data-p="mae" aria-pressed="false">Solo el MAE</button>
+    <button class="bpred" data-p="ambas" aria-pressed="false">Las dos</button>
+  </div>
+  <div class="contraste" id="contMae"></div>
+</div>
+
+<div class="panel">
+  <p style="font-size:.9rem; margin-bottom:6px"><strong>Asigna los códigos.</strong> Elige en qué orden numeras las tres clases:</p>
+  <div class="btnfila" id="permBtns" role="group" aria-label="Orden de códigos"></div>
+
+  <table id="tablaGZ" style="margin-top:6px">
+    <thead>
+      <tr><th>Real ↓ / Predicho →</th><th class="mid" id="hc0">—</th><th class="mid" id="hc1">—</th><th class="mid" id="hc2">—</th></tr>
+    </thead>
+    <tbody id="cuerpoGZ"></tbody>
+  </table>
+
+  <div class="lect">
+    <div class="met"><span class="n">Exactitud</span><span class="c" id="gzAcc">0,774</span><span class="d">774 aciertos de 1.000</span></div>
+    <div class="met mala"><span class="n">MAE sobre los códigos</span><span class="c" id="gzMae">0,300</span><span class="d" id="gzMaeDet">—</span></div>
+    <div class="met"><span class="n">Clase en el medio</span><span class="c" id="gzMedio" style="font-size:1.05rem">espiral</span><span class="d">la que quedó con el código 1</span></div>
+  </div>
+</div>
+
+<p>La exactitud no se mueve: <strong>0,774 siempre</strong>. El MAE recorre 0,280 → 0,300 → 0,324, un 16 % de diferencia, y lo único que cambió fue <strong>cuál clase pusiste en el medio</strong>. Esa decisión no tiene ningún significado: nadie puede decir que «espiral» esté entre «ambigua» y «elíptica».</p>
+
+<div class="caja tenue">
+  <p style="margin:0"><strong>El argumento completo, en una línea:</strong> una métrica cuyo valor depende de una decisión arbitraria del analista no está midiendo el modelo. Está midiendo la decisión.</p>
+</div>
+
+<details>
+  <summary>¿Por qué solo hay tres valores distintos de MAE y no seis?</summary>
+  <div class="cuerpo">
+    <p>Porque el MAE sobre códigos solo depende de <strong>qué par de clases quedó en los extremos</strong> (distancia 2); los otros dos pares quedan a distancia 1. Y hay solo tres pares posibles.</p>
+    <p>Invertir el orden completo —<code>0,1,2</code> por <code>2,1,0</code>— no cambia nada, porque las distancias son simétricas. Por eso los seis órdenes dan tres valores, de a dos.</p>
+  </div>
+</details>
+
+<h3>El matiz que el profesor sí distingue: ordinales</h3>
+
+<p>En la misma clase apareció el caso <em>frío / templado / caliente</em>, y el profesor lo separó del resto: eso <strong>sí</strong> tiene orden, porque por debajo hay una temperatura. Lo llamó «una discretización de una variable numérica». Lo mismo con <em>adulto joven / adulto mayor</em>: por debajo está la edad.</p>
+
+<div class="certamen">
+  <span class="et">Distinción que vale puntos</span>
+  <strong>Categórica nominal</strong> (perro, gato, conejo · círculo, cuadrado, triángulo) no tiene orden <strong>ni</strong> distancia.<br>
+  <strong>Categórica ordinal</strong> (frío, templado, caliente) tiene orden <strong>pero no</strong> distancia: no puedes afirmar que la distancia frío→templado sea igual a templado→caliente.<br>
+  <strong>Numérica</strong> tiene las dos.<br>
+  Solo con las dos puedes restar. Por eso el MAE necesita la tercera.
+</div>
+
+
+<h2>3 · Lo que <em>no</em> cambia respecto a regresión</h2>
+
+<p>Antes de mirar lo nuevo, conviene ver cuánto se reutiliza. El profesor fue explícito: <q>la clase de hoy vamos a hacer algo muy parecido a la clase pasada, pero en vez de hablar de regresión vamos a hablar de clasificación</q>.</p>
+
+<table>
+  <thead><tr><th>Pieza</th><th>En regresión (Melbourne)</th><th>En clasificación (perro/gato)</th></tr></thead>
+  <tbody>
+    <tr><td>Datos de entrada <code>x</code></td><td>Rooms, Distance, Bathroom…</td><td>tamaño, tamaño de oreja</td></tr>
+    <tr><td>Etiqueta real <code>y</code></td><td>Price — un número</td><td>perro / gato — <strong>una categoría</strong></td></tr>
+    <tr><td>Lo que se busca</td><td colspan="2" style="text-align:center">una función <code>ŷ = f(x)</code>. Idéntico.</td></tr>
+    <tr><td>El gorrito <code>ŷ</code></td><td colspan="2" style="text-align:center">predicción del modelo. Sin gorrito, el dato real. Idéntico.</td></tr>
+    <tr><td>Supervisado</td><td colspan="2" style="text-align:center">sí, en los dos: entrenas con <code>y</code> a la vista. Idéntico.</td></tr>
+    <tr><td>Generalizar</td><td colspan="2" style="text-align:center">separar train de test, validación cruzada. Idéntico.</td></tr>
+    <tr class="res"><td>La diferencia</td><td colspan="2" style="text-align:center">el <strong>tipo</strong> de <code>y</code>. Eso es todo. Y arrastra todo lo demás.</td></tr>
+  </tbody>
+</table>
+
+<div class="aviso">
+  <span class="et">La confusión que un compañero planteó en clase, y que el profesor tuvo que aclarar</span>
+  Lo que define la tarea es el tipo del <strong>target</strong>, no el de las features. En el ejemplo del plano, <code>x₁</code> y <code>x₂</code> son <strong>numéricas</strong> —centímetros— y aun así es clasificación, porque lo que se predice es una categoría.
+  <p style="margin:9px 0 0">Al revés también: si tus features son categóricas hay que <strong>codificarlas</strong> —one-hot, como hiciste con <code>Type</code>, <code>Method</code> y <code>Regionname</code> en Melbourne— pero eso no convierte el problema en clasificación. Melbourne tiene tres features categóricas y sigue siendo regresión, porque <code>Price</code> es un número.</p>
+</div>
+
+<details>
+  <summary>Cuatro casos para separarlo de una vez</summary>
+  <div class="cuerpo">
+    <table>
+      <thead><tr><th>Problema</th><th>Target</th><th>Tarea</th></tr></thead>
+      <tbody>
+        <tr><td>Precio de una propiedad de Melbourne</td><td>Price, en AUD</td><td>Regresión</td></tr>
+        <tr><td>Forma de una galaxia</td><td>ambigua / espiral / elíptica</td><td>Clasificación (3 clases)</td></tr>
+        <tr><td>Si una propiedad se vende sobre el millón</td><td>sí / no</td><td>Clasificación binaria</td></tr>
+        <tr><td>Cuántos días tarda en venderse</td><td>días, un número</td><td>Regresión</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:12px 0 0">La tercera fila es la interesante: es <strong>el mismo dataset de Melbourne</strong>. Cambiaste el target de un número a un sí/no y cambiaste de tarea. El dato no manda; manda qué le preguntas.</p>
+  </div>
+</details>
+
+
+<h2>4 · Entonces, ¿qué es un modelo de clasificación?</h2>
+
+<p>En regresión el modelo lineal era una recta que <strong>pasaba por</strong> los puntos: para cada <code>x</code> te daba una altura, y esa altura era la predicción.</p>
+
+<p>En clasificación la recta hace lo contrario: <strong>separa</strong> los puntos. Ya no te da una altura; te dice de qué lado caes.</p>
+
+<div class="dos">
+  <div class="lado r">
+    <h4>Regresión</h4>
+    <p style="margin:0; font-size:.93rem">La recta <em>atraviesa</em> la nube. La predicción es la altura de la recta. El error es la distancia vertical de cada punto a la recta.</p>
+  </div>
+  <div class="lado c">
+    <h4>Clasificación</h4>
+    <p style="margin:0; font-size:.93rem">La recta <em>divide</em> el plano. La predicción es el lado. El error es un conteo: cuántos quedaron del lado equivocado.</p>
+  </div>
+</div>
+
+<p>Y sin embargo la ecuación es la misma. Un modelo lineal de clasificación calcula un número, exactamente como en regresión:</p>
+
+<div class="eq">
+  s(<strong>x</strong>) = w₁·x₁ + w₂·x₂ − b
+  <span class="nota">ese número <em>s</em> se llama <strong>score</strong>, y todavía no es una clase</span>
+</div>
+
+<p>La diferencia está en el paso siguiente. En regresión, <code>s</code> <em>era</em> la respuesta. Aquí, <strong>solo importa su signo</strong>:</p>
+
+<div class="eq">
+  ŷ = signo( s(<strong>x</strong>) ) &nbsp;→&nbsp; <span class="cperro">+1 = perro</span> &nbsp;·&nbsp; <span class="cgato">−1 = gato</span>
+  <span class="nota">el ±1 es una herramienta matemática para poder ajustar el modelo, no una afirmación de que perro «vale más» que gato</span>
+</div>
+
+<p>Y la frontera —la línea del dibujo— es exactamente el conjunto de puntos donde el score vale cero:</p>
+
+<div class="eq">w₁·x₁ + w₂·x₂ − b = 0</div>
+
+<h3>Qué es dato, qué aprende la máquina, qué decides tú</h3>
+
+<table>
+  <thead><tr><th>Símbolo</th><th>Qué es</th><th>De dónde sale</th></tr></thead>
+  <tbody>
+    <tr><td><code>x₁, x₂</code></td><td>tamaño y oreja de un animal</td><td><strong>dato.</strong> Lo mediste tú con la huincha</td></tr>
+    <tr><td><code>y</code></td><td>perro o gato, de verdad</td><td><strong>dato.</strong> Solo lo tienes en el conjunto de entrenamiento</td></tr>
+    <tr><td><code>w₁, w₂</code></td><td>cuánto pesa cada medida</td><td><strong>lo aprende el modelo</strong> al ajustarse</td></tr>
+    <tr><td><code>b</code></td><td>desplaza la frontera del origen</td><td><strong>lo aprende el modelo</strong></td></tr>
+    <tr><td><code>ŷ</code></td><td>lo que el modelo responde</td><td><strong>sale</strong> de aplicar la fórmula</td></tr>
+    <tr class="res"><td>qué es «positivo»</td><td>que perro sea +1 y gato −1</td><td><strong>lo decides tú.</strong> El modelo no tiene opinión</td></tr>
+  </tbody>
+</table>
+
+
+<h2>5 · Muévela tú</h2>
+
+<p>Abajo están los 28 animales. El color del borde es la <strong>clase real</strong>. El fondo es <strong>lo que el modelo responde</strong>. Cuando un punto queda sobre un fondo de otro color, es un error: aparece con un aspa.</p>
+
+<div class="pred" id="predSalto">
+  <p class="q">Antes de mover los controles. Vas a girar la recta de a poquito, un grado a la vez. El <strong>número de errores</strong>, ¿cómo se va a comportar?</p>
+  <div class="ops" role="group" aria-label="Predicción del error">
+    <button class="bpred" data-p="suave" aria-pressed="false">Suave: va bajando de a fracciones</button>
+    <button class="bpred" data-p="salto" aria-pressed="false">A saltos: 3 → 3 → 3 → 2, de golpe</button>
+    <button class="bpred" data-p="nose" aria-pressed="false">No sé — quiero mirar primero</button>
+  </div>
+  <div class="contraste" id="contSalto"></div>
+</div>
+
+<div class="panel">
+  <canvas id="lienzo" width="1400" height="820" aria-label="Plano tamaño contra oreja con perros, gatos y una frontera de decisión"></canvas>
+
+  <div class="ctl">
+    <label for="sAng">Inclinación de la recta <span class="v"><span id="vAng">35</span>°</span></label>
+    <input type="range" id="sAng" min="-89" max="89" step="1" value="35">
+  </div>
+  <div class="ctl">
+    <label for="sB">Desplazamiento <code>b</code> <span class="v" id="vB">0,55</span></label>
+    <input type="range" id="sB" min="-1.2" max="1.6" step="0.01" value="0.55">
+  </div>
+
+  <div class="btnfila">
+    <button class="btn" id="btnAjusta">Ajustar el modelo</button>
+    <button class="btn sec" id="btnReset">Volver al inicio</button>
+    <button class="btn sec" id="btnLimpia">Quitar el animal nuevo</button>
+  </div>
+
+  <div class="lect">
+    <div class="met" id="mErr"><span class="n">Errores</span><span class="c" id="vErr">2</span><span class="d">de 28 animales</span></div>
+    <div class="met"><span class="n">Exactitud</span><span class="c" id="vAcc">0,929</span><span class="d">1 − error 0-1</span></div>
+    <div class="met"><span class="n">Punto más cercano</span><span class="c" id="vMar">0,01</span><span class="d" id="dMar">distancia a la recta</span></div>
+  </div>
+
+  <div class="caja tenue" style="margin-top:16px; font-size:.92rem" id="cajaNuevo">
+    <strong>Haz clic en el gráfico</strong> para poner un animal del que no sabes nada, como hizo el profesor con el mouse en clase. El modelo lo va a clasificar igual, sin dudar.
+  </div>
+</div>
+
+<p class="fuente">Las dos medidas están normalizadas a <code>[0, 1]</code> antes de entrar a la fórmula —tamaño entre 10 y 75 cm, oreja entre 3 y 17 cm—, así <code>w₁</code> y <code>w₂</code> son comparables entre sí y la distancia a la recta se lee en las mismas unidades para ambos ejes.</p>
+
+<h3>Lo que tenías que ver</h3>
+
+<ol>
+  <li><strong>El error salta.</strong> Giras un grado y nada; giras otro y de repente bajaste un error entero. Nunca vas a ver 2,4 errores. Esa es <em>toda</em> la diferencia con regresión: allí el error se movía de a centavos y podías derivarlo para saber hacia dónde ir. Aquí no hay pendiente que seguir.</li>
+  <li><strong>El chihuahua no tiene arreglo.</strong> Es un perro pequeño con orejas modestas, metido entre los gatos. Ninguna recta lo salva sin llevarse media docena de gatos por delante.</li>
+  <li><strong>Con el mismo número de errores, hay rectas mejores que otras.</strong> Dos rectas pueden fallar exactamente en los mismos animales y aun así una te da más confianza: la que deja más espacio libre a cada lado. El número de errores no las distingue; el margen sí.</li>
+</ol>
+
+<div class="prof">
+  <span class="et">Tu profesor, sobre el punto 2</span>
+  <q>Podrías tener un perro pequeño, no sé, un chihuahua por ejemplo, podría ser clasificado como gato, pero eso es un error… los modelos nunca son perfectos. Un modelo 100 % perfecto yo al tiro dudo de ese modelo, porque hay algo raro. La naturaleza no es 100 % perfecta: hay perros que parecen gatos y hay gatos que parecen perros.</q>
+</div>
+
+
+<h2>6 · El error de clasificación, con notación</h2>
+
+<p>Si el error no es una distancia, ¿qué es? Es un <strong>conteo</strong>. Se llama pérdida 0-1, y es literalmente «cero si acerté, uno si fallé»:</p>
+
+<div class="eq">
+  E<sub>0-1</sub> =
+  <span class="frac"><span class="num">1</span><span class="den">n</span></span>
+  &nbsp;Σ<sub>i=1..n</sub>&nbsp; <strong>1</strong>[ ŷ<sub>i</sub> ≠ y<sub>i</sub> ]
+  <span class="nota"><strong>1</strong>[·] vale 1 cuando lo de adentro es verdad y 0 cuando es falso · la exactitud es 1 − E<sub>0-1</sub></span>
+</div>
+
+<p>Compáralo con lo que usabas en Melbourne:</p>
+
+<div class="eq">
+  MAE =
+  <span class="frac"><span class="num">1</span><span class="den">n</span></span>
+  &nbsp;Σ<sub>i=1..n</sub>&nbsp; | ŷ<sub>i</sub> − y<sub>i</sub> |
+  <span class="nota">esta resta exige que <code>y</code> viva en una recta numérica. Es el supuesto que se rompe</span>
+</div>
+
+<p>Son la misma forma —promedio de algo por observación— y difieren en <strong>ese algo</strong>. El MAE pregunta <em>cuánto me equivoqué</em>. La pérdida 0-1 solo puede preguntar <em>me equivoqué, sí o no</em>.</p>
+
+<div class="aviso">
+  <span class="et">Y aquí aparece el problema técnico que explica todo el resto del curso</span>
+  Esa función escalonada que acabas de ver moviendo la recta es E<sub>0-1</sub>. Como salta, <strong>no se puede derivar</strong>, y sin derivada no hay forma de que el modelo sepa hacia dónde moverse para mejorar.
+  <p style="margin:9px 0 0">Por eso ningún algoritmo de clasificación minimiza directamente el número de errores. Cada uno inventa algo derivable o buscable que se le parezca: el SVM <strong>maximiza el margen</strong>, el árbol <strong>reduce la impureza</strong>, la regresión logística minimiza una verosimilitud. Todos los modelos que vas a ver después son respuestas distintas a este mismo estorbo.</p>
+</div>
+
+<h3>El margen, que es lo que hace el SVM</h3>
+
+<p>Cuando <em>sí</em> existe una recta sin errores, el profesor mostró cómo se elige entre las infinitas que sirven: se toman los puntos más cercanos de cada clase —los <strong>vectores de soporte</strong>—, se trazan dos planos paralelos por ellos, y se busca la recta que hace esa franja lo más ancha posible.</p>
+
+<div class="eq">
+  maximizar &nbsp;<span class="frac"><span class="num">2</span><span class="den">‖<strong>w</strong>‖</span></span>&nbsp;
+  &nbsp;≡&nbsp; minimizar ‖<strong>w</strong>‖ &nbsp;&nbsp;sujeto a&nbsp;&nbsp; y<sub>i</sub>·( <strong>w</strong>·<strong>x</strong><sub>i</sub> − b ) ≥ 1
+  <span class="nota">la restricción dice: cada punto tiene que quedar de su lado <em>y</em> fuera de la franja</span>
+</div>
+
+<p>La restricción es el truco elegante del ±1: si <code>yᵢ = +1</code> exige que el score sea ≥ +1; si <code>yᵢ = −1</code>, al multiplicar por −1 exige que el score sea ≤ −1. Una sola línea cubre las dos clases.</p>
+
+<div class="prof">
+  <span class="et">La analogía que propuso un compañero, y que el profesor aceptó</span>
+  <q>Es como un barrio: los azules son casas, los rojos son casas, y lo que está entremedio es una calle que separa ambos barrios. Si quiero volver a construir una casa, tengo que esperar a que el margen sea igual para separar ambos barrios.</q>
+  <p style="margin:9px 0 0; font-size:.93rem">El botón <em>Ajustar el modelo</em> de arriba hace justo eso, a lo bruto: prueba miles de rectas, se queda con las de menos errores y, entre ellas, con la que deja la calle más ancha.</p>
+</div>
+
+
+<h2>7 · Camino inverso: te entregan la fórmula</h2>
+
+<p>En el certamen no te van a dar el gráfico. Te van a dar esto, escrito, y tendrás que reconstruir de qué habla.</p>
+
+<div class="eq">
+  ŷ = signo( 0,82·x₁ + 0,57·x₂ − 0,55 )
+</div>
+
+<details>
+  <summary>1 · ¿Qué es cada cosa, y qué fenómeno describe?</summary>
+  <div class="cuerpo">
+    <ul>
+      <li><code>x₁</code>, <code>x₂</code>: las dos medidas del animal, normalizadas. <strong>Dato.</strong></li>
+      <li><code>0,82</code> y <code>0,57</code>: el vector <strong>w</strong>, lo que el modelo aprendió. Los dos son positivos, así que <strong>más tamaño y más oreja empujan hacia la clase positiva</strong>. Y 0,82 &gt; 0,57: el tamaño pesa más que la oreja.</li>
+      <li><code>0,55</code>: el <code>b</code>, el umbral. Es cuánto tiene que acumular un animal entre las dos medidas antes de que el modelo se atreva a decir «perro».</li>
+      <li><code>signo(·)</code>: el paso que convierte un número continuo en una decisión discreta. <strong>Esta es la pieza que no existe en regresión.</strong></li>
+    </ul>
+    <p>Fenómeno: separar dos poblaciones en un plano de dos medidas, con una frontera recta.</p>
+  </div>
+</details>
+
+<details>
+  <summary>2 · Un animal mide 38 cm y tiene orejas de 12 cm. ¿Qué responde el modelo?</summary>
+  <div class="cuerpo">
+    <p>Primero normalizas, porque la fórmula está escrita en unidades normalizadas:</p>
+    <p class="mono">x₁ = (38 − 10) / (75 − 10) = 28/65 = 0,431<br>
+       x₂ = (12 − 3) / (17 − 3) = 9/14 = 0,643</p>
+    <p>Ahora sustituyes:</p>
+    <p class="mono">s = 0,82 · 0,431 + 0,57 · 0,643 − 0,55<br>
+       s = 0,353 + 0,366 − 0,55 = <strong>+0,170</strong></p>
+    <p>El signo es positivo → <strong class="cperro">perro</strong>.</p>
+    <p>Y fíjate en algo: 0,170 es un número chico. El animal está cerca de la frontera. El modelo dice «perro» con la misma cara con la que lo diría si el score fuera 0,9 — <strong>el signo no guarda memoria de cuán cerca estuvo</strong>. Ese descarte de información es lo que la curva ROC va a recuperar más adelante, cuando dejes de mirar el signo y empieces a mirar el score.</p>
+  </div>
+</details>
+
+<details>
+  <summary>3 · ¿Cuánto tendría que valer <code>b</code> para que ese mismo animal saliera gato, sin tocar <strong>w</strong>?</summary>
+  <div class="cuerpo">
+    <p>Necesitas <code>s &lt; 0</code>, o sea <code>0,353 + 0,366 − b &lt; 0</code>, o sea <code>b &gt; 0,719</code>. Con <code>b = 0,75</code> el score pasa a −0,031 y el modelo dice gato.</p>
+    <p><strong>La relación que hay que nombrar:</strong> mover <code>b</code> dejando <strong>w</strong> fijo <em>desplaza</em> la recta en paralelo, sin girarla. Cambiar <strong>w</strong> la <em>gira</em>. Compruébalo con los dos deslizadores de arriba: uno inclina, el otro traslada.</p>
+    <p>Y hay un corolario que se te va a pedir después: subir <code>b</code> hace al modelo más exigente para declarar «perro» — declarará menos perros, se le escaparán perros de verdad, pero casi todos los que declare lo serán. Ese es literalmente el umbral que mueve la curva ROC.</p>
+  </div>
+</details>
+
+
+<h2>8 · Qué cantidad describe qué objeto</h2>
+
+<p>Esto es una pregunta del Certamen 2 con nombre y apellido. No pide calcular: pide <strong>clasificar la cantidad</strong>.</p>
+
+<table>
+  <thead><tr><th>Cantidad</th><th>¿Qué objeto describe?</th><th>¿Existe si no hay clases?</th></tr></thead>
+  <tbody>
+    <tr><td>Media, mediana, <strong>varianza</strong>, IQR</td><td>una <strong>variable</strong></td><td class="mid">Sí</td></tr>
+    <tr><td>MAE, RMSE, R²</td><td>un modelo de <strong>regresión</strong></td><td class="mid">Sí, si el target es numérico</td></tr>
+    <tr><td>TP, TN, FP, FN, exactitud, precisión, recall, FPR, F1, AUC</td><td>un <strong>clasificador</strong></td><td class="mid">No</td></tr>
+    <tr><td>Impureza de Gini, entropía</td><td><strong>criterio de entrenamiento</strong> de un árbol</td><td class="mid">No</td></tr>
+    <tr><td>Margen <code>2/‖w‖</code></td><td><strong>criterio de entrenamiento</strong> de un SVM</td><td class="mid">No</td></tr>
+  </tbody>
+</table>
+
+<div class="certamen">
+  <span class="et">La distinción que decide la pregunta</span>
+  Una cantidad que describe un <strong>clasificador</strong> no existe fuera de un problema de clasificación: sin clases no hay «falso positivo».<br>
+  Una cantidad que describe una <strong>variable</strong> —la varianza— existe con o sin clases, con o sin modelo, con o sin nada. Le basta una columna de números.<br>
+  Por eso, ante «¿cuál de estas <em>no</em> es una métrica de evaluación de un clasificador?», la varianza se cae sola.
+  <p class="fuente" style="margin-top:9px">Ficha P4 en <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>.</p>
+</div>
+
+<p>Y una que se cuela seguido: la <strong>impureza de Gini</strong> necesita clases, sí, pero no es una métrica de <em>evaluación</em> — es lo que el árbol usa <em>mientras</em> se construye, para decidir por dónde cortar. Evaluar y entrenar son momentos distintos del ciclo. Tu profesor cerró la clase con eso: la importancia de una variable en un Random Forest se mide por <strong>reducción de impureza</strong>, no por exactitud.</p>
+
+
+<h2>9 · Procedimiento para el papel</h2>
+
+<p>Cuatro pasos, para cuando te den un enunciado y tengas que decidir qué es.</p>
+
+<ol class="pasos">
+  <li><strong>Escribe cuál es el target.</strong> Literalmente, la columna. No «predecir ventas»: <em>la columna <code>monto_venta</code></em>.</li>
+  <li><strong>Pregúntale al target si tiene orden.</strong> ¿Puedes decir que un valor va antes que otro, y que entre dos hay un valor intermedio con sentido? Si sí → regresión. Si no → clasificación. Si tiene orden pero no distancia (frío/templado/caliente) → es ordinal, declara el supuesto que tomes.</li>
+  <li><strong>No mires las features para decidir esto.</strong> Features categóricas se codifican con one-hot y no cambian la tarea. Melbourne tiene tres y sigue siendo regresión.</li>
+  <li><strong>Declara la clase positiva antes de calcular nada.</strong> En binaria, escribe «positivo = X» en el margen de la hoja. Sin eso, precisión y recall no significan nada, y todas las preguntas siguientes se construyen sobre esa elección.</li>
+</ol>
+
+
+<h2>10 · Errores que este formato castiga</h2>
+
+<ul>
+  <li><strong>Usar R² o MAE para describir un clasificador.</strong> Tu profesor lo dijo en la misma clase: <q>el R cuadrado uno lo usa para regresión; en este caso estamos en clasificación</q>.</li>
+  <li><strong>Decidir la tarea mirando las features en vez del target.</strong> Tres columnas categóricas no hacen clasificación.</li>
+  <li><strong>Codificar una categórica nominal como 0, 1, 2 y tratarla como número.</strong> Acabas de ver el MAE moverse 16 % por una decisión sin contenido.</li>
+  <li><strong>Confundir el score con la probabilidad.</strong> <code>w·x − b</code> puede dar −3,7 o +12. No es una probabilidad; es una distancia con signo.</li>
+  <li><strong>Reportar un 100 % sin sospechar.</strong> <q>Un modelo 100 % perfecto, yo al tiro dudo de ese modelo.</q> Tú ya tienes el caso: <code>99_ARCHIVO/_obsoleto_split_aleatorio/</code> anunciaba 81 % y estaba mal medido.</li>
+  <li><strong>Diagnosticar mirando un solo número.</strong> Tu error registrado del 19 de septiembre es exactamente este, en sobreajuste. Aquí reaparece: exactitud sola no te dice qué clase estás hundiendo — para eso necesitas la matriz, que es el concepto siguiente.</li>
+</ul>
+
+
+<h2>11 · Qué tendrías que producir para demostrar que entendiste</h2>
+
+<div class="caja">
+  <h3 style="margin-top:0">APLICAR — con material del curso</h3>
+  <p><code>08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb</code>. Los primeros ejercicios son codificación de categóricas a mano, <code>get_dummies</code> y <strong>LabelEncoder</strong>.</p>
+  <p style="margin:0"><strong>La pregunta que importa mientras lo resuelves:</strong> <code>LabelEncoder</code> convierte tus categorías en 0, 1, 2. Acabas de ver que eso es peligroso. ¿En qué caso es inofensivo y en cuál no? Escribe la respuesta antes de seguir.</p>
+</div>
+
+<div class="caja">
+  <h3 style="margin-top:0">TRANSFERIR — otro dominio, sin galaxias ni casas</h3>
+  <p>CONAF monitorea plantaciones de pino en la Región del Biobío con imágenes satelitales. Cada rodal tiene dos índices numéricos —vigor de la copa y humedad foliar— y se etiqueta en tres estados: <strong>sano</strong>, <strong>con plaga</strong>, <strong>con estrés hídrico</strong>. De 2.400 rodales, 2.050 están sanos.</p>
+  <p>Responde por escrito, para Datito:</p>
+  <ol style="margin-bottom:0">
+    <li>¿Regresión o clasificación? Justifica desde el <strong>target</strong>, no desde las features.</li>
+    <li>Un colega propone codificar sano=0, plaga=1, estrés=2 y evaluar con MAE. Dale <strong>un argumento cuantitativo</strong> de por qué no, del mismo tipo que el de Galaxy Zoo.</li>
+    <li>Un modelo reporta 85 % de exactitud. ¿Por qué esa cifra, sola, no te deja dormir tranquilo? (La respuesta está en los 2.050.)</li>
+    <li>Si tuvieras que elegir una <strong>clase positiva</strong> para armar una detección binaria, ¿cuál eliges y por qué esa decisión no es del modelo?</li>
+  </ol>
+  <details style="margin-top:14px">
+    <summary>Qué tendría que aparecer en tu respuesta (no es la respuesta)</summary>
+    <div class="cuerpo">
+      <ul style="margin-bottom:0">
+        <li>En 1: la palabra <em>orden</em> o <em>interpolar</em>, y una frase que diga que los dos índices sean numéricos es irrelevante.</li>
+        <li>En 2: que el MAE cambia según cuál de los tres estados pongas en el código 1, y que esa elección no tiene significado ecológico. Si puedes decir <em>cuál</em> par quedaría en los extremos, mejor.</li>
+        <li>En 3: 2.050/2.400 = 85,4 %. Responder siempre «sano» ya da 85 % <strong>sin aprender nada</strong>. Es el mismo mecanismo que hace que tu desafío se evalúe con F1-macro y no con exactitud: la clase 2 de Galaxy Zoo es el 67,7 %.</li>
+        <li>En 4: que la elección depende del <strong>costo</strong> de cada error —no detectar una plaga cuesta hectáreas; una falsa alarma cuesta una inspección— y que eso lo pone la persona, no el algoritmo.</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<p style="margin-top:34px"><strong>Lo que sigue:</strong> una vez que aceptas que el error es un conteo y no una distancia, la pregunta obvia es <em>qué clase de errores</em> estás cometiendo. Ahí entra la matriz de confusión — <code>07_DATITO/visual/matriz_confusion.html</code>.</p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===================================================================
+     A · Galaxy Zoo: el MAE que se mueve solo
+     Matriz OOF CatBoost real, 02_PROYECTO_FCD/Desafio/REPORT.md
+     filas = real, columnas = predicho, orden natural [ambigua, espiral, eliptica]
+     =================================================================== */
+
+  var M = [[25,36,35],[18,176,33],[39,65,573]];
+  var NOM = ["ambigua","espiral","elíptica"];
+  var N = 1000;
+
+  // Seis ordenes: cada uno lista las clases (indices naturales) en el orden
+  // en que reciben los codigos 0, 1, 2.
+  var ORDENES = [
+    [0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]
+  ];
+  var ordenActivo = 0;
+
+  function codigosDe(orden){
+    // codigo[claseNatural] = posicion en el orden
+    var c = [0,0,0];
+    for(var k=0;k<3;k++){ c[orden[k]] = k; }
+    return c;
+  }
+
+  function maeDe(orden){
+    var c = codigosDe(orden), suma = 0;
+    for(var i=0;i<3;i++){
+      for(var j=0;j<3;j++){
+        suma += M[i][j] * Math.abs(c[j] - c[i]);
+      }
+    }
+    return suma / N;
+  }
+
+  var elPerm  = document.getElementById("permBtns");
+  var elCuerpo= document.getElementById("cuerpoGZ");
+  var elMae   = document.getElementById("gzMae");
+  var elMaeD  = document.getElementById("gzMaeDet");
+  var elMedio = document.getElementById("gzMedio");
+  var hs      = [document.getElementById("hc0"),document.getElementById("hc1"),document.getElementById("hc2")];
+
+  function fmt(x,d){
+    return x.toFixed(d).replace(".",",");
+  }
+
+  ORDENES.forEach(function(orden, idx){
+    var b = document.createElement("button");
+    b.className = "bmet";
+    b.type = "button";
+    b.setAttribute("aria-pressed", idx===0 ? "true":"false");
+    b.textContent = orden.map(function(ci,k){ return NOM[ci]+"="+k; }).join(" · ");
+    b.addEventListener("click", function(){
+      ordenActivo = idx;
+      Array.prototype.forEach.call(elPerm.children, function(x,i){
+        x.setAttribute("aria-pressed", i===idx ? "true":"false");
+      });
+      pintaGZ();
+      maeMovido = true;
+      revisaContrasteMae();
+    });
+    elPerm.appendChild(b);
+  });
+
+  function pintaGZ(){
+    var orden = ORDENES[ordenActivo];
+    var c = codigosDe(orden);
+
+    for(var k=0;k<3;k++){
+      hs[k].textContent = NOM[orden[k]] + " (" + k + ")";
+    }
+
+    var html = "";
+    for(var k2=0;k2<3;k2++){
+      var i = orden[k2];
+      html += "<tr><th>" + NOM[i] + " (" + k2 + ")</th>";
+      for(var k3=0;k3<3;k3++){
+        var j = orden[k3];
+        var d = Math.abs(c[j]-c[i]);
+        var estilo = "", extra = "";
+        if(i===j){
+          estilo = ' style="background:#e9f0eb;color:#2f6b46;font-weight:700"';
+          extra  = '<br><span style="font-size:.76rem;font-weight:400">acierto · |dif| 0</span>';
+        } else {
+          extra = '<br><span style="font-size:.76rem;color:#4a5058">|dif| = ' + d + '</span>';
+          if(d===2){ estilo = ' style="background:#f6e6e3"'; }
+        }
+        html += '<td class="mid"' + estilo + '>' + M[i][j] + extra + '</td>';
+      }
+      html += "</tr>";
+    }
+    elCuerpo.innerHTML = html;
+
+    var mae = maeDe(orden);
+    elMae.textContent = fmt(mae,3);
+    elMedio.textContent = NOM[orden[1]];
+
+    // que par quedo en los extremos
+    var ext = NOM[orden[0]] + " ↔ " + NOM[orden[2]];
+    elMaeD.textContent = "par a distancia 2: " + ext;
+  }
+
+  /* prediccion 1 */
+  var maeRespondio = null, maeMovido = false;
+  var contMae = document.getElementById("contMae");
+  Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(b){
+    b.addEventListener("click", function(){
+      maeRespondio = b.getAttribute("data-p");
+      Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(o){
+        o.setAttribute("aria-pressed", o===b ? "true":"false");
+      });
+      revisaContrasteMae();
+    });
+  });
+
+  function revisaContrasteMae(){
+    if(maeRespondio === null || !maeMovido) return;
+    var t;
+    if(maeRespondio === "mae"){
+      t = "<strong>Correcto.</strong> La exactitud no se movió de 0,774 y el MAE sí. ";
+    } else if(maeRespondio === "ninguna"){
+      t = "<strong>Se movió una.</strong> La exactitud efectivamente quedó clavada en 0,774 — esa parte la tenías. Pero el MAE recorre 0,280 · 0,300 · 0,324. ";
+    } else if(maeRespondio === "exac"){
+      t = "<strong>Al revés.</strong> La exactitud es la que <em>no</em> se mueve: cuenta aciertos, y un acierto sigue siendo un acierto llames como llames a las clases. El que se mueve es el MAE. ";
+    } else if(maeRespondio === "ambas"){
+      t = "<strong>Solo una.</strong> La exactitud no puede moverse: cuenta aciertos, y renombrar las clases no convierte un acierto en un fallo. El MAE sí se mueve. ";
+    } else { return; }
+    t += "Ahora la pregunta que importa: <strong>¿por qué</strong> el MAE es sensible a algo que la exactitud ignora? Pista: mira qué operación hace cada una. Una resta códigos; la otra solo compara si son iguales.";
+    contMae.innerHTML = t;
+    contMae.classList.add("on");
+  }
+
+  pintaGZ();
+
+
+  /* ===================================================================
+     B · Perro / gato: la frontera de decision
+     Ejemplo del profesor, clase 2026-08-07
+     =================================================================== */
+
+  var SMIN=10, SMAX=75, EMIN=3, EMAX=17;
+
+  var DATOS = [
+    /* perros: y = +1 */
+    {s:58,e:13.0,y:1},{s:62,e:11.5,y:1},{s:48,e:14.0,y:1},{s:67,e:9.5,y:1},
+    {s:55,e:10.5,y:1},{s:70,e:12.0,y:1},{s:52,e:12.5,y:1},{s:45,e:11.0,y:1},
+    {s:63,e:14.5,y:1},{s:41,e:13.5,y:1},{s:66,e:8.0,y:1},{s:50,e:9.5,y:1},
+    {s:60,e:15.0,y:1},{s:44,e:10.5,y:1},
+    {s:20,e:7.0,y:1,nom:"chihuahua"},
+    /* gatos: y = -1 */
+    {s:25,e:6.0,y:-1},{s:28,e:7.5,y:-1},{s:23,e:5.0,y:-1},{s:30,e:6.5,y:-1},
+    {s:26,e:8.0,y:-1},{s:33,e:7.0,y:-1},{s:22,e:7.0,y:-1},{s:29,e:5.5,y:-1},
+    {s:35,e:8.5,y:-1},{s:24,e:9.0,y:-1},{s:31,e:9.5,y:-1},{s:27,e:4.5,y:-1},
+    {s:42,e:7.5,y:-1,nom:"maine coon"}
+  ];
+
+  DATOS.forEach(function(p){
+    p.nx = (p.s - SMIN) / (SMAX - SMIN);
+    p.ny = (p.e - EMIN) / (EMAX - EMIN);
+  });
+
+  var ANG_INI = 35, B_INI = 0.55;
+  var ang = ANG_INI, bb = B_INI;
+  var nuevo = null;
+
+  var cv  = document.getElementById("lienzo");
+  var ctx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  var PX = 112, PY = 46, PW = 1000, PH = H - PY - 92;
+
+  var COL = {
+    perro:"#8a5a12", perroBg:"rgba(246,237,220,.85)",
+    gato:"#2b5d8c",  gatoBg:"rgba(227,236,244,.85)",
+    tinta:"#1c1f24", tinta2:"#4a5058", linea:"#ddd8cf", error:"#9b3226"
+  };
+
+  function wv(a){ var r = a*Math.PI/180; return {x:Math.cos(r), y:Math.sin(r)}; }
+  function score(p, w, b){ return w.x*p.nx + w.y*p.ny - b; }
+  function px(nx){ return PX + nx*PW; }
+  function py(ny){ return PY + PH - ny*PH; }
+
+  function evalua(a, b){
+    var w = wv(a), err = 0, dmin = Infinity, idxMin = [];
+    for(var i=0;i<DATOS.length;i++){
+      var s = score(DATOS[i], w, b);
+      var pred = s > 0 ? 1 : -1;
+      if(pred !== DATOS[i].y) err++;
+      var d = Math.abs(s);
+      if(d < dmin - 1e-12){ dmin = d; idxMin = [i]; }
+      else if(Math.abs(d - dmin) < 1e-12){ idxMin.push(i); }
+    }
+    return {err:err, dmin:dmin, idxMin:idxMin, w:w, b:b};
+  }
+
+  function dibuja(){
+    var R = evalua(ang, bb), w = R.w;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = "#fff"; ctx.fillRect(0,0,W,H);
+
+    /* --- regiones de decision --- */
+    ctx.save();
+    ctx.beginPath(); ctx.rect(PX,PY,PW,PH); ctx.clip();
+
+    var p0 = {x: bb*w.x, y: bb*w.y};      // punto de la recta mas cercano al origen
+    var d  = {x: -w.y,  y: w.x};          // direccion de la recta
+    var T = 12, B = 12;
+
+    function lado(signo, color){
+      ctx.beginPath();
+      var a1 = {x:p0.x - T*d.x,               y:p0.y - T*d.y};
+      var a2 = {x:p0.x + T*d.x,               y:p0.y + T*d.y};
+      var a3 = {x:a2.x + signo*B*w.x,         y:a2.y + signo*B*w.y};
+      var a4 = {x:a1.x + signo*B*w.x,         y:a1.y + signo*B*w.y};
+      ctx.moveTo(px(a1.x), py(a1.y));
+      ctx.lineTo(px(a2.x), py(a2.y));
+      ctx.lineTo(px(a3.x), py(a3.y));
+      ctx.lineTo(px(a4.x), py(a4.y));
+      ctx.closePath();
+      ctx.fillStyle = color; ctx.fill();
+    }
+    lado(+1, COL.perroBg);
+    lado(-1, COL.gatoBg);
+
+    /* franja del margen, solo si separa limpio */
+    if(R.err === 0 && R.dmin > 0){
+      ctx.setLineDash([9,8]); ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(28,31,36,.38)";
+      [+1,-1].forEach(function(sg){
+        var q = {x:p0.x + sg*R.dmin*w.x, y:p0.y + sg*R.dmin*w.y};
+        ctx.beginPath();
+        ctx.moveTo(px(q.x - T*d.x), py(q.y - T*d.y));
+        ctx.lineTo(px(q.x + T*d.x), py(q.y + T*d.y));
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+    }
+
+    /* la frontera */
+    ctx.lineWidth = 4; ctx.strokeStyle = COL.tinta;
+    ctx.beginPath();
+    ctx.moveTo(px(p0.x - T*d.x), py(p0.y - T*d.y));
+    ctx.lineTo(px(p0.x + T*d.x), py(p0.y + T*d.y));
+    ctx.stroke();
+    ctx.restore();
+
+    /* --- marco y ejes --- */
+    ctx.strokeStyle = COL.linea; ctx.lineWidth = 2;
+    ctx.strokeRect(PX, PY, PW, PH);
+
+    ctx.fillStyle = COL.tinta2;
+    ctx.font = "22px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.textAlign = "center";
+    for(var t=10;t<=75;t+=10){
+      var X = px((t-SMIN)/(SMAX-SMIN));
+      ctx.beginPath(); ctx.moveTo(X, PY+PH); ctx.lineTo(X, PY+PH+8); ctx.stroke();
+      ctx.fillText(String(t), X, PY+PH+34);
+    }
+    ctx.textAlign = "right";
+    for(var u=4;u<=16;u+=4){
+      var Y = py((u-EMIN)/(EMAX-EMIN));
+      ctx.beginPath(); ctx.moveTo(PX-8, Y); ctx.lineTo(PX, Y); ctx.stroke();
+      ctx.fillText(String(u), PX-16, Y+8);
+    }
+    ctx.textAlign = "center";
+    ctx.fillStyle = COL.tinta;
+    ctx.font = "600 24px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillText("x₁ · tamaño del animal (cm)", PX + PW/2, PY + PH + 70);
+    ctx.save();
+    ctx.translate(30, PY + PH/2); ctx.rotate(-Math.PI/2);
+    ctx.fillText("x₂ · tamaño de la oreja (cm)", 0, 0);
+    ctx.restore();
+
+    /* --- puntos --- */
+    DATOS.forEach(function(p, i){
+      var s = score(p, w, bb);
+      var pred = s > 0 ? 1 : -1;
+      var mal  = pred !== p.y;
+      var X = px(p.nx), Y = py(p.ny);
+      var col = p.y === 1 ? COL.perro : COL.gato;
+      var esSV = R.idxMin.indexOf(i) >= 0;
+
+      if(esSV){
+        ctx.beginPath(); ctx.arc(X, Y, 21, 0, 6.2832);
+        ctx.strokeStyle = "rgba(28,31,36,.30)"; ctx.lineWidth = 3; ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(X, Y, 12, 0, 6.2832);
+      ctx.fillStyle = mal ? "#fff" : col;
+      ctx.fill();
+      ctx.lineWidth = 4; ctx.strokeStyle = col; ctx.stroke();
+
+      if(mal){
+        ctx.strokeStyle = COL.error; ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.moveTo(X-8,Y-8); ctx.lineTo(X+8,Y+8);
+        ctx.moveTo(X+8,Y-8); ctx.lineTo(X-8,Y+8);
+        ctx.stroke();
+      }
+      if(p.nom){
+        ctx.fillStyle = COL.tinta2;
+        ctx.font = "italic 20px -apple-system, Segoe UI, Roboto, sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(p.nom, X + 20, Y + 7);
+        ctx.textAlign = "center";
+      }
+    });
+
+    /* animal nuevo */
+    if(nuevo){
+      var sN = score(nuevo, w, bb);
+      var XN = px(nuevo.nx), YN = py(nuevo.ny);
+      ctx.strokeStyle = COL.tinta; ctx.lineWidth = 4;
+      ctx.strokeRect(XN-12, YN-12, 24, 24);
+      ctx.fillStyle = "#fff"; ctx.fillRect(XN-9, YN-9, 18, 18);
+      ctx.fillStyle = COL.tinta;
+      ctx.font = "600 20px -apple-system, Segoe UI, Roboto, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("?", XN + 20, YN + 7);
+      ctx.textAlign = "center";
+    }
+
+    /* --- leyenda --- */
+    var LX = PX + PW + 32, LY = PY + 14;
+    ctx.textAlign = "left";
+    ctx.font = "600 21px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = COL.tinta2;
+    ctx.fillText("CLASE REAL", LX, LY);
+
+    ctx.beginPath(); ctx.arc(LX+13, LY+36, 12, 0, 6.2832);
+    ctx.fillStyle = COL.perro; ctx.fill();
+    ctx.font = "21px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = COL.tinta; ctx.fillText("perro  (+1)", LX+36, LY+43);
+
+    ctx.beginPath(); ctx.arc(LX+13, LY+76, 12, 0, 6.2832);
+    ctx.fillStyle = COL.gato; ctx.fill();
+    ctx.fillStyle = COL.tinta; ctx.fillText("gato  (−1)", LX+36, LY+83);
+
+    ctx.font = "600 21px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = COL.tinta2;
+    ctx.fillText("EL MODELO DICE", LX, LY+132);
+    ctx.fillStyle = COL.perroBg; ctx.fillRect(LX, LY+150, 26, 26);
+    ctx.strokeStyle = COL.linea; ctx.lineWidth = 2; ctx.strokeRect(LX, LY+150, 26, 26);
+    ctx.font = "21px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = COL.tinta; ctx.fillText("perro  (s > 0)", LX+36, LY+170);
+    ctx.fillStyle = COL.gatoBg; ctx.fillRect(LX, LY+190, 26, 26);
+    ctx.strokeStyle = COL.linea; ctx.strokeRect(LX, LY+190, 26, 26);
+    ctx.fillStyle = COL.tinta; ctx.fillText("gato  (s < 0)", LX+36, LY+210);
+
+    ctx.strokeStyle = COL.error; ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(LX+4, LY+252); ctx.lineTo(LX+22, LY+270);
+    ctx.moveTo(LX+22, LY+252); ctx.lineTo(LX+4, LY+270);
+    ctx.stroke();
+    ctx.fillStyle = COL.tinta; ctx.fillText("error", LX+36, LY+270);
+
+    ctx.beginPath(); ctx.arc(LX+13, LY+305, 16, 0, 6.2832);
+    ctx.strokeStyle = "rgba(28,31,36,.30)"; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = COL.tinta2;
+    ctx.font = "19px -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillText("más cercano", LX+36, LY+300);
+    ctx.fillText("a la recta", LX+36, LY+322);
+
+    /* --- ecuacion viva --- */
+    ctx.textAlign = "left";
+    ctx.font = "600 23px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = COL.tinta;
+    ctx.fillText(
+      "s(x) = " + w.x.toFixed(2).replace(".",",") + "·x₁ " +
+      (w.y >= 0 ? "+ " : "− ") + Math.abs(w.y).toFixed(2).replace(".",",") + "·x₂ " +
+      (bb >= 0 ? "− " : "+ ") + Math.abs(bb).toFixed(2).replace(".",","),
+      PX, PY - 16
+    );
+    ctx.textAlign = "center";
+
+    /* --- lecturas --- */
+    document.getElementById("vErr").textContent = R.err;
+    document.getElementById("vAcc").textContent = fmt(1 - R.err/DATOS.length, 3);
+    document.getElementById("vMar").textContent = fmt(R.dmin, 3);
+    document.getElementById("mErr").className = "met " + (R.err === 0 ? "destaca" : (R.err >= 5 ? "mala" : ""));
+    document.getElementById("dMar").textContent =
+      R.err === 0 ? "con 0 errores, esto ES el margen" : "distancia a la recta";
+
+    if(nuevo){
+      var sN2 = score(nuevo, w, bb);
+      document.getElementById("cajaNuevo").innerHTML =
+        "<strong>Animal nuevo:</strong> tamaño " + fmt(nuevo.s,1) + " cm, oreja " + fmt(nuevo.e,1) + " cm. " +
+        "&nbsp;→&nbsp; <span class='mono'>s = " + fmt(sN2,3) + "</span> &nbsp;→&nbsp; el modelo dice <strong class='" +
+        (sN2 > 0 ? "cperro'>perro" : "cgato'>gato") + "</strong>. " +
+        (Math.abs(sN2) < 0.06
+          ? "Está pegado a la frontera y aun así responde sin titubear: <strong>el signo no guarda cuán cerca estuvo</strong>."
+          : "Mueve la recta y míralo cambiar de clase sin que el animal se haya movido un milímetro.");
+    }
+  }
+
+  /* --- controles --- */
+  var sAng = document.getElementById("sAng"), sB = document.getElementById("sB");
+  var movimientos = 0;
+
+  function onMove(){
+    ang = parseFloat(sAng.value);
+    bb  = parseFloat(sB.value);
+    document.getElementById("vAng").textContent = sAng.value;
+    document.getElementById("vB").textContent   = fmt(bb,2);
+    movimientos++;
+    dibuja();
+    revisaContrasteSalto();
+  }
+  sAng.addEventListener("input", onMove);
+  sB.addEventListener("input", onMove);
+
+  document.getElementById("btnReset").addEventListener("click", function(){
+    sAng.value = ANG_INI; sB.value = B_INI; onMove();
+  });
+  document.getElementById("btnLimpia").addEventListener("click", function(){
+    nuevo = null;
+    document.getElementById("cajaNuevo").innerHTML =
+      "<strong>Haz clic en el gráfico</strong> para poner un animal del que no sabes nada, como hizo el profesor con el mouse en clase. El modelo lo va a clasificar igual, sin dudar.";
+    dibuja();
+  });
+
+  document.getElementById("btnAjusta").addEventListener("click", function(){
+    // Se busca sobre la MISMA rejilla que los deslizadores pueden representar
+    // -grados enteros, b de centésima en centésima-, para que lo que se informa
+    // aquí coincida exacto con lo que queda en los controles y en las lecturas.
+    var mejor = null, probadas = 0;
+    for(var ai = -89; ai <= 89; ai++){
+      for(var bi = -120; bi <= 160; bi++){
+        var b = bi / 100;
+        var R = evalua(ai, b);
+        probadas++;
+        if(mejor === null || R.err < mejor.err ||
+           (R.err === mejor.err && R.dmin > mejor.dmin + 1e-9)){
+          mejor = {err:R.err, dmin:R.dmin, a:ai, b:b};
+        }
+      }
+    }
+    sAng.value = mejor.a;
+    sB.value   = mejor.b;
+    onMove();
+    document.getElementById("cajaNuevo").innerHTML =
+      "<strong>Búsqueda a la bruta:</strong> se probaron " + probadas.toLocaleString("es-CL") +
+      " rectas. El mínimo de errores alcanzable con <em>una sola recta</em> sobre estos datos es <strong>" +
+      mejor.err + "</strong> — y ese error es el chihuahua, que no tiene arreglo. Entre todas las rectas que consiguen ese mínimo se eligió la que deja más espacio libre a cada lado (" +
+      fmt(mejor.dmin,3) + "). Ese segundo criterio — <em>a igualdad de errores, el margen más ancho</em> — es exactamente lo que resuelve el <strong>support vector machine</strong>, solo que con optimización en vez de fuerza bruta.";
+  });
+
+  /* clic: animal nuevo */
+  cv.addEventListener("click", function(ev){
+    var r = cv.getBoundingClientRect();
+    var cx = (ev.clientX - r.left) * (W / r.width);
+    var cy = (ev.clientY - r.top)  * (H / r.height);
+    var nx = (cx - PX) / PW;
+    var ny = (PY + PH - cy) / PH;
+    if(nx < 0 || nx > 1 || ny < 0 || ny > 1) return;
+    nuevo = {
+      nx:nx, ny:ny,
+      s: SMIN + nx*(SMAX-SMIN),
+      e: EMIN + ny*(EMAX-EMIN)
+    };
+    dibuja();
+  });
+
+  /* prediccion 2 */
+  var saltoRespondio = null;
+  var contSalto = document.getElementById("contSalto");
+  Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(b){
+    b.addEventListener("click", function(){
+      saltoRespondio = b.getAttribute("data-p");
+      Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(o){
+        o.setAttribute("aria-pressed", o===b ? "true":"false");
+      });
+      revisaContrasteSalto();
+    });
+  });
+
+  function revisaContrasteSalto(){
+    if(saltoRespondio === null || movimientos < 3) return;
+    var t;
+    if(saltoRespondio === "salto"){
+      t = "<strong>Eso pasó.</strong> El contador se queda quieto varios grados y después baja de golpe. ";
+    } else if(saltoRespondio === "suave"){
+      t = "<strong>No.</strong> El contador no se mueve mientras ningún punto cruza la recta, y después baja un entero de una vez. Nunca vas a ver 2,4 errores. ";
+    } else {
+      t = "<strong>Mira el contador mientras giras.</strong> Se queda quieto varios grados y después baja un entero de golpe. ";
+    }
+    t += "La razón es que la recta solo cambia algo <em>cuando un punto le cruza por encima</em>, y eso ocurre de a un punto a la vez. " +
+         "<strong>Y de ahí sale la consecuencia grande:</strong> una función que salta no tiene derivada, así que el modelo no puede preguntarle «¿hacia dónde me muevo para mejorar?». " +
+         "Por eso ningún clasificador minimiza esto directamente — el §6 explica qué minimizan en su lugar.";
+    contSalto.innerHTML = t;
+    contSalto.classList.add("on");
+  }
+
+  dibuja();
+})();
+</script>
+</body>
+</html>
