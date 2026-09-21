@@ -4,8 +4,8 @@ Problemas **con solución explicada**, para leer antes de practicar a ciegas.
 Formato del profesor, resolubles en papel.
 
 Cubre los dos conceptos de mayor peso: sobreajuste y validación (36 % del
-Certamen 2) y calidad de datos (la pregunta 9B del Certamen 1 vale 2,0 puntos,
-más que las ocho cerradas juntas).
+Certamen 2) y calidad de datos (la pregunta 9B del Certamen 1 vale 2,0 puntos
+por sí sola: la mitad de las ocho cerradas juntas y la de mayor puntaje).
 
 > **Cómo usar esto.** Tapa la solución, resuelve, y recién entonces compara. Leer
 > la solución primero se siente productivo y no enseña nada.

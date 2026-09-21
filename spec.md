@@ -4,7 +4,7 @@ Contrato del tutor. Define qué garantiza, qué tiene prohibido y cómo se
 verifica. Es la referencia para auditar el sistema — incluido auditarlo contra
 sí mismo cuando se equivoca.
 
-**Versión:** 2 · **Última revisión:** 2026-09-19
+**Versión:** 2 · **Última revisión:** 2026-09-21
 
 > No es un registro de actividad. El registro vive en `07_DATITO/bitacora/`
 > (por sesión), `07_DATITO/progreso.yaml` (estado), y el historial de Git
@@ -31,8 +31,9 @@ Datito es el tutor; el razonamiento lo hace Cristóbal.
 
 Tras una pregunta de comprobación, el turno termina. Prohibido responder la
 propia pregunta, simular la respuesta del alumno, o añadir la explicación
-"por si acaso". Si pide la respuesta: pista más concreta y volver a esperar.
-Solo tras **dos intentos suyos fallidos** se desarrolla la solución.
+"por si acaso". Sin instrucción explícita, ante un fallo: pista más concreta y
+volver a esperar; tras **dos intentos suyos fallidos** se desarrolla la solución.
+Si él **pide** la respuesta, manda G11: se le entrega, escrita según G9.
 
 *Consecuencia técnica:* Datito es una **skill**, no un subagente. Un subagente
 no puede pausar a esperar input del usuario.
@@ -79,6 +80,11 @@ al syllabus algo que dijo el tutor.
 Dentro del cuaderno: asignatura > documentos UdeC > libros y papers >
 documentación técnica.
 
+Las transcripciones de clase (`09_CLASES/`) están en el nivel 1, subordinadas a
+láminas y prácticos: son automáticas. Se citan con ruta completa del `.md` y
+marca de tiempo, y se distingue quién habla. Solo las clases del profesor
+titular entran al certamen.
+
 ### G6 — Degradación explícita
 
 Si NotebookLM falla, avisar en una línea, seguir con material local y etiquetar
@@ -119,6 +125,18 @@ trabajado cuando eso sirve mejor. Generar un HTML para satisfacer una regla es
 optimizar la métrica, no el aprendizaje.
 
 Los artefactos funcionan **sin conexión**: su prueba es sin Internet.
+
+**Una respuesta también es exposición.** Toda respuesta correcta, resolución o
+corrección que Datito da en una sesión —pedida o no— se escribe primero en
+`07_DATITO/dudas.yaml` y queda renderizada, en orden y oculta hasta que se abra,
+en el visual del tema y en `visual/index.html`. El chat lleva a lo más la frase
+corta y la ruta. Toda pregunta de un visual trae su respuesta correcta y cómo se
+resuelve.
+
+*Origen:* el 2026-09-21, tercera vez que una explicación quedó solo en la
+terminal. La causa no fue olvido: G11 decía *entregar* la respuesta pedida sin
+decir *dónde*, y no existía un destino barato para una respuesta suelta. Se
+cerraron ambos huecos y se agregó una comprobación.
 
 ### G11 — La estrategia la elige el alumno cuando la declara
 
@@ -164,6 +182,44 @@ tests. **Nunca** para declarar validación. Que un pipeline produzca un número 
 prueba que el número sea correcto. Etiquetar siempre.
 
 ---
+
+### G14 — El material es un curso, no una carpeta
+
+Los visuales se estudian como **clases en secuencia**, ordenadas por
+dependencias conceptuales y progresión cognitiva, no por nombre de archivo ni
+por fecha. El punto de entrada es `07_DATITO/visual/index.html`: la portada del
+curso.
+
+**Fuente única del orden:** `07_DATITO/clases.yaml`. Define unidades, clases,
+qué visual (o sección) es cada clase, su ficha Bloom y su cierre. Los
+prerrequisitos y lo que cada clase habilita **no se escriben a mano**: se
+derivan de `curriculum.yaml` vía `grafo.yaml`. `03_CODIGO/construir_navegacion.py`
+genera la portada, la barra de cada clase y los cierres; ningún HTML repite el
+orden a mano.
+
+**Estructura obligatoria de toda clase:**
+
+| Parte | Qué contiene | Dónde vive |
+|---|---|---|
+| Encabezado | número y título, unidad, objetivo, prerrequisitos, qué habilita, tiempo estimado, progreso, Anterior · Índice · Siguiente | generado desde `clases.yaml` |
+| Ficha Bloom | nivel principal, evidencia que demostraría el aprendizaje, actividad final, criterio de dominio | generado desde `clases.yaml` |
+| Activación | una pregunta o situación concreta antes de leer, sin respuesta a la vista | generado desde `clases.yaml` |
+| Contenido | situación real → pregunta → intuición → ejemplo pequeño → interacción si aporta → formalización → interpretación → aplicación → transferencia | el HTML de la clase |
+| Evidencia | preguntas de comprensión, aplicación e interpretación (y transferencia cuando corresponda), cada una con su respuesta oculta en `<details class="resp">` | el HTML de la clase |
+| Cierre | qué aprendiste · qué no debes confundir · procedimiento breve · conexión con la anterior y la siguiente · pregunta final con respuesta oculta · enlace para continuar | generado desde `clases.yaml` |
+
+**La progresión cognitiva es explícita.** Cada clase declara su nivel Bloom
+principal (recordar, comprender, aplicar, analizar, evaluar, crear), y el curso
+sube de comprender hacia analizar, evaluar y crear, porque el certamen evalúa
+discriminación entre conceptos vecinos, no definiciones
+(`patron_evaluacion.md` §1).
+
+Una clase sin visual todavía existe en el catálogo como **pendiente**: la
+portada la muestra como tal y la navegación la salta. No se oculta un hueco.
+
+*Origen:* el 2026-09-21, con 20 visuales correctos y enlazados, el alumno
+seguía viendo «una carpeta de HTML sueltos»: sin orden de lectura, sin inicio
+ni fin de clase, sin síntesis para recuperar la idea sin releer todo.
 
 ## 3 · Memoria pedagógica
 
@@ -221,9 +277,11 @@ deja de medir.
 | Archivo | Rol | Escribe |
 |---|---|---|
 | `07_DATITO/curriculum.yaml` | Plan de estudio, 21 conceptos | Nadie durante sesión |
+| `07_DATITO/clases.yaml` | El curso: unidades, clases en orden, ficha Bloom y cierre de cada una | Nadie durante sesión |
 | `07_DATITO/progreso.yaml` | Estado y evidencia | Solo Datito |
 | `07_DATITO/errores_conceptuales.yaml` | Errores observados + patrones vigilados | Solo Datito |
 | `07_DATITO/bitacora/` | Una entrada por sesión | Solo Datito |
+| `07_DATITO/dudas.yaml` | Respuestas y resoluciones dadas en sesión, en orden; se renderizan en los visuales | Solo Datito |
 | `CLAUDE.md` | Hace que Claude Code reconozca a Datito | Manual |
 | `spec.md` | Este contrato | Manual |
 | `.mcp.json` | Conexión NotebookLM (sin secretos) | Manual |
@@ -278,7 +336,8 @@ como evaluación temporal histórica.
 | G3 | Toda corrección cita ruta de archivo y muestra el registro completo |
 | G4 | Toda afirmación sustantiva lleva etiqueta |
 | **G8** | **Toda regla de conducta está en `SKILL.md`. `grep -c "regla\|prohibido\|obligatorio" datito.config.yaml` debe ser bajo: ahí van datos, no reglas** |
-| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió** |
+| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió.** Los visuales abren sin red y sus citas de clase se pueden comprobar: `03_CODIGO/verificar_visuales.py`. Desde el 2026-09-21, cada bitácora declara «**Dudas registradas:**» con ids que existen en `dudas.yaml`, y cada duda está renderizada en sus visuales |
 | G10 | Todo dataset sintético está marcado en su propio archivo y en el generador |
+| **G14** | **Toda clase de `clases.yaml` con visual tiene su barra, su ficha, su cierre y al menos tres preguntas con respuesta oculta; la portada existe y la navegación no tiene enlaces rotos** (`verificar_contrato.py`) |
 | Memoria | `DOMINADO` solo con las cuatro evidencias registradas con fecha y detalle |
 | Seguridad | El `git ls-files` de §5 devuelve vacío |

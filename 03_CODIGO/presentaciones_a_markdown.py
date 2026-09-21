@@ -43,12 +43,22 @@ def normalizar(texto):
     return texto.strip()
 
 
+# PDFs que llegaron a 11_PRESENTACIÓN/ pero son de OTRO curso (Prototipos y
+# creatividad, 2026G601): su lamina 1 lo dice. Detectado el 2026-09-21. Se
+# convierten igual, pero con una cabecera que impide citarlos como material FCD.
+OTRO_CURSO = ("Resumen_Clase1_Prototipos", "Resumen_Clase2_Creatividad",
+              "Resumen_Clase3_Metricas_para_Proyectos", "Resumen_Clase5_Validacion_de_Clientes")
+
+
 def convertir(ruta):
     lector = PdfReader(ruta)
+    ajeno = os.path.basename(ruta).startswith(OTRO_CURSO)
     partes = [
         f"# {limpiar(ruta)}",
         "",
-        "> Material de clase de Fundamentos de Ciencia de Datos, UdeC T2-2026.",
+        ("> **NO es material de Fundamentos de Ciencia de Datos**: pertenece al curso "
+         "Prototipos y creatividad. No citarlo como fuente de Datito." if ajeno else
+         "> Material de clase de Fundamentos de Ciencia de Datos, UdeC T2-2026."),
         f"> Texto extraido de `{os.path.basename(ruta)}` para busqueda e indexacion.",
         f"> {len(lector.pages)} laminas. Las figuras no se extraen: si una lamina",
         "> depende de un grafico, hay que abrir el PDF.",

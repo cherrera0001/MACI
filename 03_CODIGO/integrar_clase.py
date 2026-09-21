@@ -21,6 +21,14 @@ USO
   python 03_CODIGO/integrar_clase.py             # todas las pendientes
   python 03_CODIGO/integrar_clase.py --sin-subir # no toca NotebookLM
   python 03_CODIGO/integrar_clase.py --estado    # solo muestra el indice
+  python 03_CODIGO/integrar_clase.py --sin-subir --remapear
+                                                 # recalcula los conceptos de
+                                                 # todas las clases ya indexadas
+
+LIMITE CONOCIDO
+"primera_marca" es la primera MENCION de un termino, no el tramo donde se
+ensena. Para ir al tramo real (con hablante y rango) esta
+09_CLASES/mapa_ensenanza.yaml, curado a mano desde las transcripciones.
 """
 import argparse
 import glob
@@ -78,6 +86,22 @@ TERMINOS = {
 
 MARCA = re.compile(r"\*\*\[(\d+:\d{2}:\d{2})\]\*\*")
 
+# Terminos cortos que, como subcadena, dan falsos positivos observados el
+# 2026-09-21: "auc" dentro de "Araucos", "f1" dentro de "df1", "test" dentro de
+# "contestar", "llm"/"token" en palabras mas largas. Se buscan como palabra
+# completa (con prefijo permitido solo donde el termino es una raiz, p. ej.
+# "generaliza", "distribuci", que por eso no estan en esta lista).
+PALABRA_COMPLETA = {"auc", "f1", "test", "llm", "token", "target", "feature",
+                    "agente", "recall", "roc"}
+
+
+def patron(termino):
+    t = termino.strip()
+    if t in PALABRA_COMPLETA:
+        # singular o plural, como palabra completa
+        return re.compile(r"(?<![a-z0-9áéíóúñ])" + re.escape(t) + r"s?(?![a-z0-9áéíóúñ])")
+    return re.compile(re.escape(termino))
+
 
 def cargar_indice():
     if os.path.exists(INDICE):
@@ -108,6 +132,9 @@ def mapear(texto):
     bajo = texto.lower()
     # Posicion de cada marca de tiempo, para situar una coincidencia
     marcas = [(m.start(), m.group(1)) for m in MARCA.finditer(texto)]
+    # La cabecera (titulo del archivo, advertencia) no es habla de la clase:
+    # contiene "ciencia de datos" y marcaba ese concepto en 0:00:00 en todas.
+    inicio_habla = marcas[0][0] if marcas else 0
 
     def marca_en(pos):
         ultima = "0:00:00"
@@ -121,7 +148,8 @@ def mapear(texto):
     for concepto, terminos in TERMINOS.items():
         posiciones = []
         for t in terminos:
-            posiciones.extend(m.start() for m in re.finditer(re.escape(t), bajo))
+            posiciones.extend(m.start() for m in patron(t).finditer(bajo)
+                              if m.start() >= inicio_habla)
         if posiciones:
             hallado[concepto] = {
                 "menciones": len(posiciones),
@@ -154,9 +182,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sin-subir", action="store_true", help="no toca NotebookLM")
     ap.add_argument("--estado", action="store_true", help="solo muestra el indice")
+    ap.add_argument("--remapear", action="store_true",
+                    help="recalcula los conceptos de las clases ya indexadas")
     a = ap.parse_args()
 
     ind = cargar_indice()
+
+    if a.remapear:
+        for nombre, d in ind["clases"].items():
+            ruta = os.path.join(RAIZ, d["archivo"])
+            if not os.path.exists(ruta):
+                print(f"  falta en disco, se conserva tal cual: {nombre}")
+                continue
+            with open(ruta, encoding="utf-8", errors="replace") as f:
+                d["conceptos"] = mapear(f.read())
+        guardar_indice(ind)
+        print(f"{len(ind['clases'])} clases remapeadas")
 
     if a.estado:
         print(f"{len(ind['clases'])} clases integradas\n")

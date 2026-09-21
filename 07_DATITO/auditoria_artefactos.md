@@ -246,3 +246,38 @@ Es la brecha más clara del conjunto.
 **[NO EVIDENCIADO]** La dimensión `transferencia` seguía marcada como débil en
 el diagnóstico y ninguna de las seis acciones la atacaba de frente. Sigue
 sostenida por un solo dataset, el de logística.
+
+---
+
+# Seguimiento · integración de las transcripciones
+
+**2026-09-21** · Lo de arriba queda intacto; esto registra qué cambió después.
+
+**[EVIDENCIA]** Los dos puntos que quedaban abiertos se cerraron:
+
+- **Conceptos sin artefacto.** EDA y calidad de datos ya tenían el suyo. Se
+  agregaron `overfitting_underfitting`, `roc_auc`, `arboles_y_ensambles` y
+  `dl_llm_agentes`: los 21 conceptos tienen visual. Segmentación sigue sin uno
+  porque no está entre los 21.
+- **Navegación.** Cada visual tiene un bloque generado por
+  `03_CODIGO/construir_navegacion.py` (viene de, habilita, prioridades, preguntas
+  de certamen, dónde se enseñó) y existe `visual/index.html`.
+
+Además, al integrar las 14 transcripciones aparecieron errores de hecho en los
+visuales, y se corrigieron contra la clase o la lámina. Por ejemplo:
+
+- Una escala logarítmica descrita como eje truncado (`eda`).
+- Conteos de la P8 presentados como del certamen cuando no son derivables
+  (`metricas_clasificacion`).
+- La importancia en Random Forest atribuida a la impureza cuando el profesor
+  dijo conteo (`clasificacion`).
+- La no linealidad del perceptrón negada contra lo dicho en clase
+  (`redes_neuronales`).
+
+Las citas de clase ahora llevan ruta completa y marca, y
+`03_CODIGO/verificar_visuales.py` comprueba que cada marca exista. Esa
+comprobación entró al contrato.
+
+**[NO EVIDENCIADO]** Sigue abierto: la fidelidad de la transcripción frente al
+audio. El verificador compara la cita con el texto transcrito, no con la
+grabación.

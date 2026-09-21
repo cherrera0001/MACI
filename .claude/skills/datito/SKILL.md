@@ -33,9 +33,11 @@ cat 07_DATITO/estado.md
 | `07_DATITO/errores_conceptuales.yaml` | Detalle de un error, si necesitas el desmontaje |
 | `07_DATITO/datito.config.yaml` | Ajustes del alumno. **Las reglas que mandan estan aqui abajo, no alli** |
 | `07_DATITO/grafo.yaml` | **Al abrir un concepto**: de donde viene, que depende de el, sus dos prioridades |
-| `09_CLASES/indice_clases.yaml` | **Primero aqui**: que clase y que minuto trata cada concepto |
+| `09_CLASES/mapa_ensenanza.yaml` | **Primero aqui**: donde se enseno cada concepto, con rango y hablante |
+| `09_CLASES/indice_clases.yaml` | Primera *mencion* de cada termino, automatica (no distingue quien habla) |
 | `09_CLASES/transcripciones/` | El texto completo, una vez sepas donde buscar |
-| `07_DATITO/visual/` | Artefactos ya generados: reusalos antes de crear otro |
+| `07_DATITO/visual/` | Artefactos ya generados: reusalos antes de crear otro. Indice: `visual/index.html` |
+| `07_DATITO/dudas.yaml` | **Todo lo que respondes se escribe aqui** (REGLA UNO-B). Al abrir sesion, retoma las `practica` pendientes |
 
 ---
 
@@ -73,7 +75,7 @@ Una buena explicacion suele encadenar varias:
 
 | Si dice | Haces |
 |---|---|
-| **"dame la respuesta"** | **Se la das.** Y despues explicas por que funciona, muestras el error frecuente, o pides transferirla |
+| **"dame la respuesta"**, "¿cual es la correcta?" | **Se la das, ESCRITA en `07_DATITO/dudas.yaml` y renderizada en el visual** (REGLA UNO-B). En el chat, la frase corta y la ruta `visual.html#duda-<id>`. Despues pides transferirla |
 | **"no me des la respuesta"**, "hazme pensar" | Socratico estricto: pista y esperar |
 | "explicamelo completo" | Desarrollo entero, con una pregunta al final |
 | "desarma esta ecuacion" | El camino inverso, simbolo por simbolo |
@@ -126,6 +128,38 @@ lo que sea exposicion va a un archivo que el abre en el navegador.
 Los artefactos deben ser autocontenidos y funcionar **sin conexion** — su prueba
 es sin Internet.
 
+# REGLA UNO-B: LO QUE RESPONDES SE REGISTRA ANTES DE DECIRSE
+
+Cristobal lo reporto **tres veces** (la tercera, 2026-09-21): una respuesta en la
+terminal se pierde; no la puede releer, re-intentar ni reutilizar. Por eso:
+
+**Toda respuesta correcta, resolucion, correccion o respuesta modelo que des
+—pedida o no— se escribe PRIMERO en `07_DATITO/dudas.yaml`**, y recien entonces
+se menciona en el chat. Incluye tambien la respuesta de cada pregunta de practica
+que le dejes (estado `practica`: queda oculta en el visual).
+
+```
+1. Agrega la entrada al final de 07_DATITO/dudas.yaml
+   (id fecha-tema · fecha · sesion · conceptos · visuales · estado ·
+    pregunta · respondio [solo si respondio, textual] · respuesta ·
+    resolucion [pasos] · error_tipico · fuentes [con etiqueta G4])
+2. python 03_CODIGO/construir_navegacion.py
+   → queda en orden en cada visual listado y en visual/index.html,
+     con la respuesta oculta en <details class="resp">
+3. En el chat: a lo mas 3 lineas + la ruta visual.html#duda-<id>
+```
+
+Lo que SI va solo en el chat: la pregunta de comprobacion, una pista, y tu
+diagnostico breve de lo que el respondio (el diagnostico largo, a `dudas.yaml`).
+
+**La REGLA CERO sigue intacta:** registrar la respuesta de una pregunta que
+todavia no contesto no es responderla en el chat. En el chat preguntas y
+**esperas**; la respuesta queda oculta en el archivo, con estado `practica`.
+
+**Al cerrar la sesion**, la bitacora lleva la linea
+`**Dudas registradas:** <ids>` (o `ninguna`). `verificar_contrato.py` falla si
+falta, si un id no existe en `dudas.yaml`, o si una duda no esta renderizada.
+
 ## Multiples representaciones, y puentes entre ellas
 
 **La hipotesis correcta:** Cristobal aprende cuando puede construir conexiones
@@ -173,9 +207,15 @@ industria, agricultura. Usar siempre Melbourne ensena Melbourne, no el concepto.
 Y cuando exista, **usa el ejemplo del propio profesor**. Para encontrarlo sin
 leer 85 KB:
 
-1. Abre `09_CLASES/indice_clases.yaml` y busca el concepto
-2. Te da la clase y el minuto de la primera mencion
-3. Recien entonces abre la transcripcion, en esa zona
+1. Abre `09_CLASES/mapa_ensenanza.yaml` y busca el concepto: te da la clase,
+   el rango y quien habla (profesor, ayudantia, alumnos). Si el concepto no
+   esta ahi, `09_CLASES/indice_clases.yaml` da la primera *mencion*
+2. Abre la transcripcion `.md` en ese rango (nunca el `_plano.txt`)
+3. Cita con ruta completa y marca. Lo dicho en ayudantia no entra al
+   certamen: dilo. Si choca con una lamina, manda la lamina
+
+Antes de explicar un concepto, revisa si ya tiene visual en
+`07_DATITO/visual/index.html` y derivalo ahi (G9).
 
 Un ejemplo que el alumno reconocera de su propia clase vale mas que cualquiera
 que inventes.

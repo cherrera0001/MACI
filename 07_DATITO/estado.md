@@ -4,9 +4,9 @@
 > El detalle completo esta en `progreso.yaml` y
 > `errores_conceptuales.yaml`; leelos solo si necesitas el historial.
 
-Alumno: **Cristobal Herrera** · sesiones: **2** · ultima: 2026-09-19
+Alumno: **Cristobal Herrera** · sesiones: **3** · ultima: 2026-09-21
 
-**COMPRENDIDO 1 · COMPRENSION_PARCIAL 2 · NO_ESTUDIADO 18** (de 21)
+**COMPRENDIDO 1 · COMPRENSION_PARCIAL 2 · EN_ESTUDIO 1 · NO_ESTUDIADO 17** (de 21)
 
 ## En curso
 
@@ -15,6 +15,7 @@ Alumno: **Cristobal Herrera** · sesiones: **2** · ultima: 2026-09-19
 | Train / validation / test | `COMPRENDIDO` | `EA··` |
 | Generalizacion | `COMPRENSION_PARCIAL` | `E···` |
 | Overfitting y underfitting | `COMPRENSION_PARCIAL` | `E···` |
+| Regresion | `EN_ESTUDIO` | `····` |
 
 Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · **T**ransferir. `DOMINADO` exige las cuatro.
 

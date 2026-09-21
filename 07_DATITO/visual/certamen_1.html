@@ -22,6 +22,9 @@
   .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.9rem 1.1rem;margin:1.1rem 0}
   .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
   .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .src{font-size:.82rem;color:var(--suave)}
 
   .preg{background:#fff;border:1px solid var(--linea);border-radius:10px;
         padding:1.1rem 1.3rem;margin:1.3rem 0}
@@ -91,10 +94,21 @@
   .salto{margin-top:.9rem;padding-top:.7rem;border-top:1px dashed var(--linea);font-size:.88rem;color:var(--suave)}
   .salto a{color:var(--azul)}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="et">sesión del certamen</span>Sesión de certamen del 24-jul · aclaraciones del profesor 0:05:42–0:22:34 · <span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:42]</span></div>
+<div class="fila"><span class="et">conceptos</span><a href="fundamentos_ciencia_datos.html">Fundamentos de Ciencia de Datos</a> · <a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <a href="limpieza_preparacion.html">Limpieza y preparacion de datos</a> · <a href="eda.html">Analisis exploratorio de datos (EDA)</a></div>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Certamen 1 · auditado pregunta por pregunta</h1>
 <p class="sub">Fundamentos, adquisición y calidad de datos.<br>
@@ -112,7 +126,9 @@ son marcadores literales. Ninguna pauta publicada por un profesor sale así.<br>
 <strong>No es una pauta oficial.</strong> Los enunciados sí son fiables —son los
 del certamen real—; las justificaciones son de autor desconocido, y aquí
 <strong>ninguna se da por buena</strong>: cada una se verificó contra las
-diapositivas del curso.
+diapositivas del curso y las transcripciones de clase. Cada pregunta tiene su
+respuesta correcta y, bajo cada «repregunta», un desplegable con la
+resolución.
 </div>
 
 <h2>Cómo se verificó esta revisión</h2>
@@ -127,8 +143,11 @@ diapositivas del curso.
 <div class="clave">
 <strong>Material usado como criterio</strong>, en orden de autoridad:
 <ol style="margin:.4rem 0 0 1.1rem">
-  <li>Diapositivas del curso — <code>11_PRESENTACIÓN/</code>, clases 2, 3 y 4</li>
-  <li>Transcripción de clase: las palabras del profesor — <code>09_CLASES/transcripciones/</code></li>
+  <li>Diapositivas del curso — <code>11_PRESENTACIÓN/_markdown/</code>, láminas FCD-02, FCD-03 y FCD-04</li>
+  <li>Transcripciones de clase — las 14 de <code>09_CLASES/transcripciones/</code>
+  disponibles al 2026-09-21. Ojo con quién habla: las clases del 19-jun (desde
+  ~1:28) y del 26-jun (desde ~1:46) las dictó un <strong>segundo docente</strong>
+  en representación del titular; aquí «el profesor» es siempre el titular</li>
   <li>Tus datos verificables, cuando el enunciado pide un cálculo</li>
 </ol>
 <div style="margin-top:.6rem;font-size:.9rem">El cuaderno de NotebookLM
@@ -155,15 +174,34 @@ estaba.
 </table>
 
 <div class="clave">
-<strong>La 9B vale más que las ocho preguntas cerradas juntas</strong>, y no es
-una pregunta inventada para el certamen: es una <strong>variante del ejercicio
-de la lámina 27</strong> de la clase 4, que el profesor resolvió él mismo en la
-lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí.
+<strong>La 9B sola vale 2,0 puntos: la mitad de lo que suman las ocho preguntas
+cerradas juntas (8 × 0,5 = 4,0), y es la pregunta individual de mayor
+puntaje</strong>
+<span class="src">[FUENTE · Repo: <code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>.
+Y no es una pregunta inventada para el certamen: es una <strong>variante del
+ejercicio de la lámina 27</strong> de FCD-04, que el profesor resolvió él mismo en
+la lámina 28 y en vivo en la clase del 15-jul. Eso cambia bastante cuál es la
+respuesta esperada — lo vemos ahí.
+</div>
+
+<div class="nota">
+<strong>Tu versión puede no ser esta.</strong> El día del certamen el profesor
+explicó que «cada certamen es distinto»: un algoritmo toma preguntas al azar de
+«un pool de preguntas muy grande» para cada alumno
+<span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:42–0:05:55]</span>,
+y describió la estructura como «cuatro, cuatro, una y el último espacio» para
+comentarios, sin puntaje
+<span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:20:30–0:20:43]</span>.
+Cuatro V/F, cuatro de selección múltiple, <strong>una</strong> de desarrollo.
+Por eso es probable que la 9A y la 9B sean dos variantes del mismo casillero, no
+dos preguntas del mismo certamen, y que las de tus compañeros difieran de las tuyas
+<span class="src">[INFERENCIA]</span>. Estudia el tipo de pregunta, no la
+pregunta.
 </div>
 
 <h2>Parte 1 · Verdadero o falso con justificación</h2>
 
-<div class="preg">
+<div class="preg" id="p1">
   <div class="cab"><div class="num">1</div><div class="tema">Ciencia de datos como campo</div>
     <span class="eti b-ev">Evaluar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -190,7 +228,7 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
       <div class="f"><div class="h">Definición formal</div>
       Disciplina que combina computación, matemáticas y estadística
       <strong>con conocimiento del dominio</strong> para extraer conocimiento
-      accionable de datos. La lámina 5 de la clase 3 lo dibuja como la
+      accionable de datos. La lámina 5 de FCD-03 lo dibuja como la
       intersección de esos cuatro círculos.</div>
       <div class="i"><div class="h">Intuición</div>
       Saber programar no basta. Saber estadística no basta. Conocer el negocio no
@@ -210,6 +248,20 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     ciencia de datos. Quitar un círculo no la debilita: la convierte en otra cosa,
     y esa otra cosa ya tiene nombre.</p>
 
+    <div class="lbl">La aclaración del profesor durante el certamen</div>
+    <p>Un compañero preguntó en vivo qué significaba «distintos dominios» en este
+    enunciado. La respuesta:</p>
+    <div class="cita">«Estamos hablando de los distintos dominios, no las fuentes de
+    los datos. Entonces, cuando digo dominio, no sé, un dominio podría ser la
+    zoología. Otro dominio podría ser la física cuántica»
+    <span class="f">Certamen 1, 24-jul · 0:22:23–0:22:34 · profesor ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md]</span></div>
+    <div class="dist"><strong>Distinción de certamen:</strong> dominio del
+    conocimiento (zoología, física, minería) <strong>≠</strong> fuente de datos
+    (un sensor, una API, una planilla). La frase es verdadera porque la ciencia de
+    datos se aplica a problemas de cualquier <em>dominio</em>, no porque junte
+    datos de muchas fuentes.</div>
+
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
     <span class="q">«Verdadero. La ciencia de datos es exactamente eso: método
     científico aplicado a datos de cualquier dominio para producir conocimiento.
@@ -221,16 +273,33 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="repreg"><strong>Repregunta para ti:</strong> si quitas el
     conocimiento del dominio y te quedas con computación, matemáticas y
     estadística, ¿qué obtienes? Nombra el resultado usando el propio diagrama.</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> obtienes <strong>machine learning</strong>, no
+    ciencia de datos.</p>
+    <p><strong>Pasos:</strong> (1) en el diagrama de la lámina 5, borra el círculo
+    de conocimiento del dominio; (2) lo que queda es la intersección de computación
+    con matemáticas y estadística; (3) esa intersección tiene nombre propio en la
+    lámina: <em>Machine Learning</em>.</p>
+    <p><strong>Error típico:</strong> decir «sigue siendo ciencia de datos, solo que
+    más técnica». Quitar un círculo cambia la disciplina, no la debilita.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · lámina 5];
+    la lectura exacta de qué círculos forman cada intersección es [INFERENCIA],
+    porque la figura no se extrae como texto.</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_03</code>, lámina 5 — «Data Science: interdisciplinaridad».
     Nombra computación, matemáticas, estadística, conocimiento del dominio, y las
     intersecciones machine learning / investigación tradicional / desarrollo de
-    software.</div>
+    software. Aclaración de «dominios» en la sesión del certamen (arriba).</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — la definición palabra por palabra, secciones 1 y 2</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p2">
   <div class="cab"><div class="num">2</div><div class="tema">Organización data-driven</div>
     <span class="eti b-ev">Evaluar</span><span class="eti b-parcial">parcial</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -247,7 +316,7 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     aproximada</strong> de una organización data-driven: es, palabra por palabra,
     la definición que el profesor da de la etapa <em>anterior</em>.</div>
 
-    <div class="lbl">La escala del profesor, lámina 6 de la clase 2</div>
+    <div class="lbl">La escala del curso, lámina 6 de FCD-02</div>
     <table>
     <tr><th>#</th><th>Etapa</th><th>Definición textual en la lámina</th><th>Eje</th></tr>
     <tr><td>1</td><td>Resistente a los datos</td><td>Se resiste activamente a usar datos</td><td>—</td></tr>
@@ -256,6 +325,19 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <tr style="background:#fef3c7"><td>4</td><td><strong>Conocedora de datos</strong></td><td><strong>«Usa datos en todos sus procesos»</strong></td><td>VISIÓN</td></tr>
     <tr style="background:#d1fae5"><td>5</td><td><strong>Basada en Datos</strong></td><td><strong>«Empresa es data-first»</strong></td><td>ESTRATEGIA</td></tr>
     </table>
+
+    <p>El segundo docente enseñó esta escala en la clase del 19-jun
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:44:31–1:47:47]</span>
+    y al repasarla el 26-jun describió la etapa 4 casi con las palabras del
+    enunciado:</p>
+    <div class="cita">«conocedora de los datos que ocupan estos datos en todos sus
+    procesos pero que existen algunos procesos en los cuales todavía estos datos no
+    se utilizan para las decisiones»
+    <span class="f">Clase del 26-jun · 1:51:16–1:51:26 · segundo docente (clase del 26-jun) ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md]</span></div>
+    <p>Y de la etapa 5 dijo que en ella las decisiones son guiadas a partir de los
+    datos
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:51:28–1:51:40]</span>.</p>
 
     <div class="dist"><strong>La distinción que decide la respuesta:</strong>
     <em>Conocedora de datos</em> (etapa 4, usa datos en todos sus procesos)
@@ -267,7 +349,9 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     floja — y con un error de lectura.</span>
     Acierta en «Falso». Pero lo justifica diciendo que el enunciado describe una
     organización <em>data-informed</em> o <em>data-aware</em>, vocabulario que
-    <strong>no aparece en el material del curso</strong>: el profesor usa su propia
+    <strong>no aparece en el material del curso</strong> —ni en las láminas FCD ni
+    en las 14 transcripciones disponibles al 2026-09-21
+    <span class="src">[INFERENCIA, por búsqueda]</span>—: el curso usa su propia
     escala de cinco etapas, con nombres distintos.<br><br>
     Y añade que «conocer los datos y utilizarlos <em>puntualmente</em> en procesos
     no implica…». <strong>El enunciado no dice «puntualmente»: dice «en todos sus
@@ -314,17 +398,34 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     dashboards en todas las áreas y todos los usan a diario, pero cuando el dato
     contradice al gerente, gana el gerente. ¿En qué etapa está, y qué le falta
     exactamente para subir a la siguiente?</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> está en la <strong>etapa 4, Conocedora de
+    datos</strong>; le falta que las decisiones se tomen en función de los datos,
+    que es lo que define la etapa 5, Basada en datos.</p>
+    <p><strong>Pasos:</strong> (1) ¿usa datos en todos sus procesos? Sí → al menos
+    etapa 4; (2) ¿las decisiones se guían por los datos? No, gana el gerente → no
+    llega a la 5; (3) lo que falta es exactamente el paso de «usar» a «decidir».</p>
+    <p><strong>Error típico:</strong> ponerla en la 5 porque «todos usan
+    dashboards». Usar datos no es decidir con ellos.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · láminas 6 y 7]
+    y [FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:51:16–1:51:40].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_02</code>, lámina 6 —«Evolución de una organización basada en
     datos», las cinco etapas con sus definiciones— y lámina 7 —las dos columnas
-    Data Driven / No Data Driven.</div>
+    Data Driven / No Data Driven. Transcripciones: la escala enseñada el 19-jun y
+    repasada el 26-jun, citadas arriba.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — sección 3, la escala de cinco etapas con ejercicios V/F</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p3">
   <div class="cab"><div class="num">3</div><div class="tema">Rol del jefe de proyecto</div>
-    <span class="eti b-ev">Evaluar</span><span class="eti b-nover">sin evidencia</span></div>
+    <span class="eti b-ev">Evaluar</span><span class="eti b-parcial">parcial</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
   Verdadero o falso. En caso de ser falso, justifique su respuesta.<br>
   «Generalmente los proyectos basados en Ciencia de Datos requieren de
@@ -334,100 +435,145 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
 
   <details><summary>Ver análisis completo</summary>
 
-    <div class="amb"><strong>Aquí hay que ser honesto: esta es la pregunta más
-    débilmente respaldada de todo el certamen.</strong> El material del curso trata
-    el tema —láminas 6 a 12 de la clase 3— pero esas láminas son
-    <strong>diagramas sin texto extraíble</strong>. Solo se recuperan sus títulos y
-    los rótulos de los ejes. No puedo citarte una frase del profesor que zanje
-    esta pregunta, y no voy a inventar una.</div>
+    <div class="amb"><strong>Esta pregunta estaba marcada «sin evidencia», y había
+    evidencia.</strong> Las láminas 6 a 12 de FCD-03 son diagramas sin texto
+    extraíble —solo títulos y rótulos de ejes—, pero el segundo docente las explicó
+    en voz alta en la clase del 26-jun, y eso sí está transcrito. Lo que sigue
+    reevalúa la pregunta con esa evidencia. Recuerda que el enunciado viene del
+    documento del compañero y que no conocemos la pauta oficial.</div>
 
-    <div class="lbl">Lo que sí se puede afirmar del material</div>
-    <p>Las láminas 7, 8, 9 y 10 se titulan todas igual: <strong>«Habilidades: ¿T,
-    ?»</strong>, y comparten los rótulos <code>Habilidad</code>,
-    <code>Profundidad de conocimiento</code>, <code>conocimientos generales</code>
-    y <code>especialización</code>. Cuatro láminas con el mismo título y ejes es el
-    patrón de una <strong>secuencia revelada paso a paso</strong>: el perfil en I,
-    luego el T, luego variantes con más de una profundidad. La lámina 12 aplica el
-    resultado a «Proyectos interdisciplinarios complejos».</p>
+    <div class="lbl">Lo que dice el material</div>
+    <p>Las láminas 7 a 10 se titulan «Habilidades: ¿T, ?», con los ejes
+    <code>Habilidad</code> y <code>Profundidad de conocimiento</code>; la lámina 12,
+    «Proyectos interdisciplinarios complejos». En clase, el segundo docente llamó a
+    ese gráfico habilidades «T P o Gama» —T, Π y Γ, por la forma de la letra—
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:10:29–2:10:31]</span>
+    y, al llegar a los proyectos complejos, explicó que como es muy raro que una
+    sola persona lo reúna todo, el equipo se arma con distintas personas que «van
+    llenando este cuadro»
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:16:18–2:16:36]</span>.
+    Su conclusión:</p>
+
+    <div class="cita">«comúnmente lo que tenemos que buscar es tener personas con
+    alto nivel de conocimiento en cada una de las áreas […] que necesitamos para
+    cumplir este proyecto pero que tengan al mismo tiempo un nivel suficiente para
+    poder comunicarse»
+    <span class="f">Clase del 26-jun · 2:16:58–2:17:14 · segundo docente (clase del 26-jun) ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md]</span></div>
+
+    <p>Y sobre el jefe de proyecto —preguntó a la clase cuál perfil debía
+    liderar—: alguien con alto conocimiento en su área y conocimiento moderado en
+    todas las demás, porque es quien «va a coordinar a todo el resto» y hace de
+    «puente entre todo»
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:18:23–2:19:03]</span>.</p>
 
     <div class="lbl">Respuesta independiente</div>
-    <div class="vd vd-parcial"><span class="t">Falso, con reserva declarada.</span>
-    La clasificación «Falso» es la más defendible por dos razones
-    independientes:<br><br>
-    <strong>1 · Estructura del enunciado.</strong> Son dos afirmaciones unidas por
-    «y». La primera —equipos con distintas habilidades— es verdadera y genera
-    acuerdo. La segunda es la que se evalúa. Es el patrón de dos partes que el
-    profesor usa también en el Certamen 2.<br><br>
-    <strong>2 · El contenido del curso apunta al perfil en T.</strong> La idea del
-    perfil en T es precisamente que <em>no</em> se compone un equipo poniendo un
-    especialista por área: se compone con gente de base amplia y una profundidad,
-    cuyas bases se solapan lo suficiente para entenderse. Exigir «expertos en cada
-    una de las áreas requeridas» es la receta que el perfil en T viene a
-    reemplazar.</div>
+    <div class="vd vd-parcial"><span class="t">Verdadero es la lectura mejor
+    respaldada por la clase, con reserva declarada.</span>
+    <strong>1 · Primera parte</strong> —los proyectos requieren colaboradores con
+    distintas habilidades—: verdadera. La respaldan la lámina 5 de FCD-03 y los
+    9 años del segundo docente trabajando siempre con especialistas de otras
+    áreas.<br><br>
+    <strong>2 · Segunda parte</strong> —el jefe debe preocuparse de que haya
+    expertos en cada área requerida—: la cita de arriba dice casi lo mismo, y el
+    líder es quien coordina y hace de puente. Que esa preocupación sea <em>del
+    jefe</em> no está dicho literalmente, pero se sigue de su rol de coordinador
+    <span class="src">[INFERENCIA]</span>.<br><br>
+    <strong>3 · El matiz que conviene agregar:</strong> la clase exige además que
+    esos expertos puedan comunicarse con el resto. El enunciado lo omite, y omitir
+    un matiz no vuelve falsa una afirmación <span class="src">[INFERENCIA]</span>.<br><br>
+    <strong>La reserva:</strong> no hay pauta oficial ni frase en lámina. Para que
+    fuera «Falso» habría que leer «expertos en cada área» como «especialistas
+    puros sin base común», y el enunciado no dice eso.</div>
 
     <div class="lbl">Veredicto sobre la respuesta del compañero</div>
-    <div class="vd vd-mal"><span class="t">Clasificación plausible, justificación
-    sin respaldo en el material.</span>
-    Responde «Falso» —razonable— pero lo justifica diciendo que la labor del líder
-    es ser un <strong>«translator»</strong> entre especialistas técnicos y líderes
-    de negocio. <strong>La palabra «translator» no aparece en ninguna lámina del
-    curso</strong>, ni el concepto en esa forma. Es vocabulario de consultoría
-    —McKinsey lo popularizó— perfectamente respetable en la industria, pero
-    presentarlo como <em>la</em> razón es atribuirle al curso algo que no dijo.<br><br>
-    Si lo repites en un oral y el profesor pregunta «¿dónde vimos eso?», no tienes
-    dónde apoyarte. El perfil en T sí está en sus láminas.</div>
+    <div class="vd vd-mal"><span class="t">Clasificación en duda frente a la clase;
+    justificación con una palabra ajena al curso.</span>
+    Responde «Falso» y lo justifica diciendo que la labor del líder es ser un
+    <strong>«translator»</strong> entre especialistas técnicos y líderes de
+    negocio. Dos problemas:<br><br>
+    <strong>1 · La palabra no es del curso.</strong> «Translator» no aparece en
+    ninguna lámina FCD ni en las 14 transcripciones disponibles al 2026-09-21
+    <span class="src">[INFERENCIA, por búsqueda de «translator» y «traductor»]</span>.
+    Es vocabulario de consultoría. Lo que sí dijo el segundo docente se le parece
+    en espíritu: el líder como «puente».<br><br>
+    <strong>2 · El puente no contradice el enunciado.</strong> Que el líder
+    coordine y comunique no le quita la tarea de asegurar expertos en cada área;
+    la clase dice ambas cosas. Del rol de puente no se sigue «Falso»
+    <span class="src">[INFERENCIA]</span>. Recuerda que nadie verificó las
+    justificaciones de ese documento.</div>
 
     <div class="tri">
       <div class="f"><div class="h">Definición formal</div>
-      Perfil en <strong>T</strong>: barra horizontal = conocimientos generales
-      amplios en varias disciplinas; barra vertical = una especialización profunda.
-      Los ejes de la lámina son exactamente esos dos: <em>Habilidad</em> (cuántas)
-      y <em>Profundidad de conocimiento</em> (cuánto).</div>
+      Habilidades con forma de letra: eje horizontal <em>Habilidad</em> (cuántas),
+      eje vertical <em>Profundidad de conocimiento</em> (cuánto). La
+      <strong>T</strong> tiene una especialidad profunda sobre una base general; la
+      <strong>Π</strong>, profundidad en más de un área; la <strong>Γ</strong>, una
+      profunda y otra intermedia
+      <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:10:29–2:13:07]</span>.</div>
       <div class="i"><div class="h">Intuición</div>
-      Un equipo de especialistas puros —perfiles en <strong>I</strong>— no se
-      entiende entre sí: cada uno domina su columna y nadie tiene la barra
-      horizontal que permite conversar. La T existe para que el equipo
-      <em>comunique</em>, no solo para que sepa.</div>
+      Un equipo no necesita a alguien que lo sepa todo —casi no existe—: necesita
+      que entre todos cubran cada área en profundidad y que cada uno sepa lo
+      suficiente de las otras para entenderse. El líder es quien ve el cuadro
+      completo.</div>
       <div class="e"><div class="h">Ejemplo práctico</div>
-      En tu proyecto de Melbourne no hubo un experto en inmobiliaria, otro en
-      estadística y otro en Python. Hubo una persona con base en los tres y
-      profundidad en uno. El proyecto igual salió, y esa es justamente la
-      observación.</div>
+      <span class="src">[DATITO]</span> Mantenimiento predictivo en una minera: un
+      mecánico de flota, un estadístico y un ingeniero de datos. Si el mecánico no
+      sabe qué es una predicción y el estadístico no sabe qué es una falla de
+      transmisión, hay un experto por área y aun así el proyecto no avanza.</div>
     </div>
 
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
-    <span class="q">«Falso, en su segunda parte. La primera es correcta: los
-    proyectos de ciencia de datos necesitan habilidades distintas. Pero la
-    responsabilidad del jefe no es garantizar un experto por área — eso ni es
-    viable ni es lo que vimos. En clase trabajamos el perfil en T: gente con
-    conocimientos generales amplios y una especialización profunda, de modo que
-    las bases se solapen y el equipo pueda comunicarse. Un equipo de puros
-    especialistas es un equipo que no se entiende.»</span></div>
+    <span class="q">«Verdadero. Los proyectos de ciencia de datos necesitan
+    habilidades distintas, y como casi nunca una sola persona las reúne, el equipo
+    se arma con personas de alto conocimiento en cada área que el proyecto
+    requiere; el jefe, que coordina y hace de puente entre todos, tiene que
+    asegurarse de que esas áreas estén cubiertas. Agrego el matiz que vimos en
+    clase: esos expertos también tienen que poder comunicarse con el resto del
+    equipo.»</span></div>
 
-    <div class="nota"><strong>Si el profesor insiste, esto es lo que conviene
-    decir:</strong> que la primera parte del enunciado es verdadera y la segunda es
-    la que falla, y por qué. Evita afirmar «el líder es un traductor» como si
-    fuera doctrina del curso. Si quieres usar la idea, preséntala como lo que es:
-    <em>«en la industria se habla del rol de traductor, aunque eso no lo vimos en
-    clase»</em>. Declarar el origen de lo que afirmas es exactamente la conducta
-    que la P10 y la P11 del Certamen 2 premian.</div>
+    <div class="nota"><strong>Si el profesor insiste:</strong> separa las dos
+    partes del enunciado y di de dónde sale cada respaldo: la lámina de proyectos
+    interdisciplinarios complejos y lo que se dijo al explicarla. No presentes «el
+    líder es un traductor» como doctrina del curso; la palabra de clase es
+    «puente». Declarar el origen de lo que afirmas es la conducta que premian la
+    P10 y la P11 del Certamen 2
+    (<a href="certamen_2.html#p10">certamen_2.html#p10</a>).</div>
 
     <div class="repreg"><strong>Repregunta para ti:</strong> si un equipo tiene un
-    experto en cada área pero ninguno entiende el vocabulario de los demás, ¿el
-    problema es de habilidades o de forma de las habilidades? Responde usando los
-    dos ejes de la lámina.</div>
+    experto en cada área pero ninguno entiende el vocabulario de los demás, ¿cumple
+    lo que se pidió en clase? Responde con los dos ejes de la lámina y con la
+    palabra que usó el segundo docente para el rol del líder.</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> <strong>no del todo</strong>: cumple la
+    profundidad en cada área, pero le falta el nivel suficiente para comunicarse, y
+    probablemente un líder que haga de puente.</p>
+    <p><strong>Pasos:</strong> (1) eje vertical, profundidad: hay un experto por
+    área → cumplido; (2) eje horizontal, amplitud: nadie entiende el vocabulario de
+    los demás → falta la base común que la clase exigió («un nivel suficiente para
+    poder comunicarse»); (3) rol del líder: alguien con conocimiento moderado en
+    todas las áreas que coordine y sea el puente.</p>
+    <p><strong>Error típico:</strong> creer que basta juntar especialistas. La
+    frase de clase tiene dos mitades: alto conocimiento en cada área <em>y</em>
+    lenguaje común.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:16:58–2:19:03];
+    la aplicación al caso es [INFERENCIA].</p>
+    </details>
 
-    <div class="fuente"><strong>Evidencia:</strong> parcial.
-    <code>FCD-2026-2_03</code>, láminas 7–10 («Habilidades: ¿T, ?», ejes
-    <em>Habilidad</em> y <em>Profundidad de conocimiento</em>, extremos
-    <em>conocimientos generales</em> y <em>especialización</em>) y lámina 12
-    («Proyectos interdisciplinarios complejos»). El contenido gráfico de esas
-    láminas no es recuperable como texto: la inferencia sobre el perfil en T se
-    apoya en los títulos y rótulos, no en una frase citable.</div>
+    <div class="fuente"><strong>Evidencia:</strong> parcial —en transcripción, sin
+    frase en lámina—. <code>FCD-2026-2_03</code>, láminas 7–10 («Habilidades: ¿T,
+    ?») y 12 («Proyectos interdisciplinarios complejos»), cuyo contenido gráfico no
+    se recupera como texto. Lo decisivo es la explicación oral del segundo docente
+    el 26-jun, citada arriba (2:10:29–2:19:03), en una clase dictada en
+    representación del titular.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — sección 7, el equipo y el líder</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p4">
   <div class="cab"><div class="num">4</div><div class="tema">Ciclo de vida iterativo</div>
     <span class="eti b-ev">Evaluar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -440,10 +586,11 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
 
     <div class="lbl">Respuesta independiente</div>
     <div class="vd vd-ok"><span class="t">Verdadero.</span>
-    Y tiene respaldo doble: el diagrama del proceso en las láminas 16 a 23 de la
-    clase 2, y una frase del profesor en clase que dice exactamente esto.</div>
+    Y tiene respaldo triple: el diagrama del proceso en las láminas 16 a 23 de
+    FCD-02, una frase que el profesor repite en clase, y un caso real que él mismo
+    contó.</div>
 
-    <div class="lbl">El proceso, con los nombres que usa el profesor</div>
+    <div class="lbl">El proceso, con los nombres de las láminas</div>
     <table>
     <tr><th>#</th><th>Etapa</th><th>Lámina</th></tr>
     <tr><td>1</td><td>Requerimientos del negocio o preguntas a responder</td><td>16</td></tr>
@@ -455,18 +602,33 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <tr><td>7</td><td><strong>Puesta en marcha e integración</strong></td><td>22</td></tr>
     </table>
 
-    <div class="clave"><strong>Sus palabras, de la transcripción de clase:</strong>
-    <em>«El ciclo de la ciencia de datos comienza con un requerimiento pregunta,
-    después recolectamos datos, limpiamos los datos, exploramos, modelamos,
-    visualizamos […] y finalmente el modelo se pone en marcha y después volvemos
-    al requerimiento pregunta. Y como siempre decimos, <strong>la flechita apunta
-    a los dos lados</strong>, porque a veces uno está modelando y de repente se da
-    cuenta de que el modelo no funciona bien y tiene que volver a explorar los
-    datos.»</em></div>
+    <div class="lbl">Sus palabras, al abrir la clase de clasificación</div>
+    <div class="cita">«después volvemos al requerimiento pregunta. Y como siempre
+    decimos la flechita ⟨apunta⟩ a los dos lados porque a veces uno está modelando
+    y de repente se ⟨da⟩ cuenta que el modelo no funciona bien y tiene que volver a
+    explorar los datos»
+    <span class="f">Clase del 7-ago · 0:01:07–0:01:17 · profesor ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]<br>
+    ⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «para nace» y «se cuenta»</span></div>
 
     <p>Fíjate en «<strong>como siempre decimos</strong>». No es una observación al
     pasar: es algo que repite. Si hay una frase de este curso que conviene poder
-    citar literalmente, es esa.</p>
+    citar, es esa.</p>
+
+    <div class="lbl">Y un caso real: de producción de vuelta a exploración</div>
+    <p>El profesor abrió la clase del 15-jul contando lo que le había pasado ese
+    mismo día con un modelo que ya estaba en producción:</p>
+    <div class="cita">«estaba en producción y de repente nos dimos cuenta que en
+    producción tenía peor calidad que el modelo anterior […] fíjense que hoy día en
+    un día pasamos de la puesta en marcha nos devolvimos hacia la exploración de
+    nuevo»
+    <span class="f">Clase del 15-jul · 0:03:53–0:05:26 · profesor ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+    <p>La ruta completa fue puesta en marcha → visualización → modelamiento →
+    exploración, con sospecha de un error en la recolección o la limpieza
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:04:00–0:05:49]</span>.
+    Es exactamente la situación del enunciado: poner en marcha no dio por
+    terminado el proyecto.</p>
 
     <div class="lbl">Y la lámina 22 dice por qué</div>
     <p>«Una cosa es cómo funcionan los modelos <em>en el lab</em>: siempre se
@@ -515,17 +677,45 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     se entrenó con 2016 y se evaluó en 2017. Si lo dejaras corriendo hasta 2020 sin
     tocarlo, ¿a cuál de las siete etapas tendrías que volver primero, y qué señal
     te avisaría?</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la señal es que el error sobre ventas nuevas suba
+    por encima de lo medido en 2017 (MAE 188.218 AUD); lo primero es volver a la
+    <strong>recolección</strong> de ventas recientes, y desde ahí a exploración y
+    modelamiento.</p>
+    <p><strong>Pasos:</strong> (1) en la puesta en marcha se monitorea: se compara
+    el precio predicho con el precio real de cada venta nueva; (2) si el MAE crece,
+    el mundo cambió —precios, suburbios nuevos—, no el código; (3) sin ventas
+    2018–2020 con su precio real no puedes ni medir el daño ni reentrenar, por eso
+    la primera parada es recolectar; (4) después exploras qué cambió y vuelves a
+    modelar. Si el mercado cambió tanto que la pregunta ya no sirve, se vuelve al
+    requerimiento.</p>
+    <p><strong>Error típico:</strong> saltar directo al modelamiento y cambiar de
+    algoritmo con los mismos datos de 2016. Un algoritmo nuevo no sabe nada de
+    2020.</p>
+    <p><strong>Fuente:</strong> MAE de [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json];
+    el orden de la ruta es [INFERENCIA], por analogía con el caso del profesor en
+    [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:03:53–0:05:49].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_02</code>, láminas 16–23 (las siete etapas del proceso) y
-    lámina 22 (lab frente a práctica). Cita textual:
-    <code>09_CLASES/transcripciones/2026-08-07T22_14_16Z</code>.</div>
+    lámina 22 (lab frente a práctica). Citas textuales: clase del 7-ago
+    (0:01:07–0:01:17) y clase del 15-jul (0:03:53–0:05:26), arriba. CRISP-DM y
+    OSEMN no aparecen en las láminas FCD ni en las 14 transcripciones disponibles
+    al 2026-09-21 <span class="src">[INFERENCIA, por búsqueda]</span>.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — sección 6, las flechas hacia atrás y un ejercicio para reconstruir la ruta
+    del profesor<br>
+    <a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    qué se hace y qué no en cada etapa</div>
   </details>
 </div>
 
 <h2>Parte 2 · Selección múltiple</h2>
 
-<div class="preg">
+<div class="preg" id="p5">
   <div class="cab"><div class="num">5</div><div class="tema">Webscraping</div>
     <span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -604,14 +794,37 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     pago y también se puede scrapear. Según el criterio de la lámina 10, ¿qué
     pregunta concreta deberías responderte antes de scrapear, y cambia la respuesta
     si es solo para explorar frente a publicar un producto?</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la pregunta es <strong>«¿deberías
+    hacerlo?»</strong> —¿violas los términos de servicio? ¿hay problemas de
+    privacidad?—, y sí cambia: para un producto publicado el riesgo es mayor y lo
+    razonable es pagar la API.</p>
+    <p><strong>Pasos:</strong> (1) que exista una API de pago indica que el dueño
+    quiere controlar y cobrar el acceso; (2) revisa si los términos de servicio
+    prohíben el scraping y si los datos son personales; (3) para explorar una idea
+    con pocos datos el riesgo es acotado si los términos lo permiten; para publicar
+    un producto, usar los datos sin pagar ni permiso expone a problemas legales.</p>
+    <p><strong>Error típico:</strong> responder solo con lo técnico («se puede
+    scrapear, así que sí»). La lámina 10 separa <em>poder</em> de
+    <em>deber</em>.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · láminas 8–10];
+    la distinción explorar/publicar es [INFERENCIA].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_04</code>, láminas 8, 9 y 10 —formas de obtener datos online,
     por qué y cómo se hace scraping, y «¿deberías hacerlo?».</div>
+
+    <div class="salto"><strong>Dónde estudiarlo:</strong> no hay un visual
+    dedicado a webscraping. La etapa en que cae —recolección— está en
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    (sección 6) y en
+    <a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a>
+    (sección 1); para esta pregunta, las láminas 8 a 10 de FCD-04 son la fuente.</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p6">
   <div class="cab"><div class="num">6</div><div class="tema">Tipo de problema</div>
     <span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -625,7 +838,7 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="lbl">Respuesta independiente</div>
     <div class="vd vd-ok"><span class="t">Clasificación multi-clase.</span>
     Y el curso tiene un árbol de decisión explícito para llegar ahí: el
-    <strong>Mapa Metodológico</strong>, lámina 23 de la clase 3. Conviene responder
+    <strong>Mapa Metodológico</strong>, lámina 23 de FCD-03. Conviene responder
     recorriéndolo, porque es literalmente el esquema del profesor.</div>
 
     <div class="lbl">El camino por el Mapa Metodológico, rama por rama</div>
@@ -666,7 +879,7 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
 
     <div class="tri">
       <div class="f"><div class="h">Definición formal</div>
-      Lámina 20 de la clase 4: <strong>variable categórica</strong> es la que no
+      Lámina 20 de FCD-04: <strong>variable categórica</strong> es la que no
       tiene orden inherente entre sus valores. <strong>Cuantitativa</strong> es
       numérica, y puede ser discreta (finitos valores en un intervalo) o continua
       (infinitos).</div>
@@ -699,16 +912,34 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     regular, malo» te pidieran predecir el <em>porcentaje exacto de impurezas</em>,
     ¿por qué rama del mapa bajarías, y en qué punto exacto se separa del camino
     anterior?</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> bajarías por <strong>Predecir → Se tienen datos →
+    Numérico → Estático → Regresión</strong>; el camino se separa del anterior en la
+    bifurcación <strong>Numérico / Categórico</strong>.</p>
+    <p><strong>Pasos:</strong> (1) sigue siendo predecir con datos históricos; (2)
+    el porcentaje de impurezas es un número donde los valores intermedios
+    significan algo (12,5 % existe) → Numérico; (3) no se predice una serie en el
+    tiempo → Estático; (4) hoja: Regresión.</p>
+    <p><strong>Error típico:</strong> quedarse en clasificación porque «es la misma
+    máquina». El tipo de modelo lo fija la salida, no el problema de fondo.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · lámina 23].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_03</code>, lámina 23 —Mapa Metodológico completo, con las hojas
     Regresión / Modelos secuenciales / Clasificación binaria / Clasificación
     multi-clase. <code>FCD-2026-2_04</code>, lámina 20 —variable cuantitativa frente
     a categórica.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    el árbol de decisión para reconocer el tipo de problema<br>
+    <a href="clasificacion.html"><code>clasificacion.html</code></a> —
+    clasificación binaria y multiclase</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p7">
   <div class="cab"><div class="num">7</div><div class="tema">Reclutar un data scientist</div>
     <span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -781,117 +1012,180 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="repreg"><strong>Repregunta para ti:</strong> de las cinco
     sugerencias de la lámina 21, ¿cuál apunta a verificar la barra horizontal de la
     T y cuál la vertical?</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la barra <strong>horizontal</strong> (amplitud) la
+    verifica la <strong>entrevista enfocada a adaptación a distintos dominios</strong>
+    —y en parte la entrevista con el equipo—; la <strong>vertical</strong>
+    (profundidad) la verifica la <strong>prueba técnica realizada por
+    especialistas</strong> —y la experiencia previa demostrada—.</p>
+    <p><strong>Pasos:</strong> (1) recuerda los ejes: horizontal = cuántas
+    habilidades, vertical = qué tan profundo; (2) pregunta qué mide cada
+    sugerencia: moverse entre dominios y hablar con el equipo es amplitud; una
+    prueba hecha por especialistas y la experiencia demostrada miden profundidad;
+    (3) «utilizar ejemplos reales» sirve para las dos.</p>
+    <p><strong>Error típico:</strong> asignar la prueba técnica a la amplitud. Una
+    prueba hecha por especialistas mide dominio de un área, no variedad.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · láminas 7 y 21];
+    la asignación a cada eje es [INFERENCIA].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_03</code>, lámina 20 (desafíos del reclutamiento, el ~5 %, «¿qué
     tipo de llave necesito?») y lámina 21 (las cinco sugerencias).</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — sección 7, el equipo, el reclutamiento y las habilidades T, Π y Γ</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p8">
   <div class="cab"><div class="num">8</div><div class="tema">Big Data</div>
-    <span class="eti b-an">Analizar</span><span class="eti b-nover">sin evidencia</span></div>
+    <span class="eti b-an">Analizar</span><span class="eti b-parcial">parcial</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
   ¿Cuál o cuáles de las siguientes características de los datos tienen relación
   con el concepto de «Big Data»?</div>
 
   <details><summary>Ver análisis completo</summary>
 
-    <div class="amb"><strong>Esta es la pregunta que menos se puede responder con
-    certeza, y por dos motivos acumulados.</strong><br><br>
+    <div class="amb"><strong>Esta pregunta se puede responder mejor de lo que decía
+    la versión anterior, pero no del todo.</strong><br><br>
     <strong>1 · No tenemos la lista de opciones.</strong> El documento del compañero
     solo transcribe las que él marcó como correctas —Volumen y Velocidad— y
     menciona de pasada dos distractores («entendimiento del dominio» y
     «webscraping»). <strong>No sabemos si «Variedad» estaba entre las
-    alternativas.</strong> Si estaba, casi con seguridad también era correcta, y la
-    respuesta del compañero estaría incompleta.<br><br>
-    <strong>2 · No hay material del curso sobre Big Data.</strong> Se buscó
-    «Big Data», «Volumen», «Velocidad», «Variedad» y «Veracidad» en las seis
-    presentaciones disponibles y en las transcripciones de clase.
-    <strong>Cero coincidencias relevantes.</strong> O el tema se trató en una clase
-    que no está transcrita, o en material que no está en el repositorio.</div>
+    alternativas.</strong><br><br>
+    <strong>2 · Las láminas no tratan Big Data, pero la clase sí.</strong> Ninguna
+    lámina FCD de <code>11_PRESENTACIÓN/_markdown/</code> menciona «big data»
+    <span class="src">[INFERENCIA, por búsqueda]</span>. En cambio, el profesor
+    titular lo enseñó en la clase del 19-jun, entre 0:49:52 y 0:57:14: recorrió
+    volumen, velocidad y variedad con ejemplos, las llamó las tres V, dio el
+    criterio de la infraestructura y agregó la veracidad como cuarta V
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:49:52–0:57:14]</span>.
+    De las 14 transcripciones disponibles al 2026-09-21, es la única que menciona
+    big data.</div>
+
+    <div class="lbl">Lo que dijo el profesor</div>
+    <div class="cita">«esto acá es lo que se llaman las tres ⟨V⟩ volumen velocidad y
+    variedad […] cuando un proyecto es de big data es cuando la infraestructura que
+    yo tengo actualmente no es lo suficientemente buena para resolver el problema»
+    <span class="f">Clase del 19-jun · 0:54:24–0:54:47 · profesor ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]<br>
+    ⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «las tres de corta»</span></div>
+    <p>Y enseguida: «hay una cuarta ⟨V⟩ que se le llama la veracidad», con el
+    ejemplo de un sensor que falla el 10 % de las veces (⟨⟩ = corrección de
+    transcripción [INFERENCIA]: el ASR dice «de corta»)
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:55:27–0:56:02]</span>.</p>
 
     <div class="lbl">Respuesta independiente</div>
-    <div class="vd vd-parcial"><span class="t">Volumen y Velocidad son correctas
-    con seguridad. La respuesta completa depende de opciones que no conocemos.</span>
-    Cualquiera de las «V» que aparezca en la lista es una característica de Big
-    Data. Lo que sí se puede afirmar sin riesgo es que <em>entendimiento del
-    dominio</em> y <em>webscraping</em> <strong>no</strong> lo son: el primero es una
-    competencia del científico de datos y el segundo un método de adquisición.
-    Ninguno describe una propiedad de los datos.</div>
+    <div class="vd vd-parcial"><span class="t">Volumen y Velocidad son correctas.
+    Variedad también lo sería si figuraba; Veracidad, probablemente.</span>
+    Las tres primeras son las que el profesor llamó «las tres V» asociadas a big
+    data. La veracidad la presentó como cuarta V, así que si aparecía como opción
+    es defendible marcarla <span class="src">[INFERENCIA]</span>. Lo que se puede
+    descartar sin riesgo es <em>entendimiento del dominio</em> y
+    <em>webscraping</em>: el primero es una competencia del científico de datos y el
+    segundo un método de adquisición. Ninguno describe una propiedad de los
+    datos.</div>
 
-    <div class="lbl">Las «V», fuera del material del curso</div>
+    <div class="lbl">Las «V»: qué es del curso y qué es externo</div>
     <table>
-    <tr><th>V</th><th>Qué mide</th><th>Umbral típico de dolor</th></tr>
-    <tr><td><strong>Volumen</strong></td><td>Cuántos datos hay</td><td>No caben en la memoria de una máquina</td></tr>
-    <tr><td><strong>Velocidad</strong></td><td>A qué ritmo llegan y hay que procesarlos</td><td>Llegan más rápido de lo que se procesan</td></tr>
-    <tr><td><strong>Variedad</strong></td><td>Cuántos formatos distintos conviven</td><td>Tablas, texto libre, imágenes y audio a la vez</td></tr>
-    <tr><td>Veracidad</td><td>Cuánto se puede confiar en ellos</td><td>Añadida después; no siempre se incluye</td></tr>
-    <tr><td>Valor</td><td>Si sirven para decidir algo</td><td>Añadida después; la más discutida</td></tr>
+    <tr><th>V</th><th>Qué mide</th><th>Ejemplo del profesor</th><th>¿En clase?</th></tr>
+    <tr><td><strong>Volumen</strong></td><td>Cuántos datos hay</td><td>Un megabyte cabe en un pendrive; un petabyte obliga a pensar en cosas mayores</td><td>Sí</td></tr>
+    <tr><td><strong>Velocidad</strong></td><td>A qué ritmo llegan y hay que procesarlos</td><td>Lote, periódico, casi tiempo real, tiempo real</td><td>Sí</td></tr>
+    <tr><td><strong>Variedad</strong></td><td>Cuántos formatos distintos conviven</td><td>Una tabla frente a los datos de Instagram: video, imagen, texto, vínculos</td><td>Sí</td></tr>
+    <tr><td><strong>Veracidad</strong></td><td>Cuánto se puede confiar en ellos</td><td>Un sensor que falla el 10 % de las veces</td><td>Sí, como cuarta V</td></tr>
+    <tr><td>Valor</td><td>Si sirven para decidir algo</td><td>—</td><td>No como V</td></tr>
     </table>
-    <p style="font-size:.9rem;color:#666">Las tres primeras son la formulación
-    clásica (Doug Laney, 2001) y aparecen en prácticamente todas las versiones. Las
-    dos últimas se añadieron después y no hay consenso. <strong>Esto es
-    conocimiento general del área, no material de este curso</strong>, y así hay que
-    presentarlo si se usa.</p>
+    <p style="font-size:.9rem;color:#666">Los ejemplos salen de la misma clase del
+    19-jun (0:50:15–0:56:08). La formulación clásica de tres V se atribuye a Doug
+    Laney (2001), y «Valor» como quinta V es un agregado posterior sin consenso:
+    <strong>eso es conocimiento general del área, no material de este curso</strong>
+    <span class="src">[INFERENCIA]</span>. «Valor» como V no aparece en las 14
+    transcripciones; el profesor sí habló de generar valor desde los datos, pero
+    como idea general, no como característica de Big Data.</p>
 
     <div class="lbl">Veredicto sobre la respuesta del compañero</div>
-    <div class="vd vd-parcial"><span class="t">No verificable, y posiblemente
-    incompleta.</span>
-    Marca Volumen y Velocidad, lo cual es correcto hasta donde se puede saber. Pero
-    su propio «Fundamento Teórico» dice que Big Data «se define clásicamente por
-    las V: Volumen, Velocidad, Variedad, Veracidad y Valor»
-    —<strong>y entonces no explica por qué Variedad no está entre las
-    correctas</strong>. La explicación más probable es que no figuraba como opción;
-    pero eso es una suposición, no un dato.</div>
+    <div class="vd vd-parcial"><span class="t">Correcta en lo que marca;
+    posiblemente incompleta.</span>
+    Marca Volumen y Velocidad, que son dos de las tres V de clase. Pero su propio
+    «Fundamento Teórico» dice que Big Data «se define clásicamente por las V:
+    Volumen, Velocidad, Variedad, Veracidad y Valor» —<strong>y entonces no explica
+    por qué Variedad no está entre las correctas</strong>. La explicación más
+    probable es que no figuraba como opción; pero eso es una suposición, no un
+    dato. Y su lista de cinco V no es la de clase: el profesor dio tres más la
+    veracidad.</div>
 
     <div class="clave"><strong>Qué hacer con esta pregunta al estudiar.</strong>
     No memorices «la respuesta es Volumen y Velocidad»: es la respuesta a una lista
-    de alternativas que no tienes delante. Memoriza el
-    <strong>criterio</strong>: una característica es de Big Data si describe una
-    <em>propiedad de los datos</em> que hace que las herramientas normales dejen de
-    servir. Con ese criterio resuelves cualquier lista, incluida una que incluya
-    Variedad.</div>
+    de alternativas que no tienes delante, y tu versión del certamen pudo tener
+    otras. Memoriza el <strong>criterio del profesor</strong>: una característica
+    es de Big Data si describe una propiedad de los datos —volumen, velocidad,
+    variedad, y como cuarta la veracidad— que hace que <em>la infraestructura que
+    tienes</em> deje de alcanzar. Con ese criterio resuelves cualquier lista.</div>
 
     <div class="tri">
       <div class="f"><div class="h">Definición formal</div>
       Big Data no es un umbral de tamaño: es la condición en que el
       <strong>volumen, la velocidad o la variedad</strong> de los datos superan la
-      capacidad de las herramientas convencionales, obligando a arquitecturas
-      distribuidas.</div>
+      capacidad de la infraestructura actual. Si después se resuelve con mejor
+      infraestructura, «ya no sería un problema de ⟨big data⟩» (cita completa en
+      <a href="fundamentos_ciencia_datos.html">fundamentos_ciencia_datos.html</a>).</div>
       <div class="i"><div class="h">Intuición</div>
       No es «muchos datos». Es datos que <strong>rompen tu forma habitual de
       trabajar</strong>. Si tu laptop los abre en Excel, no es Big Data por muchas
       filas que tenga.</div>
       <div class="e"><div class="h">Ejemplo práctico</div>
-      Tu dataset de Melbourne tiene 13.580 filas. Cabe en memoria, se procesa en
-      segundos, viene en un solo CSV. <strong>No es Big Data</strong>, y eso no lo
-      hace peor: lo hace manejable.</div>
+      Tu dataset de Melbourne —6.336 filas de train y 7.244 de test— cabe en
+      memoria, se procesa en segundos y viene en un solo CSV. <strong>No es Big
+      Data</strong>, y eso no lo hace peor: lo hace manejable.</div>
     </div>
 
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
-    <span class="q">«Las que describen una propiedad de los datos: volumen y
-    velocidad, y variedad si aparece como alternativa. El criterio es que sean
-    características intrínsecas de los datos que hacen que las herramientas
-    normales dejen de funcionar. Por eso el entendimiento del dominio no
-    corresponde —es una competencia de la persona— ni el webscraping —es una forma
-    de conseguir los datos, no una propiedad de ellos.»</span></div>
+    <span class="q">«Las que describen una propiedad de los datos: volumen,
+    velocidad y variedad, las tres V que vimos en clase, y la veracidad si aparece,
+    que fue la cuarta. El criterio es que sean características de los datos que
+    hacen que la infraestructura que tengo deje de alcanzar. Por eso el
+    entendimiento del dominio no corresponde —es una competencia de la persona— ni
+    el webscraping —es una forma de conseguir los datos, no una propiedad de
+    ellos.»</span></div>
 
     <div class="repreg"><strong>Repregunta para ti:</strong> tu dataset de Melbourne
-    tiene 13.580 filas. ¿Es Big Data? Responde usando el criterio, no el número — y
-    di qué tendría que pasar para que lo fuera.</div>
+    tiene unas 13.580 filas. ¿Es Big Data? Responde usando el criterio de la
+    infraestructura, no el número — y di qué tendría que pasar para que lo
+    fuera.</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> <strong>no es Big Data</strong>: tu computador lo
+    procesa sin problema. Lo sería si la infraestructura dejara de alcanzar; por
+    ejemplo, si hubiera que tasar en tiempo real cada aviso publicado en el país,
+    con sus fotos y su texto, y tu infraestructura no diera abasto.</p>
+    <p><strong>Pasos:</strong> (1) no mires el número de filas; (2) pregunta si la
+    infraestructura actual resuelve el problema: un CSV de ~13.580 filas cabe en
+    memoria y se procesa en segundos → sí lo resuelve; (3) para que fuera Big Data
+    tendría que crecer alguna V —volumen, velocidad o variedad— hasta superar lo que
+    tu infraestructura aguanta.</p>
+    <p><strong>Error típico:</strong> responder «no, porque 13.580 filas son pocas».
+    La conclusión es correcta, pero el criterio es el equivocado: con ese criterio
+    no sabrías responder el caso de 50 TB.</p>
+    <p><strong>Fuente:</strong> [FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:54:40–0:55:27];
+    el escenario de tiempo real es [DATITO].</p>
+    </details>
 
-    <div class="fuente"><strong>Evidencia: ninguna en el material del curso.</strong>
-    Búsqueda de «big data», «volumen», «velocidad», «variedad» y «veracidad» en las
-    seis presentaciones de <code>11_PRESENTACIÓN/_markdown/</code> y en las tres
-    transcripciones de clase: sin coincidencias relevantes. Lo expuesto arriba es
-    conocimiento estándar del área, declarado como tal.</div>
+    <div class="fuente"><strong>Evidencia:</strong> en transcripción, no en
+    láminas. Clase del 19-jun, profesor titular, 0:49:52–0:57:14 (las tres V, la
+    infraestructura, la veracidad). Búsqueda de «big data» en las láminas FCD-02, 03,
+    04, 05, 07 y 08 de <code>11_PRESENTACIÓN/_markdown/</code>: sin coincidencias. La lista
+    de opciones del enunciado sigue sin conocerse.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a>
+    — sección 5, con un simulador de las tres V frente a la infraestructura</div>
   </details>
 </div>
 
 <h2>Parte 3 · Desarrollo — la parte que más vale</h2>
 
-<div class="preg">
+<div class="preg" id="p9a">
   <div class="cab"><div class="num">9A</div><div class="tema">Estructura de datos tabulares</div>
     <span class="eti b-cr">Analizar + Crear</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual</span>
@@ -907,7 +1201,7 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
   <details><summary>Ver análisis completo</summary>
 
     <div class="clave"><strong>Responde con las dos preguntas del profesor, no con
-    vocabulario de pandas.</strong> En las láminas 23 y 27 de la clase 4, cada vez
+    vocabulario de pandas.</strong> En las láminas 23 y 27 de FCD-04, cada vez
     que presenta una tabla desordenada hace exactamente las mismas dos preguntas:
     <br><br>
     <strong>1 · ¿Qué objeto o evento estamos midiendo?</strong><br>
@@ -963,7 +1257,9 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <code>Nombre · Apellido · Matricula · Fecha · Nota</code>) es correcta.<br><br>
     El reparo es de encuadre: usa <em>«Tidy Data»</em>, <em>«Melt»</em>,
     <em>«des-pivotar»</em>. Son términos de <code>pandas</code> y del artículo de
-    Hadley Wickham, no del curso. El profesor no dice «tidy»: dice
+    Hadley Wickham, no del curso: ni «tidy» ni «melt» aparecen en las láminas FCD
+    ni en las 14 transcripciones disponibles al 2026-09-21
+    <span class="src">[INFERENCIA, por búsqueda]</span>. La lámina dice
     <strong>«los encabezados ocultan la variable Día»</strong> y pregunta qué evento
     se mide. Decirlo con sus palabras demuestra que seguiste su método; decirlo con
     las de pandas demuestra que sabes pandas.<br><br>
@@ -984,19 +1280,43 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="repreg"><strong>Repregunta para ti:</strong> ¿por qué no basta con
     reemplazar los <code>N/A</code> por cero? Da la razón en términos de lo que le
     pasaría al promedio del curso, no en términos de tipos de dato.</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> porque un 0 es una <strong>nota real</strong>, y
+    contar como 0 a quien no tiene nota registrada <strong>baja el promedio</strong>
+    artificialmente.</p>
+    <p><strong>Pasos, a mano, con la columna 19/10/2017:</strong> notas válidas 5.6,
+    7.0 y 2.7; Pedrito tiene N/A. Sin el N/A: (5.6 + 7.0 + 2.7) / 3 = 15.3 / 3 =
+    <strong>5,10</strong>. Con el N/A convertido en 0: 15.3 / 4 =
+    <strong>3,83</strong>. Un alumno sin nota arrastró el promedio del curso más de
+    un punto. Y el promedio de Pedrito pasa de 1,2 a 0,4.</p>
+    <p><strong>Error típico:</strong> tratar la ausencia de medición como una
+    medición. En una escala de 1 a 7 el 0 ni siquiera es una nota posible
+    [INFERENCIA]. Es la misma distinción que la 9B: un 0 medido ≠ un «no hay
+    dato».</p>
+    <p><strong>Fuente:</strong> aritmética sobre la tabla del enunciado
+    [FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md]; el razonamiento es
+    [INFERENCIA].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_04</code>, láminas 23–26 (el ejercicio de las entregas y su
     método) y lámina 25, textual: «cada encabezado de columna representa un único
     valor en lugar de una variable. Los encabezados ocultan la variable Día».</div>
 
+    <div class="nota">Por la estructura que describió el profesor —cuatro, cuatro,
+    <em>una</em> de desarrollo— es probable que la 9A y la 9B sean variantes del
+    mismo casillero, sorteadas entre alumnos <span class="src">[INFERENCIA]</span>.
+    Prepara las dos.</div>
+
     <div class="salto"><strong>Explicación completa:</strong>
     <a href="limpieza_preparacion.html"><code>limpieza_preparacion.html</code></a> —
-    calidad y limpieza de datos, con esta misma clase de tabla manipulable</div>
+    calidad y limpieza de datos, con esta misma clase de tabla manipulable<br>
+    <a href="datos_features_target.html"><code>datos_features_target.html</code></a> —
+    qué es una fila, una columna y una variable</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p9b">
   <div class="cab"><div class="num" style="background:var(--ambar)">9B</div>
     <div class="tema">Consumo de combustible en minería</div>
     <span class="eti b-pts">2,0 puntos</span><span class="eti b-cr">Analizar + Crear</span>
@@ -1025,11 +1345,18 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
   <details><summary>Ver análisis completo</summary>
 
     <div class="clave"><strong>Antes que nada: esta pregunta ya la resolvió el
-    profesor en clase.</strong> La lámina 27 de la clase 4 plantea el
+    profesor en clase.</strong> La lámina 27 de FCD-04 plantea el
     <em>mismo</em> ejercicio —«Considere los siguientes datos de consumo de bencina
     de camiones», con «El Lunes / Camión 1 / Camión 2…»— y la
     <strong>lámina 28 da su respuesta</strong>. El certamen cambia los números y
     añade el <code>−999</code> y el <code>0</code>, pero la estructura es idéntica.
+    En la clase del 15-jul lo resolvió en vivo con el curso: «Las variables en este
+    conjunto de datos son día, camión y consumo», y el evento medido «es el consumo
+    por día y por camión»
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:11:28–1:11:38]</span>.
+    Y ahí mismo anunció este formato para el certamen: la pregunta de desarrollo
+    sería «le doy una tabla y le digo mira esta tabla presenta muchos problemas»
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:16:21–1:16:29]</span>.
     <strong>Responder distinto a como él respondió es un riesgo innecesario.</strong></div>
 
     <div class="lbl">La respuesta del profesor, lámina 28</div>
@@ -1050,11 +1377,35 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="nota"><strong>Dos cosas que su respuesta revela y conviene no pasar
     por alto:</strong><br><br>
     <strong>1 · La estructura destino es simple:</strong> <code>ID · Día · Camión ·
-    Consumo</code>. Cuatro columnas. No hay tabla de hechos ni tabla de
-    dimensiones.<br><br>
+    Consumo</code>. Cuatro columnas en la lámina. Pero ojo: en clase, cuando un
+    compañero propuso dejar el camión como número, el profesor fue más allá y
+    aprobó una tabla aparte para describir los camiones (la cita va abajo).<br><br>
     <strong>2 · En su ejercicio hay ceros —Camión 2 el martes, Camión 3 el
     miércoles— y él los deja como 0.</strong> No los borra, no los imputa, no los
-    llama faltantes. Un cero es un consumo medido que resultó cero.</div>
+    llama faltantes. Un cero es un consumo medido que resultó cero.<br><br>
+    <strong>3 · El día es una fecha, no un nombre.</strong> La lámina 28 escribe
+    <code>2026-07-13</code>, no «Lunes». En clase el profesor le dio la razón a un
+    compañero que lo pidió: «hay muchos miércoles», así que hace falta saber cuál es el
+    miércoles exacto
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:13:21–1:13:36]</span>.
+    La tabla del certamen no trae fechas: si asumes una, decláralo en la pregunta
+    10 <span class="src">[INFERENCIA]</span>.</div>
+
+    <div class="cita">«Tú dijiste una muy buena idea. […] el ID del camión debería
+    ser un ID numérico. O un ID que después yo pueda asociar directamente con otra
+    tabla donde aparezcan las descripciones del camión»
+    <span class="f">Clase del 15-jul · 1:11:44–1:12:00 · profesor ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+    <div class="nota"><strong>Un precedente de EDA con camiones.</strong> En la
+    clase del 17-jul el profesor usó otro caso de consumo de camiones: al graficar
+    la distribución aparecen «un valor anómalo muy grande» y «muchos ceros»; la
+    hipótesis del curso fue camiones inactivos, y si el jefe dice que no hay
+    inactivos, quizá la gente no está reportando el consumo
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:04–0:45:25]</span>.
+    Es el mismo razonamiento que pide la 9B: un cero y un valor extremo son
+    <em>hipótesis que se verifican</em>, no errores que se borran. Ver
+    <a href="eda.html">eda.html</a>.</div>
 
     <div class="lbl">Los problemas de esta tabla, ordenados por lo que cuestan</div>
     <ol class="pasos">
@@ -1142,9 +1493,13 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
       <strong>3500 y 3600</strong>, y el profesor no los llama errores — simplemente
       reestructura</li>
       <li><strong>Propone una tabla de hechos con <code>id_estado</code> más una
-      tabla de dimensiones.</strong> Es modelado dimensional de data warehouse.
-      Funciona, pero excede lo que el profesor pidió y lo que él mismo respondió:
-      <code>ID · Día · Camión · Consumo</code></li>
+      tabla de dimensiones.</strong> La idea de una tabla aparte <em>tiene
+      respaldo de clase</em>: el profesor la llamó «una muy buena idea» para las
+      descripciones del camión (cita arriba). Lo que no tiene respaldo explícito es
+      llevarla a un esquema de estados con <code>id_estado</code>: es defendible,
+      pero no necesario, y nombrarlo con vocabulario de data warehouse no suma por
+      sí solo <span class="src">[INFERENCIA]</span>. No es un error; es el reparo
+      más leve de los tres</li>
     </ol></div>
 
     <div class="lbl">La estructura que conviene entregar</div>
@@ -1156,11 +1511,14 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <tr><td>7</td><td>Martes</td><td>3</td><td class="mal">nulo</td><td>en mantenimiento</td></tr>
     <tr><td colspan="5" style="text-align:center;color:#666">… 12 filas, una por camión y día</td></tr>
     </table>
-    <p style="font-size:.92rem">Una columna <code>Estado</code> basta. No hace falta
-    una tabla aparte, y añadirla no suma puntos: el ejercicio evalúa si entiendes
-    <em>qué es cada valor</em>, no si sabes modelar un data warehouse. Lo esencial
-    es que <strong>el −999 se va a nulo, el 0 se queda, y la razón queda registrada
-    en vez de perderse</strong>.</p>
+    <p style="font-size:.92rem">Una columna <code>Estado</code> basta para lo
+    esencial: que <strong>el −999 se va a nulo, el 0 se queda, y la razón queda
+    registrada en vez de perderse</strong>. Si además propones que
+    <code>Camión</code> sea un ID numérico enlazado a una tabla aparte con la
+    descripción de cada camión, sigues la sugerencia que el profesor aprobó en la
+    clase del 15-jul. Si conoces la fecha de cada día, úsala en vez de «Lunes»; si
+    no, declara el supuesto. Si eso suma puntos no lo sabemos
+    <span class="src">[INFERENCIA]</span>.</p>
 
     <div class="tri">
       <div class="f"><div class="h">Definición formal</div>
@@ -1193,8 +1551,9 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
 
     <div class="clave"><strong>Por qué vale 2,0 puntos.</strong> No por listar
     problemas: por <strong>proponer la estructura correcta y justificar cada
-    decisión sobre cada valor</strong>. Es la única pregunta del certamen que pide
-    <em>crear</em> algo. Detectar es la mitad; decidir qué hacer con el −999, con el
+    decisión sobre cada valor</strong>. Junto con la 9A —su probable variante—, es
+    la única pregunta del certamen que pide <em>crear</em> algo. Detectar es la
+    mitad; decidir qué hacer con el −999, con el
     0 y con el 2900 —y poder defender cada decisión— es la otra mitad.</div>
 
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
@@ -1214,19 +1573,43 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     <div class="repreg"><strong>Repregunta para ti:</strong> imputar el
     <code>−999</code> con la media de la columna parece razonable. Calcula qué media
     usarías, con qué filas, y explica por qué el resultado es circular.</div>
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la media que usarías sale de las mismas filas que
+    estás tratando de arreglar, y está contaminada por el 2900 que aún no
+    decidiste: imputar con ella inventa un consumo de <strong>450,00</strong> para un
+    camión en mantención. Lo correcto es dejar el −999 como nulo con su estado.</p>
+    <p><strong>Pasos, a mano:</strong> (1) quita los dos −999: quedan 10 filas;
+    (2) suma: ocho de 200 = 1.600, más 2.900, más 0 = 4.500; (3) media = 4.500 / 10
+    = <strong>450,00</strong>; (4) si además apartas el 2900 hasta verificarlo:
+    1.600 / 9 = <strong>177,78</strong>. La imputación depende de una decisión sobre
+    el atípico que todavía no tomaste: eso es lo circular. Y rellenar con la media
+    repite la media y encoge la dispersión, así que la columna parece más segura de
+    lo que es.</p>
+    <p><strong>Error típico:</strong> imputar antes de decidir qué hacer con el
+    atípico, y olvidar que un camión en mantención probablemente no consumió: la
+    media ni siquiera describe su situación.</p>
+    <p><strong>Fuente:</strong> aritmética verificada sobre las 12 filas del
+    enunciado [FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md]; la crítica
+    a la imputación es [INFERENCIA].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_04</code>, lámina 27 (el mismo ejercicio de camiones) y lámina
     28 (la respuesta del profesor: variables Día, Camión, Consumo; evento medido:
     Consumo; tabla destino <code>ID · Día · Camión · Consumo</code>, con ceros
-    conservados). Aritmética verificada sobre las 12 filas del enunciado.</div>
+    conservados). Clase del 15-jul: resolución en vivo, la tabla aparte de camiones
+    y el anuncio del formato (1:11:28–1:16:29). Clase del 17-jul: el caso de EDA
+    con ceros y un valor anómalo (0:44:04–0:45:25). Aritmética verificada sobre las
+    12 filas del enunciado.</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
     <a href="limpieza_preparacion.html"><code>limpieza_preparacion.html</code></a> —
     esta misma tabla, manipulable: interruptores de decisión que recalculan media,
     mediana y desviación en vivo<br>
-    <a href="certamen_2.html"><code>certamen_2.html</code></a> — las preguntas 10 y
-    11, sobre declarar supuestos y vacíos</div>
+    <a href="eda.html"><code>eda.html</code></a> — cómo un gráfico de distribución
+    delata ceros y valores anómalos<br>
+    <a href="certamen_2.html#p10"><code>certamen_2.html#p10</code></a> — las
+    preguntas 10 y 11 del Certamen 2, sobre declarar supuestos y vacíos</div>
   </details>
 </div>
 
@@ -1242,10 +1625,15 @@ lámina 28. Eso cambia bastante cuál es la respuesta esperada — lo vemos ahí
     Certamen 2 pide «ingrese cualquier comentario o supuesto realizado».</p>
     <div class="nota"><strong>No la dejes en blanco.</strong> En el Certamen 2 ese
     espacio es una pregunta con puntaje, y evalúa una conducta concreta: declarar
-    los supuestos que hiciste. Si en la 9B asumiste que el vacío y el N/A
-    significan lo mismo, o que los días de la semana son consecutivos, <strong>este
-    es el lugar donde decirlo</strong>. Cuesta dos líneas y es exactamente la
-    disciplina que el curso premia.</div>
+    los supuestos que hiciste. Si en la 9A asumiste que el vacío y el N/A
+    significan lo mismo, o en la 9B que los días de la semana son consecutivos o
+    qué fecha corresponde a cada uno, <strong>este es el lugar donde
+    decirlo</strong>. Cuesta dos líneas y es exactamente la disciplina que el curso
+    premia.</div>
+    <p>Y no es una interpretación nuestra: durante el Certamen 1 el profesor pidió
+    que si hacían «algún supuesto que no están seguros», lo pusieran «en la
+    pregunta 10»
+    <span class="src">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:22:49–0:22:54]</span>.</p>
   </details>
 </div>
 
@@ -1272,14 +1660,14 @@ cambió.</strong> Si solo lees una parte del documento, que sea esta.</div>
 <table>
 <tr><th>#</th><th>Qué dice</th><th>Qué corresponde</th></tr>
 <tr><td><strong>P2</strong></td><td>El enunciado describe una organización <em>data-informed</em> o <em>data-aware</em>; y lo parafrasea como usar datos «puntualmente»</td><td><strong>El enunciado dice «en todos sus procesos», que es la definición literal de la etapa <em>Conocedora de datos</em></strong> en la lámina 6. «Puntualmente» es, en la lámina 7, el extremo <em>No Data Driven</em>. La clasificación «Falso» es correcta; la justificación, no</td></tr>
-<tr><td><strong>P3</strong></td><td>La labor del líder es ser un «translator»</td><td><strong>Esa palabra no existe en el material del curso.</strong> Lo que sí está son las láminas del perfil en T. Usa esas</td></tr>
+<tr><td><strong>P3</strong></td><td>«Falso», porque la labor del líder es ser un «translator»</td><td><strong>«Translator» no aparece en las láminas ni en las 14 transcripciones.</strong> La palabra de clase es «puente». Y la clasificación queda en duda: el segundo docente dijo que hay que buscar personas con alto conocimiento en cada área que el proyecto necesita (26-jun, 2:16:58), lo que apoya «Verdadero» [INFERENCIA]</td></tr>
 <tr><td><strong>P4</strong></td><td>Se apoya en CRISP-DM y OSEMN</td><td><strong>Ninguno de los dos aparece en el curso.</strong> El profesor tiene su ciclo de 7 etapas y la frase «la flechita apunta a los dos lados». Cita eso</td></tr>
 <tr><td><strong>P5</strong></td><td>Una API es «siempre» más estable y eficiente</td><td>Absoluto innecesario. Y la razón del curso para descartar esa opción es otra: se scrapea <strong>porque no hay API o no se quiere pagar</strong></td></tr>
-<tr><td><strong>P8</strong></td><td>Las correctas son Volumen y Velocidad</td><td><strong>No verificable.</strong> No tenemos la lista de alternativas, y si «Variedad» figuraba, la respuesta está incompleta</td></tr>
+<tr><td><strong>P8</strong></td><td>Las correctas son Volumen y Velocidad; las V son cinco</td><td><strong>Correctas, pero posiblemente incompletas.</strong> El profesor enseñó tres V —volumen, velocidad, variedad— y la veracidad como cuarta (19-jun, 0:54:24–0:56:02). Si «Variedad» figuraba, faltó. «Valor» no es V en clase</td></tr>
 <tr><td><strong>9A</strong></td><td>«Tidy Data», «Melt», «des-pivotar»</td><td>Vocabulario de pandas. El del curso es <strong>«los encabezados ocultan la variable»</strong> más las dos preguntas: qué evento medimos, cuáles son las variables</td></tr>
 <tr><td><strong>9B</strong></td><td>El 2900 «sugiere un error de ingreso de datos o falla de sensor»</td><td><strong>Inferencia presentada como hallazgo.</strong> En la lámina 27 del profesor conviven 3500 y 3600 con valores de 350, y no los llama errores. Lo correcto es marcarlo para verificar</td></tr>
 <tr><td><strong>9B</strong></td><td>No menciona el <code>0</code></td><td><strong>Es la omisión más grave del documento.</strong> El 0 del conductor enfermo es una medición real, no un faltante. En la lámina 28 el profesor conserva sus ceros</td></tr>
-<tr><td><strong>9B</strong></td><td>Tabla de hechos más tabla de dimensiones</td><td>Excede lo pedido. La respuesta del profesor es <code>ID · Día · Camión · Consumo</code></td></tr>
+<tr><td><strong>9B</strong></td><td>Tabla de hechos más tabla de dimensiones</td><td><strong>No es un exceso:</strong> el profesor aprobó en clase una tabla aparte con la descripción de cada camión, enlazada por un ID numérico (15-jul, 1:11:44–1:12:00). Lo esencial sigue siendo <code>ID · Día · Camión · Consumo</code> y qué hacer con cada valor</td></tr>
 </table>
 
 <h3>2 · Correcciones a la versión anterior de este mismo documento</h3>
@@ -1296,18 +1684,28 @@ cambió.</strong> Si solo lees una parte del documento, que sea esta.</div>
   <code>0</code> del conductor enfermo, que es la distinción central</li>
   <li><strong>Se presentaba «traductor» y CRISP-DM</strong> como si fueran material
   del curso</li>
+  <li><strong>P3 y P8 decían «sin evidencia»</strong> y la P8 afirmaba «cero
+  coincidencias» en las transcripciones. Había evidencia: la clase del 26-jun
+  (equipo y líder) y la del 19-jun (las tres V, la infraestructura, la
+  veracidad). Se buscó en pocas transcripciones; ahora, en las 14 disponibles al
+  2026-09-21</li>
+  <li><strong>Decía que la 9B «vale más que las ocho preguntas cerradas
+  juntas».</strong> Aritmética falsa: 8 × 0,5 = 4,0, y la 9B vale 2,0. Es la
+  pregunta individual de mayor puntaje, no más que las ocho juntas</li>
+  <li><strong>Calificaba de «exceso» la tabla aparte de la 9B</strong>, cuando el
+  profesor la había sugerido en clase</li>
 </ul></div>
 
 <h3>3 · Lo que no debe memorizarse sin verificar</h3>
 
 <table>
 <tr><th>Afirmación</th><th>Estado</th><th>Qué hacer</th></tr>
-<tr><td>«La respuesta de la P8 es Volumen y Velocidad»</td><td><span class="eti b-nover">sin evidencia</span></td><td>No hay material del curso sobre Big Data ni tenemos la lista de opciones. Memoriza el criterio: ¿describe una propiedad de los datos?</td></tr>
-<tr><td>«El líder del proyecto es un traductor»</td><td><span class="eti b-nover">sin evidencia</span></td><td>Si lo usas, declara que es de la industria y no del curso</td></tr>
+<tr><td>«La respuesta de la P8 es Volumen y Velocidad»</td><td><span class="eti b-parcial">parcial</span></td><td>Las láminas no tratan Big Data, pero la clase del 19-jun sí: tres V más la veracidad. No tenemos la lista de opciones. Memoriza el criterio: ¿describe una propiedad de los datos que desborda la infraestructura?</td></tr>
+<tr><td>«El líder del proyecto es un traductor»</td><td><span class="eti b-nover">sin evidencia</span></td><td>La palabra de clase es «puente» (26-jun, 2:18:59). Si usas «traductor», declara que es de la industria y no del curso</td></tr>
 <tr><td>«El ciclo es CRISP-DM»</td><td><span class="eti b-nover">sin evidencia</span></td><td>Usa las 7 etapas del profesor. Los nombres importan</td></tr>
 <tr><td>«El 2900 es un error de digitación»</td><td><span class="eti b-nover">sin evidencia</span></td><td>Es atípico. La causa no se determina desde la tabla, y decirlo puntúa</td></tr>
-<tr><td>«El perfil en T» como justificación de la P3</td><td><span class="eti b-parcial">parcial</span></td><td>Las láminas existen pero son diagramas sin texto. Es la mejor inferencia disponible, no una cita</td></tr>
-<tr><td>Las cinco «V» de Big Data</td><td><span class="eti b-parcial">parcial</span></td><td>Volumen, Velocidad y Variedad son la formulación clásica y tienen consenso. Veracidad y Valor se añadieron después y no lo tienen</td></tr>
+<tr><td>«El perfil en T» como justificación de un «Falso» en la P3</td><td><span class="eti b-parcial">parcial</span></td><td>Las habilidades T, Π y Γ sí se vieron (26-jun, 2:10:29), pero la conclusión de clase fue buscar alto conocimiento en cada área más lenguaje común. Usar la T para decir «Falso» va contra esa conclusión</td></tr>
+<tr><td>Las cinco «V» de Big Data</td><td><span class="eti b-parcial">parcial</span></td><td>En clase: tres V (volumen, velocidad, variedad) y la veracidad como cuarta. «Valor» como quinta V es externo al curso</td></tr>
 </table>
 
 <div class="clave"><strong>El criterio general, que sirve para cualquier pregunta
@@ -1324,14 +1722,45 @@ exacta que demuestra tu posición.</strong><br><br>
 Pista: hay dos números que zanjan la discusión, y uno de ellos es peor que no
 limpiar nada.
 </div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>Falso.</strong> El −999 sí sale —a nulo,
+con el estado registrado—, pero el 0 se queda: es una medición real.</p>
+<p><strong>Pasos, a mano:</strong> las 12 filas suman 8 × 200 + 2.900 + 0 − 999 −
+999 = 2.502 → media cruda <strong>208,50</strong>. Si quitas solo los −999: 4.500 /
+10 = <strong>450,00</strong>, peor que no limpiar nada. Si haces lo que propone el
+compañero —quitar los −999 y el 0— y dejas el 2900: 4.500 / 9 =
+<strong>500,00</strong>, más del doble de los 200 típicos. La limpieza defendible
+—centinelas a nulo, el 0 conservado, el 2900 marcado para verificar y fuera del
+cálculo mientras tanto— da <strong>177,78</strong>.</p>
+<p><strong>Respuesta modelo:</strong> «Falso. El −999 no es un consumo: es un
+código que significa que no hubo medición porque el camión estaba en mantención,
+así que va a nulo con el motivo anotado. El 0 es otra cosa: el conductor estaba
+enfermo, el camión no salió y consumió cero; es un dato real y se queda. Si
+borramos los dos y dejamos el 2900, la media sube a 500, más del doble de lo
+típico. Solo quitar los centinelas ya la deja en 450, peor que los 208,50 sin
+limpiar. Con la limpieza correcta, y el 2900 apartado hasta verificarlo, la media
+es 177,78.»</p>
+<p><strong>Error típico:</strong> meter en el mismo saco «dato malo» a un código
+de ausencia y a una medición que vale cero.</p>
+<p><strong>Fuente:</strong> aritmética sobre el enunciado
+[FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md]; ceros conservados en
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 28].</p>
+</details>
 
 <footer>
 Generado por Datito · <code>07_DATITO/visual/certamen_1.html</code><br>
 Enunciados transcritos literalmente de
 <code>01_DOCUMENTACION/06_CERTAMEN1/fuentes/</code>, documento de un compañero, sin
-valor de pauta. Verificación contra <code>11_PRESENTACIÓN/</code> (clases 2, 3 y 4)
-y <code>09_CLASES/transcripciones/</code>. NotebookLM no disponible en esta
-revisión. Aritmética de la 9B verificada sobre el enunciado. Funciona sin conexión.
+valor de pauta. Verificación contra <code>11_PRESENTACIÓN/_markdown/</code>
+(láminas FCD-02, FCD-03 y FCD-04) y contra las 14 transcripciones de
+<code>09_CLASES/transcripciones/</code> disponibles al 2026-09-21 (clases del 19-jun,
+26-jun, 15-jul, 17-jul y 7-ago, y la sesión del Certamen 1 del 24-jul), citadas
+con archivo <code>.md</code> y marca de tiempo. Puntajes de
+<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>. NotebookLM no disponible en
+esta revisión. Aritmética de la 9B verificada sobre el enunciado.<br>
+<strong>Datos reales:</strong> enunciados, tablas del certamen, láminas y cifras de
+Melbourne. <strong>Ilustrativos [DATITO]:</strong> el ejemplo minero de la P3.
+Funciona sin conexión.
 </footer>
 
 </main>

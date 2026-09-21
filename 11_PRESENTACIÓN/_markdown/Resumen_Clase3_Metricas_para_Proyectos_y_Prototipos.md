@@ -1,6 +1,6 @@
 # Resumen_Clase3_Metricas_para_Proyectos_y_Prototipos
 
-> Material de clase de Fundamentos de Ciencia de Datos, UdeC T2-2026.
+> **NO es material de Fundamentos de Ciencia de Datos**: pertenece al curso Prototipos y creatividad. No citarlo como fuente de Datito.
 > Texto extraido de `Resumen_Clase3_Metricas_para_Proyectos_y_Prototipos.pdf` para busqueda e indexacion.
 > 44 laminas. Las figuras no se extraen: si una lamina
 > depende de un grafico, hay que abrir el PDF.

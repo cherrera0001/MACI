@@ -8,7 +8,15 @@ Reconstruido desde las evaluaciones **reales** del repositorio, no desde lo que
 completa en
 `01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md`.
 **Complementos:** guía de estudio del profesor, Trabajos 1 y 2, Desafío Galaxy
-Zoo, y los 5 prácticos de `08_PRACTICA/`.
+Zoo, los 5 prácticos de `08_PRACTICA/` y las sesiones grabadas de ambos
+certámenes (`09_CLASES/transcripciones/05Certamen_…_24_Julio.md` y
+`…/2026-08-28T22_09_14Z_….md`), donde el profesor aclara enunciados.
+
+**Qué entra.** El profesor lo dijo en clase: «Entran solo mis clases. No entran
+las clases de Alejandra. Las clases de Alejandra se evalúan a través de los
+proyectos» [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:18:16].
+Y cada certamen se arma desde «un pool de preguntas»: tu versión puede no ser
+la de un compañero [FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].
 
 ---
 
@@ -27,11 +35,17 @@ Cada pregunta del certamen se resuelve separando dos cosas que se parecen:
 | P4 | Cantidad que describe un **clasificador** **≠** que describe una **variable** |
 | P5 | Generar texto **≠** ejecutar acciones y observar su resultado |
 | P6 | **Causa** **≠** condición habilitante |
-| P7 | Error de entrenamiento **≠** calidad del modelo · bajar grado **≠** regularizar |
+| P7 | Error de entrenamiento **≠** calidad del modelo · bajar grado **≠** regularizar (²) |
 | P8 | Precisión (÷ predichos) **≠** sensibilidad (÷ reales) **≠** exactitud (÷ total) · **FPR ≠ 1 − precisión** |
 | P9 | Comparar **punto de operación** **≠** comparar **modelo** |
 | P10 | Declarar un vacío **≠** producir una respuesta plausible |
 | P11 | **Medido** / **supuesto** / **no disponible** |
+
+(²) **[INFERENCIA]** La segunda mitad de P7 no viene del profesor: el enunciado
+solo pide cómo mejorar el ajuste, y «regularizar» no aparece en ninguna de las
+14 transcripciones ni en el P4. Nace de la reconstrucción del propio alumno
+(`01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md`). Útil
+para pensar, pero no es materia del curso.
 
 **Consecuencia para el entrenamiento:** no evalúa si sabes una definición.
 Evalúa si distingues dos conceptos vecinos bajo presión. Datito debe entrenar
@@ -53,6 +67,14 @@ esa discriminación, no el recitado.
 Más de un tercio gira sobre sobreajuste y validación. Un cuarto, sobre métricas
 de clasificación. Juntos: **63 %**.
 
+> **Matiz de la sesión del certamen (2026-09-21).** Sobre la pregunta 10
+> («punto base») se oye «No tienen que responder nada… Da lo mismo» [FUENTE ·
+> Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:12–2:01:28].
+> Que lo diga el profesor y que P10 no tuviera contenido evaluable es
+> [INFERENCIA] por el contexto. Si fue así, el bloque «conducta metodológica»
+> pesa menos de lo que dice la tabla y los otros suben. Detalle en
+> `visual/certamen_2.html#p10`.
+
 ### Certamen 1 — fundamentos, adquisición y calidad
 
 Fuente: `01_DOCUMENTACION/06_CERTAMEN1/`. **Material de un compañero: los
@@ -67,9 +89,13 @@ de esa carpeta.
 | **9B** | **Desarrollo con tabla** | **2,0** | **Caso minero: consumo de combustible** |
 | 10 | Retroalimentación | 0 | — |
 
-**Dato que reordena las prioridades:** la 9B vale **2,0 puntos**, más que las
-ocho preguntas cerradas juntas. El desarrollo de calidad de datos pesa mucho
-más de lo que sugería el Certamen 2 por sí solo.
+**Dato que reordena las prioridades:** la 9B vale **2,0 puntos** por sí sola:
+la mitad de lo que suman las ocho preguntas cerradas juntas (8 × 0,5 = 4,0) y
+la pregunta individual de mayor puntaje. El desarrollo de calidad de datos pesa
+mucho más de lo que sugería el Certamen 2 por sí solo.
+
+> Corregido el 2026-09-21: antes decía que la 9B valía «más que las ocho
+> cerradas juntas», lo que contradice la propia tabla (0,5 c/u).
 
 ### Los dos certámenes juntos
 
@@ -87,7 +113,8 @@ Cubren bloques distintos y entre ambos mapean casi todo el curso.
 | Formato | Dónde aparece | Qué exige |
 |---|---|---|
 | Verdadero/falso con justificación | P1, P2 | Nombrar el mecanismo, no solo elegir |
-| "Cuál de estas afirmaciones es incorrecta" | P3, P4, P5, P6 | Evaluar cada opción por su mecanismo propio |
+| "Cuál de estas afirmaciones es incorrecta" | P3, P4 | Evaluar cada opción por su mecanismo propio |
+| Selección con varias respuestas correctas | P5, P6 | Marcar **todas** las correctas, cada una por su mecanismo |
 | Diagnóstico desde una figura | P7, P10 | Leer un gráfico y nombrar el fenómeno |
 | Cálculo desde matriz de confusión | P8 | Aritmética a mano y elección de denominador |
 | Lectura y comparación de curvas ROC | P9 | Comparar modelos, no puntos |
@@ -126,10 +153,14 @@ Deducidos de las distinciones que cada pregunta exige:
 | `datos_features_target` | C1: P6, P9A | `NO_ESTUDIADO` | 8 |
 | `generalizacion` | transversal | `COMPRENSION_PARCIAL` | prerrequisito cubierto |
 | `train_validation_test` | transversal | `COMPRENDIDO` | prerrequisito cubierto |
-| `llm`, `agentes_ia` | C2: P5, P6 | `NO_ESTUDIADO` | 9 — menos material propio |
+| `llm`, `agentes_ia` | C2: P5 | `NO_ESTUDIADO` | 9 — menos material propio |
+| `redes_neuronales`, `deep_learning` | C2: P6 | `NO_ESTUDIADO` | 10 |
 
 `limpieza_preparacion` sube al segundo lugar por el peso de la 9B: dos puntos en
 una sola pregunta de desarrollo, con la tabla a la vista y resoluble en papel.
+
+Material de repaso por concepto: `07_DATITO/visual/index.html` (ruta de repaso,
+distinciones y clases donde se enseñó cada una).
 
 ### Por qué `overfitting_underfitting` va primero
 
@@ -167,7 +198,7 @@ Regla: no marcar `PUEDO RESOLVER SOLO` sin superar el nivel 2 sin ayuda.
 2. Calcular la **brecha**, no mirar un solo valor
 3. Clasificar: bueno dentro + malo fuera → sobreajuste · malo en ambos → subajuste · parecido y aceptable → ajuste razonable
 4. Nombrar el **mecanismo**, no la etiqueta
-5. Proponer remedio según causa: simplificar · regularizar · más filas · validación cruzada
+5. Proponer remedio según causa: simplificar (bajar grado, limitar el árbol) · más filas · elegir con validación cruzada. Regularizar solo como [INFERENCIA]: no se vio en clase (²)
 
 ### Matriz de confusión y métricas
 

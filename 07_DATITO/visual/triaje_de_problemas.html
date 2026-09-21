@@ -63,10 +63,19 @@
   button.re:hover{background:#4b5563}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
          color:var(--suave);font-size:.85rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>¿Qué tipo de problema tengo delante?</h1>
 <p class="sub">El paso que va antes de todos los demás.<br>
@@ -82,14 +91,12 @@ tratar como modelamiento algo que era limpieza.</p>
 <h2>1 · ¿En qué etapa del ciclo estoy?</h2>
 
 <div class="cita">
-"El ciclo de la ciencia de datos comienza con un requerimiento o pregunta,
-después recolectamos datos, limpiamos los datos, exploramos, modelamos,
-visualizamos de alguna forma los resultados de nuestro modelo para comunicarlo y
-luego tomar decisiones. Y finalmente el modelo se pone en marcha y después
-volvemos al requerimiento. <strong>La flechita apunta para los dos lados</strong>,
-porque a veces uno está modelando y de repente se da cuenta de que el modelo no
-funciona bien y tiene que volver a explorar los datos."
-<span class="f">Tu profesor, transcripción de clase · <code>09_CLASES/transcripciones/</code></span>
+«El ciclo de la ciencia de datos comienza con un requerimiento pregunta […] Y como siempre
+decimos <strong>la flechita ⟨apunta⟩ a los dos lados</strong> porque a veces uno
+está modelando […] y tiene que volver a explorar los datos.»
+<span class="f">Clase del 7-ago · 0:00:43–0:01:17 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «para nace»</span>
 </div>
 
 <p>Pulsa una etapa para ver qué se hace ahí y qué <strong>no</strong>:</p>
@@ -115,7 +122,7 @@ modelo, es modelamiento.
 <div id="resultado"></div>
 <p><button class="re" id="reiniciar">Empezar de nuevo</button></p>
 
-<h2>3 · La tabla que resuelve el 90 %</h2>
+<h2>3 · La tabla que resuelve la mayoría de los casos</h2>
 
 <table>
 <tr><th>Si te piden…</th><th>Es…</th><th>Porque el target es…</th><th>Se mide con</th></tr>
@@ -192,9 +199,14 @@ es el error caro.
 </table>
 
 <footer>
-Generado por Datito · <code>07_DATITO/visual/triaje_de_problemas.html</code><br>
-Definiciones del ciclo y de regresión/clasificación tomadas de la transcripción de clase.
-Funciona sin conexión.
+Generado por Datito · <code>07_DATITO/visual/triaje_de_problemas.html</code> ·
+funciona sin conexión · fuentes: la rueda en
+<code>11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md</code> (láminas 16–22),
+el mapa metodológico en <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md</code>
+(láminas 23–24) y la cita de la clase del 7-ago en
+<code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md</code> · 0:00:43–0:01:17.
+Los ejemplos de las tablas son ilustrativos [DATITO], salvo Melbourne y Galaxy Zoo, que son
+proyectos reales.
 </footer>
 
 </main>
@@ -224,8 +236,8 @@ const ETAPAS=[
   si:'Elegir tipo de problema, features y target, partir los datos, entrenar, ajustar complejidad, comparar modelos.',
   no:'No se limpia aquí. Si aparece un dato sucio en esta etapa, se vuelve a la 3 — la flecha va en ambos sentidos.',
   senal:'«¿qué algoritmo?», «¿qué tan complejo?», «¿sobreajusta?»'},
- {n:'6',t:'Evaluación',h:'Evaluar y comunicar',
-  si:'Medir sobre datos no vistos, elegir la métrica correcta, interpretar en el lenguaje del problema y comunicarlo.',
+ {n:'6',t:'Comunicación',h:'Visualización y comunicación',
+  si:'Comunicar resultados, beneficios y alcances a quien decide, sin omitir los defectos del modelo (lámina 21 de FCD-02). Para eso: medir sobre datos no vistos, elegir la métrica correcta e interpretarla en el lenguaje del problema.',
   no:'No se cambia el modelo mirando el test. Si lo haces, el test deja de ser test.',
   senal:'«¿es bueno este MAE?», «¿cuál llevamos a producción?»'},
  {n:'7',t:'Puesta en marcha',h:'Puesta en marcha',
@@ -275,41 +287,42 @@ const FIN={
    d:'El target es un número continuo. Los valores intermedios tienen sentido: entre 300 y 400 kg existe 350.',
    m:'MAE, RMSE, R². <strong>No</strong> exactitud ni precision: en regresión no existe «acertar».',
    ojo:'Antes de reportar R², recuerda que 0 significa «igual de bueno que predecir el promedio», y puede ser negativo.',
-   ver:[['clase6_regresion.html','la clase completa de regresión'],['regresion_y_costo.html','el laboratorio de la función de coste']]},
+   ver:[['clase6_regresion.html','la clase completa de regresión'],['regresion_y_costo.html','el laboratorio de la función de coste'],['overfitting_underfitting.html','cuándo el modelo es demasiado simple o demasiado complejo']]},
  bin_eq:{c:'#2563eb',t:'Clasificación binaria, clases equilibradas',
    d:'Dos categorías repartidas de forma parecida.',
    m:'Exactitud <strong>sí</strong> es informativa aquí. Acompáñala de la matriz de confusión.',
    ojo:'Aun con clases equilibradas, decide si un falso positivo y un falso negativo cuestan lo mismo. Casi nunca cuestan igual.',
-   ver:[['matriz_confusion.html','las cinco métricas y su denominador']]},
+   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['matriz_confusion.html','las cinco métricas y su denominador'],['metricas_clasificacion.html','precisión, sensibilidad, F1 y el umbral']]},
  bin_des:{c:'#d97706',t:'Clasificación binaria, clases desbalanceadas',
    d:'Dos categorías, una mucho más rara. Fraude, enfermedades, fallas.',
    m:'<strong>F1, precision y recall.</strong> La exactitud engaña: decir siempre «no» acierta casi siempre y no detecta a nadie.',
    ojo:'Di explícitamente cuál es la clase positiva y por qué. Es lo primero que se evalúa.',
-   ver:[['matriz_confusion.html','mueve la prevalencia y mira qué le pasa a la precisión']]},
+   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['metricas_clasificacion.html','precisión, sensibilidad, F1 y el umbral'],['roc_auc.html','la curva ROC y el AUC, para comparar sin fijar umbral'],['matriz_confusion.html','mueve la prevalencia y mira qué le pasa a la precisión']]},
  bin_ns:{c:'#7c3aed',t:'Clasificación binaria — primero mira el reparto',
    d:'No puedes elegir métrica sin saber cómo están repartidas las clases.',
    m:'Cuenta cuántos hay de cada una. Recién entonces decides.',
    ojo:'Esto no es un rodeo: elegir métrica sin mirar el balance es el error que el certamen castiga.',
-   ver:[['matriz_confusion.html','el efecto del desbalance sobre la exactitud']]},
+   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['metricas_clasificacion.html','qué métrica elegir según el balance y el umbral'],['matriz_confusion.html','el efecto del desbalance sobre la exactitud']]},
  multi:{c:'#2563eb',t:'Clasificación multiclase',
    d:'Tres o más categorías. Galaxy Zoo es exactamente esto: ambigua, espiral, elíptica.',
    m:'<strong>F1-macro</strong> y matriz de confusión por clase. Macro promedia las clases, así que una clase rara pesa igual que una frecuente.',
    ojo:'Si las clases se llaman 1, 2 y 3, siguen siendo categorías. No es regresión.',
-   ver:[['matriz_confusion.html','la matriz por clase, con Galaxy Zoo como segundo caso']]},
+   ver:[['clasificacion.html','clasificación binaria y multiclase'],['matriz_confusion.html','la matriz por clase, con Galaxy Zoo como segundo caso'],['metricas_clasificacion.html','F1-macro y métricas por clase']]},
  seg:{c:'#7c3aed',t:'Segmentación (no supervisado)',
    d:'<strong>No hay target.</strong> Nadie te dio las respuestas correctas: el algoritmo agrupa por parecido.',
    m:'Silueta, inercia. <strong>No</strong> exactitud ni MAE: no hay contra qué compararse.',
-   ojo:'Si en el enunciado aparece «sabemos que estos son X», hay target y entonces NO es segmentación.'},
+   ojo:'Si en el enunciado aparece «sabemos que estos son X», hay target y entonces NO es segmentación.',
+   nota:'Segmentación no tiene visual propio en esta carpeta. Está en el mapa metodológico del curso, lámina 24 de FCD-03.'},
  eda:{c:'#6b7280',t:'Análisis exploratorio',
    d:'No hay que predecir nada: hay que entender qué hay.',
    m:'Centralidad, dispersión, distribuciones, correlaciones, gráficos.',
    ojo:'Correlación no es causalidad. Es de las cosas más preguntadas.',
-   ver:[['certamen_1.html','el EDA es lo que más pesa en el Certamen 1']]},
+   ver:[['eda.html','análisis exploratorio: centralidad, dispersión, distribuciones y gráficos']]},
  limp:{c:'#dc2626',t:'Calidad y limpieza de datos',
    d:'La tabla tiene problemas estructurales antes de poder hacer nada con ella.',
    m:'No hay métrica: hay criterios. Una fila = una observación. Una columna = un tipo de cosa. Los centinelas a nulo.',
-   ojo:'Es la pregunta mejor pagada del Certamen 1 — la 9B vale 2,0 puntos, más que las ocho cerradas juntas.',
-   ver:[['certamen_1.html','la 9B, con el formato exacto en que se pregunta']]}
+   ojo:'Es la pregunta mejor pagada del Certamen 1: la 9B sola vale 2,0 puntos, la mitad de las ocho cerradas juntas (4,0), y es la pregunta individual de mayor puntaje.',
+   ver:[['limpieza_preparacion.html','calidad y limpieza, con la tabla de camiones manipulable'],['certamen_1.html#p9b','la 9B, con el formato exacto en que se pregunta']]}
 };
 
 let nodo='inicio';
@@ -335,9 +348,10 @@ function fin(k){
     <p>${f.d}</p>
     <p><strong>Se mide con:</strong> ${f.m}</p>
     <p><strong>Ojo:</strong> ${f.ojo}</p>
+    ${f.nota ? `<p style="font-size:.9rem"><strong>Sin visual:</strong> ${f.nota}</p>` : ''}
     ${f.ver ? `<p style="margin-bottom:0;padding-top:.6rem;border-top:1px dashed ${f.c}55">
       <strong>Para estudiarlo:</strong> ` + f.ver.map(([h,t])=>`<a href="${h}" style="color:${f.c}"><code>${h}</code></a> — ${t}`).join('<br>') + `</p>` : ''}
-    ${k==='seg' ? '' : `<p style="margin-bottom:0;font-size:.88rem;color:#666">Y en cualquiera de estos casos, cómo validarlo: <a href="train_validation_test.html"><code>train_validation_test.html</code></a>.</p>`}`;
+    ${['reg','bin_eq','bin_des','bin_ns','multi'].indexOf(k) < 0 ? '' : `<p style="margin-bottom:0;font-size:.88rem;color:#666">Y en cualquiera de estos casos, cómo validarlo: <a href="train_validation_test.html"><code>train_validation_test.html</code></a> y <a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a>; si el error de validación se aleja del de entrenamiento: <a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a>.</p>`}`;
   r.classList.add('on');
 }
 $('reiniciar').onclick=()=>{nodo='inicio';pinta();};

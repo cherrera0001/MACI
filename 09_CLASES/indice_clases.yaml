@@ -12,7 +12,7 @@
 meta:
   creado: '2026-09-20'
   actualizado: '2026-09-21'
-  total_clases: 13
+  total_clases: 14
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -20,14 +20,11 @@ clases:
     integrada: '2026-09-20'
     conceptos:
       fundamentos_ciencia_datos:
-        menciones: 18
-        primera_marca: 0:00:00
+        menciones: 17
+        primera_marca: 0:09:38
       limpieza_preparacion:
         menciones: 9
         primera_marca: '1:52:47'
-      train_validation_test:
-        menciones: 7
-        primera_marca: '1:57:28'
       generalizacion:
         menciones: 7
         primera_marca: '2:43:33'
@@ -40,12 +37,15 @@ clases:
       clasificacion:
         menciones: 3
         primera_marca: '2:54:34'
-      metricas_clasificacion:
-        menciones: 3
-        primera_marca: 0:32:42
       arboles_decision:
         menciones: 3
         primera_marca: '3:05:56'
+      metricas_clasificacion:
+        menciones: 2
+        primera_marca: '2:02:07'
+      train_validation_test:
+        menciones: 1
+        primera_marca: '2:56:44'
       deep_learning:
         menciones: 1
         primera_marca: '2:20:43'
@@ -94,12 +94,12 @@ clases:
       regresion:
         menciones: 7
         primera_marca: 0:02:36
-      fundamentos_ciencia_datos:
-        menciones: 5
-        primera_marca: 0:00:00
       validacion_cruzada:
         menciones: 5
         primera_marca: '1:03:59'
+      fundamentos_ciencia_datos:
+        menciones: 4
+        primera_marca: 0:00:43
       deep_learning:
         menciones: 3
         primera_marca: '1:35:48'
@@ -128,26 +128,26 @@ clases:
         menciones: 12
         primera_marca: 0:32:45
       train_validation_test:
-        menciones: 9
-        primera_marca: '1:19:29'
-      fundamentos_ciencia_datos:
         menciones: 7
-        primera_marca: 0:00:00
+        primera_marca: '1:19:29'
       gradient_boosting:
         menciones: 7
         primera_marca: 0:46:06
+      fundamentos_ciencia_datos:
+        menciones: 6
+        primera_marca: 0:31:54
       metricas_clasificacion:
         menciones: 4
         primera_marca: '1:02:56'
-      roc_auc:
-        menciones: 3
-        primera_marca: '1:25:03'
       generalizacion:
         menciones: 2
         primera_marca: '1:26:31'
       regresion:
         menciones: 2
         primera_marca: '1:56:19'
+      roc_auc:
+        menciones: 2
+        primera_marca: '1:25:03'
       arboles_decision:
         menciones: 2
         primera_marca: 0:32:00
@@ -161,8 +161,8 @@ clases:
     integrada: '2026-09-20'
     conceptos:
       fundamentos_ciencia_datos:
-        menciones: 2
-        primera_marca: 0:00:00
+        menciones: 1
+        primera_marca: 0:21:48
     notebooklm: null
   06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio:
     archivo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md
@@ -170,7 +170,7 @@ clases:
     integrada: '2026-09-20'
     conceptos:
       train_validation_test:
-        menciones: 140
+        menciones: 138
         primera_marca: 0:10:37
       regresion:
         menciones: 74
@@ -193,27 +193,24 @@ clases:
       redes_neuronales:
         menciones: 12
         primera_marca: 0:15:17
-      agentes_ia:
-        menciones: 8
-        primera_marca: 0:05:04
       eda:
         menciones: 7
         primera_marca: 0:07:54
-      fundamentos_ciencia_datos:
-        menciones: 4
-        primera_marca: 0:00:00
+      agentes_ia:
+        menciones: 6
+        primera_marca: '1:21:54'
       overfitting_underfitting:
         menciones: 4
         primera_marca: 0:37:31
+      fundamentos_ciencia_datos:
+        menciones: 3
+        primera_marca: 0:01:05
       limpieza_preparacion:
         menciones: 2
         primera_marca: 0:01:18
       metricas_clasificacion:
         menciones: 1
         primera_marca: '1:14:43'
-      roc_auc:
-        menciones: 1
-        primera_marca: '1:28:10'
       arboles_decision:
         menciones: 1
         primera_marca: 0:09:37
@@ -232,9 +229,6 @@ clases:
       roc_auc:
         menciones: 4
         primera_marca: '1:19:40'
-      fundamentos_ciencia_datos:
-        menciones: 1
-        primera_marca: 0:00:00
       matriz_confusion:
         menciones: 1
         primera_marca: 0:46:39
@@ -248,8 +242,8 @@ clases:
         menciones: 16
         primera_marca: 0:00:34
       fundamentos_ciencia_datos:
-        menciones: 9
-        primera_marca: 0:00:00
+        menciones: 8
+        primera_marca: 0:00:46
       datos_features_target:
         menciones: 4
         primera_marca: 0:51:00
@@ -274,9 +268,6 @@ clases:
       datos_features_target:
         menciones: 3
         primera_marca: '1:23:26'
-      fundamentos_ciencia_datos:
-        menciones: 1
-        primera_marca: 0:00:00
     notebooklm: null
   04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio:
     archivo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md
@@ -286,21 +277,18 @@ clases:
       eda:
         menciones: 100
         primera_marca: 0:18:43
-      fundamentos_ciencia_datos:
-        menciones: 7
-        primera_marca: 0:00:00
       clasificacion:
         menciones: 7
         primera_marca: '1:07:48'
+      fundamentos_ciencia_datos:
+        menciones: 6
+        primera_marca: 0:07:59
       limpieza_preparacion:
         menciones: 4
         primera_marca: 0:08:10
       datos_features_target:
         menciones: 3
         primera_marca: 0:08:31
-      train_validation_test:
-        menciones: 1
-        primera_marca: 0:03:54
       roc_auc:
         menciones: 1
         primera_marca: 0:59:42
@@ -314,7 +302,7 @@ clases:
         menciones: 85
         primera_marca: '1:38:56'
       agentes_ia:
-        menciones: 48
+        menciones: 45
         primera_marca: '1:24:49'
       llm:
         menciones: 36
@@ -323,7 +311,7 @@ clases:
         menciones: 29
         primera_marca: '1:24:45'
       train_validation_test:
-        menciones: 17
+        menciones: 15
         primera_marca: 0:11:11
       regresion:
         menciones: 13
@@ -340,9 +328,6 @@ clases:
       limpieza_preparacion:
         menciones: 2
         primera_marca: '1:06:30'
-      fundamentos_ciencia_datos:
-        menciones: 1
-        primera_marca: 0:00:00
       metricas_clasificacion:
         menciones: 1
         primera_marca: '2:29:37'
@@ -356,8 +341,8 @@ clases:
     integrada: '2026-09-21'
     conceptos:
       fundamentos_ciencia_datos:
-        menciones: 52
-        primera_marca: 0:00:00
+        menciones: 51
+        primera_marca: 0:00:28
       limpieza_preparacion:
         menciones: 18
         primera_marca: '2:02:44'
@@ -376,9 +361,6 @@ clases:
       agentes_ia:
         menciones: 4
         primera_marca: 0:04:57
-      roc_auc:
-        menciones: 2
-        primera_marca: 0:07:30
       deep_learning:
         menciones: 2
         primera_marca: '2:39:19'
@@ -398,7 +380,7 @@ clases:
     integrada: '2026-09-21'
     conceptos:
       train_validation_test:
-        menciones: 114
+        menciones: 111
         primera_marca: 0:35:21
       regresion:
         menciones: 65
@@ -427,9 +409,6 @@ clases:
       redes_neuronales:
         menciones: 2
         primera_marca: '1:00:28'
-      fundamentos_ciencia_datos:
-        menciones: 1
-        primera_marca: 0:00:00
     notebooklm: null
   2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos:
     archivo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md
@@ -440,7 +419,7 @@ clases:
         menciones: 60
         primera_marca: 0:44:51
       train_validation_test:
-        menciones: 55
+        menciones: 52
         primera_marca: 0:27:57
       matriz_confusion:
         menciones: 27
@@ -452,7 +431,7 @@ clases:
         menciones: 22
         primera_marca: 0:30:26
       roc_auc:
-        menciones: 18
+        menciones: 16
         primera_marca: 0:41:48
       limpieza_preparacion:
         menciones: 14
@@ -478,13 +457,61 @@ clases:
       clasificacion:
         menciones: 5
         primera_marca: 0:39:31
-      fundamentos_ciencia_datos:
-        menciones: 4
-        primera_marca: 0:00:00
       overfitting_underfitting:
         menciones: 4
         primera_marca: 0:50:33
+      fundamentos_ciencia_datos:
+        menciones: 3
+        primera_marca: '1:12:18'
       ensembles:
         menciones: 1
         primera_marca: '1:20:21'
+    notebooklm: null
+  2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos:
+    archivo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md
+    plano: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
+    integrada: '2026-09-21'
+    conceptos:
+      train_validation_test:
+        menciones: 78
+        primera_marca: 0:04:55
+      datos_features_target:
+        menciones: 58
+        primera_marca: 0:05:40
+      metricas_clasificacion:
+        menciones: 47
+        primera_marca: 0:51:14
+      eda:
+        menciones: 32
+        primera_marca: 0:13:06
+      clasificacion:
+        menciones: 28
+        primera_marca: 0:05:17
+      regresion:
+        menciones: 20
+        primera_marca: 0:04:44
+      matriz_confusion:
+        menciones: 17
+        primera_marca: 0:49:16
+      random_forest:
+        menciones: 8
+        primera_marca: 0:19:53
+      limpieza_preparacion:
+        menciones: 6
+        primera_marca: 0:46:53
+      validacion_cruzada:
+        menciones: 5
+        primera_marca: 0:04:55
+      ensembles:
+        menciones: 4
+        primera_marca: '1:31:41'
+      arboles_decision:
+        menciones: 3
+        primera_marca: '1:27:22'
+      overfitting_underfitting:
+        menciones: 2
+        primera_marca: 0:05:02
+      generalizacion:
+        menciones: 1
+        primera_marca: 0:09:33
     notebooklm: null

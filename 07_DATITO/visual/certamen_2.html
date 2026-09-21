@@ -22,6 +22,9 @@
   .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.9rem 1.1rem;margin:1.1rem 0}
   .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
   .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .preg{scroll-margin-top:1rem}
 
   .preg{background:#fff;border:1px solid var(--linea);border-radius:10px;
         padding:1.1rem 1.3rem;margin:1.3rem 0}
@@ -38,6 +41,7 @@
   .b-ok{background:#d1fae5;color:#065f46}
   .b-parcial{background:#fed7aa;color:#9a3412}
   .b-nover{background:#fee2e2;color:#991b1b}
+  .b-ficha{background:#e5e7eb;color:#374151}
 
   .enun{background:var(--fondo);border-left:3px solid var(--suave);padding:.8rem 1rem;
         margin:.7rem 0;font-size:.95rem}
@@ -93,10 +97,21 @@
   .salto{margin-top:.9rem;padding-top:.7rem;border-top:1px dashed var(--linea);font-size:.88rem;color:var(--suave)}
   .salto a{color:var(--azul)}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="et">sesión del certamen</span>Sesión de certamen del 28-ago · aclaraciones del profesor 0:11:54–2:01:28 · <span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 0:11:54]</span></div>
+<div class="fila"><span class="et">conceptos</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a> · <a href="metricas_clasificacion.html">Accuracy, precision, recall y F1</a> · <a href="matriz_confusion.html">Matriz de confusion</a> · <a href="roc_auc.html">ROC y AUC</a> · <a href="arboles_y_ensambles.html#ensambles">Ensembles</a> · <a href="dl_llm_agentes.html#llm">Modelos de lenguaje (LLM)</a> · <a href="dl_llm_agentes.html#agentes">Agentes de IA</a> · <a href="redes_neuronales.html">Redes neuronales</a></div>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Certamen 2 · auditado pregunta por pregunta</h1>
 <p class="sub">Modelamiento, evaluación y panorama de IA.<br>
@@ -139,39 +154,62 @@ en el <code>00_LEEME</code> de esa carpeta: un <em>expediente de reconstrucción
 Auditarlas sigue teniendo todo el valor de estudio; solo hay que saber qué son.
 </div>
 
-<h2>La numeración real, que no coincide con la documentada</h2>
+<h2>La numeración real del export de Canvas, que no coincide con la documentada</h2>
 
-<p>El repositorio describe «11 preguntas». El registro de Canvas muestra
-<strong>10 preguntas numeradas más un elemento intermedio</strong>:</p>
+<p>El repositorio describe «11 preguntas». El registro de Canvas (el export del
+historial) muestra <strong>10 preguntas numeradas más un elemento intermedio</strong>:</p>
 
 <table>
-<tr><th>En Canvas</th><th>Tipo</th><th>Puntos</th><th>Tema</th><th>En los docs del repo</th></tr>
-<tr><td>Pregunta 1</td><td>essay</td><td class="num">0,5</td><td>Ensambles y diversidad</td><td>P1 ✓</td></tr>
-<tr><td>Pregunta 2</td><td>essay</td><td class="num">0,5</td><td>Sobreajuste, V/F</td><td>P2 ✓</td></tr>
-<tr><td>Pregunta 3</td><td>multiple answers</td><td class="num">0,5</td><td>Afirmaciones sobre sobreajuste</td><td>P3 ✓</td></tr>
-<tr><td>Pregunta 4</td><td>multiple answers</td><td class="num">0,5</td><td>Métricas de clasificación</td><td>P4 ✓</td></tr>
-<tr><td>Pregunta 5</td><td>multiple answers</td><td class="num">0,5</td><td>LLMs y agentes</td><td>P5 ✓</td></tr>
-<tr><td>Pregunta 6</td><td>multiple answers</td><td class="num">0,5</td><td>Revoluciones de la IA</td><td>P6 ✓</td></tr>
-<tr><td>Pregunta 7</td><td>essay</td><td class="num">1,0</td><td>Regresión polinomial</td><td>P7 ✓</td></tr>
-<tr style="background:#fef3c7"><td><strong>«Espaciador»</strong></td><td><strong>text_only</strong></td><td class="num"><strong>0</strong></td><td><strong>Matriz de confusión (a–e)</strong></td><td><strong>contado como P8</strong></td></tr>
-<tr style="background:#fef3c7"><td>Pregunta 8</td><td>essay</td><td class="num">1,0</td><td>TPR/FPR de dos modelos · ROC</td><td>contada como P9</td></tr>
-<tr style="background:#fef3c7"><td>Pregunta 9</td><td>multiple choice</td><td class="num">1,0</td><td>«Punto base»</td><td>contada como P10</td></tr>
-<tr style="background:#fef3c7"><td>Pregunta 10</td><td>essay</td><td class="num">0</td><td>Comentarios y supuestos</td><td>contada como P11</td></tr>
+<tr><th>En el export de Canvas</th><th>Tipo</th><th>Puntos</th><th>Tema</th><th>En los docs del repo (y ancla de esta página)</th></tr>
+<tr><td>Pregunta 1</td><td>essay</td><td class="num">0,5</td><td>Ensambles y diversidad</td><td><a href="#p1">P1</a> ✓</td></tr>
+<tr><td>Pregunta 2</td><td>essay</td><td class="num">0,5</td><td>Sobreajuste, V/F</td><td><a href="#p2">P2</a> ✓</td></tr>
+<tr><td>Pregunta 3</td><td>multiple answers</td><td class="num">0,5</td><td>Afirmaciones sobre sobreajuste</td><td><a href="#p3">P3</a> ✓</td></tr>
+<tr><td>Pregunta 4</td><td>multiple answers</td><td class="num">0,5</td><td>Métricas de clasificación</td><td><a href="#p4">P4</a> ✓</td></tr>
+<tr><td>Pregunta 5</td><td>multiple answers</td><td class="num">0,5</td><td>LLMs y agentes</td><td><a href="#p5">P5</a> ✓</td></tr>
+<tr><td>Pregunta 6</td><td>multiple answers</td><td class="num">0,5</td><td>Revoluciones de la IA</td><td><a href="#p6">P6</a> ✓</td></tr>
+<tr><td>Pregunta 7</td><td>essay</td><td class="num">1,0</td><td>Regresión polinomial</td><td><a href="#p7">P7</a> ✓</td></tr>
+<tr style="background:#fef3c7"><td><strong>«Espaciador»</strong></td><td><strong>text_only</strong></td><td class="num"><strong>0</strong></td><td><strong>Matriz de confusión (a–e)</strong></td><td><strong>contado como <a href="#p8">P8</a></strong></td></tr>
+<tr style="background:#fef3c7"><td>Pregunta 8</td><td>essay</td><td class="num">1,0</td><td>TPR/FPR de dos modelos · ROC</td><td>contada como <a href="#p9">P9</a></td></tr>
+<tr style="background:#fef3c7"><td>Pregunta 9</td><td>multiple choice</td><td class="num">1,0</td><td>«Punto base»</td><td>contada como <a href="#p10">P10</a></td></tr>
+<tr style="background:#fef3c7"><td>Pregunta 10</td><td>essay</td><td class="num">0</td><td>Comentarios y supuestos</td><td>contada como <a href="#p11">P11</a></td></tr>
 </table>
 
-<div class="nota"><strong>Qué significa esto y qué no.</strong> El ítem de la matriz
-de confusión aparece en Canvas como <code>text_only_question</code> con
-<strong>0 puntos</strong>, no como pregunta calificada. Desde ahí, la numeración del
-repositorio va <strong>corrida en uno</strong>. No sé por qué el ítem quedó así
-configurado y no lo voy a suponer; lo que sí conviene es
-<strong>no citar números de pregunta</strong> en un oral, porque los tuyos no
-coinciden con los del sistema. Habla por tema.</div>
+<div class="nota"><strong>Cómo leer las anclas de esta página.</strong> Los círculos
+numerados de cada ficha siguen el <strong>export</strong>; las anclas
+<code>#p1</code>–<code>#p11</code> siguen las fichas de
+<code>07_DATITO/patron_evaluacion.md</code>. Del 1 al 7 coinciden. Después:
+<code>#p8</code> = matriz («Espaciador») · <code>#p9</code> = Pregunta 8 del export
+(ROC) · <code>#p10</code> = Pregunta 9 («Punto base») · <code>#p11</code> = Pregunta 10
+(comentarios). En el resto del texto, «Pregunta 8» o «P8 del export» es la del
+export, y «ficha P8» es la de <code>patron_evaluacion.md</code>.</div>
 
-<div class="clave"><strong>Dónde está el peso real.</strong> De los 7 puntos, las tres
-preguntas de <strong>1,0 punto</strong> —polinomial, ROC y punto base— suman
-<strong>3 de 7, un 43 %</strong>. Las seis de 0,5 suman los otros 3. Dicho de otro
-modo: <strong>una sola pregunta de desarrollo vale el doble que cualquier cerrada</strong>,
-y dos de las tres son de evaluación de clasificadores.</div>
+<div class="nota"><strong>Qué significa esto y qué no.</strong> En el export, el ítem
+de la matriz de confusión aparece como <code>text_only_question</code> con
+<strong>0 puntos</strong> y sin número; desde ahí, la numeración del repositorio va
+<strong>corrida en uno</strong> respecto del export. Pero <strong>durante el
+certamen</strong> los compañeros hablaban de la matriz como «la 8», de la ROC como
+«la 9» («Bueno, para mí la pregunta 9. Es la que dice de calcula de razón de verdaderos
+positivos» [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:29–1:19:31])
+y del «punto base» como «la 10», y el profesor mandó a responder la matriz en «la
+pregunta 11», la de comentarios (citas en las fichas <a href="#p8">P8</a> y
+<a href="#p10">P10</a>; quién habla en cada tramo es [INFERENCIA] por el contexto, y
+que «la 8» sea la matriz también). O sea, <strong>la numeración de 11 del repositorio coincide con
+la que se veía en pantalla</strong>; la que no coincide es la del export. Por qué el
+export quedó distinto no se puede saber: el profesor dijo haber resuelto en vivo «un
+problema del formato» de ese ítem, y que ese arreglo lo convirtiera en el
+«Espaciador» es [INFERENCIA]. En un oral conviene igual <strong>hablar por
+tema</strong>: evita la ambigüedad entre las dos numeraciones.</div>
+
+<div class="clave"><strong>Dónde está el peso real.</strong> Los ítems del export
+suman <strong>6 puntos</strong>, aunque el encabezado dice «0 de 7»: el punto que
+falta no aparece en ningún ítem (que fuera la matriz antes del cambio de formato es
+[INFERENCIA] no verificable). Además, «Punto base» vale 1,0, pero el profesor dijo
+durante el certamen que ahí <strong>no había que responder nada</strong> (ficha
+<a href="#p10">P10</a>). Lo que el export evalúa por contenido son 5 puntos: las seis
+cerradas de 0,5 (3) y dos desarrollos de <strong>1,0 punto</strong> —polinomial y
+ROC— (2). Dicho de otro modo: <strong>una sola pregunta de desarrollo vale el doble
+que cualquier cerrada</strong>, y una de las dos es de evaluación de clasificadores;
+si la matriz también puntuaba, serían dos de tres.</div>
 
 <h2>Cómo se verificó</h2>
 
@@ -185,11 +223,15 @@ y dos de las tres son de evaluación de clasificadores.</div>
 <p>Material usado: <code>FCD-2026-2_07_Clasificacion</code> (métricas, ROC, árboles),
 <code>FCD-2026-2_08_DL_LLMs_Agents</code> (LLMs, agentes, deep learning),
 <code>Resumen_Clase6_Regresion</code> (polinomial y complejidad), y el historial de
-Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
+Canvas para los enunciados. Desde la revisión del 2026-09-21 se suman las
+transcripciones de la sesión del Certamen 2 (aclaraciones en vivo), de la clase del
+21-ago (agentes) y de la clase del 31-jul (el caso Arauco), y las cifras de Melbourne de
+<code>05_RESULTADOS/resultados_temporal.json</code>. NotebookLM no conectó en esta
+revisión.</p>
 
 <h2>Las preguntas</h2>
 
-<div class="preg">
+<div class="preg" id="p1">
   <div class="cab"><div class="num">1</div><div class="tema">Ensambles y diversidad</div>
     <span class="eti b-pts">0,5</span><span class="eti b-ev">Evaluar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
@@ -259,14 +301,43 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     aciertan 80 % cada uno. Describe un caso donde el ensamble supere el 80 % y otro
     donde no gane nada, en términos de <em>en qué filas</em> falla cada uno.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> no gana nada si los dos fallan <strong>en las mismas filas</strong>;
+    puede superar el 80 % solo si fallan <strong>en filas distintas</strong> y la regla de combinación,
+    cuando discrepan, se queda con el que acierta (por ejemplo, promediando probabilidades y ganando el
+    más seguro).</p>
+    <p><strong>Cómo se resuelve</strong> (100 filas, cifras ilustrativas [DATITO]):</p>
+    <ol class="pasos">
+      <li><strong>Sin ganancia:</strong> A y B fallan las filas 1 a 20. Donde uno falla, el otro también;
+      votar o promediar da la misma respuesta errada. Ensamble = 80 %. Es la P1 en pequeño: errores
+      perfectamente correlacionados.</li>
+      <li><strong>Con ganancia:</strong> A falla las filas 1 a 20 y B las 21 a 40. En las filas 41 a 100
+      aciertan los dos. En las 40 filas donde discrepan hay exactamente un modelo correcto; si la
+      combinación elige al que acierta, el ensamble llega hasta 100 %.</li>
+      <li><strong>El detalle con dos modelos:</strong> con voto simple, dos que discrepan empatan, y el
+      empate hay que romperlo con algo (la confianza de cada uno). Por eso los ensambles usan muchos
+      modelos: con tres de 80 % y errores independientes, la mayoría acierta con probabilidad
+      0,8³ + 3 · 0,8² · 0,2 = 0,512 + 0,384 = <strong>0,896</strong>.</li>
+    </ol>
+    <p><strong>Error típico:</strong> responder «siempre mejora porque son dos opiniones». La
+    diversidad es necesaria, pero además la regla de combinación tiene que aprovecharla; y si el
+    desempate sale mal, dos modelos que discrepan pueden incluso bajar del 80 %.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> la descorrelación de errores como fundamento del
+    ensamble, en esta misma ficha [INFERENCIA]; el cálculo de 0,896 es probabilidad binomial [INFERENCIA];
+    las filas son ilustrativas [DATITO].</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong> conceptual, coherente con el bloque
-    de árboles y ensambles de <code>FCD-2026-2_07</code> (láminas 25–31). El curso
+    de árboles y ensambles de <code>FCD-2026-2_07</code> (árboles, láminas 25–33; Random Forest, 34–38). El curso
     trata Gini y ganancia de pureza; la descorrelación de errores es el fundamento
     estándar del ensamble.</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="arboles_y_ensambles.html#ensambles"><code>arboles_y_ensambles.html#ensambles</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p2">
   <div class="cab"><div class="num">2</div><div class="tema">Sobreajuste, definición</div>
     <span class="eti b-pts">0,5</span><span class="eti b-ev">Evaluar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
@@ -302,8 +373,11 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
       sacas 7; en la prueba real, no.</div>
       <div class="e"><div class="h">Ejemplo práctico</div>
       En Melbourne, la versión con split aleatorio reportaba «81 %». Con split
-      temporal 2016→2017 el R² cae a 0,765 y el MAE es 185.449 AUD. El primer número
-      medía memoria; el segundo mide generalización.</div>
+      temporal 2016→2017, el modelo final (HistGradientBoosting sobre
+      <code>log1p(Price)</code>) da en 2017 un R² de 0,757 y un MAE de 188.218 AUD,
+      frente a un R² de 0,927 en el entrenamiento de 2016
+      [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json · «HistGradientBoosting | log»].
+      El primer número medía memoria; el segundo mide generalización.</div>
     </div>
 
     <div class="dist"><strong>La distinción que puede venir en la repregunta:</strong>
@@ -322,6 +396,28 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     en entrenamiento y error alto en test. ¿Está sobreajustado? Nombra qué es, y qué
     harías distinto que si estuviera sobreajustado.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> no está sobreajustado: está <strong>subajustado</strong> (modelo
+    demasiado simple). La cura va en dirección contraria: darle <em>más</em> capacidad al modelo, no
+    menos.</p>
+    <p><strong>Cómo se resuelve:</strong></p>
+    <ol class="pasos">
+      <li>Mira las dos columnas a la vez: entrenamiento alto y test alto → no hay brecha; el modelo ni
+      siquiera aprende lo que tiene delante.</li>
+      <li>Sobreajuste exige error <em>bajo</em> en entrenamiento; aquí falta esa mitad.</li>
+      <li>Qué harías: subir la complejidad (grado del polinomio, un modelo más flexible, mejores
+      atributos) y elegir cuánto con validación. Frente a un sobreajuste harías lo contrario: bajar la
+      complejidad o conseguir más filas.</li>
+    </ol>
+    <p><strong>Error típico:</strong> llamar «sobreajuste» a cualquier error alto, o recetar «más datos»
+    para todo. Más filas ayudan al sobreajustado; a un modelo que no alcanza a capturar la forma de los
+    datos le sirven poco.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> la tabla «modelo demasiado simple: error alto en
+    entrenamiento y en datos nuevos → subajuste» está en
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · §6.6.3]; que más filas
+    ayudan poco al subajuste es [INFERENCIA].</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, láminas
     7 y 20 (generalización y modelos más complejos);
     <code>Resumen_Clase6_Regresion</code> §6.5: «aumentar el grado del polinomio
@@ -329,11 +425,13 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     generalización».</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
-    <a href="generalizacion.html"><code>generalizacion.html</code></a></div>
+    <a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> ·
+    <a href="generalizacion.html"><code>generalizacion.html</code></a> ·
+    <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p3">
   <div class="cab"><div class="num">3</div><div class="tema">Afirmaciones sobre sobreajuste</div>
     <span class="eti b-pts">0,5</span><span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas, alternativas completas</span>
@@ -398,16 +496,43 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     columnas. Alguien propone añadir 50 columnas derivadas de las 5 originales. ¿Qué
     le pasa al error de entrenamiento y qué al de validación? Responde por separado.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> el error de <strong>entrenamiento baja</strong> (o, como mínimo, no
+    sube). El de <strong>validación probablemente sube</strong>: es la señal de sobreajuste. Lo único que
+    lo confirma es medirlo en validación.</p>
+    <p><strong>Cómo se resuelve:</strong></p>
+    <ol class="pasos">
+      <li><strong>Entrenamiento.</strong> El modelo con 55 columnas contiene al de 5: le basta poner
+      en cero los coeficientes nuevos para repetir el ajuste anterior. Minimizando el error sobre esos
+      mismos datos, nunca puede quedar peor, y casi siempre queda mejor.</li>
+      <li><strong>Validación.</strong> Pasas de 5 a 55 atributos con solo 100 filas: más de un parámetro
+      por cada dos filas. Las columnas derivadas no traen información nueva del mundo (salen de las
+      mismas 5); traen libertad para acomodar el ruido de estas 100 filas. Eso es lo que sube el error en
+      datos no vistos.</li>
+      <li><strong>La excepción honesta:</strong> si alguna derivada captura una forma real (por
+      ejemplo, x² cuando la relación es curva), la validación podría mejorar. Así se construye la
+      regresión polinomial. Por eso no se decide a ojo: se decide con validación.</li>
+    </ol>
+    <p><strong>Error típico:</strong> dar una sola respuesta para los dos errores («mejora» o «empeora»).
+    La pregunta pide separarlos justamente porque se mueven en direcciones opuestas.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> modelo más complejo → más sobreajuste, y la
+    validación para decidirlo: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 8 y 20];
+    que más columnas sea más complejidad es el argumento de la opción 1 de esta ficha [INFERENCIA]; el
+    argumento del modelo anidado es [INFERENCIA]; 100 filas y 50 columnas son del enunciado [DATITO].</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, láminas
     8, 20 y 21. <code>Resumen_Clase6_Regresion</code>, §6.5.</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
+    <a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> ·
     <a href="generalizacion.html"><code>generalizacion.html</code></a> ·
+    <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a> ·
     <a href="train_validation_test.html"><code>train_validation_test.html</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p4">
   <div class="cab"><div class="num">4</div><div class="tema">Métricas de clasificación</div>
     <span class="eti b-pts">0,5</span><span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas, alternativas completas</span>
@@ -488,17 +613,41 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     0,9 y TFP 0,4. ¿Es contradictorio? Explica con los denominadores por qué las dos
     cifras pueden convivir.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> <strong>no es contradictorio.</strong> Comparten el numerador (los
+    FP) pero dividen entre universos distintos: la precisión entre los <em>predichos positivos</em>, la
+    TFP entre los <em>negativos reales</em>. Si hay pocos negativos, unos pocos FP son una fracción
+    grande de ellos y una fracción chica de los predichos positivos.</p>
+    <p><strong>Cómo se resuelve</strong> (cifras ilustrativas [DATITO]): 100 positivos reales y 25
+    negativos reales. El modelo acierta 90 positivos (VP = 90, FN = 10) y marca como positivos a 10
+    negativos (FP = 10, VN = 15).</p>
+    <ol class="pasos">
+      <li>Precisión = VP / (VP + FP) = 90 / (90 + 10) = 90 / 100 = <strong>0,9</strong>.</li>
+      <li>TFP = FP / (FP + VN) = 10 / (10 + 15) = 10 / 25 = <strong>0,4</strong>.</li>
+      <li>Los mismos 10 FP pesan 10 de 100 en un denominador y 10 de 25 en el otro.</li>
+    </ol>
+    <p><strong>Error típico:</strong> suponer que TFP = 1 − precisión (daría 0,1). Solo se pueden
+    restar de 1 dos métricas que compartan denominador, y estas no lo comparten.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> fórmulas de
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18]; los conteos son
+    ilustrativos [DATITO].</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, láminas
     17 y 18 (definiciones y las cinco fórmulas), 22–24 (ROC) y
     <strong>31</strong> (ganancia de pureza como comparación padre-hijos).</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
     <a href="matriz_confusion.html"><code>matriz_confusion.html</code></a> — las cinco
-    métricas desarmadas por su denominador</div>
+    métricas desarmadas por su denominador ·
+    <a href="clasificacion.html"><code>clasificacion.html</code></a> — qué es un
+    clasificador y qué se le mide ·
+    <a href="eda.html"><code>eda.html</code></a> — dónde vive la varianza: describe una
+    variable, no un modelo</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p5">
   <div class="cab"><div class="num">5</div><div class="tema">LLMs y agentes</div>
     <span class="eti b-pts">0,5</span><span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas, alternativas completas</span>
@@ -527,9 +676,22 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     </table>
 
     <div class="dist"><strong>La distinción:</strong> <em>generar texto</em>
-    <strong>≠</strong> <em>ejecutar acciones y observar su resultado</em>. Un LLM
-    produce tokens; un agente percibe el entorno, usa herramientas, guarda memoria y
-    actúa. El LLM puede ser <em>el cerebro</em> del agente, pero no es el agente.</div>
+    <strong>≠</strong> <em>ejecutar acciones y observar su resultado</em>. Ojo: el
+    agente <strong>también genera tokens</strong>, porque por dentro hay un LLM
+    prediciendo la siguiente palabra. La diferencia es el <strong>bucle
+    cerrado</strong>: en algún momento el LLM emite una «palabra especial» que llama a
+    una herramienta, la herramienta se ejecuta, su resultado <strong>vuelve</strong> al
+    agente y condiciona lo que genera después. Un LLM solo, sin ese bucle, genera y
+    termina. El LLM puede ser <em>el cerebro</em> del agente, pero no es el agente.</div>
+
+    <div class="cita">«empiezan a generar el siguiente ⟨token⟩ […] y generan una palabra
+    especial con la cual se conectan a la herramienta ejecutan la herramienta después le
+    devuelve ⟨al agente⟩ recibe la respuesta de la herramienta […] y de nuevo siguen
+    ⟨prediciendo⟩ la siguiente palabra» <span class="f">Clase del 21-ago · 2:50:44–2:51:08 ·
+    profesor · ⟨⟩ = corrección de transcripción [INFERENCIA] (ASR: «toque», «a la gente»,
+    «precisando») · lo acompaña la figura de agentes de la lámina 47, cuyo texto extraído
+    solo conserva el título ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
 
     <div class="tri">
       <div class="f"><div class="h">Definición formal</div>
@@ -565,13 +727,45 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     internet para buscar un dato, ¿ya es un agente? Nombra qué atributos de la lámina
     46 tendría y cuáles le faltarían.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> todavía no del todo. Tiene <strong>uso de herramientas</strong> (acceder
+    a internet es literalmente el ejemplo de la lámina 46) y algo de percepción, porque recibe lo que
+    trae la búsqueda. Le faltan la <strong>acción autónoma</strong>, la <strong>memoria</strong> para
+    almacenar preferencias y conocimiento, y la <strong>colaboración</strong> con otros agentes o con
+    humanos. Es un LLM con una herramienta; se vuelve agente cuando cierra el bucle y actúa por su
+    cuenta.</p>
+    <p><strong>Cómo se resuelve:</strong> recorre la lámina 46 atributo por atributo y marca sí / no:</p>
+    <table>
+    <tr><th>Atributo (lámina 46)</th><th>¿Lo tiene?</th></tr>
+    <tr><td>Acciones autónomas sin intervención humana constante</td><td>No: busca un dato cuando se le pide</td></tr>
+    <tr><td>Humano en el proceso (opcional)</td><td>No decide nada: es opcional en los agentes</td></tr>
+    <tr><td>Memoria para preferencias y conocimiento</td><td>No, según el enunciado</td></tr>
+    <tr><td>Un LLM se encarga del procesamiento y la toma de decisiones</td><td>Sí, es el LLM</td></tr>
+    <tr><td>Percibir y procesar la información del entorno</td><td>En parte: procesa el resultado de la búsqueda</td></tr>
+    <tr><td>Usar herramientas (internet, intérpretes de código, llamadas API)</td><td>Sí: internet</td></tr>
+    <tr><td>Colaborar con otros agentes o con humanos</td><td>No</td></tr>
+    </table>
+    <p><strong>Error típico:</strong> tomar un solo atributo como definición («usa internet, entonces es
+    agente»). La diferencia que dio el profesor es el bucle: el LLM emite la llamada, la herramienta se
+    ejecuta y su resultado vuelve y condiciona lo que el agente hace después (cita de esta ficha).</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong>
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 46]; el bucle,
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44–2:51:08];
+    el veredicto «todavía no del todo» es [INFERENCIA]: la lámina lista atributos, no un umbral.</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_08_DL_LLMs_Agents</code>, láminas 45 (LLMs: para qué son buenos y
-    para qué son malos), 46 (los atributos del agente) y 48 (ejemplos de agentes).</div>
+    para qué son malos), 46 (los atributos del agente), 47 (figura de agentes) y 48
+    (ejemplos de agentes). El mecanismo del bucle, en la clase del 21-ago (cita
+    arriba).</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="dl_llm_agentes.html#agentes"><code>dl_llm_agentes.html#agentes</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p6">
   <div class="cab"><div class="num">6</div><div class="tema">Revoluciones de la IA</div>
     <span class="eti b-pts">0,5</span><span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas, alternativas completas</span>
@@ -590,7 +784,7 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
     <div class="lbl">Respuesta independiente</div>
     <div class="vd vd-ok"><span class="t">Correctas: 1 y 4.</span>
-    Y no por descarte: son <strong>exactamente los dos casos que la clase 8 usa como
+    Y no por descarte: son <strong>exactamente los dos casos que la clase del 21-ago (mazo FCD-08) usa como
     ejemplos centrales</strong>.</div>
 
     <table>
@@ -601,11 +795,22 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     <tr class="ok-alt"><td>4</td><td>Correcta</td><td>Láminas 6–7: <strong>ImageNet Large Scale Visual Recognition Challenge</strong>, «1.2M imágenes de entrenamiento, 1000 categorías de objetos». Es el caso con que el mazo abre el tema</td></tr>
     </table>
 
-    <div class="dist"><strong>La distinción que decide la respuesta:</strong>
-    <em>causa</em> <strong>≠</strong> <em>condición habilitante</em>. La computación en
-    la nube y las GPU hicieron <em>posible</em> la revolución; no <em>son</em> la
-    revolución. El enunciado pregunta por avances «mediante el uso de redes
-    neuronales», y ni la nube ni las bases relacionales lo son.</div>
+    <div class="dist"><strong>Lo que decide la respuesta:</strong> la cláusula del
+    enunciado, <strong>«mediante el uso de redes neuronales»</strong>. Se pregunta por
+    tecnologías que avanzaron <em>usando</em> redes neuronales, y ni la nube ni las
+    bases relacionales lo son.<br>
+    <strong>Un marco para estudiarlo:</strong> <em>causa</em> <strong>≠</strong>
+    <em>condición habilitante</em> [DATITO]. Es un marco de estudio (viene de
+    <code>patron_evaluacion.md</code>), no una frase de las láminas.</div>
+
+    <div class="nota"><strong>Cuidado con las GPU.</strong> La lámina 65 dice: «El gran
+    boom se debe gracias a las redes neuronales artificiales, la gran cantidad de datos
+    que hemos producido como humanidad y a avances en cómputo con tarjetas gráficas».
+    Para el profesor, las GPU son <strong>uno de los tres factores del boom</strong>: no
+    digas en un oral que «no cuentan». Lo que deja fuera a la nube en
+    <em>esta</em> pregunta no es que importe menos, sino que no es una tecnología que
+    avance «mediante el uso de redes neuronales»
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 65].</div>
 
     <div class="nota"><strong>La opción 2 es la trampa, y es buena.</strong> Es
     verdadera como afirmación histórica —la nube sí fue decisiva— y falsa como
@@ -625,13 +830,13 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
       <div class="e"><div class="h">Ejemplo práctico</div>
       Tu desafío Galaxy Zoo es clasificación de imágenes: el descendiente directo de
       ImageNet. Y este mismo tutor corre sobre un LLM, que es el descendiente de
-      GLUE y los transformers.</div>
+      los transformers que se medían en benchmarks como GLUE.</div>
     </div>
 
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
     <span class="q">«El procesamiento del lenguaje natural y la detección de objetos
     en imágenes. Son las dos áreas donde el salto lo dieron las redes neuronales: en
-    visión con ImageNet, un millón y medio de imágenes y mil categorías de objetos; y
+    visión con ImageNet, 1,2 millones de imágenes de entrenamiento y mil categorías de objetos; y
     en lenguaje con los transformers y benchmarks como GLUE. La computación en la nube
     fue una condición que lo hizo posible, pero no es una revolución de redes
     neuronales, y las bases de datos relacionales son muy anteriores y de otra
@@ -641,14 +846,43 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     tiene que pasar con la cantidad de datos para que convenga deep learning en vez de
     un algoritmo clásico? Y di qué implica eso para tu dataset de Melbourne.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> tiene que haber <strong>muchos datos</strong>. Con pocos, los
+    algoritmos clásicos rinden igual o mejor; el deep learning saca ventaja solo pasado cierto volumen.
+    Para Melbourne, con 6.336 filas de entrenamiento y 12 columnas de tabla, lo sensato es un algoritmo
+    clásico, y de hecho el mejor de los seis que comparaste fue uno: HistGradientBoosting, con R² 0,757 en 2017.</p>
+    <div class="cita">«si tu tienes pocos datos los algoritmos clásicos funcionan mejor que deep learning
+    […] pero si tu tienes muchos datos deep learning funciona mucho mejor» <span class="f">Clase del
+    21-ago · 1:45:25–1:45:37 · profesor, explicando el gráfico de la lámina 8 ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+    <p><strong>Cómo se resuelve:</strong> (1) lee los ejes de la lámina 8: cantidad de datos contra
+    desempeño, una curva por familia; (2) con pocos datos manda la curva clásica, con muchos la de deep
+    learning; (3) ubica tu caso: miles de filas de tabla, no millones de imágenes; (4) concluye con lo
+    que mediste, no con lo que supones.</p>
+    <p><strong>Error típico:</strong> afirmar que en Melbourne el deep learning «habría sido peor». No lo
+    probaste: ninguno de tus seis modelos es una red. Lo defendible es que la lámina no da razones para
+    esperar ventaja con este volumen, y que tu mejor modelo medido es clásico [INFERENCIA]. La lámina
+    tampoco fija en qué número de filas se cruzan las curvas: el profesor aclaró que el gráfico «es un
+    dibujo» [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:45:17–1:45:19].</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong>
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8]; filas, columnas
+    y resultados de Melbourne: [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json, bloques meta y
+    «HistGradientBoosting | log»].</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong>
     <code>FCD-2026-2_08_DL_LLMs_Agents</code>, láminas 5 (la IA como nueva
     electricidad), 6–7 (ImageNet), 8 (deep learning frente a algoritmos clásicos según
-    la cantidad de datos) y 33–34 (GLUE y transformers en NLP).</div>
+    la cantidad de datos), 33–34 (GLUE y transformers en NLP) y 65 (los tres factores
+    del boom: redes neuronales, datos y GPU).</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="dl_llm_agentes.html#deep-learning"><code>dl_llm_agentes.html#deep-learning</code></a> ·
+    <a href="redes_neuronales.html"><code>redes_neuronales.html</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p7">
   <div class="cab"><div class="num">7</div><div class="tema">Regresión polinomial</div>
     <span class="eti b-pts">1,0</span><span class="eti b-ev">Evaluar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
@@ -708,7 +942,19 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
       creciente en DAP. Un modelo que no puede violar la física no la viola</li>
     </ol></div>
 
-    <div class="nota"><strong>El concepto más examinable de la clase 6, y aquí encaja
+    <div class="dist"><strong>La distinción que decide la pregunta:</strong>
+    <em>error de entrenamiento</em> <strong>≠</strong> <em>calidad del modelo</em>. ECM
+    cero sobre 5 árboles no dice nada del árbol número 6.<br>
+    <strong>Sobre «bajar el grado ≠ regularizar»</strong>, que
+    <code>patron_evaluacion.md</code> también asocia a esta ficha: es [INFERENCIA] de la
+    reconstrucción del alumno
+    (<code>01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md</code>,
+    ~l. 456 y 497), <strong>no algo que enseñara el profesor</strong>. La regularización
+    no aparece en las láminas ni en el práctico P4, y en las 14 transcripciones
+    disponibles al 2026-09-21 solo la nombra un grupo de compañeros en su presentación
+    del 4-sep. Úsala como extra, no como lo que el profesor espera leer.</div>
+
+    <div class="nota"><strong>El concepto más examinable de la clase del 31-jul (regresión), y aquí encaja
     solo:</strong> la regresión polinomial <strong>sigue siendo regresión
     lineal</strong>. Se llama lineal porque es lineal <em>en los parámetros θ</em>, no
     en <em>x</em>. Un polinomio de grado 3 en <em>x</em> es lineal en θ. Mencionarlo
@@ -740,8 +986,16 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
       libertad suficiente para hacerlo. Una goma elástica lo bastante flexible toca
       todos los clavos y no describe ninguna forma.</div>
       <div class="e"><div class="h">Ejemplo práctico</div>
-      El profesor usó el caso Deep-Hub —conteo de árboles con drones para Arauco— para
-      este bloque. Es la misma relación diámetro-volumen, con datos reales.</div>
+      En la clase del 31-jul el profesor mostró un sistema que armaron para Arauco:
+      drones sobre los predios, imágenes divididas en grillas y etiquetadas para
+      <strong>contar árboles</strong>, con partición en entrenamiento, validación y
+      test; y explicó que localizar un árbol con una caja es regresión, porque las
+      esquinas son valores reales
+      [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:27:34–1:30:53].
+      <strong>No es la relación diámetro-volumen</strong> de esta pregunta: comparte
+      el dominio forestal, no el problema. (La versión anterior lo llamaba «Deep-Hub»;
+      ese nombre no aparece en las 14 transcripciones disponibles al
+      2026-09-21.)</div>
     </div>
 
     <div class="oral"><strong>Respuesta breve, defendible en oral:</strong>
@@ -760,6 +1014,30 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     ¿Por qué eso no lo convierte en un peor modelo? Responde nombrando qué conjunto
     habría que mirar.</div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> porque un modelo se juzga por su error en datos que <strong>no vio</strong>,
+    no por el de entrenamiento. Para decidir entre la recta y el polinomio hay que mirar el error en el
+    <strong>conjunto de validación</strong> (y reportar el final en test).</p>
+    <p><strong>Cómo se resuelve:</strong></p>
+    <ol class="pasos">
+      <li>El ECM de entrenamiento mide qué tan bien el modelo repite los 5 árboles que ya conoce. El
+      polinomio los repite perfecto porque tiene tantos parámetros como datos.</li>
+      <li>El grado del polinomio es un hiperparámetro, y la lámina 8 dice para qué está el conjunto de
+      validación: «ajustar hiperparámetros (por ej, el orden del polinomio)».</li>
+      <li>Se ajusta cada candidato (grado 1, 2, …) con los datos de entrenamiento, se mide en validación,
+      y gana el de menor error ahí. Una recta que falla un poco en los 5 árboles pero predice bien el
+      sexto le gana a un polinomio que clava los 5 y da volumen negativo en DAP 37.</li>
+    </ol>
+    <p><strong>Error típico:</strong> nombrar el conjunto de <em>test</em> para elegir el grado. El test
+    es para evaluar al final un modelo que nunca lo vio; si eliges con él, deja de ser independiente.
+    Otro error: decir «la recta es peor porque su error no es cero».</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong>
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 8]; «no nos basta
+    con solamente tener un modelo que minimice el error sobre el conjunto de entrenamiento»:
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · §6.5.5]. Lo de no elegir con
+    el test es [INFERENCIA] desde la definición de la lámina 8 («el modelo nunca lo ha visto»).</p>
+    </details>
+
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, lámina 8
     («el orden del polinomio» como ejemplo canónico de hiperparámetro ajustado en
     validación). <code>Resumen_Clase6_Regresion</code>, §6.5: la progresión de grados y
@@ -767,15 +1045,17 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     <code>MisRespuestas-intento-certamen.pdf</code>, página 3.</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
+    <a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> ·
     <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a> ·
     <a href="generalizacion.html"><code>generalizacion.html</code></a></div>
   </details>
 </div>
 
-<div class="preg" style="border-color:var(--ambar);border-width:2px">
+<div class="preg" id="p8" style="border-color:var(--ambar);border-width:2px">
   <div class="cab"><div class="num" style="background:#6b7280">—</div>
     <div class="tema">Matriz de confusión desde una figura</div>
-    <span class="eti b-pts">0 puntos · «Espaciador»</span><span class="eti b-ap">Aplicar</span>
+    <span class="eti b-ficha">ficha P8</span>
+    <span class="eti b-pts">0 puntos en el export · «Espaciador»</span><span class="eti b-ap">Aplicar</span>
     <span class="eti b-nover">figura no disponible</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
   Para el siguiente modelo (línea verde punteada), calcule:<br>
@@ -784,6 +1064,25 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
   <strong>e)</strong> tasa de falsos positivos<br><br>
   <em>«Explicite cada supuesto que haga. Por ejemplo, a qué lado del modelo están los
   círculos, qué considera como positivo, etc.»</em></div>
+
+  <div class="nota"><strong>Qué pasó con este ítem durante el certamen.</strong> Un
+  compañero reportó que «la 8» pedía agregar un archivo, y el profesor contestó que
+  había un problema de formato y que la respondieran en la pregunta 11 (la de
+  comentarios):
+  <div class="cita">«Profesor, y la 8, es como que dice que hay que agregar un archivo.
+  […] Lo acabo de resolver, pero no sé si ustedes lo ven. O sea, era un problema del
+  formato […] Entonces, respondenla en la pregunta 11.» <span class="f">Sesión del
+  Certamen 2, 28-ago · 0:12:32–0:14:47 · pregunta un compañero; responde el profesor
+  (quién habla es [INFERENCIA] por el contexto) · tras «formato» la transcripción trae
+  «acceptance», probable error ASR, omitido ·
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+  Más tarde, otro compañero describió este mismo ítem como «después de la pregunta 7
+  aparece un gráfico» con la matriz, y el profesor le dijo que podía responder en los
+  comentarios o en una hoja fotografiada
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 0:46:32–0:47:11].
+  <strong>Lo que se puede afirmar:</strong> se esperaba que la respondieran; el export la
+  muestra hoy con 0 puntos. <strong>Lo que no:</strong> si se calificó y cuánto valía. Que
+  «la 8» del primer diálogo sea este ítem es [INFERENCIA] por el contexto.</div>
 
   <details><summary>Ver análisis completo</summary>
 
@@ -838,10 +1137,68 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     la exactitud sería la misma pero las otras tres cambiarían — por eso hay que
     declararla.»</span></div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> los <strong>números de este ítem no se pueden dar</strong>: la figura
+    no está en el repositorio, así que cualquier matriz concreta sería inventada. Lo que sí es correcto,
+    y lo que el enunciado pide explícitamente, es el procedimiento con la convención declarada. Para que
+    lo practiques entero, aquí va resuelto con la matriz de la lámina 19, que sí es oficial.</p>
+    <p><strong>Ejemplo resuelto con la lámina 19</strong> (filas = etiqueta predicha, columnas = etiqueta
+    real; círculo = positivo):</p>
+    <ol class="pasos">
+      <li><strong>Supuestos:</strong> positivo = círculo; se lee la matriz en la orientación de la lámina.</li>
+      <li><strong>a) Matriz:</strong> VP = 6, FP = 2 (predicho círculo, era triángulo), FN = 1, VN = 7.</li>
+      <li><strong>Marginales:</strong> P = VP + FN = 6 + 1 = 7 círculos; N = FP + VN = 2 + 7 = 9 triángulos;
+      total 16.</li>
+      <li><strong>b) Exactitud</strong> = (6 + 7) / 16 = 13 / 16 = <strong>0,8125</strong>.</li>
+      <li><strong>c) Precisión</strong> = 6 / (6 + 2) = 6 / 8 = <strong>0,75</strong>.</li>
+      <li><strong>d) TVP</strong> = 6 / 7 = <strong>0,857</strong>.</li>
+      <li><strong>e) TFP</strong> = 2 / 9 = <strong>0,222</strong>.</li>
+    </ol>
+    <p><strong>Error típico:</strong> leer la matriz con la costumbre de scikit-learn (filas = real) y
+    cambiar el 2 por el 1: te daría precisión 6/7 y TVP 6/8, al revés. Y en este ítem, peor todavía:
+    escribir una matriz con números sin tener la figura. Es exactamente lo que la versión anterior de
+    esta página hizo y hubo que eliminar.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> matriz 6/2/1/7 y fórmulas:
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 18 y 19]; orientación
+    de la lámina 19 según <a href="matriz_confusion.html#lamina19"><code>matriz_confusion.html#lamina19</code></a>,
+    que la contrasta con el resumen de la clase del 7-ago; que la
+    figura del certamen no está disponible: esta ficha.</p>
+    </details>
+
     <div class="repreg"><strong>Repregunta para ti:</strong> abre
     <code>matriz_confusion.html</code>, fija una convención y calcula las cinco
     métricas sobre el caso de las galaxias. Luego invierte la convención y di cuál de
     las cinco no se movió, y por qué.</div>
+
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> no se mueve la <strong>exactitud</strong> (y con ella el error, que es 1
+    − exactitud). Cuenta aciertos sobre el total, y los aciertos son los mismos se llame como se llame
+    cada clase. Precisión, TVP y TFP sí cambian, porque su denominador depende de cuál clase es la
+    positiva.</p>
+    <p><strong>Cómo se resuelve</strong> con la matriz real 3×3 de <a href="matriz_confusion.html#galaxias">matriz_confusion.html#galaxias</a>
+    (filas = real, columnas = predicho). Convención: <strong>positivo = clase 0 («no decidible»)</strong>,
+    negativo = cualquier otra.</p>
+    <ol class="pasos">
+      <li>VP = 25 (real 0, dijo 0). FN = 36 + 35 = 71 (real 0, dijo otra). FP = 18 + 39 = 57 (dijo 0 y
+      no era). VN = 176 + 33 + 65 + 573 = 847. Marginales: P = 96, N = 904, total 1.000.</li>
+      <li>Exactitud = (25 + 847) / 1.000 = <strong>0,872</strong>; error = <strong>0,128</strong>.</li>
+      <li>Precisión = 25 / 82 = <strong>0,305</strong>; TVP = 25 / 96 = <strong>0,260</strong>; TFP = 57 / 904
+      = <strong>0,063</strong>. (Precisión y TVP coinciden con la tabla por clase de esa página.)</li>
+      <li><strong>Invierte:</strong> positivo = «no es clase 0». Ahora VP = 847, FN = 57, FP = 71, VN = 25.</li>
+      <li>Exactitud = (847 + 25) / 1.000 = <strong>0,872</strong>: igual. Precisión = 847 / 918 =
+      <strong>0,923</strong>; TVP = 847 / 904 = <strong>0,937</strong> (= 1 − 0,063); TFP = 71 / 96 =
+      <strong>0,740</strong> (= 1 − 0,260).</li>
+    </ol>
+    <p><strong>Error típico:</strong> creer que la exactitud de esta tabla binaria es la del modelo de tres
+    clases. Aquí da 0,872 y la exactitud 3×3 es 0,774: al juntar las clases 1 y 2 en «negativo», confundir
+    una espiral con una elíptica deja de contar como error. Otro error: decir que «nada cambia» porque el
+    modelo es el mismo.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> matriz 3×3 de Galaxy Zoo en
+    <code>matriz_confusion.html</code> [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · matriz de confusión, l. 216–218];
+    fórmulas: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18]; la
+    convención elegida y las cuentas son [INFERENCIA]. Puedes elegir otra clase positiva: las cifras
+    cambian, la conclusión no.</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, láminas
     17, 18 y 19 (definiciones, las cinco fórmulas, y la matriz de confusión con un
@@ -850,12 +1207,15 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
     <div class="salto"><strong>Explicación completa:</strong>
     <a href="matriz_confusion.html"><code>matriz_confusion.html</code></a> — la matriz
-    entera, con controles de prevalencia y sensibilidad</div>
+    entera, con controles de prevalencia y sensibilidad ·
+    <a href="metricas_clasificacion.html"><code>metricas_clasificacion.html</code></a> —
+    exactitud, precisión, recall y F1: elegir el denominador</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p9">
   <div class="cab"><div class="num">8</div><div class="tema">TPR, FPR y curva ROC</div>
+    <span class="eti b-ficha">ficha P9</span>
     <span class="eti b-pts">1,0</span><span class="eti b-an">Analizar</span><span class="eti b-ok">verificado</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
   Calcule la razón de verdaderos positivos (TPR) y razón de falsos positivos (FPR)
@@ -867,7 +1227,7 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
     <div class="clave"><strong>Esta pregunta ya la resolvió el profesor en clase, y la
     figura del certamen es la misma.</strong><br><br>
-    Las láminas 22 y 23 de la clase 7 plantean el ejercicio con el mismo texto
+    Las láminas 22 y 23 del mazo FCD-07 (clase del 7-ago) plantean el ejercicio con el mismo texto
     —«considere los modelos a continuación, donde el modelo puede variar de acuerdo a
     un hiperparámetro, por ejemplo, un umbral de clasificación»— y
     <strong>la lámina 23 da los resultados</strong>:
@@ -912,6 +1272,21 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     <strong>modelo</strong>. Un modelo es la <em>curva entera</em>, no un umbral. Por
     eso la respuesta correcta no es «en el umbral tal el Modelo 1 acierta más», sino
     «el Modelo 1 domina en todos los umbrales».</div>
+
+    <div class="nota"><strong>Esta duda salió en vivo durante el certamen.</strong> Un
+    compañero preguntó si había que elegir el mejor modelo o el mejor umbral de cada
+    modelo; el profesor lo remitió a lo visto en clase y describió el planteamiento:
+    <div class="cita">«el mejor modelo, o sea el mejor umbral por modelo […] Básicamente
+    tiene un parámetro de sensibilidad tiene dos modelos y tiene un parámetro de
+    sensibilidad que te mueve el umbral.» <span class="f">Sesión del Certamen 2, 28-ago ·
+    1:19:59–1:20:34 · pregunta un compañero; responde el profesor (quién habla es
+    [INFERENCIA] por el contexto) ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+    La respuesta <strong>no dice</strong> «compara modelos, no umbrales»: solo confirma que
+    hay dos modelos y que el umbral se mueve con un parámetro, como en la lámina 22
+    («el modelo puede variar de acuerdo a un hiperparámetro, por ejemplo, un umbral»).
+    Leer de ahí que cada modelo es una curva que se recorre moviendo el umbral es
+    [INFERENCIA], coherente con esa lámina.</div>
 
     <div class="lbl">El AUC, si lo quieres calcular</div>
     <p>Sobre los cuatro puntos de la lámina 23, más (0,0) y (1,1) que cierran la
@@ -962,9 +1337,48 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     diagonal y el Modelo 1 usa fronteras diagonales, mientras que el Modelo 2 solo
     puede poner un umbral horizontal sobre x₂.»</span></div>
 
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> el <strong>Modelo 1</strong> es mejor. Sus cuatro pares (TFP, TVP) son
+    los de la lámina 23: (0,0; 0,3), (0,0; 0,6), (0,2; 0,8) y (0,6; 1,0), con P = 10 círculos y N = 5
+    triángulos.</p>
+    <p><strong>Cómo se comprueba un par:</strong> 3 círculos del lado positivo → TVP = 3 / 10 = 0,3;
+    0 triángulos → TFP = 0 / 5 = 0,0. Los otros tres salen igual: 6/10 y 0/5; 8/10 y 1/5; 10/10 y 3/5.</p>
+    <p><strong>Lo que no es verificable desde esta página:</strong> del Modelo 2 solo está contado el
+    primer panel, (0,0; 0,2). Sus otros tres pares no están en la lámina ni transcritos aquí; si los
+    necesitas, se cuentan en la figura (<code>MisRespuestas-intento-certamen.pdf</code>, página 5).
+    Que el Modelo 1 quede por encima en <em>todos</em> los umbrales es la lectura de esta ficha sobre la
+    figura, sostenida por la geometría (fronteras diagonales frente a horizontales), no un conteo
+    transcrito panel por panel [INFERENCIA]. No escribas pares del Modelo 2 que no contaste.</p>
+    <p><strong>Error típico:</strong> elegir por un solo umbral, o por un AUC sin decir de dónde sale.
+    Otro: comparar el par de un umbral del Modelo 1 con el de otro umbral del Modelo 2.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong>
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 22 y 23]; los
+    numeradores 3, 6, 8 y 10 y los de FP (0, 0, 1, 3) salen de multiplicar las tasas de la lámina por P = 10
+    y N = 5 [INFERENCIA].</p>
+    </details>
+
     <div class="repreg"><strong>Repregunta para ti:</strong> con P = 10 y N = 5, ¿qué
     par (TFP, TVP) tendría un clasificador que dijera «círculo» a todo? ¿Y uno que
     dijera «triángulo» a todo? Sitúa ambos en la ROC.</div>
+
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> «círculo» a todo → <strong>(TFP 1,0; TVP 1,0)</strong>, la esquina de
+    arriba a la derecha. «Triángulo» a todo → <strong>(0,0; 0,0)</strong>, la esquina de abajo a la
+    izquierda. Son los dos extremos por donde empieza y termina toda curva ROC.</p>
+    <p><strong>Cómo se resuelve</strong> (círculo = positivo, P = 10, N = 5):</p>
+    <ol class="pasos">
+      <li>«Círculo» a todo: los 10 círculos quedan como VP y los 5 triángulos como FP. TVP = 10 / 10 = 1;
+      TFP = 5 / 5 = 1.</li>
+      <li>«Triángulo» a todo: nadie es predicho positivo. VP = 0 y FP = 0. TVP = 0 / 10 = 0; TFP = 0 / 5 = 0.</li>
+      <li>Por eso el AUC por trapecios de esta ficha agrega (0,0) y (1,1) a los cuatro puntos de la lámina.</li>
+    </ol>
+    <p><strong>Error típico:</strong> pensar que «círculo a todo» es un buen clasificador porque su TVP es
+    1. Detecta todo porque acusa a todos: su TFP también es 1. Otro error: intercambiar los ejes (la ROC
+    pone TFP en X y TVP en Y).</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> TVP = VP / P y TFP = FP / N,
+    [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 22]; la tabla del
+    clasificador base en la ficha P10 de esta página; el cálculo es [INFERENCIA].</p>
+    </details>
 
     <div class="fuente"><strong>Evidencia:</strong> <code>FCD-2026-2_07</code>, láminas
     22, 23 y 24 —el ejercicio de curvas ROC, con las fórmulas TVP = VP/P, TFP = FP/N y
@@ -973,14 +1387,17 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     verificado sobre la imagen ampliada. AUC calculado por trapecios.</div>
 
     <div class="salto"><strong>Explicación completa:</strong>
+    <a href="roc_auc.html"><code>roc_auc.html</code></a> — la curva, el AUC y la
+    dominancia ·
     <a href="matriz_confusion.html"><code>matriz_confusion.html</code></a> — TVP y TFP,
     y por qué TFP no es 1 − precisión</div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p10">
   <div class="cab"><div class="num">9</div><div class="tema">«Punto base»</div>
-    <span class="eti b-pts">1,0</span><span class="eti b-nover">sin evidencia</span></div>
+    <span class="eti b-ficha">ficha P10</span>
+    <span class="eti b-pts">1,0 en el export</span><span class="eti b-parcial">sin contenido que responder</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas, completo</span>
   <strong>«Punto base»</strong><br>
   <em>Selección múltiple, 4 alternativas. En el export, las cuatro figuran como
@@ -988,26 +1405,39 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
   <details><summary>Ver análisis completo</summary>
 
-    <div class="amb"><strong>Esta pregunta no se puede responder, y vale 1,0 punto —
-    la séptima parte del certamen.</strong><br><br>
-    El registro de Canvas conserva el título («Punto base») y que era de selección
-    múltiple con cuatro alternativas, pero <strong>las cuatro opciones eran imágenes
-    que no se exportaron</strong>. No hay enunciado más allá del título, ni alternativas
-    legibles, ni la respuesta correcta.<br><br>
-    <strong>No voy a inventar de qué trataba.</strong> El expediente del repositorio ya
-    la clasifica como «no evaluable», y esa sigue siendo la clasificación honesta.</div>
+    <div class="amb"><strong>Lo que dijo el profesor durante el certamen cambia la
+    lectura de este ítem.</strong> Un compañero preguntó por él al comienzo y otro al
+    final:
+    <div class="cita">«En mi caso, es una pregunta 10. ¿Qué dice punto base? Y nada más.
+    […] Es que hay un punto base y yo lo pongo... Y yo lo pongo en esa pregunta. […] No
+    lo debería haber puesto así.» <span class="f">Sesión del Certamen 2, 28-ago ·
+    0:11:54–0:12:14 · pregunta un compañero; responde el profesor (quién habla es
+    [INFERENCIA] por el contexto) ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+    <div class="cita">«Una consulta que llegue unos minutos atrás a la pregunta 10 que
+    hice punto base. No tienen que responder nada. Y si ya le puse una alternativa. […]
+    Da lo mismo, da lo mismo.» <span class="f">Sesión del Certamen 2, 28-ago ·
+    2:01:12–2:01:28 · pregunta un compañero; responde el profesor (quién habla es
+    [INFERENCIA] por el contexto) ·
+    [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+    <strong>Lectura [INFERENCIA]:</strong> «Punto base» no era una pregunta de
+    contenido, sino el <strong>punto base de la nota</strong> —en la escala chilena de
+    1 a 7 la nota parte en 1,0— cargado como ítem de 1,0 punto; por eso no había nada
+    que responder. Encaja con el total «de 7», pero <strong>no se puede verificar</strong>
+    cómo quedó puntuado el ítem ni qué mostraban las cuatro imágenes.</div>
 
-    <div class="lbl">Lo único que se puede decir con fundamento</div>
-    <p>El término <strong>«punto base»</strong>, en el contexto de las dos preguntas
-    que la rodean —ambas sobre evaluación de clasificadores y curvas ROC— apunta con
-    alta probabilidad al <strong>clasificador base</strong>: la línea diagonal de la
-    ROC que va de (0,0) a (1,1), donde TVP = TFP y el modelo no discrimina mejor que
-    el azar.</p>
-    <div class="nota"><strong>Esto es [INFERENCIA], no evidencia.</strong> Se apoya en
-    la posición de la pregunta dentro del certamen y en el vocabulario de las láminas
-    22–24, no en el enunciado, que no tenemos. Si lo usas, dilo como hipótesis.</div>
+    <div class="lbl">Qué pasa con la hipótesis anterior</div>
+    <p>La versión anterior de esta ficha proponía, rotulado como [INFERENCIA], que
+    «punto base» aludía al <strong>clasificador base</strong> de la ROC, por la posición
+    del ítem entre preguntas de clasificadores. Con las citas de arriba esa hipótesis
+    <strong>pierde su apoyo</strong>: queda descartada como lectura del ítem.</p>
+    <div class="dist"><strong>La distinción de la ficha</strong> (según
+    <code>patron_evaluacion.md</code>): <em>declarar un vacío</em> <strong>≠</strong>
+    <em>producir una respuesta plausible</em>. Esta misma página lo ilustra: una
+    hipótesis plausible, aunque vaya rotulada, no reemplaza buscar la evidencia. Aquí
+    la evidencia existía, en la grabación de la sesión.</div>
 
-    <div class="lbl">Y ya que estamos: qué conviene saber del clasificador base</div>
+    <div class="lbl">Aparte, porque sirve para la ficha P9 (no para este ítem): el clasificador base en la ROC</div>
     <table>
     <tr><th>Situación</th><th>Punto en la ROC</th><th>Qué significa</th></tr>
     <tr><td>Dice «positivo» a todo</td><td class="num">(1 , 1)</td><td>Captura todos los positivos y también todos los falsos</td></tr>
@@ -1018,23 +1448,29 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     </table>
 
     <div class="oral"><strong>Si te preguntan por esta en un oral:</strong>
-    <span class="q">«De esa pregunta no conservo el enunciado: las alternativas eran
-    imágenes y no quedaron en el registro. Si se refería al clasificador base, es la
-    diagonal de la ROC, donde la tasa de verdaderos positivos iguala a la de falsos
-    positivos y el AUC vale 0,5: el modelo no discrimina mejor que el azar. Pero eso
-    es una inferencia por el contexto, no puedo afirmar que fuera eso.»</span>
-    <div style="margin-top:.6rem;font-size:.9rem;color:#a8a29e">Declarar el vacío es
-    la respuesta correcta. Este certamen tiene una pregunta entera —la 10— dedicada a
-    premiar esa conducta.</div></div>
+    <span class="q">«Ese ítem se llamaba "Punto base" y no tenía enunciado. Durante el
+    certamen el profesor dijo que no había que responder nada. Por cómo lo explicó,
+    entiendo que era el punto base de la nota y no una pregunta de contenido; eso
+    último es mi interpretación, no algo que él haya escrito.»</span>
+    <div style="margin-top:.6rem;font-size:.9rem;color:#a8a29e">Separar lo que se
+    dijo de lo que tú interpretas es la conducta que el certamen premia. Tiene un campo
+    entero dedicado a eso: la Pregunta 10 del export, ficha P11.</div></div>
 
-    <div class="fuente"><strong>Evidencia: ninguna.</strong> Historial de Canvas:
-    <code>multiple_choice_question</code>, título «Punto base», 4 alternativas, todas
-    <code>No answer text provided</code>. Las respuestas correctas están ocultas.</div>
+    <div class="fuente"><strong>Evidencia:</strong> historial de Canvas:
+    <code>multiple_choice_question</code>, título «Punto base», 1 punto, 4
+    alternativas, todas <code>No answer text provided</code>; las respuestas correctas
+    están ocultas. Aclaraciones del profesor en la sesión del Certamen 2 (citas arriba).
+    Que sea el punto base de la escala de notas: [INFERENCIA].</div>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a> ·
+    para la diagonal de la ROC, <a href="roc_auc.html"><code>roc_auc.html</code></a></div>
   </details>
 </div>
 
-<div class="preg">
+<div class="preg" id="p11">
   <div class="cab"><div class="num">10</div><div class="tema">Comentarios y supuestos</div>
+    <span class="eti b-ficha">ficha P11</span>
     <span class="eti b-pts">0 puntos</span><span class="eti b-ev">Evaluar</span></div>
   <div class="enun"><span class="lit">Enunciado textual · Canvas</span>
   Ingrese aquí cualquier comentario o supuesto que haya hecho.</div>
@@ -1060,14 +1496,19 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
     <div class="dist"><strong>La distinción que se evalúa:</strong>
     <em>declarar un vacío</em> <strong>≠</strong> <em>producir una respuesta
-    plausible</em>. Es la misma conducta que la 9B del Certamen 1 premia cuando pide
+    plausible</em>. Es la misma conducta que la
+    <a href="certamen_1.html#p9b">9B del Certamen 1</a> premia cuando pide
     no afirmar que el 2900 es un error.</div>
 
     <div class="nota"><strong>En el registro este campo quedó vacío.</strong> Junto con
-    los de las preguntas 7 y 8. No hay nada que auditar ahí — pero sí algo que
-    aprender: <strong>es el campo más barato del certamen</strong>. Cuesta dos líneas y
-    es la única pregunta cuya respuesta correcta puedes escribir sin saber la
-    materia.</div>
+    los de las preguntas 7 y 8 del export (polinomial y ROC). No hay nada que auditar
+    ahí — pero sí algo que aprender: <strong>es el campo más barato del
+    certamen</strong>. Cuesta dos líneas y es la única pregunta cuya respuesta correcta
+    puedes escribir sin saber la materia.<br><br>
+    <strong>Y durante el certamen tuvo otro uso:</strong> el profesor pidió responder
+    aquí la matriz de confusión, porque ese ítem tenía un problema de formato (ficha
+    <a href="#p8">P8</a>). Por eso, en este certamen, la respuesta a la matriz podía
+    quedar aquí y no en su propio ítem.</div>
 
     <div class="oral"><strong>Cómo se usa en un oral:</strong>
     <span class="q">«Los supuestos que hice fueron: círculos como clase positiva, lado
@@ -1077,6 +1518,29 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
     <div class="repreg"><strong>Repregunta para ti:</strong> de todo lo que respondiste
     en este certamen, nombra los tres supuestos que <em>tuviste</em> que hacer y no
     estaban en los enunciados.</div>
+
+    <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta modelo:</strong> «(1) En la matriz de confusión y en la ROC tomé los círculos
+    como clase positiva y el lado inferior izquierdo de la línea como predicción positiva. (2) En la
+    polinomial leí los cinco árboles de la figura a ojo, así que DAP y volumen son aproximados, y el
+    grado del polinomio del compañero lo deduje de la curva, porque el enunciado no lo dice. (3) En la
+    ROC supuse que los cuatro paneles de cada modelo son el mismo modelo con cuatro umbrales distintos,
+    sobre los mismos quince puntos.»</p>
+    <p><strong>Cómo se arma:</strong> recorre cada respuesta y pregúntate «¿qué usé que el enunciado no
+    me dio?». Salen tres tipos: convenciones (qué es positivo), lecturas aproximadas (valores sacados de
+    una figura) e interpretaciones del enunciado (qué representa cada panel).</p>
+    <p><strong>Error típico:</strong> escribir «no hice supuestos». En este certamen es imposible: la
+    matriz no tiene sentido sin decir cuál clase es positiva, y el propio enunciado pide
+    «explicite cada supuesto que haga». Otro error: confundir un supuesto con una duda sin resolver;
+    el supuesto se declara y se usa, la duda se declara y no se rellena.</p>
+    <p style="margin-bottom:0"><strong>Origen:</strong> los tres supuestos salen de las fichas
+    <a href="#p8">P8</a>, <a href="#p7">P7</a> y <a href="#p9">P9</a> de esta página (la ficha P7 advierte
+    que los puntos se leyeron a ojo); el tercero es [INFERENCIA] coherente con la lámina 22; la redacción
+    es [DATITO]. Si tus supuestos fueron otros, llévalos a Datito.</p>
+    </details>
+
+    <div class="salto"><strong>Explicación completa:</strong>
+    <a href="fundamentos_ciencia_datos.html"><code>fundamentos_ciencia_datos.html</code></a></div>
   </details>
 </div>
 
@@ -1084,13 +1548,13 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 
 <table>
 <tr><th>Patrón</th><th>Dónde</th><th>Cómo se ataca</th></tr>
-<tr><td>Cantidad disfrazada de calidad</td><td>P1</td><td>¿Aporta algo <em>distinto</em>, o solo más de lo mismo?</td></tr>
-<tr><td>Dirección invertida en una afirmación plausible</td><td>P3 opción 1</td><td>¿Más filas o más columnas? No es lo mismo</td></tr>
-<tr><td>Criterio de entrenamiento ofrecido como métrica de evaluación</td><td>P4 «ganancia de pureza»</td><td>¿Sirve para <em>construir</em> o para <em>juzgar</em>?</td></tr>
-<tr><td>Afirmación invertida punto por punto</td><td>P5 opción 1</td><td>Comparar con la lista de «para qué son malos»</td></tr>
-<tr><td>Verdad histórica que no responde la pregunta</td><td>P6 «la nube»</td><td>Volver a la cláusula que acota: «mediante redes neuronales»</td></tr>
-<tr><td>Ajuste perfecto presentado como buen ajuste</td><td>P7</td><td>¿Cuántos parámetros contra cuántos datos? ¿Y qué dice la física?</td></tr>
-<tr><td>Comparar modelos en un solo punto</td><td>P8</td><td>Un modelo es una curva, no un umbral</td></tr>
+<tr><td>Cantidad disfrazada de calidad</td><td><a href="#p1">P1</a></td><td>¿Aporta algo <em>distinto</em>, o solo más de lo mismo?</td></tr>
+<tr><td>Dirección invertida en una afirmación plausible</td><td><a href="#p3">P3</a> opción 1</td><td>¿Más filas o más columnas? No es lo mismo</td></tr>
+<tr><td>Criterio de entrenamiento ofrecido como métrica de evaluación</td><td><a href="#p4">P4</a> «ganancia de pureza»</td><td>¿Sirve para <em>construir</em> o para <em>juzgar</em>?</td></tr>
+<tr><td>Afirmación invertida punto por punto</td><td><a href="#p5">P5</a> opción 1</td><td>Comparar con la lista de «para qué son malos»</td></tr>
+<tr><td>Verdad histórica que no responde la pregunta</td><td><a href="#p6">P6</a> «la nube»</td><td>Volver a la cláusula que acota: «mediante redes neuronales»</td></tr>
+<tr><td>Ajuste perfecto presentado como buen ajuste</td><td><a href="#p7">P7</a></td><td>¿Cuántos parámetros contra cuántos datos? ¿Y qué dice la física?</td></tr>
+<tr><td>Comparar modelos en un solo punto</td><td>P8 del export (ficha <a href="#p9">P9</a>)</td><td>Un modelo es una curva, no un umbral</td></tr>
 </table>
 
 <h2>Correcciones críticas y puntos que no deben memorizarse sin verificar</h2>
@@ -1102,16 +1566,26 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 <table>
 <tr><th>Dónde</th><th>Qué decía</th><th>Qué corresponde</th></tr>
 <tr><td><strong>Matriz de confusión</strong></td><td>VP 12 · FN 3 · FP 4 · VN 31 · total 50 · exactitud 86 % · precisión 75 % · TVP 80 % · TFP 11,4 %</td><td><strong>No derivable.</strong> La figura del enunciado no está en el repositorio. Y las figuras hermanas tienen <strong>15 puntos, no 50</strong>. Queda solo el procedimiento</td></tr>
-<tr><td><strong>P8 · ROC</strong></td><td>Tabla de umbrales «bajo / medio / alto» con pares 0,95/0,34 · 0,88/0,51 · 0,80/0,14 · 0,70/0,23 · 0,45/0,03 · 0,38/0,06</td><td><strong>No derivable, y contradice la lámina 23</strong>, que da (0,0 · 0,3), (0,0 · 0,6), (0,2 · 0,8), (0,6 · 1,0). Reemplazada por los valores del profesor</td></tr>
-<tr><td><strong>P8 · AUC</strong></td><td>0,78 y 0,68 en la respuesta reconstruida</td><td>Sobre los puntos del profesor, el Modelo 1 da <strong>0,900</strong> por trapecios. Diferencia de 0,12, no explicable por redondeo</td></tr>
+<tr><td><strong>P8 · ROC</strong> (ficha <a href="#p9">P9</a>)</td><td>Tabla de umbrales «bajo / medio / alto» con pares 0,95/0,34 · 0,88/0,51 · 0,80/0,14 · 0,70/0,23 · 0,45/0,03 · 0,38/0,06</td><td><strong>No derivable, y contradice la lámina 23</strong>, que da (0,0 · 0,3), (0,0 · 0,6), (0,2 · 0,8), (0,6 · 1,0). Reemplazada por los valores del profesor</td></tr>
+<tr><td><strong>P8 · AUC</strong> (ficha <a href="#p9">P9</a>)</td><td>0,78 y 0,68 en la respuesta reconstruida</td><td>Sobre los puntos del profesor, el Modelo 1 da <strong>0,900</strong> por trapecios. Diferencia de 0,12, no explicable por redondeo</td></tr>
+</table>
+
+<h3>1b · Cifras y ejemplos corregidos en la revisión del 2026-09-21</h3>
+
+<table>
+<tr><th>Dónde</th><th>Qué decía</th><th>Qué corresponde</th></tr>
+<tr><td><a href="#p2">P2</a> · Melbourne</td><td>R² 0,765 y MAE 185.449 AUD</td><td>R² <strong>0,757</strong> y MAE <strong>188.218 AUD</strong> en 2017, HistGradientBoosting sobre <code>log1p(Price)</code> (<code>05_RESULTADOS/resultados_temporal.json</code>)</td></tr>
+<tr><td><a href="#p6">P6</a> · ImageNet</td><td>«un millón y medio de imágenes»</td><td><strong>1,2 millones</strong> de imágenes de entrenamiento (lámina 6)</td></tr>
+<tr><td><a href="#p7">P7</a> · ejemplo del profesor</td><td>«caso Deep-Hub… la misma relación diámetro-volumen»</td><td>El caso Arauco de la clase del 31-jul es <strong>contar árboles en imágenes de dron</strong>, no diámetro-volumen; «Deep-Hub» no aparece en las transcripciones</td></tr>
 </table>
 
 <h3>2 · Correcciones estructurales</h3>
 
 <table>
 <tr><th>Qué</th><th>Corrección</th></tr>
-<tr><td>«11 preguntas»</td><td><strong>10 preguntas numeradas más un «Espaciador» de 0 puntos.</strong> Desde la matriz de confusión, la numeración del repositorio va corrida en uno respecto de Canvas</td></tr>
-<tr><td>El ítem de matriz de confusión como pregunta de peso</td><td>En Canvas es <code>text_only_question</code> con <strong>0 puntos</strong>. Sigue siendo material de estudio de primer nivel, pero no era una pregunta calificada</td></tr>
+<tr><td>«11 preguntas»</td><td><strong>En el export: 10 preguntas numeradas más un «Espaciador» de 0 puntos.</strong> Desde la matriz de confusión, la numeración del repositorio va corrida en uno respecto del export. Pero durante el certamen se hablaba de «la 8», «la 9», «la 10» y «la 11» (sesión del 28-ago): <strong>las 11 describen lo que se veía en pantalla</strong>. Ninguna de las dos es «la» numeración; habla por tema</td></tr>
+<tr><td>El ítem de matriz de confusión como pregunta de peso</td><td>En el export es <code>text_only_question</code> con <strong>0 puntos</strong>. Pero durante el certamen el profesor pidió responderla (en el campo de comentarios o en una hoja fotografiada) tras un problema de formato: <strong>se esperaba respuesta</strong>. Si se calificó y cuánto valía <strong>no se puede saber</strong>; que el punto que falta para llegar a «de 7» sea este ítem es [INFERENCIA]. Ver ficha <a href="#p8">P8</a></td></tr>
+<tr><td>«Punto base» como pregunta de 1,0 punto sobre el clasificador base</td><td>El profesor dijo durante el certamen que ahí <strong>no había que responder nada</strong>. Lectura [INFERENCIA]: era el punto base de la nota, no contenido. La hipótesis del clasificador base queda descartada. Ver ficha <a href="#p10">P10</a></td></tr>
 <tr><td>«Las respuestas entregadas»</td><td>Los campos <code>Su respuesta:</code> de las tres preguntas de desarrollo están <strong>vacíos</strong> en el registro. Lo que se audita son <strong>reconstrucciones posteriores</strong>, como declara el propio expediente</td></tr>
 <tr><td>P5 y P6 marcadas «evidencia parcial» en el expediente</td><td><strong>Ambas son verificables al 100 %.</strong> Las láminas 45–46 y 6–7/33–34 respaldan cada alternativa. Era una búsqueda no hecha</td></tr>
 </table>
@@ -1122,8 +1596,8 @@ Canvas para los enunciados. NotebookLM no conectó en esta revisión.</p>
 <tr><th>Afirmación</th><th>Estado</th><th>Qué hacer</th></tr>
 <tr><td>Cualquier cifra concreta de la matriz de confusión</td><td><span class="eti b-nover">sin evidencia</span></td><td>La figura no existe en el repositorio. Estudia el procedimiento y la verificación de marginales</td></tr>
 <tr><td>«AUC 0,78 frente a 0,68»</td><td><span class="eti b-nover">sin evidencia</span></td><td>Usa 0,900 del Modelo 1, o mejor: argumenta por <strong>dominancia</strong>, que no necesita integrar nada</td></tr>
-<tr><td>De qué trataba «Punto base»</td><td><span class="eti b-nover">sin evidencia</span></td><td>Las alternativas eran imágenes no exportadas. La hipótesis del clasificador base es [INFERENCIA] por contexto</td></tr>
-<tr><td>Los números de pregunta</td><td><span class="eti b-parcial">parcial</span></td><td>No coinciden con Canvas desde la matriz en adelante. <strong>Habla por tema, no por número</strong></td></tr>
+<tr><td>De qué trataba «Punto base»</td><td><span class="eti b-parcial">parcial</span></td><td>Las alternativas eran imágenes no exportadas. Lo verificable: el profesor dijo «No tienen que responder nada». Que fuera el punto base de la nota es [INFERENCIA]; la hipótesis del clasificador base quedó descartada</td></tr>
+<tr><td>Los números de pregunta</td><td><span class="eti b-parcial">parcial</span></td><td>Desde la matriz en adelante, los del repositorio no coinciden con el export, pero sí con los que se usaron durante el certamen. <strong>Habla por tema, no por número</strong></td></tr>
 <tr><td>Que el Modelo 1 gana «porque tiene más AUC»</td><td><span class="eti b-parcial">parcial</span></td><td>Es cierto pero débil. Gana por <strong>dominancia en todos los umbrales</strong>, que es un argumento más fuerte y no depende de calcular un área</td></tr>
 <tr><td>Que los datos de P7 son exactamente (15; 0,38) … (35; 1,41)</td><td><span class="eti b-parcial">parcial</span></td><td>Leídos de la figura a ojo. Los usas para argumentar la forma de la curva, no para recalcular el ajuste</td></tr>
 </table>
@@ -1142,17 +1616,60 @@ Un compañero te dice: <em>«el Modelo 1 es mejor porque su AUC es 0,78 contra
 <strong>¿Su conclusión es correcta? ¿Y su argumento? Respóndelo distinguiendo las dos
 cosas, y da un argumento que no necesite calcular ningún área.</strong><br><br>
 Pista: hay una palabra que resuelve la pregunta entera, y aparece cuatro veces en la
-P8.
+P8 del export (ficha <a href="#p9">P9</a>). Cuando lo tengas, llévalo a Datito.
 </div>
 
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta en una frase:</strong> la conclusión es correcta (el Modelo 1 es mejor), pero el
+argumento no: esas dos cifras de AUC no se pueden reproducir desde ninguna fuente, y el argumento que
+no necesita ningún área es la <strong>dominancia</strong>.</p>
+<p><strong>Respuesta modelo</strong> (como la dirías en un oral):</p>
+<blockquote style="border-left:3px solid #059669;margin:.5rem 0;padding:.3rem .9rem;background:#fff">
+«Tu conclusión está bien, el Modelo 1 es mejor; el argumento no. Ese 0,78 contra 0,68 no sale de
+ningún lado: con los cuatro puntos del profesor en la lámina 23, más (0,0) y (1,1), el AUC del Modelo 1
+por trapecios es 0,900, no 0,78. Pero no necesito ningún área: el Modelo 1 <em>domina</em> al 2, porque
+a igual tasa de falsos positivos recupera más verdaderos positivos. En el primer umbral, los dos tienen
+TFP 0,0 y el Modelo 1 tiene TVP 0,3 contra 0,2. Si una curva queda por encima de la otra, la decisión
+no depende de dónde se opere. Y la razón de fondo es geométrica: los datos se separan en diagonal y
+solo el Modelo 1 tiene fronteras diagonales.»
+</blockquote>
+<p><strong>Cómo se resuelve:</strong> (1) separa conclusión de argumento y evalúa cada uno por su lado;
+(2) verifica el número: 0,2 × 0,70 + 0,4 × 0,90 + 0,4 × 1,00 = 0,14 + 0,36 + 0,40 = 0,900; (3) cambia el
+argumento por uno que no dependa de integrar: a igual TFP, más TVP.</p>
+<p><strong>Criterios de corrección:</strong></p>
+<ul>
+<li>Dice explícitamente que la conclusión es correcta y el argumento no.</li>
+<li>Explica por qué el 0,78 / 0,68 no se sostiene (no es derivable; con la lámina 23 da 0,900).</li>
+<li>Usa la palabra y la idea: dominancia, a igual TFP más TVP, en todos los umbrales.</li>
+<li>Honestidad sobre el Modelo 2: lo contado es su primer panel; no inventa sus otros pares.</li>
+</ul>
+<p><strong>Error típico:</strong> «da lo mismo el número si la conclusión es correcta». En un oral,
+una cifra que no puedes reproducir hace caer la respuesta completa. Otro error: corregir 0,78 por 0,900 y
+quedarse ahí, sin cambiar a la dominancia.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 23];
+el AUC por trapecios y el primer panel de cada modelo, en la ficha <a href="#p9">P9</a>; que la
+dominancia en todos los umbrales se lee de la figura y la geometría es [INFERENCIA] (ver esa ficha).
+La redacción es [DATITO].</p>
+</details>
+
 <footer>
-Generado por Datito · <code>07_DATITO/visual/certamen_2.html</code><br>
-Enunciados transcritos del historial de exámenes de Canvas
+Generado por Datito · <code>07_DATITO/visual/certamen_2.html</code> · funciona sin conexión<br>
+Fuentes: enunciados transcritos del historial de exámenes de Canvas
 (<code>01_DOCUMENTACION/01_CERTAMEN2/fuentes/</code>), donde las respuestas correctas
 figuran como ocultas y las alternativas marcadas no quedaron registradas.
-Verificación contra <code>11_PRESENTACIÓN/</code> (clases 6, 7 y 8). Figuras
-recuperadas de <code>MisRespuestas-intento-certamen.pdf</code>. NotebookLM no
-disponible en esta revisión. Funciona sin conexión.
+Verificación contra <code>11_PRESENTACIÓN/</code> (resumen de regresión y mazos FCD-07 y FCD-08). Figuras
+recuperadas de <code>MisRespuestas-intento-certamen.pdf</code>. Aclaraciones en vivo y
+ejemplos de clase desde <code>09_CLASES/transcripciones/</code> (sesión del Certamen 2
+del 28-ago, clase del 21-ago y clase del 31-jul; faster-whisper, con errores ASR).
+Cifras de Melbourne de <code>05_RESULTADOS/resultados_temporal.json</code>. NotebookLM no
+disponible en esta revisión. Funciona sin conexión.<br>
+Datos reales: enunciados, puntajes del export, láminas, citas de clase y cifras de
+Melbourne. Lecturas a ojo: los puntos de la figura de la P7. Ilustrativos [DATITO]: los
+números de las repreguntas (80 %, 100 filas, precisión 0,9…) y los conteos inventados de sus
+respuestas (las 100 filas del ensamble, los 100 positivos y 25 negativos de la P4). Datos reales en
+las respuestas: la matriz 6/2/1/7 de la lámina 19, la matriz 3×3 de Galaxy Zoo
+(<code>02_PROYECTO_FCD/Desafio/REPORT.md</code>) y los pares de la lámina 23. Cada pregunta y
+repregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
 </footer>
 
 </main>

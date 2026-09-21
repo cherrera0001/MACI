@@ -48,23 +48,50 @@
   button:hover{background:#1d4ed8}
   button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
   .fold{font-family:ui-monospace,monospace;font-size:.82rem;margin-top:.8rem}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul)}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .vecino a{color:var(--azul)}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Train / validation / test</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="generalizacion.html">Generalizacion</a>, <a href="validacion_cruzada.html">Validacion cruzada</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 11 · peso en certamen media (transversal) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
+<details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:43:55–0:54:42 · profesor — tres conjuntos; hiperparametros; por que validacion y test<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:43:55]</span></li><li><b>Clase del 31-jul</b> · 1:06:15–1:07:22 · profesor — un test no representativo (el ejemplo de 2008)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:15]</span></li><li><b>Clase del 31-jul</b> · 1:27:34–1:30:53 · profesor — el sistema para Arauco: etiquetar y evaluar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:27:34]</span></li><li><b>Clase del 7-ago</b> · 1:25:05–1:26:31 · profesor — el criterio de impureza es un hiperparametro<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:25:05]</span></li><li><b>Presentaciones del 4-sep</b> · 2:01:26–2:09:21 · profesor — pregunta a un grupo por entrenamiento y evaluacion (Melbourne)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:26]</span></li><li><b>Ayudantía del 31-jul</b> · 0:58:01–1:01:05 · ayudantía — particiones en el notebook <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:58:01]</span></li><li><b>Ayudantía del 7-ago</b> · 0:10:55–0:14:05 · ayudantía — split aleatorio y estratificacion <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:10:55]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Train / Validation / Test</h1>
-<p class="sub">Y validación cruzada, que tu profesor llama «la técnica más importante de toda la IA».<br>
-Fundamentos de Ciencia de Datos · UdeC · Clase 6</p>
+<p class="sub">Y las estrategias de validación cruzada que se construyen encima.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul</p>
 
-<div class="cita">
-"La clase cierra con la herramienta que el profesor llama la más importante de
-toda la IA: la <strong>validación cruzada</strong> —holdout, submuestreo
-aleatorio, K-Fold y bootstrap—, junto con la distinción entre parámetros e
-hiperparámetros y los tres conjuntos entrenamiento / validación / test."
-<span class="f">Resumen de la Clase 6 · <code>11_PRESENTACIÓN/_markdown/</code></span>
-</div>
+<p>La partición en tres conjuntos es la base de lo que el profesor anunció al
+<strong>inicio</strong> de esa clase, con reserva:</p>
+
+<div class="cita">«Para el final terminar viendo la técnica más importante yo creo de quizás toda la inteligencia artificial que es la ⟨validación⟩ cruzada.» <span class="f">Clase del 31-jul · 0:02:25–0:02:32 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p style="font-size:.9rem;color:var(--suave)">El Resumen de la Clase 6 lo parafrasea
+como cierre de la clase y sin el «yo creo» ni el «quizás»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 1].
+La frase textual es la de arriba: un anuncio, no una conclusión.</p>
 
 <div class="grafo">
   <span class="n">Datos, features y target</span> →
@@ -87,24 +114,32 @@ dentro de casi todas. Estudiarlo por lo que puntúa es leer mal el mapa.
 </div>
 
 <div class="tension">
-<strong>La trampa de la validación cruzada.</strong> Tu profesor la llama «la
-técnica más importante de toda la IA» y el programa casi no la pregunta: su
-peso de evaluación es <em>bajo</em>, y cuando aparece lo hace
-<em>como remedio, no como pregunta propia</em> —la respuesta a «¿y cómo
-arreglas el sobreajuste?», nunca el enunciado.<br><br>
-Esa asimetría es real y conviene que la sepas: <strong>es fundacional pero poco
-preguntada, y nueve conceptos posteriores la necesitan.</strong> Si decides cuánto
-estudiar mirando solo el certamen, esta es exactamente la que vas a subestimar.
+<strong>Tensión G12 de este concepto:</strong> importancia curricular
+<strong>11</strong> frente a peso de evaluación <em>medio</em>; en
+<code>07_DATITO/grafo.yaml</code> no está declarada (<code>tension: null</code>).<br><br>
+La de su vecino sí lo está: la validación cruzada es «fundacional pero poco
+preguntada» —peso de evaluación bajo, aparece <em>como remedio, no como pregunta
+propia</em>— aunque el profesor la haya anunciado como la técnica más importante.
+Está en <a href="validacion_cruzada.html">validacion_cruzada.html</a>.
 </div>
 
 <h2>1 · El problema, con el caso del profesor</h2>
 
-<p>Tu profesor lo ilustra con <strong>Deep-Hub: conteo de árboles con drones para
-Arauco</strong>. Un dron sobrevuela un predio y un modelo cuenta cuántos árboles
-hay en cada imagen.</p>
+<p>Al cerrar la Clase del 31-jul, el profesor mostró un caso real propio:</p>
 
-<p>Tienes 1.000 imágenes ya contadas a mano. Con ellas quieres construir el
-modelo. Y aquí aparece el problema que obliga a partir los datos:</p>
+<div class="cita">«Este es un sistema que nosotros armamos para Arauco, donde básicamente ellos tenían drones que vuelan por los predios y querían contarle la cantidad de árboles, ese era como el objetivo principal, tenían muchas, muchas imágenes […] se separan las celditas en conjunto entrenamiento, ⟨validación⟩ y test» <span class="f">Clase del 31-jul · 1:28:10–1:28:52 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p style="font-size:.9rem;color:var(--suave)">El Resumen de la Clase 6 titula
+este ejemplo «Deep-Hub» (lámina 32 según ese resumen)
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 16].
+En las 14 transcripciones disponibles al 2026-09-21 ese nombre no aparece: en voz,
+el profesor lo presenta como «un sistema que nosotros armamos para Arauco».</p>
+
+<p>Supón que tienes <strong>1.200 imágenes</strong> ya contadas a mano —cifra
+ilustrativa [DATITO]: el profesor solo dijo «muchas, muchas imágenes»—. Con ellas
+quieres construir el modelo. Y aquí aparece el problema que obliga a partir los
+datos:</p>
 
 <div class="clave">
 Si el modelo <strong>ve</strong> una imagen mientras aprende, esa imagen ya no
@@ -127,12 +162,20 @@ distintas</strong>, y cada una gasta un conjunto.</p>
 
 <h3>Parámetros frente a hiperparámetros</h3>
 
-<div class="cita">
-"—Es un parámetro que uno… —No. Es un <strong>hiperparámetro</strong>, Camilo.
-Tú lo tienes que elegir a priori, y generalmente lo que uno hace es elegirlo
-usando validación cruzada."
-<span class="f">Tu profesor, transcripción de clase</span>
-</div>
+<p>En la Clase del 7-ago, hablando de árboles de decisión, un compañero preguntó
+cuándo conviene usar uno u otro criterio de impureza (Gini, entropía o error de
+clasificación). El profesor devolvió la pregunta al curso: algo que se escoge antes
+de ajustar el modelo, como el orden del polinomio, ¿cómo se llama?
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:24:56–1:26:06].
+Y cerró así:</p>
+
+<div class="cita">«Es un hiperparámetro[…]. Entonces, tú lo tienes que elegir a priori y generalmente lo que uno hace es que lo elige usando validación cruzada. De acuerdense que si no saben la respuesta, digan validación cruzada. No, no siempre, la mayor parte de las veces la respuesta es validación cruzada.» <span class="f">Clase del 7-ago · 1:26:06–1:26:31 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Fíjate en lo que eso implica: <strong>el criterio de impureza de un árbol es un
+hiperparámetro</strong>, igual que el grado del polinomio. Todo lo que se fija antes
+de entrenar se elige con validación, no con el entrenamiento. Árboles en
+<a href="arboles_y_ensambles.html#arboles">arboles_y_ensambles.html</a>.</p>
 
 <table>
 <tr><th></th><th>Parámetro</th><th>Hiperparámetro</th></tr>
@@ -144,19 +187,85 @@ usando validación cruzada."
 
 <h3>Y el riesgo de usar solo dos</h3>
 
-<p>Si pruebas veinte modelos sobre el <em>mismo</em> conjunto y te quedas con el
-mejor, ese conjunto <strong>dejó de ser imparcial</strong>: lo usaste para
-decidir. Por azar, alguno encajará especialmente bien con sus particularidades.</p>
+<p>Esta duda apareció tal cual en la Clase del 31-jul, justo después de que el
+profesor explicara los tres conjuntos:</p>
+
+<div class="cita">«¿por qué entonces tengo que hacer conjunto de ⟨validación⟩ y de test? ¿Por qué no uso solo uno?» <span class="f">Clase del 31-jul · 0:47:02–0:47:10 · un compañero (según el Resumen de la Clase 6, la pregunta la formuló un estudiante) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p>La objeción de fondo que siguió en ese intercambio fue: si el modelo no vio la
+validación durante el entrenamiento, ¿por qué no basta con ella? [INFERENCIA:
+resumen del tramo
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:47:10–0:49:07]].
+La respuesta del profesor:</p>
+
+<div class="cita">«[…] el problema que tenemos ahí es que se podría sobreajustar el conjunto de ⟨validación⟩. ¿Me entienden? Porque yo estoy tomando una decisión sobre el modelo, utilizando el conjunto de ⟨validación⟩. […] Entonces por eso la métrica final se mide sobre el conjunto de test.» <span class="f">Clase del 31-jul · 0:49:50–0:50:35 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p>Dicho de otro modo: si pruebas veinte modelos sobre el <em>mismo</em> conjunto y
+te quedas con el mejor, ese conjunto <strong>dejó de ser imparcial</strong>: lo
+usaste para decidir. Por azar, alguno encajará especialmente bien con sus
+particularidades. [DATITO]</p>
 
 <div class="peligro">
 <strong>El conjunto que usas para elegir queda quemado para medir.</strong><br>
-Por eso el test «se guarda en el bolsillo» desde el primer día. Vale exactamente
-una medición.
+Por eso el test se aparta primero: «me lo guardo en el bolsillo»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:44:12],
+«siempre parto guardando el test, eso que no se lo olvide nunca»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:57:55],
+y «el conjunto de test no cambia entre una iteración y otra»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:09:06–1:09:10].
+Vale exactamente una medición.
 </div>
 
-<h2>3 · Los cuatro métodos que enseñó tu profesor</h2>
+<div class="pred" data-p="rep">
+  <div class="q">Predice antes de seguir. El profesor planteó este ejemplo de
+  partición para una serie de tiempo:</div>
+  <div class="cita">«[…] yo digo voy a considerar para el entrenamiento los datos hasta el año 2025, voy a usar como conjunto de ⟨validación⟩ los datos del año 2025 al 2026, y voy a juntar en el conjunto de test todos los datos del año 2008, por decir algo.» <span class="f">Clase del 31-jul · 1:06:52–1:07:05 · profesor ·
+  [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+  <p style="margin:.2rem 0 .6rem"><strong>El test está separado en el tiempo y el
+  modelo nunca lo vio. ¿Qué problema tiene?</strong></p>
+  <button data-r="ninguno">Ninguno: está separado, así que es honesto</button>
+  <button data-r="rep">El test no representa lo que el modelo tiene que hacer</button>
+  <button data-r="fuga">Hay fuga del test hacia el entrenamiento</button>
+  <div class="veredicto"></div>
+</div>
 
-<p>Pulsa cada uno para ver cómo parte las 1.000 imágenes:</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el test <strong>no es representativo</strong> de lo
+que el modelo tiene que hacer: mide 2008 cuando el modelo se va a usar después de
+2026.</p>
+<p><strong>Cómo se resuelve:</strong> 1) pregunta para qué se va a usar el modelo:
+predecir lo que viene después de los datos; 2) pregunta qué mide el test: un año
+lejano, muy separado de la validación; 3) si el test no se parece al uso, su error
+no informa sobre el uso, aunque el modelo nunca lo haya visto; 4) el test correcto
+sería el período más reciente, posterior a la validación.</p>
+<p><strong>Error típico:</strong> creer que basta con que el test esté «separado» y
+no haya sido visto. Es necesario, pero no suficiente. Tampoco es fuga: nada de 2008
+entra al entrenamiento.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> «test no es
+representativo de lo que yo quiero que el modelo haga»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:07:15–1:07:22].</p>
+</details>
+
+<h2>3 · Las cuatro estrategias: holdout es el caso base</h2>
+
+<p>La lámina de la clase, según el Resumen de la Clase 6, lista cuatro estrategias
+de validación cruzada: holdout, bootstrap, submuestreo aleatorio y K-Fold
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 14].
+Matiz de vocabulario: el profesor dijo que una sola partición «no es validación
+cruzada, esto es validación nomás»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:51:29–0:51:38]
+y minutos después puso el holdout primero en la lista de estrategias
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:54:42–0:55:15].
+Lectura coherente [INFERENCIA]: el holdout es el <strong>caso base</strong> (una
+partición, un solo valor); submuestreo aleatorio, K-Fold y bootstrap lo
+<strong>repiten</strong>, y eso los vuelve validación cruzada propiamente tal. El
+detalle, con las citas, en <a href="validacion_cruzada.html">validacion_cruzada.html</a>.</p>
+
+<p>Pulsa cada una para ver cómo reparte las 1.200 imágenes ilustrativas [DATITO].
+En <strong>todas</strong> el test (300) se aparta primero y no cambia entre
+rondas:</p>
 
 <div class="panel">
   <p>
@@ -169,8 +278,7 @@ una medición.
   <div class="leyenda">
     <span><i class="cuad tr"></i> entrenamiento</span>
     <span><i class="cuad va"></i> validación</span>
-    <span><i class="cuad te"></i> test</span>
-    <span><i class="cuad no"></i> sin usar en esa ronda</span>
+    <span><i class="cuad te"></i> test (guardado)</span>
   </div>
   <div id="expl" style="margin-top:1rem"></div>
 </div>
@@ -181,17 +289,40 @@ una medición.
 <tr><th>¿Los datos tienen orden temporal?</th><th>Método</th><th>Por qué</th></tr>
 <tr><td><strong>No</strong> — cada fila es independiente</td><td>K-Fold con mezcla</td><td>Aprovecha todos los datos y promedia el azar de la partición</td></tr>
 <tr><td><strong>Sí</strong> — hay fechas y predices el futuro</td><td><strong>Corte temporal</strong></td><td>Mezclar filtra información del futuro hacia el entrenamiento</td></tr>
-<tr><td>Muy pocos datos</td><td>K-Fold con k alto, o bootstrap</td><td>Un holdout desperdicia datos que no sobran</td></tr>
+<tr><td>Pocos datos</td><td>Oficial (P4): K-Fold. En clase: bootstrap si son <em>muy</em> pocos</td><td>Un holdout desperdicia datos que no sobran. Las dos fuentes no dicen lo mismo: ver <a href="validacion_cruzada.html">validacion_cruzada.html</a> §7</td></tr>
+<tr><td>Hay clases (clasificación)</td><td>Partición estratificada</td><td>Que cada conjunto conserve las proporciones de clases (ayudantía, abajo)</td></tr>
 </table>
 
 <div class="nota">
-<strong>La frase del profesor que conviene tomar en serio, aunque la dijo medio
-en broma:</strong><br><br>
-<em>"Si no saben la respuesta, digan validación cruzada. No siempre, pero la
-mayor parte de las veces la respuesta es validación cruzada."</em><br><br>
-No es un truco para aprobar: es una señal de qué considera central. Si una
-pregunta te da a elegir cómo estimar el error de forma honesta, la validación
-cruzada es casi siempre la respuesta defendible.
+<strong>Ya viste arriba la frase «si no saben la respuesta, digan validación
+cruzada».</strong> Tómala con su reserva: él mismo agregó «No, no siempre». No es
+un truco para aprobar: es una señal de qué considera central. Si una pregunta te da
+a elegir cómo estimar el error de forma honesta, la validación cruzada suele ser la
+respuesta defendible — dicha con la estrategia y la métrica. [DATITO]
+</div>
+
+<h3>Estratificar cuando hay clases (ayudantía)</h3>
+
+<div class="cita">«[…] si es que yo tuviera clases lo ideal sería mantener las proporciones de clases por ejemplo en todos los conjuntos […] en el conjunto de test no tengo datos de unicornios no voy a estar evaluando para todas las clases» <span class="f">Ayudantía del 7-ago · 0:13:06–0:13:33 · la ayudantía (no es materia de certamen) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Tu caso de aplicación es Galaxy Zoo: la clase 0 («no decidible») es solo el
+<strong>9,6 %</strong> del entrenamiento
+[FUENTE · Repo: 07_DATITO/referencia/material.md]. Un fold sin estratificar puede
+quedarse con muy pocas; el ejercicio de cálculo del §6 lo pone en números.</p>
+
+<div class="nota">
+<strong>Advertencia: desordenar no siempre es inocente.</strong> En la ayudantía del
+31-jul, al mostrar <code>train_test_split</code>, se dijo que la función desordena
+los datos, y la razón que se dio fue esta:
+<div class="cita">«y eso de los desordena porque si pueden tener un orden temporal y pueden tener correlaciones temporales es la idea de desordenar» <span class="f">Ayudantía del 31-jul · 1:24:06–1:24:12 · la ayudantía ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md]</span></div>
+Eso vale si el orden es un accidente del archivo. Pero si el objetivo es
+<strong>predecir el futuro</strong>, el orden temporal es justamente lo que hay que
+respetar: desordenar mete datos del futuro en el entrenamiento, y por eso tu
+proyecto de Melbourne corta por año (§5). El propio profesor usó series de tiempo
+como ejemplo de partición temporal en la Clase del 31-jul (la predicción del §2).
+Ante la duda, lo que manda es cómo se va a usar el modelo. [INFERENCIA]
 </div>
 
 <h2>5 · Tu propio proyecto</h2>
@@ -220,19 +351,163 @@ split aleatorio. Un número más alto midiendo mal — porque mezclaba 2016 y 20
 y el modelo veía el futuro durante el entrenamiento.
 </div>
 
-<h2>6 · Procedimiento para el papel</h2>
+<h2>6 · Ejercicios</h2>
+
+<h3>Cálculo: Galaxy Zoo con K-Fold estratificado</h3>
+<p>El entrenamiento del Desafío Galaxy Zoo tiene <strong>1.000 filas</strong>:
+clase 0 = 96, clase 1 = 227, clase 2 = 677
+[FUENTE · Repo: 07_DATITO/referencia/material.md]. Haces K-Fold con k = 5.
+(a) ¿Cuántas filas tiene cada fold? (b) Si estratificas, ¿cuántas filas de cada clase
+esperas por fold? (c) ¿Con cuántas filas se entrena en cada ronda?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) 200 filas por fold; (b) ~19,2 de la clase 0,
+~45,4 de la clase 1 y ~135,4 de la clase 2 por fold; (c) 800 filas de
+entrenamiento por ronda.</p>
+<p>(a) 1.000 / 5 = <strong>200</strong> filas por fold.</p>
+<p>(b) Cada fold conserva las proporciones: clase 0 → 96 / 5 = <strong>19,2</strong>
+(19 o 20); clase 1 → 227 / 5 = <strong>45,4</strong> (45 o 46); clase 2 →
+677 / 5 = <strong>135,4</strong> (135 o 136). Sin estratificar, un fold podría
+quedar con bastantes menos filas de la clase 0 por azar [INFERENCIA].</p>
+<p>(c) Las otras 4 partes: 4 × 200 = <strong>800</strong> filas. Y el test del
+desafío sigue aparte: no entra en ningún fold.</p>
+<p><strong>Error típico:</strong> repartir las clases en partes iguales (≈ 67 de cada
+una por fold) en vez de conservar las proporciones; o meter el test del desafío en
+los folds, con lo que ya no queda nada guardado para medir.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> los conteos de clase,
+[FUENTE · Repo: 07_DATITO/referencia/material.md]; la idea de mantener las
+proporciones, ayudantía del 7-ago
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:13:06–0:13:33];
+la aritmética es [INFERENCIA].</p>
+</details>
+
+<h3>Interpretación</h3>
+<p>Tu validación con K-Fold (k = 4) dio un error de 0,12 en promedio, con rondas
+entre 0,11 y 0,13. El test da <strong>0,31</strong>. Cifras ilustrativas [DATITO].
+¿Qué significa, dicho en términos del problema?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el modelo va a rendir bastante peor de lo que
+prometía la validación, y antes de reportar hay que averiguar por qué el test es
+distinto.</p>
+<p><strong>Cómo se resuelve:</strong> 1) rango de validación: 0,11–0,13; 2) test:
+0,31, casi el triple del promedio y muy fuera del rango; 3) regla del profesor: el
+test debería caer dentro de lo que dio la validación; 4) conclusión: algo raro pasa
+y hay que buscarlo.</p>
+<p><strong>Error típico:</strong> decir «el modelo sobreajusta» y quedarse ahí, o
+volver a elegir el modelo mirando el test (eso lo quema como medición).</p>
+<p>El test cae muy lejos de lo que la validación anticipaba: el modelo va a rendir
+peor de lo que prometía la selección. Según el
+profesor, si el error de test no cae dentro de la distribución de los errores de
+validación «hay algo raro»: un test con anomalías o no representativo
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:22–1:06:47].
+Antes de reportar, hay que averiguar en qué se diferencia el test: ¿otro período?,
+¿otra población?, ¿se decidió tanto con la validación que quedó optimista? Más en
+<a href="validacion_cruzada.html">validacion_cruzada.html</a> §5.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> la regla es del profesor
+(fuente arriba); las cifras son [DATITO].</p>
+</details>
+
+<h3>Transferencia: agricultura</h3>
+<p>Una cooperativa de Ñuble tiene el rendimiento de <strong>40 huertos de
+cerezos</strong> en las temporadas 2021 a 2025 (200 filas) [DATITO] y quiere
+predecir la temporada 2026. ¿Cómo partes en entrenamiento, validación y test, y
+qué no puedes hacer?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> partir por tiempo —entrenamiento 2021–2023,
+validación 2024, test 2025— y <strong>no</strong> desordenar las filas antes de
+partir.</p>
+<p>El orden temporal manda: se predice el futuro. Test = la temporada más reciente
+(2025), guardada desde el inicio. Validación = la temporada anterior (2024).
+Entrenamiento = 2021–2023. <strong>No</strong> se puede desordenar todo y partir al
+azar: el modelo vería temporadas posteriores a las que valida.</p>
+<p style="margin-bottom:0">Si además hay pocos datos por temporada, se puede repetir
+la validación sobre varios cortes temporales (por ejemplo, validar 2023 entrenando
+con 2021–2022, y validar 2024 entrenando con 2021–2023) [INFERENCIA: no se vio en
+clase]. Si el objetivo fuera predecir huertos <em>nuevos</em>, la pregunta sería
+otra: habría que separar por huerto. [DATITO]</p>
+<p><strong>Error típico:</strong> usar <code>train_test_split</code> con mezcla,
+con el argumento que se dio en la ayudantía (desordenar porque los datos pueden
+tener un orden temporal): aquí el orden temporal es justamente lo que hay que
+respetar.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> partición temporal con
+series de tiempo, Clase del 31-jul
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:47–1:07:22];
+el caso de los cerezos es [DATITO].</p>
+</details>
+
+<h3>Producción: rotula el gráfico</h3>
+<p>Un gráfico de resultados muestra, para cada modelo, dos barras: una azul y una
+naranja, con el MAE en el eje vertical. Sin rotular, no dice nada. Escribe el
+rótulo completo de <strong>cada</strong> barra respondiendo tres cosas:
+<strong>con qué datos se entrenó</strong>, <strong>sobre qué datos se
+evaluó</strong> y <strong>qué decisión se tomó con ella</strong>. Hazlo para un
+proyecto con entrenamiento 2016 (validado con K-Fold dentro de 2016) y test 2017.
+Después explícale a alguien la diferencia entre <em>se entrenó con 2017</em> y
+<em>se evaluó sobre 2017</em>. Llévalo a Datito.</p>
+<p style="font-size:.9rem;color:var(--suave)">No es una pregunta inventada: en las
+presentaciones del Hito 2 el profesor preguntó en vivo qué dice cada barra de un
+gráfico así, y la diferencia entre <em>entrenado con</em> y <em>evaluado sobre</em>
+costó
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:36–2:06:17].</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> la barra de validación cruzada se entrenó y evaluó
+<em>dentro</em> de 2016 y sirvió para elegir; la de test se entrenó con todo 2016 y
+se evaluó sobre 2017, sin decidir nada con ella. <strong>Nada se entrenó con
+2017.</strong></p>
+<p><strong>Respuesta modelo (rótulos):</strong><br>
+Barra de validación cruzada: «MAE de validación cruzada (K-Fold, k = 5) dentro de
+2016: en cada ronda, entrenado con 4/5 de 2016 y evaluado sobre el 1/5 restante;
+promedio de las 5 rondas. Con esta barra se eligió el modelo».<br>
+Barra de test: «MAE de test: entrenado con todo 2016 y evaluado una sola vez sobre
+2017. Con esta barra no se tomó ninguna decisión».</p>
+<p><strong>Respuesta modelo (explicación):</strong> «Entrenar con 2017 querría decir
+que el modelo aprendió de los precios de 2017; evaluarlo sobre 2017 quiere decir que
+se le mostraron las propiedades de 2017 solo para comparar sus predicciones con los
+precios reales, después de haber aprendido únicamente de 2016. Si se hubiera
+entrenado con 2017, la barra de 2017 ya no mediría lo que pasa con datos
+nuevos».</p>
+<p><strong>Cómo se resuelve:</strong> para cada barra responde, en este orden: con
+qué datos aprendió, sobre qué datos se midió, y qué decisión se tomó con ella.</p>
+<p><strong>Criterios de corrección:</strong> cada barra separa datos de
+entrenamiento y de evaluación; la de validación cruzada queda dentro de 2016 y es
+la que decide; la de test es 2016 → 2017 y no decide nada; nunca dice «entrenado
+con 2017».</p>
+<p><strong>Error típico:</strong> rotular la barra de test como «entrenado con
+2017». 2017 fue solo el conjunto de evaluación.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> el diseño temporal y el
+K-Fold dentro de 2016
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · l. 76–100]; la pregunta del
+profesor en el Hito 2 (fuente arriba). La redacción de los rótulos es [DATITO].</p>
+</details>
+
+<h2>7 · Distinción de certamen</h2>
+
+<div class="nota">
+<strong>Distinción de certamen.</strong> <strong>Parámetro ≠ hiperparámetro</strong>
+(lo ajusta el algoritmo con el entrenamiento ≠ lo decides tú con la validación) y
+<strong>medir para decidir ≠ medir para reportar</strong> (validación ≠ test). Es
+la misma firma del profesor de <code>patron_evaluacion.md</code> §1: separar dos
+cosas que se parecen.<br><br>
+Dónde aparece: la <a href="certamen_2.html#p3">P3 del Certamen 2</a> (validación
+cruzada para medir el sobreajuste) y la <a href="certamen_2.html#p7">P7</a>
+(error de entrenamiento ≠ calidad del modelo; el grado del polinomio es un
+hiperparámetro).
+</div>
+
+<h2>8 · Procedimiento para el papel</h2>
 
 <pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
 1. ¿QUÉ SE AJUSTA?        parámetros → entrenamiento
                           hiperparámetros → validación
 2. ¿HAY ORDEN TEMPORAL?   sí → corte temporal · no → K-Fold con mezcla
-3. ¿CUÁNTOS DATOS HAY?    pocos → k alto o bootstrap · muchos → holdout sirve
-4. EL TEST                se aparta ANTES de mirar nada
-5. AL DECIDIR             solo entrenamiento y validación
-6. AL REPORTAR            el test, UNA vez, y no se vuelve atrás
+3. ¿HAY CLASES?           sí → estratificar las proporciones
+4. ¿CUÁNTOS DATOS HAY?    pocos → K-Fold (P4) o bootstrap (clase): declararlo
+                          muchos → holdout sirve
+5. EL TEST                se aparta ANTES de mirar nada, y no cambia
+6. AL DECIDIR             solo entrenamiento y validación
+7. AL REPORTAR            el test, UNA vez; ¿cae donde la validación anticipaba?
 </pre>
 
-<h2>7 · Errores que el formato castiga</h2>
+<h2>9 · Errores que el formato castiga</h2>
 
 <table>
 <tr><th>Error</th><th>Cómo se ve</th></tr>
@@ -241,6 +516,10 @@ y el modelo veía el futuro durante el entrenamiento.
 <tr><td>Split aleatorio con datos temporales</td><td>Métrica optimista que no mide lo que importa</td></tr>
 <tr><td>Tratar la validación cruzada como una métrica</td><td>«El CV dio 0,8» — CV es un método, no un número que se reporta</td></tr>
 <tr><td>Reportar el error de validación como final</td><td>El conjunto con que elegiste no puede medir</td></tr>
+<tr><td>Dibujar K-Fold o bootstrap sin apartar el test</td><td>El test queda dentro de los folds: ya no hay nada guardado para la medición final</td></tr>
+<tr><td>Confundir «entrenado con» y «evaluado sobre»</td><td>«Se entrenó con 2017» cuando 2017 fue el test</td></tr>
+<tr><td>Test de un período que no representa el uso</td><td>El test «2008» del profesor: separado, pero no mide lo que el modelo tiene que hacer</td></tr>
+<tr><td>Olvidar estratificar con clases desbalanceadas</td><td>Un conjunto sin la clase minoritaria no la evalúa</td></tr>
 </table>
 
 <div class="repreg">
@@ -252,8 +531,34 @@ robusta»</em>.<br><br>
 solo que está mal, sino por dónde entra el problema.</strong><br><br>
 Pista de dónde mirar: el <strong>29,1 %</strong> del test que son suburbios
 inexistentes en el train no desaparece porque mezcles; se reparte. Es el formato
-exacto de tu profesor: verdadero o falso, <em>con justificación</em>.
+exacto de tu profesor: verdadero o falso, <em>con justificación</em>. Escríbelo y
+llévalo a Datito.
 </div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>no tiene razón</strong>: su error es más bajo
+porque su validación es más fácil, no porque sea más robusta.</p>
+<p><strong>Respuesta modelo:</strong> «Falso. Al mezclar 2016 y 2017 antes de armar
+los folds, el modelo entrena con propiedades de 2017 y valida con otras de 2017 y
+de 2016 revueltas: ve el futuro que después dice predecir. Además, los suburbios
+que en la realidad aparecen recién en 2017 —el 29,1 % del test— quedan repartidos
+entre entrenamiento y validación, así que el modelo ya los conoce cuando lo
+evalúan. Su número mide qué tan bien interpola dentro de una mezcla de ambos años,
+no qué tan bien predice el año siguiente. El corte temporal da un error más alto
+porque mide el problema real: entrenar con el pasado y predecir un año que no se
+ha visto.»</p>
+<p><strong>Cómo se resuelve:</strong> 1) pregunta qué se quiere predecir: el año
+siguiente; 2) mira qué datos ve el modelo al entrenar en cada esquema; 3) si ve
+datos del período que se evalúa, la validación es optimista; 4) concluye que un
+error más bajo no es mejor si mide un problema más fácil.</p>
+<p><strong>Error típico:</strong> pensar que «más folds y más mezcla» siempre es más
+robusto. Con datos temporales, mezclar es la fuente del problema.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> 29,1 % de suburbios
+nuevos [FUENTE · Repo: 07_DATITO/referencia/material.md]; la versión con split
+aleatorio que «anunciaba 81 % de precisión» está en
+<code>99_ARCHIVO/_obsoleto_split_aleatorio/</code>; el razonamiento es
+[INFERENCIA].</p>
+</details>
 
 <div class="vecino">
 <strong>A dónde seguir.</strong> Este concepto es la puerta de dos caminos:
@@ -261,55 +566,91 @@ exacto de tu profesor: verdadero o falso, <em>con justificación</em>.
 <li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué pasa
     cuando el modelo se enfrenta a datos que nunca vio. Es el concepto que este
     habilita directamente, y donde el 29,1 % de suburbios nuevos cobra sentido.</li>
+<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — las
+    cuatro estrategias con sus citas, la distribución del error y dónde debe caer el
+    test.</li>
+<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+    lo que la partición permite diagnosticar.</li>
 <li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
     antes de partir los datos hay que saber qué tipo de problema tienes.</li>
 </ul>
 </div>
 
+<!-- datito:dudas:inicio -->
+<style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
+<section class="ddudas" id="dudas-resueltas">
+<h2>Dudas resueltas con Datito, en orden</h2>
+<p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
+<article class="duda" id="duda-2026-09-18-baseline-mejora"><div class="dm">18-sep · quedó abierta en la sesión: aquí está la respuesta · <a href="generalizacion.html">Generalizacion</a>, <b>Train / validation / test</b> · también en <a href="generalizacion.html#duda-2026-09-18-baseline-mejora">generalizacion.html</a></div><p><b>Pregunta.</b> En Melbourne, el MAE de validación cruzada en 2016 y el de test en 2017 fueron: baseline (mediana) 449.160 → 431.649 (mejora 17.511); árbol de decisión 219.821 → 246.568 (empeora 26.747); HistGradientBoosting 159.777 → 188.218 (empeora 28.441). ¿Por qué el baseline mejora al pasar a 2017 mientras los modelos empeoran, y por qué el mejor modelo es el que más empeora?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> Intento 1: «entonces, podemos hablar de un sobreajuste». Intento 2: «el modelo fue entrenado con datos del 2016, pero un modelo que deberías validar, o que debería probar es gradient boosting, o random forest».</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> El baseline no aprendió nada de 2016 salvo un número (la mediana, 900.000), así que su error solo refleja qué tan dispersos están los precios del año que mide; los modelos aprendieron relaciones de 2016 que en 2017 valen menos, y además fueron elegidos mirando 2016, por eso el más ajustado a 2016 es el que más pierde.</p><ol><li>El baseline: predecir siempre 900.000 da MAE 449.122 sobre los precios de 2016 y 431.649 sobre los de 2017 (este último es exactamente su MAE de test). Los precios de 2017 están algo menos dispersos alrededor de 900.000. La «mejora» es una propiedad de los datos, no del modelo.</li><li>Los modelos: aprendieron cómo se relacionan ubicación, tipo y tamaño con el precio EN 2016. En 2017 el 29,1 % de las propiedades están en suburbios que no existían en 2016: parte de lo aprendido ya no aplica (cambio de distribución).</li><li>El mejor es el que más empeora (HGB +17,8 %, 159.777 → 188.218; árbol +12,2 %): es el que más estructura fina de 2016 capturó, y además fue ELEGIDO por tener el menor error en 2016, así que su número de validación es optimista.</li><li>Así lo dijo el profesor al comentar este mismo proyecto: los datos «cambian un poco entre el 2016 y el 2017» y «también tomaron decisiones con ese subconjunto de datos», y lo llamó «un poquito sobreajustado a los datos del 2016». Son dos mecanismos: optimismo por selección y cambio de distribución.</li><li>Por qué no basta decir «sobreajuste»: las dos columnas de la tabla son datos que el modelo no usó para entrenar. Sin nombrar el mecanismo, la etiqueta no explica por qué el baseline mejora.</li></ol><p><b>Error típico.</b> Poner la etiqueta «sobreajuste» sin mecanismo, o proponer otro modelo sin leer que la tabla ya contiene los resultados del propio proyecto.</p><p class="df">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017<br>[FUENTE · Repo: 04_DATOS/housing_dashai_2016_2017.csv + 05_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21<br>[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor<br>[INFERENCIA] la descomposición en dos mecanismos<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-18-train_validation_test.md</code></p></details></article>
+</section>
+<!-- datito:dudas:fin -->
 <footer>
-Generado por Datito · <code>07_DATITO/visual/train_validation_test.html</code><br>
-Caso Deep-Hub y citas tomadas de la transcripción de clase y del Resumen de la Clase 6.
-Funciona sin conexión.
+Generado por Datito · <code>07_DATITO/visual/train_validation_test.html</code> ·
+funciona sin conexión · fuentes: transcripciones de la Clase del 31-jul, la Clase
+del 7-ago, las ayudantías del 31-jul y del 7-ago y las presentaciones del Hito 2;
+Resumen de la Clase 6; <code>05_RESULTADOS/dashai_split_indices.json</code>;
+<code>07_DATITO/referencia/material.md</code>.<br>
+Datos reales: las citas (con marca de tiempo verificable), el split de Melbourne
+(5.702 / 634 / 7.244) y las clases de Galaxy Zoo. Datos ilustrativos [DATITO]: las
+1.200 imágenes del caso Arauco y sus particiones, y las cifras de los ejercicios de
+interpretación y transferencia.
 </footer>
 
 </main>
 
 <script>
 const $=id=>document.getElementById(id);
-const N=1000;
+// 1.200 imagenes ilustrativas [DATITO]: 300 de test guardadas primero; 900 para repartir.
+const TE=['te',300,'test · 300 · guardado'];
 
 const METODOS={
  holdout:{
-  t:'Holdout',
-  barras:[[['tr',600,'entrenamiento · 600'],['va',200,'validación · 200'],['te',200,'test · 200']]],
-  d:'<strong>Se parte una vez y listo.</strong> Sencillo y barato, pero el resultado depende de qué imágenes cayeron en cada lado. Con pocos datos, mala suerte en la partición puede cambiar por completo la conclusión.',
-  cuando:'Cuando hay datos de sobra y el costo de entrenar es alto.'},
+  t:'Holdout (método de retención) · el caso base',
+  barras:[[['tr',600,'entrenamiento · 600'],['va',300,'validación · 300'],TE]],
+  d:'<strong>Se parte una vez y listo</strong>: 2/3 para entrenar y 1/3 para validar, la proporción que dio el profesor (citada en <a href="validacion_cruzada.html">validacion_cruzada.html</a> §7). Sencillo y barato, pero entrega <strong>un solo valor</strong>: depende de qué imágenes cayeron en cada lado. Es la «validación nomás».',
+  cuando:'Cuando hay datos de sobra y entrenar es caro. Por sí solo no permite ver la distribución del error.'},
  submuestreo:{
-  t:'Submuestreo aleatorio',
+  t:'Submuestreo aleatorio (shuffle split)',
   barras:[
-   [['tr',700,'train'],['va',300,'val']],
-   [['va',250,'val'],['tr',750,'train']],
-   [['tr',400,'train'],['va',200,'val'],['tr',400,'train']]],
-  d:'<strong>Se repite el holdout varias veces</strong>, con particiones distintas al azar, y se promedia. Ya no dependes de una sola partición afortunada.',
-  cuando:'Cuando quieres estabilidad sin comprometerte a folds fijos. Ojo: una imagen puede caer en validación varias veces y otra ninguna.'},
+   [['tr',450,'entrena'],['va',300,'val'],['tr',150,'entrena'],TE],
+   [['va',300,'val'],['tr',600,'entrena'],TE],
+   [['tr',150,'entrena'],['va',150,'val'],['tr',300,'entrena'],['va',150,'val'],['tr',150,'entrena'],TE]],
+  d:'<strong>Se repite el holdout varias veces</strong>, con particiones al azar <strong>sin reemplazo</strong>, y se promedian los errores. Ya no dependes de una sola partición afortunada. El test no cambia entre rondas.',
+  cuando:'Cuando quieres varias estimaciones sin comprometerte a bloques fijos. Ojo: una imagen puede caer en validación varias veces y otra ninguna.'},
  kfold:{
   t:'K-Fold',
   barras:[
-   [['va',200,'val'],['tr',800,'entrenamiento']],
-   [['tr',200,'train'],['va',200,'val'],['tr',600,'entrenamiento']],
-   [['tr',400,'train'],['va',200,'val'],['tr',400,'train']],
-   [['tr',600,'entrenamiento'],['va',200,'val'],['tr',200,'train']],
-   [['tr',800,'entrenamiento'],['va',200,'val']]],
-  d:'<strong>Se divide en k partes iguales</strong> —aquí 5— y se entrena k veces. Cada vuelta usa una parte distinta como validación y el resto para entrenar. Al final se promedian los k resultados.<br><br><strong>Toda imagen es de validación exactamente una vez.</strong> Es lo que lo hace más justo que el submuestreo aleatorio.',
-  cuando:'La opción por defecto cuando no hay orden temporal. Es la que usaste en 2016.'},
+   [['va',225,'val · 225'],['tr',675,'entrenamiento · 675'],TE],
+   [['tr',225,'entrena'],['va',225,'val'],['tr',450,'entrena'],TE],
+   [['tr',450,'entrena'],['va',225,'val'],['tr',225,'entrena'],TE],
+   [['tr',675,'entrenamiento · 675'],['va',225,'val · 225'],TE]],
+  d:'<strong>Lo que no es test se divide en k bloques disjuntos</strong> —aquí k = 4, el mismo k del dibujo del profesor— y se entrena k veces. Cada vuelta usa un bloque distinto como validación y el resto para entrenar. Al final se promedian los k resultados.<br><br><strong>Toda imagen que no es test valida exactamente una vez.</strong> Es lo que lo distingue del submuestreo aleatorio.',
+  cuando:'Cuando no hay orden temporal y cada bloque queda con datos suficientes. Tu proyecto de Melbourne la usó dentro de 2016, con k = 5.'},
  bootstrap:{
   t:'Bootstrap',
   barras:[
-   [['tr',1000,'muestra CON reemplazo · 1.000 (con repetidas)']],
-   [['no',368,'~36,8 % nunca sale: son la validación'],['tr',632,'el resto entrena']]],
-  d:'<strong>Se sortean 1.000 imágenes con reemplazo</strong>, así que algunas salen repetidas y otras no salen nunca. Las que nunca salieron —alrededor del 36,8 %— sirven de validación.<br><br>Se repite muchas veces, y eso permite además calcular <strong>intervalos de confianza</strong>.',
-  cuando:'Con pocos datos, o cuando quieres cuantificar la incertidumbre y no solo un número. Tú lo usaste en <code>bootstrap_comparacion.py</code>.'}
+   [['tr',569,'entrena · 900 sorteos, ~569 distintas'],['va',331,'val · ~331 no salieron'],TE],
+   [['va',331,'val · otras ~331'],['tr',569,'entrena · otro sorteo'],TE]],
+  d:'<strong>Se sortean 900 imágenes con reemplazo</strong> entre las que no son test: algunas salen repetidas y otras nunca. En promedio el entrenamiento contiene ~63,2 % de imágenes <em>distintas</em> (≈ 569); las que no salieron (≈ 331, ~36,8 %) son la validación, que <strong>no tiene repetidas</strong>. Se repite muchas veces. (Las barras muestran imágenes distintas, no sorteos; la posición es solo ilustrativa.)',
+  cuando:'Según el profesor, cuando hay muy pocos datos. Ojo: en <code>03_CODIGO/bootstrap_comparacion.py</code> usaste bootstrap para otra cosa —intervalos de confianza de la diferencia de MAE sobre 2017—, no como estrategia de validación. Mismo remuestreo con reemplazo, distinto propósito.'}
 };
+
+// Prediccion con veredicto inmediato
+const PRED={rep:{
+ rep:'<strong>Eso es.</strong> El profesor lo dijo así: el test de 2008 queda muy separado de la validación y «test no es representativo de lo que yo quiero que el modelo haga» [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:07:15–1:07:22]. Separado no basta: el test tiene que parecerse al uso real.',
+ ninguno:'<strong>No.</strong> Que el modelo no lo haya visto es necesario, pero no suficiente. Si vas a predecir 2026, un test de 2008 mide otra cosa: no representa lo que el modelo tiene que hacer.',
+ fuga:'<strong>No es fuga.</strong> Nada del test entra al entrenamiento: 2008 está fuera de ambos. El problema es otro: el test no representa lo que el modelo tiene que hacer, y su error no te dice nada útil sobre 2026.'}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PRED[k][b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
 
 function pinta(clave){
   const m=METODOS[clave];

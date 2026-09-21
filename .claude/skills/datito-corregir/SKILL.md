@@ -83,12 +83,21 @@ ENTRENAMIENTO DIRIGIDO
 
 Se honesto con el puntaje. Un informe amable no le sirve para el certamen.
 
+**El informe no vive en el chat** (REGLA UNO-B de la skill `datito`, spec G9).
+Por cada pregunta corregida, agrega una entrada a `07_DATITO/dudas.yaml` con
+el enunciado, lo que respondio (textual), la respuesta correcta, la resolucion
+paso a paso, el error tipico y la fuente, en el visual del concepto que evalua.
+Luego corre `python 03_CODIGO/construir_navegacion.py`. Lo que devuelves al que
+te invoco es el RESUMEN, los CONCEPTOS RAIZ y la lista de ids registrados: el
+detalle por pregunta ya quedo en los visuales, en orden.
+
 ---
 
 # REGISTRAR
 
 Actualiza `07_DATITO/progreso.yaml` y `errores_conceptuales.yaml` segun
-`referencia/memoria.md`, y escribe la entrada de bitacora.
+`referencia/memoria.md`, y escribe la entrada de bitacora, con la linea
+`**Dudas registradas:** <ids>`.
 
 Reglas que no se rompen:
 

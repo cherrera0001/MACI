@@ -7,14 +7,23 @@ sin conexión.
 
 ## Por dónde empezar
 
-**No abras las transcripciones directamente.** Pesan entre 60 y 120 KB cada una.
+**No abras las transcripciones directamente.** Pesan entre 10 y 235 KB cada una.
 
-Empieza por [`indice_clases.yaml`](indice_clases.yaml): dice **qué conceptos
-trata cada clase y en qué minuto se mencionan por primera vez**. Buscas el
-concepto, obtienes clase y marca de tiempo, y recién entonces vas al texto.
+Empieza por [`mapa_ensenanza.yaml`](mapa_ensenanza.yaml): dice **dónde se
+enseñó cada concepto**, con rango de tiempo y quién hablaba (profesor, segundo
+docente, ayudantía, alumnos). Curado a mano; es lo que usan los visuales.
 
-Ejemplo de lo que resuelve: *"¿dónde explicó matriz de confusión?"* →
-clase del 7 de agosto, minuto **0:49:48**.
+[`indice_clases.yaml`](indice_clases.yaml) es automático: dice en qué minuto se
+**menciona por primera vez** cada término. Sirve para buscar, pero una mención no
+es una explicación, y no sabe quién habla.
+
+Ejemplo: *"¿dónde explicó matriz de confusión?"* → clase del 7 de agosto,
+0:44:25–0:47:52 y 1:00:54–1:02:54, y el ejercicio de 100 pacientes del 4 de
+septiembre, 1:28:40–1:48:16.
+
+**Qué entra al certamen.** El profesor: «Entran solo mis clases. No entran las
+clases de Alejandra» (clase del 15 de julio, 1:18:16). Las ayudantías se
+estudian, pero no son materia de certamen.
 
 ---
 
@@ -48,10 +57,18 @@ Genera dos archivos por clase: `.md` con marcas de tiempo por segmento, y
 python 03_CODIGO/integrar_clase.py              # todas las pendientes
 python 03_CODIGO/integrar_clase.py --sin-subir  # sin tocar NotebookLM
 python 03_CODIGO/integrar_clase.py --estado     # ver qué hay integrado
+python 03_CODIGO/integrar_clase.py --sin-subir --remapear   # recalcula todas
 ```
 
 Detecta las transcripciones nuevas, mapea qué conceptos del curriculum aparecen
 y en qué minuto, escribe el índice, y las sube a NotebookLM.
+
+### 3 · Llevarla a los visuales
+
+Agrega la clase y sus tramos a `mapa_ensenanza.yaml` y corre
+`python 03_CODIGO/construir_navegacion.py`: los visuales muestran el nuevo tramo
+en «Dónde se enseñó» y el índice `07_DATITO/visual/index.html` se regenera. Luego
+`python 03_CODIGO/verificar_visuales.py` comprueba que cada marca exista.
 
 Es **idempotente** —lo ya integrado se omite— y **degrada**: si NotebookLM no
 responde, el índice local se completa igual y queda anotado para reintentar.

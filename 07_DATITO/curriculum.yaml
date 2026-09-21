@@ -47,11 +47,11 @@ meta:
       - FAIR Principles
       - Scikit-learn User Guide (model selection, model evaluation, learning curves)
     nota: >-
-      Los 4 conceptos marcados sin_material_local NO estan descubiertos: el
-      cuaderno los cubre con FCD-2026-2_08_DL_LLMs_Agents.pdf,
-      Resumen_Clase8_DL_LLMs_Agentes.pdf y el PDF de Deep Learning del Magister.
-      Lo que falta para ellos es material propio ejecutado por el alumno, no
-      fuentes. Al ensenarlos, citar el cuaderno en vez de caer en [GENERAL].
+      Redes, deep learning, LLM y agentes no tienen codigo propio ejecutado por
+      el alumno. Desde el 2026-09-21 sus laminas estan en texto local
+      (11_PRESENTACION/_markdown/FCD-2026-2_08 y Resumen_Clase8, este ultimo
+      hibrido con transcripcion) y la clase del 21-ago esta transcrita. El
+      cuaderno de NotebookLM agrega el PDF de Deep Learning del Magister.
 
 # Laboratorios de la asignatura. Fuente de PRIORIDAD 1 segun spec.md G5:
 # es el tratamiento oficial del curso, manda sobre cualquier otra referencia.
@@ -375,8 +375,12 @@ conceptos:
     orden: 18
     prerrequisitos: [gradient_boosting]
     por_que_importa: "Cambio de paradigma: el modelo aprende sus propias features."
-    sin_material_local: true
-    material_local: []
+    # 2026-09-21: las laminas de la Clase 8 ya estan en texto local. Sigue
+    # sin haber codigo propio ejecutado por el alumno para este concepto.
+    sin_material_local: false
+    material_local:
+      - 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
+      - 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md
     pregunta_diagnostico: >-
       En tus modelos de Melbourne tu elegiste las features. Que hace distinto
       una red neuronal con las features?
@@ -386,8 +390,12 @@ conceptos:
     orden: 19
     prerrequisitos: [redes_neuronales]
     por_que_importa: Explica por que en datos tabulares sigue ganando el boosting y en vision o texto no.
-    sin_material_local: true
-    material_local: []
+    # 2026-09-21: las laminas de la Clase 8 ya estan en texto local. Sigue
+    # sin haber codigo propio ejecutado por el alumno para este concepto.
+    sin_material_local: false
+    material_local:
+      - 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
+      - 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md
     pregunta_diagnostico: >-
       Para tus datos tabulares de Melbourne, el boosting le gana a una red
       profunda. Por que, si el deep learning domina en imagenes y texto?
@@ -397,8 +405,12 @@ conceptos:
     orden: 20
     prerrequisitos: [deep_learning]
     por_que_importa: Base para entender que es y que no es un agente.
-    sin_material_local: true
-    material_local: []
+    # 2026-09-21: las laminas de la Clase 8 ya estan en texto local. Sigue
+    # sin haber codigo propio ejecutado por el alumno para este concepto.
+    sin_material_local: false
+    material_local:
+      - 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
+      - 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md
     pregunta_diagnostico: >-
       Un LLM predice el siguiente token. Como puede algo asi responder una
       pregunta que nunca vio escrita?
@@ -408,8 +420,12 @@ conceptos:
     orden: 21
     prerrequisitos: [llm]
     por_que_importa: Cierra el circulo. Este tutor es un agente y podras auditarlo por dentro.
-    sin_material_local: true
+    # 2026-09-21: las laminas de la Clase 8 ya estan en texto local. Sigue
+    # sin haber codigo propio ejecutado por el alumno para este concepto.
+    sin_material_local: false
     material_local:
+      - 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
+      - 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md
       - .claude/skills/datito/SKILL.md
       - .mcp.json
     pregunta_diagnostico: >-

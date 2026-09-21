@@ -41,7 +41,7 @@ Dos casos reales, datos a la vista, resolubles en papel. Fuente:
   `2900` frente a `200` del resto. A detectar: sobrecarga semántica, centinelas
   que sesgan estadísticos, atípico, filas usadas como separadores.
 
-**La 9B vale más que las ocho preguntas cerradas juntas.**
+**La 9B sola vale 2,0 puntos: la mitad de las ocho cerradas juntas (4,0) y la pregunta individual de mayor puntaje.**
 
 ### Certamen 2 — modelamiento y evaluación
 

@@ -60,6 +60,7 @@ el de la sesión.
 ├── certamenes/              problemas SIN solución — miden
 ├── entregas/                donde dejas tus respuestas para corregir
 ├── transferencia/           dataset sintético de otro dominio
+├── dudas.yaml               lo que Datito respondió, en orden → aparece en los visuales
 ├── bitacora/                una entrada por sesión
 └── osint_*.md               investigación de fuentes públicas (en pausa)
 ```
@@ -70,11 +71,32 @@ el de la sesión.
 
 ### Visuales interactivos — `visual/`
 
-| Archivo | Qué muestra |
+**Empieza por [`visual/index.html`](visual/index.html)**: la ruta de repaso del
+certamen, las distinciones que deciden cada pregunta, el mapa por cadenas y las
+clases donde se enseñó cada concepto. Todo abre con doble clic, sin Internet.
+
+| Archivo | Concepto |
 |---|---|
-| `clase6_regresion.html` | La Clase 6 entera con el ejemplo del profesor: el peso del árbol según el radio del tronco. Incluye la zona sin datos, donde el modelo extrapola |
-| `regresion_y_costo.html` | Camiones mineros. Mueves la recta y ves el costo y el R² cambiar en vivo |
-| `matriz_confusion.html` | Detección de cáncer. Cuatro barras controlan la matriz; tres botones montan las trampas del certamen |
+| `fundamentos_ciencia_datos.html` | Qué problema resuelve la ciencia de datos; data-driven; Big Data; el ciclo |
+| `datos_features_target.html` | Fila, columna, feature, target, identificador y fuga de información |
+| `eda.html` | Centralidad, extensión, distribución, correlación, integridad visual |
+| `limpieza_preparacion.html` | Calidad de datos sobre la tabla real de la 9B; limpiar ≠ decidir modelado |
+| `train_validation_test.html` | Los tres conjuntos y por qué el test se guarda |
+| `validacion_cruzada.html` | Holdout, bootstrap, submuestreo y K-Fold |
+| `generalizacion.html` | Datos no vistos: interpolar, extrapolar, cambio de distribución |
+| `overfitting_underfitting.html` | La curva de complejidad y el diagnóstico por la brecha |
+| `clase6_regresion.html` · `regresion_y_costo.html` | La Clase 6 completa · el laboratorio de la función de costo |
+| `clasificacion.html` | Cuando la etiqueta no es un número |
+| `matriz_confusion.html` | Construir y leer la matriz; el ejercicio de 100 pacientes del profesor |
+| `metricas_clasificacion.html` | Exactitud, precisión, recall, F1: el denominador |
+| `roc_auc.html` | Umbral, punto de operación, curva ROC y AUC |
+| `arboles_y_ensambles.html` | Árboles, Random Forest, boosting y ensambles |
+| `redes_neuronales.html` · `dl_llm_agentes.html` | Perceptrón y entrenamiento · deep learning, LLM y agentes |
+| `certamen_1.html` · `certamen_2.html` | Los certámenes auditados pregunta por pregunta |
+| `triaje_de_problemas.html` | Qué tipo de problema tengo delante |
+
+Cada visual cita la clase donde se enseñó con ruta completa y marca de tiempo.
+La barra superior de cada uno la genera `03_CODIGO/construir_navegacion.py`.
 
 ### Material escrito
 
@@ -137,8 +159,9 @@ Peso por bloque:
 | Panorama de IA: LLM, agentes, redes | 18 % |
 | Conducta metodológica | 18 % |
 
-Y en el Certamen 1, la pregunta 9B de calidad de datos **vale 2,0 puntos** —
-más que las ocho preguntas cerradas juntas.
+Y en el Certamen 1, la pregunta 9B de calidad de datos **vale 2,0 puntos** por
+sí sola: la mitad de lo que suman las ocho cerradas juntas (4,0) y la pregunta
+individual de mayor puntaje.
 
 ---
 
@@ -156,6 +179,11 @@ más que las ocho preguntas cerradas juntas.
 Toda afirmación lleva etiqueta: `[FUENTE · NotebookLM: …]`, `[FUENTE · Repo: …]`,
 `[INFERENCIA]` o `[DATITO]` para explicación pedagógica propia.
 
+Las transcripciones se citan con la ruta completa del `.md` y la marca de tiempo,
+nunca el `_plano.txt`. Si contradicen una lámina o un práctico, manda el material
+oficial. Y solo las clases del profesor titular entran al certamen: «Entran solo
+mis clases. No entran las clases de Alejandra» (`09_CLASES/transcripciones/03Clase_Recuperación_…_15_julio.md`, 1:18:16).
+
 ### Material de terceros
 
 `01_DOCUMENTACION/06_CERTAMEN1/` procede de un compañero. Los **enunciados** son
@@ -172,11 +200,16 @@ Tras cada sesión, Datito regenera el resumen que se inyecta la próxima vez:
 python 03_CODIGO/datito_estado.py
 ```
 
-Transcribir una clase nueva:
+Transcribir una clase nueva e integrarla a los visuales:
 
 ```bash
 uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
 uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
+python 03_CODIGO/integrar_clase.py --sin-subir      # índice de menciones
+# agregar la clase y sus tramos a 09_CLASES/mapa_ensenanza.yaml
+python 03_CODIGO/construir_navegacion.py            # barras de navegación + index.html
+python 03_CODIGO/verificar_visuales.py              # sin red, enlaces, citas
+uv run --with playwright python 03_CODIGO/probar_visuales_offline.py   # prueba en Edge sin red
 ```
 
 Reautenticar NotebookLM cuando caduque:

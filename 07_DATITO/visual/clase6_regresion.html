@@ -89,16 +89,28 @@
   details[open] summary{margin-bottom:.7rem}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
           margin:1.1rem 0;font-size:.92rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
          color:var(--suave);font-size:.85rem}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="clasificacion.html">Clasificacion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="certamen_2.html#p7">C2 P7</a></div>
+<details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Clase 6 · Regresión</h1>
 <p class="sub">Modelo lineal · función de costo · minimizar el riesgo · R²<br>
-Fundamentos de Ciencia de Datos · UdeC</p>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul</p>
 
 
 <div class="grafo">
@@ -111,9 +123,10 @@ Fundamentos de Ciencia de Datos · UdeC</p>
 
 <div class="nota">
 <strong>Dónde estás.</strong> La regresión es el punto donde el curso se vuelve
-modelamiento. Tu profesor lo dice en clase: <em>«los conceptos fundamentales que
-se ven en regresión se aplican después en clasificación y sucesivamente en
-modelos de IA más complejos»</em>.<br><br>
+modelamiento. Tu profesor lo plantea al abrir la clase: hay conceptos fundamentales
+que se ven en regresión y que después se aplican en clasificación y, así
+sucesivamente, en distintos modelos de inteligencia artificial
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:00:53–0:01:05].<br><br>
 Se pregunta <strong>poco</strong> de forma directa en los certámenes — y es de
 donde sale todo lo demás. No lo estudies por puntaje.
 </div>
@@ -126,12 +139,16 @@ abre <a href="regresion_y_costo.html"><code>regresion_y_costo.html</code></a>, q
 
 <h2>El ejemplo es de tu profesor</h2>
 
-<div class="cita">
-"El peso de un árbol en función del radio del tronco. Tenemos todos estos datos
-de árboles que yo corté y para los cuales yo sé cuál es su peso y también el
-radio de su tronco."
-<span class="f">Transcripción de clase · <code>09_CLASES/transcripciones/2026-08-07…</code></span>
-</div>
+<div class="cita">«me gustaría saber más menos cuál es el peso del árbol sin tener que
+cortarlo […] fíjense que hay ruido cierto porque no todos los árboles son iguales hay
+algunos árboles que tienen el mismo radio pero tienen distinto peso»
+<span class="f">Clase del 31-jul · 0:19:04–0:19:53 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<p>Fíjate en la segunda mitad de la cita: <strong>el ruido</strong>. Dos árboles del mismo radio
+pesan distinto, así que ninguna recta puede pasar por todos. Eso que la recta no
+explica es la <em>ε</em> de la §7, y querer explicarlo igual es lo que lleva al
+sobreajuste.</p>
 
 <p>Quédate con esa imagen, porque explica los cinco conceptos de golpe:</p>
 
@@ -171,17 +188,62 @@ tantos kilos más»</em>.</p>
 
 <h3>La trampa que tu profesor deja caer</h3>
 
-<div class="cita">
-"Un modelo de regresión lineal, que como vimos la clase pasada, es <strong>lineal
-en los parámetros a ajustar</strong>. Y podría uno pensar un polinomio de grado 1,
-un polinomio de grado 2, un polinomio de grado 10…"
-</div>
+<p>Después de la recta se pregunta por qué no una parábola, y por qué no una cúbica.
+Y aclara qué significa «lineal»:</p>
+
+<div class="cita">«La complejidad del modelo tiene relación con el número de parámetros que
+tiene el modelo. […] la regresión lineal se llama regresión lineal porque es lineal en
+los ⟨θ⟩. No porque es lineal en los x.»
+<span class="f">Clase del 31-jul · 0:37:24–0:37:55 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="cita">«En realidad en este caso son p más 1 porque acá tengo el ⟨θ⟩ 0. […]
+Hay un solo ⟨θ⟩ o sea cada ⟨θ⟩ ⟨aparece⟩ una sola vez.»
+<span class="f">Clase del 31-jul · 0:38:35–0:39:17 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
 
 <div class="peligro">
 <strong>Lineal en los parámetros, no lineal en X.</strong> Un polinomio de grado 2
 dibuja una curva, no una recta, y <strong>sigue siendo un modelo lineal</strong>.
 Lo que importa es cómo entran los parámetros, no la forma del dibujo.<br><br>
+<strong>La regla para reconocerlo:</strong> cada θ aparece una sola vez, multiplicando
+algo que depende solo de x. Nada de θ², log(θ) ni e<sup>θ</sup>.<br>
+<strong>La cuenta de parámetros:</strong> un polinomio de grado p tiene
+<strong>p + 1</strong> (θ₀ a θ<sub>p</sub>). Más grado, más parámetros, más
+complejidad.<br><br>
 Es exactamente el tipo de distinción que evalúa: <em>curva</em> ≠ <em>no lineal</em>.
+</div>
+
+<p><strong>Aplica: ¿cuáles de estos son regresión lineal?</strong>
+(1) ŷ = θ₀ + θ₁x + θ₂x² + θ₃x³ · (2) ŷ = θ₀ + θ₁·log(x) · (3) ŷ = θ₀ + θ₁²·x ·
+(4) ŷ = θ₀ + log(θ₁)·x. Para los que sí lo son, ¿cuántos parámetros tienen?</p>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> son regresión lineal el (1), con 4 parámetros, y el
+  (2), con 2; el (3) y el (4) no lo son.</p>
+  <p><strong>Cómo se resuelve:</strong> revisa cada θ y pregúntate si aparece una sola
+  vez, multiplicando algo que depende solo de x. (1) θ₀…θ₃ aparecen solos: cúbico en x,
+  lineal en θ; p = 3, así que p + 1 = 4 parámetros. (2) log(x) es solo una función de
+  x, y θ₁ la multiplica tal cual: 2 parámetros. (3) θ₁ aparece al cuadrado: no es lineal
+  en θ. (4) θ₁ está dentro de un logaritmo: tampoco.</p>
+  <p><strong>Error típico:</strong> mirar x en vez de θ, y descartar el (1) «porque es
+  una curva» o el (2) «porque tiene un logaritmo».</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> la regla de las dos citas
+  de arriba (clase del 31-jul); casos casi idénticos aparecen en
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 11].</p>
+</details>
+
+<div class="vecino">
+<strong>Aquí nace el sobreajuste.</strong> Al subir el grado, la lámina muestra un
+polinomio de grado 10 con oscilaciones violentas que pasa muy cerca de casi todos los
+puntos: es donde el curso introduce el sobreajuste
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 11, §6.5.4].
+Muévelo tú mismo en
+<a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a>,
+y mira cómo lo preguntó el certamen en la
+<a href="certamen_2.html#p7">ficha P7</a>.
 </div>
 
 <h2>3 · La función de costo</h2>
@@ -222,6 +284,43 @@ que fallar poquito muchas veces.
 <p>Eso es todo lo que significa «minimizar el riesgo». Para una recta hay
 <strong>fórmula exacta</strong> — mínimos cuadrados. No hace falta tantear.</p>
 
+<div class="cita">«esta es la solución analítica que es básicamente la covarianza para el
+⟨θ⟩ 1 […] es la covarianza entre x ⟨e y⟩ partido por la varianza de x […] yo no se lo
+voy a pedir para ningún certamen»
+<span class="f">Clase del 31-jul · 0:31:06–0:31:40 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="ecu">
+  <div class="formula">&theta;&#770;&#8321; = Cov(x, y) / Var(x) &nbsp;&nbsp;·&nbsp;&nbsp; &theta;&#770;&#8320; = &#563; &minus; &theta;&#770;&#8321;&middot;x&#772;</div>
+  <p style="margin:0;font-size:.93rem">Léela así: la pendiente es <strong>cuánto
+  varían juntos</strong> radio y peso, medido en unidades de <strong>cuánto varía el
+  radio solo</strong>. Y la recta pasa por el punto promedio (x&#772;, &#563;). Con los
+  20 árboles simulados de esta página: Cov = 177,2 y Var = 18,24, así que
+  &theta;&#770;&#8321; = 9,72 kg/cm y &theta;&#770;&#8320; = 144,65 &minus; 9,72 &middot; 15,6
+  &asymp; &minus;6,9 kg (cifras ilustrativas [DATITO]; el botón «Minimizar el
+  riesgo» las lleva a la escala de los deslizadores, así que verás 9,8 y &minus;6).
+  <strong>No se pide en el certamen</strong>: se entiende, no se memoriza.</p>
+</div>
+
+<h3>La duda que apareció en clase: ¿se derivan los datos?</h3>
+
+<p>Un compañero preguntó cómo se deriva la función de costo si lo que hay dentro son
+datos. El intercambio:</p>
+
+<div class="cita">«no estaría como derivando los números […] como les decía la función
+de costo depende del modelo y el modelo depende de los parámetros»
+<span class="f">Clase del 31-jul · 0:34:34–0:34:49 · pregunta un compañero (primera frase), responde el profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<div class="clave">
+<strong>Se deriva respecto a los parámetros, no a los datos.</strong> Una vez que
+cortaste los 20 árboles, cada x<sub>i</sub> y cada y<sub>i</sub> es un número fijo:
+una constante. Lo único que puede moverse son θ₀ y θ₁. El costo es una función
+<em>de los θ</em>, y derivar es preguntar «si muevo un poco θ₁, ¿el costo sube o
+baja?». Por eso se iguala a cero la derivada respecto a cada θ [DATITO].
+</div>
+
 <div class="nota">
 La palabra que importa es <strong>empírico</strong>. Minimizas sobre los 20
 árboles que cortaste, no sobre todos los árboles del mundo. De ahí sale el
@@ -238,6 +337,24 @@ sobreajuste.
   <button data-r="ambas">Las dos cosas</button>
   <div class="veredicto"></div>
 </div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> la recta gira y queda más inclinada, pivotando sobre el
+punto donde corta el eje vertical, que no se mueve.</p>
+<ol style="margin:.3rem 0 .6rem 1.1rem;padding:0">
+  <li>La recta es ŷ = θ₀ + θ₁·x. «Cuánto sube» es θ₁ (la pendiente) y «dónde empieza» es
+  θ₀ (el corte con el eje vertical)</li>
+  <li>En x = 0, ŷ = θ₀: si θ₀ no cambia, ese punto queda fijo</li>
+  <li>Para cualquier otro x, ŷ cambia en (cambio de θ₁)·x: poco cerca de 0, mucho lejos.
+  Eso es girar. Ejemplo con θ₀ = 0: pasar θ₁ de 10 a 12 deja x = 0 en 0 kg, lleva
+  x = 10 de 100 a 120 kg y x = 20 de 200 a 240 kg [DATITO]</li>
+</ol>
+<p><strong>Error típico:</strong> atribuirle a θ₁ lo que hace θ₀ (desplazar la recta
+entera, paralela a sí misma).</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> «m es la pendiente y b es el
+punto de intersección en la ordenada», con θ₁ = m y θ₀ = b
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.47–55 y l.181–185].</p>
+</details>
 
 <div class="panel">
   <canvas id="lienzo" width="840" height="460"></canvas>
@@ -290,6 +407,46 @@ gráfico, y <strong>no se mueve</strong>: depende solo de los datos.</p>
 promedio». Y puede ser negativo, porque siempre se puede hacer peor que no pensar.
 </div>
 
+<h3>R² es de regresión</h3>
+
+<p>En la clase de clasificación un compañero preguntó si las tasas de falsos positivos
+venían a reemplazar al R². La respuesta:</p>
+
+<div class="cita">«el ⟨R cuadrado⟩ es una métrica que uno usa para medir lo errores o el
+porcentaje de la varianza que representa un modelo de regresión el ⟨R cuadrado⟩ uno lo
+usa para regresión en este caso estamos en clasificación»
+<span class="f">Clase del 7-ago · 1:12:03–1:12:18 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p><strong>Verdadero o falso, en caso de ser falso justifique.</strong> En la ayudantía
+se dijo, al presentar las métricas:</p>
+
+<div class="cita">«R cuadrado está en 0 y 1 y entre más cercano a uno mejor»
+<span class="f">Ayudantía del 31-jul · 0:50:47–0:50:49 · la ayudantía ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md]</span></div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> Falso: R² nunca pasa de 1, pero sí puede ser
+  negativo.</p>
+  <p><strong>Cómo se resuelve:</strong> R² = 1 − SS<sub>res</sub> / SS<sub>tot</sub>.
+  Si tu modelo se equivoca más que responder siempre el promedio,
+  SS<sub>res</sub> &gt; SS<sub>tot</sub>, el cociente pasa de 1 y la resta queda
+  negativa. Ejemplo a mano [DATITO]: SS<sub>tot</sub> = 100 y SS<sub>res</sub> = 150 →
+  R² = 1 − 1,5 = −0,5. Tus propios datos lo prueban: el baseline de Melbourne dio
+  &minus;0,080 en 2017, y Ridge sobre <code>log1p(Price)</code> dio
+  <strong>&minus;17,0</strong> al deshacer <code>expm1</code> sobre valores extremos
+  [FUENTE · Repo: 07_DATITO/referencia/material.md].</p>
+  <p><strong>Error típico:</strong> la frase de la ayudantía tiene una parte de verdad
+  que confunde. Sobre los <em>mismos</em> datos con que se ajustó una recta de mínimos
+  cuadrados con intercepto, R² no baja de 0, porque la recta siempre puede imitar al
+  promedio [INFERENCIA]. Sobre datos nuevos esa garantía desaparece, y es justo donde
+  se evalúa un modelo.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> la fórmula de la §8 de
+  esta página; cifras de [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] vía
+  material.md.</p>
+</details>
+
 <h2>7 · La notación, desarmada</h2>
 
 <div class="ecu">
@@ -302,9 +459,20 @@ promedio». Y puede ser negativo, porque siempre se puede hacer peor que no pens
   <tr><td><strong>&theta;&#8321;</strong></td><td>Kilos que gana por cada centímetro</td><td><span class="rol r-aprende">lo aprende el modelo</span></td></tr>
   <tr><td><strong>&epsilon;</strong></td><td>Lo que la recta no logra explicar</td><td><span class="rol r-dato">no se controla</span></td></tr>
   </table>
-  <p style="margin:.7rem 0 0;font-size:.93rem">En tu Práctica 4 esos dos números
-  salieron <code>&theta;&#8321; = 82,13</code> y <code>&theta;&#8320; = 0,2588</code>.
+  <p style="margin:.7rem 0 0;font-size:.93rem">Con los 20 árboles simulados de esta
+  página, esos dos números salen <code>&theta;&#8321; &asymp; 9,72</code> kg por cm y
+  <code>&theta;&#8320; &asymp; &minus;6,9</code> kg (cifras ilustrativas [DATITO]).
   <strong>Eso es todo el modelo.</strong></p>
+</div>
+
+<div class="nota">
+<strong>Ojo con los números del P4.</strong> En tu Práctica 4 aparecen
+<code>&theta;&#8321; = 82,13</code> y <code>&theta;&#8320; = 0,2588</code>, pero
+<strong>no son de árboles</strong>: vienen de datos sintéticos generados con
+<code>make_regression</code> (1.000 muestras, 1 atributo, ruido 10), sin unidades de
+kilos ni centímetros
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.57–67 y l.175–185].
+Sirven para ver qué es un coeficiente, no para interpretar pesos.
 </div>
 
 <div class="ecu">
@@ -388,12 +556,77 @@ el recorrido al revés.</p>
 <p style="font-size:.88rem;color:#a8a29e;margin-top:1rem">
 Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 <p style="margin-bottom:0;border-top:1px solid #44403c;padding-top:1rem">
-<strong>Y explícaselo a alguien:</strong> un compañero dice <em>«si &theta;&#8321; es 82,13, entonces un árbol de radio cero pesaría 82 kilos»</em>. ¿Tiene razón? Justifícalo nombrando qué símbolo responde esa pregunta.</p>
+<strong>Y explícaselo a alguien:</strong> un compañero dice <em>«si &theta;&#8321; es 9,72, entonces un árbol de radio cero pesaría 9,72 kilos»</em>. ¿Tiene razón? Justifícalo nombrando qué símbolo responde esa pregunta, y qué te dice que ese símbolo salga negativo. Escríbelo y llévalo a Datito.</p>
 </div>
 
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta a «Tu pregunta»:</strong> no se entrega como predicción confiable:
+  45 cm está fuera del rango observado (8 a 22 cm), así que es una extrapolación, y el
+  R² = 0,93 no dice nada sobre ese tramo.</p>
+  <ol style="margin:.3rem 0 .6rem 1.1rem;padding:0">
+    <li><strong>Ubica el pedido respecto a los datos.</strong> 45 cm es más del doble del
+    radio más grande que mediste (22 cm): no hay ni un árbol de ese tamaño en tu
+    entrenamiento</li>
+    <li><strong>Lee bien el R².</strong> El 0,93 mide qué tan bien la recta describe los
+    20 árboles que ya cortaste, dentro de 8–22 cm. Es un número de entrenamiento y de ese
+    rango; no certifica nada fuera de él</li>
+    <li><strong>El modelo igual devuelve un número.</strong> Con los θ de esta página:
+    ŷ = θ₀ + θ₁·45 = −6,9 + 9,72·45 ≈ <strong>430 kg</strong> (el panel muestra 435 kg
+    porque redondea los deslizadores). Tener un número no es tener evidencia. Si alguien
+    usara los números del P4, saldría 0,2588 + 82,13·45 ≈ 3.696 kg: un número todavía más
+    vacío, porque esos θ vienen de <code>make_regression</code>, no de árboles</li>
+    <li><strong>Contrasta con la física.</strong> El peso crece más o menos con el
+    volumen (≈ radio² × altura), no en línea recta, así que la recta probablemente
+    <em>subestima</em> los árboles grandes [INFERENCIA]. Por ejemplo, si el peso escalara
+    con el radio al cuadrado, pasar de 22 a 45 cm lo multiplicaría por (45/22)² ≈ 4,2:
+    de unos 207 kg a unos 865, no a 430 [DATITO]</li>
+    <li><strong>Qué hacer.</strong> O entregas el número con una advertencia explícita
+    («extrapolación: el modelo se entrenó con radios de 8 a 22 cm»), o, mejor, mides y
+    cortas algunos árboles grandes para ampliar el rango. Más en
+    <a href="generalizacion.html"><code>generalizacion.html</code></a></li>
+  </ol>
+  <p><strong>Respuesta a «explícaselo a alguien»:</strong> el compañero se equivoca de
+  símbolo. Respuesta modelo: <em>«θ₁ es la pendiente: cuántos kilos gana el árbol por
+  cada centímetro más de radio, no el peso de nada. El peso en radio cero lo da θ₀, el
+  punto donde la recta corta el eje, y aquí vale unos −6,9 kg. Que salga negativo te
+  avisa que radio 0 también está fuera de los datos (8 a 22 cm): θ₀ es solo donde la
+  recta cruza el eje, sin sentido físico.»</em></p>
+  <p><strong>Errores típicos:</strong> creer que un R² alto vale para cualquier radio;
+  confundir «el modelo da un número» con «el modelo sabe»; y confundir la pendiente θ₁
+  con el intercepto θ₀.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> datos y coeficientes
+  ilustrativos de esta página [DATITO]; pendiente e intercepto
+  [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.47–55]; origen
+  sintético de 82,13 y 0,2588 [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.57–67];
+  razonamiento físico [INFERENCIA].</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="regresion_y_costo.html"><code>regresion_y_costo.html</code></a> — el laboratorio de la función de costo</li>
+<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> — qué pasa al subir el grado del polinomio: sobreajuste y subajuste</li>
+<li><a href="certamen_2.html#p7"><code>certamen_2.html</code></a> — la P7, regresión polinomial con 5 árboles</li>
+</ul>
+</div>
+
+<!-- datito:dudas:inicio -->
+<style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
+<section class="ddudas" id="dudas-resueltas">
+<h2>Dudas resueltas con Datito, en orden</h2>
+<p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
+<article class="duda" id="duda-2026-09-21-arbol-45cm"><div class="dm">21-sep · resuelta en la sesión · <b>Regresion</b>, <a href="generalizacion.html">Generalizacion</a> · también en <a href="generalizacion.html#duda-2026-09-21-arbol-45cm">generalizacion.html</a></div><p><b>Pregunta.</b> Cortaste 20 árboles y ajustaste la recta: R² = 0,93. Tu jefe te pide predecir el peso de un árbol de radio 45 cm. Los 20 árboles tenían radios entre 8 y 22 cm. ¿Le entregas la predicción? Justifica.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No como una predicción confiable: 45 cm está fuera del rango observado (8–22 cm), es una extrapolación; si se entrega, va con esa advertencia explícita, y lo correcto es medir árboles de ese tamaño.</p><ol><li>El rango de tus datos es 8–22 cm. 45 cm es más del doble del máximo: el modelo nunca vio un árbol así.</li><li>R² = 0,93 mide el ajuste a los 20 árboles con que ajustaste la recta, todos dentro de 8–22 cm. No dice nada fuera de ese rango.</li><li>El modelo igual devuelve un número. Con la recta de la página (θ₁ ≈ 9,72 kg por cm, θ₀ ≈ −6,9 kg): ŷ = −6,9 + 9,72·45 ≈ 430 kg. Tener un número no es tener evidencia.</li><li>El peso crece con el volumen (aprox. radio² × altura), más rápido que una recta: con árboles grandes la recta probablemente se queda corta.</li><li>Qué haces: entregas el número declarando la extrapolación y por qué no es confiable, o mides árboles grandes y vuelves a ajustar.</li><li>Frase para la prueba: «No la entrego como confiable: 45 cm está fuera del rango observado (8–22 cm), así que es extrapolación. El R² de 0,93 mide el ajuste solo dentro de ese rango.»</li></ol><p><b>Error típico.</b> Creer que un R² alto autoriza a predecir en cualquier parte; el R² se calculó solo donde había datos.</p><p class="df">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes<br>[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html] los 20 árboles y la recta de mínimos cuadrados<br>[INFERENCIA] «extrapolación»: el profesor no usa esa palabra en las 14 transcripciones<br>[DATITO] el argumento físico del volumen<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-21-theta0-theta1"><div class="dm">21-sep · resuelta en la sesión · <b>Regresion</b></div><p><b>Pregunta.</b> Un compañero dice: «si θ₁ es 82,13, entonces un árbol de radio cero pesaría 82 kilos». ¿Tiene razón? Justifícalo nombrando qué símbolo responde esa pregunta.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No: el peso con radio cero lo da θ₀ (el intercepto), no θ₁; θ₁ es la pendiente, cuántos kilos sube el peso por cada centímetro más de radio.</p><ol><li>En ŷ = θ₀ + θ₁·x, con x = 0 queda ŷ = θ₀. El símbolo que responde es θ₀.</li><li>θ₁ no es un peso: es kilos POR centímetro. Leerlo como peso confunde pendiente con intercepto.</li><li>Con la recta de la página, θ₀ ≈ −6,9 kg: un peso negativo, imposible. Eso muestra lo segundo: radio 0 también está fuera de los datos (8–22 cm), así que ni siquiera θ₀ tiene interpretación física aquí.</li><li>Ojo con las cifras: 82,13 y 0,2588 son los coeficientes del P4 sobre datos sintéticos (make_regression), no de árboles. Con esas cifras, radio 0 daría 0,26 kg; el razonamiento es el mismo.</li><li>Frase para la prueba: «No. &quot;Cuánto pesa con radio cero&quot; lo responde θ₀, no θ₁; θ₁ es cuánto aumenta el peso por centímetro. Y radio 0 está fuera de los datos, así que θ₀ no se interpreta físicamente.»</li></ol><p><b>Error típico.</b> Leer la pendiente como si fuera el valor de ŷ; interpretar θ₀ fuera del rango de los datos.</p><p class="df">[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html §7] la notación desarmada<br>[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md] 82,13 y 0,2588 vienen de make_regression<br>[INFERENCIA] la lectura de θ₀ negativo como señal de extrapolación<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
+</section>
+<!-- datito:dudas:fin -->
 <footer>
-Generado por Datito · <code>07_DATITO/visual/clase6_regresion.html</code><br>
-Datos simulados sobre el ejemplo real de clase. Funciona sin conexión.
+Generado por Datito · <code>07_DATITO/visual/clase6_regresion.html</code> · funciona sin conexión ·
+fuentes: transcripciones de la clase del 31-jul, la clase del 7-ago y la ayudantía del 31-jul
+(<code>09_CLASES/transcripciones/</code>), <code>Resumen_Clase6_Regresion</code>, P4 resuelto,
+<code>referencia/material.md</code>.<br>
+Datos reales: las cifras de Melbourne (baseline &minus;0,080 y Ridge &minus;17,0, de
+<code>05_RESULTADOS/resultados_temporal.json</code>) y los coeficientes sintéticos del P4.
+Ilustrativos [DATITO]: los 20 árboles del gráfico, sus coeficientes y el ejemplo del error cuadrático.
 </footer>
 
 </main>

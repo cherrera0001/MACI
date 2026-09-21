@@ -53,10 +53,28 @@ cuando hay una **relacion que se entiende moviendola**.
 **1. Mira si ya existe.** `07_DATITO/visual/` puede tener uno del mismo
 concepto o de uno vecino. Extenderlo suele ser mejor que crear otro.
 
-**2. Busca el ejemplo del propio profesor.** Las transcripciones de
-`09_CLASES/transcripciones/*_plano.txt` se buscan con `grep`. Si el profesor uso
-un ejemplo para ese concepto, **usa ese** — vale mas que cualquiera que inventes,
-porque es el que va a reconocer en la prueba.
+**2. Busca el ejemplo del propio profesor.** Empieza por
+`09_CLASES/mapa_ensenanza.yaml`: dice en que clase, rango y boca (profesor,
+ayudantia, alumnos) se enseno cada concepto. Luego abre el `.md` de esa clase en
+ese rango. Si el profesor uso un ejemplo para ese concepto, **usa ese** — vale
+mas que cualquiera que inventes, porque es el que va a reconocer en la prueba.
+
+Reglas de cita, que verifica `03_CODIGO/verificar_visuales.py`:
+
+- Ruta **completa** del `.md` y marca o rango `H:MM:SS–H:MM:SS`. Nunca el
+  `_plano.txt` (no tiene marcas), nunca una ruta truncada con «…».
+- Texto **literal** de esos segmentos. Correcciones de la transcripcion entre
+  ⟨ ⟩ marcadas `[INFERENCIA]`; omisiones con […]. Maximo ~40 palabras.
+- «El profesor» es solo el titular. Lo dicho en ayudantias no entra al
+  certamen («Entran solo mis clases», 03Clase_Recuperacion 15-jul, 1:18:16):
+  rotulalo. Si una transcripcion choca con una lamina o un practico, manda el
+  material oficial y la advertencia queda visible.
+- Un numero dicho en clase puede estar mal transcrito: contrastalo con la
+  lamina o la aritmetica antes de usarlo.
+- No escribas la barra de navegacion: la inyecta
+  `03_CODIGO/construir_navegacion.py` entre `<!-- datito:nav:inicio -->` y
+  `<!-- datito:nav:fin -->`. Si creas un visual nuevo, agregalo a `VISUAL_DE` en
+  ese script.
 
 **3. Mira como lo evalua.** `07_DATITO/patron_evaluacion.md`. El artefacto debe
 preparar para **la distincion** que la pregunta exige, no para la definicion.
@@ -165,6 +183,7 @@ La prediccion se gana por interes, no por obstruccion.
 | **La distincion del certamen** | Marcada como tal, no diluida en el texto |
 | **Un procedimiento paso a paso** | Corto, para recordarlo en una prueba escrita |
 | **Errores que el formato castiga** | Lista breve al final |
+| **La respuesta correcta de cada pregunta** | Toda pregunta —prediccion, calculo, interpretacion, transferencia, «explicaselo», V/F— lleva debajo `<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>` con la respuesta en una frase, la resolucion paso a paso, el error tipico y su etiqueta de origen. En produccion, una respuesta modelo completa. Cristobal lo pidio: sin la resolucion, la duda no se cierra y no aprende (2026-09-21) |
 
 Y **sin conexion**: nada de CDN, ni fuentes remotas, ni librerias externas.
 Canvas y JavaScript plano. Su prueba es sin Internet.
@@ -181,7 +200,9 @@ Canvas y JavaScript plano. Su prueba es sin Internet.
 
 # SALIDA
 
-Escribe en `07_DATITO/visual/<concepto>.html` y devuelve **solo**:
+Escribe en `07_DATITO/visual/<concepto>.html`, corre
+`python 03_CODIGO/construir_navegacion.py` y
+`python 03_CODIGO/verificar_visuales.py` (0 fallos), y devuelve **solo**:
 
 ```
 ruta del archivo

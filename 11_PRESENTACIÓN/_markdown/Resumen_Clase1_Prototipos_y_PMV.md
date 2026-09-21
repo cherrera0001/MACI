@@ -1,6 +1,6 @@
 # Resumen_Clase1_Prototipos_y_PMV
 
-> Material de clase de Fundamentos de Ciencia de Datos, UdeC T2-2026.
+> **NO es material de Fundamentos de Ciencia de Datos**: pertenece al curso Prototipos y creatividad. No citarlo como fuente de Datito.
 > Texto extraido de `Resumen_Clase1_Prototipos_y_PMV.pdf` para busqueda e indexacion.
 > 32 laminas. Las figuras no se extraen: si una lamina
 > depende de un grafico, hay que abrir el PDF.

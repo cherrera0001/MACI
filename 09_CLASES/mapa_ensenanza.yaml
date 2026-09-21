@@ -1,0 +1,188 @@
+# Mapa de ensenanza: DONDE se enseno cada concepto, con rango y hablante.
+#
+# Curado a mano el 2026-09-21 leyendo las transcripciones (no es la "primera
+# mencion" automatica de indice_clases.yaml, que cuenta palabras y no distingue
+# quien habla). Lo consume 03_CODIGO/construir_navegacion.py para el bloque
+# "Donde se enseno" de cada visual, y 03_CODIGO/verificar_visuales.py comprueba
+# que cada marca exista en su transcripcion.
+#
+# Reglas:
+#   - las marcas son de la transcripcion automatica (pueden desviarse segundos)
+#   - hablante: titular | segundo_docente | ayudantia | alumnos | invitado
+#   - evaluable: el profesor titular declaro «Entran solo mis clases. No entran
+#     las clases de Alejandra» (03Clase_Recuperacion 15-jul, 1:18:16). Lo dicho
+#     en ayudantias se estudia, pero no es materia de certamen.
+#   - spoiler: el tramo resuelve en vivo un practico; ver antes el (vacio).
+#
+# Para integrar una clase nueva: transcribir, correr integrar_clase.py
+# --sin-subir, agregar aqui la clase y sus tramos, y correr
+# construir_navegacion.py. Ningun HTML se edita a mano para eso.
+
+clases:
+  01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio:
+    fecha: '2026-06-19'
+    tipo: clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md
+    hablantes: 'titular hasta ~1:17:20 (0:00-0:28 presentaciones de alumnos); desde ~1:28:33 un segundo docente'
+  02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
+    fecha: '2026-06-26'
+    tipo: ayudantia_y_clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md
+    hablantes: 'ayudantia P1 hasta ~1:46; despues clase del segundo docente'
+  03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio:
+    fecha: '2026-07-15'
+    tipo: clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md
+    hablantes: titular
+  04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio:
+    fecha: '2026-07-17'
+    tipo: ayudantia
+    hablantes: 'ayudantia (P2 Calidad y P3 Numpy)'
+  04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio:
+    fecha: '2026-07-17'
+    tipo: clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md
+    hablantes: 'titular (algunas intervenciones de alumnos)'
+  05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio:
+    fecha: '2026-07-24'
+    tipo: certamen
+    hablantes: 'sesion del Certamen 1: aclaraciones del titular'
+  06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio:
+    fecha: '2026-07-31'
+    tipo: ayudantia
+    hablantes: 'ayudantia (P3 visualizacion y P4 Regresion)'
+  06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio:
+    fecha: '2026-07-31'
+    tipo: clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md
+    hablantes: titular
+  2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-08-07'
+    tipo: clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md
+    hablantes: titular
+  2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-08-07'
+    tipo: ayudantia
+    hablantes: 'ayudantia (P5 Clasificacion)'
+  2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-08-14'
+    tipo: presentaciones
+    hablantes: 'presentaciones de alumnos (Hito 1) con comentarios del titular'
+  2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-08-21'
+    tipo: invitado_y_clase
+    material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
+    hablantes: 'invitado ~0:06-1:23 (datos personales, fuera del curriculum); pausa 1:25-1:35; titular 1:35:51-3:24'
+  2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-08-28'
+    tipo: certamen
+    hablantes: 'sesion del Certamen 2: aclaraciones del titular'
+  2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos:
+    fecha: '2026-09-04'
+    tipo: presentaciones
+    hablantes: 'presentaciones de alumnos (Hito 2); ejercicio del titular 1:28:40-1:48:16'
+
+conceptos:
+  fundamentos_ciencia_datos:
+    - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '0:28:57', fin: '0:48:15', hablante: titular, que: 'la IA alrededor, los datos como recurso, el caso Uber'}
+    - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '0:48:22', fin: '0:57:14', hablante: titular, que: 'definicion; Big Data: tres V, infraestructura y veracidad'}
+    - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '1:30:12', fin: '1:53:20', hablante: segundo_docente, que: 'organizacion data-driven; escala de cinco etapas (1:44:31-1:47:47)'}
+    - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '1:58:46', fin: '2:30:54', hablante: segundo_docente, que: 'la rueda del proceso, etapa por etapa con Uber'}
+    - {clase: 02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio, inicio: '1:48:43', fin: '1:54:31', hablante: segundo_docente, que: 'repaso de la escala y de la rueda'}
+    - {clase: 02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio, inicio: '2:06:20', fin: '2:19:25', hablante: segundo_docente, que: 'roles, perfiles T/Pi/Gamma, el lider'}
+    - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '0:00:19', fin: '0:06:41', hablante: titular, que: 'repaso del ciclo; retroceso de produccion a exploracion'}
+    - {clase: 05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio, inicio: '0:21:58', fin: '0:22:23', hablante: titular, que: 'aclaracion en el certamen: dominios, no fuentes'}
+  datos_features_target:
+    - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '0:07:29', fin: '0:17:05', hablante: titular, que: 'que es un dato; dato frente a informacion'}
+    - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '0:47:42', fin: '0:59:23', hablante: titular, que: 'datos tabulares, cilindros, dimension, tipos de variable, one-hot'}
+    - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '1:01:12', fin: '1:15:06', hablante: titular, que: 'tablas desordenadas: entregas y camiones'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:16:26', fin: '0:17:44', hablante: titular, que: 'atributos, etiqueta y f(x)'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:10:03', fin: '0:13:18', hablante: titular, que: 'categorica frente a numerica; discretizacion'}
+    - {clase: 2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:55:00', fin: '1:59:06', hablante: titular, que: 'el target es una decision: regresion o clasificacion'}
+  eda:
+    - {clase: 04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:05:20', fin: '1:27:00', hablante: titular, que: 'la clase completa de EDA'}
+    - {clase: 2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:19:25', fin: '1:21:04', hablante: titular, que: 'boxplots con pocos datos no aseguran significancia'}
+  limpieza_preparacion:
+    - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '0:59:41', fin: '1:16:23', hablante: titular, que: 'problemas tipicos, formato, camiones, fechas; anuncia el ejercicio tipo 9B'}
+    - {clase: 04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:44:12', fin: '0:45:21', hablante: titular, que: 'camiones: muchos ceros y un valor anomalo'}
+    - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '2:20:37', fin: '2:22:40', hablante: segundo_docente, que: 'sensores sin dato y el secador de pelo'}
+    - {clase: 04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:10:31', fin: '0:37:25', hablante: ayudantia, que: 'resuelve el P2 de calidad', spoiler: P2}
+  train_validation_test:
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:43:55', fin: '0:54:42', hablante: titular, que: 'tres conjuntos; hiperparametros; por que validacion y test'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '1:06:15', fin: '1:07:22', hablante: titular, que: 'un test no representativo (el ejemplo de 2008)'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '1:27:34', fin: '1:30:53', hablante: titular, que: 'el sistema para Arauco: etiquetar y evaluar'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:25:05', fin: '1:26:31', hablante: titular, que: 'el criterio de impureza es un hiperparametro'}
+    - {clase: 2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:01:26', fin: '2:09:21', hablante: titular, que: 'pregunta a un grupo por entrenamiento y evaluacion (Melbourne)'}
+    - {clase: 06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio, inicio: '0:58:01', fin: '1:01:05', hablante: ayudantia, que: 'particiones en el notebook', spoiler: P4}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:10:55', fin: '0:14:05', hablante: ayudantia, que: 'split aleatorio y estratificacion'}
+  validacion_cruzada:
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:02:14', fin: '0:02:38', hablante: titular, que: 'anuncia «la tecnica mas importante yo creo de quizas…»'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:43:28', fin: '0:43:55', hablante: titular, que: 'la respuesta a la mayor parte de los problemas'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:49:13', fin: '0:51:59', hablante: titular, que: 'sobreajustar la validacion; «validacion nomas»; estrategias'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:55:04', fin: '1:15:03', hablante: titular, que: 'holdout, bootstrap, submuestreo y K-Fold'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:03:34', fin: '1:04:25', hablante: titular, que: 'lo mismo en clasificacion'}
+    - {clase: 06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio, inicio: '1:25:10', fin: '1:30:40', hablante: ayudantia, que: 'KFold en el P4', spoiler: P4}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:12:03', fin: '0:30:25', hablante: ayudantia, que: 'k=5, busqueda de hiperparametros, MSE negativo'}
+  generalizacion:
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:40:51', fin: '0:43:37', hablante: titular, que: 'grado alto, definicion, la maquina que falla'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:44:25', fin: '0:45:22', hablante: titular, que: 'una frontera que no generaliza'}
+    - {clase: 2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:06:29', fin: '2:09:21', hablante: titular, que: 'Melbourne 2016 a 2017: decisiones y cambio de datos'}
+  overfitting_underfitting:
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:36:16', fin: '0:43:37', hablante: titular, que: 'complejidad = numero de parametros; el balance'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:47:10', fin: '0:50:35', hablante: titular, que: 'error 0 con grado alto; sobreajustar la validacion'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:03:03', fin: '1:03:51', hablante: titular, que: 'sobreajuste en clasificacion'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:28:08', fin: '1:28:43', hablante: titular, que: 'arboles: parar antes de sobreajustar'}
+    - {clase: 06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio, inicio: '1:15:44', fin: '1:23:15', hablante: ayudantia, que: 'grados 4, 7, 10 y 13 del P4', spoiler: P4}
+  regresion:
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:18:53', fin: '0:21:42', hablante: titular, que: 'el peso del arbol segun el radio; ruido; theta0 + theta1 x'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:22:08', fin: '0:28:11', hablante: titular, que: 'funcion de costo; por que al cuadrado'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:28:27', fin: '0:36:05', hablante: titular, que: 'minimizar: derivadas, solucion cerrada, gradiente'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:36:16', fin: '0:40:51', hablante: titular, que: 'complejidad; lineal en los theta, no en x'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:11:39', fin: '1:12:26', hablante: titular, que: 'R cuadrado es de regresion, no de clasificacion'}
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:55:43', fin: '2:04:18', hablante: titular, que: 'la regresion como perceptron sin g; gradiente'}
+    - {clase: 06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio, inicio: '0:50:27', fin: '1:17:30', hablante: ayudantia, que: 'metricas, California Housing, PolynomialFeatures', spoiler: P4}
+  clasificacion:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:00:09', fin: '0:09:22', hablante: titular, que: 'regresion frente a clasificacion; perro o gato'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:09:22', fin: '0:16:16', hablante: titular, que: 'categorica frente a numerica; el orden'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:19:23', fin: '0:25:05', hablante: titular, que: 'clasificar por cercania (KNN) y la probabilidad'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:25:11', fin: '0:44:15', hablante: titular, que: 'SVM y el margen'}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:33:57', fin: '0:47:26', hablante: ayudantia, que: 'get_dummies y LabelEncoder', spoiler: P5}
+  matriz_confusion:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:44:25', fin: '0:47:52', hablante: titular, que: 'la convencion del positivo; contar VP, FP, FN, VN'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:00:54', fin: '1:02:54', hablante: titular, que: 'construir la matriz; el caso multiclase'}
+    - {clase: 2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:28:40', fin: '1:48:16', hablante: titular, que: 'ejercicio de 100 pacientes con 20 enfermos («lo mas importante del curso»)'}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:00:34', fin: '1:10:12', hablante: ayudantia, que: 'el ejemplo Guitarra y el caso de 3 clases', spoiler: P5}
+  metricas_clasificacion:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:48:00', fin: '0:58:35', hablante: titular, que: 'exactitud, recall y precision; la maquina 7 de 10'}
+    - {clase: 2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:12:28', fin: '1:16:17', hablante: titular, que: 'el pescado: que decision tomar con las metricas'}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:48:02', fin: '1:00:23', hablante: ayudantia, que: 'F1 como media armonica; exactitud balanceada', spoiler: P5}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:10:37', fin: '1:14:57', hablante: ayudantia, que: 'classification_report: macro y weighted', spoiler: P5}
+  roc_auc:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:04:17', fin: '1:13:50', hablante: titular, que: 'probabilidad, umbral, punto de operacion, curva ROC'}
+    - {clase: 2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:19:26', fin: '1:20:34', hablante: titular, que: 'aclaracion durante el Certamen 2'}
+    - {clase: 2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:35:16', fin: '1:45:35', hablante: titular, que: 'de un punto de la ROC a conteos de pacientes'}
+  arboles_decision:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:14:34', fin: '1:28:43', hablante: titular, que: 'pureza, Gini, entropia, ganancia, criterio de parada'}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:27:08', fin: '1:30:15', hablante: ayudantia, que: 'DecisionTreeClassifier y plot_tree', spoiler: P5}
+  random_forest:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:28:43', fin: '1:36:40', hablante: titular, que: 'votacion, bootstrap, atributos al azar, importancia por conteo'}
+    - {clase: 2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:30:23', fin: '1:35:12', hablante: ayudantia, que: 'Random Forest en el P5', spoiler: P5}
+  gradient_boosting:
+    - {clase: 2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:59:10', fin: '1:59:14', hablante: titular, que: 'comentario breve; no se enseno como tema'}
+  ensembles:
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:29:42', fin: '1:30:40', hablante: titular, que: 'las decisiones no deben estar correlacionadas'}
+  redes_neuronales:
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:48:16', fin: '2:11:31', hablante: titular, que: 'neurona, perceptron, costo, gradiente, retropropagacion'}
+  deep_learning:
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:37:26', fin: '1:53:00', hablante: titular, que: 'ImageNet, 2012, GPU, definicion, datos frente a desempeno'}
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:54:51', fin: '2:56:10', hablante: titular, que: 'Premio Turing e historia'}
+    - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:35:32', fin: '1:36:34', hablante: titular, que: 'con datos tabulares un random forest puede ganar'}
+  llm:
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:11:41', fin: '2:35:37', hablante: titular, que: 'transformer, atencion, BERT, predecir la siguiente palabra'}
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:43:47', fin: '2:46:54', hablante: titular, que: 'destilacion y limitaciones'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:04:42', fin: '0:06:34', hablante: titular, que: 'GPT es el modelo; ChatGPT, el sistema'}
+  agentes_ia:
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '2:45:33', fin: '2:54:43', hablante: titular, que: 'definicion, mecanismo de herramientas, multiagente, responsabilidad'}
+    - {clase: 2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos, inicio: '3:04:17', fin: '3:05:41', hablante: titular, que: 'uso autonomo del computador; agentes multimodales'}
+    - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '1:21:54', fin: '1:23:15', hablante: titular, que: 'un agente con un LLM de base'}

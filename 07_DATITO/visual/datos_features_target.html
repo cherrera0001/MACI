@@ -67,6 +67,8 @@
   details{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.7rem 1rem;margin:.8rem 0}
   details summary{cursor:pointer;font-weight:600;font-size:.92rem;color:#374151}
   details[open] summary{margin-bottom:.6rem;border-bottom:1px solid var(--linea);padding-bottom:.5rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
   .cols{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0}
   .cols button{font-family:ui-monospace,monospace;font-size:.82rem;font-weight:600;
                background:#fff;color:#374151;border:1.5px solid var(--linea);padding:.4rem .7rem;margin:0}
@@ -83,11 +85,22 @@
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Datos, filas, columnas, features y target</b></span> · <span class="et">viene de</span><a href="fundamentos_ciencia_datos.html">Fundamentos de Ciencia de Datos</a> · <span class="et">habilita</span><a href="eda.html">Analisis exploratorio de datos (EDA)</a>, <a href="clase6_regresion.html">Regresion</a>, <a href="train_validation_test.html">Train / validation / test</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 19 · peso en certamen media (C1: P6 y 9A) · <span class="et">certamen</span><a href="certamen_1.html#p6">C1 P6</a> · <a href="certamen_1.html#p9a">C1 P9A</a> · <a href="certamen_2.html#p3">C2 P3</a></div>
+<details><summary>Dónde se enseñó en clase (6 tramos)</summary><ul><li><b>Clase del 15-jul</b> · 0:07:29–0:17:05 · profesor — que es un dato; dato frente a informacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:07:29]</span></li><li><b>Clase del 15-jul</b> · 0:47:42–0:59:23 · profesor — datos tabulares, cilindros, dimension, tipos de variable, one-hot<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:47:42]</span></li><li><b>Clase del 15-jul</b> · 1:01:12–1:15:06 · profesor — tablas desordenadas: entregas y camiones<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:01:12]</span></li><li><b>Clase del 31-jul</b> · 0:16:26–0:17:44 · profesor — atributos, etiqueta y f(x)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:16:26]</span></li><li><b>Clase del 7-ago</b> · 0:10:03–0:13:18 · profesor — categorica frente a numerica; discretizacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:10:03]</span></li><li><b>Presentaciones del 14-ago</b> · 1:55:00–1:59:06 · profesor — el target es una decision: regresion o clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:00]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Datos, filas, columnas, features y target</h1>
 <p class="sub">Qué es una fila, qué es una columna, y por qué el target no es una
-propiedad de la tabla sino una decisión tuya.<br>
-Fundamentos de Ciencia de Datos · UdeC · Clase de recuperación del 15 de julio</p>
+propiedad de la tabla sino una decisión tuya. Y cuál es la columna que nunca
+debe entrar: la que ya sabe la respuesta.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 15-jul (recuperación, lámina FCD-04 Calidad de datos)</p>
 
 <div class="grafo">
   <span class="n">Fundamentos de ciencia de datos</span> →
@@ -114,51 +127,122 @@ preguntas, y las repite tabla tras tabla:</p>
   <strong>2. ¿Cuáles son las variables?</strong> → cada una es una <b>columna</b>
 </div>
 
+<p>Antes de las dos preguntas, la palabra de base. La lámina oficial define el
+dato así:</p>
+
 <div class="cita">
-  «Cuando los datos están bien estructurados, uno espera que cada registro u
-  observación represente las medidas de un solo objeto o evento. […] Cada una de
-  las medidas que yo hago sobre cada uno de estos objetos o eventos, se les llama
-  una variable o atributo. Cada vez que yo hable de variable o atributo voy a
-  estar hablando de lo mismo. Exactamente lo mismo.»
-  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio_plano.txt</code>]</span>
+  «Un dato es una medición de algo en una escala que sea comprensible tanto para
+  el registrador y como para el lector.»
+  <span class="f">Lámina oficial · [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 5]</span>
 </div>
 
-<p>Su ejemplo limpio son <b>cilindros</b>. Cada fila, un cilindro. Las columnas:
-altura, radio, y si le gusta o no. Y ahí suelta un término que sí te pueden
+<p>En clase lo dijo casi con las mismas palabras
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:08:41–0:08:50]</span>,
+y unos minutos después separó dato de <b>información</b>: la información son los
+datos puestos dentro de un contexto
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:14:24–0:14:31]</span>.
+«1,65 metros» es un dato; «la altura de esta persona es 1,65 metros, y es la más
+baja del curso» ya es información. Una celda de tu tabla es un dato; la tabla con
+sus nombres de columna y su pregunta es lo que la vuelve información.
+<span class="fuente">[DATITO] ejemplo sobre la altura que usó el profesor.</span></p>
+
+<p>Ahora la tabla. La lámina 18 fija las dos piezas y el término que sí te pueden
 preguntar:</p>
 
 <div class="cita">
-  «El número de atributos que yo tenga, en este caso tres —altura, radio y me
-  gusta o no— es lo que se le llama la <b>dimensión de los datos</b>. Entonces en
-  este caso son tres dimensiones.»
-  <span class="f">[FUENTE · Repo: transcripción del 15 de julio]</span>
+  «Se espera que cada registro u observación represente un conjunto de medidas de
+  un solo objeto o evento. Cada tipo de medida se denomina variable o atributo
+  (por ejemplo, Altura, Radio y "¿Me gusta?" son variables o atributos). El número
+  de atributos se denomina dimensión de los datos.»
+  <span class="f">Lámina oficial · [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 18]</span>
 </div>
+
+<p>Su ejemplo limpio son <b>cilindros</b>: cada fila, un cilindro; las columnas,
+altura, radio y si le gusta o no. En clase remarcó que «variable» y «atributo»
+son exactamente lo mismo
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:50:37–0:51:10]</span>,
+y que tres atributos hacen datos «tridimensionales»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:51:51–0:52:03]</span>.</p>
 
 <div class="clave">
   <b>Dimensión de los datos = número de atributos = número de columnas de variables.</b>
   No es el número de filas. No es el tamaño del archivo. Más adelante lo vas a
-  llamar <code>p</code>, y va a ser el protagonista de la sección 8.
+  llamar <code>p</code>, y va a ser el protagonista de la sección 7.
 </div>
 
-<p>Él mismo advierte que el caso limpio es el caso raro:</p>
+<p>Él mismo advirtió que el caso limpio es el raro: si todavía no te ha tocado
+reestructurar una tabla así, te va a tocar
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:51:31–0:51:43]</span>.
+Y ese mismo día puso el caso sucio: una tabla de <b>consumo de combustible de
+camiones</b> donde la columna <code>Consumo</code> mezcla días y camiones. Después
+de discutirla con el curso, cerró así:</p>
 
-<div class="cita">
-  «Yo les aseguro que más de alguna vez no les ha tocado los datos así, y ustedes
-  han tenido que transformar los datos en algo así, o les va a tocar. Si no les ha
-  tocado, les va a tocar.»
-  <span class="f">[FUENTE · Repo: transcripción del 15 de julio]</span>
-</div>
+<div class="cita">«Entonces la respuesta a esto que ya la venimos discutiendo. Las variables en este conjunto de datos son día, camión y consumo. El objeto ⟨o⟩ evento que estamos midiendo es el consumo por día y por camión.» <span class="f">Clase del 15-jul · 1:11:28–1:11:38 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «objeto de evento»)</span></div>
 
 <div class="vecino">
-  El caso sucio que usó ese mismo día —la tabla de <b>consumo de combustible de
-  camiones</b>, donde la columna <code>CONSUMO</code> mezcla días, camiones y
-  cantidades— está trabajado a fondo en
-  <code>07_DATITO/visual/limpieza_preparacion.html</code>, desde el ángulo de la
-  calidad. Acá lo usamos solo para una cosa: en esa tabla <b>una fila no es una
-  observación</b>, y por eso no se puede modelar hasta reestructurarla.
-  Su respuesta: las variables son <b>Día, Camión y Consumo</b>, y lo que se mide es
-  el consumo de un camión en un día.
+  Fíjate en la forma de la respuesta: <b>tres variables</b> y un objeto medido con
+  <b>dos calificadores</b> («por día y por camión»). En esa tabla <b>una fila no es
+  una observación</b> —las filas «El Lunes», «El Martes» son separadores—, y por
+  eso no se puede modelar hasta reestructurarla. La reestructuración, desde el
+  ángulo de la calidad, está en <a href="limpieza_preparacion.html">limpieza_preparacion.html</a>.
 </div>
+
+<details>
+  <summary>Ejercicio de aplicación · La tabla de la lámina 27, como en la 9A y la 9B del Certamen 1</summary>
+  <p>La lámina 27 entrega esto (consumo de bencina, sin unidad):</p>
+  <pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.8rem;font-size:.86rem">Consumo        Cantidad
+El Lunes
+Camión 1         400
+Camión 2        3500
+Camión 3        2000
+El Martes
+Camión 1         350
+Camión 2           0
+Camión 3         400
+El Miércoles
+Camión 1         500
+Camión 2        3600
+Camión 3           0</pre>
+  <p>En papel: (1) ¿qué objeto o evento se mide?, (2) ¿cuáles son las variables?,
+  (3) ¿qué columna sirve de identificador?, (4) dibuja la tabla corregida con sus
+  columnas y las tres primeras filas. <b>Escríbelo antes de abrir.</b></p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><b>Respuesta:</b> se mide el consumo de bencina de un camión en un día; las
+    variables son <b>Día, Camión y Consumo</b>; ninguna columna identifica una fila,
+    así que se crea un <b>ID</b>; la tabla corregida tiene una fila por camión y día:
+    <code>ID · Día · Camión · Consumo</code>.</p>
+    <p><b>Cómo se resuelve:</b></p>
+    <ol class="pasos">
+      <li>Mira un número cualquiera, el 3500, y pregúntate de qué es: del camión 2,
+      el lunes. Entonces el evento es «consumo de un camión en un día».</li>
+      <li>Las variables son lo que cambia entre esos eventos: el día (escondido en
+      filas separadoras), el camión (metido en la columna <code>Consumo</code>) y
+      la cantidad.</li>
+      <li>¿Alguna columna distingue cada fila? No: «Camión 1» aparece tres veces.
+      Se crea un ID del 1 al 9.</li>
+      <li>Se arma la tabla: 3 días × 3 camiones = 9 filas; las filas «El Lunes»
+      desaparecen porque su contenido pasa a la columna Día, escrita completa.</li>
+    </ol>
+    <p><b>Error típico:</b> decir que las variables son «Consumo» y «Cantidad»
+    (eso son los encabezados, no las variables), o que se mide «camiones» (falta el
+    día). Otro: borrar los ceros o marcar el 3500 como error; la respuesta oficial
+    conserva ambos. Tabla destino del propio profesor:</p>
+    <pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.8rem;font-size:.86rem">ID  Día         Camión  Consumo
+1   2026-07-13  1        400
+2   2026-07-13  2       3500
+3   2026-07-13  3       2000</pre>
+    <p>Cuatro columnas: un <b>ID</b> que no mide nada, la fecha completa en vez de
+    «El Lunes», el camión como número y el consumo. Nota que <b>conserva los ceros</b>
+    y no marca el 3500 como error.</p>
+    <p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · láminas 27–28]
+    · La 9A (calificaciones con fechas como encabezados y una <code>Matrícula</code>
+    con <code>N/A</code>) y la 9B (camiones con <code>−999</code> y <code>2900</code>)
+    son variantes de este mismo ejercicio: <a href="certamen_1.html#p9a">certamen_1.html#p9a</a>
+    · <a href="certamen_1.html#p9b">certamen_1.html#p9b</a>.</p>
+  </details>
+</details>
 
 
 <h2>2 · La anatomía completa de un dataset</h2>
@@ -166,18 +250,22 @@ preguntar:</p>
 <p>La descripción más limpia de un dataset que se dijo en tu curso vino de una
 presentación de compañeros sobre biopsias de mama:</p>
 
-<div class="cita">
-  «…filas del dataset, el cual contiene <b>32 columnas</b>, donde la primera de
-  ellas corresponde al <b>identificador único</b> de la biopsia, la segunda
-  corresponde a nuestra <b>variable objetivo o target</b>, que es <em>diagnosis</em>,
-  que es binaria, que puede ser M o B, maligno o benigno, y otras <b>30 variables
-  que son predictoras</b>. Es decir, que a partir de estas vamos a tratar de
-  predecir la variable de diagnóstico.»
-  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code>]</span>
+<div class="cita">«[…] tenemos 569 biopsias las cuales, o mejor dicho, 539 filas del dataset, el cual contiene <b>32 columnas</b>, donde la primera de ellas corresponde al <b>identificador único</b> de la biopsia, la segunda […] a nuestra <b>variable objetivo o target</b>, […] y otras <b>30 variables que son predictoras</b>.» <span class="f">Presentaciones del 14-ago · 1:09:08–1:09:31 · un grupo de compañeros ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="nota">
+  ⚠ <b>El número de filas no es confiable.</b> El expositor dice 569 y se corrige a
+  539. Pero más adelante el mismo grupo habla de 569 datos con ID únicos y
+  multiplica por las 30 columnas para obtener 17.070 valores
+  <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:31–1:11:53]</span>;
+  569 × 30 = 17.070 cuadra y 539 × 30 = 16.170 no, así que lo más probable es que
+  sean 569 [INFERENCIA]. No uses ninguna de las dos cifras como dato. Para lo que
+  importa aquí —la anatomía de las columnas— el número de filas da igual.
 </div>
 
-<p>Ahí está todo. Un dataset tiene <b>tres tipos de columna</b>, y confundirlos es
-lo que se castiga:</p>
+<p>Ahí está todo (el target, <code>diagnosis</code>, vale M o B: maligno o
+benigno). Un dataset tiene <b>tres tipos de columna</b>, y confundirlos es lo que
+se castiga:</p>
 
 <table>
   <tr><th>Tipo</th><th>Cuántas</th><th>Qué hace</th><th>¿Entra al modelo?</th></tr>
@@ -201,13 +289,25 @@ lo que se castiga:</p>
 <p>1 + 1 + 30 = 32. La aritmética cuadra, y esa es la comprobación que puedes hacer
 en cualquier tabla del certamen.</p>
 
+<p>¿Para qué existe una columna que no mide nada? El profesor lo respondió con
+una razón de modelamiento, no de orden:</p>
+
+<div class="cita">«si tú quieres saber cuándo tu modelo predice mal […] tienes que de alguna forma acceder a esos datos. Y la forma de acceder es a través de esto acá que se le llama un índice, ¿no? O una llave primaria […]» <span class="f">Clase del 15-jul · 1:06:21–1:06:34 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
 <div class="nota">
-  Sobre el identificador, el profesor fue explícito ese día: <em>«tiene que ser un
-  identificador único; yo no le puedo poner a este “Libre 1” y al siguiente
-  “Libre 1”, porque entonces no puedo identificar exactamente cada uno de ellos»</em>.
+  <b>Único, o no sirve.</b> Justo después, un compañero comentó que ese ID debía ser
+  único, y la respuesta fue que es muy importante: no se puede poner el mismo ID a
+  dos filas, porque entonces no se puede identificar cada una
+  <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:06:42–1:07:00]</span>.
+  La transcripción no separa las voces; que la última frase sea del profesor se
+  deduce por contexto [INFERENCIA]. ⚠ Donde el ASR escribe «Libre 1», lo más
+  probable es «delivery 1», el ID que él mismo había puesto a su tabla de entregas
+  un minuto antes [INFERENCIA]
+  <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:05:04–1:05:32]</span>.<br>
   Un ID repetido no es un detalle cosmético: significa que <b>no sabes qué es una
-  fila</b>.
-  <span class="fuente">[FUENTE · Repo: transcripción del 15 de julio]</span>
+  fila</b>. Es lo que rompe la 9A del Certamen 1, donde la <code>Matrícula</code>
+  vale <code>N/A</code> en una fila (<a href="certamen_1.html#p9a">certamen_1.html#p9a</a>).
 </div>
 
 <details>
@@ -218,8 +318,15 @@ en cualquier tabla del certamen.</p>
   <code>Hora_alta</code>. Quieres predecir el diagnóstico al momento del ingreso.</p>
   <p>¿Cuál es el ID, cuál el target, cuáles features, y cuál columna sobra aunque
   parezca útil?</p>
-  <details>
-    <summary>Ver respuesta</summary>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><b>Respuesta:</b> <code>RUT</code> es el ID, <code>Diagnóstico</code> el
+    target, <code>Edad</code>, <code>Temperatura</code> y <code>Presión</code> las
+    features, y <code>Hora_alta</code> sobra porque no existe al momento de
+    predecir.</p>
+    <p><b>Cómo se resuelve:</b> primero el target (lo dice el enunciado: el
+    diagnóstico); después, para cada columna restante, dos preguntas: ¿mide algo del
+    paciente o solo lo identifica? y ¿la tengo en la mano en el ingreso?</p>
     <ul>
       <li><b>ID:</b> <code>RUT</code> — identifica, no mide. Fuera del modelo.</li>
       <li><b>Target:</b> <code>Diagnóstico</code>.</li>
@@ -232,9 +339,13 @@ en cualquier tabla del certamen.</p>
       cambia el tipo de urgencia, pero es la clase de columna que hay que
       justificar, no asumir.</li>
     </ul>
+    <p><b>Error típico:</b> meter <code>Hora_alta</code> «porque es un dato real»
+    o porque mejora la exactitud en la tabla. Que sea verdadera no la hace usable:
+    a la hora de predecir todavía no ocurrió.</p>
     <p class="fuente">[DATITO] Ejercicio construido para este artefacto. El
-    mecanismo —una columna que no existe al momento de predecir— es el mismo que
-    vas a ver en <code>train_validation_test</code>.</p>
+    mecanismo —una columna que no existe al momento de predecir— tiene nombre,
+    fuga de información, y está en la sección 9; su consecuencia sobre la
+    partición de filas, en <a href="train_validation_test.html">train_validation_test.html</a>.</p>
   </details>
 </details>
 
@@ -256,6 +367,25 @@ cambia de tipo de problema.</p>
   <div class="veredicto"></div>
 </div>
 
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> no; con <code>Type</code> como target el problema pasa a ser
+  de <b>clasificación multiclase</b> (tres clases: casa, townhouse, unidad).</p>
+  <ol class="pasos">
+    <li>Mira qué valores puede tomar la columna que elegiste como target:
+    <code>h</code>, <code>t</code>, <code>u</code>.</li>
+    <li>¿Existe un punto medio entre «casa» y «unidad»? No. Es categórica.</li>
+    <li>Target categórico con más de dos valores → clasificación multiclase. Con
+    <code>Price</code>, que es continuo, era regresión.</li>
+    <li>Cambia también cómo mides el error: aciertos por clase (matriz de
+    confusión, F1) en vez de AUD de diferencia (MAE).</li>
+  </ol>
+  <p><b>Error típico:</b> decidir el tipo de problema mirando las features («como
+  <code>Rooms</code> y <code>Distance</code> son números, es regresión»). Lo fija el
+  target, no las entradas.</p>
+  <p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 20] · mismo razonamiento que la P6 del Certamen 1 (<a href="certamen_1.html#p6">certamen_1.html#p6</a>) · pasos [DATITO]</p>
+</details>
+
 <div class="panel">
   <p class="lbl">Haz clic en una columna para convertirla en el target</p>
   <div class="cols" id="colsMel"></div>
@@ -276,10 +406,93 @@ cambia de tipo de problema.</p>
   no se «descubre» mirando el CSV — se decide antes, cuando defines el problema.
 </div>
 
-<p>Tu profesor lo plantea exactamente así cuando interroga a un grupo:
-<em>«¿cuál es la variable que tú quieres predecir?»</em>. No «cuál es el target»:
-<b>cuál quieres tú</b>.
-<span class="fuente">[FUENTE · Repo: transcripción del 14 de agosto]</span></p>
+<p>En la clase de regresión lo dijo de frente: en la tabla, el target no se ve
+distinto de las demás columnas.</p>
+
+<div class="cita">«le entrego atributos y además le entrego una etiqueta en general las tablas cuando uno ve las tablas la etiqueta es parte de los atributos pero tú sabes ⟨cuál⟩ es ⟨la⟩ etiqueta» <span class="f">Clase del 31-jul · 0:16:55–0:17:05 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «que es el etiqueta»)</span></div>
+
+<p>«Tú sabes»: nadie más lo sabe por ti, ni el CSV ni pandas. Y cuando le tocó
+interrogar a un grupo en las presentaciones del 14-ago, empezó por ahí. El grupo
+tenía la nota final de una asignatura (0 a 100) y la había convertido en
+aprobado/reprobado para usarla como target:</p>
+
+<div class="cita">«¿cuál es la variable que tú quieres ⟨predecir⟩? […] entonces lo que hiciste fue tomarte una variable numérica y la transformaste en una variable categórica […] ¿no has pensado en transformar un modelo de regresión en vez de un modelo de clasificación?» <span class="f">Presentaciones del 14-ago · 1:55:00–1:57:31 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «predicir»)</span></div>
+
+<div class="clave">
+  Es el mismo movimiento que acabas de hacer con los botones, pero sobre una sola
+  columna: <b>la nota 0–100 y aprobado/reprobado son dos targets distintos sacados
+  del mismo dato</b>, y cada uno define otro problema. No hay uno «correcto»: hay
+  uno que responde tu pregunta. Por eso el profesor no le dijo que estaba mal; le
+  preguntó si lo había pensado.
+</div>
+
+<div class="repreg">
+  <strong>Producción · explícaselo a alguien.</strong><br><br>
+  Un compañero tiene la nota final (0 a 100) de cada estudiante y quiere predecir
+  si aprueba. Explícale, en 5 o 6 líneas y sin fórmulas:<br>
+  (1) qué cambia si el target es la nota o si es aprobado/reprobado: tipo de
+  problema, cómo se mide el error y qué información se pierde;<br>
+  (2) por qué, si elige aprobado/reprobado, la nota <b>no puede</b> quedar entre
+  las features;<br>
+  (3) por qué aprobado/reprobado, aunque sea categórica, todavía tiene un orden.<br><br>
+  Escríbelo tú. Después llévalo a Datito para que te lo corrija.
+</div>
+
+<details>
+  <summary>Criterios de corrección (no es una respuesta modelo)</summary>
+  <ul>
+    <li>Conecta el tipo de problema con <b>el target</b>, no con las features:
+    nota → regresión; aprobado/reprobado → clasificación binaria.</li>
+    <li>Nombra lo que se pierde al discretizar con un ejemplo concreto (dos notas
+    muy distintas que quedan en la misma clase).</li>
+    <li>Identifica que aprobado/reprobado <b>se calcula</b> desde la nota: si la
+    nota entra como feature, el modelo copia la regla del umbral. Usa la palabra
+    que corresponde (la sección 9 la define).</li>
+    <li>Usa la idea de discretización de una variable numérica de la sección 6, no
+    solo «porque aprobar es mejor que reprobar».</li>
+    <li>No dice «clasificación es mejor» o «regresión es mejor» sin decir para qué
+    pregunta.</li>
+  </ul>
+  <p class="fuente">[DATITO] Criterios construidos para este artefacto a partir del
+  caso real del 14-ago.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> son dos problemas distintos sacados del mismo dato: la nota
+  como target es regresión y aprobado/reprobado es clasificación binaria; si eliges
+  aprobado/reprobado, la nota no puede ser feature porque el target se calcula desde
+  ella (fuga), y aprobado/reprobado conserva un orden porque es una nota
+  discretizada.</p>
+  <p><b>Respuesta modelo, como se la dirías al compañero:</b></p>
+  <div class="clave" style="font-style:normal">
+    «Tienes dos targets posibles y cada uno es otro problema. Si predices la nota de
+    0 a 100, es regresión: el modelo da un número y el error tiene tamaño, no es lo
+    mismo fallar por 3 puntos que por 30. Si predices aprobado o reprobado, es
+    clasificación binaria: aciertas la clase o no, y lo mides con exactitud,
+    precisión, recall o F1. Al pasar a dos clases pierdes información: dos notas
+    aprobatorias muy distintas quedan iguales, y dos notas casi idénticas a cada
+    lado del umbral quedan en clases opuestas. Si eliges aprobado/reprobado, la nota
+    no puede entrar como feature, porque aprobado se calcula desde la nota con un
+    umbral: el modelo aprendería el umbral, se vería perfecto y no sabría nada de los
+    estudiantes. Eso es fuga de información. Y aunque aprobado/reprobado sea
+    categórica, tiene orden: aprobado está por encima de reprobado, porque es una
+    discretización de una variable numérica. Cuál conviene depende de tu pregunta:
+    si la institución solo necesita saber a quién apoyar, basta la clase; si quiere
+    saber cuánto le falta a cada uno, conviene la nota.»
+  </div>
+  <p><b>Cómo se construye:</b> (1) target → tipo de problema; (2) tipo de problema
+  → cómo se mide el error; (3) qué se pierde al discretizar, con un ejemplo;
+  (4) la regla de fuga: ¿el target se calcula desde alguna feature?; (5) el orden
+  de una variable discretizada; (6) cerrar con «depende de la pregunta» y decir de
+  qué depende.</p>
+  <p><b>Error típico:</b> defender la nota como feature «porque correlaciona
+  muchísimo con aprobar». Correlaciona porque es la misma información: por eso es
+  fuga y no una buena feature.</p>
+  <p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:00–1:57:31] (el caso) · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:12:19–0:12:41] (la discretización conserva el orden) · redacción [DATITO]</p>
+</details>
 
 
 <h2>4 · La ecuación, desarmada</h2>
@@ -331,8 +544,14 @@ escrita así, sin la tabla al lado:</p>
 <p>Te entregan solo esto, sin contexto: <code>n = 6.336</code>, <code>p = 23</code>,
 <code>y</code> continuo en AUD, y <code>ŷ<sub>i</sub> = f̂(x<sub>i1</sub>,…,x<sub>i,23</sub>)</code>.</p>
 
-<details>
-  <summary>Antes de abrir: ¿qué es una fila aquí, qué cuenta p, y qué es y?</summary>
+<p><b>Tu pregunta:</b> ¿qué es una fila aquí, qué cuenta <code>p</code>, y qué es
+<code>y</code>? Escríbelo antes de abrir.</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> una fila es una venta de 2016, <code>p = 23</code> son las
+  columnas numéricas que entran al modelo después del encoding (no 23 variables), e
+  <code>y</code> es el precio de venta en AUD.</p>
   <ul>
     <li><b>Una fila</b> = una <b>venta</b> de una propiedad. Ojo: no una propiedad.
     Si la misma casa se vendió dos veces, son dos filas. El objeto medido es el
@@ -346,6 +565,9 @@ escrita así, sin la tabla al lado:</p>
     se entrena sobre <code>log1p(Price)</code>, que sigue siendo el mismo target
     en otra escala.</li>
   </ul>
+  <p><b>Error típico:</b> leer <code>p = 23</code> como «23 variables» (son 12
+  conceptuales, sección 6) y decir que una fila es «una casa» (una casa vendida dos
+  veces son dos filas).</p>
   <p class="fuente">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code> y <code>03_CODIGO/modelamiento_temporal.py</code>]</p>
 </details>
 
@@ -356,14 +578,14 @@ escrita así, sin la tabla al lado:</p>
 industriales de verdad. En tu propio curso pasó, con el dataset de flotación
 minera del Proyecto 1:</p>
 
-<div class="cita">
-  «El dataset posee 24 columnas, de las cuales [23] son numéricas y la 24 es una
-  serie de tiempo. Tenemos aproximadamente 4.100 horas de datos. […] No hay nulos
-  explícitos y hay <b>timestamps repetidos</b>. En este tipo de datos esperaría que
-  el timestamp fuera una variable única, pero nosotros tenemos una hipótesis de
-  cómo trabajar eso. […] Tenemos la variable objetivo, que sería el <b>porcentaje
-  de sílice en el concentrado</b>.»
-  <span class="f">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code>]</span>
+<div class="vecino">
+  Lo que reportó ese grupo de compañeros, resumido: el dataset tiene 24 columnas,
+  una de ellas es el tiempo; cubre unas 4.100 horas; no hay nulos explícitos, pero
+  <b>hay timestamps repetidos</b>, cuando esperaban que el timestamp fuera único; y
+  la variable objetivo es el <b>porcentaje de sílice en el concentrado</b>. Las
+  variables las agruparon en tres bloques: de alimentación, de operación y de
+  concentrado.
+  <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 0:32:17–0:32:53] · un grupo de compañeros · el ASR no deja claro cuántas de las 24 son numéricas</span>
 </div>
 
 <div class="tension">
@@ -375,16 +597,17 @@ minera del Proyecto 1:</p>
   sabes qué son.
 </div>
 
-<p>Nota también cómo el grupo ordenó las 23 features: las agruparon en variables
+<p>Nota también cómo el grupo ordenó sus variables: las agruparon en variables
 <b>de alimentación</b>, <b>de operación</b> y <b>de concentrado</b>. Agrupar las
 features por su rol en el proceso físico es una buena costumbre — y en flotación
 tiene una consecuencia directa: las variables «de concentrado» se miden
 <em>al final</em> del proceso, igual que el target. Usarlas para predecir el
 sílice del concentrado es la misma trampa que la <code>Hora_alta</code> del
 ejercicio de la sección 2.</p>
-<p class="fuente">[INFERENCIA] Lo de la agrupación es cita de clase. La advertencia
+<p class="fuente">[INFERENCIA] La agrupación la dijo el grupo. La advertencia
 sobre las variables de concentrado es razonamiento de Datito a partir del
-mecanismo, no algo que el profesor haya dicho ese día.</p>
+mecanismo, no algo que el profesor haya dicho ese día. El mecanismo tiene nombre:
+fuga de información, sección 9.</p>
 
 
 <h2>6 · Columna ≠ variable: 12 se convierten en 23</h2>
@@ -428,6 +651,50 @@ salen las 11 extra?</p>
   <span class="fuente">[FUENTE · Repo: <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>, ficha P3: «<em>Suburb descartado por 311 categorías = sobreajuste</em>»]</span>
 </div>
 
+<h3>Por qué una categórica se abre en k columnas y no en una</h3>
+
+<p>La lámina oficial clasifica las variables en dos familias: <b>cuantitativas</b>
+(discretas, como número de hermanos; continuas, como temperatura) y
+<b>categóricas</b>, «sin orden inherente entre los valores», como el tipo de
+mascota <span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 20]</span>.
+Esa falta de orden es justo lo que hay que conservar al pasarla a números.</p>
+
+<div class="cita">«mi modelo no puede trabajar directamente con palabras. Tengo que transformar de alguna forma esta, esta, esta palabra en un dato numérico, pero que no tenga orden.» <span class="f">Clase del 15-jul · 0:56:42–0:56:55 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+<p>Por eso <code>Type</code> no se codifica como h=1, t=2, u=3 sino como tres
+columnas 0/1 (<em>one-hot</em>): con un solo número, el modelo creería que una
+unidad es «tres veces» una casa. La ayudantía del 7-ago dio la misma advertencia
+desde el otro lado: el <code>LabelEncoder</code> (0, 1, 2, 3…) crea un orden
+artificial, y se aconseja usarlo solo en la variable objetivo
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:38:16–0:39:36] · ayudantía: no es materia de certamen</span>.</p>
+
+<p>Y la trampa inversa: no todo lo que tiene nombres es categórico. En la clase de
+clasificación un compañero propuso «adulto joven / adulto mayor» como ejemplo de
+categoría, y el profesor lo corrigió:</p>
+
+<div class="cita">«la variable real que está midiendo adulto mayor o adulto joven es la edad y la edad yo sí la puedo ordenar […] es una discretización de una variable numérica entonces sigue siendo sigue teniendo una noción de orden» <span class="f">Clase del 7-ago · 0:12:19–0:12:41 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="dist">
+  <b>Certamen 1 · pregunta 6 (tipo de problema)</b><br>
+  <span style="font-size:1.02rem">Salida categórica («bueno / regular / malo»)
+  &nbsp;≠&nbsp; salida numérica</span><br>
+  Lo que fija el tipo de modelo es <b>el target</b>, no las entradas. Y
+  «bueno / regular / malo» tiene orden, igual que «adulto joven / adulto mayor»:
+  es la trampa del orden. Análisis completo en
+  <a href="certamen_1.html#p6">certamen_1.html#p6</a>.
+</div>
+
+<div class="vecino">
+  Otra forma en que columnas y variables no coinciden. Las 30 columnas predictoras del grupo de las
+  biopsias eran en realidad <b>10 variables medidas de 3 formas</b> (media, error
+  estándar y peor valor sobre los núcleos de cada imagen)
+  <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:09:39–1:10:00] · un grupo de compañeros</span>.
+  Columnas ≠ variables en las dos direcciones: el one-hot abre una variable en
+  varias columnas, y un resumen estadístico hace lo mismo con una medición.
+</div>
+
 
 <h2>7 · Más filas no es lo mismo que más columnas</h2>
 
@@ -443,6 +710,27 @@ pregunta 3. Es fácil de decir y difícil de sentir, así que acá se mueve.</p>
   <button data-v="sube">Sube: el modelo lo aprovecha</button>
   <div class="veredicto"></div>
 </div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> <b>sube</b>. Con n fijo, agregar columnas —aunque sean puro
+  ruido— sube el R² de entrenamiento; lo que baja es el R² en datos nuevos.</p>
+  <p><b>Cómo se resuelve, con las fórmulas del panel</b> (n = 6.336, ρ = 0,76):</p>
+  <table>
+    <tr><th></th><th>p = 23</th><th>p = 123 (+100 de ruido)</th></tr>
+    <tr><td>R² train = 1 − 0,24·(1 − p/n)</td><td class="num">0,7609</td><td class="num">0,7647 ↑</td></tr>
+    <tr><td>R² test = 0,76 − 0,24·p/(n − p)</td><td class="num">0,7591</td><td class="num">0,7552 ↓</td></tr>
+    <tr><td>Brecha</td><td class="num">0,0017</td><td class="num">0,0094</td></tr>
+  </table>
+  <p>Cada columna extra le da al modelo un grado de libertad más para calzar las
+  filas que ya vio. El ruido no se repite en filas nuevas, así que ese ajuste extra
+  no se traslada: la brecha crece.</p>
+  <p><b>Error típico:</b> «queda igual, porque el ruido no aporta nada». Confunde
+  señal con libertad: el ruido no aporta señal, pero sí flexibilidad. Es la trampa
+  de la P3 del Certamen 2 (<a href="certamen_2.html#p3">certamen_2.html#p3</a>).</p>
+  <p class="fuente">[DATITO] simulación de mínimos cuadrados de esta sección; cifras
+  ilustrativas, no una corrida de tu modelo.</p>
+</details>
 
 <div class="panel">
   <div class="ctrl">
@@ -537,21 +825,21 @@ original y contienen información real:</p>
   <tr><td><code>Address</code></td><td>Es casi un identificador: valor único por fila</td><td>Identifica, no mide</td></tr>
   <tr><td><code>Suburb</code></td><td>311 categorías → 311 columnas</td><td>Dimensión</td></tr>
   <tr><td><code>Postcode</code></td><td>Misma información geográfica, ya cubierta por lat/long y Regionname</td><td>Redundante</td></tr>
-  <tr><td><code>CouncilArea</code></td><td>Ídem, geografía repetida</td><td>Redundante</td></tr>
+  <tr><td><code>CouncilArea</code></td><td>0 % de nulos en 2016 y 18,9 % en 2017, más 14 categorías que no existen en 2016. Con ella el error bajaba 599 AUD (0,38 %), y aun así se conservó el modelo sin ella</td><td>No sobrevive al cambio de año</td></tr>
   <tr><td><code>SellerG</code></td><td>Corredoras que aparecen en 2016 y no en 2017</td><td>No sobrevive al cambio de año</td></tr>
   <tr><td><code>BuildingArea</code></td><td>Demasiados faltantes</td><td>Calidad</td></tr>
   <tr><td><code>YearBuilt</code></td><td>Demasiados faltantes</td><td>Calidad</td></tr>
   <tr><td><code>Date</code></td><td><b>—</b></td><td><b>—</b></td></tr>
 </table>
-<p class="fuente">[FUENTE · Repo: lista <code>EXCLUIDAS</code> de <code>03_CODIGO/modelamiento_temporal.py</code>. Las razones de Suburb y de las de calidad están documentadas; las de redundancia geográfica son [INFERENCIA] a partir del código.]</p>
+<p class="fuente">[FUENTE · Repo: lista <code>EXCLUIDAS</code> de <code>03_CODIGO/modelamiento_temporal.py</code>. Las razones de Suburb, de las de calidad y de CouncilArea están documentadas (CouncilArea: <code>07_DATITO/referencia/material.md</code> y <code>05_RESULTADOS/experimento_councilarea_2026-09-18.json</code>); la de Postcode es [INFERENCIA] a partir del código.]</p>
 
 <div class="repreg">
   <strong>La fila de <code>Date</code> quedó en blanco a propósito.</strong><br>
-  Esa es tu pregunta de diagnóstico, y es de Datito, no de este archivo:
+  Esa es tu pregunta de diagnóstico:
   <em>si <code>Date</code> es una columna con información real sobre cada venta,
   ¿por qué quedó excluida de las features?</em><br><br>
-  Tienes todo lo necesario para responderla en las secciones 2, 4 y 7. Llévala a
-  la sesión sin buscarla acá: no está.
+  Está planteada como ejercicio al final de la sección 9, con criterios de
+  corrección y la respuesta oculta. Escribe la tuya antes de abrirla.
 </div>
 
 <div class="clave">
@@ -562,7 +850,255 @@ original y contienen información real:</p>
 </div>
 
 
-<h2>9 · La distinción de certamen</h2>
+<h2>9 · Fuga de información: la columna que ya sabe la respuesta</h2>
+
+<p>Ya separaste cinco palabras. Falta la sexta, la que hace que un modelo inútil
+se vea excelente. Primero las seis, lado a lado:</p>
+
+<table>
+  <tr><th>Palabra</th><th>Qué es</th><th>La pregunta que la detecta</th><th>En Melbourne</th><th>¿Entra al modelo?</th></tr>
+  <tr><td><b>Fila</b></td><td>Un objeto o evento medido</td><td>¿Qué estamos midiendo?</td><td>Una venta</td><td>Es la unidad: cada fila es un ejemplo</td></tr>
+  <tr><td><b>Columna</b></td><td>Una variable o atributo medido en cada fila</td><td>¿Cuáles son las variables?</td><td><code>Rooms</code>, <code>Date</code>, <code>Price</code>…</td><td>Candidata, nada más</td></tr>
+  <tr><td><b>Identificador</b></td><td>Distingue filas; no mide nada</td><td>¿Solo sirve para encontrar la fila?</td><td><code>Address</code> (casi un ID)</td><td>No. Se guarda aparte para rastrear errores</td></tr>
+  <tr><td><b>Target</b></td><td>La columna que decidiste predecir</td><td>¿Qué quiero predecir?</td><td><code>Price</code></td><td>Nunca como entrada: es la salida</td></tr>
+  <tr><td><b>Feature</b></td><td>Columna que usas para predecir</td><td>¿Existe al predecir y no sale del target?</td><td><code>Rooms</code>, <code>Distance</code></td><td>Sí, las que elijas</td></tr>
+  <tr><td><b>Fuga</b></td><td>Una feature que trae el target adentro, o que viene del futuro</td><td>¿La tendría en la mano en el momento de predecir? ¿Se calcula desde el target?</td><td>Pregunta abierta: ver el ejercicio de <code>Date</code> más abajo</td><td><b>Jamás</b></td></tr>
+</table>
+
+<div class="clave">
+  <b>Fuga de información</b> (<em>leakage</em>): una columna que contiene el
+  target, o que se calcula a partir de él, o que todavía no existe en el momento en
+  que vas a usar el modelo. El modelo no aprende a predecir: aprende a leer la
+  respuesta. En validación se ve brillante; en uso real no corre, o se derrumba.
+  <span class="fuente">[DATITO] definición operativa.</span>
+</div>
+
+<p>Hay dos formas, y conviene nombrarlas por separado
+<span class="fuente">[DATITO]</span>:</p>
+<ul>
+  <li><b>Por construcción.</b> La feature y el target salen del mismo cálculo.
+  Aprobado/reprobado se calcula desde la nota; si la nota es feature, el modelo
+  copia el umbral.</li>
+  <li><b>Temporal.</b> La feature es verdadera, pero se conoce <em>después</em> del
+  momento de predecir. La <code>Hora_alta</code> del ejercicio de urgencias; las
+  variables de concentrado de la planta de flotación.</li>
+</ul>
+
+<p>El profesor la detectó en vivo en las presentaciones del 14-ago. Un grupo quería
+predecir el valor de una canasta de productos con datos por región, y él les
+preguntó si iban a usar los datos de hoy para predecir el valor de hoy
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 0:25:40–0:25:53]</span>.
+Al cerrar, les dejó esto:</p>
+
+<div class="cita">«si ustedes ajustan un modelo con datos de hoy para predecir el valor de hoy no es muy valioso porque ya tienes el valor de hoy […] el valor de hoy se calcula directamente desde las variables que ustedes están midiendo hoy» <span class="f">Presentaciones del 14-ago · 0:30:09–0:30:31 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Las dos formas están en esa frase: «ya tienes el valor de hoy» es la temporal
+(predices algo que ya conoces), y «se calcula directamente desde las variables»
+es la de construcción. Fíjate además en que no lo afirma: justo después aclara que
+no lo sabe y que por eso importa saber cómo se calcula ese valor dentro del
+dataset. <b>Sospechar fuga obliga a revisar cómo se construyó cada columna</b>, no
+a declararla.</p>
+
+<h3>El caso real: Galaxy Zoo</h3>
+
+<p>El train del desafío tiene 1.000 filas × 90 columnas; el test, 10.000 × 86.
+Las cuatro que están solo en train son <code>objID</code>, <code>p_cs</code>,
+<code>p_el</code> y <code>label</code>. <code>p_cs</code> y <code>p_el</code> son las
+fracciones de voto de los clasificadores humanos (espiral y elíptica), y son
+muy informativas.
+<span class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md, §2 · 07_DATITO/referencia/material.md, Galaxy Zoo]</span></p>
+
+<div class="pred" id="pred3">
+  <div class="q">Predice: si entrenas con <code>p_cs</code> y <code>p_el</code> como
+  features y evalúas con validación cruzada <b>dentro del train</b>, ¿qué F1
+  obtienes?</div>
+  <button data-v="bajo">Bajo: son votos humanos, ruidosos</button>
+  <button data-v="igual">Parecido al modelo sin ellas</button>
+  <button data-v="alto">Casi perfecto</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> <b>casi perfecto</b> en la validación dentro del train, porque
+  el <code>label</code> se construyó desde <code>p_cs</code> y <code>p_el</code>; y
+  sobre el test el modelo no se puede ni ejecutar, porque esas columnas no están.</p>
+  <ol class="pasos">
+    <li>Pregunta de dónde sale el target: el <code>label</code> resume la votación
+    humana.</li>
+    <li>Las features <code>p_cs</code> y <code>p_el</code> <em>son</em> esa votación.
+    Una regla de una línea reproduce el <code>label</code> en 998 de 1.000 filas
+    (panel de abajo).</li>
+    <li>En la validación cruzada dentro del train las dos columnas están en todos
+    los folds, así que el F1 sale casi perfecto.</li>
+    <li>El test tiene 86 columnas y no incluye esas dos: el modelo no corre.</li>
+  </ol>
+  <p><b>Error típico:</b> quedarse con «son muy informativas, entonces sirven». Lo
+  informativo que es una columna no dice nada sobre si existe al predecir ni sobre
+  si viene del target.</p>
+  <p class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md, §2 y §3.1]</p>
+</details>
+
+<div class="panel">
+  <p style="margin:0 0 .6rem"><b>Lo que encontró la auditoría del proyecto:</b> una
+  regla de una línea, sin ningún modelo, reproduce el <code>label</code>.</p>
+  <pre style="background:var(--fondo);border-radius:8px;padding:.8rem;font-size:.9rem;margin:0">label = 1  si p_cs ≥ 0,5
+label = 2  si p_el ≥ 0,5
+label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre>
+  <p style="font-size:.88rem;margin:.6rem 0 0">Las 2 discrepancias son empates exactos
+  <code>p_cs = p_el = 0,5</code>. <code>p_cs</code> y <code>p_el</code> no están en el
+  test, así que un modelo que las use <b>ni siquiera puede ejecutarse</b> sobre las
+  10.000 filas a predecir.
+  <span class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md, §3.1]</span></p>
+</div>
+
+<details>
+  <summary>Ejercicio de interpretación · ¿Qué significa ese 99,8 %?</summary>
+  <p>Una regla trivial acierta el <code>label</code> en 998 de 1.000 galaxias.
+  Escribe en dos o tres líneas qué te dice ese número sobre <code>p_cs</code> y
+  <code>p_el</code>, y qué <b>no</b> te dice sobre la dificultad del problema.</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><b>Respuesta:</b> el 99,8 % dice que <code>p_cs</code> y <code>p_el</code> son
+    el target escrito de otra forma (fuga por construcción); no dice nada sobre qué
+    tan difícil es predecir el <code>label</code> con las columnas que sí existen en
+    el test.</p>
+    <p><b>Cómo se resuelve:</b> una regla sin aprendizaje que acierta casi todo
+    significa que la respuesta ya estaba en las columnas usadas. Entonces la
+    pregunta no es «qué buen número», sino «de dónde salen esas columnas».</p>
+    <p>No es un logro de nadie: dice que <code>p_cs</code> y <code>p_el</code> son
+    <b>el target escrito de otra forma</b>. El <code>label</code> se construyó desde
+    los votos, así que esas columnas son fuga por construcción. Un modelo con ellas
+    aprendería la regla con que se armó la etiqueta, no a reconocer galaxias desde
+    la fotometría, que es lo único que hay en el test.</p>
+    <p>Lo que <b>no</b> dice: nada sobre qué tan difícil es predecir el
+    <code>label</code> con las columnas que sí existen al predecir. Ese número hay
+    que medirlo sin ellas. Y deja al descubierto algo sobre la clase 0: es «ningún
+    bando alcanzó mayoría», un estado de la votación, no un tipo de galaxia.</p>
+    <p><b>Error típico:</b> leer el 99,8 % como «el problema es fácil» o como la
+    exactitud esperable de un modelo. Es la exactitud de copiar la respuesta.</p>
+    <p class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md, §3.1] ·
+    redacción [DATITO]</p>
+  </details>
+</details>
+
+<h3>Ejercicio · Melbourne y la columna <code>Date</code></h3>
+
+<div class="repreg">
+  <strong>Tu pregunta de diagnóstico, como ejercicio.</strong><br><br>
+  Tu split es temporal: entrenas con las ventas de 2016 (6.336) y evalúas con las
+  de 2017 (7.244). <code>Date</code> es información real sobre cada venta y quedó
+  fuera de las features. En 4 a 6 líneas: <b>¿por qué?</b> Y decide si es un caso
+  de fuga, de otra cosa, o de ninguna. No asumas que es fuga por estar en esta
+  sección.
+</div>
+
+<details>
+  <summary>Criterios de corrección (no es la respuesta)</summary>
+  <ul>
+    <li>Fija el <b>momento de la predicción</b>: cuándo se usaría el modelo y qué
+    se sabe en ese momento.</li>
+    <li>Separa dos preguntas y no las mezcla: <em>¿Date existe al predecir?</em> y
+    <em>¿el modelo puede aprender algo útil de Date con este split?</em></li>
+    <li>Dice qué rango de fechas ve el modelo en train, qué rango le llega en test,
+    y qué hace un modelo con valores que nunca vio
+    (<a href="generalizacion.html">generalizacion.html</a>).</li>
+    <li>Menciona qué papel ya cumple <code>Date</code> en tu proyecto
+    (<a href="train_validation_test.html">train_validation_test.html</a>).</li>
+    <li>Cierra con una etiqueta justificada, no con «porque no sirve».</li>
+  </ul>
+  <p>Escríbela antes de abrir la respuesta, y llévala a Datito: es la pregunta con
+  que abre este concepto.</p>
+  <p class="fuente">[FUENTE · Repo: 07_DATITO/curriculum.yaml, <code>pregunta_diagnostico</code> de <code>datos_features_target</code>] · criterios [DATITO]</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> <code>Date</code> quedó fuera porque es la columna que
+  <b>define la partición</b>: todas las fechas de train son de 2016 y todas las de
+  test son de 2017, fuera del rango que el modelo vio. No es fuga; es un problema de
+  extrapolación: el modelo no puede aprender de esa columna nada que valga para
+  2017.</p>
+  <ol class="pasos">
+    <li><b>Momento de la predicción.</b> Al tasar una venta sabes su fecha, así que
+    <code>Date</code> sí existe al predecir y no viene del precio. Por ese lado
+    <b>no</b> es fuga.</li>
+    <li><b>Papel de Date en el proyecto.</b> El código convierte <code>Date</code> en
+    año y parte con él: train = 2016, test = 2017. <code>Date</code> es el criterio
+    de la partición.</li>
+    <li><b>Qué vería el modelo.</b> En train, solo fechas de 2016; en test, solo
+    fechas posteriores a todas las que vio. El año sería constante dentro de cada
+    conjunto: cero información para aprender.</li>
+    <li><b>Qué haría con eso.</b> Un modelo de árboles como HistGradientBoosting no
+    extrapola: a cualquier fecha de 2017 la trata como «las últimas fechas de 2016».
+    Lo único que podría aprender son patrones propios de 2016, que no tienen por qué
+    repetirse (ver <a href="generalizacion.html">generalizacion.html</a>).</li>
+    <li><b>Etiqueta:</b> extrapolación temporal, no fuga. Un derivado como el mes de
+    venta sí podría evaluarse como feature (estacionalidad), porque sus valores se
+    repiten entre años.</li>
+  </ol>
+  <p><b>Error típico:</b> responder «porque es fuga de información» sin mostrar que
+  venga del target o del futuro (no viene de ninguno), o «porque no sirve» sin decir
+  por qué. El otro error: creer que una columna con información real tiene que ser
+  feature.</p>
+  <p class="fuente">[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py, líneas 33–36
+  (año desde <code>Date</code> y partición 2016/2017) y lista <code>EXCLUIDAS</code>]
+  · el porqué es [INFERENCIA] a partir del código: el proyecto no documenta la razón
+  de esta exclusión en particular · lo del mes, [INFERENCIA].</p>
+</details>
+
+<h3>Transferencia · agricultura</h3>
+
+<div class="repreg">
+  Una cooperativa quiere predecir, <b>el día de la siembra</b>, el rendimiento de
+  trigo de cada potrero. Una fila por potrero y temporada. Columnas:
+  <code>id_potrero</code>, <code>variedad</code>, <code>fecha_siembra</code>,
+  <code>kg_fertilizante_ha</code>, <code>superficie_ha</code>,
+  <code>lluvia_total_temporada</code>, <code>humedad_grano_cosecha</code>,
+  <code>ton_cosechadas</code>, <code>rendimiento_ton_ha</code>.<br><br>
+  Clasifica cada columna: identificador, target, feature válida o fuga (y de qué
+  forma). Después: ¿cambia algo si el modelo se usa a mitad de temporada, en
+  noviembre?
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> <code>id_potrero</code> es el ID y
+  <code>rendimiento_ton_ha</code> el target; <code>ton_cosechadas</code> es fuga por
+  construcción; <code>humedad_grano_cosecha</code> y
+  <code>lluvia_total_temporada</code> son fuga temporal; el resto son features
+  válidas. En noviembre la lluvia <em>acumulada hasta noviembre</em> pasa a ser
+  válida, pero no la de toda la temporada.</p>
+  <p><b>Cómo se resuelve:</b> fija el momento de predecir (la siembra) y pasa cada
+  columna por dos preguntas: ¿se calcula desde el target? y ¿la tendría ese día?</p>
+  <ul>
+    <li><b>Identificador:</b> <code>id_potrero</code>.</li>
+    <li><b>Target:</b> <code>rendimiento_ton_ha</code>.</li>
+    <li><b>Fuga por construcción:</b> <code>ton_cosechadas</code>. El rendimiento
+    <em>es</em> toneladas cosechadas divididas por superficie: con esa columna y
+    <code>superficie_ha</code>, el modelo reconstruye el target con una división.</li>
+    <li><b>Fuga temporal:</b> <code>humedad_grano_cosecha</code> (se mide en la
+    cosecha) y <code>lluvia_total_temporada</code> (el día de la siembra no ha
+    llovido nada de esa temporada).</li>
+    <li><b>Features válidas:</b> <code>variedad</code>, <code>fecha_siembra</code>,
+    <code>superficie_ha</code> y <code>kg_fertilizante_ha</code>, si el
+    fertilizante se decide antes de sembrar.</li>
+  </ul>
+  <p><b>En noviembre</b> cambia la lluvia: ya existe la lluvia acumulada <em>hasta
+  noviembre</em>, que sí es feature válida, pero no la de toda la temporada.
+  Habría que construir una columna nueva, «lluvia hasta la fecha de predicción».</p>
+  <p><b>Lo que transfiere:</b> la fuga no es una propiedad de la columna sola, sino
+  de la columna <b>más el momento en que predices</b>. La misma lluvia es fuga en
+  septiembre y feature en noviembre, si la cortas bien.</p>
+  <p><b>Error típico:</b> aceptar <code>lluvia_total_temporada</code> «porque la
+  lluvia no depende del rendimiento». No viene del target, pero viene del futuro:
+  también es fuga.</p>
+  <p class="fuente">[DATITO] Caso construido para este artefacto; no hay cifras.</p>
+</details>
+
+
+<h2>10 · La distinción de certamen</h2>
 
 <div class="dist">
   <b>Certamen 1 · preguntas 9A y 9B (desarrollo, la 9B vale 2,0 puntos)</b><br>
@@ -571,6 +1107,16 @@ original y contienen información real:</p>
   Te dan una tabla mal estructurada y tienes que nombrar las variables y decir qué
   se está midiendo. Se castiga responder «las variables son las columnas» cuando
   una sola columna tiene tres variables adentro.
+  Ver <a href="certamen_1.html#p9a">certamen_1.html#p9a</a> ·
+  <a href="certamen_1.html#p9b">certamen_1.html#p9b</a>.
+</div>
+
+<div class="dist">
+  <b>Certamen 1 · pregunta 6 (selección múltiple)</b><br>
+  <span style="font-size:1.02rem">Tipo de la <b>salida</b> &nbsp;≠&nbsp; tipo de las
+  entradas</span><br>
+  El tipo de modelo lo fija el target. Está desarrollada en la sección 6 y en
+  <a href="certamen_1.html#p6">certamen_1.html#p6</a>.
 </div>
 
 <div class="dist">
@@ -578,7 +1124,8 @@ original y contienen información real:</p>
   <span style="font-size:1.02rem">Más <b>filas</b> (reduce el sobreajuste)
   &nbsp;≠&nbsp; más <b>columnas</b> (lo aumenta si no traen señal)</span><br>
   La afirmación trampa invierte la relación entre evidencia y parámetros. La
-  sección 7 es exactamente esta pregunta, con deslizadores.
+  sección 7 es exactamente esta pregunta, con deslizadores. Ver
+  <a href="certamen_2.html#p3">certamen_2.html#p3</a>.
 </div>
 
 <p class="fuente">[FUENTE · Repo: <code>07_DATITO/patron_evaluacion.md</code> y
@@ -593,7 +1140,7 @@ original y contienen información real:</p>
 </div>
 
 
-<h2>10 · Procedimiento para el papel</h2>
+<h2>11 · Procedimiento para el papel</h2>
 
 <p>Sin computador, con una tabla impresa al frente. Los tres primeros pasos son
 literalmente el método de tu profesor.</p>
@@ -610,13 +1157,15 @@ literalmente el método de tu profesor.</p>
   no está enunciada, dilo: es una decisión, no un hallazgo.</li>
   <li><b>Las demás son candidatas a <code>X</code>.</b> Candidatas, no features.</li>
   <li><b>Descarta</b>: las que solo identifican, las que no existirán al momento de
-  predecir, y las que definen cómo partiste los datos.</li>
+  predecir, las que se calculan desde el target, y las que definen cómo partiste
+  los datos. Para cada candidata pregunta: <em>¿la tendría en la mano el día que
+  uso el modelo?</em></li>
   <li><b>Cuenta n y p</b>, y mira la razón <b>n/p</b>. Si p creció por one-hot,
   cuenta las columnas resultantes, no las variables.</li>
 </ol>
 
 
-<h2>11 · Errores que el formato castiga</h2>
+<h2>12 · Errores que el formato castiga</h2>
 
 <ul>
   <li><b>Nombrar el objeto medido como sustantivo suelto.</b> «Camiones» no es la
@@ -634,6 +1183,12 @@ literalmente el método de tu profesor.</p>
   mismo, y la diferencia importa justo cuando se discute sobreajuste.</li>
   <li><b>Usar una columna que no existe al momento de predecir.</b> Fuga de
   información. Se ve como un modelo excelente y es un modelo inútil.</li>
+  <li><b>Usar una columna que se calcula desde el target.</b> La otra fuga. La nota
+  para predecir aprobado/reprobado; <code>p_cs</code> y <code>p_el</code> para
+  predecir el <code>label</code> de Galaxy Zoo.</li>
+  <li><b>Codificar una categórica como 1, 2, 3.</b> Le inventas un orden que no
+  existe. Y al revés: tratar como «sin orden» una variable discretizada (adulto
+  joven / adulto mayor) que sí lo tiene.</li>
   <li><b>Presentar una inferencia como hallazgo.</b> Si un valor es atípico, dilo
   así: es atípico. Afirmar «hay una falla de sensor» sin evidencia es
   <em>[INFERENCIA]</em> disfrazada de dato, y tu profesor lo distingue —la ficha
@@ -654,8 +1209,13 @@ literalmente el método de tu profesor.</p>
   <em>otro</em> nivel según cuál elijas?
 </div>
 
-<details>
-  <summary>Solo después de haberlo escrito</summary>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><b>Respuesta:</b> una fila es una <b>parcela</b>, porque el target (volumen por
+  hectárea) es una propiedad de la parcela; las variables de cada árbol hay que
+  resumirlas por parcela, y si eligieras el árbol como fila las variables de
+  parcela se repetirían en todos sus árboles.</p>
+  <p><b>Cómo se resuelve:</b></p>
   <p>La pregunta decide la fila. El target es <b>volumen por hectárea</b>, que es
   una propiedad de la <b>parcela</b>, no de un árbol. Entonces una fila es una
   parcela.</p>
@@ -672,22 +1232,40 @@ literalmente el método de tu profesor.</p>
   <p><b>Lo que transfiere:</b> el nivel del target fija el nivel de la fila, y todo
   lo que está en otro nivel hay que subirlo o bajarlo. Es el mismo problema que los
   timestamps repetidos de la planta de flotación en la sección 5.</p>
+  <p><b>Error típico:</b> elegir el árbol como fila «porque es lo que se midió» y
+  poner el volumen por hectárea de la parcela como target de cada árbol: el mismo
+  target repetido en muchas filas que no son independientes.</p>
   <p class="fuente">[DATITO] Caso construido para este artefacto. Dominio elegido
   a propósito fuera de Melbourne y de minería.</p>
 </details>
 
 <div class="vecino">
-  <b>Qué sigue.</b> Con esto ya puedes entrar a <code>eda</code> (mirar esas
-  columnas de a una y de a dos) y a <code>limpieza_preparacion</code> (decidir qué
-  hacer con las que están rotas). Y te deja en condiciones de entender por qué
-  <code>train_validation_test</code> es una decisión sobre <b>filas</b>, no sobre
-  columnas.
+  <b>Qué sigue.</b> Con esto ya puedes entrar a <a href="eda.html">eda.html</a>
+  (mirar esas columnas de a una y de a dos) y a
+  <a href="limpieza_preparacion.html">limpieza_preparacion.html</a> (corregir lo
+  que está mal registrado y separar eso de las decisiones de modelado). Y te deja
+  en condiciones de entender por qué
+  <a href="train_validation_test.html">train_validation_test.html</a> es una
+  decisión sobre <b>filas</b>, no sobre columnas.
 </div>
 
 <footer>
-  Datito · artefacto de estudio · concepto <code>datos_features_target</code>,
-  orden 2 del currículum.<br>
-  Funciona sin conexión. Sin librerías externas, sin fuentes remotas.
+  Generado por Datito · <code>07_DATITO/visual/datos_features_target.html</code> ·
+  concepto <code>datos_features_target</code>, orden 2 del currículum · funciona sin
+  conexión, sin librerías ni fuentes remotas.<br>
+  Fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md</code>
+  (5, 18, 20, 27, 28); transcripciones de las clases del 15-jul, 31-jul y 7-ago,
+  la ayudantía del 7-ago y las presentaciones del 14-ago (cada una citada arriba
+  con su ruta completa; errores de ASR marcados con ⟨⟩ y ⚠);
+  <code>03_CODIGO/modelamiento_temporal.py</code>,
+  <code>05_RESULTADOS/resultados_temporal.json</code>,
+  <code>07_DATITO/referencia/material.md</code>,
+  <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>.<br>
+  Datos reales: cifras de Melbourne (6.336 / 7.244 filas, 12 variables, 23
+  columnas, 311 suburbios, 29,1 %, CouncilArea) y de Galaxy Zoo (90/86 columnas,
+  998/1.000). Ilustrativos [DATITO]: los ejercicios de urgencias, forestal y
+  agricultura, y la simulación de la sección 7 (fórmulas de mínimos cuadrados con
+  ρ = 0,76, no una corrida de tu modelo).
 </footer>
 
 </main>
@@ -718,6 +1296,12 @@ predic('pred2', 'sube', {
   baja  : '<b>Casi, pero al revés.</b> Eso pasa en <em>datos nuevos</em>, no en entrenamiento. Sobre las mismas filas con que se ajustó, más columnas siempre dan más libertad para pegarse a los datos. Sube p en el panel y mira la curva azul.',
   igual : '<b>No.</b> Es la intuición más común y es la que castiga la P3. El ruido no aporta señal, pero sí aporta <em>libertad</em>: con más columnas el modelo tiene más formas de calzar las filas que ya vio. Sube p y mira la azul.',
   sube  : '<b>Exacto — y ese es el problema.</b> Sube porque el modelo aprovecha el ruido para calzar <em>estas</em> filas. Como el ruido no se repite en filas nuevas, el R² de test cae. Ahora sube p y mira la distancia entre las dos curvas.'
+});
+
+predic('pred3', 'alto', {
+  bajo  : '<b>No.</b> Son votos humanos, sí, pero el <code>label</code> se construyó desde esos votos. Mira el panel de abajo: una regla de una línea con esas dos columnas acierta 998 de 1.000.',
+  igual : '<b>No, sube muchísimo.</b> No aportan «un poco más de señal»: traen la respuesta adentro. Mira el panel de abajo.',
+  alto  : '<b>Exacto, y por eso es una trampa.</b> Casi perfecto en validación, porque el <code>label</code> se armó desde esos votos. Y en el test ni siquiera corre: esas columnas no existen ahí. Mira el panel de abajo.'
 });
 
 /* ---------- 3 · selector de target ---------- */

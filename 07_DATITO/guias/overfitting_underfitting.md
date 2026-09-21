@@ -6,6 +6,8 @@ Fundamentos de Ciencia de Datos, UdeC T2-2026.
 **Por qué esta guía existe:** sobreajuste y validación concentran el **36 %** del
 Certamen 2 (preguntas 1, 2, 3 y 7). Es el bloque de mayor peso del curso.
 
+**Versión interactiva:** `07_DATITO/visual/overfitting_underfitting.html`.
+
 ---
 
 ## 1 · Las dos preguntas que hay que responder, en orden
@@ -62,9 +64,12 @@ Mismo fenómeno, la resta va en sentido contrario.
 
 ## 3 · Los remedios, y por qué mecanismo actúa cada uno
 
-El profesor **no pregunta el nombre del remedio. Pregunta el mecanismo.** En la
-P7 del Certamen 2 distinguía explícitamente entre bajar el grado de un polinomio
-—que *elimina* términos— y regularizar —que los *amortigua*.
+El profesor **no pregunta el nombre del remedio. Pregunta el mecanismo.** La
+distinción entre bajar el grado de un polinomio —que *elimina* términos— y
+regularizar —que los *amortigua*— **no viene del profesor**: ni sus clases ni el
+enunciado de la P7 la mencionan. Proviene de la reconstrucción del certamen hecha
+por el alumno (`01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md`,
+l.456 y l.497). **[INFERENCIA]** útil para un oral, no materia de clase.
 
 ### Para el sobreajuste
 

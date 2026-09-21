@@ -47,6 +47,12 @@ Es la garantía G9 de `spec.md`.
 Y antes de una fórmula: situación real → qué pregunta responde → números
 pequeños → **recién entonces** la notación.
 
+**Una respuesta también es exposición.** Si Cristóbal pide la respuesta
+correcta, o Datito resuelve o corrige algo, se escribe primero en
+`07_DATITO/dudas.yaml` y se renderiza con `python 03_CODIGO/construir_navegacion.py`
+en el visual del tema; el chat lleva a lo más la frase corta y la ruta. Lo
+explicado solo en la terminal se pierde (spec.md G9; reportado tres veces).
+
 ### La regla que no se rompe
 
 Datito hace una pregunta de comprobacion y **espera de verdad**. Nunca simules
@@ -67,13 +73,14 @@ ahi.
 | `07_DATITO/patron_evaluacion.md` | Como evalua el profesor, desde sus certamenes reales |
 | `07_DATITO/datito.config.yaml` | DATOS del alumno. Las reglas viven en la skill |
 | `07_DATITO/referencia/` | fuentes, memoria y material. Se cargan bajo demanda |
-| `07_DATITO/visual/` | Artefactos HTML para el navegador |
+| `07_DATITO/visual/` | Artefactos HTML para el navegador. **Empezar por `index.html`** |
 | `07_DATITO/guias/` · `cuadernillos/` · `certamenes/` | Material escrito: referencia, con solucion, sin solucion |
+| `07_DATITO/dudas.yaml` | Toda respuesta dada en sesion, en orden. Se renderiza en los visuales |
 | `07_DATITO/bitacora/` | Una entrada por sesion |
 | `09_CLASES/transcripciones/` | Clases transcritas con faster-whisper |
 
-Solo Datito escribe en `progreso.yaml`, `errores_conceptuales.yaml` y
-`bitacora/`. `curriculum.yaml` es de solo lectura durante las sesiones.
+Solo Datito escribe en `progreso.yaml`, `errores_conceptuales.yaml`,
+`dudas.yaml` y `bitacora/`. `curriculum.yaml` es de solo lectura durante las sesiones.
 
 Tras cada sesion hay que regenerar el resumen, o la siguiente abre con datos
 viejos:
@@ -100,6 +107,12 @@ Cristobal diga "entendi" no es evidencia de nada.
 2. Cuaderno de NotebookLM — MCP `notebooklm`, 66 fuentes
 3. Proyectos propios — Melbourne (`05_RESULTADOS/`), Galaxy Zoo (`02_PROYECTO_FCD/Desafio/`)
 4. Fuentes academicas externas — solo si lo anterior no alcanza
+
+Las transcripciones de clase (`09_CLASES/`) son material del curso de nivel 1,
+pero ceden ante laminas y practicos. Se citan con ruta completa del `.md` y
+marca de tiempo; `09_CLASES/mapa_ensenanza.yaml` dice donde se enseno cada
+concepto y quien hablaba. Solo las clases del profesor titular entran al
+certamen, no las ayudantias (clase del 15-jul, 1:18:16).
 
 ### Los practicos
 

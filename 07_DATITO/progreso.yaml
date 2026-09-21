@@ -42,17 +42,17 @@ meta:
   tutor: Datito
   asignatura: Fundamentos de Ciencia de Datos (T2-2026), Universidad de Concepcion
   creado: 2026-09-18
-  ultima_sesion: 2026-09-19
-  sesiones_totales: 2
+  ultima_sesion: 2026-09-21
+  sesiones_totales: 3
   diagnostico_inicial_hecho: false
 
 resumen:
   DOMINADO: 0
   COMPRENDIDO: 1
-  COMPRENSION_PARCIAL: 1
-  EN_ESTUDIO: 0
+  COMPRENSION_PARCIAL: 2
+  EN_ESTUDIO: 1
   REQUIERE_REPASO: 0
-  NO_ESTUDIADO: 19
+  NO_ESTUDIADO: 17
   siguiente_recomendado: generalizacion
 
 conceptos:
@@ -156,10 +156,12 @@ conceptos:
       aplicar: null
       interpretar: null
       transferir: null
-    sesiones: 1
+    sesiones: 2
     ultima_verificacion: 2026-09-19
     nota: >-
       Cubierto el caso de distribution shift por DISPONIBILIDAD de una feature.
+      2026-09-21: se le entrego la resolucion de extrapolacion (arbol de 45 cm);
+      no cuenta como evidencia: la recibio, no la produjo.
       Falta el caso por cambio de relacion features-target, y falta APLICAR y
       TRANSFERIR. Segunda etapa abierta: trasladar un modelo de Melbourne 2016 a
       Gran Concepcion es un problema de generalizacion entre poblaciones,
@@ -199,14 +201,20 @@ conceptos:
       APLICAR no se acredita hasta completar un nivel 2 entero sin ayuda.
 
   - id: regresion
-    estado: NO_ESTUDIADO
+    estado: EN_ESTUDIO
     evidencias:
       explicar: null
       aplicar: null
       interpretar: null
       transferir: null
-    sesiones: 0
+    sesiones: 1
     ultima_verificacion: null
+    nota: >-
+      2026-09-21: pidio la respuesta de «Tu pregunta» de clase6_regresion.html
+      (arbol de 45 cm fuera del rango 8-22; theta0 frente a theta1) y Datito se
+      la dio. Sin evidencia todavia: recibio la respuesta, no la produjo. Queda
+      pendiente la transferencia del agronomo (dudas.yaml,
+      2026-09-21-agronomo-lluvia).
 
   - id: clasificacion
     estado: NO_ESTUDIADO

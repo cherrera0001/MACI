@@ -69,6 +69,8 @@
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.6rem .9rem;margin:.9rem 0;font-size:.92rem}
+  .dist a{color:var(--azul)}
 
   /* --- Big Data --- */
   .bd-fila{display:grid;grid-template-columns:5.5rem 1fr 4.5rem;gap:.7rem;align-items:center;margin:.55rem 0}
@@ -99,10 +101,22 @@
   .sintoma .txt{font-style:italic;margin-bottom:.3rem}
   .sintoma .fb{font-size:.9rem;margin-top:.5rem;display:none}
   .sintoma .fb.on{display:block}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
 </style>
 </head>
 <body>
 <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Fundamentos de Ciencia de Datos</b></span> · <span class="et">viene de</span>— · <span class="et">habilita</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 20 · peso en certamen media (C1: P1 a P4) · <span class="et">certamen</span><a href="certamen_1.html#p1">C1 P1</a> · <a href="certamen_1.html#p2">C1 P2</a> · <a href="certamen_1.html#p3">C1 P3</a> · <a href="certamen_1.html#p4">C1 P4</a> · <a href="certamen_1.html#p7">C1 P7</a> · <a href="certamen_1.html#p8">C1 P8</a> · <a href="certamen_2.html#p10">C2 P10</a> · <a href="certamen_2.html#p11">C2 P11</a></div>
+<details><summary>Dónde se enseñó en clase (8 tramos)</summary><ul><li><b>Clase del 19-jun</b> · 0:28:57–0:48:15 · profesor — la IA alrededor, los datos como recurso, el caso Uber<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:28:57]</span></li><li><b>Clase del 19-jun</b> · 0:48:22–0:57:14 · profesor — definicion; Big Data: tres V, infraestructura y veracidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:48:22]</span></li><li><b>Clase del 19-jun</b> · 1:30:12–1:53:20 · segundo docente — organizacion data-driven; escala de cinco etapas (1:44:31-1:47:47)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:30:12]</span></li><li><b>Clase del 19-jun</b> · 1:58:46–2:30:54 · segundo docente — la rueda del proceso, etapa por etapa con Uber<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:58:46]</span></li><li><b>Clase del 26-jun</b> · 1:48:43–1:54:31 · segundo docente — repaso de la escala y de la rueda<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:48:43]</span></li><li><b>Clase del 26-jun</b> · 2:06:20–2:19:25 · segundo docente — roles, perfiles T/Pi/Gamma, el lider<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:06:20]</span></li><li><b>Clase del 15-jul</b> · 0:00:19–0:06:41 · profesor — repaso del ciclo; retroceso de produccion a exploracion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:00:19]</span></li><li><b>Sesión de certamen del 24-jul</b> · 0:21:58–0:22:23 · profesor — aclaracion en el certamen: dominios, no fuentes<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:21:58]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
 
 <h1>Fundamentos de Ciencia de Datos</h1>
 <p class="sub">Qué es esto, antes de que exista un modelo.<br>
@@ -120,60 +134,77 @@ Fundamentos de Ciencia de Datos · UdeC · T2-2026</p>
 grafo. <strong>Los otros veinte cuelgan de él.</strong> No se estudia para
 puntuar una pregunta: se estudia porque define de qué están hablando todos los
 demás.<br><br>
-Aun así, <em>también</em> puntúa. En el Certamen 1 las preguntas 1 a 4 y la 7
-salen de aquí: campo interdisciplinario, organización <em>data-driven</em>, rol
-del líder, ciclo de vida iterativo y reclutamiento. Cinco preguntas cerradas de
-0,5 puntos cada una.
+Aun así, <em>también</em> puntúa. En el Certamen 1 las preguntas 1 a 4, la 7 y
+la 8 salen de aquí: campo interdisciplinario, organización <em>data-driven</em>,
+rol del líder, ciclo de vida iterativo, reclutamiento y Big Data. Seis preguntas
+cerradas de 0,5 puntos cada una (3,0 en total). Auditoría pregunta por pregunta
+en <a href="certamen_1.html">certamen_1.html</a>.
 <span style="font-size:.85rem;color:#666">[FUENTE · Repo:
 <code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>
 </div>
 
+<div class="nota">
+<strong>Quién dijo qué.</strong> La clase del 19-jun la abrió el <strong>profesor
+titular</strong>: IA, Uber, la definición de ciencia de datos y Big Data
+(0:28:57–0:57:14). Desde ~1:28 la dictó un <strong>segundo docente</strong> en su
+representación: organización <em>data-driven</em>, la escala de cinco etapas, la
+rueda del proceso, los 9 años colaborando, «meter las manos en el código». La
+parte de clase del 26-jun (desde ~1:46) también es del segundo docente. Aquí
+«el profesor» es siempre el titular.
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:28:57–0:57:14] ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:28:56–1:30:19]</span>
+</div>
+
 <h2>1 · La definición, palabra por palabra</h2>
 
-<p>Tu profesor abrió el curso con una definición y dijo de dónde la sacó: de
-Wikipedia. Lo importante no es la definición completa, sino las tres palabras que
-él mismo marcó.</p>
+<p>El profesor titular dio esta definición en la clase del 19-jun y dijo de dónde
+la sacó: de Wikipedia
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:49:13–0:49:21]</span>.
+Lo importante no es la definición completa, sino las tres palabras que él mismo
+marcó.</p>
 
 <div class="cita">
-«La ciencia de datos es un campo académico <strong>interdisciplinario</strong> que
-utiliza estadística, computación, método científico, procesamiento, visualización
-científica, algoritmos y sistemas para extraer o extrapolar
-<strong>conocimiento</strong> desde los <strong>datos</strong>, que son
-potencialmente ruidosos, estructurados o no estructurados.»
-<span class="f">Clase 1, 19 de junio · [FUENTE · Repo:
-<code>09_CLASES/transcripciones/01Clase_Bienvenida_..._19_Junio_plano.txt</code>]</span>
+«la ciencia de datos es un campo académico <strong>interdisciplinario</strong> que
+utiliza estadística computación ⟨método⟩ científico procesamiento visualización
+científica algoritmos y sistemas para extraer o extrapolar
+<strong>conocimiento</strong> desde los <strong>datos</strong> que son
+potencialmente ruidoso estructurado no estructurado»
+<span class="f">Clase del 19-jun · 0:48:22–0:48:44 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]</span>
 </div>
 
-<div class="cita">
-«Las palabras que yo creo que son importantes son: interdisciplinario,
-conocimiento y datos.»
-<span class="f">Clase 1, 19 de junio · el profesor, sobre su propia lámina</span>
-</div>
+<p>Y enseguida marcó sus tres palabras: «interdisciplinario conocimiento y datos»
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:49:37]</span>.
+Más tarde el segundo docente repitió una versión de Wikipedia al presentar la
+rueda y subrayó las mismas ideas
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:59:12–2:00:35]</span>.</p>
 
 <table>
-<tr><th>Palabra</th><th>Qué obliga</th><th>Cómo lo dijo él</th></tr>
+<tr><th>Palabra</th><th>Qué obliga</th><th>Qué se dijo en clase</th></tr>
 <tr>
   <td><strong>Interdisciplinario</strong></td>
   <td>El científico de datos <em>no puede</em> resolver el problema solo. Necesita
       al experto del dominio para saber qué pregunta vale la pena.</td>
-  <td>«Si yo estoy tratando de responder una pregunta en minería con ciencia de
-      datos, probablemente yo sé mucho de ciencia de datos pero no sé tanto de
-      minería. Necesito estar en constante colaboración con los expertos de sus
-      respectivas áreas.»</td>
+  <td>El segundo docente puso el ejemplo de minería: él sabe mucho de ciencia de
+      datos pero no tanto de minería, así que necesita colaborar de forma
+      constante con los expertos del área.
+      <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:59:54–2:00:03]</span></td>
 </tr>
 <tr>
   <td><strong>Conocimiento</strong></td>
   <td>El producto no es el modelo, ni el gráfico, ni el <em>dashboard</em>. Es una
       decisión mejor tomada. Si nadie decide distinto, no hubo conocimiento.</td>
-  <td>«Queremos utilizar datos para poder extraer conocimiento que nos va a ser
-      útil para poder tomar decisiones.»</td>
+  <td>El segundo docente: se usan datos para extraer conocimiento útil para tomar
+      decisiones.
+      <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:00:27–2:00:42]</span></td>
 </tr>
 <tr>
   <td><strong>Datos</strong></td>
   <td>Y añade: <em>potencialmente ruidosos</em>. El ruido no es un accidente que se
       pueda limpiar del todo — es parte de la definición. Vuelve en la sección 8.</td>
-  <td>«…desde los datos, que son potencialmente ruidosos, estructurados o no
-      estructurados.»</td>
+  <td>Está en la cita de arriba, en boca del profesor titular: datos
+      «potencialmente ruidoso», estructurados o no.</td>
 </tr>
 </table>
 
@@ -182,9 +213,19 @@ conocimiento y datos.»
 varias herramientas». Significa <em>involucra personas de disciplinas
 distintas</em>. Un solo ingeniero que sabe SQL, Python y estadística
 <strong>no</strong> es un equipo interdisciplinario: es un ingeniero polivalente.
-El profesor lo subrayó incluso al armar los grupos del proyecto: «si se acuerdan
-de la definición de ciencia de datos, es un área interdisciplinaria; entonces
-necesita gente de distintas disciplinas».
+El profesor lo repitió al armar los grupos del proyecto: la ciencia de datos «es
+un área interdisciplinaria», así que necesita gente de distintas disciplinas.
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:14:48–1:14:54]</span>
+</div>
+
+<div class="dist">
+<strong>Distinción de certamen (C1 P1).</strong> «Datos de distintos
+<em>dominios</em>» ≠ «datos de distintas <em>fuentes</em>». Durante el Certamen 1,
+ante la duda de un compañero, el profesor aclaró que se hablaba de dominios del
+conocimiento —puso como ejemplos la zoología y la física cuántica—, no de fuentes
+de datos.
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:22:23–0:22:38]</span>
+Ver <a href="certamen_1.html#p1">certamen_1.html#p1</a>.
 </div>
 
 <h2>2 · Lo que la ciencia de datos no es</h2>
@@ -212,38 +253,146 @@ definición.</p>
     <td>Es un adjetivo del problema, no una disciplina. Ver sección 5.</td></tr>
 </table>
 
-<details>
-<summary>Autocomprobación · dos ítems al estilo del profesor</summary>
+<div class="panel">
+<p style="margin-top:0"><strong>Autocomprobación · dos V/F al estilo del
+profesor</strong> <span style="font-size:.85rem">[DATITO]</span></p>
 <p><strong>(a)</strong> «Un equipo formado por tres ingenieros civiles
 informáticos que dominan estadística, programación y visualización constituye un
 equipo interdisciplinario de ciencia de datos.» ¿V o F, y por qué?</p>
-<p><strong>(b)</strong> «Todo proyecto de ciencia de datos incluye una etapa de
-modelamiento con inteligencia artificial.» ¿V o F, y por qué?</p>
-<hr style="border:0;border-top:1px dashed #ccc;margin:.9rem 0">
+<p style="margin-bottom:0"><strong>(b)</strong> «Todo proyecto de ciencia de
+datos incluye una etapa de modelamiento con inteligencia artificial.» ¿V o F, y
+por qué?</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> las dos son <strong>falsas</strong>.</p>
 <p><strong>(a) Falso.</strong> Tienen varias <em>herramientas</em>, no varias
-<em>disciplinas</em>. Falta quien conozca el dominio del problema —el geólogo, el
-médico, el forestal— que es quien sabe si la pregunta tiene sentido y si el
-resultado es plausible. El mecanismo: sin experto de dominio nadie valida la
-pregunta, solo el cálculo.</p>
-<p><strong>(b) Falso.</strong> El proceso empieza en un requerimiento y puede
-cerrarse en la exploración: a veces el hallazgo es «estos datos no permiten
-responder esto» o «la respuesta ya está en un gráfico de barras». El modelamiento
-es una etapa disponible, no obligatoria. Fíjate que esta es también la respuesta a
-la pregunta de para qué sirve la ciencia de datos <em>cuando no hace falta ningún
-modelo</em>.</p>
+<em>disciplinas</em>. Pasos: (1) subraya «interdisciplinario»; (2) cuenta
+disciplinas, no habilidades: los tres son de la misma, informática; (3) nombra lo
+que falta: quien conozca el dominio del problema —el geólogo, el médico, el
+forestal—, que es quien sabe si la pregunta tiene sentido y si el resultado es
+plausible. Sin experto de dominio nadie valida la pregunta, solo el cálculo.</p>
+<p><strong>(b) Falso.</strong> Pasos: (1) subraya el cuantificador «todo»; (2)
+busca un contraejemplo: un proyecto que termina en la exploración porque la
+respuesta ya está en un gráfico de barras, o porque los datos no permiten
+responder. El modelamiento es una etapa disponible, no obligatoria; el mapa
+metodológico tiene ramas enteras de análisis sin modelo predictivo (ver abajo).</p>
+<p><strong>Error típico:</strong> en (a), confundir «sabe muchas cosas» con «viene
+de varias disciplinas»; en (b), creer que ciencia de datos es sinónimo de modelo.</p>
+<p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · lámina 5]
+(interdisciplina: computación, matemáticas, estadística y dominio) y
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · lámina 23]
+(mapa metodológico). La justificación paso a paso es [INFERENCIA].</p>
 </details>
+</div>
+
+<h3>Qué problema resuelve, y cuándo no hace falta ningún modelo</h3>
+
+<p>El problema que resuelve la ciencia de datos no es «tener datos» ni «tener un
+modelo»: es <strong>convertir datos en una decisión mejor tomada</strong>. El
+profesor titular lo cerró así, después de una discusión sobre por qué Uber vale
+lo que vale:</p>
+
+<div class="cita">
+«en realidad no no solamente no solamente necesito datos para hacer crecer mi
+negocio sino que a la vez tengo que ser capaz de generar valor desde esos datos
+no me sirve dejarlo almacenado en un superservidor en alguna parte»
+<span class="f">Clase del 19-jun · 0:47:43–0:47:56 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]</span>
+</div>
+
+<p>Y la lámina sobre cómo cambiar la cultura organizacional lo dice en forma de
+consejo: enfocarse en
+«qué problemas puedo solucionar con datos» en lugar de «qué datos necesito»
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · lámina 8]</span>.
+El <strong>Mapa Metodológico</strong> del curso empieza con la misma bifurcación:
+<em>¿Predecir</em> o <em>Análisis?</em> Del lado del análisis quedan la
+segmentación, la agregación, la descripción y lo geoespacial; del lado de predecir
+sin datos queda el <em>A/B test</em>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · láminas 23 y 25]</span>.
+Es decir: <strong>hay ramas enteras del mapa donde no se entrena ningún modelo
+predictivo</strong>.</p>
+
+<div class="panel">
+<p style="margin-top:0"><strong>Procedimiento: ¿hace falta un modelo?</strong>
+<span style="font-size:.85rem;color:#666">[INFERENCIA, sobre la lámina 23 de FCD-03]</span></p>
+<ol style="margin-bottom:0">
+<li><strong>Escribe la decisión y quién la toma.</strong> Si no hay decisión, no
+hay requerimiento: la rueda ni siquiera arranca.</li>
+<li><strong>¿Se pregunta por lo que ya pasó o por casos que aún no ves?</strong>
+Lo que ya pasó (un total, un promedio por grupo, un mapa) es <em>Análisis</em>: una
+agregación o un gráfico lo responde. <strong>Sin modelo.</strong></li>
+<li><strong>Si hay que predecir, ¿tienes datos con la respuesta?</strong> Si no los
+tienes, el mapa manda a un <em>A/B test</em>: primero se experimenta y se
+recolecta. <strong>Todavía sin modelo.</strong></li>
+<li><strong>Si tienes datos, ¿qué tipo de salida?</strong> Número → regresión;
+categoría → clasificación. Recién aquí hay modelo (ver
+<a href="triaje_de_problemas.html">triaje_de_problemas.html</a>).</li>
+<li><strong>Compara contra lo simple.</strong> Un modelo solo se justifica si le
+gana a un baseline (la mediana, una regla) en algo que cambie la decisión.</li>
+</ol>
+</div>
+
+<div class="panel">
+<p style="margin-top:0"><strong>Ejercicio de aplicación y transferencia ·
+¿modelo, agregación o experimento?</strong></p>
+<p>Para cada pedido, di en qué rama del mapa cae y si hace falta un modelo
+predictivo. Los casos (c) a (e) son de otros dominios, a propósito
+<span style="font-size:.85rem">[DATITO]</span>.</p>
+<ol type="a">
+<li>Melbourne: «¿cuál fue el precio mediano de 2017 por tipo de vivienda: casa,
+departamento, <em>townhouse</em>?»</li>
+<li>Melbourne: «estimar el precio de las 7.244 propiedades vendidas en 2017 con lo
+aprendido de las 6.336 de 2016».</li>
+<li>Forestal: «¿cuántas hectáreas se cosecharon el año pasado en cada comuna?»</li>
+<li>Transporte: una empresa de buses quiere saber si un horario nuevo sube los
+pasajeros. Nunca lo ha probado.</li>
+<li>Minería: con cinco años de historial de mantenciones, «¿qué camiones
+fallarán la próxima semana?»</li>
+</ol>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> hace falta modelo solo en (b) —regresión— y en (e)
+—clasificación binaria—. (a) y (c) se resuelven con una agregación y (d) con un
+experimento A/B.</p>
+<p><strong>Pasos:</strong> aplica el procedimiento de arriba a cada pedido:
+¿análisis o predicción? → si es predicción, ¿hay datos con la respuesta? → si los
+hay, ¿número o categoría?</p>
+<p><strong>(a) Análisis → agregación.</strong> Es un valor calculado sobre un grupo
+(tipo de vivienda). Un <code>groupby</code> lo responde. Sin modelo.</p>
+<p><strong>(b) Predecir → se tienen datos → numérico → regresión.</strong> Es lo
+que hizo tu proyecto: HistGradientBoosting sobre <code>log1p(Price)</code>
+<span style="font-size:.85rem">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code>]</span>.
+Aquí sí hay modelo — y la pregunta de si le gana a un tasador humano queda para
+la sección 9.</p>
+<p><strong>(c) Análisis → agregación geográfica.</strong> Suma por comuna. Sin
+modelo.</p>
+<p><strong>(d) Predecir → no se tienen datos → A/B test.</strong> No hay historial
+del horario nuevo: primero se prueba en algunas líneas y se compara. Entrenar un
+modelo sin ese dato sería inventar la respuesta.</p>
+<p><strong>(e) Predecir → se tienen datos → categórico binario → clasificación
+binaria.</strong> Falla / no falla. Aquí sí hay modelo, y la clase positiva es
+rara: ver <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+<p><strong>Error típico:</strong> responder (a) o (c) con «entrenaría un modelo»,
+o (d) con «entreno un modelo con los datos de pasajeros»: no hay datos del horario
+nuevo, así que el modelo no tiene de dónde aprender el efecto. Tres de los cinco
+pedidos se resuelven sin ningún modelo.</p>
+<p><strong>Fuente:</strong> ramas del
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · láminas 23 y 25];
+clasificación de cada caso [INFERENCIA]; casos (c) a (e) [DATITO].</p>
+</details>
+</div>
 
 <h2>3 · Organización <em>data-driven</em></h2>
 
-<p>El profesor abrió la clase 1 con esto, antes que con cualquier técnica. Y su
-definición es más estrecha de lo que suena.</p>
-
-<div class="cita">
-«Las organizaciones <em>data-driven</em> son organizaciones cuyo proceso, cuyo
-valor, lo generan a partir de los datos. […] Todo lo que deciden, en general, lo
-deciden a partir de los datos.»
-<span class="f">Clase 1, 19 de junio</span>
-</div>
+<p>El segundo docente abrió su parte de la clase del 19-jun con esto, antes que
+con cualquier técnica. Y su definición es más estrecha de lo que suena: son
+organizaciones «cuyo proceso, cuyo valor los generan a partir de los datos», y
+de las que ponía de ejemplo dijo que todo lo que deciden, en general, lo deciden
+a partir de los datos
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:31:31–1:33:01]</span>.
+La lámina 7 de FCD-02 lo dice en su columna <em>Data Driven</em>: «Toman
+decisiones en función de los datos»
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · lámina 7]</span>.</p>
 
 <div class="clave">
 <strong>La distinción que decide la pregunta.</strong> «Usamos muchos datos» no es
@@ -253,23 +402,101 @@ por antigüedad del jefe de turno <strong>usa</strong> datos; no es
 palabra</em>, no cuántos datos entran.
 </div>
 
-<p>Un compañero tuyo, que trabaja en minería, lo dijo en clase mejor que cualquier
-manual: «en minería existe mucho la ideología de que las decisiones se sacan
-solamente de la experiencia; lo que intento es respaldar todo lo que decimos a
-partir de datos, en vez de simplemente de la experiencia del <em>siempre se ha
-hecho así</em>».</p>
+<p>Un compañero que trabaja en minería lo dijo en esa misma clase, cuando el
+segundo docente pidió ejemplos: en minería existe la idea de que las decisiones
+salen solo de la experiencia, y lo que él intenta es respaldar lo que se dice con
+datos en vez del «siempre se ha hecho así».
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:30:41–1:31:08]</span></p>
 
-<h3>Compara las tres posturas sobre la misma decisión</h3>
+<h3>El marco oficial: la escala de cinco etapas</h3>
 
-<p>Caso forestal. Una empresa decide si adelanta la cosecha de un rodal de pino
-radiata. Tiene un modelo de crecimiento alimentado con inventarios, precios de
-madera y pronóstico de lluvia. Pulsa cada postura: <strong>cambia quién decide,
-no cuántos datos hay</strong>.</p>
+<p>Este es el marco que el curso usa para <em>data-driven</em>, y el que decide la
+pregunta 2 del Certamen 1. Está en la lámina 6 de FCD-02; el segundo docente la
+enseñó el 19-jun
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:44:31–1:47:47]</span>
+y la repasó el 26-jun
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:48:43–1:51:52]</span>.</p>
+
+<table>
+<tr><th>#</th><th>Etapa (lámina)</th><th>Descriptor en la lámina</th><th>Eje</th></tr>
+<tr><td>1</td><td>Resistente a los datos</td><td>Se resiste activamente a usar datos</td><td>—</td></tr>
+<tr><td>2</td><td>Consciente de los datos</td><td>Curiosa por los datos</td><td>DATOS</td></tr>
+<tr><td>3</td><td>Guiada por los datos</td><td>Comienza a usar datos en producción</td><td>ANÁLISIS</td></tr>
+<tr style="background:#fef3c7"><td>4</td><td><strong>Conocedora de datos</strong></td><td><strong>Usa datos en todos sus procesos</strong></td><td>VISIÓN</td></tr>
+<tr style="background:#d1fae5"><td>5</td><td><strong>Basada en Datos</strong></td><td><strong>Empresa es data-first</strong></td><td>ESTRATEGIA</td></tr>
+</table>
+<p style="font-size:.85rem;color:#666;margin-top:-.4rem">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · lámina 6]</p>
+
+<div class="cita">
+«conocedora de los datos que ocupan estos datos en todos sus procesos pero que
+existen algunos procesos en los cuales todavía estos datos no se utilizan para las
+decisiones […] estas organizaciones ⟨basadas⟩ en datos […] las decisiones son
+guiadas a partir de los datos»
+<span class="f">Clase del 26-jun · 1:51:16–1:51:38 · segundo docente (clase del 26-jun) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]</span>
+</div>
+
+<div class="dist">
+<strong>Distinción de certamen (C1 P2).</strong> <em>Conocedora de datos</em> (etapa
+4: usa datos en todos sus procesos, pero aún hay decisiones que no se toman con
+ellos) <strong>≠</strong> <em>Basada en datos</em> (etapa 5: data-first, las
+decisiones se guían por los datos). «Usar datos en todos sus procesos» describe el
+peldaño 4, no el 5. Ver <a href="certamen_1.html#p2">certamen_1.html#p2</a>.
+</div>
+
+<div class="panel">
+<p style="margin-top:0"><strong>Ejercicio de interpretación y transferencia ·
+V/F con justificación, formato C1 P2</strong> <span style="font-size:.85rem">[DATITO]</span></p>
+<p><strong>(a)</strong> «Una organización que almacena todos sus datos en un
+servidor centralizado ya es una organización basada en datos.»</p>
+<p><strong>(b)</strong> «Una empresa que tiene tableros en todas sus áreas y los
+usa a diario, pero cuyo gerente decide por intuición cuando el dato le incomoda,
+está en la etapa 5.»</p>
+<p style="margin-bottom:0"><strong>(c) Transferencia, salud.</strong> «Un hospital
+que registra cada signo vital en fichas electrónicas, pero asigna camas por orden
+de llegada sin mirar esos registros, es data-driven.»</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> las tres son <strong>falsas</strong>. Pasos para
+cada una: (1) ubica a la organización en la escala de cinco etapas; (2) pregunta
+quién decide y con qué; (3) justifica con lo que le falta para subir.</p>
+<p><strong>(a) Falso.</strong> Almacenar no es generar valor. Es literalmente la
+frase del profesor titular citada en la sección 2: no sirve dejarlo almacenado en
+un servidor, hay que ser capaz de generar valor desde esos datos. En la escala,
+acumular sin saber cómo usarlo se parece a la etapa 2, la de la organización
+curiosa que tiene los datos «almacenados en alguna parte» pero no los hace llegar
+al resto <span style="font-size:.85rem">[INFERENCIA] sobre
+[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:50:38–1:51:08]</span>.</p>
+<p><strong>(b) Falso.</strong> Usa datos en todos sus procesos (etapa 4,
+<em>Conocedora</em>), pero hay decisiones que no se toman con ellos. Le falta
+exactamente lo que define la 5.</p>
+<p><strong>(c) Falso.</strong> Registrar es tener datos, no decidir con ellos. La
+lámina 7 pone del lado <em>No Data Driven</em> a quien toma decisiones «en
+función de la intuición y experiencia»
+<span style="font-size:.85rem">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · lámina 7]</span>.</p>
+<p><strong>Error típico:</strong> confundir <em>tener</em> o <em>usar</em> datos
+con <em>decidir</em> con ellos. Las tres organizaciones tienen datos; ninguna deja
+que los datos decidan. Es el mismo error que castiga la pregunta 2 del Certamen 1.</p>
+<p><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · láminas 6 y 7];
+ubicación de cada caso en la escala [INFERENCIA].</p>
+</details>
+</div>
+
+<h3>Fuera del temario: tres posturas, con vocabulario externo</h3>
+
+<p><span style="font-size:.85rem">[DATITO]</span> Este comparador usa la palabra
+<em>data-informed</em>, que <strong>no es vocabulario del curso</strong> (ver la
+nota de abajo). Sirve como intuición para una idea que la escala sí contiene:
+<strong>cambia quién decide, no cuántos datos hay</strong>. Caso forestal: una
+empresa decide si adelanta la cosecha de un rodal de pino radiata con un modelo
+de crecimiento alimentado con inventarios, precios de madera y pronóstico de
+lluvia.</p>
 
 <div class="panel">
   <div class="seg" id="segPostura">
     <button data-p="exp" class="on">Por experiencia</button>
-    <button data-p="inf">Data-informed</button>
+    <button data-p="inf">Data-informed (externo)</button>
     <button data-p="drv">Data-driven</button>
   </div>
   <div class="caja-postura" id="cajaPostura"></div>
@@ -277,42 +504,61 @@ no cuántos datos hay</strong>.</p>
 
 <div class="nota">
 <strong>Honestidad de fuente.</strong> El enunciado de la pregunta 2 del Certamen 1
-contrasta <em>data-driven</em> con <em>data-informed</em>
+<strong>no</strong> menciona <em>data-informed</em>: dice «tener conocimiento de
+sus datos y usarlos en todos sus procesos». La palabra aparece en la
+<em>justificación del compañero</em> y en la etiqueta temática del expediente
 <span style="font-size:.85rem">[FUENTE · Repo:
-<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>, pero el término
-<em>data-informed</em> <strong>no aparece en ninguna transcripción de clase</strong>
-— lo verifiqué buscándolo en las nueve. <span style="font-size:.85rem">[INFERENCIA]</span><br><br>
-Consecuencia práctica: si esa pregunta reaparece, ancla tu justificación en la
-definición que <em>sí</em> dio el profesor —«el valor se genera a partir de los
-datos»— y declara el contraste como matiz, no como doctrina del curso. Separar lo
-medido de lo supuesto es, literalmente, lo que evalúa la última pregunta del
-Certamen 2.
+<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>. <em>Data-informed</em>
+no aparece en ninguna de las 14 transcripciones disponibles al 2026-09-21 ni en las
+láminas FCD de <code>11_PRESENTACIÓN/_markdown/</code>
+<span style="font-size:.85rem">[INFERENCIA, por búsqueda de «informed» e «informad»]</span>.<br><br>
+Consecuencia práctica: justifica con la escala de cinco etapas —la del curso— y,
+si usas <em>data-informed</em>, decláralo como vocabulario externo. Separar lo que
+viene del curso de lo que traes de fuera es la conducta que premian las preguntas
+10 y 11 del Certamen 2 (<a href="certamen_2.html#p11">certamen_2.html#p11</a>).
 </div>
 
 <h2>4 · Por qué ahora y no antes</h2>
 
-<p>Dato del profesor, citando a Cindy Howson (ThoughtSpot): <strong>solo el 20 % de
-las empresas está empoderando con datos a sus trabajadores de primera línea</strong>
-—los que interactúan a diario con el cliente. La brecha no es tecnológica.</p>
+<p>Dato de la lámina 5 de FCD-02, citando a Cindi Howson: <strong>solo el 20 % de
+las empresas está empoderando a los trabajadores de primera línea con
+datos</strong>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · lámina 5]</span>.
+El segundo docente aclaró que «primera línea» son los que interactúan a diario con
+el cliente
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:36:32–1:36:36]</span>.
+La brecha no es tecnológica.</p>
 
-<p>Su explicación de por qué ahora sí se puede, en dos piezas: <strong>abundancia
-de datos</strong> (internet masivo, captura barata) y <strong>modelos capaces de
-extraerles información</strong>. Y su explicación de por qué las empresas antiguas
-no logran la transformación, en otras dos: <strong>lo operativo</strong> y
-<strong>lo humano</strong>. Las <em>startups</em> avanzan más rápido no por talento,
-sino porque no tienen una forma establecida de hacer las cosas que desmontar.</p>
+<p>La explicación del segundo docente de por qué ahora sí se puede, en dos piezas:
+<strong>abundancia de datos</strong> (internet masivo) y <strong>modelos capaces
+de extraerles información</strong>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:33:22–1:34:42]</span>.
+Y de por qué las empresas antiguas no logran la transformación, en otras dos:
+<strong>lo operativo</strong> y <strong>lo humano</strong>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:41:21–1:43:27]</span>.
+Las <em>startups</em> tienen ventaja —dice la lámina 5— y según él la ventaja es
+que no tienen una forma establecida de hacer las cosas que desmontar
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:39:42–1:39:51]</span>.</p>
 
 <h2>5 · Big Data: las tres V, y la cuarta</h2>
 
-<p>Aquí está la distinción más cara del bloque, y el profesor la dijo con todas las
-letras.</p>
+<p>Aquí está la distinción más cara del bloque, y el profesor titular la dijo con
+todas las letras en la clase del 19-jun
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:49:52–0:57:14]</span>.
+Primero recorrió volumen, velocidad y variedad con ejemplos (un megabyte en un
+pendrive frente a un petabyte; un lote frente a tiempo real; una tabla frente a
+Instagram) y las llamó «las tres ⟨V⟩» que se asocian a big data
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:54:24–0:54:32]</span>
+—la transcripción dice «las tres de corta»; ⟨⟩ = corrección de transcripción
+[INFERENCIA]—. Después dio el criterio:</p>
 
 <div class="cita">
-«Un proyecto es de <em>big data</em> cuando la infraestructura que yo tengo
-actualmente no es lo suficientemente buena para resolver el problema. […] Y
-seguramente después lo voy a resolver, y ya no sería un problema de <em>big
-data</em>.»
-<span class="f">Clase 1, 19 de junio</span>
+«cuando un proyecto es de big data es cuando la infraestructura que yo tengo
+actualmente no es lo suficientemente buena para resolver el problema […]
+seguramente pues lo voy a resolver […] ya no sería un problema de ⟨big data⟩»
+<span class="f">Clase del 19-jun · 0:54:40–0:55:27 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «data de quien»</span>
 </div>
 
 <div class="clave">
@@ -335,6 +581,25 @@ aguanta</strong>.
   <button data-r="dep">Depende de otra cosa</button>
   <div class="veredicto" id="vBD"></div>
 </div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> depende de la infraestructura; si el clúster que
+hoy procesa esos 40 TB por lote no alcanza a procesarlos en tiempo real,
+<strong>sí pasa a ser un problema de big data</strong>, aunque el volumen no haya
+cambiado.</p>
+<p><strong>Pasos:</strong> (1) identifica qué V cambió: no el volumen, la
+velocidad —de lote nocturno a tiempo real—; (2) aplica el criterio del profesor:
+es big data cuando la infraestructura que tienes no alcanza para resolver el
+problema; (3) concluye: con el clúster actual, pensado para lotes, lo más probable
+es que no alcance, y entonces sí lo es; si la organización invierte y lo resuelve,
+deja de serlo.</p>
+<p><strong>Error típico:</strong> responder «no, porque el volumen es el mismo».
+Eso trata big data como sinónimo de «muchos datos» y olvida que velocidad y
+variedad cuentan igual.</p>
+<p><strong>Fuente:</strong> [FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:54:40–0:55:27];
+el caso de la central meteorológica es [DATITO].</p>
+</details>
 
 <div class="panel">
   <p style="margin-top:0;font-size:.9rem;color:#666">Mueve las tres V y, después,
@@ -376,11 +641,12 @@ aguanta</strong>.
 <h3>La cuarta V no se arregla con más servidores</h3>
 
 <div class="cita">
-«Hay una cuarta V que se le llama la <strong>veracidad</strong>, que es básicamente
-estar seguro de que el dato que se está generando es veraz. […] Imaginemos que el
-sensor falla el 10 % de las veces: entonces ya no es tan veraz la información que
-tú tienes, y el manejo de esa información se complejiza aún más.»
-<span class="f">Clase 1, 19 de junio</span>
+«hay una cuarta ⟨V⟩ que se le llama la <strong>veracidad</strong> que es
+básicamente estar seguro de que el dato que se está generando ⟨es veraz⟩ […]
+imaginemos que el sensor falla el 10 por ciento las veces»
+<span class="f">Clase del 19-jun · 0:55:27–0:55:54 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «de corta» y «verás»</span>
 </div>
 
 <p>Volumen, velocidad y variedad son problemas de <strong>capacidad</strong>: se
@@ -389,10 +655,11 @@ atacan con infraestructura. La veracidad es un problema de
 aparte en el simulador — y por eso desemboca en <em>calidad de datos</em>, que en
 el Certamen 1 vale 2,0 puntos en una sola pregunta.</p>
 
-<details>
-<summary>Autocomprobación · selección múltiple, formato del profesor</summary>
+<div class="panel">
+<p style="margin-top:0"><strong>Autocomprobación · selección múltiple, formato del
+profesor</strong> <span style="font-size:.85rem">[DATITO]</span></p>
 <p>¿Cuál de estas afirmaciones sobre Big Data es <strong>incorrecta</strong>?</p>
-<ol type="a">
+<ol type="a" style="margin-bottom:0">
 <li>Un proyecto deja de ser <em>big data</em> cuando la organización mejora su
     infraestructura.</li>
 <li>Un conjunto de datos de 50 TB es, por su tamaño, un problema de <em>big data</em>.</li>
@@ -401,25 +668,35 @@ el Certamen 1 vale 2,0 puntos en una sola pregunta.</p>
 <li>La veracidad apunta a la confiabilidad del dato, por ejemplo cuando un sensor
     falla intermitentemente.</li>
 </ol>
-<hr style="border:0;border-top:1px dashed #ccc;margin:.9rem 0">
-<p><strong>La incorrecta es la (b).</strong> Y la razón es exactamente la frase del
-profesor: no hay un umbral absoluto. 50 TB pueden ser rutina para una organización
-con el clúster adecuado y un colapso para otra. El error de fondo es tratar una
-<em>relación</em> (dato frente a infraestructura) como una <em>cantidad</em>.</p>
-<p>La (a) suena a trampa y no lo es: es literalmente lo que él dijo —«seguramente
-después lo voy a resolver, y ya no sería un problema de big data».</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta: la incorrecta es la (b).</strong></p>
+<p><strong>Pasos:</strong> (1) busca el absoluto escondido: «por su tamaño»; (2)
+contrástalo con el criterio del profesor: big data es una relación entre el dato
+y la infraestructura, no un umbral; (3) contraejemplo: 50 TB pueden ser rutina
+para una organización con el clúster adecuado y un colapso para otra.</p>
+<p><strong>Error típico:</strong> marcar la (a) por sonar raro. Es tratar una
+<em>relación</em> (dato frente a infraestructura) como una <em>cantidad</em>. La
+(c) y la (d) son correctas: variedad y veracidad tal como las explicó.</p>
+<p><strong>Fuente:</strong> [FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:52:55–0:56:02].</p>
+<p>La (a) suena a trampa y no lo es: es el final de la cita de arriba —una vez
+resuelto con mejor infraestructura, «ya no sería un problema de ⟨big data⟩».</p>
+<p>Esta es la pregunta 8 del Certamen 1: ver
+<a href="certamen_1.html#p8">certamen_1.html#p8</a>.</p>
 </details>
+</div>
 
 <h2>6 · La ruedita: el ciclo es iterativo, no lineal</h2>
 
-<div class="cita">
-«La figura que voy a mostrar es <strong>la figura más importante de este trimestre
-en este curso</strong>. […] Creo que ilustra cuál es la tarea y el día a día del
-científico de datos.»
-<span class="f">Clase 1, 19 de junio, presentando la rueda del proceso</span>
-</div>
+<p>El segundo docente la presentó en la clase del 19-jun como «la figura más
+importante de este de este trimestre en este curso»
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:58:59–1:59:04]</span>,
+y el profesor titular la repasó al abrir las clases del 15-jul y del 7-ago
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:00:46–0:02:26]</span>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:43–0:01:17]</span>.</p>
 
-<p>Siete etapas, en sentido horario:</p>
+<p>Siete etapas, en sentido horario
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · láminas 16–22]</span>:</p>
 
 <p style="text-align:center;font-size:.9rem;line-height:2.2">
 <code>Requerimiento / pregunta</code> →
@@ -446,16 +723,115 @@ mal: es el modo normal de operación.
 </div>
 
 <div class="cita">
-«Estas flechitas que están acá no están porque sea algo que <em>podría</em> pasar:
-es porque es habitual. […] Llego al modelamiento, los resultados no se ven como yo
-pienso que deberían verse, y ahí es cuando voy y me pregunto: ¿mi proceso de
-limpieza estuvo bien hecho?, ¿mi recolección está bien planteada? Y ahí es donde
-empiezo a volver atrás. Y <strong>la mayoría de las veces, yo diría el 90 %, me voy
-a encontrar con que tiene que ver con la limpieza de los datos</strong>: que algo
-faltó, que falta un paso intermedio de procesamiento. Esto es muy común.»
-<span class="f">Clase 2, 26 de junio · [FUENTE · Repo:
-<code>09_CLASES/transcripciones/02Clase_y_Ayudantía_..._26_Junio_plano.txt</code>]</span>
+«estas flechitas que están acá no están porque sea algo que podría pasar, es
+porque es habitual […] y la mayoría de las veces yo diría el 90% me voy a
+⟨encontrar con⟩ que tiene que ver […] con la limpieza de los datos»
+<span class="f">Clase del 26-jun · 1:53:22–1:54:16 · segundo docente (clase del 26-jun) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md]<br>
+⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR dice «me voy a contar»</span>
 </div>
+
+<h3>Un retroceso real, contado por el profesor</h3>
+
+<p>El profesor titular abrió la clase del 15-jul con lo que le había pasado ese
+mismo día en su trabajo, con un modelo que clasifica lo que observan los
+telescopios:</p>
+
+<div class="cita">
+«estaba en producción y de repente nos dimos cuenta que en producción tenía peor
+calidad que el modelo anterior […] fíjense que hoy día en un día pasamos de la
+puesta en marcha nos devolvimos hacia la exploración de nuevo»
+<span class="f">Clase del 15-jul · 0:03:53–0:05:26 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span>
+</div>
+
+<p>Lo que omite el […] es la ruta completa, etapa por etapa: de la puesta en
+marcha volvieron a la <strong>visualización</strong> (revisar los gráficos que ya
+tenían), de ahí al <strong>modelamiento</strong> (los modelos eran casi iguales;
+cambiaban los datos de entrenamiento), de ahí a la <strong>exploración</strong>, y
+sospechan que el origen está en la <strong>recolección</strong> o en la
+<strong>limpieza</strong> —quizá borraron lo que no debían—
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:04:00–0:05:49]</span>.
+Nada de eso fue un fracaso: es el ciclo funcionando.</p>
+
+<div class="dist">
+<strong>Distinción de certamen (C1 P4).</strong> Poner un modelo en marcha
+<strong>≠</strong> terminar el proyecto. Desde producción se puede volver al
+modelado o incluso al requerimiento. Ver
+<a href="certamen_1.html#p4">certamen_1.html#p4</a>.
+</div>
+
+<div class="panel">
+<p style="margin-top:0"><strong>Ejercicio de producción · explícaselo a
+alguien.</strong> Sin mirar el párrafo de arriba, reconstruye por escrito la ruta
+hacia atrás del caso del profesor: en qué etapa se detectó el problema, a qué
+etapas volvieron y <em>qué revisaron en cada una</em>, y dónde creen que está el
+origen. Después explícale a un compañero que no vino a clase por qué ese viaje
+hacia atrás confirma que la respuesta de la pregunta 4 es «Verdadero». Llévalo a
+Datito para que lo revise.</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta en una frase:</strong> el problema se detectó en la
+<strong>puesta en marcha</strong> y volvieron hacia atrás por
+<strong>visualización → modelamiento → exploración</strong>, con la sospecha puesta
+en la <strong>recolección</strong> o la <strong>limpieza</strong>.</p>
+<p><strong>Respuesta modelo (explicación a un compañero):</strong> «El profesor
+tenía un modelo en producción clasificando lo que ven los telescopios. Un día
+notaron que el modelo nuevo rendía peor que el anterior: eso se detectó en la
+puesta en marcha. Primero volvieron a la visualización y revisaron los gráficos
+que ya tenían para entender el modelo; vieron cosas raras. Entonces volvieron al
+modelamiento y compararon los modelos: eran casi iguales, y la diferencia era que
+se habían entrenado con datos distintos. Por eso volvieron a la exploración, a
+mirar esos datos otra vez. Lo que <em>sabían</em> era que el modelo nuevo rendía
+peor; lo que <em>sospechaban</em> era que algo se hizo mal al recolectar los datos,
+o que en la limpieza borraron cosas que no debían. Y todo eso pasó en un solo día.
+Por eso la pregunta 4 del Certamen 1 es verdadera: poner un modelo en marcha no da
+por terminado el proyecto; desde ahí se puede volver al modelado o más atrás.»</p>
+<p><strong>Criterios para revisar la tuya:</strong> etapas con los nombres de la
+rueda; el orden hacia atrás sin saltarse la visualización; qué se buscó en cada
+etapa, no solo su nombre; la separación entre lo que se sabía y lo que se
+sospechaba; la conexión con el enunciado.</p>
+<p><strong>Error típico:</strong> contar la historia como un fracaso («se
+equivocaron y tuvieron que rehacer»). Para el curso, volver atrás es el modo normal
+del ciclo, no un error del equipo.</p>
+<p><strong>Fuente:</strong> [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:03:27–0:05:58].</p>
+</details>
+</div>
+
+<h3>Tres cifras que se confunden: 90 %, 80 % y 80 %</h3>
+
+<table>
+<tr><th>Cifra</th><th>Qué mide</th><th>Quién y cuándo</th></tr>
+<tr><td class="num"><strong>90 %</strong></td>
+    <td>De las veces que <strong>retrocede</strong> porque el modelo no da lo
+    esperado, cuántas el problema está en la <strong>limpieza</strong>.</td>
+    <td>Segundo docente, clase del 26-jun
+    <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:54:12]</span></td></tr>
+<tr><td class="num"><strong>80 %</strong></td>
+    <td>Del <strong>tiempo</strong> de un proyecto ya resuelto por otros, cuánto se va
+    en <strong>recolección y limpieza</strong>.</td>
+    <td>Segundo docente, clase del 19-jun
+    <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:13:44–2:13:54]</span></td></tr>
+<tr><td class="num"><strong>80 %</strong></td>
+    <td>Del <strong>tiempo</strong> total, cuánto se va entre <strong>recolección,
+    limpieza y exploración</strong>.</td>
+    <td>Profesor titular, clase del 15-jul
+    <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:06:18–0:06:30]</span></td></tr>
+</table>
+
+<div class="clave">
+<strong>Causa de retrocesos ≠ tiempo invertido.</strong> El 90 % responde «cuando
+algo falla, ¿dónde está el error?». Los dos 80 % responden «¿en qué se me va el
+tiempo?». Una etapa puede comerse el tiempo sin ser la causa de los fallos, y al
+revés. Tampoco los dos 80 % son iguales: uno cuenta dos etapas y el otro tres.
+Si en una prueba escribes «el 90 % del tiempo se va en limpieza», mezclaste dos
+afirmaciones distintas de dos personas distintas.
+</div>
+
+<p class="nota" style="margin-top:0">⚠ Las tres son estimaciones dichas de palabra
+(«yo diría», «aproximadamente»), no datos medidos, y no aparecen en las láminas FCD. Úsalas como
+órdenes de magnitud atribuidos, no como cifras duras
+<span style="font-size:.85rem">[INFERENCIA]</span>.</p>
 
 <h3>¿A qué etapa vuelves?</h3>
 
@@ -465,6 +841,29 @@ puede fallar sin costo: la idea es ver <em>de qué depende</em> la respuesta.</p
 <div id="simCiclo"></div>
 
 <div class="nota" id="marcador" style="display:none"></div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> 1 → Limpieza · 2 → Requerimiento · 3 → Comunicación
+· 4 → Puesta en marcha (detecta) y de ahí recolección o requerimiento · 5 →
+Limpieza.</p>
+<p><strong>Pasos:</strong> para cada síntoma, pregunta <em>dónde nació</em> el
+problema, no dónde lo viste. (1) Landsize 0 y 40.000 m² son valores fuera de rango:
+nacieron al limpiar mal. (2) El dato al nivel de camión y turno no existe: la
+pregunta no es respondible tal como está, así que se refina el requerimiento.
+(3) El modelo funciona; lo que falla es traducirlo a la decisión de gerencia.
+(4) Nadie tocó el código y el modelo se degrada: lo detecta el monitoreo de la
+puesta en marcha, y la causa probable es que cambió el mundo, así que se vuelve a
+recolectar o a replantear. (5) Una columna con litros, IDs, texto y un −999 es
+sobrecarga semántica y un centinela: limpieza.</p>
+<p><strong>Error típico:</strong> elegir la etapa donde apareció el síntoma
+(«modelamiento», porque ahí se vio el precio absurdo) en vez de la etapa donde
+nació. Retroceder no es fallar: es el ciclo.</p>
+<p><strong>Fuente:</strong> la rueda y sus flechas en
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md · láminas 16–22]
+y [FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:02:10–2:05:18];
+los cinco casos son [DATITO].</p>
+</details>
 
 <h3>Dónde está la puesta en marcha en tu propio proyecto</h3>
 
@@ -486,11 +885,25 @@ quedó. <span style="font-size:.85rem">[INFERENCIA, sobre
 <p>Dos preguntas del Certamen 1 —la 3 y la 7— van sobre personas, no sobre
 técnica. Se contestan desde la palabra <em>interdisciplinario</em>.</p>
 
+<p>El marco de clase son las habilidades en forma de letra —T, Π y Γ: cuántas
+habilidades tienes y qué tan profundo en cada una—, en las láminas 7 a 12 de
+FCD-03 y explicado por el segundo docente el 26-jun
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md · láminas 7–12]</span>
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:10:29–2:12:45]</span>.
+Su conclusión para proyectos complejos: como casi nadie reúne todo, se buscan
+personas con alto conocimiento en cada una de las áreas que el proyecto necesita,
+que además puedan comunicarse con el resto en el mismo lenguaje
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:16:18–2:17:16]</span>.
+Esa frase pesa directamente sobre la pregunta 3: ver
+<a href="certamen_1.html#p3">certamen_1.html#p3</a>.</p>
+
 <table>
 <tr><th>Rol</th><th>Qué aporta</th><th>Qué NO le corresponde</th></tr>
 <tr><td><strong>Líder del proyecto</strong></td>
-    <td>Traducir entre negocio y datos: convertir un malestar difuso en una
-        pregunta respondible, y un resultado técnico en una decisión.</td>
+    <td>Coordinar a todo el equipo. Según el segundo docente, alguien con alto
+        conocimiento en su área y conocimiento moderado en todas las demás, para
+        saber qué hace cada uno y ser «el puente entre todo»
+        <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:18:23–2:18:59]</span>.</td>
     <td>Ser el mejor modelador del equipo. Si su valor es escribir el modelo, el
         equipo no tiene líder, tiene un modelador más.</td></tr>
 <tr><td><strong>Experto de dominio</strong></td>
@@ -498,8 +911,10 @@ técnica. Se contestan desde la palabra <em>interdisciplinario</em>.</p>
         resultado es físicamente posible.</td>
     <td>Escribir el código. Puede no programar nada y ser imprescindible.</td></tr>
 <tr><td><strong>Científico de datos</strong></td>
-    <td>Recolectar, limpiar, explorar, modelar, evaluar. Según el profesor, en casi
-        todo el ciclo «debe meter las manos en el código».</td>
+    <td>Recolectar, limpiar, explorar, modelar, evaluar. Según el segundo docente,
+        en casi todo el ciclo —salvo el requerimiento y quizá la puesta en
+        marcha— «debe meter las manos en el código»
+        <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:06:11–2:06:34]</span>.</td>
     <td>Decidir solo qué se hace con el hallazgo.</td></tr>
 <tr><td><strong>Ingeniero de datos / plataforma</strong></td>
     <td>Que el dato exista, llegue a tiempo y se pueda reproducir.</td>
@@ -507,18 +922,38 @@ técnica. Se contestan desde la palabra <em>interdisciplinario</em>.</p>
 </table>
 
 <div class="clave">
-<strong>Sobre reclutar (pregunta 7).</strong> El profesor lo enmarcó así:
+<strong>Sobre reclutar (pregunta 7).</strong> El segundo docente lo enmarcó así:
 «necesitamos gente que tenga buenas preguntas que queramos responder a partir de
-los datos y que sean capaces de generar valor». El criterio dominante no es el
-catálogo de algoritmos: es <strong>formular la pregunta correcta y comunicar el
-resultado</strong>. Él mismo reportó nueve años como científico de datos «sin haber
-abordado nunca un problema en el cual no haya trabajado con» otros.
+los datos y que sean capaces de generar valor»
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:01:40–2:01:45]</span>.
+El criterio dominante no es el catálogo de algoritmos: es <strong>formular la
+pregunta correcta y comunicar el resultado</strong>. Él mismo contó que en unos 9
+años como científico de datos nunca ha abordado un problema sin trabajar con
+especialistas de otra área —astronomía, medicina, ciencia forestal, minería—
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:52:48–1:53:12]</span>.
+Las láminas 20 y 21 de FCD-03 tienen las sugerencias de reclutamiento: ver
+<a href="certamen_1.html#p7">certamen_1.html#p7</a>.
 </div>
 
 <h2>8 · La ecuación: <code>Y = f(X) + ε</code></h2>
 
 <p>La definición dijo «datos potencialmente <strong>ruidosos</strong>». Esto es esa
-frase, escrita.</p>
+frase, escrita. Antes de la notación, la versión con palabras que dio el segundo
+docente —y fíjate en el ejemplo que eligió:</p>
+
+<div class="cita">
+«un modelo es una función matemática que me ayuda a llegar de datos a una
+respuesta que yo quiero entonces por ejemplo la respuesta que yo quiero es cuál es
+el precio de una casa dada las características de la casa»
+<span class="f">Clase del 26-jun · 2:51:44–2:52:00 · segundo docente (clase del 26-jun) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md]</span>
+</div>
+
+<p>La «función» es <code>f</code>; los «datos» son <code>X</code>; la «respuesta que
+yo quiero» es <code>Y</code>. Lo que la frase no dice —y la ecuación sí— es que
+la respuesta real nunca es exactamente la función: siempre queda un resto,
+<code>&epsilon;</code>. Esa descomposición es el marco estándar del área, no una
+lámina del curso <span style="font-size:.85rem">[DATITO]</span>.</p>
 
 <div class="ecu">
   <div class="formula">Y &nbsp;=&nbsp; f(X) &nbsp;+&nbsp; &epsilon;</div>
@@ -566,6 +1001,25 @@ frase, escrita.</p>
   <div class="veredicto" id="vEps"></div>
 </div>
 
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el error del modelo perfecto <strong>sube con el
+ruido</strong>: es exactamente el tamaño de &epsilon;.</p>
+<p><strong>Pasos:</strong> (1) el modelo perfecto predice <code>f(X)</code>; (2) lo
+observado es <code>Y = f(X) + &epsilon;</code>; (3) su error es
+<code>Y − f(X) = &epsilon;</code>; (4) si &epsilon; crece, su error crece, aunque el
+modelo no cometa ningún error propio. Con números de juguete: si
+<code>f(X)</code> = 900 mil y la casa se vendió en 950 mil, el modelo perfecto
+se equivoca en 50 mil, y esos 50 mil son todo ruido
+<span style="font-size:.85rem">[DATITO, cifras ilustrativas]</span>.</p>
+<p><strong>Error típico:</strong> responder «cero, porque es perfecto». Perfecto
+respecto de <code>f</code>, no respecto de <code>Y</code>.</p>
+<p><strong>Fuente:</strong> la descomposición <code>Y = f(X) + &epsilon;</code> es
+el marco estándar del área, no una lámina del curso [DATITO]; la idea de modelo
+como función en
+[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:51:44–2:52:00].</p>
+</details>
+
 <div class="panel">
   <canvas id="cv" width="860" height="360"></canvas>
   <div class="ctrl">
@@ -596,8 +1050,15 @@ frase, escrita.</p>
 <p><strong>Te dan:</strong> <code>Y = f(X) + ε</code>, y te dicen que un modelo
 alcanza MAE 188.218 AUD sobre una mediana de 910.000.</p>
 
-<details>
-<summary>¿Qué se puede afirmar, y qué no, solo con eso?</summary>
+<p style="margin-bottom:0"><strong>Ejercicio de cálculo e interpretación:</strong>
+¿qué se puede afirmar, y qué no, solo con eso? Calcula a mano qué fracción de la
+mediana es el error típico.</p>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> se puede afirmar que el error típico es un
+<strong>20,7 % de la mediana</strong> y que tiene una parte reducible y otra
+irreducible; <strong>no</strong> se puede afirmar cuánto vale cada parte.</p>
 <p><strong>Se puede afirmar:</strong> el error típico equivale a un 20,7 % de la
 mediana (188.218 / 910.000). Y que ese error tiene dos partes sumadas: lo que se
 podría mejorar cambiando el modelo o las features, y lo que no se puede bajar
@@ -612,6 +1073,14 @@ baseline de mediana de tu propio proyecto da MAE 431.649. Tu modelo baja a
 recortar, y cuánto, no lo sabes.
 <span style="font-size:.85rem">[FUENTE · Repo:
 <code>05_RESULTADOS/resultados_temporal.json</code>]</span></p>
+<p><strong>Cálculo a mano:</strong> 188.218 / 910.000 = 0,2068… ≈ 20,7 %.
+431.649 − 188.218 = 243.431.</p>
+<p><strong>Error típico:</strong> decir «el 20,7 % es ruido» o «el modelo podría
+bajar a cero». Ninguna de las dos cosas se sabe: <code>&epsilon;</code> no se
+observa.</p>
+<p><strong>Fuente:</strong> cifras de
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]; la lectura con
+<code>&epsilon;</code> es [INFERENCIA].</p>
 </details>
 </div>
 
@@ -627,7 +1096,7 @@ empeoramiento.
 <h2>9 · La pregunta que te va a hacer Datito</h2>
 
 <div class="repreg">
-<strong>No la respondo aquí, a propósito.</strong><br><br>
+<strong>Respóndela por escrito antes de abrir la respuesta de abajo.</strong><br><br>
 Tu modelo predice el precio de una casa en Melbourne. Un tasador humano también lo
 hace.<br><br>
 <strong>¿Qué aporta el modelo que el tasador no, y qué aporta el tasador que el
@@ -637,6 +1106,35 @@ respuesta floja compara <em>exactitud</em>. La respuesta que vale compara
 <strong>escala, consistencia, trazabilidad y qué pasa con lo que no está en la
 tabla</strong> — es decir, usa la sección 8.</span>
 </div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta en una frase:</strong> el modelo aporta
+<strong>escala, consistencia, trazabilidad y un error medido</strong>; el tasador
+aporta <strong>lo que no está en la tabla</strong> y criterio en los casos que el
+modelo nunca vio. No compiten en exactitud: cubren errores distintos.</p>
+<p><strong>Pasos:</strong> (1) escribe <code>Y = f(X) + &epsilon;</code> para el
+modelo; (2) pregunta qué sabe cada uno de <code>X</code> y de &epsilon;; (3)
+compara en escala, consistencia, trazabilidad y casos nuevos, no solo en
+exactitud.</p>
+<p><strong>Respuesta modelo:</strong> «El modelo tasa las 7.244 propiedades de
+2017 en segundos, da siempre el mismo precio para la misma ficha, y su error está
+medido fuera de muestra: MAE de 188.218 AUD y R² de 0,757 sobre ventas de un año
+que no vio. Además se puede auditar qué variables usó. El tasador, en cambio, ve
+lo que para el modelo es &epsilon;: el estado de la cocina, la humedad, la vista,
+la urgencia del vendedor. Y tiene criterio donde el modelo es más débil: el 29,1 %
+de las propiedades de 2017 estaban en suburbios que no aparecían en el
+entrenamiento. Lo que no puedo afirmar es cuál de los dos acierta más, porque no
+tengo medido el error del tasador.»</p>
+<p><strong>Error típico:</strong> responder «el modelo es más exacto» o «el
+tasador es más exacto». Ninguna comparación de exactitud está medida en tu
+proyecto; afirmarla es rellenar un vacío con algo plausible.</p>
+<p><strong>Fuente:</strong> cifras de
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]; la comparación es
+[INFERENCIA]; los ejemplos de lo que no está en la tabla son [DATITO].
+Es la pregunta diagnóstica del currículum: Datito te la va a hacer igual, y lo
+que evalúa es tu razonamiento, no que repitas esta respuesta.</p>
+</details>
 
 <h2>10 · Procedimiento para el papel</h2>
 
@@ -656,7 +1154,20 @@ en otras palabras. «Es falso porque no es interdisciplinario» no justifica nad
 «es falso porque no hay experto de dominio que valide la pregunta» sí.</li>
 <li><strong>Si el dato no está, dilo.</strong> Declarar un vacío puntúa; rellenar
 con algo plausible, no.</li>
+<li><strong>Ancla en el marco del curso.</strong> La escala de cinco etapas, la
+rueda de siete, las tres V más la veracidad, el mapa metodológico. Si usas
+vocabulario de fuera (<em>data-informed</em>, CRISP-DM, «traductor»), decláralo
+como externo.</li>
 </ol>
+
+<div class="vecino">
+<strong>Para seguir.</strong> Qué tipo de problema tienes delante y en qué etapa
+estás: <a href="triaje_de_problemas.html">triaje_de_problemas.html</a>. El
+siguiente concepto del grafo, qué es una fila, una feature y un target:
+<a href="datos_features_target.html">datos_features_target.html</a>. Las preguntas
+1 a 8 del Certamen 1 auditadas:
+<a href="certamen_1.html">certamen_1.html</a>.
+</div>
 
 <h2>11 · Errores que el formato castiga</h2>
 
@@ -668,6 +1179,14 @@ infraestructura, no un umbral de terabytes.</li>
 herramientas ≠ varias disciplinas.</li>
 <li><strong>Decir que una organización es <em>data-driven</em> porque usa muchos
 datos.</strong> Lo que define es quién tiene la última palabra.</li>
+<li><strong>Confundir la etapa 4 con la 5.</strong> «Usa datos en todos sus
+procesos» es <em>Conocedora de datos</em>; <em>Basada en datos</em> es data-first.</li>
+<li><strong>Presentar <em>data-informed</em> como escala del curso.</strong> No
+aparece en las láminas ni en las transcripciones.</li>
+<li><strong>Mezclar el 90 % con los 80 %.</strong> Uno es causa de retrocesos; los
+otros, tiempo invertido.</li>
+<li><strong>Confundir dominios con fuentes</strong> en la definición de ciencia de
+datos.</li>
 <li><strong>Describir el ciclo como una cascada.</strong> Las flechas hacia atrás
 son el modo normal, no la excepción; y el destino más frecuente es la limpieza.</li>
 <li><strong>Omitir la puesta en marcha</strong> al enumerar las etapas.</li>
@@ -681,17 +1200,25 @@ mecanismo.</li>
 </div>
 
 <footer>
-<strong>Fuentes de este artefacto.</strong><br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio_plano.txt</code> — definición, data-driven, las V, la rueda.<br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio_plano.txt</code> — las flechas hacia atrás y el 90 % de limpieza.<br>
+Generado por Datito · <code>07_DATITO/visual/fundamentos_ciencia_datos.html</code> ·
+funciona sin conexión · fuentes:<br>
+[FUENTE · Repo] <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md</code> — láminas 5–8 (data-driven, escala de cinco etapas, cultura de datos) y 16–22 (la rueda).<br>
+[FUENTE · Repo] <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md</code> — láminas 5, 7–12, 20–21 y 23–25 (interdisciplina, habilidades, reclutamiento, mapa metodológico).<br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md</code> · 0:47:43–0:57:14 y 1:28:56–2:28:28 — profesor titular hasta ~1:17 (definición, valor, Big Data); segundo docente desde ~1:28 (data-driven, escala, rueda, 80 %, 9 años).<br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md</code> · 1:48:43–2:52:00 — segundo docente: repaso de la escala, el 90 %, habilidades T/Π/Γ, el líder, «un modelo es una función matemática».<br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md</code> · 0:03:27–0:06:30 — profesor: el retroceso desde producción y el 80 %.<br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md</code> · 0:22:23–0:22:38 — aclaración de «dominios» durante el Certamen 1.<br>
 [FUENTE · Repo] <code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code> — estructura y temas del Certamen 1.<br>
 [FUENTE · Repo] <code>07_DATITO/patron_evaluacion.md</code> — formatos y errores que castiga.<br>
 [FUENTE · Repo] <code>05_RESULTADOS/resultados_temporal.json</code> — MAE 188.218, R² 0,757, baseline 431.649, brecha 0,17.<br>
-[INFERENCIA] la ausencia de <em>data-informed</em> en las transcripciones, y la etapa en que quedó el proyecto Melbourne.<br>
-[DATITO] el simulador de Big Data, el comparador de posturas y el gráfico de ruido.<br>
+[INFERENCIA] la ausencia de <em>data-informed</em> en las 14 transcripciones disponibles al 2026-09-21 y en las láminas FCD, el procedimiento «¿hace falta un modelo?» y la etapa en que quedó el proyecto Melbourne.<br>
+[DATITO] el simulador de Big Data, el comparador de posturas (vocabulario externo), los casos forestal, de transporte, minero y de salud, y el gráfico de ruido.<br>
 <br>
-Las citas de clase provienen de transcripción automática: la puntuación está
-corregida, las palabras no.
+<strong>Datos reales:</strong> las cifras de Melbourne (del JSON citado) y las de
+las láminas. <strong>Ilustrativos:</strong> los datos del gráfico de ruido
+(simulados con la escala de Melbourne, no sus filas) y los números de los casos
+inventados. Las citas de clase provienen de transcripción automática y van
+literales; las correcciones van entre ⟨⟩.
 </footer>
 
 </main>
@@ -707,7 +1234,7 @@ var POSTURAS = {
     v: "Es rápido y usa conocimiento real que no está en ninguna tabla."
   },
   inf: {
-    t: "Data-informed",
+    t: "Data-informed (vocabulario externo, no del curso)",
     h: "El modelo proyecta que esperar seis meses sube el rendimiento un 4 %. El jefe de patrimonio lo lee, lo cruza con que el camino forestal se corta con lluvia fuerte, y decide cosechar ahora igual.",
     q: "Decide: la persona. Los datos: entran como una entrada más, con peso.",
     f: "Falla cuando «el criterio experto» se usa como comodín para ignorar siempre lo que el dato dice. Sin registro de por qué se desvió, es experiencia disfrazada.",
@@ -829,13 +1356,13 @@ function pintaPostura(k){
   var CASOS = [
     { txt: 'El modelo de precios da resultados rarísimos: predice 12 millones para departamentos de un dormitorio. Revisas y hay filas con Landsize = 0 y otras con 40.000 m².',
       ok: 'Limpieza',
-      fb: 'Valores fuera de rango → <strong>limpieza</strong>. Este es el caso que el profesor dice encontrar el 90 % de las veces: llega al modelamiento, el resultado no cuadra, y el problema estaba dos etapas atrás.' },
+      fb: 'Valores fuera de rango → <strong>limpieza</strong>. Este es el caso que el segundo docente dice encontrar el 90 % de las veces que retrocede: llega al modelamiento, el resultado no cuadra, y el problema estaba dos etapas atrás.' },
     { txt: 'Quieres predecir el consumo de combustible por camión y turno, pero el sistema de despacho solo registra el consumo agregado por día de toda la flota.',
       ok: 'Requerimiento',
-      fb: 'El dato al nivel que la pregunta exige <strong>no existe</strong>. Puedes intentar recolectarlo, pero si no se registra, hay que volver al <strong>requerimiento</strong> y replantear la pregunta a un nivel respondible. El profesor lo dijo así: «puedo darme cuenta de que parte fundamental de los datos no está disponible, entonces puedo volver atrás y refinar mi pregunta».' },
+      fb: 'El dato al nivel que la pregunta exige <strong>no existe</strong>. Puedes intentar recolectarlo, pero si no se registra, hay que volver al <strong>requerimiento</strong> y replantear la pregunta a un nivel respondible. El segundo docente lo explicó así en la clase del 19-jun: si al recolectar descubres que parte fundamental de los datos no está disponible, vuelves atrás y refinas la pregunta. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:02:23–2:02:44]</span>' },
     { txt: 'El modelo funciona bien en validación. Lo presentas a gerencia y la primera pregunta es: «¿y esto qué significa para el presupuesto del próximo trimestre?». No sabes responder.',
       ok: 'Comunicación',
-      fb: 'No es un problema de modelo: es de <strong>comunicación</strong>. El profesor fue explícito: «no me sirve de nada llevar a cabo este proceso completo si no soy capaz de comunicárselo a los tomadores de decisiones». Un modelo que nadie sabe usar no produjo conocimiento.' },
+      fb: 'No es un problema de modelo: es de <strong>comunicación</strong>. El segundo docente fue explícito: de nada sirve el proceso completo si, una vez encontrada la respuesta, no eres capaz de comunicársela a los tomadores de decisiones. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:04:43–2:05:02]</span> Un modelo que nadie sabe usar no produjo conocimiento.' },
     { txt: 'Llevas un mes con el modelo en operación. Al principio acertaba; en las últimas tres semanas se degrada sin que nadie haya tocado el código.',
       ok: 'Puesta en marcha',
       fb: 'Detectarlo es función de la <strong>puesta en marcha</strong>: si no hay monitoreo, nadie se entera. Una vez detectado, el ciclo vuelve a girar — probablemente hacia recolección o requerimiento, porque cambió el mundo, no el código. Esta es la etapa que casi todos omiten al enumerar el ciclo.' },
@@ -880,7 +1407,7 @@ function pintaPostura(k){
             marcador.style.display = 'block';
             marcador.innerHTML = '<strong>' + aciertos + ' de ' + respondidos + '</strong> a la primera. ' +
               (respondidos === CASOS.length
-                ? 'De los cinco síntomas, <strong>dos</strong> vuelven a limpieza. Ese sesgo no es del ejercicio: es el 90 % del que habló tu profesor.'
+                ? 'De los cinco síntomas, <strong>dos</strong> vuelven a limpieza. Ese sesgo no es del ejercicio: es el 90 % del que habló el segundo docente (causa de retrocesos, no tiempo invertido).'
                 : 'Sigue.');
           }
         });

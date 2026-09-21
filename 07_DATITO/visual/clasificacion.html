@@ -50,6 +50,15 @@
   .prof q{font-style:italic}
   .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
   .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
+  .cita{border-left:3px solid var(--acierto); background:#f0f6f2; padding:12px 16px; margin:18px 0; font-style:italic; border-radius:0 6px 6px 0}
+  .cita .f{display:block; font-style:normal; font-size:.8rem; color:var(--tinta2); margin-top:7px}
+  .nota{background:var(--aviso-bg); border-left:3px solid #c9a227; padding:12px 16px; margin:18px 0; font-size:.94rem; border-radius:0 6px 6px 0}
+  details.resp{background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:.6rem 1rem; margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer; font-weight:700; color:#065f46}
+  .preg{font-weight:600; margin:18px 0 6px}
+  a{color:var(--gato)}
+  footer{max-width:808px; margin:0 auto 60px; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem}
+  @media(max-width:860px){ footer{margin:0 16px 50px} }
 
   .eq{
     background:#f3f1ec; border:1px solid var(--linea); border-radius:7px;
@@ -57,7 +66,7 @@
     font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
     font-size:1.04rem; overflow-x:auto;
   }
-  .eq .nota{display:block; font-family:inherit; font-size:.8rem; color:var(--tinta2); margin-top:8px}
+  .eq .nota{display:block; font-family:inherit; font-size:.8rem; color:var(--tinta2); margin-top:8px; background:none; border:0; padding:0; border-radius:0}
   .frac{display:inline-block; vertical-align:middle; text-align:center; margin:0 3px}
   .frac .num{display:block; padding:0 8px 2px; border-bottom:1.6px solid var(--tinta)}
   .frac .den{display:block; padding:3px 8px 0}
@@ -137,6 +146,16 @@
 </style>
 </head>
 <body>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Clasificacion</b></span> · <span class="et">viene de</span><a href="clase6_regresion.html">Regresion</a> · <span class="et">habilita</span><a href="matriz_confusion.html">Matriz de confusion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 3 · peso en certamen media (C1: P6; base de C2) · <span class="et">certamen</span><a href="certamen_1.html#p6">C1 P6</a> · <a href="certamen_2.html#p4">C2 P4</a></div>
+<details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:00:09–0:09:22 · profesor — regresion frente a clasificacion; perro o gato<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:09]</span></li><li><b>Clase del 7-ago</b> · 0:09:22–0:16:16 · profesor — categorica frente a numerica; el orden<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:09:22]</span></li><li><b>Clase del 7-ago</b> · 0:19:23–0:25:05 · profesor — clasificar por cercania (KNN) y la probabilidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:19:23]</span></li><li><b>Clase del 7-ago</b> · 0:25:11–0:44:15 · profesor — SVM y el margen<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:25:11]</span></li><li><b>Ayudantía del 7-ago</b> · 0:33:57–0:47:26 · ayudantía — get_dummies y LabelEncoder <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:33:57]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
 <div class="hoja">
 
 <h1>Clasificación</h1>
@@ -150,7 +169,7 @@
   <span class="nodo">precisión · recall · F1</span><span class="flecha">→</span>
   <span class="nodo">ROC y AUC</span>
 </div>
-<p class="fuente">Estructura de <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>. Este documento se detiene justo antes de la matriz de confusión: ese concepto ya lo tienes en <code>07_DATITO/visual/matriz_confusion.html</code> y las métricas en <code>metricas_clasificacion.html</code>. Aquí no se repiten.</p>
+<p class="fuente">Estructura de <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>. Este documento se detiene justo antes de la matriz de confusión: ese concepto ya lo tienes en <a href="matriz_confusion.html">matriz_confusion.html</a>, las métricas en <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> y el umbral recorrido entero en <a href="roc_auc.html">roc_auc.html</a>. Aquí no se repiten.</p>
 
 
 <h2>1 · La situación, antes de cualquier fórmula</h2>
@@ -159,11 +178,10 @@
 
 <p>Vuelves con una tabla de 28 filas. Mañana te van a pasar las medidas de un animal que no viste, sin decirte qué es, y tienes que responder: <strong>perro o gato</strong>.</p>
 
-<div class="prof">
-  <span class="et">Este ejemplo es de tu profesor, no inventado</span>
-  <q>Digamos que yo estoy midiendo el tamaño del animal y el tamaño de las orejas… entonces yo quiero después ajustar un modelo que digamos que podría hacer algo como esto: digo todo lo que está hacia arriba es perro y todo lo que está hacia abajo es gato.</q>
-  <p class="fuente" style="margin-top:9px">Clase del 7 de agosto de 2026 · <code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code></p>
-</div>
+<p>Este ejemplo es de tu profesor, no inventado:</p>
+
+<div class="cita">«yo estoy midiendo el tamaño del animal y el tamaño de las orejas […] ajustar un modelo que […] digo todo lo que está hacia arriba es perro y todo lo que está hacia abajo es gato» <span class="f">Clase del 7-ago · 0:05:05–0:06:57 (dos tramos: 0:05:05–0:05:10 y 0:06:46–0:06:57; […] = salto de 1:36 en que muestra perros y gatos uno por uno) · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
 
 <p>Fíjate en lo que acaba de cambiar respecto a Melbourne. Allí tu modelo respondía <em>910.000 AUD</em> y el error era <em>una distancia</em>: fallaste por 188.218 AUD. Aquí tu modelo responde <em>perro</em>. No existe fallar por poco. <strong>O es perro, o no lo es.</strong></p>
 
@@ -179,11 +197,33 @@
 
 <p>Porque para que una resta signifique algo, los números tienen que traer dos cosas: <strong>orden</strong> y <strong>distancia</strong>. Las categorías no traen ninguna de las dos.</p>
 
-<div class="prof">
-  <span class="et">Tu profesor, respondiendo esto mismo en clase</span>
-  <q>Una categoría es perro, gato, conejo; un número es 1, 2, 3, 4, 5, 6… La diferencia es que la variable categórica no tiene una noción de orden. Si digo perro, gato, conejo, yo no puedo decir el perro viene antes que el gato.</q>
-  <p style="margin:9px 0 0">Y de un compañero, en la misma clase: <q>una variable numérica tiene sentido interpolarla, mientras una categórica no; entre 1 y 2 puedo decir que hay 1,5, pero entre perro y gato no hay nada.</q></p>
-</div>
+<p>Tu profesor, cuando preguntó en clase cuál es la diferencia entre una variable categórica y una numérica:</p>
+
+<div class="cita">«la diferencia es que la variable categórica no tiene una noción de orden entonces si digo perro gato conejo yo no puedo decir el perro viene antes que el gato o después del gato» <span class="f">Clase del 7-ago · 0:10:43–0:10:59 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Justo antes, un compañero lo había dicho con la idea de interpolar: entre 1 y 2 hay 1,5, pero entre perro y gato no hay nada [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:10:28–0:10:43].</p>
+
+<h3>Cualitativo no es lo mismo que categórico</h3>
+
+<p>Otro compañero preguntó si la diferencia era «cualitativa contra cuantitativa». El profesor dijo que no necesariamente, con este ejemplo:</p>
+
+<div class="cita">«voy a observar un paisaje y le voy a asignar un número de 1 a 5 de acuerdo a qué tan bonito el paisaje es un numérico y es cualitativo» <span class="f">Clase del 7-ago · 0:11:24–0:11:39 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>O sea: <strong>cualitativo / cuantitativo</strong> habla de <em>cómo se obtuvo</em> el dato (lo juzga una persona o lo mide un instrumento); <strong>categórico / numérico</strong> habla de <em>qué operaciones admite</em> (ordenar, interpolar). La nota del paisaje es cualitativa y numérica a la vez [INFERENCIA].</p>
+
+<p class="preg">¿El «nivel de dolor de 1 a 10» que anota un paciente es categórico?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> no: es <strong>numérico y cualitativo</strong>, como el paisaje del profesor.</p>
+    <p><strong>Cómo se resuelve:</strong> dos preguntas separadas. (1) ¿Lo mide un instrumento o lo juzga una persona? Lo juzga el paciente → cualitativo. (2) ¿Tiene orden y tiene sentido un punto medio? 4 &lt; 6 y un 5 está entre medio → numérico.</p>
+    <p><strong>Error típico:</strong> decir «es categórico porque lo decide una persona». Eso confunde cómo se obtuvo el dato con qué operaciones admite.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> análogo al paisaje del profesor (cita de arriba); el dolor es [DATITO].</p>
+  </div>
+</details>
 
 <h3>Y esto no es filosofía: lo puedes ver fallar con tus propios datos</h3>
 
@@ -201,6 +241,16 @@
   </div>
   <div class="contraste" id="contMae"></div>
 </div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> <strong>solo el MAE</strong>; la exactitud no se mueve.</p>
+    <p><strong>Cómo se resuelve:</strong> la exactitud solo pregunta si el código predicho es igual al real: renombrar las clases no convierte un acierto en error, y sigue en 774/1.000 = 0,774. El MAE resta códigos: con ambigua = 0, espiral = 1, elíptica = 2, las 74 confusiones ambigua↔elíptica (35 + 39) valen 2 y el resto de los errores vale 1 → (152 + 2·74)/1.000 = 0,300. Si pones elíptica en el medio, el par a distancia 2 pasa a ser ambigua↔espiral (36 + 18 = 54): (172 + 2·54)/1.000 = 0,280. Si pones ambigua en el medio, el par lejano es espiral↔elíptica (33 + 65 = 98): (128 + 2·98)/1.000 = 0,324.</p>
+    <p><strong>Error típico:</strong> «las dos», pensando que cualquier cambio de codificación mueve cualquier métrica.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> matriz OOF de [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §«OOF CatBoost, argmax normal»]; cálculo [INFERENCIA].</p>
+  </div>
+</details>
 
 <div class="panel">
   <p style="font-size:.9rem; margin-bottom:6px"><strong>Asigna los códigos.</strong> Elige en qué orden numeras las tres clases:</p>
@@ -226,30 +276,56 @@
   <p style="margin:0"><strong>El argumento completo, en una línea:</strong> una métrica cuyo valor depende de una decisión arbitraria del analista no está midiendo el modelo. Está midiendo la decisión.</p>
 </div>
 
-<details>
-  <summary>¿Por qué solo hay tres valores distintos de MAE y no seis?</summary>
+<p class="preg">¿Por qué solo hay tres valores distintos de MAE y no seis?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
   <div class="cuerpo">
-    <p>Porque el MAE sobre códigos solo depende de <strong>qué par de clases quedó en los extremos</strong> (distancia 2); los otros dos pares quedan a distancia 1. Y hay solo tres pares posibles.</p>
-    <p>Invertir el orden completo —<code>0,1,2</code> por <code>2,1,0</code>— no cambia nada, porque las distancias son simétricas. Por eso los seis órdenes dan tres valores, de a dos.</p>
+    <p><strong>Respuesta:</strong> porque el MAE sobre códigos solo depende de <strong>qué par de clases quedó en los extremos</strong>, y hay solo tres pares posibles.</p>
+    <p><strong>Cómo se resuelve:</strong> con tres códigos 0, 1, 2, un par de clases queda a distancia 2 (los extremos) y los otros dos a distancia 1. Invertir el orden completo —<code>0,1,2</code> por <code>2,1,0</code>— deja los mismos extremos, porque |a − b| = |b − a|. Seis órdenes, de a dos iguales: tres valores (0,280 · 0,300 · 0,324).</p>
+    <p><strong>Error típico:</strong> pensar que cada orden da un MAE distinto, sin ver la simetría de la resta en valor absoluto.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [INFERENCIA] sobre la matriz de [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md].</p>
   </div>
 </details>
 
-<h3>El matiz que el profesor sí distingue: ordinales</h3>
+<h3>El matiz que el profesor sí distingue: categorías que esconden un número</h3>
 
-<p>En la misma clase apareció el caso <em>frío / templado / caliente</em>, y el profesor lo separó del resto: eso <strong>sí</strong> tiene orden, porque por debajo hay una temperatura. Lo llamó «una discretización de una variable numérica». Lo mismo con <em>adulto joven / adulto mayor</em>: por debajo está la edad.</p>
+<p>Un compañero propuso <em>adulto joven / adulto mayor</em> como categoría. El profesor respondió que eso está en una zona gris, porque por debajo hay una variable numérica que sí se ordena. Minutos después, otro compañero planteó <em>frío / templado / caliente</em> [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:14:02–0:14:17], y el profesor le contestó con la misma idea:</p>
+
+<div class="cita">«la variable real que está midiendo adulto mayor o adulto joven es la edad y la edad yo sí la puedo ordenar […] es una discretización de una variable numérica […] frío mediano caliente está asociado a una temperatura como la altura» <span class="f">Clase del 7-ago · 0:12:19–0:14:25 (dos tramos: 0:12:19–0:12:33 sobre la edad y 0:14:17–0:14:25 sobre la temperatura; […] = omisiones) · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Lo que dijo el profesor es eso: si la categoría es un tramo de una variable numérica (edad, temperatura), <strong>conserva el orden</strong> de esa variable. Para él, una categoría «de verdad» es la que no está asociada a ninguna variable numérica (hombre / mujer, árbol / planta, círculo / cuadrado / triángulo).</p>
+
+<div class="nota">
+  <strong>Lo que es de Datito, no de la clase.</strong> Las palabras <em>nominal</em> y <em>ordinal</em> (en el sentido de tipos de variable) y la regla «orden sin distancia» no aparecen en las 14 transcripciones disponibles al 2026-09-21 (la única coincidencia es «precio nominal», en una presentación de alumnos del 14-ago): son vocabulario estándar que agrega Datito [DATITO]. Úsalas para ordenar tu cabeza, pero en el certamen justifica con el argumento del profesor: <em>¿hay una variable numérica debajo?, ¿tiene sentido un punto medio?</em>
+</div>
 
 <div class="certamen">
-  <span class="et">Distinción que vale puntos</span>
-  <strong>Categórica nominal</strong> (perro, gato, conejo · círculo, cuadrado, triángulo) no tiene orden <strong>ni</strong> distancia.<br>
-  <strong>Categórica ordinal</strong> (frío, templado, caliente) tiene orden <strong>pero no</strong> distancia: no puedes afirmar que la distancia frío→templado sea igual a templado→caliente.<br>
-  <strong>Numérica</strong> tiene las dos.<br>
-  Solo con las dos puedes restar. Por eso el MAE necesita la tercera.
+  <span class="et">Distinción que vale puntos · Certamen 1, P6</span>
+  <strong>Categoría sin orden</strong> (perro, gato, conejo · círculo, cuadrado, triángulo): no puedes decir cuál va antes. Así lo dijo el profesor.<br>
+  <strong>Categoría que discretiza un número</strong> (adulto joven / mayor · frío / mediano / caliente): hereda el orden de la edad o la temperatura. También del profesor.<br>
+  <strong>Numérica</strong>: orden y punto medio con sentido; se puede restar. Por eso el MAE la necesita.<br>
+  [DATITO] En vocabulario estándar, las dos primeras se llaman <em>nominal</em> y <em>ordinal</em>, y la ordinal tiene orden pero no distancia: no puedes afirmar que frío→templado sea igual a templado→caliente.<br>
+  Aplicado: el Certamen 1 preguntó qué modelo predice una salida «bueno / regular / malo», y la respuesta es <strong>clasificación multiclase</strong>, aunque esas categorías tengan orden: <a href="certamen_1.html#p6">certamen_1.html#p6</a>. En el Certamen 2 la distinción vecina es qué cantidad describe un clasificador: <a href="certamen_2.html#p4">certamen_2.html#p4</a>.
 </div>
+
+<p class="preg">V/F con justificación: «Como "bueno / regular / malo" tiene orden, predecirlo es un problema de regresión».</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> <strong>falso</strong>: es clasificación multiclase, porque la salida son tres categorías y no un número con punto medio.</p>
+    <p><strong>Cómo se resuelve:</strong> (1) ¿cuál es el target? La etiqueta de calidad. (2) ¿Toma valores numéricos con punto medio con sentido? No: entre «regular» y «bueno» no hay un «regular y medio» medible. (3) Entonces el modelo tiene que elegir <em>cuál</em> de tres etiquetas → clasificación. Que las etiquetas tengan orden permite, a lo más, tratarlas con cuidado (confundir «malo» con «bueno» es peor que confundirlo con «regular»), pero no las convierte en un número.</p>
+    <p><strong>Error típico:</strong> confundir «tiene orden» con «es numérica». Tener orden no basta para restar.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 07_DATITO/visual/certamen_1.html · P6] (respuesta verificada allí); el argumento del punto medio, de la clase (cita de arriba) y [INFERENCIA].</p>
+  </div>
+</details>
 
 
 <h2>3 · Lo que <em>no</em> cambia respecto a regresión</h2>
 
-<p>Antes de mirar lo nuevo, conviene ver cuánto se reutiliza. El profesor fue explícito: <q>la clase de hoy vamos a hacer algo muy parecido a la clase pasada, pero en vez de hablar de regresión vamos a hablar de clasificación</q>.</p>
+<p>Antes de mirar lo nuevo, conviene ver cuánto se reutiliza. El profesor abrió la clase diciendo que sería muy parecida a la de regresión, con los mismos componentes, pero para clasificación [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:04:20–0:04:31].</p>
 
 <table>
   <thead><tr><th>Pieza</th><th>En regresión (Melbourne)</th><th>En clasificación (perro/gato)</th></tr></thead>
@@ -265,14 +341,17 @@
 </table>
 
 <div class="aviso">
-  <span class="et">La confusión que un compañero planteó en clase, y que el profesor tuvo que aclarar</span>
+  <span class="et">Lo que define la tarea [DATITO], y lo que dijo el profesor sobre las features categóricas</span>
   Lo que define la tarea es el tipo del <strong>target</strong>, no el de las features. En el ejemplo del plano, <code>x₁</code> y <code>x₂</code> son <strong>numéricas</strong> —centímetros— y aun así es clasificación, porque lo que se predice es una categoría.
-  <p style="margin:9px 0 0">Al revés también: si tus features son categóricas hay que <strong>codificarlas</strong> —one-hot, como hiciste con <code>Type</code>, <code>Method</code> y <code>Regionname</code> en Melbourne— pero eso no convierte el problema en clasificación. Melbourne tiene tres features categóricas y sigue siendo regresión, porque <code>Price</code> es un número.</p>
+  <p style="margin:9px 0 0">Al revés también: si tus features son categóricas hay que <strong>codificarlas</strong>. Cuando un compañero preguntó si estaba mal darle un valor numérico a una categórica, el profesor respondió que un modelo matemático no entiende «perro» o «gato» y que hay que transformarlo con one-hot encoding [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:15:10–0:15:48]. Eso —one-hot, como hiciste con <code>Type</code>, <code>Method</code> y <code>Regionname</code> en Melbourne— no convierte el problema en clasificación. Melbourne tiene tres features categóricas y sigue siendo regresión, porque <code>Price</code> es un número.</p>
 </div>
 
-<details>
-  <summary>Cuatro casos para separarlo de una vez</summary>
+<p class="preg">Cuatro casos para separarlo de una vez: ¿regresión o clasificación? (1) Precio de una propiedad de Melbourne · (2) forma de una galaxia · (3) si una propiedad se vende sobre el millón · (4) cuántos días tarda en venderse.</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
   <div class="cuerpo">
+    <p><strong>Respuesta:</strong> (1) regresión · (2) clasificación de 3 clases · (3) clasificación binaria · (4) regresión.</p>
     <table>
       <thead><tr><th>Problema</th><th>Target</th><th>Tarea</th></tr></thead>
       <tbody>
@@ -282,7 +361,9 @@
         <tr><td>Cuántos días tarda en venderse</td><td>días, un número</td><td>Regresión</td></tr>
       </tbody>
     </table>
-    <p style="margin:12px 0 0">La tercera fila es la interesante: es <strong>el mismo dataset de Melbourne</strong>. Cambiaste el target de un número a un sí/no y cambiaste de tarea. El dato no manda; manda qué le preguntas.</p>
+    <p><strong>Cómo se resuelve:</strong> para cada uno, escribe el target y pregúntale si tiene punto medio con sentido. Precio y días: sí → regresión. Forma y «sobre el millón»: son etiquetas → clasificación. La tercera fila es la interesante: es <strong>el mismo dataset de Melbourne</strong>. Cambiaste el target de un número a un sí/no y cambiaste de tarea. El dato no manda; manda qué le preguntas.</p>
+    <p><strong>Error típico:</strong> decidir por las features («Melbourne tiene Type y Regionname, entonces es clasificación»).</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] sobre la definición de clasificación de la clase: etiqueta categórica [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:32–0:00:37].</p>
   </div>
 </details>
 
@@ -318,6 +399,11 @@
   <span class="nota">el ±1 es una herramienta matemática para poder ajustar el modelo, no una afirmación de que perro «vale más» que gato</span>
 </div>
 
+<p>Esa aclaración es del profesor, al presentar el <em>support vector machine</em> (SVM). El SVM no está entre los 21 conceptos del currículum de Datito: aquí solo importa la idea de las etiquetas.</p>
+
+<div class="cita">«a uno de los objetos le ponemos la etiqueta más uno y a la otra etiqueta al otro objeto le pongo la etiqueta menos uno entonces esto es solamente una […] herramienta matemática para poder ajustar el modelo» <span class="f">Clase del 7-ago · 0:25:54–0:26:16 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
 <p>Y la frontera —la línea del dibujo— es exactamente el conjunto de puntos donde el score vale cero:</p>
 
 <div class="eq">w₁·x₁ + w₂·x₂ − b = 0</div>
@@ -350,6 +436,16 @@
   </div>
   <div class="contraste" id="contSalto"></div>
 </div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> <strong>a saltos</strong>: el número de errores se queda quieto varios grados y después cambia un entero de golpe.</p>
+    <p><strong>Cómo se resuelve:</strong> un error es un animal del lado equivocado de la recta. Mientras giras, el conteo solo cambia cuando la recta pasa por encima de un animal; entre un cruce y otro, ningún animal cambia de lado y el conteo no se mueve. Nunca puede dar 2,4 errores: se cuentan animales enteros.</p>
+    <p><strong>Error típico:</strong> «suave, de a fracciones», trasladando la intuición del MAE de regresión, que sí se mueve de a centavos.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] sobre el ejemplo perro/gato del profesor; la pérdida 0-1 se define en el §6.</p>
+  </div>
+</details>
 
 <div class="panel">
   <canvas id="lienzo" width="1400" height="820" aria-label="Plano tamaño contra oreja con perros, gatos y una frontera de decisión"></canvas>
@@ -390,10 +486,33 @@
   <li><strong>Con el mismo número de errores, hay rectas mejores que otras.</strong> Dos rectas pueden fallar exactamente en los mismos animales y aun así una te da más confianza: la que deja más espacio libre a cada lado. El número de errores no las distingue; el margen sí.</li>
 </ol>
 
-<div class="prof">
-  <span class="et">Tu profesor, sobre el punto 2</span>
-  <q>Podrías tener un perro pequeño, no sé, un chihuahua por ejemplo, podría ser clasificado como gato, pero eso es un error… los modelos nunca son perfectos. Un modelo 100 % perfecto yo al tiro dudo de ese modelo, porque hay algo raro. La naturaleza no es 100 % perfecta: hay perros que parecen gatos y hay gatos que parecen perros.</q>
-</div>
+<p>Tu profesor, sobre el punto 2:</p>
+
+<div class="cita">«podrías tener un perro pequeño […] un chihuahua por ejemplo podría ser clasificado como gato pero eso es un error […] un modelo de 100% perfecto yo al tiro dudo de ese modelo porque ningún modelo 100% perfecto hay algo raro» <span class="f">Clase del 7-ago · 0:22:25–0:22:52 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Y siguió: la naturaleza no es 100 % perfecta, hay perros que parecen gatos y gatos que parecen perros [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:22:56–0:23:03]. Un 100 % en test no es un logro: es una alarma de fuga de información o de un test mal armado [INFERENCIA].</p>
+
+<h3>Otra forma de clasificar: por vecinos, y con una probabilidad</h3>
+
+<p>Antes del modelo lineal, el profesor mostró la idea de cercanía con el <em>k</em> vecinos más cercanos (KNN): para clasificar un punto nuevo, miras sus <em>k</em> vecinos del entrenamiento y votan.</p>
+
+<div class="cita">«los tres más cercanos de un círculo y dos triángulos […] hay una probabilidad de dos de tres o sea un 66 coma 6 periódico por ciento de probabilidad de que sea un triángulo» <span class="f">Clase del 7-ago · 0:24:42–0:24:56 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Fíjate en lo que acaba de aparecer: el modelo no solo dice «triángulo», dice <strong>«triángulo con probabilidad 2/3»</strong>. Si decides «triángulo» cuando esa probabilidad pasa de 0,5, elegiste un <strong>umbral</strong>. Moverlo cambia qué casos se declaran positivos, y recorrer todos los umbrales es la curva ROC: <a href="roc_auc.html">roc_auc.html</a>. El Random Forest hace algo parecido: si 3 de 4 árboles dicen perro, 75 % de probabilidad de perro [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:31:53–1:32:09].</p>
+
+<p class="preg">Con K = 5, los vecinos de un punto nuevo son 3 círculos y 2 triángulos. ¿Qué responde el modelo, con qué probabilidad, y qué pasa si exiges al menos 0,7 para decir «círculo»?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> responde <strong>círculo con probabilidad 3/5 = 0,6</strong>; con un umbral de 0,7, en cambio, el punto quedaría como triángulo.</p>
+    <p><strong>Cómo se resuelve:</strong> probabilidad de círculo = votos de círculo / K = 3/5 = 0,60. Con la regla por defecto (gana la mayoría, o sea umbral 0,5): 0,60 ≥ 0,5 → círculo. Con umbral 0,7: 0,60 &lt; 0,7 → no alcanza, se declara triángulo.</p>
+    <p><strong>Error típico:</strong> creer que la clase que entrega el modelo es fija. Depende del umbral que tú eliges sobre la probabilidad; el modelo solo entrega el 0,6.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> mecanismo del KNN y la probabilidad por votos: cita de arriba; números [DATITO]; el umbral como decisión tuya: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+  </div>
+</details>
 
 
 <h2>6 · El error de clasificación, con notación</h2>
@@ -421,7 +540,7 @@
 <div class="aviso">
   <span class="et">Y aquí aparece el problema técnico que explica todo el resto del curso</span>
   Esa función escalonada que acabas de ver moviendo la recta es E<sub>0-1</sub>. Como salta, <strong>no se puede derivar</strong>, y sin derivada no hay forma de que el modelo sepa hacia dónde moverse para mejorar.
-  <p style="margin:9px 0 0">Por eso ningún algoritmo de clasificación minimiza directamente el número de errores. Cada uno inventa algo derivable o buscable que se le parezca: el SVM <strong>maximiza el margen</strong>, el árbol <strong>reduce la impureza</strong>, la regresión logística minimiza una verosimilitud. Todos los modelos que vas a ver después son respuestas distintas a este mismo estorbo.</p>
+  <p style="margin:9px 0 0">Por eso ningún algoritmo de clasificación minimiza directamente el número de errores. Cada uno inventa algo derivable o buscable que se le parezca: el SVM <strong>maximiza el margen</strong>, el árbol <strong>reduce la impureza</strong>, la regresión logística minimiza una verosimilitud. Todos los modelos que vas a ver después son respuestas distintas a este mismo estorbo [DATITO].</p>
 </div>
 
 <h3>El margen, que es lo que hace el SVM</h3>
@@ -438,7 +557,7 @@
 
 <div class="prof">
   <span class="et">La analogía que propuso un compañero, y que el profesor aceptó</span>
-  <q>Es como un barrio: los azules son casas, los rojos son casas, y lo que está entremedio es una calle que separa ambos barrios. Si quiero volver a construir una casa, tengo que esperar a que el margen sea igual para separar ambos barrios.</q>
+  Un compañero comparó el margen con un barrio: las dos clases son casas de dos barrios y el margen es la calle que los separa; el profesor dijo que era una muy buena analogía [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:12–0:29:36].
   <p style="margin:9px 0 0; font-size:.93rem">El botón <em>Ajustar el modelo</em> de arriba hace justo eso, a lo bruto: prueba miles de rectas, se queda con las de menos errores y, entre ellas, con la que deja la calle más ancha.</p>
 </div>
 
@@ -451,53 +570,65 @@
   ŷ = signo( 0,82·x₁ + 0,57·x₂ − 0,55 )
 </div>
 
-<details>
-  <summary>1 · ¿Qué es cada cosa, y qué fenómeno describe?</summary>
+<p class="preg">1 · ¿Qué es cada cosa, y qué fenómeno describe?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
   <div class="cuerpo">
+    <p><strong>Respuesta:</strong> es un clasificador lineal que separa perros de gatos con una recta en el plano (tamaño, oreja): x₁ y x₂ son datos, 0,82 y 0,57 son los pesos aprendidos, 0,55 es el desplazamiento, y el signo convierte el puntaje en una clase.</p>
     <ul>
       <li><code>x₁</code>, <code>x₂</code>: las dos medidas del animal, normalizadas. <strong>Dato.</strong></li>
-      <li><code>0,82</code> y <code>0,57</code>: el vector <strong>w</strong>, lo que el modelo aprendió. Los dos son positivos, así que <strong>más tamaño y más oreja empujan hacia la clase positiva</strong>. Y 0,82 &gt; 0,57: el tamaño pesa más que la oreja.</li>
-      <li><code>0,55</code>: el <code>b</code>, el umbral. Es cuánto tiene que acumular un animal entre las dos medidas antes de que el modelo se atreva a decir «perro».</li>
+      <li><code>0,82</code> y <code>0,57</code>: el vector <strong>w</strong>, lo que el modelo aprendió. Los dos son positivos, así que <strong>más tamaño y más oreja empujan hacia la clase positiva</strong>. Y 0,82 &gt; 0,57: el tamaño pesa más que la oreja (se pueden comparar porque las dos medidas están normalizadas).</li>
+      <li><code>0,55</code>: el <code>b</code>. Es cuánto tiene que acumular un animal entre las dos medidas antes de que el modelo se atreva a decir «perro».</li>
       <li><code>signo(·)</code>: el paso que convierte un número continuo en una decisión discreta. <strong>Esta es la pieza que no existe en regresión.</strong></li>
     </ul>
-    <p>Fenómeno: separar dos poblaciones en un plano de dos medidas, con una frontera recta.</p>
+    <p><strong>Error típico:</strong> leer 0,82·x₁ + 0,57·x₂ − 0,55 como «la predicción». Es el puntaje; la predicción es su signo.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> ecuación y coeficientes ilustrativos [DATITO]; el esquema perro/gato con una recta es del profesor (cita del §1).</p>
   </div>
 </details>
 
-<details>
-  <summary>2 · Un animal mide 38 cm y tiene orejas de 12 cm. ¿Qué responde el modelo?</summary>
+<p class="preg">2 · Un animal mide 38 cm y tiene orejas de 12 cm. ¿Qué responde el modelo?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
   <div class="cuerpo">
-    <p>Primero normalizas, porque la fórmula está escrita en unidades normalizadas:</p>
+    <p><strong>Respuesta:</strong> <strong class="cperro">perro</strong>, porque el puntaje sale +0,170, positivo (aunque cerca de la frontera).</p>
+    <p>Primero normalizas, porque la fórmula está escrita en unidades normalizadas (tamaño entre 10 y 75 cm, oreja entre 3 y 17 cm):</p>
     <p class="mono">x₁ = (38 − 10) / (75 − 10) = 28/65 = 0,431<br>
        x₂ = (12 − 3) / (17 − 3) = 9/14 = 0,643</p>
     <p>Ahora sustituyes:</p>
     <p class="mono">s = 0,82 · 0,431 + 0,57 · 0,643 − 0,55<br>
        s = 0,353 + 0,366 − 0,55 = <strong>+0,170</strong></p>
-    <p>El signo es positivo → <strong class="cperro">perro</strong>.</p>
-    <p>Y fíjate en algo: 0,170 es un número chico. El animal está cerca de la frontera. El modelo dice «perro» con la misma cara con la que lo diría si el score fuera 0,9 — <strong>el signo no guarda memoria de cuán cerca estuvo</strong>. Ese descarte de información es lo que la curva ROC va a recuperar más adelante, cuando dejes de mirar el signo y empieces a mirar el score.</p>
+    <p>El signo es positivo → perro. Y fíjate: 0,170 es un número chico. El modelo dice «perro» con la misma cara con la que lo diría si el puntaje fuera 0,9 — <strong>el signo no guarda memoria de cuán cerca estuvo</strong>. Ese descarte de información es lo que la curva ROC recupera cuando dejas de mirar el signo y miras el puntaje: <a href="roc_auc.html">roc_auc.html</a>.</p>
+    <p><strong>Error típico:</strong> sustituir 38 y 12 directamente, sin normalizar: s = 0,82·38 + 0,57·12 − 0,55 = 37,5, un número sin sentido en esta escala (aquí da el mismo signo por casualidad).</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] (cifras ilustrativas).</p>
   </div>
 </details>
 
-<details>
-  <summary>3 · ¿Cuánto tendría que valer <code>b</code> para que ese mismo animal saliera gato, sin tocar <strong>w</strong>?</summary>
+<p class="preg">3 · ¿Cuánto tendría que valer <code>b</code> para que ese mismo animal saliera gato, sin tocar <strong>w</strong>?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
   <div class="cuerpo">
-    <p>Necesitas <code>s &lt; 0</code>, o sea <code>0,353 + 0,366 − b &lt; 0</code>, o sea <code>b &gt; 0,719</code>. Con <code>b = 0,75</code> el score pasa a −0,031 y el modelo dice gato.</p>
-    <p><strong>La relación que hay que nombrar:</strong> mover <code>b</code> dejando <strong>w</strong> fijo <em>desplaza</em> la recta en paralelo, sin girarla. Cambiar <strong>w</strong> la <em>gira</em>. Compruébalo con los dos deslizadores de arriba: uno inclina, el otro traslada.</p>
-    <p>Y hay un corolario que se te va a pedir después: subir <code>b</code> hace al modelo más exigente para declarar «perro» — declarará menos perros, se le escaparán perros de verdad, pero casi todos los que declare lo serán. Ese es literalmente el umbral que mueve la curva ROC.</p>
+    <p><strong>Respuesta:</strong> cualquier <code>b</code> mayor que <strong>0,719</strong> (por ejemplo 0,75).</p>
+    <p><strong>Cómo se resuelve:</strong> necesitas <code>s &lt; 0</code>, o sea <code>0,353 + 0,366 − b &lt; 0</code>, o sea <code>b &gt; 0,719</code>. Con <code>b = 0,75</code> el puntaje pasa a −0,031 y el modelo dice gato.</p>
+    <p><strong>La relación que hay que nombrar:</strong> mover <code>b</code> dejando <strong>w</strong> fijo <em>desplaza</em> la recta en paralelo, sin girarla. Cambiar <strong>w</strong> la <em>gira</em>. Compruébalo con los dos deslizadores de arriba: uno inclina, el otro traslada. Y el corolario: subir <code>b</code> hace al modelo más exigente para declarar «perro» — declarará menos perros, se le escaparán perros de verdad, pero casi todos los que declare lo serán. Ese es el umbral que recorre la curva ROC.</p>
+    <p><strong>Error típico:</strong> responder «b &lt; 0,719» por invertir la desigualdad al despejar un término con signo menos.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] (cifras ilustrativas); el umbral como decisión: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
   </div>
 </details>
 
 
 <h2>8 · Qué cantidad describe qué objeto</h2>
 
-<p>Esto es una pregunta del Certamen 2 con nombre y apellido. No pide calcular: pide <strong>clasificar la cantidad</strong>.</p>
+<p>Esto es una pregunta del Certamen 2 con nombre y apellido (ficha P4: <a href="certamen_2.html#p4">certamen_2.html#p4</a>). No pide calcular: pide <strong>clasificar la cantidad</strong>.</p>
 
 <table>
   <thead><tr><th>Cantidad</th><th>¿Qué objeto describe?</th><th>¿Existe si no hay clases?</th></tr></thead>
   <tbody>
     <tr><td>Media, mediana, <strong>varianza</strong>, IQR</td><td>una <strong>variable</strong></td><td class="mid">Sí</td></tr>
     <tr><td>MAE, RMSE, R²</td><td>un modelo de <strong>regresión</strong></td><td class="mid">Sí, si el target es numérico</td></tr>
-    <tr><td>TP, TN, FP, FN, exactitud, precisión, recall, FPR, F1, AUC</td><td>un <strong>clasificador</strong></td><td class="mid">No</td></tr>
+    <tr><td>VP, VN, FP, FN, exactitud, precisión, recall, FPR, F1, AUC</td><td>un <strong>clasificador</strong></td><td class="mid">No</td></tr>
     <tr><td>Impureza de Gini, entropía</td><td><strong>criterio de entrenamiento</strong> de un árbol</td><td class="mid">No</td></tr>
     <tr><td>Margen <code>2/‖w‖</code></td><td><strong>criterio de entrenamiento</strong> de un SVM</td><td class="mid">No</td></tr>
   </tbody>
@@ -508,10 +639,29 @@
   Una cantidad que describe un <strong>clasificador</strong> no existe fuera de un problema de clasificación: sin clases no hay «falso positivo».<br>
   Una cantidad que describe una <strong>variable</strong> —la varianza— existe con o sin clases, con o sin modelo, con o sin nada. Le basta una columna de números.<br>
   Por eso, ante «¿cuál de estas <em>no</em> es una métrica de evaluación de un clasificador?», la varianza se cae sola.
-  <p class="fuente" style="margin-top:9px">Ficha P4 en <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>.</p>
+  <p class="fuente" style="margin-top:9px">Ficha P4 en <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code> · <a href="certamen_2.html#p4">certamen_2.html#p4</a>.</p>
 </div>
 
-<p>Y una que se cuela seguido: la <strong>impureza de Gini</strong> necesita clases, sí, pero no es una métrica de <em>evaluación</em> — es lo que el árbol usa <em>mientras</em> se construye, para decidir por dónde cortar. Evaluar y entrenar son momentos distintos del ciclo. Tu profesor cerró la clase con eso: la importancia de una variable en un Random Forest se mide por <strong>reducción de impureza</strong>, no por exactitud.</p>
+<p class="preg">¿Cuál de estas <em>no</em> describe a un clasificador: precisión, FPR, varianza, AUC?</p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> la <strong>varianza</strong>.</p>
+    <p><strong>Cómo se resuelve:</strong> pregunta a cada una si existiría sin clases. Precisión y FPR necesitan falsos positivos, que solo existen si hay una clase positiva; el AUC se arma con TPR y FPR. La varianza solo necesita una columna de números: describe una variable, no un modelo.</p>
+    <p><strong>Error típico:</strong> elegir el AUC «porque es un área y no un porcentaje». Sigue siendo una medida del clasificador.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, ficha P4].</p>
+  </div>
+</details>
+
+<p>Y una que se cuela seguido: la <strong>impureza de Gini</strong> necesita clases, sí, pero no es una métrica de <em>evaluación</em> — es lo que el árbol usa <em>mientras</em> se construye, para decidir por dónde cortar (el profesor la calculó en clase [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:22:15–1:22:31]). Evaluar y entrenar son momentos distintos del ciclo.</p>
+
+<p>Tu profesor cerró la clase con la importancia de variables en un Random Forest, y la explicó <strong>contando</strong>, no con impureza:</p>
+
+<div class="cita">«tengo que contar cuántas veces cada variable fue cogida por cada uno de los árboles como relevante al momento de separar» <span class="f">Clase del 7-ago · 1:32:59–1:33:04 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Es lo mismo que dice la lámina 38: se estima la importancia «contando cuántas veces cada variable fue escogida por cada árbol como relevante» [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 38]. La importancia por <em>reducción de impureza</em> (la que entrega scikit-learn) es otra forma de medirla: viene de tu trabajo en los proyectos, no de la clase [INFERENCIA]. Más en <a href="arboles_y_ensambles.html#random-forest">arboles_y_ensambles.html#random-forest</a>.</p>
 
 
 <h2>9 · Procedimiento para el papel</h2>
@@ -520,7 +670,7 @@
 
 <ol class="pasos">
   <li><strong>Escribe cuál es el target.</strong> Literalmente, la columna. No «predecir ventas»: <em>la columna <code>monto_venta</code></em>.</li>
-  <li><strong>Pregúntale al target si tiene orden.</strong> ¿Puedes decir que un valor va antes que otro, y que entre dos hay un valor intermedio con sentido? Si sí → regresión. Si no → clasificación. Si tiene orden pero no distancia (frío/templado/caliente) → es ordinal, declara el supuesto que tomes.</li>
+  <li><strong>Pregúntale al target si tiene orden.</strong> ¿Puedes decir que un valor va antes que otro, y que entre dos hay un valor intermedio con sentido? Si sí → regresión. Si no → clasificación. Si son categorías con orden (bueno/regular/malo, frío/templado/caliente) → sigue siendo clasificación: el modelo elige una etiqueta (Certamen 1, <a href="certamen_1.html#p6">P6</a>); si te piden tratarlo de otra forma, declara el supuesto [DATITO].</li>
   <li><strong>No mires las features para decidir esto.</strong> Features categóricas se codifican con one-hot y no cambian la tarea. Melbourne tiene tres y sigue siendo regresión.</li>
   <li><strong>Declara la clase positiva antes de calcular nada.</strong> En binaria, escribe «positivo = X» en el margen de la hoja. Sin eso, precisión y recall no significan nada, y todas las preguntas siguientes se construyen sobre esa elección.</li>
 </ol>
@@ -529,11 +679,11 @@
 <h2>10 · Errores que este formato castiga</h2>
 
 <ul>
-  <li><strong>Usar R² o MAE para describir un clasificador.</strong> Tu profesor lo dijo en la misma clase: <q>el R cuadrado uno lo usa para regresión; en este caso estamos en clasificación</q>.</li>
+  <li><strong>Usar R² o MAE para describir un clasificador.</strong> Cuando un compañero preguntó si estas métricas reemplazaban al R², el profesor respondió que el R² se usa para regresión y que en clasificación se miden otros tipos de errores [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39–1:12:26].</li>
   <li><strong>Decidir la tarea mirando las features en vez del target.</strong> Tres columnas categóricas no hacen clasificación.</li>
   <li><strong>Codificar una categórica nominal como 0, 1, 2 y tratarla como número.</strong> Acabas de ver el MAE moverse 16 % por una decisión sin contenido.</li>
   <li><strong>Confundir el score con la probabilidad.</strong> <code>w·x − b</code> puede dar −3,7 o +12. No es una probabilidad; es una distancia con signo.</li>
-  <li><strong>Reportar un 100 % sin sospechar.</strong> <q>Un modelo 100 % perfecto, yo al tiro dudo de ese modelo.</q> Tú ya tienes el caso: <code>99_ARCHIVO/_obsoleto_split_aleatorio/</code> anunciaba 81 % y estaba mal medido.</li>
+  <li><strong>Reportar un 100 % sin sospechar.</strong> El profesor dijo que de un modelo 100 % perfecto «al tiro» duda (cita del §5). Tú ya tienes un caso de número inflado: <code>99_ARCHIVO/_obsoleto_split_aleatorio/</code> anunciaba 81 % con split aleatorio y estaba mal medido.</li>
   <li><strong>Diagnosticar mirando un solo número.</strong> Tu error registrado del 19 de septiembre es exactamente este, en sobreajuste. Aquí reaparece: exactitud sola no te dice qué clase estás hundiendo — para eso necesitas la matriz, que es el concepto siguiente.</li>
 </ul>
 
@@ -546,6 +696,16 @@
   <p style="margin:0"><strong>La pregunta que importa mientras lo resuelves:</strong> <code>LabelEncoder</code> convierte tus categorías en 0, 1, 2. Acabas de ver que eso es peligroso. ¿En qué caso es inofensivo y en cuál no? Escribe la respuesta antes de seguir.</p>
 </div>
 
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> es inofensivo para codificar el <strong>target</strong> de un clasificador y peligroso para codificar una <strong>feature</strong> categórica sin orden.</p>
+    <p><strong>Cómo se resuelve:</strong> un clasificador trata los valores del target como nombres de clases: le da lo mismo que «gato» sea 0 o 2, porque solo compara si acertó. En cambio, si codificas una feature (por ejemplo, fruta = 0, 1, 2, 3, 4) y se la pasas a un modelo que suma o mide distancias (regresión lineal, KNN), el modelo cree que la fruta 4 es «el doble» de la 2 y que la 1 está «entre» la 0 y la 2: un orden y una distancia inventados. Para features se usa one-hot (<code>get_dummies</code>). Y si con el target codificado calculas un MAE, reaparece el problema del §2.</p>
+    <p><strong>Error típico:</strong> usar LabelEncoder en todas las columnas «porque es más corto».</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> el propio P5 aconseja usarlo «solo en la variable objetivo» [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P5_Clasificación_res_ _1.md · l.244]; la razón es [INFERENCIA] a partir del §2.</p>
+  </div>
+</details>
+
 <div class="caja">
   <h3 style="margin-top:0">TRANSFERIR — otro dominio, sin galaxias ni casas</h3>
   <p>CONAF monitorea plantaciones de pino en la Región del Biobío con imágenes satelitales. Cada rodal tiene dos índices numéricos —vigor de la copa y humedad foliar— y se etiqueta en tres estados: <strong>sano</strong>, <strong>con plaga</strong>, <strong>con estrés hídrico</strong>. De 2.400 rodales, 2.050 están sanos.</p>
@@ -556,22 +716,47 @@
     <li>Un modelo reporta 85 % de exactitud. ¿Por qué esa cifra, sola, no te deja dormir tranquilo? (La respuesta está en los 2.050.)</li>
     <li>Si tuvieras que elegir una <strong>clase positiva</strong> para armar una detección binaria, ¿cuál eliges y por qué esa decisión no es del modelo?</li>
   </ol>
-  <details style="margin-top:14px">
-    <summary>Qué tendría que aparecer en tu respuesta (no es la respuesta)</summary>
+  <details class="resp" style="margin-top:14px">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
     <div class="cuerpo">
-      <ul style="margin-bottom:0">
-        <li>En 1: la palabra <em>orden</em> o <em>interpolar</em>, y una frase que diga que los dos índices sean numéricos es irrelevante.</li>
-        <li>En 2: que el MAE cambia según cuál de los tres estados pongas en el código 1, y que esa elección no tiene significado ecológico. Si puedes decir <em>cuál</em> par quedaría en los extremos, mejor.</li>
-        <li>En 3: 2.050/2.400 = 85,4 %. Responder siempre «sano» ya da 85 % <strong>sin aprender nada</strong>. Es el mismo mecanismo que hace que tu desafío se evalúe con F1-macro y no con exactitud: la clase 2 de Galaxy Zoo es el 67,7 %.</li>
-        <li>En 4: que la elección depende del <strong>costo</strong> de cada error —no detectar una plaga cuesta hectáreas; una falsa alarma cuesta una inspección— y que eso lo pone la persona, no el algoritmo.</li>
-      </ul>
+      <p><strong>Respuesta en una frase:</strong> es clasificación de tres clases; el MAE depende de un orden arbitrario; el 85 % no supera a responder siempre «sano»; y la clase positiva la eliges tú según qué error cuesta más.</p>
+      <ol>
+        <li><strong>Clasificación multiclase.</strong> El target es el estado del rodal (sano / plaga / estrés): no hay un «plaga y media» entre plaga y estrés, así que no tiene punto medio. Que los dos índices sean numéricos es irrelevante: la tarea la define el target.</li>
+        <li><strong>El MAE depende del orden que inventes.</strong> Con una matriz ilustrativa [DATITO] de 2.400 rodales donde los errores son sano→plaga 30, sano→estrés 20, plaga→sano 40, plaga→estrés 30, estrés→sano 25, estrés→plaga 35: con sano = 0, plaga = 1, estrés = 2, el par a distancia 2 es sano↔estrés (20 + 25 = 45) y MAE = (135 + 2·45)/2.400 ≈ 0,094. Con sano = 0, estrés = 1, plaga = 2, el par lejano pasa a ser sano↔plaga (30 + 40 = 70) y MAE = (110 + 2·70)/2.400 ≈ 0,104. Mismo modelo, mismas predicciones, 11 % de diferencia por una decisión sin significado ecológico.</li>
+        <li><strong>Porque 2.050/2.400 = 85,4 %.</strong> Un modelo que responde siempre «sano» ya saca 85 % sin aprender nada. El 85 % reportado no demuestra que el modelo detecte plagas ni estrés. Es el mismo mecanismo que hace que tu desafío se evalúe con F1-macro: la clase 2 de Galaxy Zoo es el 67,7 %.</li>
+        <li><strong>Positivo = «con plaga»</strong> (o «con estrés», según el objetivo). Depende del <strong>costo</strong> de cada error —no detectar una plaga cuesta hectáreas; una falsa alarma cuesta una inspección—, y ese costo lo pone la persona que decide, no el algoritmo.</li>
+      </ol>
+      <p><strong>Error típico:</strong> en 1, decir «regresión porque los índices son numéricos»; en 3, aceptar el 85 % sin compararlo con el modelo tonto.</p>
+      <p style="margin-bottom:0"><strong>Fuente:</strong> caso y cifras ilustrativas [DATITO]; el argumento del MAE es el del §2 con la matriz real de <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>.</p>
     </div>
   </details>
 </div>
 
-<p style="margin-top:34px"><strong>Lo que sigue:</strong> una vez que aceptas que el error es un conteo y no una distancia, la pregunta obvia es <em>qué clase de errores</em> estás cometiendo. Ahí entra la matriz de confusión — <code>07_DATITO/visual/matriz_confusion.html</code>.</p>
+<div class="caja">
+  <h3 style="margin-top:0">PRODUCIR — explícaselo a alguien</h3>
+  <p style="margin:0">Un compañero te dice: «si a perro, gato y conejo les pongo 0, 1 y 2, ya puedo usar el MAE como en Melbourne». Explícale en cinco líneas, sin fórmulas, por qué no.</p>
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta en una frase:</strong> no, porque el MAE resta los códigos y esa resta inventa un orden y una distancia que las categorías no tienen; el resultado depende de qué número le pusiste a cada animal.</p>
+    <p><strong>Respuesta modelo</strong> [DATITO]: «El MAE mide cuánto te equivocaste restando lo que dijiste menos lo que era. Con precios eso tiene sentido: equivocarte por 10.000 es menos grave que por 100.000. Pero con animales no: si pones perro = 0, gato = 1, conejo = 2, el MAE dice que confundir perro con conejo es el doble de grave que confundirlo con gato, y eso lo decidiste tú al numerar. Cambia la numeración y cambia el MAE, aunque el modelo sea el mismo; en tu Galaxy Zoo pasa de 0,280 a 0,324. Para categorías se cuenta si acertaste o no: exactitud y, mejor, la matriz de confusión.»</p>
+    <p><strong>Criterios para corregir la tuya:</strong> nombra la resta; dice que el orden de los códigos es arbitrario; da un ejemplo de que el número cambia sin que cambie el modelo; propone qué usar en su lugar.</p>
+    <p><strong>Error típico:</strong> responder «porque no son números», sin decir qué operación falla. Sí son números después de codificar; lo que no tienen es orden ni distancia.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> argumento del profesor sobre el orden (cita del §2); cifras de Galaxy Zoo de <code>02_PROYECTO_FCD/Desafio/REPORT.md</code> [INFERENCIA]; redacción [DATITO]. Si quieres que corrija tu versión, llévala a Datito.</p>
+  </div>
+</details>
+
+<p style="margin-top:34px"><strong>Lo que sigue:</strong> una vez que aceptas que el error es un conteo y no una distancia, la pregunta obvia es <em>qué clase de errores</em> estás cometiendo. Ahí entra la matriz de confusión — <a href="matriz_confusion.html">matriz_confusion.html</a> —, después las métricas que salen de ella — <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> — y el umbral recorrido entero — <a href="roc_auc.html">roc_auc.html</a>.</p>
 
 </div>
+
+<footer>
+Generado por Datito · <code>07_DATITO/visual/clasificacion.html</code> · funciona sin conexión ·
+fuentes: transcripción de la Clase del 7-ago (<code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md</code>), lámina FCD-2026-2_07_Clasificacion (lámina 38), P5 (<code>08_PRACTICA/_markdown/</code>), <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>, <code>07_DATITO/patron_evaluacion.md</code>.<br>
+<strong>Datos reales:</strong> la matriz 3×3 de Galaxy Zoo (OOF CatBoost: 25/36/35 · 18/176/33 · 39/65/573) y los MAE que salen de ella. <strong>Ilustrativos [DATITO]:</strong> los 28 perros y gatos del plano (inventados sobre el ejemplo del profesor), la ecuación 0,82·x₁ + 0,57·x₂ − 0,55, el caso CONAF y su matriz, y los vecinos del ejercicio de KNN.
+</footer>
 
 <script>
 (function(){

@@ -175,22 +175,26 @@ Tres propiedades que no son accidentales:
 2. **Se corren en fork.** Construir un artefacto de 25 KB consume mucho
    contexto. Hacerlo en la sesión de estudio dejaría al tutor sin memoria de la
    conversación justo cuando más la necesita.
-3. **Están enlazados entre sí.** Los nueve artefactos forman un grafo navegable:
-   cada concepto declara de dónde viene, qué habilita y dónde se evalúa.
+3. **Están enlazados entre sí.** Los artefactos forman un grafo navegable:
+   cada concepto declara de dónde viene, qué habilita, dónde se evalúa y en qué
+   clase y minuto se enseñó. Ese bloque **no se escribe a mano**: lo inyecta
+   `03_CODIGO/construir_navegacion.py` entre los marcadores
+   `<!-- datito:nav:inicio -->` y `<!-- datito:nav:fin -->`, desde
+   `grafo.yaml` y `09_CLASES/mapa_ensenanza.yaml`, y genera `visual/index.html`.
 
 ### Estado actual de los artefactos
 
-| Artefacto | Qué cubre |
+Al 2026-09-21: **20 artefactos más el índice**, que cubren los 21 conceptos
+(cuatro comparten `arboles_y_ensambles.html` y tres `dl_llm_agentes.html`). La
+lista comentada está en `07_DATITO/00_LEEME.md` y en `visual/index.html`.
+
+| Tipo | Artefactos |
 |---|---|
-| `triaje_de_problemas.html` | Árbol de decisión: qué tipo de problema tengo |
-| `clase6_regresion.html` | La clase de regresión completa |
-| `regresion_y_costo.html` | Laboratorio de la función de coste |
-| `generalizacion.html` | La brecha entrenamiento–validación |
-| `train_validation_test.html` | Los cuatro métodos de validación |
-| `matriz_confusion.html` | Las cinco métricas, por su denominador |
-| `limpieza_preparacion.html` | Calidad de datos, sobre la tabla real de la 9B |
-| `certamen_1.html` | Certamen 1 auditado pregunta por pregunta |
-| `certamen_2.html` | Certamen 2 auditado pregunta por pregunta |
+| Un concepto | `fundamentos_ciencia_datos` · `datos_features_target` · `eda` · `limpieza_preparacion` · `train_validation_test` · `validacion_cruzada` · `generalizacion` · `overfitting_underfitting` · `clase6_regresion` · `clasificacion` · `matriz_confusion` · `metricas_clasificacion` · `roc_auc` · `redes_neuronales` |
+| Varios conceptos | `arboles_y_ensambles` (árboles, RF, boosting, ensambles) · `dl_llm_agentes` (deep learning, LLM, agentes) |
+| Laboratorio | `regresion_y_costo` |
+| Certamen y triaje | `certamen_1` · `certamen_2` · `triaje_de_problemas` |
+| Índice | `index.html` — generado |
 
 ---
 
@@ -210,10 +214,29 @@ pipeline propio, fuera del bucle de estudio:
           │
           │  integrar_clase.py
           ▼
-09_CLASES/indice_clases.yaml     qué concepto aparece, y en qué minuto
+09_CLASES/indice_clases.yaml     qué concepto se MENCIONA, y en qué minuto
+          │                      (automático: cuenta palabras, no sabe quién habla)
+          │
+          │  curación a mano
+          ▼
+09_CLASES/mapa_ensenanza.yaml    dónde se ENSEÑA: rango, hablante, si es ayudantía
+          │
+          │  construir_navegacion.py
+          ▼
+07_DATITO/visual/                bloque «Dónde se enseñó» en cada visual + index.html
           │
           └──► (opcional) subida a NotebookLM, si la sesión MCP está viva
 ```
+
+**Mención ≠ enseñanza.** El índice automático marcaba `roc_auc` por «Congreso
+de los Araucos» y `f1` por «df1», y el título del archivo contaba como mención
+de «ciencia de datos». Desde el 2026-09-21 busca palabras completas e ignora la
+cabecera (`integrar_clase.py --remapear`), pero sigue sin distinguir al
+profesor de un alumno: por eso existe el mapa curado.
+
+**Quién habla importa.** Las ayudantías, las presentaciones de alumnos y la
+charla del invitado del 21-ago están transcritas, pero el profesor declaró que
+solo sus clases entran al certamen. `mapa_ensenanza.yaml` lo registra por tramo.
 
 **Por qué transcribir en local y no subir el video.** NotebookLM acepta video
 como fuente, pero entonces la transcripción vive en sus servidores: no se
@@ -235,7 +258,7 @@ hay que extraer antes.
 ## 7 · El contrato es ejecutable
 
 Lo que separa este sistema de un conjunto de instrucciones bien escritas es que
-**nueve de sus garantías son un test que corre**:
+**once comprobaciones de sus garantías son un test que corre**:
 
 ```bash
 python 03_CODIGO/verificar_contrato.py
@@ -246,6 +269,8 @@ python 03_CODIGO/verificar_contrato.py
 | **G1** no simula respuestas | Ninguna respuesta del alumno aparece escrita por Datito en las bitácoras |
 | **G8** reglas donde se leen | `SKILL.md` referencia el config; el config tiene pocas marcas de regla |
 | **G9** exposición consultable | Cada concepto trabajado tiene material asociado |
+| **G9** lo respondido queda escrito | Cada duda de `dudas.yaml` está renderizada en sus visuales, y cada bitácora desde el 2026-09-21 declara sus «Dudas registradas» |
+| **G9** visuales sin red y citables | Ningún recurso remoto, enlaces y anclas existen, JS sin errores de sintaxis, cada cita de clase es un `.md` completo con una marca que existe (`verificar_visuales.py`) |
 | **G12** dos prioridades | Los 21 conceptos tienen ambas prioridades; las tensiones están declaradas |
 | **G13** sin deficiencia inferida | Cada error registrado tiene evidencia textual |
 | Memoria | Ningún `DOMINADO` sin sus tres evidencias |
@@ -263,6 +288,14 @@ Esto importa tanto como lo anterior, y conviene tenerlo escrito:
   exhaustivamente.
 - Que un artefacto exista **no prueba que esté bien**. Para eso está
   `datito-pedagogia`, que es un juicio, no un test.
+- Que una cita de clase exista en la transcripción **no prueba que la
+  transcripción sea fiel al audio**. `verificar_visuales.py` avisa cuando las
+  palabras citadas no calzan con el texto alrededor de la marca, pero el audio
+  no se contrasta.
+
+La prueba de comportamiento —abrir cada visual en Edge sin red, mover todos los
+controles y registrar errores de JavaScript— no está en el contrato porque
+necesita un navegador: `uv run --with playwright python 03_CODIGO/probar_visuales_offline.py`.
 
 Un contrato parcialmente verificable es honesto si declara su parte no
 verificable. Uno que pretende verificarse entero, miente.
@@ -410,11 +443,12 @@ CLAUDE.md                        ← hace que Claude Code reconozca a Datito. Ma
   progreso.yaml                  ← DINÁMICO · solo Datito
   errores_conceptuales.yaml      ← DINÁMICO · observados ≠ vigilados
   estado.md                      ← DERIVADO · el punto de inyección
+  dudas.yaml                     ← DINÁMICO · lo que Datito respondió, en orden → visuales
   grafo.yaml                     ← DERIVADO · importancia_curricular
   datito.config.yaml           ← DATOS del alumno, nunca reglas
   patron_evaluacion.md           ← cómo evalúa el profesor, desde sus certámenes
   auditoria_*.md                 ← diagnósticos con su cierre
-  visual/                        ← 9 artefactos HTML autocontenidos
+  visual/                        ← 20 artefactos HTML autocontenidos + index.html
   bitacora/                      ← una entrada por sesión
   referencia/                    ← fuentes y material, bajo demanda
   guias/ · cuadernillos/ · certamenes/
@@ -425,9 +459,12 @@ CLAUDE.md                        ← hace que Claude Code reconozca a Datito. Ma
   verificar_contrato.py          ← el contrato como test
   transcribir_clases.py          ← un video → transcripción
   transcribir_cola.py            ← la cola completa, reanudable
-  integrar_clase.py              ← transcripción → índice de conceptos
+  integrar_clase.py              ← transcripción → índice de menciones
+  construir_navegacion.py        ← grafo + mapa de enseñanza → navegación e index.html
+  verificar_visuales.py          ← sin red, enlaces, citas (lo llama el contrato)
+  probar_visuales_offline.py     ← cada visual en Edge sin red, con sus controles
 
-09_CLASES/                       ← transcripciones + índice
+09_CLASES/                       ← transcripciones + índice + mapa_ensenanza.yaml
 10_GRABACIÓN_CLASES/             ← los ZIP. Gitignorado
 11_PRESENTACIÓN/                 ← PDF gitignorados; el _markdown/ sí se versiona
 08_PRACTICA/                     ← los 5 laboratorios, (res) y (vacío)
@@ -447,7 +484,8 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 | Reglas solo en `SKILL.md` | Lo escrito gobierna de verdad | El `SKILL.md` crece y hay que mantenerlo legible |
 | Artefactos autocontenidos | Funcionan sin red, para siempre | Pesan 20–50 KB cada uno y duplican CSS |
 | Transcribir en local | Material versionable y buscable offline | Horas de CPU por clase |
-| Contrato ejecutable | Nueve garantías dejan de ser buenas intenciones | Las otras cinco siguen dependiendo de criterio |
+| Contrato ejecutable | Once comprobaciones dejan de ser buenas intenciones | Las otras garantías siguen dependiendo de criterio |
+| Navegación generada | Una clase nueva actualiza los 20 visuales corriendo un script | El bloque entre marcadores no se edita a mano: se pierde al regenerar |
 | Mismo agente enseña y evalúa | Un solo sistema, coherente | Riesgo de circularidad, mitigado pero no eliminado |
 
 ---
@@ -458,9 +496,11 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 
 - **La circularidad no está cerrada, solo contrapesada.** Los tres contrapesos
   del §9 reducen el riesgo; no lo eliminan. No hay un evaluador externo real.
-- **Tres conceptos del currículum no tienen artefacto propio**: segmentación,
-  EDA y —hasta hoy— calidad de datos, que acaba de recibir el suyo. La cobertura
-  es de 9 artefactos para 21 conceptos.
+- **Los 21 conceptos tienen artefacto desde el 2026-09-21**, pero siete lo
+  comparten (`arboles_y_ensambles`, `dl_llm_agentes`). Gradient boosting es un
+  recuadro, no una sección completa: el profesor no lo enseñó como tema.
+  Segmentación (no supervisado) aparece en el triaje y no tiene artefacto: no
+  está entre los 21 conceptos.
 - **La dimensión `transferencia` está sostenida por un solo dataset.** Es la
   evidencia más difícil de producir y la que menos material tiene.
 - **`verificar_contrato.py` comprueba estructura, no calidad.** Que un concepto
@@ -479,7 +519,8 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 ## Verificación rápida
 
 ```bash
-python 03_CODIGO/verificar_contrato.py     # debe dar 9 ok · 0 fallos
+python 03_CODIGO/verificar_contrato.py     # debe dar 11 ok · 0 fallos
+python 03_CODIGO/construir_navegacion.py   # regenera navegación e index.html
 python 03_CODIGO/datito_estado.py        # regenera estado.md
 python 03_CODIGO/grafo_conceptual.py       # regenera grafo.yaml
 python 03_CODIGO/transcribir_cola.py --listar   # qué clases faltan

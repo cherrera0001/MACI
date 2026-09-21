@@ -203,10 +203,69 @@ def rutas_declaradas_existen():
     return OK, "todas las rutas del curriculum existen"
 
 
+def g9_visuales_sin_red_y_citables():
+    """Los visuales abren sin red, sus enlaces existen y sus citas de clase se
+    pueden comprobar (ruta .md completa + marca que existe). Detalle en
+    03_CODIGO/verificar_visuales.py; la prueba en navegador real es
+    03_CODIGO/probar_visuales_offline.py."""
+    sys.path.insert(0, os.path.join(RAIZ, "03_CODIGO"))
+    import verificar_visuales
+    fallos, avisos, resumen = verificar_visuales.revisar()
+    if fallos:
+        return FALLO, f"{len(fallos)} fallos en visuales; el primero: {fallos[0]}"
+    if avisos:
+        return AVISO, f"{resumen}; {len(avisos)} avisos (verificar_visuales.py --detalle)"
+    return OK, resumen
+
+
+def g9_lo_respondido_queda_escrito():
+    """Lo que Datito responde en una sesion queda en dudas.yaml y en los
+    visuales, no solo en el chat (spec.md G9, REGLA UNO-B).
+
+    No se puede leer el chat, pero si exigir el rastro: desde el 2026-09-21 cada
+    bitacora declara «Dudas registradas:» con ids que existen, y cada duda esta
+    renderizada en los visuales que lista."""
+    import yaml
+    texto = leer("07_DATITO/dudas.yaml")
+    if texto is None:
+        return FALLO, "no existe 07_DATITO/dudas.yaml"
+    dudas = (yaml.safe_load(texto) or {}).get("dudas") or []
+    ids = {d.get("id") for d in dudas}
+    problemas = []
+    for d in dudas:
+        for campo in ("respuesta", "resolucion", "fuentes"):
+            if not d.get(campo):
+                problemas.append(f"{d.get('id')} sin {campo}")
+        for v in d.get("visuales") or []:
+            html_v = leer(f"07_DATITO/visual/{v}") or ""
+            if f'id="duda-{d.get("id")}"' not in html_v:
+                problemas.append(f"{d.get('id')} no esta en {v} (correr construir_navegacion.py)")
+    for f in sorted(glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*.md"))):
+        nombre = os.path.basename(f)
+        if nombre[:10] < "2026-09-21":
+            continue  # la regla rige desde esa fecha
+        t = open(f, encoding="utf-8", errors="replace").read()
+        m = re.search(r"\*\*Dudas registradas:\*\*\s*([^\n]+)", t)
+        if not m:
+            problemas.append(f"{nombre} sin la linea «Dudas registradas:»")
+            continue
+        declarados = re.findall(r"\d{4}-\d{2}-\d{2}-[\w-]+", m.group(1))
+        if not declarados and "ninguna" not in m.group(1).lower():
+            problemas.append(f"{nombre}: «Dudas registradas:» vacia")
+        for i in declarados:
+            if i not in ids:
+                problemas.append(f"{nombre}: la duda {i} no existe en dudas.yaml")
+    if problemas:
+        return FALLO, "; ".join(problemas[:3])
+    return OK, f"{len(dudas)} dudas registradas, todas renderizadas en sus visuales"
+
+
 COMPROBACIONES = [
     ("G1  no simula respuestas",      g1_no_simula_respuestas),
     ("G8  reglas donde se leen",      g8_reglas_donde_se_leen),
     ("G9  exposicion consultable",    g9_exposicion_consultable),
+    ("G9  visuales sin red y citables", g9_visuales_sin_red_y_citables),
+    ("G9  lo respondido queda escrito", g9_lo_respondido_queda_escrito),
     ("G12 dos prioridades",           g12_dos_prioridades),
     ("G13 sin deficiencia inferida",  g13_sin_deficiencia_inferida),
     ("Memoria  DOMINADO con evidencia", memoria_dominado_con_evidencia),

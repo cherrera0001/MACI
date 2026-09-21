@@ -129,10 +129,19 @@ Dos secciones que **no se mezclan**:
 - `observados` — errores que cometió de verdad
 - `patrones_vigilados` — trampas que anticipas. **No son errores suyos**
 
+### `dudas.yaml` — lo que se respondió, para releerlo
+
+Toda respuesta correcta, resolución o corrección dada en la sesión, una entrada
+por pregunta, en orden (REGLA UNO-B). `construir_navegacion.py` la pone en el
+visual del tema, oculta en `<details>`, y en `visual/index.html`. Es lo que
+Cristóbal relee y re-intenta: la bitácora es para Datito; `dudas.yaml`, para él.
+
 ### `bitacora/AAAA-MM-DD-<concepto>.md`
 
 Una entrada por sesión: qué se enseñó, los problemas planteados, lo que
-respondió, dónde estuvo el desvío, y el siguiente paso.
+respondió, dónde estuvo el desvío, y el siguiente paso. Lleva la línea
+`**Dudas registradas:** <ids de dudas.yaml>` (o `ninguna`): el contrato lo
+comprueba desde el 2026-09-21.
 
 ---
 
@@ -175,8 +184,10 @@ Sin ese registro, la próxima sesión vuelve a probar lo que ya falló.
 ### Y al terminar
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_CODIGO/construir_navegacion.py   # las dudas de hoy, en los visuales
+python 03_CODIGO/datito_estado.py          # el resumen de la próxima sesión
+python 03_CODIGO/verificar_contrato.py     # que no quede nada solo en el chat
 ```
 
-Regenera `estado.md`, que es lo que se inyecta la próxima vez. Si no lo
-ejecutas, la siguiente sesión abre con datos viejos.
+`datito_estado.py` regenera `estado.md`, que es lo que se inyecta la próxima
+vez. Si no lo ejecutas, la siguiente sesión abre con datos viejos.

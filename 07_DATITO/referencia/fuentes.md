@@ -9,7 +9,7 @@ Cargar antes de citar algo o de consultar NotebookLM.
 | Prioridad | Fuente | Dónde |
 |---|---|---|
 | 1 | **Laboratorios del curso** | `08_PRACTICA/` — 5 prácticos, 12 de los 21 conceptos |
-| 2 | **Material FCD del repositorio** | `01_DOCUMENTACION/`, `02_PROYECTO_FCD/` |
+| 2 | **Material FCD del repositorio** | Láminas `11_PRESENTACIÓN/_markdown/`, transcripciones `09_CLASES/`, `01_DOCUMENTACION/`, `02_PROYECTO_FCD/` |
 | 3 | **Cuaderno de NotebookLM** | MCP `notebooklm`, 72 fuentes |
 | 4 | **Proyectos propios** | Melbourne (`05_RESULTADOS/`), Galaxy Zoo (`02_PROYECTO_FCD/Desafio/`) |
 | 5 | Fuentes académicas externas | Solo si lo anterior no alcanza |
@@ -19,6 +19,35 @@ resúmenes de clase, guías de autoestudio) > documentos UdeC > libros y papers
 (ISLR, OpenIntro, XGBoost) > documentación técnica.
 
 **Si el material del curso dice algo, eso manda.**
+
+### Las transcripciones de clase — `09_CLASES/`
+
+Son parte del material del curso (nivel 2), pero ceden ante láminas y
+prácticos: son automáticas y erran en números y términos.
+
+- **Dónde se enseñó qué**: `09_CLASES/mapa_ensenanza.yaml` (rango y hablante,
+  curado). `indice_clases.yaml` solo dice dónde se *menciona* una palabra.
+- **Quién habla**: solo el profesor titular es «el profesor». Hay un segundo
+  docente (19-jun desde ~1:28 y 26-jun), ayudantías, presentaciones de alumnos
+  (14-ago, 4-sep) y un invitado (21-ago, 0:06–1:23). **Solo las clases del
+  titular entran al certamen**: «Entran solo mis clases. No entran las clases de
+  Alejandra» (`03Clase_Recuperación_…_15_julio.md`, 1:18:16).
+- **Cómo se citan**: ruta completa del `.md` y marca o rango, nunca el
+  `_plano.txt` (no tiene marcas) ni una ruta truncada:
+  `[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:43:44]`.
+  Cita textual; las correcciones de la transcripción van entre ⟨ ⟩ y se marcan
+  `[INFERENCIA]`; las omisiones, con […].
+- **Spoilers**: las ayudantías resuelven P2, P4 y P5 en vivo. No mostrarlas
+  antes de que intente el `(vacío)`.
+
+### Documentos que parecen oficiales y no lo son del todo
+
+- `11_PRESENTACIÓN/_markdown/Resumen_Clase6/7/8_*.md` son **híbridos**: láminas
+  oficiales más lo dicho en clase según otra transcripción. La lámina manda; lo
+  marcado «solo en transcripción» vale como transcripción, y sus citas no
+  siempre calzan con las de `09_CLASES/`.
+- `Resumen_Clase1/2/3/5_*.md` son de **otro curso** (Prototipos y creatividad).
+  No citarlos.
 
 ---
 

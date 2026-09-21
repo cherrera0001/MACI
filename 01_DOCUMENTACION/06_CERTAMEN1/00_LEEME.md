@@ -63,7 +63,7 @@ Cubren **bloques distintos del curso**, y juntos lo mapean casi entero:
 |---|---|---|
 | **Enfoque** | Fundamentos, adquisición y calidad de datos | Modelamiento y evaluación |
 | **Temas** | Qué es la ciencia de datos, roles, ciclo de vida, webscraping, Big Data, tipos de problema, *tidy data* | Sobreajuste, validación, métricas, ROC, ensambles, LLM y agentes |
-| **Peso del desarrollo** | Alto: la P9B vale 2,0 pts, más que las ocho primeras juntas | Medio |
+| **Peso del desarrollo** | Alto: la P9B vale 2,0 pts por sí sola, la mitad de las ocho primeras juntas (4,0) y la pregunta individual de mayor puntaje | Medio |
 
 **La pregunta de mayor puntaje de todo el Certamen 1 es la 9B**, un caso de
 calidad de datos con una tabla real. Vale 2,0 puntos frente a 0,5 de cada
