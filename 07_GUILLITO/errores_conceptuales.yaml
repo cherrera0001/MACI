@@ -133,17 +133,17 @@ patrones_vigilados:
     senal: Usar las palabras acierto, correcto o porcentaje al hablar de R2.
     desmontaje: >-
       Pedirle que senale UNA prediccion correcta en 05_RESULTADOS/predicciones_2017.csv.
-      No hay ninguna exacta, y aun asi el R2 es 0,765. La nocion de acierto se
+      No hay ninguna exacta, y aun asi el R2 es 0,757. La nocion de acierto se
       cae sola.
 
   - id: mae_sin_escala
     concepto: regresion
     confusion: >-
-      Juzgar un MAE en abstracto. 185.449 no es "mucho" ni "poco" hasta
+      Juzgar un MAE en abstracto. 188.218 no es "mucho" ni "poco" hasta
       compararlo con la escala del target y con un baseline.
     senal: Decir que el MAE es alto o bajo sin mencionar la mediana ni un baseline.
     desmontaje: >-
-      Comparar 185.449 contra la mediana de 910.000 (20%) y contra el MAE del
+      Comparar 188.218 contra la mediana de 910.000 (21%) y contra el MAE del
       baseline de mediana que ya esta calculado en resultados_temporal.json.
 
   - id: accuracy_con_clases_desbalanceadas

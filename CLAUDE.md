@@ -142,7 +142,7 @@ Verificadas en `05_RESULTADOS/resultados_temporal.json`. Usalas como ejemplo
 concreto en vez de inventar numeros:
 
 - Train 6.336 propiedades de 2016, test 7.244 de 2017
-- HistGradientBoosting sobre `log1p(Price)`: MAE 185.449 AUD, R² 0,765
+- HistGradientBoosting sobre `log1p(Price)`: MAE **188.218 AUD**, R² **0,757**
 - Mediana de precio 2017: 910.000 AUD
 - **29,1% del test son suburbios que no existen en el train**
 - 6 modelos comparados, cada uno sobre target crudo y logaritmico

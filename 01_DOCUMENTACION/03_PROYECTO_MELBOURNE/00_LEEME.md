@@ -55,9 +55,9 @@ Capa ejecutable: scripts en `03_CODIGO/`, ejecutar **desde `F:\MACI`**. Orden:
 
 | Métrica en 2017 | Valor |
 |---|---|
-| MAE | 185.449 AUD |
+| MAE | 188.218 AUD |
 | RMSE | 305.329 |
-| R² | 0,765 |
+| R² | 0,757 |
 | MAPE | 16,8 % |
 | Brecha R² train-test | +0,176 |
 

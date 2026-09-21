@@ -128,8 +128,8 @@ hechos_del_proyecto:
   precio_mediana_2017: 910000.0
   semillas: [0, 1, 2, 3, 4]
   modelo_final: HistGradientBoosting sobre log1p(Price)
-  mae_2017: 185449
-  r2_2017: 0.765
+  mae_2017: 188218
+  r2_2017: 0.757
   modelos_comparados:
     - Baseline (mediana)
     - Ridge (lineal)
@@ -259,13 +259,13 @@ conceptos:
     # e introduce el sobreajuste DENTRO de ella, via regresion polinomial. El
     # error lo expuso el grafo conceptual al hacerse recorrible.
     prerrequisitos: [datos_features_target]
-    por_que_importa: Es tu proyecto. MAE 185.449 AUD y R2 0,765 son tus propias cifras.
+    por_que_importa: Es tu proyecto. MAE 188.218 AUD y R2 0,757 son tus propias cifras.
     material_local:
       - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
       - 05_RESULTADOS/predicciones_2017.csv
       - 03_CODIGO/bootstrap_comparacion.py
     pregunta_diagnostico: >-
-      Tu MAE en 2017 es 185.449 AUD sobre una mediana de 910.000. Es bueno o
+      Tu MAE en 2017 es 188.218 AUD sobre una mediana de 910.000. Es bueno o
       malo? Defiende la respuesta con un argumento que no sea "depende".
 
   - id: clasificacion

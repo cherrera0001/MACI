@@ -11,8 +11,8 @@
 
 meta:
   creado: '2026-09-20'
-  actualizado: '2026-09-20'
-  total_clases: 10
+  actualizado: '2026-09-21'
+  total_clases: 12
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -349,4 +349,85 @@ clases:
       random_forest:
         menciones: 1
         primera_marca: '1:50:38'
+    notebooklm: null
+  01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio:
+    archivo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md
+    plano: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio_plano.txt
+    integrada: '2026-09-21'
+    conceptos:
+      fundamentos_ciencia_datos:
+        menciones: 52
+        primera_marca: 0:00:00
+      limpieza_preparacion:
+        menciones: 18
+        primera_marca: '2:02:44'
+      datos_features_target:
+        menciones: 8
+        primera_marca: 0:08:57
+      eda:
+        menciones: 7
+        primera_marca: '1:07:52'
+      train_validation_test:
+        menciones: 5
+        primera_marca: '1:49:03'
+      clasificacion:
+        menciones: 5
+        primera_marca: 0:37:16
+      agentes_ia:
+        menciones: 4
+        primera_marca: 0:04:57
+      roc_auc:
+        menciones: 2
+        primera_marca: 0:07:30
+      deep_learning:
+        menciones: 2
+        primera_marca: '2:39:19'
+      llm:
+        menciones: 2
+        primera_marca: 0:04:57
+      generalizacion:
+        menciones: 1
+        primera_marca: '1:29:30'
+      matriz_confusion:
+        menciones: 1
+        primera_marca: 0:23:26
+    notebooklm: null
+  06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio:
+    archivo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md
+    plano: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio_plano.txt
+    integrada: '2026-09-21'
+    conceptos:
+      train_validation_test:
+        menciones: 114
+        primera_marca: 0:35:21
+      regresion:
+        menciones: 65
+        primera_marca: 0:25:48
+      datos_features_target:
+        menciones: 37
+        primera_marca: 0:02:11
+      eda:
+        menciones: 26
+        primera_marca: 0:02:19
+      validacion_cruzada:
+        menciones: 12
+        primera_marca: 0:59:27
+      generalizacion:
+        menciones: 5
+        primera_marca: '1:02:56'
+      limpieza_preparacion:
+        menciones: 3
+        primera_marca: 0:07:04
+      clasificacion:
+        menciones: 3
+        primera_marca: '1:27:12'
+      llm:
+        menciones: 3
+        primera_marca: '1:12:15'
+      redes_neuronales:
+        menciones: 2
+        primera_marca: '1:00:28'
+      fundamentos_ciencia_datos:
+        menciones: 1
+        primera_marca: 0:00:00
     notebooklm: null

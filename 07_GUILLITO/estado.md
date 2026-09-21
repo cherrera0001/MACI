@@ -27,4 +27,4 @@ Si el concepto a tratar aparece aqui, **anticipa la confusion**: ya la tuvo y re
 
 **Siguiente recomendado:** `generalizacion` — Generalizacion
 
-<!-- generado 2026-09-20 -->
+<!-- generado 2026-09-21 -->
