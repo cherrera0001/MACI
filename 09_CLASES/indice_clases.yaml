@@ -12,7 +12,7 @@
 meta:
   creado: '2026-09-20'
   actualizado: '2026-09-21'
-  total_clases: 12
+  total_clases: 13
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -430,4 +430,61 @@ clases:
       fundamentos_ciencia_datos:
         menciones: 1
         primera_marca: 0:00:00
+    notebooklm: null
+  2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos:
+    archivo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md
+    plano: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
+    integrada: '2026-09-21'
+    conceptos:
+      metricas_clasificacion:
+        menciones: 60
+        primera_marca: 0:44:51
+      train_validation_test:
+        menciones: 55
+        primera_marca: 0:27:57
+      matriz_confusion:
+        menciones: 27
+        primera_marca: 0:44:09
+      eda:
+        menciones: 22
+        primera_marca: 0:26:42
+      random_forest:
+        menciones: 22
+        primera_marca: 0:30:26
+      roc_auc:
+        menciones: 18
+        primera_marca: 0:41:48
+      limpieza_preparacion:
+        menciones: 14
+        primera_marca: 0:24:53
+      arboles_decision:
+        menciones: 12
+        primera_marca: '1:02:56'
+      datos_features_target:
+        menciones: 10
+        primera_marca: 0:32:58
+      redes_neuronales:
+        menciones: 10
+        primera_marca: 0:36:54
+      gradient_boosting:
+        menciones: 9
+        primera_marca: 0:37:09
+      validacion_cruzada:
+        menciones: 8
+        primera_marca: 0:28:11
+      generalizacion:
+        menciones: 7
+        primera_marca: 0:47:02
+      clasificacion:
+        menciones: 5
+        primera_marca: 0:39:31
+      fundamentos_ciencia_datos:
+        menciones: 4
+        primera_marca: 0:00:00
+      overfitting_underfitting:
+        menciones: 4
+        primera_marca: 0:50:33
+      ensembles:
+        menciones: 1
+        primera_marca: '1:20:21'
     notebooklm: null
