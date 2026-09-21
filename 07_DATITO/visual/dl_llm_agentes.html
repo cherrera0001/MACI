@@ -113,7 +113,24 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="18" id="clase-18">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 18 de 22</b></div>
+<div class="barra"><span style="width:81.8%"></span></div>
+<div class="lt">Clase 18 · Deep learning, LLM y agentes</div>
+<p><b>Objetivo.</b> Distinguir deep learning, LLM y agente, y separar lo que avanzó mediante redes de lo que lo hizo posible.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~55 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Separa en una lista qué es avance mediante redes y qué es factor habilitante, y explica el bucle del agente.</li>
+<li><b>Actividad final:</b> Clasificar los siete ítems de la P6 y recorrer el simulador de agente de la P5.</li>
+<li><b>Criterio de dominio:</b> Explica la diferencia entre LLM y agente por el bucle cerrado: acción, observación, siguiente paso.</li></ul></div>
+<div class="activ"><b>Activación.</b> Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="18"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="redes_neuronales.html">← Clase 17 · Redes neuronales</a></span><a href="index.html">Índice del curso</a><span><a href="certamen_1.html">Clase 20 · Distinciones del Certamen 1 →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><a href="#deep-learning">Deep learning</a></span> · <span class="et">viene de</span><a href="redes_neuronales.html">Redes neuronales</a> · <span class="et">habilita</span><a href="#llm">Modelos de lenguaje (LLM)</a></div>
@@ -1233,6 +1250,21 @@ la P5, y es falsa.</li>
   <a class="n" href="certamen_2.html#p6">Certamen 2 · P6</a>
 </div>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-18">
+<h2>Cierre de la Clase 18 · Deep learning, LLM y agentes</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Deep learning: redes profundas que dominan imagen y texto cuando hay muchos datos.</li><li>Con pocos datos tabulares, los algoritmos clásicos suelen ganar.</li><li>Un LLM predice la siguiente palabra.</li><li>Un agente es un LLM con herramientas y objetivos, cuyo resultado vuelve y condiciona lo siguiente.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Generar texto ≠ ejecutar acciones y observar su resultado (C2 P5).</li><li>Avance mediante redes ≠ factor que lo hizo posible (C2 P6).</li><li>GPT (el modelo) ≠ ChatGPT (el sistema).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>¿Aprende sus propias variables? Es deep learning.</li><li>¿Solo genera texto? Es un LLM.</li><li>¿Actúa con herramientas y observa el resultado? Es un agente.</li></ol>
+<p><b>Viene de:</b> <a href="redes_neuronales.html">Clase 17 · Redes neuronales</a> · <b>Sigue:</b> <a href="certamen_1.html">Clase 20 · Distinciones del Certamen 1</a></p>
+<p><b>Vuelve a tu activación:</b> Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Un modelo genera un token especial que llama a una calculadora y usa el resultado para seguir. ¿Es un LLM o un agente?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Un agente: actúa con una herramienta y el resultado vuelve y condiciona lo que genera después. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="certamen_1.html">Continuar → Clase 20 · Distinciones del Certamen 1</a>
+</section>
+<!-- datito:cierre:fin -->
 <footer>
 Generado por Datito · <code>07_DATITO/visual/dl_llm_agentes.html</code> · funciona sin conexión ·
 fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md</code> (mandan

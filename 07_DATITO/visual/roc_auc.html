@@ -97,7 +97,24 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="14" id="clase-14">
+<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 14 de 22</b></div>
+<div class="barra"><span style="width:63.6%"></span></div>
+<div class="lt">Clase 14 · ROC-AUC y elección del umbral</div>
+<p><b>Objetivo.</b> Elegir un punto de operación y comparar modelos por sus curvas ROC.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~40 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Construye una curva ROC con cuatro puntos y decide si hay dominancia o cruce.</li>
+<li><b>Actividad final:</b> La lámina 23, a mano.</li>
+<li><b>Criterio de dominio:</b> Compara curvas y no puntos, y justifica el umbral por el costo de cada error.</li></ul></div>
+<div class="activ"><b>Activación.</b> El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="14"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="metricas_clasificacion.html">← Clase 13 · Precisión, sensibilidad, exactitud y F1</a></span><a href="index.html">Índice del curso</a><span><a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>ROC y AUC</b></span> · <span class="et">viene de</span><a href="metricas_clasificacion.html">Accuracy, precision, recall y F1</a> · <span class="et">habilita</span>—</div>
@@ -975,6 +992,21 @@ redacción de la respuesta modelo [DATITO].</p>
 </ul>
 </div>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-14">
+<h2>Cierre de la Clase 14 · ROC-AUC y elección del umbral</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El modelo entrega un puntaje; el umbral lo decides tú.</li><li>Cada umbral es un punto; el modelo es la curva completa.</li><li>El AUC resume toda la curva, pero no fija el umbral.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Punto de operación ≠ modelo (C2 P9).</li><li>AUC alto ≠ exactitud alta.</li><li>Subir el umbral baja TPR y FPR a la vez: no van en sentidos opuestos.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Un modelo es una curva, no un punto.</li><li>Compara umbral a umbral: ¿uno tiene mayor TPR y menor FPR en todos?</li><li>Si domina en todos, es mejor sin ambigüedad.</li><li>Si se cruzan, depende del punto de operación.</li></ol>
+<p><b>Viene de:</b> <a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · <b>Sigue:</b> <a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a></p>
+<p><b>Vuelve a tu activación:</b> El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Dos curvas ROC se cruzan. ¿Puedes decir cuál modelo es mejor sin más información?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: depende del punto de operación, es decir, del costo relativo de falsos positivos y negativos. Solo una curva que domina en todos los umbrales es mejor sin ambigüedad. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="arboles_y_ensambles.html#arboles">Continuar → Clase 15 · Árboles de decisión</a>
+</section>
+<!-- datito:cierre:fin -->
 <footer>
 Generado por Datito · <code>07_DATITO/visual/roc_auc.html</code> · funciona sin
 conexión · fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md</code>

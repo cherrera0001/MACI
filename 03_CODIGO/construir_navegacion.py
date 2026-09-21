@@ -123,8 +123,8 @@ ESPECIALES = {
         "rol": "certamen", "sesion": "2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos",
         "rango": ("0:11:54", "2:01:28")},
     "triaje_de_problemas.html": {"titulo": "Triaje de problemas", "conceptos": [], "rol": "herramienta"},
-    "regresion_y_costo.html": {"titulo": "Laboratorio de la función de costo",
-                               "conceptos": ["regresion"], "rol": "laboratorio"},
+    "regresion_y_costo.html": {"titulo": "Función de costo, error y R²",
+                               "conceptos": ["regresion"], "rol": "clase"},
 }
 
 # Orden de repaso para el certamen presencial (pedido del alumno, 2026-09-21).
@@ -143,6 +143,228 @@ RUTA_REPASO = [
 TAMBIEN = ["fundamentos_ciencia_datos", "datos_features_target", "clasificacion",
            "arboles_decision", "redes_neuronales", "deep_learning"]
 
+# --------------------------------------------------------------------------
+# El curso (spec.md G14). El orden, la ficha Bloom y el cierre de cada clase
+# viven en 07_DATITO/clases.yaml; aqui solo se derivan prerrequisitos,
+# habilitaciones, tiempo de lectura y navegacion. LECCIONES se conserva por
+# compatibilidad: (n, titulo, visual, objetivo, bloom, prerrequisitos).
+CLASES_YAML = "07_DATITO/clases.yaml"
+BLOOM = ["Recordar", "Comprender", "Aplicar", "Analizar", "Evaluar", "Crear"]
+CURSO = {"clases": [], "unidades": {}, "por_archivo": {}, "de_concepto": {}, "con_visual": []}
+LECCIONES = []
+CINI, CFIN = "<!-- datito:cierre:inicio -->", "<!-- datito:cierre:fin -->"
+
+
+def minutos_de_lectura(archivo, partes):
+    """~170 palabras por minuto sobre el texto visible, sin la navegacion."""
+    ruta = os.path.join(VISUAL, archivo)
+    if not os.path.exists(ruta):
+        return None
+    t = open(ruta, encoding="utf-8").read()
+    t = re.sub(r"<!-- datito:(nav|cierre|dudas):inicio -->.*?<!-- datito:\1:fin -->", " ", t, flags=re.S)
+    t = re.sub(r"<script.*?</script>|<style.*?</style>|<[^>]+>", " ", t, flags=re.S)
+    palabras = len(t.split()) / max(1, partes)
+    return max(5, int(round(palabras / 170 / 5.0)) * 5)
+
+
+def cargar_curso(grafo):
+    data = cargar(CLASES_YAML)
+    clases = sorted(data["clases"], key=lambda c: c["n"])
+    CURSO["clases"] = clases
+    CURSO["unidades"] = {int(k): v for k, v in data["unidades"].items()}
+    por_archivo = {}
+    for c in clases:
+        if c.get("visual"):
+            por_archivo.setdefault(c["visual"].split("#")[0], []).append(c)
+    CURSO["por_archivo"] = por_archivo
+    CURSO["con_visual"] = [c for c in clases if c.get("visual")]
+    de = {}
+    for c in clases:
+        if c.get("tipo") == "concepto":
+            for cid in c.get("conceptos", []):
+                de.setdefault(cid, c["n"])
+    CURSO["de_concepto"] = de
+    g = grafo["conceptos"]
+    for c in clases:
+        pre, hab = set(), set()
+        for cid in c.get("conceptos", []):
+            if de.get(cid) and de[cid] < c["n"]:
+                pre.add(de[cid])        # el mismo concepto se enseño antes
+            for x in g.get(cid, {}).get("viene_de", []):
+                if de.get(x) and de[x] < c["n"]:
+                    pre.add(de[x])
+            for x in g.get(cid, {}).get("habilita", []):
+                if de.get(x) and de[x] > c["n"]:
+                    hab.add(de[x])
+        for otra in clases:  # una clase que repite un concepto de esta la necesita
+            if otra["n"] > c["n"] and otra.get("tipo") == "concepto" and \
+                    set(otra.get("conceptos", [])) & set(c.get("conceptos", [])):
+                hab.add(otra["n"])
+        c["_pre"], c["_hab"] = sorted(pre), sorted(hab)
+        base = c["visual"].split("#")[0] if c.get("visual") else None
+        c["_min"] = minutos_de_lectura(base, len(por_archivo.get(base, [1]))) if base else None
+    for c in clases:
+        if c.get("bloom", {}).get("nivel") not in BLOOM:
+            sys.exit(f"clases.yaml: la clase {c['n']} tiene un nivel Bloom invalido")
+    LECCIONES[:] = [(c["n"], c["titulo"], c.get("visual") or "", c["objetivo"], c["bloom"]["nivel"],
+                     ", ".join(f"Clase {x}" for x in c["_pre"]) or "-") for c in clases]
+
+
+def clase_n(n):
+    return next((c for c in CURSO["clases"] if c["n"] == n), None)
+
+
+def vecina(c, paso):
+    """La clase anterior o siguiente CON visual (las pendientes se saltan)."""
+    lista = CURSO["con_visual"]
+    i = next((i for i, x in enumerate(lista) if x["n"] == c["n"]), None)
+    if i is None:
+        return None
+    j = i + paso
+    return lista[j] if 0 <= j < len(lista) else None
+
+
+def enlace_clase(c, desde=None, forma="{t}"):
+    if not c:
+        return ""
+    texto = f'Clase {c["n"]} · {esc(c["titulo"])}'
+    if not c.get("visual"):
+        return f'{texto} <span class="apagado">(pendiente)</span>'
+    href = c["visual"]
+    if desde and href.split("#")[0] == desde and "#" in href:
+        href = "#" + href.split("#")[1]
+    return f'<a href="{href}">{forma.replace("{t}", texto)}</a>'
+
+
+def leccion_para(archivo):
+    base = archivo.split("#", 1)[0]
+    return next((l for l in LECCIONES if l[2].split("#", 1)[0] == base), None)
+
+
+def lista_clases(nums, desde):
+    return ", ".join(enlace_clase(clase_n(x), desde) for x in nums) or "ninguna"
+
+
+def bloque_leccion(archivo, conceptos=()):
+    """Encabezado de clase: numero, unidad, objetivo, prerrequisitos, habilita,
+    tiempo, ficha Bloom, activacion, marca de avance y Anterior/Indice/Siguiente."""
+    clases = CURSO["por_archivo"].get(archivo, [])
+    if not clases:
+        return ""
+    total = len(CURSO["clases"])
+    partes = []
+    for c in clases:
+        b = c["bloom"]
+        minutos = f"~{c['_min']} min" if c.get("_min") else "—"
+        compartida = ""
+        if len(clases) > 1:
+            compartida = (' <span class="apagado">(este archivo contiene las clases '
+                          + " y ".join(str(x["n"]) for x in clases) + ")</span>")
+        if c["_pre"]:
+            pre = lista_clases(c["_pre"], archivo)
+        elif c.get("tipo") == "repaso":
+            pre = "las clases anteriores"
+        else:
+            pre = "ninguna: es el punto de partida"
+        partes.append(
+            f'<section class="leccion" data-clase="{c["n"]}" id="clase-{c["n"]}">\n'
+            f'<div class="leccion-top"><span class="uni">Unidad {c["unidad"]} · '
+            f'{esc(CURSO["unidades"][c["unidad"]])}</span><b>Clase {c["n"]} de {total}</b></div>\n'
+            f'<div class="barra"><span style="width:{c["n"] / total * 100:.1f}%"></span></div>\n'
+            f'<div class="lt">Clase {c["n"]} · {esc(c["titulo"])}{compartida}</div>\n'
+            f'<p><b>Objetivo.</b> {esc(c["objetivo"])}</p>\n'
+            f'<div class="fichas"><div><span class="et">prerrequisitos</span>{pre}</div>\n'
+            f'<div><span class="et">habilita</span>{lista_clases(c["_hab"], archivo)}</div>\n'
+            f'<div><span class="et">tiempo estimado</span>{minutos}</div></div>\n'
+            f'<div class="ficha"><b>Ficha Bloom · {esc(b["nivel"])}</b><ul>\n'
+            f'<li><b>Evidencia de aprendizaje:</b> {esc(b["evidencia"])}</li>\n'
+            f'<li><b>Actividad final:</b> {esc(b["actividad_final"])}</li>\n'
+            f'<li><b>Criterio de dominio:</b> {esc(b["criterio_dominio"])}</li></ul></div>\n'
+            f'<div class="activ"><b>Activación.</b> {esc(c["activacion"])} '
+            f'<span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>\n'
+            f'<label class="hecha"><input type="checkbox" data-clase-hecha="{c["n"]}"> Terminé esta clase '
+            f'<span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>\n'
+            f'</section>')
+    ant, sig = vecina(clases[0], -1), vecina(clases[-1], +1)
+    izq = enlace_clase(ant, archivo, "← {t}") if ant else '<span class="apagado">Inicio del curso</span>'
+    der = enlace_clase(sig, archivo, "{t} →") if sig else '<span class="apagado">Fin del curso</span>'
+    nav = (f'<nav class="pasos"><span>{izq}</span><a href="index.html">Índice del curso</a>'
+           f'<span>{der}</span></nav>')
+    js = ("<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){"
+          "var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';"
+          "c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}"
+          "catch(e){}})();</script>")
+    return "\n".join(partes) + "\n" + nav + "\n" + js
+
+
+CSS_CIERRE = (
+    "<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;"
+    "border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}"
+    ".dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}"
+    ".dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}"
+    ".dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}"
+    ".dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}"
+    ".dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;"
+    "border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>"
+)
+
+
+def bloque_cierre(archivo):
+    clases = [c for c in CURSO["por_archivo"].get(archivo, []) if (c.get("cierre") or {}).get("aprendiste")]
+    if not clases:
+        return None
+    secs = []
+    for c in clases:
+        ci = c["cierre"]
+        ant, sig = vecina(c, -1), vecina(c, +1)
+
+        def lis(xs):
+            return "".join(f"<li>{esc(x)}</li>" for x in xs)
+
+        if sig:
+            cont = (f'<a class="continuar" href="{sig["visual"]}">Continuar → Clase {sig["n"]} · '
+                    f'{esc(sig["titulo"])}</a>')
+        else:
+            cont = '<a class="continuar" href="index.html">Volver al índice del curso</a>'
+        secs.append(
+            f'<section class="dcierre" id="cierre-clase-{c["n"]}">\n'
+            f'<h2>Cierre de la Clase {c["n"]} · {esc(c["titulo"])}</h2>\n'
+            f'<div class="c2"><div><h3>Qué aprendiste</h3><ul>{lis(ci["aprendiste"])}</ul></div>\n'
+            f'<div><h3>Qué no debes confundir</h3><ul>{lis(ci["no_confundir"])}</ul></div></div>\n'
+            f'<h3>Procedimiento para el papel</h3><ol>{lis(ci["procedimiento"])}</ol>\n'
+            f'<p><b>Viene de:</b> {enlace_clase(ant) if ant else "el inicio del curso"} · '
+            f'<b>Sigue:</b> {enlace_clase(sig) if sig else "el índice del curso"}</p>\n'
+            f'<p><b>Vuelve a tu activación:</b> {esc(c["activacion"])} ¿Cambiarías tu respuesta?</p>\n'
+            f'<div class="pf"><b>Pregunta final.</b> {esc(ci["pregunta_final"])}\n'
+            f'<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>'
+            f'<p>{esc(ci["respuesta_final"])}</p>\n'
+            f'<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente '
+            f'en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>\n'
+            f'{cont}\n</section>')
+    return f"{CINI}\n{CSS_CIERRE}\n" + "\n".join(secs) + f"\n{CFIN}"
+
+
+def inyectar_cierre(ruta, bloque, revisar):
+    with open(ruta, encoding="utf-8") as f:
+        t = f.read()
+    patron_c = re.escape(CINI) + r".*?" + re.escape(CFIN)
+    if CINI in t:
+        nuevo = re.sub(patron_c, lambda _: bloque or "", t, count=1, flags=re.S)
+    elif bloque:
+        m = (re.search(re.escape(DINI), t) or re.search(r"<footer", t)
+             or re.search(r"</main>", t) or re.search(r"</body>", t))
+        if not m:
+            return "sin lugar para el cierre"
+        nuevo = t[:m.start()] + bloque + "\n" + t[m.start():]
+    else:
+        return "sin cierre"
+    if nuevo == t:
+        return "cierre sin cambios"
+    if not revisar:
+        with open(ruta, "w", encoding="utf-8", newline="") as f:
+            f.write(nuevo)
+    return "cierre actualizado"
+
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 HABLA = {"titular": "profesor", "segundo_docente": "segundo docente",
          "ayudantia": "ayudantía", "alumnos": "alumnos", "invitado": "invitado"}
@@ -156,7 +378,18 @@ CSS_NAV = (
     ".dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}"
     ".dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}"
     ".dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}"
-    ".dnav .cpt{font-weight:700}</style>"
+    ".dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;"
+    "background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 \"Segoe UI\",system-ui,sans-serif}"
+    ".leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}"
+    ".barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}"
+    ".ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}"
+    ".actividad{margin:.7rem 0;color:#334155}"
+    ".lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}"
+    ".fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}"
+    ".fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}"
+    ".ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}"
+    ".hecha{display:block;margin:.5rem 0;font-size:.85rem}"
+    ".pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>"
 )
 
 
@@ -258,7 +491,8 @@ def bloque_nav(archivo, conceptos, grafo, nombres, mapa, especial=None):
     if tramos_html:
         filas.append(f"<details><summary>Dónde se enseñó en clase ({len(tramos_html)} tramos)</summary>"
                      f"<ul>{''.join(tramos_html)}</ul></details>")
-    return (f"{INI}\n{CSS_NAV}\n<nav class=\"dnav\" aria-label=\"Navegación de Datito\">\n"
+    leccion = bloque_leccion(archivo, conceptos)
+    return (f"{INI}\n{CSS_NAV}\n{leccion}\n<nav class=\"dnav\" aria-label=\"Navegación de Datito\">\n"
             + "\n".join(filas) + f"\n</nav>\n{FIN}")
 
 
@@ -391,6 +625,42 @@ C1_ITEMS = [
 
 def indice(grafo, nombres, mapa, dudas=()):
     g = grafo["conceptos"]
+    import yaml as _y
+    try:
+        prog = {c["id"]: c["estado"] for c in _y.safe_load(
+            open(os.path.join(RAIZ, "07_DATITO", "progreso.yaml"), encoding="utf-8"))["conceptos"]}
+    except (OSError, KeyError, TypeError):
+        prog = {}
+    orden_estado = ["NO_ESTUDIADO", "EN_ESTUDIO", "COMPRENSION_PARCIAL", "REQUIERE_REPASO",
+                    "COMPRENDIDO", "DOMINADO"]
+    unidades_html = []
+    for u, nombre_u in sorted(CURSO["unidades"].items()):
+        filas = []
+        for c in [x for x in CURSO["clases"] if x["unidad"] == u]:
+            estados = [prog.get(cid, "NO_ESTUDIADO") for cid in c.get("conceptos", [])]
+            ev = min(estados, key=orden_estado.index) if estados else "—"
+            pre = ", ".join(f"C{x}" for x in c["_pre"]) or ("anteriores" if c.get("tipo") == "repaso" else "—")
+            titulo = enlace_clase(c)
+            minutos = f"~{c['_min']} min" if c.get("_min") else "—"
+            marca = (f'<span class="marca" data-marca="{c["n"]}"></span>' if c.get("visual")
+                     else '<span class="apagado">pendiente</span>')
+            filas.append(f'<tr><td class="num">{c["n"]}</td><td>{titulo}</td><td>{esc(c["bloom"]["nivel"])}</td>'
+                         f'<td>{pre}</td><td>{minutos}</td><td><code>{esc(ev)}</code></td><td>{marca}</td></tr>')
+        unidades_html.append(f'<h3>Unidad {u} · {esc(nombre_u)}</h3><table><tr><th>#</th><th>Clase</th>'
+                             f'<th>Bloom</th><th>Requiere</th><th>Tiempo</th><th>Evidencia en Datito</th>'
+                             f'<th>Tu marca</th></tr>{"".join(filas)}</table>')
+    primera = CURSO["con_visual"][0] if CURSO["con_visual"] else None
+    cubiertos = sorted(CURSO["de_concepto"].items(), key=lambda kv: kv[1])
+    lista_cubiertos = ", ".join(f'{esc(nombres.get(cid, cid))} (C{n})' for cid, n in cubiertos)
+    sin_clase = [cid for cid in nombres if cid not in CURSO["de_concepto"]]
+    pendientes = [c for c in CURSO["clases"] if not c.get("visual")]
+    txt_pend = ("; ".join(f'Clase {c["n"]} · {esc(c["titulo"])}' for c in pendientes)
+                or "ninguna")
+    usa = {}
+    for cid, tramos in mapa["conceptos"].items():
+        for tr in tramos:
+            if cid in CURSO["de_concepto"]:
+                usa.setdefault(tr["clase"], set()).add(CURSO["de_concepto"][cid])
     filas_dudas = []
     for d in dudas:
         principal = d["visuales"][0]
@@ -437,15 +707,16 @@ def indice(grafo, nombres, mapa, dudas=()):
         href = "../../" + quote(f"{TRANS}/{clave}.md")
         evaluable = "no (práctica)" if meta["tipo"] == "ayudantia" else (
             "sesión de certamen" if meta["tipo"] == "certamen" else "sí")
+        en = ", ".join(enlace_clase(clase_n(x)) for x in sorted(usa.get(clave, []))) or "—"
         filas_c.append(f"<tr><td>{esc(fecha_corta(meta['fecha']))}</td><td>{esc(meta['tipo'])}</td>"
                        f"<td>{esc(meta['hablantes'])}</td><td>{evaluable}</td>"
-                       f'<td><a href="{href}">{esc(clave)}.md</a></td></tr>')
+                       f'<td><a href="{href}">{esc(clave)}.md</a></td><td>{en}</td></tr>')
 
     return f"""<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Repaso del certamen · índice · Datito</title>
+<title>Fundamentos de Ciencia de Datos · el curso de Datito</title>
 <style>
   :root{{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;--azul:#2563eb;--morado:#7c3aed;--ambar:#d97706}}
   *{{box-sizing:border-box}}
@@ -463,19 +734,49 @@ def indice(grafo, nombres, mapa, dudas=()):
   .clave{{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1rem 0}}
   code{{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}}
   footer{{margin-top:3rem;color:var(--suave);font-size:.82rem;border-top:1px solid var(--linea);padding-top:1rem}}
+  h3{{font-size:1rem;margin:1.4rem 0 .3rem}} .apagado{{color:#94a3b8}}
+  .boton{{display:inline-block;background:var(--azul);color:#fff;padding:.7rem 1.3rem;border-radius:9px;font-weight:700;margin:.3rem .5rem .3rem 0}}
+  .boton.alt{{background:#fff;color:var(--azul);border:2px solid var(--azul)}}
+  .barra{{height:10px;background:#dbeafe;border-radius:8px;margin:.4rem 0}} .barra span{{display:block;height:100%;background:var(--azul);border-radius:8px;width:0}}
+  @media (max-width:640px){{body{{padding:1rem .6rem}} table{{font-size:.8rem}} th,td{{padding:.3rem .35rem}}}}
 </style>
 </head>
 <body>
 <main>
-<h1>Repaso del certamen</h1>
-<p class="sub">Índice de los visuales de Datito · Fundamentos de Ciencia de Datos (UdeC, T2-2026) · todo funciona sin conexión</p>
+<h1 id="curso">Fundamentos de Ciencia de Datos</h1>
+<p class="sub">El curso de Datito · UdeC, T2-2026 · {len(CURSO["clases"])} clases en {len(CURSO["unidades"])} unidades · todo funciona sin conexión</p>
+
+<p><b>Bienvenido.</b> Este es tu curso para el certamen presencial: las clases del profesor, ordenadas de
+lo que necesitas primero a lo que se apoya en eso, con preguntas que intentas antes de ver la respuesta.</p>
+<p><b>Propósito.</b> Que puedas resolver en papel, sin Internet, las preguntas que el profesor realmente hace:
+distinguir conceptos vecinos, calcular a mano e interpretar el resultado
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md].</p>
+
+<p>{('<a class="boton" href="' + primera["visual"] + '">Comenzar la Clase 1 →</a>') if primera else ""}
+<a class="boton alt" id="seguir" href="#curso-clases">Seguir donde quedé</a>
+<a class="boton alt" href="#repaso">Repaso del certamen</a>
+<a class="boton alt" href="#dudas">Dudas resueltas</a></p>
+<p>Tu avance (marcas de «Terminé esta clase» en este navegador): <b id="avance">0</b> de
+{len(CURSO["con_visual"])} clases disponibles.</p>
+<div class="barra"><span id="barra"></span></div>
 
 <div class="clave"><b>Cómo usarlo.</b> Abre este archivo con doble clic: no necesita Internet.
 En cada visual, <b>predice antes de mover</b> un control, resuelve los ejercicios <b>antes</b> de abrir
 las soluciones (<code>&lt;details&gt;</code>) y termina con la tarea de producción: explícaselo a Datito.
 Leer sin responder no es estudiar.</div>
 
-<h2>1 · Ruta de repaso para el certamen presencial</h2>
+<h2 id="curso-clases">0 · El curso, clase por clase</h2>
+<p>El orden sigue los prerrequisitos del currículum y la secuencia real de las clases del profesor, y sube de
+comprender a aplicar, analizar, evaluar y crear [FUENTE · Repo: 07_DATITO/clases.yaml]. Cada clase abre con
+su objetivo, su ficha Bloom y una pregunta de activación, y cierra con qué aprendiste, qué no confundir, un
+procedimiento y una pregunta final. «Requiere» son las clases que conviene tener antes; «Evidencia en Datito»
+es el estado registrado en <code>progreso.yaml</code> al generar esta página.</p>
+{"".join(unidades_html)}
+<p><b>Conceptos cubiertos ({len(cubiertos)} de {len(nombres)}):</b> {lista_cubiertos}.</p>
+<p><b>Conceptos sin clase:</b> {(", ".join(esc(nombres[c]) for c in sin_clase)) or "ninguno"}.
+<b>Clases pendientes de construir:</b> {txt_pend}.</p>
+
+<h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de
 <a href="../patron_evaluacion.md">patron_evaluacion.md</a>: sobreajuste, generalización y validación suman el
 36 % del Certamen 2 y las métricas de clasificación otro 27 % [FUENTE · Repo: 07_DATITO/patron_evaluacion.md].
@@ -485,7 +786,7 @@ puede ser lo que más sostiene al resto.</p>
 <p>También conviene repasar:</p>
 <table>{cab}{tambien}</table>
 
-<h2>2 · Dudas resueltas con Datito, en orden</h2>
+<h2 id="dudas">2 · Dudas resueltas por Datito, en orden</h2>
 <p>Todo lo que se resolvió en una sesión queda aquí y en el visual del tema, con la respuesta
 correcta y cómo se resuelve (oculta hasta que la abras). Nada queda solo en la terminal.
 Fuente única: <a href="../dudas.yaml">07_DATITO/dudas.yaml</a>.</p>
@@ -513,7 +814,7 @@ cuadernillo <a href="../cuadernillos/01_sobreajuste_y_calidad_de_datos.md">01_so
 el material oficial del curso manda. El profesor fue explícito sobre qué entra al certamen:
 «Entran solo mis clases. No entran las clases de Alejandra.»
 [FUENTE · Repo: {TRANS}/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:18:16].</p>
-<table><tr><th>Fecha</th><th>Tipo</th><th>Quién habla</th><th>¿Entra al certamen?</th><th>Transcripción</th></tr>{''.join(filas_c)}</table>
+<table><tr><th>Fecha</th><th>Tipo</th><th>Quién habla</th><th>¿Entra al certamen?</th><th>Transcripción</th><th>Se usa en</th></tr>{''.join(filas_c)}</table>
 
 <h2>5 · Cómo leer las etiquetas</h2>
 <table>
@@ -524,8 +825,16 @@ el material oficial del curso manda. El profesor fue explícito sobre qué entra
 <tr><td><code>⚠</code></td><td>Cifra o término que la transcripción pudo alterar: contrastar con la lámina.</td></tr>
 </table>
 
+<script>(function(){{try{{var n=0,total=0,seguir=null;
+document.querySelectorAll('[data-marca]').forEach(function(s){{total++;var k=s.getAttribute('data-marca');
+var h=localStorage.getItem('datito-clase-'+k)==='1';s.textContent=h?'✓ terminada':'';if(h)n++;
+else if(!seguir){{var a=s.closest('tr').querySelector('a');if(a)seguir=a.getAttribute('href');}}}});
+document.getElementById('avance').textContent=n;
+document.getElementById('barra').style.width=(total?Math.round(100*n/total):0)+'%';
+if(seguir)document.getElementById('seguir').setAttribute('href',seguir);}}catch(e){{}}}})();</script>
+
 <footer>Generado por <code>03_CODIGO/construir_navegacion.py</code> el {date.today().isoformat()} desde
-<code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/patron_evaluacion.md</code>
+<code>07_DATITO/clases.yaml</code>, <code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/patron_evaluacion.md</code>
 y <code>09_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
 </main>
 </body>
@@ -544,6 +853,12 @@ def main():
     nombres = {c["id"]: c["nombre"] for c in cur["conceptos"]}
 
     dudas = cargar_dudas()
+    cargar_curso(grafo)
+    for c in CURSO["clases"]:
+        if c.get("visual"):
+            base, _, ancla = c["visual"].partition("#")
+            if not os.path.exists(os.path.join(VISUAL, base)):
+                sys.exit(f"clases.yaml: la clase {c['n']} apunta a un visual inexistente: {base}")
     faltan = [c for c in VISUAL_DE if c not in grafo["conceptos"]]
     if faltan:
         sys.exit(f"conceptos del catalogo ausentes de grafo.yaml: {faltan}")
@@ -577,8 +892,9 @@ def main():
             links = " · ".join(enlace_concepto(c, f, nombres) for c in esp["conceptos"])
             bloque = bloque.replace("</nav>", f'<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>')
         estado = inyectar(os.path.join(VISUAL, f), bloque, a.revisar)
+        estado_c = inyectar_cierre(os.path.join(VISUAL, f), bloque_cierre(f), a.revisar)
         estado_d = inyectar_dudas(os.path.join(VISUAL, f), bloque_dudas(f, dudas, nombres), a.revisar)
-        print(f"  {f:34} {estado} · {estado_d}")
+        print(f"  {f:34} {estado} · {estado_c} · {estado_d}")
 
     ruta_idx = os.path.join(VISUAL, "index.html")
     contenido = indice(grafo, nombres, mapa, dudas)

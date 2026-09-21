@@ -109,7 +109,24 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="4" id="clase-4">
+<div class="leccion-top"><span class="uni">Unidad 1 · Del problema a los datos</span><b>Clase 4 de 22</b></div>
+<div class="barra"><span style="width:18.2%"></span></div>
+<div class="lt">Clase 4 · Calidad, limpieza y preparación de datos</div>
+<p><b>Objetivo.</b> Decidir qué es un error de datos que se limpia y qué es una decisión de modelado que se documenta.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~45 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Resuelve una tabla tipo 9B: identifica cada problema, lo clasifica y justifica su tratamiento.</li>
+<li><b>Actividad final:</b> Resolver la 9B del Certamen 1 (consumo de camiones).</li>
+<li><b>Criterio de dominio:</b> Identifica centinela, atípico, sobrecarga semántica y formato; distingue atípico de error; justifica cada decisión con su efecto en la media.</li></ul></div>
+<div class="activ"><b>Activación.</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="4"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="eda.html">← Clase 3 · EDA: conocer los datos antes de modelar</a></span><a href="index.html">Índice del curso</a><span><a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Limpieza y preparacion de datos</b></span> · <span class="et">viene de</span><a href="eda.html">Analisis exploratorio de datos (EDA)</a> · <span class="et">habilita</span>—</div>
@@ -1060,6 +1077,21 @@ es una decisión de modelado.</p>
 </ul>
 </div>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-4">
+<h2>Cierre de la Clase 4 · Calidad, limpieza y preparación de datos</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un centinela (−999) no es un número: sesga cualquier promedio.</li><li>Un atípico puede ser real o un error de digitación: se verifica, no se borra por defecto.</li><li>Excluir una columna útil o imputar son decisiones de modelado, no limpieza.</li><li>Una tabla bien formada: una fila por observación, identificadores que enlazan otras tablas, fechas completas.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Limpiar (corregir lo mal registrado) ≠ decidir (excluir, imputar, elegir target).</li><li>Atípico ≠ error.</li><li>Faltante ≠ cero.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Define la fila y las variables.</li><li>Busca centinelas, faltantes, tipos mezclados y atípicos.</li><li>Para cada uno: ¿está mal registrado (limpiar) o es una decisión (documentar)?</li><li>Calcula el efecto en la media antes y después.</li></ol>
+<p><b>Viene de:</b> <a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · <b>Sigue:</b> <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></p>
+<p><b>Vuelve a tu activación:</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Por qué no basta con borrar en la 9B los valores a más de dos desviaciones de la media?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque los −999 inflan la desviación y pueden quedar dentro del corte, y porque un atípico puede ser real. Primero se tratan los centinelas como faltantes; después se evalúa cada atípico. [FUENTE · Repo: 07_DATITO/visual/limpieza_preparacion.html §6]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="clase6_regresion.html">Continuar → Clase 5 · Regresión: predecir una cantidad</a>
+</section>
+<!-- datito:cierre:fin -->
 <footer>
 Generado por Datito · <code>07_DATITO/visual/limpieza_preparacion.html</code> ·
 funciona sin conexión · fuentes: láminas

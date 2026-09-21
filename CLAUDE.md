@@ -75,6 +75,7 @@ ahi.
 | `07_DATITO/referencia/` | fuentes, memoria y material. Se cargan bajo demanda |
 | `07_DATITO/visual/` | Artefactos HTML para el navegador. **Empezar por `index.html`** |
 | `07_DATITO/guias/` · `cuadernillos/` · `certamenes/` | Material escrito: referencia, con solucion, sin solucion |
+| `07_DATITO/clases.yaml` | El curso: 22 clases en orden, ficha Bloom y cierre de cada una (spec.md G14) |
 | `07_DATITO/dudas.yaml` | Toda respuesta dada en sesion, en orden. Se renderiza en los visuales |
 | `07_DATITO/bitacora/` | Una entrada por sesion |
 | `09_CLASES/transcripciones/` | Clases transcritas con faster-whisper |

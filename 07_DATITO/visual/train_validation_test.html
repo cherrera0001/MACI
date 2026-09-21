@@ -68,7 +68,24 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="7" id="clase-7">
+<div class="leccion-top"><span class="uni">Unidad 3 · Medir si el modelo sirve</span><b>Clase 7 de 22</b></div>
+<div class="barra"><span style="width:31.8%"></span></div>
+<div class="lt">Clase 7 · Train, validation y test</div>
+<p><b>Objetivo.</b> Separar entrenamiento, validación y test, y decir qué decisión se toma con cada uno.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
+<div><span class="et">tiempo estimado</span>~25 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Asigna cada decisión (ajustar θ, elegir hiperparámetro, reportar) al conjunto correcto.</li>
+<li><b>Actividad final:</b> Rotular un gráfico de resultados: con qué se entrenó y sobre qué se evaluó cada barra.</li>
+<li><b>Criterio de dominio:</b> No usa el test para decidir y distingue parámetro de hiperparámetro en un caso nuevo.</li></ul></div>
+<div class="activ"><b>Activación.</b> Si eliges el mejor modelo mirando el test, ¿ese número de test sigue siendo una medida honesta? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="7"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="regresion_y_costo.html">← Clase 6 · Función de costo, error y R²</a></span><a href="index.html">Índice del curso</a><span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Train / validation / test</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="generalizacion.html">Generalizacion</a>, <a href="validacion_cruzada.html">Validacion cruzada</a></div>
@@ -576,6 +593,21 @@ aleatorio que «anunciaba 81 % de precisión» está en
 </ul>
 </div>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-7">
+<h2>Cierre de la Clase 7 · Train, validation y test</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El test se guarda «en el bolsillo»: no se usa para decidir.</li><li>La validación sirve para elegir hiperparámetros, como el grado del polinomio.</li><li>Si decides con un conjunto, su número queda optimista.</li><li>Un test debe representar los datos donde se usará el modelo.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Parámetro (lo aprende el algoritmo) ≠ hiperparámetro (lo fijas tú antes).</li><li>Entrenado con ≠ evaluado sobre.</li><li>Elegir (validación) ≠ medir (test).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Aparta el test primero.</li><li>Ajusta con train; elige con validación.</li><li>Mide una sola vez en test y reporta.</li></ol>
+<p><b>Viene de:</b> <a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a> · <b>Sigue:</b> <a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a></p>
+<p><b>Vuelve a tu activación:</b> Si eliges el mejor modelo mirando el test, ¿ese número de test sigue siendo una medida honesta? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Por qué hacen falta validación y test, si ambos son datos que el modelo no vio?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque al elegir con la validación, esa medida se vuelve optimista; el test, que no se usó para decidir, da la medida honesta. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="validacion_cruzada.html">Continuar → Clase 8 · Validación cruzada y selección de modelos</a>
+</section>
+<!-- datito:cierre:fin -->
 <!-- datito:dudas:inicio -->
 <style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
 <section class="ddudas" id="dudas-resueltas">

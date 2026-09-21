@@ -98,7 +98,24 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="5" id="clase-5">
+<div class="leccion-top"><span class="uni">Unidad 2 · Aprender una cantidad: regresión</span><b>Clase 5 de 22</b></div>
+<div class="barra"><span style="width:22.7%"></span></div>
+<div class="lt">Clase 5 · Regresión: predecir una cantidad</div>
+<p><b>Objetivo.</b> Explicar el modelo lineal ŷ = θ₀ + θ₁x: qué es dato, qué aprende el modelo y qué significa cada símbolo.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a>, <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div><span class="et">tiempo estimado</span>~20 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Comprender</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Explica θ₀ y θ₁ con sus unidades y predice un valor dentro del rango de los datos.</li>
+<li><b>Actividad final:</b> «Tu pregunta»: el árbol de 45 cm y el compañero que confunde θ₁ con el peso a radio cero.</li>
+<li><b>Criterio de dominio:</b> Nombra qué símbolo responde cada pregunta y declara cuándo una predicción es extrapolación.</li></ul></div>
+<div class="activ"><b>Activación.</b> El profesor quiere saber cuánto pesa un árbol sin cortarlo. ¿Qué medirías, y cómo lo usarías para predecir? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="5"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="limpieza_preparacion.html">← Clase 4 · Calidad, limpieza y preparación de datos</a></span><a href="index.html">Índice del curso</a><span><a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R² →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="clasificacion.html">Clasificacion</a></div>
@@ -610,6 +627,21 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 </ul>
 </div>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-5">
+<h2>Cierre de la Clase 5 · Regresión: predecir una cantidad</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Regresión: predecir un valor real, una cantidad.</li><li>θ₁ es cuánto cambia ŷ por unidad de x; θ₀ es ŷ cuando x = 0.</li><li>La regresión se llama lineal por ser lineal en los θ, no en x.</li><li>La complejidad del modelo es su número de parámetros.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Pendiente (θ₁) ≠ intercepto (θ₀).</li><li>Lineal en θ ≠ lineal en x: la polinomial sigue siendo regresión lineal.</li><li>Predecir dentro del rango ≠ extrapolar.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Identifica x (dato), y (target) y los θ (lo que aprende el modelo).</li><li>Interpreta θ₁ en unidades de y por unidad de x.</li><li>Antes de predecir, revisa el rango de x observado.</li></ol>
+<p><b>Viene de:</b> <a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a> · <b>Sigue:</b> <a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a></p>
+<p><b>Vuelve a tu activación:</b> El profesor quiere saber cuánto pesa un árbol sin cortarlo. ¿Qué medirías, y cómo lo usarías para predecir? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Es ŷ = θ₀ + θ₁x + θ₂x² una regresión lineal?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Sí: es lineal en los parámetros, porque cada θ aparece una vez multiplicando un término; x² es solo una columna nueva. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:37:49]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="regresion_y_costo.html">Continuar → Clase 6 · Función de costo, error y R²</a>
+</section>
+<!-- datito:cierre:fin -->
 <!-- datito:dudas:inicio -->
 <style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
 <section class="ddudas" id="dudas-resueltas">

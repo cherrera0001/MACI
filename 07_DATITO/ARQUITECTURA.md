@@ -258,7 +258,7 @@ hay que extraer antes.
 ## 7 · El contrato es ejecutable
 
 Lo que separa este sistema de un conjunto de instrucciones bien escritas es que
-**once comprobaciones de sus garantías son un test que corre**:
+**doce comprobaciones de sus garantías son un test que corre**:
 
 ```bash
 python 03_CODIGO/verificar_contrato.py
@@ -269,6 +269,7 @@ python 03_CODIGO/verificar_contrato.py
 | **G1** no simula respuestas | Ninguna respuesta del alumno aparece escrita por Datito en las bitácoras |
 | **G8** reglas donde se leen | `SKILL.md` referencia el config; el config tiene pocas marcas de regla |
 | **G9** exposición consultable | Cada concepto trabajado tiene material asociado |
+| **G14** el material es un curso | Cada clase de `clases.yaml` con visual tiene barra, ficha Bloom, cierre y ≥ 3 preguntas con respuesta; la portada existe |
 | **G9** lo respondido queda escrito | Cada duda de `dudas.yaml` está renderizada en sus visuales, y cada bitácora desde el 2026-09-21 declara sus «Dudas registradas» |
 | **G9** visuales sin red y citables | Ningún recurso remoto, enlaces y anclas existen, JS sin errores de sintaxis, cada cita de clase es un `.md` completo con una marca que existe (`verificar_visuales.py`) |
 | **G12** dos prioridades | Los 21 conceptos tienen ambas prioridades; las tensiones están declaradas |
@@ -444,6 +445,7 @@ CLAUDE.md                        ← hace que Claude Code reconozca a Datito. Ma
   errores_conceptuales.yaml      ← DINÁMICO · observados ≠ vigilados
   estado.md                      ← DERIVADO · el punto de inyección
   dudas.yaml                     ← DINÁMICO · lo que Datito respondió, en orden → visuales
+  clases.yaml                    ← ESTÁTICO · el curso: unidades, clases, ficha Bloom, cierres (G14)
   grafo.yaml                     ← DERIVADO · importancia_curricular
   datito.config.yaml           ← DATOS del alumno, nunca reglas
   patron_evaluacion.md           ← cómo evalúa el profesor, desde sus certámenes
@@ -519,7 +521,7 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 ## Verificación rápida
 
 ```bash
-python 03_CODIGO/verificar_contrato.py     # debe dar 11 ok · 0 fallos
+python 03_CODIGO/verificar_contrato.py     # debe dar 12 ok · 0 fallos
 python 03_CODIGO/construir_navegacion.py   # regenera navegación e index.html
 python 03_CODIGO/datito_estado.py        # regenera estado.md
 python 03_CODIGO/grafo_conceptual.py       # regenera grafo.yaml

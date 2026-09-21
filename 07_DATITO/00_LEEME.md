@@ -71,9 +71,11 @@ el de la sesión.
 
 ### Visuales interactivos — `visual/`
 
-**Empieza por [`visual/index.html`](visual/index.html)**: la ruta de repaso del
-certamen, las distinciones que deciden cada pregunta, el mapa por cadenas y las
-clases donde se enseñó cada concepto. Todo abre con doble clic, sin Internet.
+**Empieza por [`visual/index.html`](visual/index.html)**: la portada del curso.
+Son 22 clases en 6 unidades, ordenadas por prerrequisitos (fuente única:
+[`clases.yaml`](clases.yaml)); cada una abre con objetivo, ficha Bloom y
+activación, y cierra con síntesis, procedimiento y pregunta final. Incluye el
+repaso del certamen y las dudas resueltas. Todo abre con doble clic, sin Internet.
 
 | Archivo | Concepto |
 |---|---|

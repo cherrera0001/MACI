@@ -74,7 +74,9 @@ Reglas de cita, que verifica `03_CODIGO/verificar_visuales.py`:
 - No escribas la barra de navegacion: la inyecta
   `03_CODIGO/construir_navegacion.py` entre `<!-- datito:nav:inicio -->` y
   `<!-- datito:nav:fin -->`. Si creas un visual nuevo, agregalo a `VISUAL_DE` en
-  ese script.
+  ese script y como clase en `07_DATITO/clases.yaml` (spec.md G14): con su
+  ficha Bloom, activacion y cierre. La barra de clase y el cierre los genera el
+  script; no los escribas en el HTML.
 
 **3. Mira como lo evalua.** `07_DATITO/patron_evaluacion.md`. El artefacto debe
 preparar para **la distincion** que la pregunta exige, no para la definicion.

@@ -260,6 +260,44 @@ def g9_lo_respondido_queda_escrito():
     return OK, f"{len(dudas)} dudas registradas, todas renderizadas en sus visuales"
 
 
+def g14_el_material_es_un_curso():
+    """Cada clase de clases.yaml con visual tiene barra, ficha Bloom, cierre y
+    (si es de concepto) al menos tres preguntas con respuesta oculta; la
+    portada existe (spec.md G14)."""
+    import yaml
+    texto = leer("07_DATITO/clases.yaml")
+    if texto is None:
+        return FALLO, "no existe 07_DATITO/clases.yaml"
+    clases = (yaml.safe_load(texto) or {}).get("clases") or []
+    portada = leer("07_DATITO/visual/index.html") or ""
+    if 'id="curso"' not in portada:
+        return FALLO, "visual/index.html no es la portada del curso (correr construir_navegacion.py)"
+    problemas, pendientes = [], 0
+    for c in clases:
+        for campo in ("titulo", "objetivo", "activacion", "bloom"):
+            if not c.get(campo):
+                problemas.append(f"clase {c.get('n')} sin {campo}")
+        if not c.get("visual"):
+            pendientes += 1
+            continue
+        base, _, ancla = c["visual"].partition("#")
+        html_c = leer(f"07_DATITO/visual/{base}")
+        if html_c is None:
+            problemas.append(f"clase {c['n']}: no existe {base}")
+            continue
+        if ancla and f'id="{ancla}"' not in html_c:
+            problemas.append(f"clase {c['n']}: falta el ancla #{ancla}")
+        if f'data-clase="{c["n"]}"' not in html_c:
+            problemas.append(f"clase {c['n']}: sin barra de clase en {base}")
+        if (c.get("cierre") or {}).get("aprendiste") and f'id="cierre-clase-{c["n"]}"' not in html_c:
+            problemas.append(f"clase {c['n']}: sin cierre en {base}")
+        if c.get("tipo") == "concepto" and html_c.count('class="resp"') < 3:
+            problemas.append(f"clase {c['n']}: menos de 3 preguntas con respuesta oculta")
+    if problemas:
+        return FALLO, "; ".join(problemas[:3])
+    return OK, f"{len(clases)} clases en orden; {pendientes} pendiente(s) declarada(s) en la portada"
+
+
 COMPROBACIONES = [
     ("G1  no simula respuestas",      g1_no_simula_respuestas),
     ("G8  reglas donde se leen",      g8_reglas_donde_se_leen),
@@ -267,6 +305,7 @@ COMPROBACIONES = [
     ("G9  visuales sin red y citables", g9_visuales_sin_red_y_citables),
     ("G9  lo respondido queda escrito", g9_lo_respondido_queda_escrito),
     ("G12 dos prioridades",           g12_dos_prioridades),
+    ("G14 el material es un curso",   g14_el_material_es_un_curso),
     ("G13 sin deficiencia inferida",  g13_sin_deficiencia_inferida),
     ("Memoria  DOMINADO con evidencia", memoria_dominado_con_evidencia),
     ("Seguridad  sin secretos",       seguridad_sin_secretos),

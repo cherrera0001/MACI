@@ -103,7 +103,39 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}</style>
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="15" id="clase-15">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 15 de 22</b></div>
+<div class="barra"><span style="width:68.2%"></span></div>
+<div class="lt">Clase 15 · Árboles de decisión <span class="apagado">(este archivo contiene las clases 15 y 16)</span></div>
+<p><b>Objetivo.</b> Calcular la impureza de Gini de un corte y explicar cómo el árbol elige sus preguntas.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
+<div><span class="et">habilita</span><a href="#random-forest">Clase 16 · Random Forest y ensambles</a></div>
+<div><span class="et">tiempo estimado</span>~35 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Calcula el Gini ponderado de dos cortes y elige el mejor.</li>
+<li><b>Actividad final:</b> El ejercicio de Gini con los números del profesor.</li>
+<li><b>Criterio de dominio:</b> Obtiene 0,46875 para un nodo con 3/8 y 5/8, y elige el corte de mayor ganancia.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="15"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<section class="leccion" data-clase="16" id="clase-16">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 16 de 22</b></div>
+<div class="barra"><span style="width:72.7%"></span></div>
+<div class="lt">Clase 16 · Random Forest y ensambles <span class="apagado">(este archivo contiene las clases 15 y 16)</span></div>
+<p><b>Objetivo.</b> Explicar por qué combinar modelos mejora solo si sus errores no están correlacionados.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="#arboles">Clase 15 · Árboles de decisión</a></div>
+<div><span class="et">habilita</span><a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></div>
+<div><span class="et">tiempo estimado</span>~35 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Distingue número de modelos de diversidad, y explica el bootstrap de filas y los atributos al azar.</li>
+<li><b>Actividad final:</b> El simulador de votación con correlación entre errores.</li>
+<li><b>Criterio de dominio:</b> Argumenta con la correlación de los errores (C2 P1) y explica la importancia de variables por conteo.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="16"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="roc_auc.html">← Clase 14 · ROC-AUC y elección del umbral</a></span><a href="index.html">Índice del curso</a><span><a href="redes_neuronales.html">Clase 17 · Redes neuronales →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><a href="#arboles">Arboles de decision</a></span> · <span class="et">viene de</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a> · <span class="et">habilita</span><a href="#random-forest">Random Forest</a></div>
@@ -1477,6 +1509,33 @@ VOTO DE UN ENSAMBLE
 </div>
 </section>
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-15">
+<h2>Cierre de la Clase 15 · Árboles de decisión</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El árbol divide los datos buscando grupos más puros.</li><li>El Gini de un nodo es su error esperado; se pondera por el tamaño de cada hijo.</li><li>El árbol se detiene por pureza, o antes, para no sobreajustar.</li><li>La medida de impureza es un hiperparámetro: se elige con validación cruzada.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Ganancia de pureza (sirve para construir el árbol) ≠ métrica de evaluación (C2 P4).</li><li>Árbol sin límite ≠ buen modelo: sobreajusta.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Calcula la impureza de cada hijo.</li><li>Pondera por el tamaño de cada hijo.</li><li>Compara con el padre y elige el corte de mayor ganancia.</li></ol>
+<p><b>Viene de:</b> <a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · <b>Sigue:</b> <a href="arboles_y_ensambles.html#random-forest">Clase 16 · Random Forest y ensambles</a></p>
+<p><b>Vuelve a tu activación:</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="arboles_y_ensambles.html#random-forest">Continuar → Clase 16 · Random Forest y ensambles</a>
+</section>
+<section class="dcierre" id="cierre-clase-16">
+<h2>Cierre de la Clase 16 · Random Forest y ensambles</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Random Forest: muchos árboles con filas por bootstrap y atributos al azar, que votan.</li><li>La importancia de una variable se cuenta por cuántas veces los árboles la usan para separar.</li><li>Boosting corrige en secuencia los errores de los árboles anteriores (no se enseñó como tema en clase).</li><li>El modelo final de Melbourne fue un HistGradientBoosting.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Número de modelos ≠ diversidad (C2 P1).</li><li>En paralelo (Random Forest) ≠ en secuencia (boosting).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.</li><li>Diversidad: filas distintas (bootstrap) y atributos distintos.</li></ol>
+<p><b>Viene de:</b> <a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a> · <b>Sigue:</b> <a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></p>
+<p><b>Vuelve a tu activación:</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="redes_neuronales.html">Continuar → Clase 17 · Redes neuronales</a>
+</section>
+<!-- datito:cierre:fin -->
 <footer>
 Generado por Datito · <code>07_DATITO/visual/arboles_y_ensambles.html</code> · funciona sin
 conexión · fuentes: láminas 25–39 de <code>FCD-2026-2_07_Clasificacion</code> y lámina 8 de
