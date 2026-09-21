@@ -28,7 +28,7 @@ Regla: un agente o humano que solo abre el README debe llegar al documento útil
 | Pitch Hito 2 | `06_ENTREGABLES/PITCH_HITO2_REVISION.md` (+ pptx/pdf ahí) | Rutas antiguas a la raíz |
 | Expediente Certamen 2 | `01_DOCUMENTACION/01_CERTAMEN2/` (LEEME → md → Word) | `DOCUMENTACION/01_CERTAMEN2/` (legacy) |
 | Originales certamen | `01_CERTAMEN2/fuentes/` | No editar; no “limpiar” |
-| Guillito estado | `07_GUILLITO/progreso.yaml` + `estado.md` | Inventar progreso en el chat |
+| Datito estado | `07_DATITO/progreso.yaml` + `estado.md` | Inventar progreso en el chat |
 | Obsoleto | `99_ARCHIVO/` + `05_HISTORICO/` | Reintroducir como vigente |
 
 ---
@@ -42,7 +42,7 @@ Regla: un agente o humano que solo abre el README debe llegar al documento útil
 | Original intacto (docx/pdf/eml) | `…/fuentes/` del dominio |
 | Entregable del curso (informe, pitch) | `06_ENTREGABLES/` |
 | Salida de script | `05_RESULTADOS/` (nunca editar a mano como verdad) |
-| Material de estudio Guillito | `07_GUILLITO/` según tipo (guias/cuadernillos/…) |
+| Material de estudio Datito | `07_DATITO/` según tipo (guias/cuadernillos/…) |
 | Transcripción de clase | `09_CLASES/transcripciones/` |
 | Presentación/markdown de diapositivas | `11_PRESENTACIÓN/` |
 | Invalidado a propósito | `99_ARCHIVO/` o `05_HISTORICO/` + nota en LEEME |
@@ -62,7 +62,7 @@ Naming: prefijo numérico `00_`… para orden de lectura; `00_LEEME.md` siempre 
 | Formato de evaluación (Certamen 1, enunciados) | `06_CERTAMEN1/00_LEEME` (respuestas de tercero = baja fiabilidad) |
 | Defender Proyecto 3 | `03_PROYECTO_MELBOURNE/00_LEEME` → informe + pitch en `06_ENTREGABLES/` |
 | Reproducir cifras | `README` “Reproducir” + `05_RESULTADOS/*.json` |
-| Estudiar con tutor | `07_GUILLITO/00_LEEME` · `spec.md` |
+| Estudiar con tutor | `07_DATITO/00_LEEME.md` · `spec.md` |
 | Prácticos | `08_PRACTICA/00_LEEME` |
 | Clases | `09_CLASES/00_LEEME` |
 | Diapositivas en markdown | `11_PRESENTACIÓN/_markdown/` |

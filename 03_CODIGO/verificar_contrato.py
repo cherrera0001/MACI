@@ -2,7 +2,7 @@
 Verifica las garantias de spec.md que se pueden comprobar sin criterio humano.
 
 POR QUE EXISTE
-Analisis de nueve errores propios cometidos en el desarrollo de Guillito: el
+Analisis de nueve errores propios cometidos en el desarrollo de Datito: el
 patron comun no fue descuido, fue verificar la ENTRADA y no verificar que la
 ACCION surtiera efecto. Escribir una regla no la pone en vigor; correr git add
 no dice que quedo en el indice; disenar un instrumento no garantiza que mida.
@@ -46,7 +46,7 @@ def git(*args):
 def g1_no_simula_respuestas():
     """Ninguna bitacora debe contener una respuesta inventada del alumno."""
     sospechosos = []
-    for f in glob.glob(os.path.join(RAIZ, "07_GUILLITO", "bitacora", "*.md")):
+    for f in glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*.md")):
         t = open(f, encoding="utf-8", errors="replace").read()
         for patron in (r"probablemente dirias", r"supongamos que responde",
                        r"el alumno diria"):
@@ -59,15 +59,15 @@ def g1_no_simula_respuestas():
 
 def g8_reglas_donde_se_leen():
     """Las reglas de conducta van en SKILL.md, no en la config."""
-    cfg = leer("07_GUILLITO/guillito.config.yaml")
+    cfg = leer("07_DATITO/datito.config.yaml")
     if cfg is None:
-        return AVISO, "no existe guillito.config.yaml"
+        return AVISO, "no existe datito.config.yaml"
     # Palabras que delatan una REGLA, no un dato
     reglas = len(re.findall(r"\b(nunca|prohibido|obligatori|no abrir|debe )", cfg, re.I))
-    skill = leer(".claude/skills/guillito/SKILL.md")
+    skill = leer(".claude/skills/datito/SKILL.md")
     if skill is None:
-        return FALLO, "no existe la skill guillito"
-    if "guillito.config" not in skill:
+        return FALLO, "no existe la skill datito"
+    if "datito.config" not in skill:
         return FALLO, "SKILL.md no referencia la config: nada de lo escrito alli se lee"
     if reglas > 12:
         return AVISO, f"la config tiene {reglas} marcas de regla; deberia guardar datos"
@@ -77,7 +77,7 @@ def g8_reglas_donde_se_leen():
 def g9_exposicion_consultable():
     """Cada concepto trabajado deja material consultable. El medio es libre."""
     import yaml
-    pro = yaml.safe_load(leer("07_GUILLITO/progreso.yaml"))
+    pro = yaml.safe_load(leer("07_DATITO/progreso.yaml"))
     tocados = [c["id"] for c in pro["conceptos"] if c["estado"] != "NO_ESTUDIADO"]
     if not tocados:
         return OK, "ningun concepto iniciado todavia"
@@ -85,10 +85,10 @@ def g9_exposicion_consultable():
     # Cualquier medio vale: HTML, guia, cuadernillo o bitacora con desarrollo.
     material = " ".join(
         os.path.basename(p) for p in
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "visual", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "guias", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "cuadernillos", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_GUILLITO", "bitacora", "*"))
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "visual", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "guias", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "cuadernillos", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*"))
     ).lower()
 
     sin = [c for c in tocados
@@ -101,7 +101,7 @@ def g9_exposicion_consultable():
 def g12_dos_prioridades():
     """El grafo debe traer ambas dimensiones, y estar al dia."""
     import yaml
-    g = leer("07_GUILLITO/grafo.yaml")
+    g = leer("07_DATITO/grafo.yaml")
     if g is None:
         return FALLO, "no existe grafo.yaml; ejecutar grafo_conceptual.py"
     doc = yaml.safe_load(g)
@@ -111,8 +111,8 @@ def g12_dos_prioridades():
     if faltan:
         return FALLO, f"{len(faltan)} conceptos sin las dos prioridades"
 
-    gp = os.path.join(RAIZ, "07_GUILLITO", "grafo.yaml")
-    cp = os.path.join(RAIZ, "07_GUILLITO", "curriculum.yaml")
+    gp = os.path.join(RAIZ, "07_DATITO", "grafo.yaml")
+    cp = os.path.join(RAIZ, "07_DATITO", "curriculum.yaml")
     if os.path.getmtime(cp) > os.path.getmtime(gp) + 5:
         return FALLO, "curriculum.yaml es mas nuevo que grafo.yaml: regenerar"
 
@@ -123,7 +123,7 @@ def g12_dos_prioridades():
 def g13_sin_deficiencia_inferida():
     """Nada debe marcarse como bajo o fallido sin evidencia registrada."""
     import yaml
-    err = yaml.safe_load(leer("07_GUILLITO/errores_conceptuales.yaml"))
+    err = yaml.safe_load(leer("07_DATITO/errores_conceptuales.yaml"))
     malos = []
     for o in (err.get("observados") or []):
         if not (o.get("dijo") or "").strip():
@@ -143,7 +143,7 @@ def memoria_dominado_con_evidencia():
     'interpretar': un concepto podia pasar el test incumpliendo spec.md §3.
     """
     import yaml
-    pro = yaml.safe_load(leer("07_GUILLITO/progreso.yaml"))
+    pro = yaml.safe_load(leer("07_DATITO/progreso.yaml"))
     malos = []
     for c in pro["conceptos"]:
         if c["estado"] != "DOMINADO":
@@ -176,19 +176,19 @@ def seguridad_sin_secretos():
 
 def estado_al_dia():
     """estado.md es lo que se inyecta: si esta viejo, la sesion abre mal."""
-    e = os.path.join(RAIZ, "07_GUILLITO", "estado.md")
-    p = os.path.join(RAIZ, "07_GUILLITO", "progreso.yaml")
+    e = os.path.join(RAIZ, "07_DATITO", "estado.md")
+    p = os.path.join(RAIZ, "07_DATITO", "progreso.yaml")
     if not os.path.exists(e):
-        return FALLO, "no existe estado.md; ejecutar guillito_estado.py"
+        return FALLO, "no existe estado.md; ejecutar datito_estado.py"
     if os.path.getmtime(p) > os.path.getmtime(e) + 5:
-        return FALLO, "progreso.yaml es mas nuevo que estado.md: ejecutar guillito_estado.py"
+        return FALLO, "progreso.yaml es mas nuevo que estado.md: ejecutar datito_estado.py"
     return OK, "estado.md al dia respecto de progreso.yaml"
 
 
 def rutas_declaradas_existen():
     """El curriculum no debe citar material inexistente."""
     import yaml
-    cur = yaml.safe_load(leer("07_GUILLITO/curriculum.yaml"))
+    cur = yaml.safe_load(leer("07_DATITO/curriculum.yaml"))
     faltan = []
     for c in cur["conceptos"]:
         for r in (c.get("material_local") or []):
@@ -222,7 +222,7 @@ def main():
                     help="codigo de salida 1 si alguna comprobacion falla")
     args = ap.parse_args()
 
-    print("Verificacion del contrato de Guillito (spec.md)")
+    print("Verificacion del contrato de Datito (spec.md)")
     print("=" * 74)
     fallos = avisos = 0
     for nombre, fn in COMPROBACIONES:

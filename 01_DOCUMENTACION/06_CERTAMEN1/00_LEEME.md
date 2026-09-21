@@ -28,7 +28,7 @@
 | **Clasificación V/F** | Media | Plausible, pero sin verificar |
 | **Justificaciones y "Fundamento Teórico"** | **Baja** | **No citar como pauta.** Contrastar contra el material del curso antes de darlo por válido |
 
-**Regla para Guillito:** los enunciados entran como material de entrenamiento;
+**Regla para Datito:** los enunciados entran como material de entrenamiento;
 las respuestas **no** son criterio de corrección. Si una respuesta de este
 documento contradice el material de la asignatura, manda el material de la
 asignatura (`spec.md` §G5).

@@ -3,7 +3,7 @@ Hace utilizable el grafo de conceptos, en vez de solo almacenarlo.
 
 EL PROBLEMA
 curriculum.yaml declara prerrequisitos para 20 de 21 conceptos. Eran datos sin
-comportamiento: Guillito no podia responder de donde viene un concepto, que
+comportamiento: Datito no podia responder de donde viene un concepto, que
 depende de el, ni que pasa si no se comprende.
 
 QUE HACE
@@ -11,7 +11,7 @@ QUE HACE
   - calcula importancia_curricular a partir de cuantos conceptos dependen de uno,
     directa o indirectamente. NO de cuanto se pregunta en un certamen
   - detecta ciclos y prerrequisitos rotos
-  - genera 07_GUILLITO/grafo.yaml, que la skill consulta al abrir un concepto
+  - genera 07_DATITO/grafo.yaml, que la skill consulta al abrir un concepto
 
 LA DISTINCION QUE JUSTIFICA ESTO
 importancia_curricular y prioridad_evaluacion son dimensiones distintas. La
@@ -30,15 +30,15 @@ from collections import defaultdict
 import yaml
 
 RAIZ = r"F:\MACI"
-CURRICULUM = os.path.join(RAIZ, "07_GUILLITO", "curriculum.yaml")
-SALIDA = os.path.join(RAIZ, "07_GUILLITO", "grafo.yaml")
+CURRICULUM = os.path.join(RAIZ, "07_DATITO", "curriculum.yaml")
+SALIDA = os.path.join(RAIZ, "07_DATITO", "grafo.yaml")
 
 # Cadenas con sentido pedagogico. No son el grafo -eso sale de los
 # prerrequisitos- sino trayectos que vale la pena recorrer completos.
-# Peso en las evaluaciones reales, de 07_GUILLITO/patron_evaluacion.md.
+# Peso en las evaluaciones reales, de 07_DATITO/patron_evaluacion.md.
 # Es una dimension DISTINTA de importancia_curricular y no se deriva de ella.
 # Un concepto fundacional puede preguntarse poco; uno periferico puede valer
-# muchos puntos. Cuando difieren, Guillito debe decirlo.
+# muchos puntos. Cuando difieren, Datito debe decirlo.
 PRIORIDAD_EVALUACION = {
     "overfitting_underfitting":  {"peso": "alta",  "nota": "C2: P2, P3, P7 — 3 preguntas"},
     "limpieza_preparacion":      {"peso": "alta",  "nota": "C1: 9A y 9B; la 9B vale 2,0 pts"},
@@ -128,7 +128,7 @@ def construir(cur):
             "es_hoja": not dependientes.get(cid),
         }
 
-    # La tension entre ambas dimensiones es lo que Guillito debe poder decir.
+    # La tension entre ambas dimensiones es lo que Datito debe poder decir.
     orden_peso = {"alta": 3, "media": 2, "baja": 1, "desconocida": 0}
     maxima = max(d["importancia_curricular"] for d in grafo.values()) or 1
     for cid, d in grafo.items():
@@ -154,7 +154,7 @@ def detectar_ciclos(grafo):
 
 
 def situar(cid, grafo):
-    """Lo que Guillito necesita responder al abrir un concepto."""
+    """Lo que Datito necesita responder al abrir un concepto."""
     if cid not in grafo:
         print(f"No existe el concepto '{cid}'")
         return

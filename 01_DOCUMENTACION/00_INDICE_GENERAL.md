@@ -25,7 +25,7 @@ Carpeta: [`01_CERTAMEN2/`](01_CERTAMEN2/)
 **Conclusión del expediente, en una línea:** el material local permite reconstruir **parcialmente** un proceso de comprensión — con doble anclaje (guía de estudio + trabajo propio) en seis de las once fichas, anclaje solo en la guía en otras, y zonas que ningún archivo explica del todo (secuencia temporal del estudio; cifras AUC de P9).
 
 > **Corrección estructural, 2026-09-20.** El expediente trabaja con **11 fichas**, pero el registro real de Canvas muestra **10 preguntas numeradas más un «Espaciador»** de tipo `text_only_question` y **0 puntos** —el ítem de la matriz de confusión—. Desde ahí, la numeración del expediente va **corrida en uno** respecto del sistema. Detalle y evidencia en
-> [`07_GUILLITO/visual/certamen_2.html`](../07_GUILLITO/visual/certamen_2.html). Al hablar de una pregunta, **nómbrala por tema, no por número**.
+> [`07_DATITO/visual/certamen_2.html`](../07_DATITO/visual/certamen_2.html). Al hablar de una pregunta, **nómbrala por tema, no por número**.
 
 ---
 
@@ -83,7 +83,7 @@ Registro de corrección (split aleatorio → temporal). No es basura.
 
 | Dominio | Puerta |
 |---|---|
-| Guillito | [`07_GUILLITO/00_LEEME.md`](../07_GUILLITO/00_LEEME.md) |
+| Datito | [`07_DATITO/00_LEEME.md`](../07_DATITO/00_LEEME.md) |
 | Prácticos | [`08_PRACTICA/00_LEEME.md`](../08_PRACTICA/00_LEEME.md) |
 | Clases | [`09_CLASES/00_LEEME.md`](../09_CLASES/00_LEEME.md) |
 | Presentaciones (md) | [`11_PRESENTACIÓN/_markdown/`](../11_PRESENTACIÓN/_markdown/) |
@@ -113,8 +113,8 @@ Registro de corrección (split aleatorio → temporal). No es basura.
 2. Informe § fe de erratas
 3. `05_RESULTADOS/resultados_temporal.json` + scripts del README
 
-**Estudiar con Guillito:**
-1. `07_GUILLITO/00_LEEME.md`
+**Estudiar con Datito:**
+1. `07_DATITO/00_LEEME.md`
 2. `spec.md`
 
 ---

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Generalización · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4rem;text-align:right}
+  input[type=range]{width:100%}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin-top:1.1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
+  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.72rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button:hover{background:#1d4ed8}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .ecu .formula .num{color:var(--verde);font-weight:700}
+  .ecu .formula .den{color:var(--azul);font-weight:700}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Generalización</h1>
+<p class="sub">Por qué un modelo bueno aquí puede ser malo allá.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<div class="grafo">
+  <span class="n">Train / validation / test</span> →
+  <span class="n aqui">Generalización</span> →
+  <span class="n">Overfitting y underfitting</span> →
+  <span class="n">…y 8 conceptos más</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> Viene de <em>train / validation / test</em> y
+habilita el sobreajuste, los árboles, los ensambles y todo el bloque de modelos.
+<strong>Nueve conceptos quedan bloqueados si este no se entiende.</strong><br><br>
+Su peso en la evaluación es medio —transversal a las preguntas 2, 3 y 7— pero
+su importancia curricular es de las más altas del programa. No es un concepto
+que se estudie para puntuar: es uno de los que sostienen el resto.
+</div>
+
+<h2>1 · Qué es, en una frase</h2>
+
+<div class="clave">
+<strong>Generalizar es funcionar donde no aprendiste.</strong><br><br>
+Todo lo demás —sobreajuste, validación cruzada, el conjunto de test— existe
+para una sola cosa: <em>estimar si el modelo va a generalizar, antes de
+apostar a que sí</em>.
+</div>
+
+<p>El problema es que generalizar no es una propiedad que se pueda observar
+directamente. Solo puedes <strong>estimarla</strong>, y toda estimación tiene un
+supuesto detrás.</p>
+
+<h2>2 · El supuesto que casi nadie declara</h2>
+
+<p>Cuando mides en un conjunto de test y dices «el modelo tiene MAE 188.218»,
+estás afirmando algo más de lo que parece:</p>
+
+<div class="nota">
+<strong>«Los datos donde voy a usar el modelo se parecen a los datos donde lo
+medí.»</strong><br><br>
+Si eso deja de ser cierto, tu número deja de significar lo que crees. Y casi
+nunca es del todo cierto.
+</div>
+
+<p>Hay tres formas de que se rompa, y conviene distinguirlas porque tienen
+remedios distintos:</p>
+
+<table>
+<tr><th>Qué cambió</th><th>Nombre</th><th>Ejemplo</th></tr>
+<tr><td>La <strong>distribución de las features</strong></td><td>Covariate shift</td><td>En 2017 aparecen casas en barrios que no existían en 2016</td></tr>
+<tr><td>La <strong>disponibilidad</strong> de una feature</td><td>Cambio de captura</td><td><code>CouncilArea</code> está completa en 2016 y falta el 18,9 % en 2017</td></tr>
+<tr><td>La <strong>relación</strong> entre features y target</td><td>Concept drift</td><td>Cambia la ley de arriendos y el precio por m² ya no se forma igual</td></tr>
+</table>
+
+<h2>3 · Extrapolar: predecir donde no hay datos</h2>
+
+<p>Recuerda los árboles de tu profesor. Cortaste 20 con radios entre 8 y 22 cm y
+ajustaste la recta. Ahora te piden uno de 45 cm.</p>
+
+<div class="pred" data-p="extra">
+  <div class="q">Antes de mover nada: el modelo tiene <strong>R² = 0,93</strong>
+  sobre esos 20 árboles. Si le pides el peso de uno de <strong>45 cm</strong>,
+  ¿qué hace?</div>
+  <button data-r="avisa">Avisa que no puede</button>
+  <button data-r="numero">Devuelve un número sin más</button>
+  <button data-r="error">Da error</button>
+  <div class="veredicto"></div>
+</div>
+
+<div class="panel">
+  <canvas id="lienzo" width="840" height="400"></canvas>
+  <div class="ctrl">
+    <label for="radio">Radio a predecir</label>
+    <input type="range" id="radio" min="4" max="60" step="1" value="18">
+    <output id="rOut">18 cm</output>
+  </div>
+  <div class="met">
+    <div><div class="n" id="pred">–</div><div class="e">Peso predicho</div></div>
+    <div><div class="n" id="zona">–</div><div class="e">Zona</div></div>
+    <div><div class="n" id="conf">–</div><div class="e">Confianza</div></div>
+  </div>
+  <p style="margin-top:.9rem">
+    <button id="b18">Radio 18 · dentro</button>
+    <button id="b45">Radio 45 · fuera</button>
+  </p>
+</div>
+
+<div class="peligro">
+<strong>El modelo siempre te devuelve un número.</strong> No tiene forma de
+avisarte que está inventando. Dentro del rango observado interpola entre datos
+reales; fuera, solo prolonga una recta que nadie comprobó que siga siendo recta.<br><br>
+Un árbol de 45 cm probablemente no pesa el doble que uno de 22: los troncos
+crecen en volumen, no en línea.
+</div>
+
+<h2>4 · Tu propio proyecto lo midió</h2>
+
+<p><code>05_RESULTADOS/resultados_temporal.json</code></p>
+
+<table>
+<tr><th>Modelo (log)</th><th>R² train 2016</th><th>R² test 2017</th><th>Brecha</th></tr>
+<tr><td>Árbol de decisión</td><td class="num">0,7523</td><td class="num">0,6123</td><td class="num">0,1400</td></tr>
+<tr><td><strong>Random Forest</strong></td><td class="num">0,9423</td><td class="num">0,7109</td><td class="num"><strong>0,2314</strong></td></tr>
+<tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num">0,7466</td><td class="num">0,1392</td></tr>
+<tr><td>HistGradientBoosting</td><td class="num">0,9274</td><td class="num">0,7571</td><td class="num">0,1703</td></tr>
+</table>
+
+<p>Random Forest aprende 2016 casi perfecto —0,94— y generaliza peor que
+Gradient Boosting, que aprende menos —0,89— y llega más lejos. <strong>Aprender
+mejor los datos no es generalizar mejor.</strong></p>
+
+<h3>El dato que suele malinterpretarse</h3>
+
+<p>El <strong>29,1 %</strong> de las propiedades de 2017 están en suburbios que
+no existen en 2016. Es tentador concluir que ahí está toda la degradación. No lo
+está:</p>
+
+<table>
+<tr><th>Modelo (log)</th><th>MAE suburbio NUEVO</th><th>MAE suburbio CONOCIDO</th><th>Diferencia</th></tr>
+<tr><td>HistGradientBoosting</td><td class="num">193.462</td><td class="num">186.064</td><td class="num">7.398</td></tr>
+<tr><td>Gradient Boosting</td><td class="num">198.666</td><td class="num">189.884</td><td class="num">8.782</td></tr>
+<tr><td>Random Forest</td><td class="num">227.081</td><td class="num">198.531</td><td class="num">28.550</td></tr>
+</table>
+
+<div class="nota">
+La caída de CV a test en HistGradientBoosting es de <strong>28.441 AUD</strong>.
+La diferencia entre suburbios nuevos y conocidos es de solo <strong>7.398</strong>.<br><br>
+Los suburbios nuevos explican <strong>una fracción menor</strong>: la degradación
+afecta a todo 2017, no solo a las zonas nuevas. Es un año distinto, no solo un
+mapa distinto.
+</div>
+
+<div class="clave">
+Fíjate en Random Forest: su diferencia entre zonas nuevas y conocidas es
+<strong>28.550</strong>, casi cuatro veces la de HistGradientBoosting. El modelo
+que más memorizó la geografía de 2016 es el que peor se comporta donde esa
+geografía no existe.
+</div>
+
+<h2>5 · La trampa: validar no siempre puede detectarlo</h2>
+
+<p>Caso real de este proyecto. Se quiso saber si añadir <code>CouncilArea</code>
+mejoraba el modelo. En validación cruzada dentro de 2016, mejoraba: ganaba 20 de
+25 comparaciones pareadas.</p>
+
+<p>Pero en 2017:</p>
+
+<table>
+<tr><th>Situación en 2017</th><th>Filas</th><th>%</th></tr>
+<tr><td>Valor conocido</td><td class="num">5.182</td><td class="num">71,5 %</td></tr>
+<tr><td>Valor faltante</td><td class="num">1.369</td><td class="num">18,9 %</td></tr>
+<tr><td>Categoría nunca vista en 2016</td><td class="num">693</td><td class="num">9,6 %</td></tr>
+<tr><td><strong>Sin información utilizable</strong></td><td class="num"><strong>2.062</strong></td><td class="num"><strong>28,5 %</strong></td></tr>
+</table>
+
+<p>En 2016 esa columna está <strong>completa</strong>: cero faltantes, 19
+categorías, todas conocidas. Así que la validación cruzada dentro de 2016 mide
+la feature <em>en el único escenario donde siempre está disponible</em>.</p>
+
+<div class="peligro">
+<strong>Ningún esquema de validación dentro de 2016 puede detectar un problema
+que solo existe en 2017.</strong><br><br>
+Y no es un defecto de la validación cruzada: está bien hecha. Es que mide un
+problema más fácil que el real.
+</div>
+
+<h2>6 · La brecha, desarmada</h2>
+
+<p>Todo lo anterior se resume en una resta. Vale la pena mirarla de cerca, porque
+cada término responde una pregunta distinta.</p>
+
+<div class="ecu">
+  <div class="formula">brecha = <span class="num">R²<sub>train</sub></span> − <span class="den">R²<sub>test</sub></span></div>
+  <table>
+  <tr><th>Término</th><th>Qué mide</th><th>Rol</th></tr>
+  <tr><td><strong>R²<sub>train</sub></strong></td><td>Qué tan bien le va donde <strong>aprendió</strong></td><td><span class="rol r-dato">no mide calidad</span></td></tr>
+  <tr><td><strong>R²<sub>test</sub></strong></td><td>Qué tan bien le va donde <strong>nunca estuvo</strong></td><td><span class="rol r-cuenta">esto sí mide</span></td></tr>
+  <tr><td><strong>la resta</strong></td><td>Cuánto de lo aprendido <strong>no se repite fuera</strong></td><td><span class="rol r-decide">es el diagnóstico</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>Los dos números solos no
+  bastan.</strong> Un R² de train alto no es bueno ni malo: solo dice que el
+  modelo memorizó bien. Lo que informa es la <em>distancia</em> entre ambos, más
+  el nivel del segundo.</p>
+</div>
+
+<div class="ecu">
+  <div class="formula">R² = 1 − <span class="num">SS<sub>res</sub></span> / <span class="den">SS<sub>tot</sub></span></div>
+  <table>
+  <tr><th>Término</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>SS<sub>res</sub></strong></td><td>Suma de los errores de <strong>tu modelo</strong>, al cuadrado</td><td><span class="rol r-decide">lo mueve tu modelo</span></td></tr>
+  <tr><td><strong>SS<sub>tot</sub></strong></td><td>Suma de los errores de <strong>predecir siempre la media</strong></td><td><span class="rol r-dato">es un dato del conjunto</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem">Aquí está la clave de por qué el
+  R² de train y el de test <strong>no son comparables sin más</strong>:
+  <code>SS<sub>tot</sub></code> se calcula sobre el conjunto donde estás
+  midiendo. Si 2017 tiene precios más dispersos que 2016, el rival cambia, y dos
+  R² de conjuntos distintos miden contra varas distintas.</p>
+</div>
+
+<h2>7 · Camino inverso: te dan los números</h2>
+
+<p>En una prueba no te van a contar la historia: te van a dar dos números. Haz
+el recorrido al revés.</p>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    Random Forest &nbsp;·&nbsp; R²<sub>train</sub> = 0,9423 &nbsp;·&nbsp; R²<sub>test</sub> = 0,7109
+  </div>
+
+  <details>
+    <summary>1 · ¿Qué dice el primer número por sí solo?</summary>
+    <p><strong>Casi nada sobre la calidad.</strong> Dice que el modelo reproduce
+    el 94 % de la variación de los datos con los que aprendió. Un modelo con
+    suficiente capacidad puede llegar ahí memorizando, incluido el ruido.</p>
+    <p style="margin-bottom:0">Por eso el error de entrenamiento no es evidencia.
+    Es la P7 del Certamen 2.</p>
+  </details>
+
+  <details>
+    <summary>2 · ¿Y el segundo?</summary>
+    <p>Ése <strong>sí</strong> mide: 0,7109 sobre datos que el modelo nunca vio.
+    Es lo único que se parece a lo que pasaría en producción.</p>
+  </details>
+
+  <details>
+    <summary>3 · ¿Qué historia cuenta la resta?</summary>
+    <p>La brecha es <strong>0,2314</strong>. Casi un cuarto de lo que el modelo
+    «sabía» no se repitió fuera.</p>
+    <p>Eso significa que buena parte de lo que aprendió eran
+    <strong>particularidades de 2016</strong> — combinaciones concretas de barrio,
+    tamaño y precio que no volvieron a darse en 2017.</p>
+    <p style="margin-bottom:0">No es que el modelo esté roto: es que aprendió
+    cosas que no eran generalizables.</p>
+  </details>
+
+  <details>
+    <summary>4 · ¿Cómo se compara con los demás?</summary>
+    <table>
+    <tr><th>Modelo</th><th>train</th><th>test</th><th>brecha</th></tr>
+    <tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num"><strong>0,7466</strong></td><td class="num"><strong>0,1392</strong></td></tr>
+    <tr><td>Random Forest</td><td class="num"><strong>0,9423</strong></td><td class="num">0,7109</td><td class="num">0,2314</td></tr>
+    </table>
+    <p>Gradient Boosting aprende <strong>menos</strong> —0,886 frente a 0,942— y
+    generaliza <strong>mejor</strong> —0,747 frente a 0,711.</p>
+    <p style="margin-bottom:0"><strong>Aprender mejor los datos no es generalizar
+    mejor.</strong> Si tuvieras que elegir uno para producción, el número que
+    decide es el segundo, no el primero.</p>
+  </details>
+</div>
+
+<h2>8 · Qué hacer al respecto</h2>
+
+<table>
+<tr><th>Estrategia</th><th>Qué consigue</th></tr>
+<tr><td><strong>Validar como vas a usar</strong></td><td>Si vas a predecir el futuro, valida contra el futuro: corte temporal, no aleatorio</td></tr>
+<tr><td><strong>Mirar la distribución del test, no su target</strong></td><td>Cuántos faltantes, cuántas categorías nuevas. Es información legítima: en producción también la tendrías</td></tr>
+<tr><td><strong>Preferir modelos con menor brecha</strong></td><td>Aunque su rendimiento interno sea menor. Gradient Boosting sobre Random Forest</td></tr>
+<tr><td><strong>Declarar el rango de validez</strong></td><td>«Este modelo se entrenó con radios de 8 a 22 cm» es parte del entregable, no una nota al pie</td></tr>
+<tr><td><strong>Monitorear después</strong></td><td>El ciclo vuelve al requerimiento. Un modelo en producción se degrada solo</td></tr>
+</table>
+
+<h2>9 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+ANTE UNA PREGUNTA DE GENERALIZACIÓN
+
+1. ¿DÓNDE SE MIDIÓ?        dentro o fuera del entrenamiento
+2. ¿LA BRECHA?             train vs test, no un número solo
+3. ¿QUÉ CAMBIÓ ENTRE AMBOS?  features · disponibilidad · la relación
+4. ¿LA VALIDACIÓN PODÍA VERLO?  si el problema solo existe fuera, no
+5. ¿SE PIDE PREDECIR FUERA DEL RANGO OBSERVADO?
+       sí → es extrapolación: se declara, no se entrega sin más
+6. NOMBRAR EL MECANISMO    no la etiqueta
+</pre>
+
+<h2>10 · Errores que el formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Por qué está mal</th></tr>
+<tr><td>«Generaliza bien porque el R² de entrenamiento es alto»</td><td>El entrenamiento no mide generalización. Nunca</td></tr>
+<tr><td>Llamar sobreajuste a cualquier degradación</td><td>Sobreajuste es la brecha train-validación. Entre validación y test puede ser cambio de distribución</td></tr>
+<tr><td>Entregar una extrapolación sin advertirla</td><td>El modelo devuelve un número aunque no tenga datos para respaldarlo</td></tr>
+<tr><td>Atribuir toda la caída a una sola causa</td><td>Hay que comprobar la magnitud: 7.398 no explican 28.441</td></tr>
+<tr><td>Suponer que validar bien garantiza generalizar</td><td>La validación solo mide los escenarios que puede observar</td></tr>
+</table>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero sostiene: <em>«el modelo tiene R² de 0,94, así que generaliza muy
+bien»</em>.<br><br>
+<strong>¿Tiene razón? Justifícalo con las dos cifras de Random Forest y di qué
+número habría que mirar en su lugar.</strong><br><br>
+Es el formato exacto de tu profesor: verdadero o falso, <em>con justificación</em>.
+Y poder explicárselo a otro es la prueba de que lo entiendes.
+</div>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+    de dónde viene esto. Si la partición está mal hecha, la brecha que mides aquí
+    no significa lo que crees.</li>
+<li><a href="certamen_2.html"><code>certamen_2.html</code></a> — dónde se
+    pregunta: <strong>P2, P3 y P7</strong>. Las tres por el mismo concepto y en
+    tres formatos distintos.</li>
+<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    si todavía no tienes claro qué tipo de problema estás resolviendo.</li>
+</ul>
+</div>
+
+<footer>
+Generado por Datito · <code>07_DATITO/visual/generalizacion.html</code><br>
+Cifras verificadas en <code>05_RESULTADOS/</code>. Funciona sin conexión.
+</footer>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const PRED={extra:{correcta:'numero',txt:{
+ numero:'<strong>Correcto, y es lo incomodo.</strong> El modelo no tiene forma de saber que esta fuera de su rango: solo prolonga la recta. Devuelve un numero con la misma seguridad que dentro. <strong>La advertencia tiene que ponerla el que usa el modelo, no el modelo.</strong>',
+ avisa:'<strong>No.</strong> Nada en una regresion lineal detecta que el dato esta fuera del rango observado. La formula funciona para cualquier x, incluido uno absurdo. Mueve el deslizador a 45 y mira: sale un numero, sin ninguna senal de alarma.',
+ error:'<strong>No.</strong> No hay error posible: la recta esta definida para todo valor. Por eso la extrapolacion es peligrosa — falla en silencio, no con una excepcion.'}}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PRED[k].txt[b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
+
+// Los 20 árboles: radios de 8 a 22 cm
+const D=[[8,72],[9,85],[10,88],[11,104],[12,98],[12,118],[13,121],[14,130],
+         [15,142],[15,128],[16,155],[17,148],[18,171],[18,160],[19,180],
+         [20,192],[20,178],[21,205],[22,198],[22,220]];
+const MIN=8, MAX=22;
+// Recta por mínimos cuadrados
+const n=D.length, sx=D.reduce((s,p)=>s+p[0],0), sy=D.reduce((s,p)=>s+p[1],0);
+const sxy=D.reduce((s,p)=>s+p[0]*p[1],0), sxx=D.reduce((s,p)=>s+p[0]**2,0);
+const M=(n*sxy-sx*sy)/(n*sxx-sx*sx), B=(sy-M*sx)/n;
+
+const cv=$('lienzo'), cx=cv.getContext('2d');
+const mg={l:62,r:22,t:22,b:50};
+const xMin=0,xMax=62,yMin=0,yMax=560;
+const px=x=>mg.l+(x-xMin)/(xMax-xMin)*(cv.width-mg.l-mg.r);
+const py=y=>cv.height-mg.b-(y-yMin)/(yMax-yMin)*(cv.height-mg.t-mg.b);
+const fmt=(v,d=0)=>v.toFixed(d).replace('.',',');
+
+function dibujar(){
+  const r=+$('radio').value, dentro = r>=MIN && r<=MAX;
+  cx.clearRect(0,0,cv.width,cv.height);
+
+  // Zona sin datos
+  cx.fillStyle='#fee2e2'; cx.globalAlpha=.5;
+  cx.fillRect(px(xMin),mg.t,px(MIN)-px(xMin),cv.height-mg.t-mg.b);
+  cx.fillRect(px(MAX),mg.t,px(xMax)-px(MAX),cv.height-mg.t-mg.b);
+  cx.globalAlpha=1;
+  cx.fillStyle='#d1fae5'; cx.globalAlpha=.45;
+  cx.fillRect(px(MIN),mg.t,px(MAX)-px(MIN),cv.height-mg.t-mg.b);
+  cx.globalAlpha=1;
+
+  cx.fillStyle='#065f46'; cx.font='600 12px system-ui'; cx.textAlign='center';
+  cx.fillText('rango observado · 8 a 22 cm',(px(MIN)+px(MAX))/2,mg.t+18);
+  cx.fillStyle='#991b1b';
+  cx.fillText('sin datos · extrapolación',(px(MAX)+px(xMax))/2,mg.t+18);
+
+  cx.strokeStyle='#e8e6e3'; cx.lineWidth=1; cx.font='12px system-ui';
+  cx.fillStyle='#666'; cx.textAlign='right';
+  for(let y=0;y<=560;y+=140){
+    cx.beginPath(); cx.moveTo(mg.l,py(y)); cx.lineTo(cv.width-mg.r,py(y)); cx.stroke();
+    cx.fillText(y,mg.l-9,py(y)+4);
+  }
+  cx.textAlign='center';
+  for(let x=0;x<=60;x+=10){
+    cx.fillText(x,px(x),cv.height-mg.b+20);
+  }
+  cx.fillStyle='#444'; cx.font='600 13px system-ui';
+  cx.fillText('Radio del tronco (cm)',cv.width/2,cv.height-12);
+
+  // La recta: sólida dentro, punteada fuera
+  cx.strokeStyle='#1a1a1a'; cx.lineWidth=2.5;
+  cx.beginPath(); cx.moveTo(px(MIN),py(M*MIN+B)); cx.lineTo(px(MAX),py(M*MAX+B)); cx.stroke();
+  cx.setLineDash([6,5]); cx.strokeStyle='#9ca3af';
+  cx.beginPath(); cx.moveTo(px(MAX),py(M*MAX+B)); cx.lineTo(px(xMax),py(M*xMax+B)); cx.stroke();
+  cx.beginPath(); cx.moveTo(px(MIN),py(M*MIN+B)); cx.lineTo(px(xMin),py(M*xMin+B)); cx.stroke();
+  cx.setLineDash([]);
+
+  for(const [x,y] of D){
+    cx.fillStyle='#2563eb'; cx.beginPath(); cx.arc(px(x),py(y),5.5,0,7); cx.fill();
+    cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
+  }
+
+  const yp=M*r+B;
+  cx.fillStyle = dentro ? '#059669' : '#dc2626';
+  cx.beginPath(); cx.arc(px(r),py(yp),8,0,7); cx.fill();
+  cx.strokeStyle='#fff'; cx.lineWidth=2.5; cx.stroke();
+  cx.setLineDash([3,3]); cx.strokeStyle=dentro?'#059669':'#dc2626'; cx.lineWidth=1.5;
+  cx.beginPath(); cx.moveTo(px(r),py(0)); cx.lineTo(px(r),py(yp)); cx.stroke();
+  cx.setLineDash([]);
+
+  $('rOut').textContent=r+' cm';
+  $('pred').textContent=fmt(yp)+' kg';
+  $('zona').textContent=dentro?'dentro':'FUERA';
+  $('zona').style.color=dentro?'#059669':'#dc2626';
+  $('conf').textContent=dentro?'respaldada':'inventada';
+  $('conf').style.color=dentro?'#059669':'#dc2626';
+  $('pred').style.color=dentro?'#1a1a1a':'#dc2626';
+}
+$('radio').oninput=dibujar;
+$('b18').onclick=()=>{$('radio').value=18;dibujar();};
+$('b45').onclick=()=>{$('radio').value=45;dibujar();};
+dibujar();
+</script>
+</body>
+</html>

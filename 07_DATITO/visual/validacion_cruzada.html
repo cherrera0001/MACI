@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Validación cruzada · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
+  button.ok{background:var(--verde)}button.ok:hover{background:#047857}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .hist{display:flex;gap:3px;flex-wrap:wrap;margin-top:.6rem;min-height:2rem}
+  .hist span{background:#fff;border:1px solid var(--linea);border-radius:5px;
+             padding:.15rem .45rem;font-size:.8rem;font-variant-numeric:tabular-nums}
+  .hist span.rep{background:#fee2e2;border-color:#fca5a5;color:#991b1b;font-weight:700}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .fold{display:flex;height:34px;border-radius:6px;overflow:hidden;margin:.35rem 0;
+        font-size:.74rem;font-weight:700;color:#fff}
+  .fold div{display:flex;align-items:center;justify-content:center}
+  .f-tr{background:#93c5fd;color:#1e3a8a}.f-va{background:#d97706}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Validación cruzada</h1>
+<p class="sub">Por qué una sola partición no basta, y qué cambia al rotarla.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31 de julio</p>
+
+<div class="grafo">
+  <span class="n">Train / validation / test</span> →
+  <span class="n aqui">Validación cruzada</span> →
+  <span class="n">Overfitting y underfitting</span> →
+  <span class="n">…y 8 conceptos más</span>
+</div>
+
+<div class="tension">
+<strong>Dónde estás, y una asimetría que conviene que sepas.</strong>
+Viene de <em>train / validation / test</em>, que ya tienes en
+<code>COMPRENDIDO</code>. Habilita el sobreajuste y, por cadena, los árboles, los
+ensambles y el boosting: <strong>9 conceptos quedan bloqueados si este no se
+entiende</strong>.<br><br>
+Y sin embargo su <strong>peso en la evaluación es bajo</strong>: aparece
+<em>como remedio, no como pregunta propia</em> — la respuesta a «¿y cómo
+arreglas el sobreajuste?», casi nunca el enunciado. Si decides cuánto estudiar
+mirando el certamen, esta es exactamente la que vas a subestimar.
+</div>
+
+<h2>1 · La frase que define el concepto</h2>
+
+<p>Tu profesor pasa casi diez minutos explicando el esquema de tres conjuntos
+—entrenamiento, validación, test—. Un alumno, Francisco, le pregunta qué hacer
+si el conjunto de validación resultó «afortunado». Y entonces dice esto:</p>
+
+<div class="cita">
+"Esto que yo le acabo de mostrar acá <strong>no es validación cruzada, esto es
+validación nomás</strong>. Y ahora le voy a explicar cómo se hace eso que tú
+dices, Francisco, usando validación cruzada propiamente tal. La estrategia de
+validación cruzada hay distintas, pero una de esas es <strong>K-fold</strong>,
+otra de esas <strong>shuffle split</strong> y otra es <strong>bootstrapping</strong>."
+<span class="f">Clase del 31 de julio · <strong>0:51:38</strong> ·
+<code>09_CLASES/transcripciones/06Clase_…_31_de_julio.md</code></span>
+</div>
+
+<div class="dist">
+<strong>La distinción que decide todo:</strong><br>
+<strong>Validación</strong> = partir una vez en train / validation / test y
+decidir con eso.<br>
+<strong>Validación cruzada</strong> = <strong>rotar</strong> la partición, de modo
+que cada dato sea validación exactamente una vez, y promediar.<br><br>
+Son cosas distintas y él las separa explícitamente. La mayoría de los alumnos usa
+«validación cruzada» para las dos — y esa es la confusión que esta clase viene a
+deshacer.
+</div>
+
+<p>Antes, en el mismo bloque, había dicho algo que conviene tener a mano:</p>
+
+<div class="cita">
+"Si es que no saben la respuesta a algún problema, tienen como respuesta
+validación cruzada. Porque validación cruzada es la respuesta a la mayor parte de
+los problemas del aprendizaje automático."
+<span class="f">Clase del 31 de julio · 0:43:44</span>
+</div>
+
+<h2>2 · El problema: el conjunto de validación puede tener suerte</h2>
+
+<p>Él mismo lo plantea, y es la razón de existir de todo lo que sigue:</p>
+
+<div class="cita">
+"Podría ocurrir […] que yo haya escogido un hiperparámetro que funcione muy bien
+para el conjunto de validación. Que <strong>por azar</strong>, justo el conjunto de
+validación funciona muy bien para un orden del polinomio […] Entonces el problema
+que tenemos ahí es que <strong>se podría sobreajustar el conjunto de
+validación</strong>. Porque yo estoy tomando una decisión sobre el modelo
+utilizando el conjunto de validación."
+<span class="f">Clase del 31 de julio · 0:49:20 – 0:50:05</span>
+</div>
+
+<div class="clave">
+<strong>Traducido:</strong> el conjunto de validación deja de ser un juez neutral
+en cuanto lo usas para <em>elegir</em>. Cada decisión que tomas mirándolo le
+transfiere un poco de tu optimismo. Con una sola partición, no tienes forma de
+saber si el grado que ganó es bueno de verdad o solo tuvo suerte con esas 5 filas.
+</div>
+
+<div class="pred" id="pred1">
+  <div class="q">Antes de tocar nada — predice:</div>
+  <p style="margin:.2rem 0 .6rem">Abajo hay 20 árboles. Voy a apartar 5 al azar
+  como validación, ajustar polinomios de grado 1 a 6 con los otros 15, y quedarme
+  con el grado que menor error dé en esos 5. <strong>Si repito el sorteo 10 veces,
+  ¿cuántos grados distintos crees que van a ganar?</strong></p>
+  <button data-v="1">Siempre el mismo</button>
+  <button data-v="2">Dos o tres distintos</button>
+  <button data-v="3">Cuatro o más distintos</button>
+  <div class="veredicto"></div>
+</div>
+
+<h2>3 · La lotería de una sola partición</h2>
+
+<div class="panel">
+  <canvas id="lienzo" width="860" height="330"></canvas>
+  <div style="margin-top:.9rem">
+    <button id="sortear">Sortear otra partición</button>
+    <button id="sortear10" class="alt">Sortear 10 veces</button>
+    <button id="reiniciar" class="alt">Reiniciar</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="m-grado">—</div><div class="e">Grado ganador</div></div>
+    <div><div class="n" id="m-err">—</div><div class="e">Error en validación</div></div>
+    <div><div class="n" id="m-veces">0</div><div class="e">Sorteos</div></div>
+    <div><div class="n" id="m-distintos">0</div><div class="e">Ganadores distintos</div></div>
+  </div>
+  <div class="lbl">Historial de ganadores</div>
+  <div class="hist" id="hist"></div>
+  <p style="font-size:.88rem;color:var(--suave);margin:.7rem 0 0">
+    Los datos <strong>no cambian</strong> entre sorteos. Lo único que cambia es
+    <em>qué 5 árboles</em> caen en validación. Si el grado ganador salta, es que
+    tu decisión depende del sorteo, no de los datos.
+  </p>
+</div>
+
+<h2>4 · K-Fold: que cada dato sea validación exactamente una vez</h2>
+
+<p>En vez de apartar 5 y rezar, se parte el conjunto en <strong>k</strong> bloques
+—aquí k = 4, de 5 árboles cada uno— y se rota cuál hace de validación:</p>
+
+<div class="panel">
+  <div id="folds"></div>
+  <div style="margin-top:.9rem">
+    <button id="correrkf" class="ok">Correr K-Fold (k = 4)</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="k-grado">—</div><div class="e">Grado ganador</div></div>
+    <div><div class="n" id="k-err">—</div><div class="e">Error promedio</div></div>
+    <div><div class="n" id="k-desv">—</div><div class="e">Desviación entre folds</div></div>
+    <div><div class="n" id="k-veces">0</div><div class="e">Corridas</div></div>
+  </div>
+  <div class="lbl">Historial de ganadores (K-Fold)</div>
+  <div class="hist" id="khist"></div>
+  <p style="font-size:.88rem;color:var(--suave);margin:.7rem 0 0">
+    Vuelve a correrlo varias veces. Compara cuánto salta <em>este</em> historial
+    contra el de arriba.
+  </p>
+</div>
+
+<div class="nota">
+<strong>Lo que acabas de ver, dicho en una línea:</strong> la validación simple
+te da <em>una</em> estimación del error; K-Fold te da <em>k</em> y promedia. No
+mejora el modelo — <strong>mejora tu estimación del error del modelo</strong>.
+Son cosas distintas y conviene no confundirlas al responder.
+</div>
+
+<h2>5 · La ecuación, desarmada</h2>
+
+<div class="ecu">
+  <div class="f">CV<sub>(k)</sub> = (1/k) · Σ<sub>i=1..k</sub> L( f<sub>−i</sub> , D<sub>i</sub> )</div>
+  <table class="simb">
+  <tr><td>CV<sub>(k)</sub></td><td>La estimación del error por validación cruzada. <strong>Es un número que resume k números.</strong> <span class="rol r-aprende">lo calculas</span></td></tr>
+  <tr><td>k</td><td>Cuántos bloques. <strong>Lo decides tú</strong>: 5 y 10 son los habituales <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>D<sub>i</sub></td><td>El bloque <em>i</em>, el que hace de validación en esa ronda <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>f<sub>−i</sub></td><td>El modelo entrenado con <strong>todo menos</strong> D<sub>i</sub>. El subíndice negativo es «sin el bloque i» <span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td>L</td><td>La función de pérdida: MAE, MSE, error de clasificación… <strong>La eliges tú</strong> <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>Σ</td><td>«Suma sobre las k rondas»</td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.7rem 0 0"><strong>Dos de los cinco símbolos
+  son decisiones tuyas</strong>, no verdades del problema: <code>k</code> y
+  <code>L</code>. Cambiarlas cambia el número. Por eso una respuesta que dice
+  «hice validación cruzada» sin decir <em>cuál</em> y <em>con qué métrica</em>
+  está incompleta.</p>
+</div>
+
+<h3>El camino inverso: te dan la fórmula en el papel</h3>
+
+<p>En una prueba escrita la ecuación llega primero. Esto es lo que hay que poder
+reconstruir, en orden:</p>
+
+<ol class="pasos">
+  <li><strong>¿Qué compara?</strong> Nada: no compara, <em>promedia</em>. Es una
+  media de k errores, no una diferencia entre dos cosas</li>
+  <li><strong>¿Por qué el subíndice −i?</strong> Porque el modelo de la ronda
+  <em>i</em> nunca vio el bloque <em>i</em>. Si lo hubiera visto, el error no
+  mediría generalización</li>
+  <li><strong>¿Cuántas veces se entrena el modelo?</strong> <strong>k veces</strong>,
+  una por ronda. Ese es el costo: validación cruzada es k veces más cara que
+  validación simple</li>
+  <li><strong>¿Cuántas veces se usa cada dato?</strong> k−1 veces para entrenar y
+  <strong>exactamente una</strong> para validar. Esa es la propiedad que define
+  K-Fold</li>
+  <li><strong>¿Qué pasa si k = n?</strong> Cada bloque tiene un solo dato. Se llama
+  <em>leave-one-out</em>: máximo aprovechamiento, máximo costo</li>
+</ol>
+
+<div class="peligro">
+<strong>El error que este formato castiga.</strong> Decir <em>«el CV dio 0,8»</em>
+como si fuera una métrica que se reporta. <strong>CV no es una métrica: es un
+método para estimar una métrica.</strong> Lo que se reporta es el MAE, la
+exactitud o el F1 — <em>estimados por validación cruzada</em>. Y la métrica final
+se reporta sobre el <strong>test</strong>, que sigue guardado en el bolsillo.
+</div>
+
+<h2>6 · Las tres estrategias que nombró</h2>
+
+<table>
+<tr><th>Estrategia</th><th>Cómo parte</th><th>Cuándo conviene</th></tr>
+<tr><td><strong>K-Fold</strong></td><td>k bloques fijos; cada uno valida una vez</td><td>El caso general. Cada dato se usa exactamente una vez como validación</td></tr>
+<tr><td><strong>Shuffle split</strong><br><em>(submuestreo aleatorio)</em></td><td>Sortea train/validación varias veces, independientes</td><td>Cuando quieres controlar el tamaño de validación y el número de repeticiones por separado</td></tr>
+<tr><td><strong>Bootstrapping</strong></td><td>Muestrea <strong>con reemplazo</strong>; lo que queda fuera valida</td><td>Pocos datos. Un mismo dato puede aparecer varias veces en el entrenamiento</td></tr>
+</table>
+
+<div class="nota">
+<strong>La diferencia que se pregunta:</strong> en K-Fold los bloques son
+<strong>disjuntos</strong> y cada dato valida <em>una vez</em>. En shuffle split
+los sorteos son independientes: un dato puede caer en validación tres veces y
+otro ninguna. En bootstrap el entrenamiento puede <strong>repetir</strong> filas.
+</div>
+
+<div class="peligro">
+<strong>Y la excepción que te toca de cerca.</strong> Nada de esto vale si los
+datos tienen orden temporal. Mezclar para armar los folds mete datos del futuro
+en el entrenamiento. Tu proyecto de Melbourne es exactamente ese caso: train 2016
+→ test 2017, <strong>sin mezclar</strong>. Ahí la validación cruzada estándar está
+prohibida, y hay que usar cortes temporales.
+</div>
+
+<h2>7 · Por qué esto te importa a ti en particular</h2>
+
+<div class="clave">
+Tienes un error abierto registrado: <strong>diagnosticar sin calcular la
+brecha</strong>. Ante la tabla <code>A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39</code>
+dijiste <em>«A sobreajusta, B subajusta, C está bien»</em> sin calcular las
+diferencias.<br><br>
+<strong>La validación cruzada es la herramienta que convierte esa intuición en un
+número.</strong> No solo te da el error de validación: te da <strong>k</strong> de
+ellos, y con eso una desviación. Una brecha de 0,44 entre entrenamiento y
+validación significa una cosa si los folds varían ±0,02, y otra muy distinta si
+varían ±0,20.
+</div>
+
+<h2>8 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. ¿HAY ORDEN TEMPORAL?      sí → corte temporal, NO k-fold con mezcla
+2. APARTAR EL TEST           antes de todo. No se toca hasta el final
+3. ELEGIR k                  5 o 10. Declararlo
+4. ELEGIR LA PÉRDIDA L       MAE, MSE, F1… Declararla
+5. PARA CADA RONDA i         entrenar sin Dᵢ, medir sobre Dᵢ
+6. PROMEDIAR                 CV = media de los k errores
+7. MIRAR LA DISPERSIÓN       si los folds varían mucho, el promedio engaña
+8. DECIDIR                   el hiperparámetro se elige con CV
+9. REPORTAR                  el test, UNA vez, y no se vuelve atrás
+</pre>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero te dice: <em>«hice validación cruzada: separé mis datos en
+entrenamiento, validación y test, y elegí el modelo con el de validación»</em>.<br><br>
+<strong>¿Hizo validación cruzada? Responde verdadero o falso con justificación, y
+nombra qué le falta exactamente.</strong><br><br>
+Pista: tu profesor respondió justo esto a Francisco, en el minuto 0:51:38.
+</div>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+    de dónde viene esto, y los cuatro métodos con su visualización</li>
+<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué es
+    exactamente la brecha que la validación cruzada mide</li>
+<li><a href="certamen_2.html"><code>certamen_2.html</code></a> — dónde se pregunta:
+    la P3 dice <em>«se puede medir el nivel de sobreajuste utilizando validación
+    cruzada»</em>, y es verdadera</li>
+</ul>
+</div>
+
+<footer>
+Generado por Datito · <code>07_DATITO/visual/validacion_cruzada.html</code><br>
+Citas textuales de la transcripción de la clase del 31 de julio, con marca de
+tiempo verificable. Funciona sin conexión.
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- Datos: 20 arboles. Relacion cuadratica real + ruido. Semilla fija. ----
+let semilla = 20260731;
+function rnd(){ semilla = (semilla * 1664525 + 1013904223) % 4294967296; return semilla / 4294967296; }
+function gauss(){ return (rnd()+rnd()+rnd()+rnd()+rnd()+rnd()-3) / 1.5; }
+
+const DATOS = [];
+for (let i = 0; i < 20; i++){
+  const x = 10 + i * 1.4;                       // DAP 10 a 36.6 cm
+  const y = 0.02 + 0.0011 * x * x + 0.11 * gauss();   // volumen m3
+  DATOS.push({x, y: Math.max(0.05, y)});
+}
+const XMIN = 8, XMAX = 39, YMIN = 0, YMAX = 2.0;
+const GRADOS = [1,2,3,4,5,6];
+
+// ---- Ajuste polinomial por ecuaciones normales (x escalado a [-1,1]) ----
+function esc(x){ return (2*(x - XMIN)/(XMAX - XMIN)) - 1; }
+
+function ajustar(puntos, grado){
+  const m = grado + 1;
+  const A = Array.from({length:m}, () => new Array(m).fill(0));
+  const b = new Array(m).fill(0);
+  for (const p of puntos){
+    const u = esc(p.x);
+    const pot = [1]; for (let j = 1; j < 2*m; j++) pot.push(pot[j-1]*u);
+    for (let r = 0; r < m; r++){
+      for (let c = 0; c < m; c++) A[r][c] += pot[r+c];
+      b[r] += pot[r] * p.y;
+    }
+  }
+  for (let r = 0; r < m; r++) A[r][r] += 1e-9;          // regularizacion minima
+  // Gauss con pivoteo parcial
+  for (let c = 0; c < m; c++){
+    let piv = c;
+    for (let r = c+1; r < m; r++) if (Math.abs(A[r][c]) > Math.abs(A[piv][c])) piv = r;
+    [A[c], A[piv]] = [A[piv], A[c]]; [b[c], b[piv]] = [b[piv], b[c]];
+    if (Math.abs(A[c][c]) < 1e-12) return null;
+    for (let r = c+1; r < m; r++){
+      const f = A[r][c]/A[c][c];
+      for (let k = c; k < m; k++) A[r][k] -= f*A[c][k];
+      b[r] -= f*b[c];
+    }
+  }
+  const co = new Array(m).fill(0);
+  for (let r = m-1; r >= 0; r--){
+    let s = b[r];
+    for (let k = r+1; k < m; k++) s -= A[r][k]*co[k];
+    co[r] = s/A[r][r];
+  }
+  return co;
+}
+function evaluar(co, x){
+  const u = esc(x); let y = 0, p = 1;
+  for (const c of co){ y += c*p; p *= u; }
+  return y;
+}
+function mse(co, puntos){
+  if (!co) return Infinity;
+  let s = 0;
+  for (const p of puntos) s += (p.y - evaluar(co, p.x))**2;
+  return s/puntos.length;
+}
+
+// ---- Estado ----
+let idxVal = [], ganadores = [], kGanadores = [], coActual = null, gradoActual = null;
+
+function sortearIdx(){
+  const idx = DATOS.map((_,i)=>i);
+  for (let i = idx.length-1; i > 0; i--){
+    const j = Math.floor(rnd()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  return idx.slice(0,5).sort((a,b)=>a-b);
+}
+
+function unSorteo(){
+  idxVal = sortearIdx();
+  const val = idxVal.map(i=>DATOS[i]);
+  const tr  = DATOS.filter((_,i)=>!idxVal.includes(i));
+  let mejor = null, mejorE = Infinity;
+  for (const g of GRADOS){
+    const e = mse(ajustar(tr,g), val);
+    if (e < mejorE){ mejorE = e; mejor = g; }
+  }
+  gradoActual = mejor; coActual = ajustar(tr, mejor);
+  ganadores.push(mejor);
+  $('m-grado').textContent = mejor;
+  $('m-err').textContent = mejorE.toFixed(4);
+  $('m-veces').textContent = ganadores.length;
+  $('m-distintos').textContent = new Set(ganadores).size;
+  pintaHist('hist', ganadores);
+  dibuja();
+  veredicto();
+}
+
+function pintaHist(destino, arr){
+  const cont = $(destino); cont.innerHTML = '';
+  const cuenta = {};
+  arr.forEach(g => cuenta[g] = (cuenta[g]||0)+1);
+  arr.forEach(g => {
+    const s = document.createElement('span');
+    s.textContent = 'g' + g;
+    if (cuenta[g] === 1 && arr.length > 1) s.className = 'rep';
+    cont.appendChild(s);
+  });
+}
+
+function veredicto(){
+  if (ganadores.length < 10) return;
+  const d = new Set(ganadores).size;
+  const v = document.querySelector('#pred1 .veredicto');
+  const elegida = document.querySelector('#pred1 button.elegida');
+  if (!elegida || v.classList.contains('on')) return;
+  const val = elegida.dataset.v;
+  const real = d === 1 ? '1' : (d <= 3 ? '2' : '3');
+  v.innerHTML = '<strong>' + (val === real ? 'Acertaste.' : 'No era eso.') +
+    '</strong> Con 10 sorteos salieron <strong>' + d + ' grados distintos</strong> ganadores. ' +
+    (d > 1
+      ? 'Los datos no cambiaron ni una vez: lo único que cambió fue qué 5 árboles cayeron en validación. Tu decisión estaba dependiendo del sorteo.'
+      : 'Vuelve a sortear unas cuantas veces más: con 20 puntos la lotería casi siempre aparece.');
+  v.classList.add('on');
+}
+
+// ---- K-Fold ----
+function correrKFold(){
+  const idx = DATOS.map((_,i)=>i);
+  for (let i = idx.length-1; i > 0; i--){
+    const j = Math.floor(rnd()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  const k = 4, folds = [];
+  for (let i = 0; i < k; i++) folds.push(idx.slice(i*5, i*5+5).sort((a,b)=>a-b));
+
+  let mejor = null, mejorE = Infinity, mejorErrs = null;
+  for (const g of GRADOS){
+    const errs = folds.map(f => {
+      const val = f.map(i=>DATOS[i]);
+      const tr  = DATOS.filter((_,i)=>!f.includes(i));
+      return mse(ajustar(tr,g), val);
+    });
+    const prom = errs.reduce((a,b)=>a+b,0)/k;
+    if (prom < mejorE){ mejorE = prom; mejor = g; mejorErrs = errs; }
+  }
+  const media = mejorE;
+  const desv = Math.sqrt(mejorErrs.reduce((a,e)=>a+(e-media)**2,0)/mejorErrs.length);
+
+  kGanadores.push(mejor);
+  $('k-grado').textContent = mejor;
+  $('k-err').textContent = media.toFixed(4);
+  $('k-desv').textContent = '±' + desv.toFixed(4);
+  $('k-veces').textContent = kGanadores.length;
+  pintaHist('khist', kGanadores);
+
+  const cont = $('folds'); cont.innerHTML = '';
+  folds.forEach((f,i) => {
+    const fila = document.createElement('div');
+    fila.className = 'fold';
+    for (let b = 0; b < k; b++){
+      const d = document.createElement('div');
+      d.style.flex = '1';
+      d.className = (b === i) ? 'f-va' : 'f-tr';
+      d.textContent = (b === i) ? 'validación' : 'entrena';
+      fila.appendChild(d);
+    }
+    const etq = document.createElement('div');
+    etq.style.cssText = 'font-size:.78rem;color:#666;margin-bottom:.15rem';
+    etq.textContent = 'ronda ' + (i+1) + ' · error ' + mejorErrs[i].toFixed(4);
+    cont.appendChild(etq); cont.appendChild(fila);
+  });
+}
+
+// ---- Dibujo ----
+function dibuja(){
+  const c = $('lienzo'), g = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 58, MB = 42, MT = 14, MR = 14;
+  g.clearRect(0,0,W,H);
+  const px = x => ML + (x-XMIN)/(XMAX-XMIN)*(W-ML-MR);
+  const py = y => H-MB - (y-YMIN)/(YMAX-YMIN)*(H-MT-MB);
+
+  g.strokeStyle = '#e5e5e5'; g.lineWidth = 1;
+  for (let y = 0; y <= 2.0; y += 0.5){
+    g.beginPath(); g.moveTo(ML,py(y)); g.lineTo(W-MR,py(y)); g.stroke();
+    g.fillStyle = '#666'; g.font = '11px system-ui'; g.textAlign = 'right';
+    g.fillText(y.toFixed(1), ML-8, py(y)+4);
+  }
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(ML,MT); g.lineTo(ML,H-MB); g.lineTo(W-MR,H-MB); g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#666';
+  for (let x = 10; x <= 36; x += 5) g.fillText(x, px(x), H-MB+16);
+  g.fillText('DAP [cm]', (ML+W-MR)/2, H-8);
+  g.save(); g.translate(14, (MT+H-MB)/2); g.rotate(-Math.PI/2);
+  g.fillText('Volumen [m³]', 0, 0); g.restore();
+
+  if (coActual){
+    g.strokeStyle = '#d97706'; g.lineWidth = 2.5; g.beginPath();
+    let primero = true;
+    for (let x = XMIN; x <= XMAX; x += 0.25){
+      const y = evaluar(coActual, x);
+      const Y = Math.max(MT-40, Math.min(H-MB+40, py(y)));
+      primero ? (g.moveTo(px(x), Y), primero = false) : g.lineTo(px(x), Y);
+    }
+    g.stroke();
+  }
+  DATOS.forEach((p,i) => {
+    const esVal = idxVal.includes(i);
+    g.beginPath(); g.arc(px(p.x), py(p.y), esVal ? 7 : 5, 0, 7);
+    g.fillStyle = esVal ? '#dc2626' : '#2563eb';
+    g.fill();
+    if (esVal){ g.strokeStyle = '#7f1d1d'; g.lineWidth = 2; g.stroke(); }
+  });
+  g.textAlign = 'left'; g.font = '12px system-ui';
+  g.fillStyle = '#2563eb'; g.fillText('● entrenamiento (15)', ML+8, MT+14);
+  g.fillStyle = '#dc2626'; g.fillText('● validación (5)', ML+160, MT+14);
+  if (gradoActual){
+    g.fillStyle = '#d97706';
+    g.fillText('— grado ganador: ' + gradoActual, ML+290, MT+14);
+  }
+}
+
+// ---- Eventos ----
+$('sortear').onclick = unSorteo;
+$('sortear10').onclick = () => { for (let i = 0; i < 10; i++) unSorteo(); };
+$('reiniciar').onclick = () => {
+  ganadores = []; kGanadores = []; idxVal = []; coActual = null; gradoActual = null;
+  ['m-grado','m-err','k-grado','k-err','k-desv'].forEach(i => $(i).textContent = '—');
+  ['m-veces','m-distintos','k-veces'].forEach(i => $(i).textContent = '0');
+  $('hist').innerHTML = ''; $('khist').innerHTML = ''; $('folds').innerHTML = '';
+  dibuja();
+};
+$('correrkf').onclick = correrKFold;
+document.querySelectorAll('#pred1 button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('#pred1 button').forEach(x => x.classList.remove('elegida'));
+    b.classList.add('elegida');
+  };
+});
+
+dibuja();
+</script>
+</main>
+</body>
+</html>

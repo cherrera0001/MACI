@@ -1,5 +1,5 @@
 """
-Integra una transcripcion de clase al flujo de Guillito, de principio a fin.
+Integra una transcripcion de clase al flujo de Datito, de principio a fin.
 
 EL PROBLEMA QUE RESUELVE
 Una transcripcion suelta es un .md de 85 KB que nadie va a leer entero. Para

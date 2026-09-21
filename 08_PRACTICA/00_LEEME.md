@@ -9,7 +9,7 @@ en dos versiones:
 | `(vacio)` | Enunciados sin resolver | **Ejercicios reales** para practicar |
 
 La distinción importa: los `(vacio)` son la fuente de ejercicios con solución
-conocida pero no visible. Guillito los usa como evidencia de **APLICAR**, porque
+conocida pero no visible. Datito los usa como evidencia de **APLICAR**, porque
 resolver uno sin mirar el `(res)` es una prueba genuina de comprensión.
 
 ---

@@ -1,0 +1,224 @@
+# Registro de errores conceptuales
+#
+# Dos secciones, y la distincion entre ellas importa:
+#
+#   observados          Errores que Cristobal COMETIO de verdad, con fecha.
+#                       Datito los escribe. Empiezan vacios.
+#
+#   patrones_vigilados  Confusiones frecuentes en estos temas que Datito debe
+#                       ANTICIPAR. No son errores suyos: son trampas conocidas.
+#                       No las cuentes como fallos hasta que ocurran.
+#
+# Si un error observado reaparece, incrementa 'veces' y anade la fecha. Un error
+# que vuelve tres veces no es un despiste: es un modelo mental equivocado, y hay
+# que atacarlo de frente en vez de corregir el sintoma.
+
+meta:
+  creado: 2026-09-18
+  total_observados: 3
+
+observados:
+
+  - id: diagnostica_sin_calcular_la_brecha
+    concepto: overfitting_underfitting
+    veces: 1
+    fechas: [2026-09-19]
+    dijo: >-
+      "A sobreajusta, B subajusta, C esta bien" ante la tabla
+      A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39
+    confusion_de_fondo: >-
+      El mecanismo lo tiene bien: describio el sobreajuste como "buenos
+      resultados en entrenamiento pero mucho error con datos nuevos", que es
+      correcto y es un avance frente al error anterior de usar la etiqueta sin
+      mecanismo. Lo que fallo fue la LECTURA de la tabla: asigno los tres
+      diagnosticos a las filas equivocadas. Describio el patron de B y lo
+      llamo A. No calculo las brechas, que es el paso 2 del procedimiento
+      escrito para esta familia de problemas.
+    distincion_no_es_conceptual: true
+    desmontaje_que_funciono: pendiente
+    estado: abierto
+    nota: >-
+      Importante para Datito: NO tratarlo como incomprension del concepto.
+      Es un fallo de procedimiento -saltarse el calculo de la brecha- y se
+      corrige exigiendo el paso, no reexplicando sobreajuste.
+
+  - id: sobreajuste_como_etiqueta_de_toda_degradacion
+    concepto: train_validation_test
+    veces: 1
+    fechas: [2026-09-18]
+    dijo: "entonces, podemos hablar de un sobreajuste"
+    confusion_de_fondo: >-
+      Usa "sobreajuste" como explicacion de cualquier empeoramiento sobre datos
+      nuevos. El sobreajuste se diagnostica comparando TRAIN contra VALIDACION.
+      La tabla que se le mostro compara VALIDACION contra TEST: en ambas columnas
+      el modelo esta viendo datos que nunca uso para entrenar, asi que la brecha
+      entre ellas tiene otra causa (cambio de distribucion entre 2016 y 2017).
+      Ademas nombrar la etiqueta no es explicar el mecanismo.
+    desmontaje_que_funciono: >-
+      Mostrarle que AMBAS columnas de la tabla (CV 2016 y test 2017) son datos
+      que el modelo nunca uso para entrenar. El sobreajuste se diagnostica train
+      contra validacion; si en las dos columnas los datos son inéditos, la
+      brecha entre ellas tiene otra causa. Lo acepto y reoriento solo.
+    estado: resuelto
+
+  # ANULADO. Este registro fue un error de Datito, no de Cristobal.
+  # Se le mostro una tabla recortada a 3 filas de 12, ocultando justamente las
+  # de Random Forest y Gradient Boosting, y acto seguido se le corrigio con un
+  # "ya los probaste" que el no podia verificar. Su reaccion fue correcta:
+  # desconfio de la tabla y exigio los datos completos. Al verlos, identifico
+  # sus cifras sin ayuda. No se contabiliza como error suyo.
+  - id: no_reconoce_sus_propios_resultados
+    concepto: train_validation_test
+    veces: 0
+    fechas: [2026-09-18]
+    dijo: >-
+      "un modelo que deberias validar, o que deberia probar es gradient boosting,
+      o random forest"
+    confusion_de_fondo: >-
+      Atribuido inicialmente a que leia la tabla como ejercicio hipotetico. La
+      causa real fue la tabla truncada que se le presento. Con las 12 filas a la
+      vista reconocio sus resultados de inmediato y recordo correctamente el
+      R2 0,719 y el MAE 205.546 de su Trabajo N2.
+    desmontaje_que_funciono: >-
+      Mostrar la tabla completa. Leccion para Datito: no recortar evidencia
+      del alumno para ilustrar un punto, y nunca corregirlo con datos que no
+      tiene delante.
+    estado: anulado
+
+  - id: categoria_desconocida_en_vez_de_extrapolacion
+    concepto: train_validation_test
+    veces: 1
+    fechas: [2026-09-18]
+    dijo: >-
+      "pero hay sobre 170 barrios nuevos, y codigos postales" (como explicacion
+      de la degradacion en 2017)
+    confusion_de_fondo: >-
+      Identifica el fenomeno correcto -172 suburbios nuevos, cifra exacta- pero
+      le atribuye el mecanismo equivocado. Supone que el modelo falla ante una
+      categoria que no vio. Pero Suburb y Postcode estan EXCLUIDAS del modelo:
+      nunca las leyo. El mecanismo real es extrapolacion geografica: 831 de
+      2.109 filas nuevas caen fuera del rango de latitud de 2016 y 1.092 fuera
+      del de longitud. El modelo predice donde no tiene datos.
+    desmontaje_que_funciono: >-
+      Recordarle la lista de features excluidas y calcular en vivo los rangos de
+      Lattitude/Longtitude de 2016 frente a las filas nuevas de 2017. Ver los
+      831 y 1.092 hace visible que el problema es geometrico, no categorico.
+    estado: resuelto
+
+# Formato de cada entrada de 'observados':
+#
+#   - id: r2_como_porcentaje_de_aciertos
+#     concepto: regresion
+#     veces: 2
+#     fechas: [2026-09-20, 2026-10-04]
+#     dijo: "R2 = 0,765 significa que acierta el 76,5% de las veces"
+#     confusion_de_fondo: >-
+#       Trata una metrica de varianza explicada como si fuera una tasa de acierto.
+#       Subyace algo mas general: aplicar el marco de clasificacion a un problema
+#       de regresion, donde no existe "acertar".
+#     desmontaje_que_funciono: >-
+#       Pedirle que nombre UNA sola prediccion "correcta" en predicciones_2017.csv.
+#       Al ver que ninguna coincide exactamente, la idea de acierto se cae sola.
+#     estado: resuelto | reincidente | abierto
+
+patrones_vigilados:
+
+  - id: r2_como_porcentaje_de_aciertos
+    concepto: regresion
+    confusion: >-
+      Leer R2 = 0,30 como "acierta el 30% de las predicciones". R2 mide que
+      proporcion de la varianza del target explica el modelo, no una tasa de
+      acierto. En regresion no existe "acertar": ninguna prediccion continua cae
+      exactamente sobre el valor real.
+    senal: Usar las palabras acierto, correcto o porcentaje al hablar de R2.
+    desmontaje: >-
+      Pedirle que senale UNA prediccion correcta en 05_RESULTADOS/predicciones_2017.csv.
+      No hay ninguna exacta, y aun asi el R2 es 0,757. La nocion de acierto se
+      cae sola.
+
+  - id: mae_sin_escala
+    concepto: regresion
+    confusion: >-
+      Juzgar un MAE en abstracto. 188.218 no es "mucho" ni "poco" hasta
+      compararlo con la escala del target y con un baseline.
+    senal: Decir que el MAE es alto o bajo sin mencionar la mediana ni un baseline.
+    desmontaje: >-
+      Comparar 188.218 contra la mediana de 910.000 (21%) y contra el MAE del
+      baseline de mediana que ya esta calculado en resultados_temporal.json.
+
+  - id: accuracy_con_clases_desbalanceadas
+    concepto: metricas_clasificacion
+    confusion: >-
+      Tomar accuracy como la metrica por defecto. Con clases desbalanceadas un
+      modelo que predice siempre la clase mayoritaria obtiene accuracy alta sin
+      aprender nada.
+    senal: Proponer accuracy para Galaxy Zoo, cuya metrica oficial es F1-macro.
+    desmontaje: >-
+      Construir el clasificador trivial que siempre responde la clase mas
+      frecuente y calcular su accuracy. Luego su F1-macro.
+
+  - id: auc_confundido_con_accuracy
+    concepto: roc_auc
+    confusion: >-
+      Tratar AUC como una version mas de accuracy. AUC mide la capacidad de
+      ORDENAR positivos por encima de negativos y es independiente del umbral;
+      accuracy depende por completo del umbral elegido.
+    senal: No poder explicar como un modelo tiene AUC 0,90 y accuracy 0,60.
+    desmontaje: >-
+      Un ejemplo de 4 casos donde el ranking es perfecto pero el umbral 0,5 esta
+      mal puesto. AUC = 1,0 y accuracy mediocre a la vez.
+    nota: >-
+      PRIORITARIO. El expediente del Certamen 2 marca las cifras de AUC de la
+      pregunta 9 como no evidenciadas. Es un vacio identificado por escrito
+      antes de empezar.
+
+  - id: split_aleatorio_en_datos_temporales
+    concepto: train_validation_test
+    confusion: >-
+      Usar split aleatorio cuando los datos tienen orden temporal. Mezcla futuro
+      y pasado, y produce una metrica optimista que no mide lo que importa.
+    senal: >-
+      Proponer train_test_split con shuffle para Melbourne, o defender el 81%
+      de la version obsoleta como si fuera comparable.
+    desmontaje: >-
+      Su propio repositorio: 99_ARCHIVO/_obsoleto_split_aleatorio/ anuncia "81%
+      Precision" y fue invalidado. Un numero mas alto midiendo mal.
+
+  - id: mirar_el_test_para_elegir_modelo
+    concepto: validacion_cruzada
+    confusion: >-
+      Elegir el modelo comparando resultados en test. Eso convierte el test en
+      un conjunto de validacion y deja de existir estimacion honesta del error.
+    senal: Proponer probar varios modelos en 2017 y quedarse con el mejor.
+    desmontaje: >-
+      Preguntarle que le queda para estimar el error una vez que uso el test
+      para decidir. La respuesta es: nada.
+
+  - id: correlacion_implica_causalidad
+    concepto: eda
+    confusion: Leer una correlacion alta como relacion causal.
+    senal: Afirmar que una feature "hace que" suba el precio a partir de correlacion.
+    desmontaje: >-
+      Distance y Price correlacionan en Melbourne, pero acercar fisicamente una
+      casa al centro no cambia su precio: cambia el barrio, que es la variable
+      real detras.
+
+  - id: overfitting_como_error_alto
+    concepto: overfitting_underfitting
+    confusion: >-
+      Creer que sobreajustar significa tener error alto. Sobreajustar es tener
+      error BAJO en train y alto en test. La brecha es el sintoma, no el nivel.
+    senal: Diagnosticar overfitting mirando un solo numero.
+    desmontaje: >-
+      Poner los dos numeros de un baseline y los de un arbol sin podar, y pedirle
+      que diagnostique cada uno solo con esos pares.
+
+  - id: mas_features_siempre_mejor
+    concepto: limpieza_preparacion
+    confusion: >-
+      Asumir que anadir columnas siempre mejora. Pueden introducir ruido, fuga de
+      informacion, o no estar disponibles al momento de predecir.
+    senal: Preguntar por que no se usaron BuildingArea y YearBuilt, asumiendo que fue un descuido.
+    desmontaje: >-
+      Fueron excluidas deliberadamente. Revisar 03_CODIGO/preparar_dashai.py y la
+      lista 'excluidas' del curriculum.

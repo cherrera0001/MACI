@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accuracy, precisión, recall y F1 — elegir el denominador</title>
+<style>
+  :root{
+    --tinta:#1c1f24;
+    --tinta2:#4a5058;
+    --papel:#fbfaf7;
+    --caja:#ffffff;
+    --linea:#ddd8cf;
+    --acierto:#2f6b46;
+    --acierto-bg:#e6f0ea;
+    --error:#9b3226;
+    --error-bg:#f6e6e3;
+    --real:#2b5d8c;     /* eje: lo que ERA */
+    --real-bg:#e3ecf4;
+    --pred:#8a5a12;     /* eje: lo que DIJE */
+    --pred-bg:#f6eddc;
+    --total:#5a4a78;
+    --total-bg:#ece8f3;
+    --aviso:#7a5b00;
+    --aviso-bg:#fdf6e0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--papel); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16.5px; line-height:1.62;
+  }
+  .hoja{max-width:860px; margin:0 auto; padding:34px 26px 90px}
+  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
+  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
+  .ruta{color:var(--tinta2); font-size:.86rem; margin:14px 0 0; font-variant-numeric:tabular-nums}
+  h2{
+    font-size:1.22rem; margin:52px 0 12px; padding-top:18px;
+    border-top:1px solid var(--linea); letter-spacing:-.01em;
+  }
+  h3{font-size:1.02rem; margin:26px 0 8px; color:var(--tinta)}
+  p{margin:0 0 13px}
+  ul,ol{margin:0 0 13px; padding-left:22px}
+  li{margin:0 0 6px}
+  code,.mono{font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace; font-size:.93em}
+  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
+  .caja.tenue{background:#f5f3ee}
+  .aviso{background:var(--aviso-bg); border:1px solid #e8d9a8; border-left:4px solid #c9a227; border-radius:6px; padding:14px 17px; margin:20px 0}
+  .aviso .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--aviso); font-weight:700; display:block; margin-bottom:5px}
+  .certamen{background:#efe9f5; border:1px solid #d5c9e4; border-left:4px solid var(--total); border-radius:6px; padding:14px 17px; margin:20px 0}
+  .certamen .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--total); font-weight:700; display:block; margin-bottom:5px}
+  .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
+  .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
+
+  /* ---- ecuaciones ---- */
+  .eq{
+    background:#f3f1ec; border:1px solid var(--linea); border-radius:7px;
+    padding:15px 18px; margin:14px 0; text-align:center;
+    font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
+    font-size:1.02rem; overflow-x:auto;
+  }
+  .frac{display:inline-block; vertical-align:middle; text-align:center; margin:0 3px}
+  .frac .num{display:block; padding:0 8px 2px; border-bottom:1.6px solid var(--tinta)}
+  .frac .den{display:block; padding:3px 8px 0}
+  .den-real{color:var(--real); font-weight:700}
+  .den-pred{color:var(--pred); font-weight:700}
+  .den-total{color:var(--total); font-weight:700}
+  .ok{color:var(--acierto); font-weight:700}
+  .mal{color:var(--error); font-weight:700}
+
+  /* ---- matriz interactiva ---- */
+  .mwrap{display:grid; grid-template-columns:118px 1fr 1fr; gap:6px; margin:18px 0 6px; font-size:.93rem}
+  .mcell{
+    border:1.6px solid var(--linea); border-radius:7px; padding:11px 10px; text-align:center;
+    background:#fff; transition:background .16s, border-color .16s, box-shadow .16s;
+  }
+  .mcell .nom{font-size:.73rem; letter-spacing:.06em; text-transform:uppercase; color:var(--tinta2); display:block}
+  .mcell .val{font-size:1.5rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.18}
+  .mcell .glosa{font-size:.76rem; color:var(--tinta2); display:block; line-height:1.34; margin-top:3px}
+  .mcell.vp,.mcell.vn{border-color:#bcd6c6}
+  .mcell.vp .val,.mcell.vn .val{color:var(--acierto)}
+  .mcell.fp,.mcell.fn{border-color:#e3c3bc}
+  .mcell.fp .val,.mcell.fn .val{color:var(--error)}
+  .mcell.lit{box-shadow:0 0 0 3px rgba(0,0,0,.055)}
+  .mcell.lit-real{background:var(--real-bg); border-color:var(--real)}
+  .mcell.lit-pred{background:var(--pred-bg); border-color:var(--pred)}
+  .mcell.lit-total{background:var(--total-bg); border-color:var(--total)}
+  .mrot{display:flex; align-items:center; justify-content:flex-end; padding-right:9px; text-align:right; font-size:.83rem; color:var(--tinta2); line-height:1.3}
+  .mhead{text-align:center; font-size:.79rem; letter-spacing:.05em; text-transform:uppercase; color:var(--pred); font-weight:700; padding-bottom:2px}
+  .mtitulo-real{font-size:.79rem; letter-spacing:.05em; text-transform:uppercase; color:var(--real); font-weight:700}
+
+  .btnfila{display:flex; flex-wrap:wrap; gap:7px; margin:16px 0 4px}
+  .bmet{
+    font:inherit; font-size:.88rem; padding:7px 13px; border-radius:20px; cursor:pointer;
+    border:1.5px solid var(--linea); background:#fff; color:var(--tinta2); transition:all .15s;
+  }
+  .bmet:hover{border-color:#bbb4a8; color:var(--tinta)}
+  .bmet[aria-pressed="true"]{background:var(--tinta); color:#fff; border-color:var(--tinta)}
+  .explica{
+    min-height:70px; background:#f5f3ee; border:1px solid var(--linea);
+    border-radius:7px; padding:14px 16px; margin:12px 0 0; font-size:.94rem;
+  }
+  .explica .kicker{font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--tinta2); display:block; margin-bottom:4px}
+
+  /* ---- controles ---- */
+  .panel{background:var(--caja); border:1px solid var(--linea); border-radius:10px; padding:20px 22px; margin:22px 0}
+  .ctl{margin:16px 0 4px}
+  .ctl label{display:block; font-size:.88rem; font-weight:600; margin-bottom:5px}
+  .ctl label .v{float:right; font-variant-numeric:tabular-nums; color:var(--tinta2); font-weight:400}
+  input[type=range]{width:100%; margin:0; accent-color:var(--tinta)}
+  select{font:inherit; font-size:.92rem; padding:5px 8px; border:1px solid var(--linea); border-radius:6px; background:#fff}
+  canvas{display:block; width:100%; height:auto; border:1px solid var(--linea); border-radius:7px; background:#fff}
+
+  .pred{background:var(--aviso-bg); border:1px solid #e8d9a8; border-radius:7px; padding:13px 16px; margin:14px 0}
+  .pred .q{font-size:.92rem; font-weight:600; margin:0 0 9px}
+  .pred .ops{display:flex; flex-wrap:wrap; gap:7px}
+  .bpred{font:inherit; font-size:.86rem; padding:6px 12px; border-radius:6px; cursor:pointer; border:1.5px solid #ddd0a4; background:#fff; color:var(--tinta)}
+  .bpred[aria-pressed="true"]{background:var(--aviso); color:#fff; border-color:var(--aviso)}
+  .contraste{font-size:.9rem; margin:11px 0 0; padding-top:10px; border-top:1px dashed #ddd0a4; display:none}
+  .contraste.on{display:block}
+
+  .metgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr)); gap:9px; margin:18px 0 0}
+  .met{border:1px solid var(--linea); border-radius:7px; padding:10px 11px; background:#fff}
+  .met .n{font-size:.74rem; letter-spacing:.05em; text-transform:uppercase; color:var(--tinta2); display:block}
+  .met .c{font-size:1.32rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.25}
+  .met .d{font-size:.75rem; color:var(--tinta2); display:block; font-family:ui-monospace,Consolas,monospace}
+  .met.destaca{background:var(--aviso-bg); border-color:#e8d9a8}
+
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:.91rem}
+  th,td{border:1px solid var(--linea); padding:8px 10px; text-align:left; vertical-align:top}
+  th{background:#f3f1ec; font-weight:600; font-size:.85rem}
+  td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
+
+  details{border:1px solid var(--linea); border-radius:7px; padding:11px 15px; margin:14px 0; background:#fff}
+  details[open]{background:#f8f7f3}
+  summary{cursor:pointer; font-weight:600; font-size:.93rem}
+  summary::marker{color:var(--tinta2)}
+  details .cuerpo{margin-top:12px; padding-top:11px; border-top:1px solid var(--linea)}
+
+  .grafo{display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.87rem; margin:14px 0}
+  .nodo{border:1px solid var(--linea); border-radius:16px; padding:5px 13px; background:#fff; color:var(--tinta2)}
+  .nodo.aqui{background:var(--tinta); color:#fff; border-color:var(--tinta); font-weight:600}
+  .flecha{color:var(--tinta2)}
+  .pasos{counter-reset:p; list-style:none; padding-left:0}
+  .pasos li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:11px}
+  .pasos li::before{
+    content:counter(p); position:absolute; left:0; top:1px; width:23px; height:23px;
+    border-radius:50%; background:var(--tinta); color:#fff; font-size:.79rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  @media(max-width:620px){
+    .mwrap{grid-template-columns:78px 1fr 1fr; font-size:.86rem}
+    .mcell .val{font-size:1.25rem}
+    .hoja{padding:24px 16px 70px}
+  }
+</style>
+</head>
+<body>
+<div class="hoja">
+
+<h1>Accuracy, precisión, recall y F1</h1>
+<p class="sub">Las cuatro comparten casi el mismo numerador. Lo que las separa es <strong>por qué dividen</strong>.</p>
+<p class="ruta">Datito · concepto 12 del currículum · prerrequisito: matriz de confusión</p>
+
+<div class="grafo" style="margin-top:22px">
+  <span class="nodo">clasificación</span><span class="flecha">→</span>
+  <span class="nodo">matriz de confusión</span><span class="flecha">→</span>
+  <span class="nodo aqui">accuracy · precisión · recall · F1</span><span class="flecha">→</span>
+  <span class="nodo">ROC y AUC</span>
+</div>
+<p class="fuente">Estructura tomada de <code>07_DATITO/curriculum.yaml</code> (campo <code>prerrequisitos</code>). La matriz de confusión ya la tienes en <code>07_DATITO/visual/matriz_confusion.html</code>: aquí no se repite, se usa.</p>
+
+
+<h2>1 · La situación, antes de cualquier fórmula</h2>
+
+<p>Una planta tiene una máquina cara. Un modelo de detección de anomalías avisa cuándo va a fallar. Tú frenas la máquina cuando avisa.</p>
+
+<p>Hay dos formas distintas de que el modelo te arruine el día, y <strong>no cuestan lo mismo</strong>:</p>
+
+<ul>
+  <li><strong>No avisó y falló.</strong> La máquina se rompe. Paras tres días y pagas el repuesto.</li>
+  <li><strong>Avisó y no iba a fallar.</strong> Frenaste la línea, revisaste, no había nada. Perdiste dos horas de producción.</li>
+</ul>
+
+<p>Si alguien te dice «el modelo acierta el 99 % de las veces», todavía no sabes nada de lo que te importa. Necesitas saber <em>cuál de los dos errores</em> está cometiendo. Ese es el trabajo completo de estas cuatro métricas: no dan una nota al modelo, <strong>reparten la culpa</strong>.</p>
+
+<div class="aviso">
+  <span class="et">La idea que hay que llevarse</span>
+  Las cuatro métricas se construyen con las mismas cuatro casillas. La única decisión de fondo es <strong>sobre qué grupo estás preguntando</strong>: sobre lo que <em>era</em> positivo, sobre lo que <em>dijiste</em> que era positivo, sobre lo que <em>era</em> negativo, o sobre el total. Ese grupo es el denominador.
+</div>
+
+
+<h2>2 · Cuatro casillas, cuatro denominadores</h2>
+
+<p>Convención, y hay que escribirla siempre antes de calcular: <strong>positivo = la máquina va a fallar</strong>. Aquí están las cuatro casillas con un caso concreto de 50 revisiones.</p>
+
+<p>Aprieta una métrica y mira <strong>qué casillas se encienden</strong>. Esas casillas sumadas son su denominador.</p>
+
+<div class="btnfila" role="group" aria-label="Elegir métrica">
+  <button class="bmet" data-m="exactitud" aria-pressed="false">Exactitud</button>
+  <button class="bmet" data-m="precision" aria-pressed="false">Precisión</button>
+  <button class="bmet" data-m="recall" aria-pressed="false">Recall (TPR)</button>
+  <button class="bmet" data-m="fpr" aria-pressed="false">FPR</button>
+  <button class="bmet" data-m="f1" aria-pressed="false">F1</button>
+</div>
+
+<div class="mwrap" id="mwrap">
+  <div></div>
+  <div class="mhead">Dije: va a fallar</div>
+  <div class="mhead">Dije: está bien</div>
+
+  <div class="mrot"><span class="mtitulo-real">Era:<br>iba a fallar</span></div>
+  <div class="mcell vp" id="c-vp"><span class="nom">VP</span><span class="val">12</span><span class="glosa">Avisé, y falló</span></div>
+  <div class="mcell fn" id="c-fn"><span class="nom">FN</span><span class="val">3</span><span class="glosa">No avisé, y falló</span></div>
+
+  <div class="mrot"><span class="mtitulo-real">Era:<br>estaba bien</span></div>
+  <div class="mcell fp" id="c-fp"><span class="nom">FP</span><span class="val">4</span><span class="glosa">Avisé en falso</span></div>
+  <div class="mcell vn" id="c-vn"><span class="nom">VN</span><span class="val">31</span><span class="glosa">Callé, y no pasó nada</span></div>
+</div>
+
+<div class="explica" id="explica" aria-live="polite">
+  <span class="kicker">Elige una métrica arriba</span>
+  Ninguna seleccionada todavía. Fíjate en que las cuatro casillas son las mismas para todas: lo que cambia es cuáles entran en el denominador.
+</div>
+
+<p class="fuente">[FUENTE · Repo: <code>01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md</code>] Estos conteos —12 / 3 / 4 / 31 sobre 50— <strong>son los del Certamen 2, pregunta 8</strong>, con la misma convención de clase positiva. No son inventados.</p>
+
+<div class="certamen">
+  <span class="et">La distinción que decide el certamen</span>
+  Precisión divide por <strong>lo que predijiste</strong>. Recall divide por <strong>lo que realmente era</strong>. Exactitud divide por <strong>el total</strong>. FPR divide por <strong>los negativos reales</strong>. La pregunta 8 no premia recitar las definiciones: premia elegir bien el denominador cuando los cuatro números están a la vista y todos «calzan».
+</div>
+
+
+<h2>3 · Las fórmulas, desarmadas</h2>
+
+<p>Cada fila responde a una pregunta distinta en castellano. Si sabes decir la pregunta, la fórmula se reconstruye sola.</p>
+
+<table>
+<thead><tr><th>Métrica</th><th>La pregunta que responde</th><th>Denominador</th><th>Aquí</th></tr></thead>
+<tbody>
+<tr>
+  <td><strong>Exactitud</strong><br><span style="font-size:.84rem;color:var(--tinta2)">accuracy</span></td>
+  <td>De <em>todo</em> lo que revisé, ¿qué porcentaje clasifiqué bien?</td>
+  <td class="den-total">el total (50)</td>
+  <td class="num">(12+31)/50<br>= <strong>86,0 %</strong></td>
+</tr>
+<tr>
+  <td><strong>Precisión</strong></td>
+  <td>De lo que mi modelo <em>marcó</em> como falla, ¿qué porcentaje era falla de verdad?</td>
+  <td class="den-pred">los predichos positivos (16)</td>
+  <td class="num">12/16<br>= <strong>75,0 %</strong></td>
+</tr>
+<tr>
+  <td><strong>Recall</strong><br><span style="font-size:.84rem;color:var(--tinta2)">= TPR = sensibilidad</span></td>
+  <td>De las fallas que <em>realmente ocurrieron</em>, ¿cuántas alcancé a recuperar?</td>
+  <td class="den-real">los positivos reales (15)</td>
+  <td class="num">12/15<br>= <strong>80,0 %</strong></td>
+</tr>
+<tr>
+  <td><strong>FPR</strong><br><span style="font-size:.84rem;color:var(--tinta2)">tasa de falsos positivos</span></td>
+  <td>De las veces que <em>no había nada</em>, ¿en cuántas frené la máquina al cohete?</td>
+  <td class="den-real">los negativos reales (35)</td>
+  <td class="num">4/35<br>= <strong>11,4 %</strong></td>
+</tr>
+<tr>
+  <td><strong>F1</strong></td>
+  <td>¿Puedo resumir precisión y recall en un número que castigue si una de las dos está mala?</td>
+  <td class="den-pred" style="color:var(--tinta2)">media armónica de las dos</td>
+  <td class="num">2·12/(24+4+3)<br>= <strong>77,4 %</strong></td>
+</tr>
+</tbody>
+</table>
+
+<h3>Qué es dato, qué aprende el modelo, qué decides tú</h3>
+
+<table>
+<thead><tr><th>Pieza</th><th>De dónde sale</th></tr></thead>
+<tbody>
+<tr><td><strong>La etiqueta real</strong> (era falla / no era)</td><td><strong>Dato.</strong> Viene del mundo, no del modelo. Sin ella no hay matriz.</td></tr>
+<tr><td><strong>La probabilidad</strong> que el modelo asigna a cada caso</td><td><strong>Lo aprende el modelo</strong> durante el entrenamiento.</td></tr>
+<tr><td><strong>La clase positiva</strong></td><td><strong>La decides tú.</strong> Si cambias cuál es la positiva, precisión, recall y FPR cambian. La exactitud no.</td></tr>
+<tr><td><strong>El umbral</strong> sobre esa probabilidad</td><td><strong>Lo decides tú.</strong> El 0,5 por defecto es una costumbre, no una ley.</td></tr>
+<tr><td><strong>Qué métrica reportas</strong></td><td><strong>La decides tú</strong>, según qué error cuesta más plata o más vidas.</td></tr>
+</tbody>
+</table>
+
+<div class="aviso">
+  <span class="et">Consecuencia inmediata</span>
+  Precisión, recall y FPR <strong>no son propiedades del modelo</strong>. Son propiedades del modelo <em>a un umbral</em>. Cambias el umbral y cambian las tres. Eso es justo lo que vas a mover ahora.
+</div>
+
+
+<h2>4 · El umbral: el control que mueve todo</h2>
+
+<p>Abajo hay 200 revisiones. El modelo le puso a cada una una probabilidad de falla, de izquierda (baja) a derecha (alta).</p>
+
+<p>Usamos la misma notación que el profesor dibujó en la pizarra: <strong>círculos = positivos reales</strong> (iban a fallar), <strong>triángulos = negativos reales</strong> (estaban bien). Todo lo que quede <strong>a la derecha del umbral</strong> lo declaras «va a fallar».</p>
+
+<div class="pred">
+  <p class="q">Antes de tocar nada — si <strong>bajas</strong> el umbral, o sea declaras «va a fallar» con menos evidencia: ¿qué le pasa al recall y a la precisión?</p>
+  <div class="ops" role="group" aria-label="Tu predicción">
+    <button class="bpred" data-p="ambas" aria-pressed="false">Suben las dos</button>
+    <button class="bpred" data-p="rec" aria-pressed="false">Sube recall, baja precisión</button>
+    <button class="bpred" data-p="pre" aria-pressed="false">Baja recall, sube precisión</button>
+    <button class="bpred" data-p="nada" aria-pressed="false">Ninguna cambia</button>
+  </div>
+  <p class="contraste" id="contrasteA"></p>
+</div>
+
+<div class="panel">
+  <canvas id="lienzo" width="800" height="270" aria-label="200 casos ordenados por probabilidad, con una línea de umbral móvil"></canvas>
+
+  <div class="ctl">
+    <label for="sUmbral">Umbral de decisión <span class="v" id="vUmbral">0,50</span></label>
+    <input type="range" id="sUmbral" min="0" max="1" step="0.01" value="0.5">
+  </div>
+
+  <div class="mwrap" style="margin-top:20px">
+    <div></div><div class="mhead">Dije: va a fallar</div><div class="mhead">Dije: está bien</div>
+    <div class="mrot"><span class="mtitulo-real">Era:<br>iba a fallar</span></div>
+    <div class="mcell vp"><span class="nom">VP</span><span class="val" id="aVP">—</span></div>
+    <div class="mcell fn"><span class="nom">FN</span><span class="val" id="aFN">—</span></div>
+    <div class="mrot"><span class="mtitulo-real">Era:<br>estaba bien</span></div>
+    <div class="mcell fp"><span class="nom">FP</span><span class="val" id="aFP">—</span></div>
+    <div class="mcell vn"><span class="nom">VN</span><span class="val" id="aVN">—</span></div>
+  </div>
+
+  <div class="metgrid">
+    <div class="met"><span class="n">Exactitud</span><span class="c" id="aAcc">—</span><span class="d" id="adAcc"></span></div>
+    <div class="met"><span class="n">Precisión</span><span class="c" id="aPre">—</span><span class="d" id="adPre"></span></div>
+    <div class="met"><span class="n">Recall</span><span class="c" id="aRec">—</span><span class="d" id="adRec"></span></div>
+    <div class="met"><span class="n">FPR</span><span class="c" id="aFpr">—</span><span class="d" id="adFpr"></span></div>
+    <div class="met"><span class="n">F1</span><span class="c" id="aF1">—</span><span class="d" id="adF1"></span></div>
+  </div>
+</div>
+
+<p>Llévalo a los dos extremos y mira lo que pasa:</p>
+
+<ul>
+  <li><strong>Umbral en 0.</strong> Declaras que <em>todo</em> va a fallar. Recall 100 %: no se te escapa ninguna. Pero frenas la línea todo el día y la precisión se desploma hasta la proporción de fallas que hay en los datos.</li>
+  <li><strong>Umbral en 1.</strong> No avisas nunca. Cero falsas alarmas — precisión indefinida, porque no hay nada en el denominador— y recall 0. No detectas nada.</li>
+</ul>
+
+<p>Ninguno de los dos extremos es un modelo malo: <strong>es el mismo modelo</strong>. Solo cambió dónde pusiste la raya. Por eso decir «mi modelo tiene 92 % de recall» sin decir a qué umbral es una frase incompleta.</p>
+
+<div class="certamen">
+  <span class="et">Esto exacto ya apareció</span>
+  En la clase del 28 de agosto, sobre el certamen: <em>«básicamente tiene un parámetro de sensibilidad, tiene dos modelos y tiene un parámetro de sensibilidad que te mueve el umbral»</em>. El «parámetro de sensibilidad» de un enunciado <strong>es este slider</strong>. Si mueve la línea a la derecha, bajan TPR y FPR a la vez; a la izquierda, suben las dos a la vez.
+  <p class="fuente" style="margin-top:8px">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos_plano.txt</code>]</p>
+</div>
+
+
+<h2>5 · El caso del profesor: la falla que pasa 1 de cada 1.000</h2>
+
+<p>Este es el ejemplo que puso en clase, casi textual:</p>
+
+<blockquote style="border-left:3px solid var(--linea); margin:16px 0; padding:2px 0 2px 16px; color:var(--tinta2); font-size:.96rem">
+  «Imagínense que tenemos una máquina que tiene un modelo que te hace detección de anomalías… las fallas pasan poco, de una cada mil. Imagínense que ustedes tienen un recall del 100 por ciento pero tienen una precisión del 70 por ciento. ¿Qué quiere decir eso?»
+  <br><span class="fuente" style="display:block;margin-top:6px">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_..._plano.txt</code>]</span>
+</blockquote>
+
+<p>Aquí el modelo se queda <strong>fijo</strong>: tú fijas su TPR y su FPR, que son sus dos características propias. Lo único que cambia es <strong>cuán rara es la falla en la realidad</strong>.</p>
+
+<div class="pred">
+  <p class="q">Predicción, y esta es contraintuitiva — el modelo <strong>no cambia</strong>: mismo TPR, mismo FPR. Si las fallas pasan de 1 de cada 10 a 1 de cada 1.000, ¿qué le pasa a la precisión?</p>
+  <div class="ops" role="group" aria-label="Tu predicción sobre prevalencia">
+    <button class="bpred" data-q="igual" aria-pressed="false">Sigue igual: el modelo es el mismo</button>
+    <button class="bpred" data-q="baja" aria-pressed="false">Se desploma</button>
+    <button class="bpred" data-q="sube" aria-pressed="false">Mejora</button>
+  </div>
+  <p class="contraste" id="contrasteB"></p>
+</div>
+
+<div class="panel">
+  <p style="font-size:.9rem;color:var(--tinta2);margin:0 0 4px">Sobre 10.000 revisiones de la máquina.</p>
+
+  <div class="ctl">
+    <label for="sPrev">¿Cada cuánto falla de verdad? <span class="v" id="vPrev">1 de cada 100</span></label>
+    <input type="range" id="sPrev" min="0" max="3" step="1" value="1">
+  </div>
+  <div class="ctl">
+    <label for="sTpr">Recall / TPR del modelo <span class="v" id="vTpr">100 %</span></label>
+    <input type="range" id="sTpr" min="0" max="100" step="1" value="100">
+  </div>
+  <div class="ctl">
+    <label for="sFpr">FPR del modelo <span class="v" id="vFpr">1,00 %</span></label>
+    <input type="range" id="sFpr" min="0" max="1000" step="1" value="224">
+    <p style="font-size:.78rem;color:var(--tinta2);margin:4px 0 0">La escala es fina cerca de cero a propósito: ahí es donde se juega el problema raro.</p>
+  </div>
+
+  <div class="mwrap" style="margin-top:20px">
+    <div></div><div class="mhead">Dije: va a fallar</div><div class="mhead">Dije: está bien</div>
+    <div class="mrot"><span class="mtitulo-real">Era:<br>iba a fallar</span></div>
+    <div class="mcell vp"><span class="nom">VP</span><span class="val" id="bVP">—</span></div>
+    <div class="mcell fn"><span class="nom">FN</span><span class="val" id="bFN">—</span></div>
+    <div class="mrot"><span class="mtitulo-real">Era:<br>estaba bien</span></div>
+    <div class="mcell fp"><span class="nom">FP</span><span class="val" id="bFP">—</span></div>
+    <div class="mcell vn"><span class="nom">VN</span><span class="val" id="bVN">—</span></div>
+  </div>
+
+  <div class="metgrid">
+    <div class="met destaca"><span class="n">Exactitud</span><span class="c" id="bAcc">—</span><span class="d">parece buenísima</span></div>
+    <div class="met destaca"><span class="n">Precisión</span><span class="c" id="bPre">—</span><span class="d" id="bdPre"></span></div>
+    <div class="met"><span class="n">Recall</span><span class="c" id="bRec">—</span><span class="d">no se movió</span></div>
+    <div class="met"><span class="n">FPR</span><span class="c" id="bFprOut">—</span><span class="d">no se movió</span></div>
+    <div class="met"><span class="n">1 − precisión</span><span class="c" id="bUnoMenos">—</span><span class="d">¿es igual al FPR?</span></div>
+  </div>
+
+  <p id="lectura" style="margin:18px 0 0; font-size:.95rem; background:#f5f3ee; border-radius:7px; padding:13px 15px"></p>
+</div>
+
+<p>Deja el TPR en 100 % y el FPR en 1 %, y baja la prevalencia a 1 de cada 1.000. Vas a leer algo como <strong>exactitud 99 %, precisión 9 %</strong>. El mismo modelo, sin tocar una sola línea de código, pasa de razonable a inservible <em>solo porque el mundo cambió de proporción</em>.</p>
+
+<p>Y ahí está la respuesta a la pregunta del profesor. Un recall de 100 % con precisión de 70 % en un problema de 1 en 1.000 no es «un modelo con un defectito»: es un modelo <strong>extraordinariamente bueno</strong>, porque para conseguir 70 % de precisión con esa prevalencia su FPR tiene que ser menor a <strong>0,05 %</strong>. Prueba a lograrlo con el slider.</p>
+
+<div class="aviso">
+  <span class="et">Por qué esto importa para tu proyecto</span>
+  Melbourne es regresión y aquí no aplica; pero Galaxy Zoo tiene <strong>67,7 % de galaxias elípticas</strong>. Es el mismo fenómeno, invertido: cuando una clase domina, la exactitud se la regala el desbalance.
+  <p class="fuente" style="margin-top:8px">[FUENTE · Repo: <code>07_DATITO/referencia/material.md</code>, cifras verificadas sobre <code>04_DATOS/GZ_mini_challenge_train.csv</code>]</p>
+</div>
+
+
+<h2>6 · FPR no es 1 − precisión</h2>
+
+<p>Este es <strong>el</strong> error que el expediente del Certamen 2 marca por escrito para la pregunta 8. Y es tentador, porque las dos suenan a «la proporción de veces que me equivoqué al decir que sí».</p>
+
+<div class="eq">
+  FPR =
+  <span class="frac"><span class="num">FP</span><span class="den den-real">FP + VN</span></span>
+  <span style="margin:0 14px; color:var(--tinta2)">frente a</span>
+  1 − precisión =
+  <span class="frac"><span class="num">FP</span><span class="den den-pred">VP + FP</span></span>
+</div>
+
+<p><strong>Mismo numerador. Denominadores de universos distintos.</strong> El FPR se pregunta por la fila de abajo de la matriz —lo que <em>era</em> negativo—. El «1 − precisión» se pregunta por la columna de la izquierda —lo que <em>dijiste</em> que era positivo—. Son dos poblaciones que no tienen por qué parecerse en nada.</p>
+
+<p>Con los conteos del certamen: FPR = 4/35 = <strong>11,4 %</strong>, mientras que 1 − precisión = 4/16 = <strong>25,0 %</strong>. No se parecen ni por casualidad. Y en el panel de arriba puedes dejar el FPR clavado en 1 % mientras el «1 − precisión» se pasea entre 10 % y 99 %: si fueran lo mismo, eso sería imposible.</p>
+
+<details>
+  <summary>¿Cuándo sí coinciden? (útil para no memorizar mal)</summary>
+  <div class="cuerpo">
+    <p>Coinciden solo si <code>FP + VN = VP + FP</code>, es decir si <code>VN = VP</code>. Es una coincidencia aritmética sin ningún significado, no una regla. Si te encuentras con que te dan lo mismo en un ejercicio, revisa que no sea casualidad antes de sacar conclusiones.</p>
+  </div>
+</details>
+
+<div class="certamen">
+  <span class="et">Cómo se ve esto en la prueba</span>
+  Te dan una figura con círculos y triángulos separados por una línea, y te piden la matriz de confusión más exactitud, precisión, TPR y FPR. <strong>Lo primero es declarar la convención</strong> —qué símbolo es el positivo, de qué lado está la predicción positiva— porque sin eso la respuesta es irreproducible. La exactitud es simétrica y no cambia si inviertes las clases; precisión, TPR y FPR sí cambian.
+</div>
+
+
+<h2>7 · F1: por qué media armónica y no el promedio</h2>
+
+<p>F1 existe porque precisión y recall se pueden hacer trampa una a la otra. Puedes tener precisión casi perfecta si avisas una sola vez al año, cuando estás segurísimo. Y recall perfecto si avisas siempre.</p>
+
+<div class="eq">
+  F1 = 2 ·
+  <span class="frac"><span class="num">precisión · recall</span><span class="den">precisión + recall</span></span>
+</div>
+
+<p>Mira qué hace la media armónica con un modelo tramposo, comparada con el promedio de toda la vida:</p>
+
+<table>
+<thead><tr><th>Modelo</th><th>Precisión</th><th>Recall</th><th>Promedio simple</th><th>F1</th></tr></thead>
+<tbody>
+<tr><td>Avisa una vez y le achunta</td><td class="num">100 %</td><td class="num">1 %</td><td class="num">50,5 %</td><td class="num"><strong>2,0 %</strong></td></tr>
+<tr><td>Avisa siempre (prevalencia 10 %)</td><td class="num">10 %</td><td class="num">100 %</td><td class="num">55,0 %</td><td class="num"><strong>18,2 %</strong></td></tr>
+<tr><td>Equilibrado</td><td class="num">70 %</td><td class="num">70 %</td><td class="num">70,0 %</td><td class="num"><strong>70,0 %</strong></td></tr>
+<tr><td>El del certamen (12/3/4/31)</td><td class="num">75 %</td><td class="num">80 %</td><td class="num">77,5 %</td><td class="num"><strong>77,4 %</strong></td></tr>
+</tbody>
+</table>
+
+<p>El promedio simple le regala un 50 % al modelo que avisa una sola vez. F1 le da 2 %. <strong>La media armónica se va con el más chico</strong>: para que F1 sea alto, las dos tienen que serlo. Cuando precisión y recall se parecen, F1 y el promedio dan casi lo mismo —fíjate en las dos últimas filas—; la diferencia solo aparece cuando hay desequilibrio, que es exactamente cuando la quieres.</p>
+
+
+<h2>8 · Camino inverso: te entregan la fórmula</h2>
+
+<p>En la prueba la fórmula te la dan escrita. El trabajo es desarmarla. Toma esta forma equivalente de F1 y contesta antes de abrir la solución:</p>
+
+<div class="eq">
+  F1 =
+  <span class="frac"><span class="num">2 · VP</span><span class="den">2 · VP + FP + FN</span></span>
+</div>
+
+<details>
+  <summary>a) ¿Qué casilla de la matriz de confusión <strong>no aparece</strong> por ninguna parte? ¿Y qué consecuencia tiene?</summary>
+  <div class="cuerpo">
+    <p>No aparece <strong>VN</strong>, los verdaderos negativos. F1 ignora por completo los aciertos sobre la clase negativa.</p>
+    <p>La consecuencia es la razón de ser de la métrica: en un problema desbalanceado, VN es un número gigante que infla la exactitud sin que el modelo haya hecho nada difícil. Al dejar VN fuera, <strong>F1 no se puede comprar con la clase mayoritaria</strong>. Por eso sobrevive al desbalance y la exactitud no.</p>
+  </div>
+</details>
+
+<details>
+  <summary>b) ¿De dónde sale el 2 del numerador?</summary>
+  <div class="cuerpo">
+    <p>De desarrollar la media armónica. Sustituye precisión = VP/(VP+FP) y recall = VP/(VP+FN) en 2PR/(P+R): el numerador queda 2·VP² y el denominador VP·(2·VP+FP+FN). Se simplifica un VP y queda la expresión de arriba. El 2 no es un ajuste arbitrario: es lo que queda cuando cancelas.</p>
+  </div>
+</details>
+
+<details>
+  <summary>c) Reconstruye el fenómeno: ¿qué historia cuenta un F1 bajo con exactitud alta?</summary>
+  <div class="cuerpo">
+    <p>Que VN es enorme y VP es chico. O sea: hay una clase rara, el modelo casi nunca dice que sí, y cuando lo dice no le achunta mucho. Está acertando por abstención. Es el diagnóstico de <strong>una clase minoritaria que el modelo está ignorando</strong>, y es lo que verías si entrenaras Galaxy Zoo sin cuidar la clase 0.</p>
+  </div>
+</details>
+
+
+<h2>9 · Tus propios datos: por qué Galaxy Zoo se evalúa con F1-macro</h2>
+
+<p>El desafío tiene tres clases y la métrica oficial es <strong>F1-macro</strong>, no exactitud. Esa elección tiene motivo, y el motivo está en el reparto:</p>
+
+<table>
+<thead><tr><th>Clase</th><th>Qué es</th><th>Filas</th><th>%</th></tr></thead>
+<tbody>
+<tr><td class="num">0</td><td>No decidible — los humanos no se pusieron de acuerdo</td><td class="num">96</td><td class="num"><strong>9,6 %</strong></td></tr>
+<tr><td class="num">1</td><td>Espiral</td><td class="num">227</td><td class="num">22,7 %</td></tr>
+<tr><td class="num">2</td><td>Elíptica</td><td class="num">677</td><td class="num"><strong>67,7 %</strong></td></tr>
+</tbody>
+</table>
+<p class="fuente">[FUENTE · Repo: <code>07_DATITO/referencia/material.md</code> · <code>04_DATOS/GZ_mini_challenge_train.csv</code>, 1.000 filas, cero nulos. Desbalance 7,1×]</p>
+
+<p>Construye el modelo más tonto posible: <strong>responde «elíptica» siempre</strong>. No mira ni un pixel.</p>
+
+<div class="caja tenue">
+  <p style="margin:0 0 10px"><strong>Exactitud del modelo tonto: 67,7 %.</strong> Acaba de sacarse un 6,8 sin aprender nada.</p>
+  <p style="margin:0 0 10px">Ahora el F1 por clase:</p>
+  <ul style="margin:0 0 10px">
+    <li>Clase 0 — recall 0, precisión indefinida → <strong>F1 = 0</strong></li>
+    <li>Clase 1 — recall 0, precisión indefinida → <strong>F1 = 0</strong></li>
+    <li>Clase 2 — recall 1,00 · precisión 0,677 → F1 = 2(0,677)(1)/(0,677+1) = <strong>0,807</strong></li>
+  </ul>
+  <p style="margin:0"><strong>F1-macro = (0 + 0 + 0,807) / 3 = 0,269.</strong></p>
+</div>
+
+<p>Exactitud 67,7 % contra F1-macro 26,9 %. <strong>El mismo modelo, los mismos datos.</strong> La exactitud premia haber adivinado la clase mayoritaria; el F1-macro promedia las tres clases con el mismo peso y por eso delata que dos de las tres quedaron sin atender.</p>
+
+<p>Y hay una segunda razón, específica de estos datos: la clase 0 no es otro tipo de galaxia. Es <em>«no hubo consenso entre los humanos»</em>. Reconocer una ausencia de acuerdo es una señal mucho más débil que reconocer una forma, así que la clase 0 es la difícil y la chica a la vez — es la que hunde el F1-macro, y por eso es la que hay que mirar primero.</p>
+
+<div class="certamen">
+  <span class="et">El salto que el certamen te puede pedir</span>
+  Pasar de una matriz <strong>3×3</strong> a las cuatro casillas VP / FN / FP / VN. Se hace eligiendo una clase como positiva y metiendo <em>todas las demás</em> en «negativo». Haces eso tres veces, una por clase, y de ahí salen los tres F1 que luego promedias. Ese paso —declarar cuál es la positiva— es el mismo de siempre, y sin declararlo el resultado es irreproducible.
+</div>
+
+
+<h2>10 · Transferencia: explicárselo a quien paga</h2>
+
+<p>Esta es la parte que el profesor pregunta en las presentaciones, casi con estas palabras: <em>«cuál es la decisión que deberían tomar con este modelo y cuál sería la implicancia de acuerdo a tus métricas»</em>. Y da su propia respuesta modelo, con pescado:</p>
+
+<div class="caja">
+  <p style="margin:0 0 10px"><strong>Detección de comida en mal estado. Recall 70 %, precisión 80 %.</strong></p>
+  <p style="margin:0 0 10px">Frente al productor no dices «tengo un recall de 0,70». Dices dos frases:</p>
+  <ul style="margin:0 0 10px">
+    <li><strong>Recall 70 %</strong> → «de todo el pescado que efectivamente está malo, mi sistema capta 7 de cada 10. <strong>Tres de cada diez se te van a pasar</strong> y van a llegar al cliente.»</li>
+    <li><strong>Precisión 80 %</strong> → «de todo lo que mi sistema marca como malo, 8 de cada 10 lo están de verdad. Así que <strong>vas a botar un 20 % de pescado bueno</strong>.»</li>
+  </ul>
+  <p style="margin:0">Y ahí recién viene la decisión, que no es tuya: ¿qué te cuesta más, la devolución del cliente por el 30 % que se pasó, o el 20 % de mercadería sana que tiras a la basura? Según la respuesta, mueves el umbral para un lado o para el otro.</p>
+  <p class="fuente" style="margin-top:9px">[FUENTE · Repo: <code>09_CLASES/transcripciones/2026-09-04T22_05_05Z_..._plano.txt</code>]</p>
+</div>
+
+<p>Fíjate en la estructura de las dos frases, porque es reutilizable y es la evidencia de que entendiste:</p>
+
+<div class="eq" style="font-size:.95rem; text-align:left; line-height:1.9">
+  <strong>Recall</strong> → «de todo lo que <span class="den-real">ERA</span> ___ , capto el __ % · se me pasa el __ %»<br>
+  <strong>Precisión</strong> → «de todo lo que <span class="den-pred">MARCO</span> como ___ , acierto el __ % · el resto es falsa alarma»
+</div>
+
+<p>El mismo molde sirve para el caso clínico que presentaron tus compañeros el 4 de septiembre: tumores. Ahí un falso negativo —decirle «benigno» a alguien con un tumor maligno— es inaceptable, así que bajaron el umbral hasta dejar el recall en 100 %. ¿El costo? La precisión se les cayó a entre 0,33 y 0,42, y 37 personas sanas quedaron marcadas como enfermas. <strong>No hay almuerzo gratis: el recall se compra con precisión.</strong></p>
+
+<details>
+  <summary>Practica el molde: un modelo de deserción escolar tiene recall 0,91 y precisión 0,45. Escríbelo en dos frases para el director del colegio.</summary>
+  <div class="cuerpo">
+    <p>«De los alumnos que efectivamente van a desertar, el sistema detecta 9 de cada 10 — se le escapa aproximadamente uno de cada diez. Pero de cada 100 alumnos que el sistema marca en riesgo, solo 45 iban a desertar realmente: los otros 55 van a recibir una intervención que no necesitaban.»</p>
+    <p>Y la decisión que se sigue: si la intervención es barata y no estigmatiza —una tutoría, una llamada— este punto de operación está bien y conviene incluso bajar más el umbral. Si es cara o marca al alumno, hay que subirlo y aceptar que se escapen más.</p>
+  </div>
+</details>
+
+
+<h2>11 · Procedimiento para el papel</h2>
+
+<p>Todo el Certamen 2 se resolvió a mano, sin ejecutar código. Este es el orden que no falla:</p>
+
+<ol class="pasos">
+  <li><strong>Declara la clase positiva por escrito.</strong> «Tomo círculo = positivo; lado izquierdo de la línea = predicción positiva.» Una línea. Sin esto, cualquier número que escribas es irreproducible.</li>
+  <li><strong>Llena las cuatro casillas</strong> VP / FN / FP / VN contando de la figura.</li>
+  <li><strong>Suma los márgenes y anótalos al lado.</strong> Fila de arriba = positivos reales. Fila de abajo = negativos reales. Columna izquierda = predichos positivos. Y el total. Estos cuatro números <em>son</em> los denominadores; tenerlos escritos es la mitad del trabajo.</li>
+  <li><strong>Para cada métrica escribe primero el denominador</strong>, después el numerador. Al revés es cuando se cuela el error.</li>
+  <li><strong>Verifica que cierre.</strong> Las dos filas suman el total, las dos columnas también. Si no cierra, contaste mal.</li>
+</ol>
+
+<details>
+  <summary>Ejercicio con los conteos reales del certamen: VP = 12, FN = 3, FP = 4, VN = 31. Calcula exactitud, precisión, TPR, FPR y F1.</summary>
+  <div class="cuerpo">
+    <p><strong>Márgenes primero.</strong> Positivos reales = 12+3 = <span class="den-real">15</span>. Negativos reales = 4+31 = <span class="den-real">35</span>. Predichos positivos = 12+4 = <span class="den-pred">16</span>. Total = <span class="den-total">50</span>. Cierra: 15+35 = 50, y 16+34 = 50.</p>
+    <ul>
+      <li><strong>Exactitud</strong> = (12+31) / <span class="den-total">50</span> = 43/50 = <strong>86,0 %</strong></li>
+      <li><strong>Precisión</strong> = 12 / <span class="den-pred">16</span> = <strong>75,0 %</strong></li>
+      <li><strong>TPR (recall)</strong> = 12 / <span class="den-real">15</span> = <strong>80,0 %</strong></li>
+      <li><strong>FPR</strong> = 4 / <span class="den-real">35</span> = <strong>11,4 %</strong></li>
+      <li><strong>F1</strong> = 2·12 / (2·12 + 4 + 3) = 24/31 = <strong>77,4 %</strong></li>
+      <li><em>De yapa:</em> TNR = 31/35 = 88,6 %, que es 1 − FPR. <strong>Eso sí</strong> es un complemento verdadero, porque comparten denominador.</li>
+    </ul>
+    <p><strong>Y el control de la trampa:</strong> 1 − precisión = 25,0 %, pero FPR = 11,4 %. Distintos, como tienen que ser.</p>
+    <p class="fuente">[FUENTE · Repo: <code>01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md</code>, pregunta 8, verificación aritmética independiente]</p>
+  </div>
+</details>
+
+<details>
+  <summary>Y la pregunta de seguimiento que hizo el profesor: si mueves la línea a la derecha, ¿qué le pasa a TPR y FPR?</summary>
+  <div class="cuerpo">
+    <p><strong>Suben las dos.</strong> Estás declarando positivos más casos, así que capturas más círculos reales (sube TPR) pero también marcas más triángulos (sube FPR). Nunca sube una sin la otra.</p>
+    <p>Ese compromiso, recorrido para todos los umbrales posibles, <strong>es la curva ROC</strong>. Es el concepto que viene después de este.</p>
+  </div>
+</details>
+
+
+<h2>12 · Errores que este formato castiga</h2>
+
+<ul>
+  <li><strong>Usar el denominador equivocado.</strong> Es el error más caro y el más fácil de cometer, porque todas las divisiones «dan un número que se ve razonable».</li>
+  <li><strong>Creer que FPR = 1 − precisión.</strong> Está escrito como trampa en el material del profesor. Numerador igual, universos distintos.</li>
+  <li><strong>Calcular sin declarar cuál es la clase positiva.</strong> Aunque los números te queden bien, la respuesta no es defendible.</li>
+  <li><strong>Reportar exactitud en un problema desbalanceado</strong> y presentarla como si dijera algo. Con 67,7 % de una clase, la exactitud es el piso, no el resultado.</li>
+  <li><strong>Decir «el recall del modelo es X»</strong> sin decir a qué umbral. El recall es del modelo <em>a un punto de operación</em>.</li>
+  <li><strong>Comparar dos clasificadores en un solo umbral</strong> y concluir cuál es mejor. Elegir el de mayor TPR sin mirar su FPR lleva a preferir un modelo que declara todo positivo: TPR = 1, FPR = 1, inútil.</li>
+  <li><strong>Confundir precisión con exactitud</strong> porque en castellano suenan parecido. <em>Precision</em> divide por los predichos; <em>accuracy</em> por el total.</li>
+</ul>
+
+
+<h2>Lo que sigue</h2>
+
+<p>Ya moviste el umbral y viste que TPR y FPR se mueven juntos. Si en vez de mirar un umbral a la vez dibujas <strong>todos</strong> los puntos (FPR, TPR) que ese slider puede generar, tienes la curva ROC. Y el área bajo ella —el AUC— resume al modelo <em>sin comprometerse con ningún umbral</em>.</p>
+
+<p>Eso resuelve una pregunta que aquí quedó abierta: cómo comparar dos modelos cuando cada uno se puede operar a cualquier umbral. La distinción de ese concepto es <strong>comparar un punto de operación ≠ comparar un modelo</strong>, y es la pregunta 9 del Certamen 2 — la que el expediente marca como no evidenciada.</p>
+
+<p class="ruta" style="margin-top:30px">Datito · <code>07_DATITO/visual/metricas_clasificacion.html</code> · funciona sin conexión</p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var fmtPct = function(x, d){
+    if (x === null || isNaN(x)) return "—";
+    return (x*100).toFixed(d === undefined ? 1 : d).replace(".", ",") + " %";
+  };
+  var fmtNum = function(n){
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  /* ============================================================
+     A · MATRIZ ESTÁTICA: encender el denominador de cada métrica
+     ============================================================ */
+  var CELDAS = {vp:"c-vp", fn:"c-fn", fp:"c-fp", vn:"c-vn"};
+  var DEF = {
+    exactitud: {
+      den: ["vp","fn","fp","vn"], tono:"lit-total",
+      t:"Exactitud · denominador = el TOTAL",
+      h:"Se encendieron las cuatro casillas, porque la exactitud pregunta por todo lo revisado. "
+       + "(12 + 31) / 50 = 86,0 %. Es la única de las cinco que no cambia si inviertes cuál clase es la positiva — "
+       + "y también la única que un problema desbalanceado te puede regalar."
+    },
+    precision: {
+      den: ["vp","fp"], tono:"lit-pred",
+      t:"Precisión · denominador = la COLUMNA de lo que predije positivo",
+      h:"Solo la columna izquierda: VP + FP = 16. De todo lo que el modelo marcó como falla, "
+       + "12 lo eran. 12/16 = 75,0 %. Fíjate en que VN ni siquiera participa: da lo mismo cuántos aciertos "
+       + "tuviste callando."
+    },
+    recall: {
+      den: ["vp","fn"], tono:"lit-real",
+      t:"Recall / TPR · denominador = la FILA de los positivos reales",
+      h:"Solo la fila de arriba: VP + FN = 15. De las 15 fallas que realmente ocurrieron, recuperaste 12. "
+       + "12/15 = 80,0 %. Mismo numerador que la precisión, otro universo: por eso pueden ser muy distintos."
+    },
+    fpr: {
+      den: ["fp","vn"], tono:"lit-real",
+      t:"FPR · denominador = la FILA de los negativos reales",
+      h:"Solo la fila de abajo: FP + VN = 35. De las 35 veces que no pasaba nada, frenaste la máquina 4. "
+       + "4/35 = 11,4 %. Compáralo con 1 − precisión = 4/16 = 25,0 %: mismo numerador, denominador distinto, "
+       + "número distinto. Aquí muere la trampa."
+    },
+    f1: {
+      den: ["vp","fp","fn"], tono:"lit-pred",
+      t:"F1 · usa tres casillas y deja VN afuera",
+      h:"2·VP / (2·VP + FP + FN) = 24/31 = 77,4 %. Se encendieron VP, FP y FN. "
+       + "VN quedó apagada a propósito: por eso F1 no se puede inflar con la clase mayoritaria, y por eso "
+       + "sobrevive al desbalance donde la exactitud se rinde."
+    }
+  };
+
+  var expl = document.getElementById("explica");
+  var botonesM = [].slice.call(document.querySelectorAll(".bmet"));
+
+  function apagarCeldas(){
+    for (var k in CELDAS){
+      var el = document.getElementById(CELDAS[k]);
+      el.className = el.className.replace(/\s*lit(-\w+)?/g, "");
+    }
+  }
+
+  botonesM.forEach(function(b){
+    b.addEventListener("click", function(){
+      var m = b.getAttribute("data-m");
+      var yaEstaba = b.getAttribute("aria-pressed") === "true";
+      botonesM.forEach(function(o){ o.setAttribute("aria-pressed","false"); });
+      apagarCeldas();
+      if (yaEstaba){
+        expl.innerHTML = '<span class="kicker">Elige una métrica arriba</span>'
+          + 'Ninguna seleccionada. Las cuatro casillas son las mismas para todas: lo que cambia es cuáles entran en el denominador.';
+        return;
+      }
+      b.setAttribute("aria-pressed","true");
+      var d = DEF[m];
+      d.den.forEach(function(c){
+        var el = document.getElementById(CELDAS[c]);
+        el.className += " lit " + d.tono;
+      });
+      expl.innerHTML = '<span class="kicker">' + d.t + '</span>' + d.h;
+    });
+  });
+
+  /* ============================================================
+     B · UMBRAL SOBRE 200 CASOS
+     ============================================================ */
+  var N_POS = 60, N_NEG = 140;
+
+  function lcg(seed){
+    var s = seed >>> 0;
+    return function(){
+      s = (1664525 * s + 1013904223) >>> 0;
+      return s / 4294967296;
+    };
+  }
+  var rnd = lcg(20260921);
+  function gauss(){
+    var u = 0, v = 0;
+    while (u === 0) u = rnd();
+    while (v === 0) v = rnd();
+    return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+  }
+  function clamp01(x){ return x < 0.01 ? 0.01 : (x > 0.99 ? 0.99 : x); }
+
+  var casos = [];
+  var i;
+  for (i = 0; i < N_POS; i++) casos.push({pos:true,  s:clamp01(0.66 + 0.155*gauss()), y:rnd()});
+  for (i = 0; i < N_NEG; i++) casos.push({pos:false, s:clamp01(0.36 + 0.155*gauss()), y:rnd()});
+
+  var cv   = document.getElementById("lienzo");
+  var ctx  = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  var MI = 38, MD = 18, MT = 26, MB = 34;
+
+  function xDe(s){ return MI + s * (W - MI - MD); }
+
+  function triangulo(g, x, y, r){
+    g.beginPath();
+    g.moveTo(x, y - r);
+    g.lineTo(x + r*0.92, y + r*0.72);
+    g.lineTo(x - r*0.92, y + r*0.72);
+    g.closePath();
+  }
+
+  function dibujar(u){
+    ctx.clearRect(0,0,W,H);
+
+    var x0 = xDe(0), x1 = xDe(1), xu = xDe(u);
+    var yTop = MT, yBot = H - MB;
+
+    /* zonas */
+    ctx.fillStyle = "#faf7f0";
+    ctx.fillRect(xu, yTop, x1 - xu, yBot - yTop);
+    ctx.fillStyle = "#f7f7f8";
+    ctx.fillRect(x0, yTop, xu - x0, yBot - yTop);
+
+    /* marco */
+    ctx.strokeStyle = "#ddd8cf"; ctx.lineWidth = 1;
+    ctx.strokeRect(x0, yTop, x1 - x0, yBot - yTop);
+
+    /* puntos */
+    for (var k = 0; k < casos.length; k++){
+      var c = casos[k];
+      var px = xDe(c.s);
+      var py = yTop + 12 + c.y * (yBot - yTop - 24);
+      var predPos = c.s >= u;
+      var correcto = (predPos === c.pos);
+      ctx.lineWidth = 1.4;
+      if (correcto){
+        ctx.fillStyle   = "rgba(47,107,70,.34)";
+        ctx.strokeStyle = "rgba(47,107,70,.85)";
+      } else {
+        ctx.fillStyle   = "rgba(155,50,38,.40)";
+        ctx.strokeStyle = "rgba(155,50,38,.95)";
+      }
+      if (c.pos){
+        ctx.beginPath(); ctx.arc(px, py, 4.4, 0, 2*Math.PI);
+      } else {
+        triangulo(ctx, px, py, 4.8);
+      }
+      ctx.fill(); ctx.stroke();
+    }
+
+    /* línea de umbral */
+    ctx.strokeStyle = "#1c1f24"; ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.moveTo(xu, yTop - 8); ctx.lineTo(xu, yBot + 6); ctx.stroke();
+
+    /* etiquetas */
+    ctx.fillStyle = "#4a5058";
+    ctx.font = "11px -apple-system,Segoe UI,Roboto,sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("← digo: está bien", (x0 + xu)/2, yTop - 11);
+    ctx.fillText("digo: va a fallar →", (xu + x1)/2, yTop - 11);
+    ctx.textAlign = "left";
+    ctx.fillText("prob. baja", x0, yBot + 20);
+    ctx.textAlign = "right";
+    ctx.fillText("prob. alta", x1, yBot + 20);
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#1c1f24";
+    ctx.font = "600 11px -apple-system,Segoe UI,Roboto,sans-serif";
+    ctx.fillText("umbral " + u.toFixed(2).replace(".",","), xu, yBot + 20);
+
+    /* leyenda */
+    ctx.textAlign = "left";
+    ctx.font = "11px -apple-system,Segoe UI,Roboto,sans-serif";
+    ctx.fillStyle = "#4a5058";
+    ctx.beginPath(); ctx.arc(MI + 6, 12, 4.2, 0, 2*Math.PI);
+    ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fill();
+    ctx.strokeStyle = "#4a5058"; ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.fillStyle = "#4a5058";
+    ctx.fillText("círculo = iba a fallar", MI + 16, 16);
+    triangulo(ctx, MI + 158, 12, 4.6);
+    ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#4a5058";
+    ctx.fillText("triángulo = estaba bien", MI + 168, 16);
+  }
+
+  var sU = document.getElementById("sUmbral");
+  var movido = 0, predA = null;
+  var uInicial = parseFloat(sU.value);
+
+  function pintarA(){
+    var u = parseFloat(sU.value);
+    document.getElementById("vUmbral").textContent = u.toFixed(2).replace(".", ",");
+    dibujar(u);
+
+    var VP=0, FN=0, FP=0, VN=0;
+    for (var k=0;k<casos.length;k++){
+      var c = casos[k], p = c.s >= u;
+      if (c.pos){ p ? VP++ : FN++; } else { p ? FP++ : VN++; }
+    }
+    document.getElementById("aVP").textContent = VP;
+    document.getElementById("aFN").textContent = FN;
+    document.getElementById("aFP").textContent = FP;
+    document.getElementById("aVN").textContent = VN;
+
+    var tot  = VP+FN+FP+VN;
+    var acc  = (VP+VN)/tot;
+    var pre  = (VP+FP) ? VP/(VP+FP) : null;
+    var rec  = (VP+FN) ? VP/(VP+FN) : null;
+    var fpr  = (FP+VN) ? FP/(FP+VN) : null;
+    var f1   = (2*VP+FP+FN) ? (2*VP)/(2*VP+FP+FN) : null;
+
+    document.getElementById("aAcc").textContent = fmtPct(acc);
+    document.getElementById("aPre").textContent = pre===null ? "indef." : fmtPct(pre);
+    document.getElementById("aRec").textContent = fmtPct(rec);
+    document.getElementById("aFpr").textContent = fmtPct(fpr);
+    document.getElementById("aF1").textContent  = f1===null ? "indef." : fmtPct(f1);
+
+    document.getElementById("adAcc").textContent = "("+VP+"+"+VN+")/"+tot;
+    document.getElementById("adPre").textContent = (VP+FP) ? VP+"/"+(VP+FP) : "0/0";
+    document.getElementById("adRec").textContent = VP+"/"+(VP+FN);
+    document.getElementById("adFpr").textContent = FP+"/"+(FP+VN);
+    document.getElementById("adF1").textContent  = (2*VP)+"/"+(2*VP+FP+FN);
+
+    /* contraste con la predicción, solo si ya predijo y ya movió */
+    if (predA && Math.abs(u - uInicial) > 0.12){
+      var box = document.getElementById("contrasteA");
+      var bajo = u < uInicial;
+      var real = bajo
+        ? "Bajaste el umbral y el <strong>recall subió</strong> mientras la <strong>precisión bajó</strong>: "
+          + "al declarar positivos más casos atrapas más círculos reales, pero también te llevas más triángulos."
+        : "Subiste el umbral, así que estás viendo el movimiento inverso al de la pregunta: "
+          + "la <strong>precisión subió</strong> y el <strong>recall bajó</strong>. Arrástralo hacia la izquierda, "
+          + "por debajo de 0,38, para ver el caso que predijiste.";
+      var veredicto;
+      if (predA === "rec"){
+        veredicto = bajo
+          ? "<strong>Le achuntaste.</strong> "
+          : "<strong>Tu predicción era la correcta</strong> para el movimiento que te pedí. ";
+      } else if (predA === "ambas"){
+        veredicto = "<strong>No.</strong> Es tentador, pero no pueden subir las dos: cada caso nuevo que declaras positivo "
+          + "entra en el numerador del recall solo si era positivo, y entra en el denominador de la precisión siempre. ";
+      } else if (predA === "pre"){
+        veredicto = "<strong>Está al revés.</strong> Esa es la dirección contraria: subir el umbral es lo que sube la precisión y baja el recall. ";
+      } else {
+        veredicto = "<strong>Sí cambian, y mucho.</strong> Ese es justamente el punto: no son propiedades fijas del modelo. ";
+      }
+      box.innerHTML = veredicto + real
+        + "<br><br>La pregunta que queda: <em>¿qué término de cada fórmula produjo ese movimiento?</em> "
+        + "Mira los denominadores debajo de cada número mientras mueves el slider.";
+      box.className = "contraste on";
+    }
+  }
+
+  [].slice.call(document.querySelectorAll('.bpred[data-p]')).forEach(function(b){
+    b.addEventListener("click", function(){
+      [].slice.call(document.querySelectorAll('.bpred[data-p]')).forEach(function(o){
+        o.setAttribute("aria-pressed","false");
+      });
+      b.setAttribute("aria-pressed","true");
+      predA = b.getAttribute("data-p");
+      pintarA();
+    });
+  });
+
+  sU.addEventListener("input", function(){ movido++; pintarA(); });
+  pintarA();
+
+  /* ============================================================
+     C · PREVALENCIA: el caso de la máquina del profesor
+     ============================================================ */
+  var PREVS = [
+    {lab:"1 de cada 2 (balanceado)", p:1/2},
+    {lab:"1 de cada 100",            p:1/100},
+    {lab:"1 de cada 1.000",          p:1/1000},
+    {lab:"1 de cada 10.000",         p:1/10000}
+  ];
+  /* el slider recorre 0..3; ordenamos de más común a más raro */
+  var ORDEN = [0, 1, 2, 3];
+
+  var sP = document.getElementById("sPrev"),
+      sT = document.getElementById("sTpr"),
+      sF = document.getElementById("sFpr");
+  var predB = null;
+
+  function pintarB(){
+    var idx  = ORDEN[parseInt(sP.value, 10)];
+    var prev = PREVS[idx].p;
+    var tpr  = parseInt(sT.value, 10) / 100;
+    /* escala cuadrática: 0 → 0 %, 224 → 1 %, 1000 → 20 %.
+       Hace falta resolución fina cerca de cero para que el caso raro sea alcanzable. */
+    var t    = parseInt(sF.value, 10) / 1000;
+    var fpr  = t * t * 0.2;
+
+    document.getElementById("vPrev").textContent = PREVS[idx].lab;
+    document.getElementById("vTpr").textContent  = (parseInt(sT.value,10)) + " %";
+    document.getElementById("vFpr").textContent  =
+      (fpr*100).toFixed(fpr < 0.005 ? 3 : 2).replace(".",",") + " %";
+
+    var N = 10000;
+    var P = Math.round(N * prev);
+    if (P < 1) P = 1;
+    var Ng = N - P;
+
+    var VP = Math.round(tpr * P);
+    var FN = P - VP;
+    var FP = Math.round(fpr * Ng);
+    var VN = Ng - FP;
+
+    document.getElementById("bVP").textContent = fmtNum(VP);
+    document.getElementById("bFN").textContent = fmtNum(FN);
+    document.getElementById("bFP").textContent = fmtNum(FP);
+    document.getElementById("bVN").textContent = fmtNum(VN);
+
+    var acc = (VP+VN)/N;
+    var pre = (VP+FP) ? VP/(VP+FP) : null;
+    var rec = P ? VP/P : null;
+    var fprReal = Ng ? FP/Ng : null;
+
+    document.getElementById("bAcc").textContent = fmtPct(acc);
+    document.getElementById("bPre").textContent = pre===null ? "indef." : fmtPct(pre);
+    document.getElementById("bRec").textContent = fmtPct(rec);
+    document.getElementById("bFprOut").textContent = fmtPct(fprReal, 2);
+    document.getElementById("bUnoMenos").textContent = pre===null ? "indef." : fmtPct(1-pre);
+    document.getElementById("bdPre").textContent = (VP+FP) ? fmtNum(VP)+"/"+fmtNum(VP+FP) : "0/0";
+
+    var msg;
+    if (pre === null){
+      msg = "El modelo no avisa nunca, así que no hay nada en el denominador de la precisión. "
+          + "Sube el TPR para que empiece a decir que sí.";
+    } else {
+      msg = "Con " + PREVS[idx].lab.toLowerCase() + ", cada vez que el modelo grita «va a fallar», "
+          + "acierta el <strong>" + fmtPct(pre) + "</strong> de las veces. "
+          + "Detiene la línea <strong>" + fmtNum(VP+FP) + "</strong> veces y solo <strong>"
+          + fmtNum(VP) + "</strong> eran fallas de verdad.";
+      if (acc > 0.9 && pre < 0.35){
+        msg += "<br><br><strong>Mira la contradicción:</strong> exactitud " + fmtPct(acc)
+             + " y precisión " + fmtPct(pre) + ", con el mismo modelo y la misma tabla. "
+             + "Si reportas solo la exactitud, nadie se entera de que el sistema es inutilizable en planta.";
+      }
+      if (fprReal !== null && Math.abs((1-pre) - fprReal) > 0.05){
+        msg += "<br><br><strong>FPR = " + fmtPct(fprReal,2) + " pero 1 − precisión = " + fmtPct(1-pre) + ".</strong> "
+             + "Si fueran la misma cantidad, estos dos números no podrían separarse. Se separan.";
+      }
+    }
+    document.getElementById("lectura").innerHTML = msg;
+
+    if (predB && parseInt(sP.value,10) !== 1){
+      var box = document.getElementById("contrasteB");
+      var v;
+      if (predB === "baja"){
+        v = "<strong>Correcto.</strong> ";
+      } else if (predB === "igual"){
+        v = "<strong>No.</strong> Y es el error más natural de todos, porque suena lógico: el modelo no cambió. ";
+      } else {
+        v = "<strong>Al revés.</strong> ";
+      }
+      box.innerHTML = v
+        + "TPR y FPR sí son propiedades del modelo y no se mueven. Pero la <strong>precisión no lo es</strong>: "
+        + "su denominador mezcla VP (que sale de los positivos, cada vez menos) con FP (que sale de los negativos, "
+        + "cada vez más). Cuando la clase positiva se hace rara, los falsos positivos —sacados de una población enorme— "
+        + "ahogan a los verdaderos positivos, que salen de una población diminuta."
+        + "<br><br>Por eso <em>la precisión depende del mundo, no solo del modelo</em>. Es la razón de que un modelo "
+        + "se «rompa» al pasarlo de un laboratorio balanceado a producción sin haber cambiado nada.";
+      box.className = "contraste on";
+    }
+  }
+
+  [].slice.call(document.querySelectorAll('.bpred[data-q]')).forEach(function(b){
+    b.addEventListener("click", function(){
+      [].slice.call(document.querySelectorAll('.bpred[data-q]')).forEach(function(o){
+        o.setAttribute("aria-pressed","false");
+      });
+      b.setAttribute("aria-pressed","true");
+      predB = b.getAttribute("data-q");
+      pintarB();
+    });
+  });
+
+  sP.addEventListener("input", pintarB);
+  sT.addEventListener("input", pintarB);
+  sF.addEventListener("input", pintarB);
+  pintarB();
+
+})();
+</script>
+</body>
+</html>

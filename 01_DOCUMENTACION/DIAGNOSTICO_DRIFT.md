@@ -31,7 +31,7 @@
 | `04_DATOS/` | También `GZ_mini_challenge_*.csv` + `00_LEEME.md` |
 | `06_ENTREGABLES/INFORME_…` y `PITCH_…` | Existen aquí; **no** en la raíz |
 | `02_PROYECTO_FCD/Hito1/` | Canónico actual; `Fundamentos de ciencia de datos\Hito1\` **no existe** |
-| `00_LEEME.md` por dominio | Presentes en certámenes, curso, Melbourne, Galaxy, histórico, datos, Guillito, práctica, clases |
+| `00_LEEME.md` por dominio | Presentes en certámenes, curso, Melbourne, Galaxy, histórico, datos, Datito, práctica, clases |
 
 ---
 

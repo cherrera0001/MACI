@@ -5,12 +5,12 @@ Datos (T2-2026), Universidad de Concepción.
 
 Contiene el proyecto semestral (Proyecto 3 — predicción de precios de propiedades
 en Melbourne), un desafío de clasificación (Galaxy Zoo), los laboratorios de la
-asignatura, la reconstrucción documental del Certamen 2, y **Guillito**, un tutor
+asignatura, la reconstrucción documental del Certamen 2, y **Datito**, un tutor
 personal de Ciencia de Datos construido sobre este mismo material.
 
 **Punto de entrada:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)
 · **Orden documental:** [`01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md`](01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md)
-· **Contrato de Guillito:** [`spec.md`](spec.md)
+· **Contrato de Datito:** [`spec.md`](spec.md)
 
 ---
 
@@ -31,7 +31,7 @@ Arquitectura **repo-nativa** (sin Obsidian como segunda verdad):
 | Drift README↔disco | [`DIAGNOSTICO_DRIFT.md`](01_DOCUMENTACION/DIAGNOSTICO_DRIFT.md) · `python 03_CODIGO/auditar_drift_documental.py` |
 | Certamen 2 | [`01_CERTAMEN2/00_LEEME.md`](01_DOCUMENTACION/01_CERTAMEN2/00_LEEME.md) |
 | Proyecto 3 | [`03_PROYECTO_MELBOURNE/00_LEEME.md`](01_DOCUMENTACION/03_PROYECTO_MELBOURNE/00_LEEME.md) |
-| Guillito | [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md) |
+| Datito | [`07_DATITO/00_LEEME.md`](07_DATITO/00_LEEME.md) |
 
 **Obsidian MCP / GitHub MCP:** no implementados. El mismo árbol se navega en GitHub con estos links relativos; estudio asistido ya usa NotebookLM (`.mcp.json`).
 
@@ -43,8 +43,8 @@ Arquitectura **repo-nativa** (sin Obsidian como segunda verdad):
 F:\MACI\
 │
 ├── README.md                       ← este archivo
-├── CLAUDE.md                       ← contexto para Claude Code; activa a Guillito
-├── spec.md                         ← contrato de Guillito: garantías y verificación
+├── CLAUDE.md                       ← contexto para Claude Code; activa a Datito
+├── spec.md                         ← contrato de Datito: garantías y verificación
 ├── .mcp.json                       ← conexión MCP a NotebookLM (sin secretos)
 ├── .env / .env.example             ← token de GitHub; .env NUNCA se versiona
 ├── push_github.ps1                 ← push con token desde .env, sin filtrar secretos
@@ -100,9 +100,9 @@ F:\MACI\
 │   ├── Pitch_Hito2_v2.pptx / .pdf      presentación Hito 2
 │   └── visualizaciones\viz_1..10.html  visualizaciones interactivas
 │
-├── 07_GUILLITO\                    ← tutor personal de Ciencia de Datos
+├── 07_DATITO\                    ← tutor personal de Ciencia de Datos
 │   ├── 00_LEEME.md                     cómo se usa — EMPEZAR AQUÍ
-│   ├── guillito.config.yaml            datos del alumno; las reglas van en la skill
+│   ├── datito.config.yaml            datos del alumno; las reglas van en la skill
 │   ├── curriculum.yaml                 21 conceptos, prerrequisitos, material
 │   ├── progreso.yaml                   estado y cadena de evidencia
 │   ├── errores_conceptuales.yaml       errores observados + patrones a vigilar
@@ -143,35 +143,35 @@ F:\MACI\
 
 ---
 
-## Guillito — tutor personal
+## Datito — tutor personal
 
 Abre Claude Code en `F:\MACI` y escribe, por ejemplo:
 
 ```
-Guillito, quiero aprender validación cruzada
+Datito, quiero aprender validación cruzada
 ```
 
-Guillito consulta tu cuaderno de NotebookLM y el material del repositorio,
+Datito consulta tu cuaderno de NotebookLM y el material del repositorio,
 explica, pregunta, **espera tu respuesta**, analiza tu razonamiento y registra el
 avance. Un concepto solo llega a `DOMINADO` con cuatro evidencias: explicar,
 aplicar, interpretar resultados y transferir a otro problema.
 
 | Comando | Qué hace | Contexto |
 |---|---|---|
-| `/guillito` | Sesión de estudio: problema → tu respuesta → diagnóstico | Conversación |
-| `/guillito-progreso` | Informe de estado. Solo lectura | Conversación |
-| `/guillito-visual <concepto>` | Genera un HTML explicativo | Aislado |
-| `/guillito-corregir` | Corrige un lote de respuestas escritas | Aislado |
+| `/datito` | Sesión de estudio: problema → tu respuesta → diagnóstico | Conversación |
+| `/datito-progreso` | Informe de estado. Solo lectura | Conversación |
+| `/datito-visual <concepto>` | Genera un HTML explicativo | Aislado |
+| `/datito-corregir` | Corrige un lote de respuestas escritas | Aislado |
 
 El tutor no puede ser un subagente —no sabría esperar tu respuesta—, pero
 corregir y construir artefactos sí corren aislados, sin gastar el contexto de la
 sesión.
 
 **Las explicaciones van a un archivo, no al chat.** Cada concepto genera un HTML
-interactivo en `07_GUILLITO/visual/`, que funciona sin conexión. El chat queda
+interactivo en `07_DATITO/visual/`, que funciona sin conexión. El chat queda
 para preguntar, esperar y diagnosticar.
 
-Detalle en [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md). Garantías y
+Detalle en [`07_DATITO/00_LEEME.md`](07_DATITO/00_LEEME.md). Garantías y
 método en [`spec.md`](spec.md).
 
 ### Estados de aprendizaje
@@ -198,8 +198,8 @@ Jerarquía, de mayor a menor prioridad:
 3. **Proyectos propios** — Melbourne y Galaxy Zoo
 4. **Fuentes académicas externas** — solo si lo anterior no alcanza
 
-Toda afirmación de Guillito lleva etiqueta de origen: `[FUENTE · NotebookLM: …]`,
-`[FUENTE · Repo: …]`, `[INFERENCIA]` o `[GUILLITO]` para explicación propia.
+Toda afirmación de Datito lleva etiqueta de origen: `[FUENTE · NotebookLM: …]`,
+`[FUENTE · Repo: …]`, `[INFERENCIA]` o `[DATITO]` para explicación propia.
 
 ### Las clases transcritas
 
@@ -230,7 +230,7 @@ términos técnicos.
 | P5 | Clasificación | `clasificacion`, `matriz_confusion`, `metricas_clasificacion`, `arboles_decision`, `random_forest` |
 
 Las versiones `(vacio)` son **ejercicios sin resolver** y se reservan como
-evidencia de APLICAR. Guillito no muestra la versión resuelta antes de que los
+evidencia de APLICAR. Datito no muestra la versión resuelta antes de que los
 intentes.
 
 ### NotebookLM
@@ -238,7 +238,7 @@ intentes.
 Conectado por MCP mediante [`notebooklm-py`](https://github.com/teng-lin/notebooklm-py)
 (MIT). Google **no ofrece API oficial para cuentas personales** — la integración
 usa APIs internas no documentadas con cookies de sesión, que **caducan cada
-pocas semanas**. Guillito no depende de ella: si falla, avisa y sigue con el
+pocas semanas**. Datito no depende de ella: si falla, avisa y sigue con el
 material local.
 
 Credenciales en `~/.notebooklm/`, **nunca** en el repositorio. Reautenticar:
