@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fundamentos de Ciencia de Datos · Guillito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:5.5rem;text-align:right}
+  input[type=range]{width:100%}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin-top:1.1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
+  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.72rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button:hover{background:#1d4ed8}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.25rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"\25B8  ";font-weight:700}
+  details[open] summary:before{content:"\25BE  "}
+  details[open] summary{margin-bottom:.7rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+
+  /* --- Big Data --- */
+  .bd-fila{display:grid;grid-template-columns:5.5rem 1fr 4.5rem;gap:.7rem;align-items:center;margin:.55rem 0}
+  .bd-fila .nom{font-weight:600;font-size:.86rem}
+  .bd-pista{position:relative;height:26px;background:#f1f0ee;border-radius:5px;overflow:hidden}
+  .bd-barra{height:100%;border-radius:5px;transition:width .12s linear}
+  .bd-ok{background:#a7f3d0}
+  .bd-mal{background:#fca5a5}
+  .bd-techo{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--tinta);z-index:2}
+  .bd-val{font-size:.8rem;font-variant-numeric:tabular-nums;text-align:right;color:var(--suave)}
+  .bd-veredicto{margin-top:1rem;padding:.8rem 1rem;border-radius:8px;font-weight:600}
+  .bd-si{background:#fef2f2;border-left:3px solid var(--rojo)}
+  .bd-no{background:#f0fdf4;border-left:3px solid var(--verde)}
+
+  /* --- postura data-driven --- */
+  .seg{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
+  .seg button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600}
+  .seg button.on{background:var(--azul);border-color:var(--azul);color:#fff}
+  .caja-postura{background:var(--fondo);border-radius:8px;padding:.9rem 1.1rem;font-size:.93rem;min-height:9rem}
+  .caja-postura b{display:block;margin-top:.6rem}
+
+  /* --- ciclo --- */
+  .ciclo{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
+  .ciclo button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600;font-size:.8rem}
+  .ciclo button.ok{background:#d1fae5;border-color:var(--verde);color:#065f46}
+  .ciclo button.no{background:#fee2e2;border-color:var(--rojo);color:#991b1b}
+  .sintoma{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.1rem;margin:.9rem 0}
+  .sintoma .txt{font-style:italic;margin-bottom:.3rem}
+  .sintoma .fb{font-size:.9rem;margin-top:.5rem;display:none}
+  .sintoma .fb.on{display:block}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Fundamentos de Ciencia de Datos</h1>
+<p class="sub">Qué es esto, antes de que exista un modelo.<br>
+Fundamentos de Ciencia de Datos · UdeC · T2-2026</p>
+
+<div class="grafo">
+  <span class="n aqui">Fundamentos</span> →
+  <span class="n">Datos, features y target</span> →
+  <span class="n">EDA</span> →
+  <span class="n">…y 18 conceptos más</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> Este concepto no tiene prerrequisitos: es la raíz del
+grafo. <strong>Los otros veinte cuelgan de él.</strong> No se estudia para
+puntuar una pregunta: se estudia porque define de qué están hablando todos los
+demás.<br><br>
+Aun así, <em>también</em> puntúa. En el Certamen 1 las preguntas 1 a 4 y la 7
+salen de aquí: campo interdisciplinario, organización <em>data-driven</em>, rol
+del líder, ciclo de vida iterativo y reclutamiento. Cinco preguntas cerradas de
+0,5 puntos cada una.
+<span style="font-size:.85rem;color:#666">[FUENTE · Repo:
+<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>
+</div>
+
+<h2>1 · La definición, palabra por palabra</h2>
+
+<p>Tu profesor abrió el curso con una definición y dijo de dónde la sacó: de
+Wikipedia. Lo importante no es la definición completa, sino las tres palabras que
+él mismo marcó.</p>
+
+<div class="cita">
+«La ciencia de datos es un campo académico <strong>interdisciplinario</strong> que
+utiliza estadística, computación, método científico, procesamiento, visualización
+científica, algoritmos y sistemas para extraer o extrapolar
+<strong>conocimiento</strong> desde los <strong>datos</strong>, que son
+potencialmente ruidosos, estructurados o no estructurados.»
+<span class="f">Clase 1, 19 de junio · [FUENTE · Repo:
+<code>09_CLASES/transcripciones/01Clase_Bienvenida_..._19_Junio_plano.txt</code>]</span>
+</div>
+
+<div class="cita">
+«Las palabras que yo creo que son importantes son: interdisciplinario,
+conocimiento y datos.»
+<span class="f">Clase 1, 19 de junio · el profesor, sobre su propia lámina</span>
+</div>
+
+<table>
+<tr><th>Palabra</th><th>Qué obliga</th><th>Cómo lo dijo él</th></tr>
+<tr>
+  <td><strong>Interdisciplinario</strong></td>
+  <td>El científico de datos <em>no puede</em> resolver el problema solo. Necesita
+      al experto del dominio para saber qué pregunta vale la pena.</td>
+  <td>«Si yo estoy tratando de responder una pregunta en minería con ciencia de
+      datos, probablemente yo sé mucho de ciencia de datos pero no sé tanto de
+      minería. Necesito estar en constante colaboración con los expertos de sus
+      respectivas áreas.»</td>
+</tr>
+<tr>
+  <td><strong>Conocimiento</strong></td>
+  <td>El producto no es el modelo, ni el gráfico, ni el <em>dashboard</em>. Es una
+      decisión mejor tomada. Si nadie decide distinto, no hubo conocimiento.</td>
+  <td>«Queremos utilizar datos para poder extraer conocimiento que nos va a ser
+      útil para poder tomar decisiones.»</td>
+</tr>
+<tr>
+  <td><strong>Datos</strong></td>
+  <td>Y añade: <em>potencialmente ruidosos</em>. El ruido no es un accidente que se
+      pueda limpiar del todo — es parte de la definición. Vuelve en la sección 8.</td>
+  <td>«…desde los datos, que son potencialmente ruidosos, estructurados o no
+      estructurados.»</td>
+</tr>
+</table>
+
+<div class="clave">
+<strong>La trampa de la palabra «interdisciplinario».</strong> No significa «usa
+varias herramientas». Significa <em>involucra personas de disciplinas
+distintas</em>. Un solo ingeniero que sabe SQL, Python y estadística
+<strong>no</strong> es un equipo interdisciplinario: es un ingeniero polivalente.
+El profesor lo subrayó incluso al armar los grupos del proyecto: «si se acuerdan
+de la definición de ciencia de datos, es un área interdisciplinaria; entonces
+necesita gente de distintas disciplinas».
+</div>
+
+<h2>2 · Lo que la ciencia de datos no es</h2>
+
+<p>La pregunta 1 del Certamen 1 es verdadero/falso sobre el campo
+interdisciplinario. Ese formato se resuelve separando vecinos, no recitando la
+definición.</p>
+
+<table>
+<tr><th>Vecino</th><th>Qué hace</th><th>Qué le falta para ser ciencia de datos</th></tr>
+<tr><td><strong>Estadística</strong></td>
+    <td>Cuantifica incertidumbre y contrasta hipótesis sobre una muestra.</td>
+    <td>No se hace cargo de recolectar, limpiar, poner en marcha ni comunicar.</td></tr>
+<tr><td><strong>Inteligencia artificial / ML</strong></td>
+    <td>Algoritmos que aprenden una función desde ejemplos.</td>
+    <td>Es <em>una etapa</em> del proceso —el modelamiento—, no el proceso.</td></tr>
+<tr><td><strong>Ingeniería de datos</strong></td>
+    <td>Construye las tuberías: ingestión, almacenamiento, disponibilidad.</td>
+    <td>Deja el dato disponible; no responde la pregunta de negocio.</td></tr>
+<tr><td><strong>Business Intelligence</strong></td>
+    <td>Reporta lo que pasó, en tableros y KPIs.</td>
+    <td>Describe el pasado. No experimenta, no predice, no itera sobre hipótesis.</td></tr>
+<tr><td><strong>Big Data</strong></td>
+    <td>Nombra una <em>condición</em> de escala, velocidad y variedad.</td>
+    <td>Es un adjetivo del problema, no una disciplina. Ver sección 5.</td></tr>
+</table>
+
+<details>
+<summary>Autocomprobación · dos ítems al estilo del profesor</summary>
+<p><strong>(a)</strong> «Un equipo formado por tres ingenieros civiles
+informáticos que dominan estadística, programación y visualización constituye un
+equipo interdisciplinario de ciencia de datos.» ¿V o F, y por qué?</p>
+<p><strong>(b)</strong> «Todo proyecto de ciencia de datos incluye una etapa de
+modelamiento con inteligencia artificial.» ¿V o F, y por qué?</p>
+<hr style="border:0;border-top:1px dashed #ccc;margin:.9rem 0">
+<p><strong>(a) Falso.</strong> Tienen varias <em>herramientas</em>, no varias
+<em>disciplinas</em>. Falta quien conozca el dominio del problema —el geólogo, el
+médico, el forestal— que es quien sabe si la pregunta tiene sentido y si el
+resultado es plausible. El mecanismo: sin experto de dominio nadie valida la
+pregunta, solo el cálculo.</p>
+<p><strong>(b) Falso.</strong> El proceso empieza en un requerimiento y puede
+cerrarse en la exploración: a veces el hallazgo es «estos datos no permiten
+responder esto» o «la respuesta ya está en un gráfico de barras». El modelamiento
+es una etapa disponible, no obligatoria. Fíjate que esta es también la respuesta a
+la pregunta de para qué sirve la ciencia de datos <em>cuando no hace falta ningún
+modelo</em>.</p>
+</details>
+
+<h2>3 · Organización <em>data-driven</em></h2>
+
+<p>El profesor abrió la clase 1 con esto, antes que con cualquier técnica. Y su
+definición es más estrecha de lo que suena.</p>
+
+<div class="cita">
+«Las organizaciones <em>data-driven</em> son organizaciones cuyo proceso, cuyo
+valor, lo generan a partir de los datos. […] Todo lo que deciden, en general, lo
+deciden a partir de los datos.»
+<span class="f">Clase 1, 19 de junio</span>
+</div>
+
+<div class="clave">
+<strong>La distinción que decide la pregunta.</strong> «Usamos muchos datos» no es
+<em>data-driven</em>. Una minera que llena tableros de Power BI y después decide
+por antigüedad del jefe de turno <strong>usa</strong> datos; no es
+<em>data-driven</em>. Lo que define el término es <em>quién tiene la última
+palabra</em>, no cuántos datos entran.
+</div>
+
+<p>Un compañero tuyo, que trabaja en minería, lo dijo en clase mejor que cualquier
+manual: «en minería existe mucho la ideología de que las decisiones se sacan
+solamente de la experiencia; lo que intento es respaldar todo lo que decimos a
+partir de datos, en vez de simplemente de la experiencia del <em>siempre se ha
+hecho así</em>».</p>
+
+<h3>Compara las tres posturas sobre la misma decisión</h3>
+
+<p>Caso forestal. Una empresa decide si adelanta la cosecha de un rodal de pino
+radiata. Tiene un modelo de crecimiento alimentado con inventarios, precios de
+madera y pronóstico de lluvia. Pulsa cada postura: <strong>cambia quién decide,
+no cuántos datos hay</strong>.</p>
+
+<div class="panel">
+  <div class="seg" id="segPostura">
+    <button data-p="exp" class="on">Por experiencia</button>
+    <button data-p="inf">Data-informed</button>
+    <button data-p="drv">Data-driven</button>
+  </div>
+  <div class="caja-postura" id="cajaPostura"></div>
+</div>
+
+<div class="nota">
+<strong>Honestidad de fuente.</strong> El enunciado de la pregunta 2 del Certamen 1
+contrasta <em>data-driven</em> con <em>data-informed</em>
+<span style="font-size:.85rem">[FUENTE · Repo:
+<code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code>]</span>, pero el término
+<em>data-informed</em> <strong>no aparece en ninguna transcripción de clase</strong>
+— lo verifiqué buscándolo en las nueve. <span style="font-size:.85rem">[INFERENCIA]</span><br><br>
+Consecuencia práctica: si esa pregunta reaparece, ancla tu justificación en la
+definición que <em>sí</em> dio el profesor —«el valor se genera a partir de los
+datos»— y declara el contraste como matiz, no como doctrina del curso. Separar lo
+medido de lo supuesto es, literalmente, lo que evalúa la última pregunta del
+Certamen 2.
+</div>
+
+<h2>4 · Por qué ahora y no antes</h2>
+
+<p>Dato del profesor, citando a Cindy Howson (ThoughtSpot): <strong>solo el 20 % de
+las empresas está empoderando con datos a sus trabajadores de primera línea</strong>
+—los que interactúan a diario con el cliente. La brecha no es tecnológica.</p>
+
+<p>Su explicación de por qué ahora sí se puede, en dos piezas: <strong>abundancia
+de datos</strong> (internet masivo, captura barata) y <strong>modelos capaces de
+extraerles información</strong>. Y su explicación de por qué las empresas antiguas
+no logran la transformación, en otras dos: <strong>lo operativo</strong> y
+<strong>lo humano</strong>. Las <em>startups</em> avanzan más rápido no por talento,
+sino porque no tienen una forma establecida de hacer las cosas que desmontar.</p>
+
+<h2>5 · Big Data: las tres V, y la cuarta</h2>
+
+<p>Aquí está la distinción más cara del bloque, y el profesor la dijo con todas las
+letras.</p>
+
+<div class="cita">
+«Un proyecto es de <em>big data</em> cuando la infraestructura que yo tengo
+actualmente no es lo suficientemente buena para resolver el problema. […] Y
+seguramente después lo voy a resolver, y ya no sería un problema de <em>big
+data</em>.»
+<span class="f">Clase 1, 19 de junio</span>
+</div>
+
+<div class="clave">
+<strong>Big Data no es una cantidad. Es una relación.</strong> No hay un umbral de
+terabytes que convierta un problema en <em>big data</em>. El mismo problema lo es
+para una empresa y no lo es para otra, y deja de serlo para la misma empresa
+cuando mejora su infraestructura. <em>Big data</em> es un diagnóstico sobre
+<strong>la distancia entre la exigencia del dato y lo que tu infraestructura
+aguanta</strong>.
+</div>
+
+<div class="pred" id="predBD">
+  <div class="q">Antes de mover nada, predice.</div>
+  <p style="margin:.2rem 0 .5rem">Una central meteorológica recibe cada noche
+  40 TB por lote y su clúster los procesa sin apuro. Mañana le exigen procesar
+  <em>los mismos 40 TB</em> en tiempo real. El volumen no cambió.
+  <strong>¿Pasa a ser un problema de big data?</strong></p>
+  <button data-r="si">Sí, pasa a serlo</button>
+  <button data-r="no">No: mismo volumen, mismo problema</button>
+  <button data-r="dep">Depende de otra cosa</button>
+  <div class="veredicto" id="vBD"></div>
+</div>
+
+<div class="panel">
+  <p style="margin-top:0;font-size:.9rem;color:#666">Mueve las tres V y, después,
+  mueve la capacidad. La línea negra vertical es <strong>lo que tu infraestructura
+  aguanta hoy</strong>.</p>
+
+  <div class="bd-fila">
+    <span class="nom">Volumen</span>
+    <div class="bd-pista"><div class="bd-barra" id="bVol"></div><div class="bd-techo" id="tVol"></div></div>
+    <span class="bd-val" id="lVol"></span>
+  </div>
+  <div class="bd-fila">
+    <span class="nom">Velocidad</span>
+    <div class="bd-pista"><div class="bd-barra" id="bVel"></div><div class="bd-techo" id="tVel"></div></div>
+    <span class="bd-val" id="lVel"></span>
+  </div>
+  <div class="bd-fila">
+    <span class="nom">Variedad</span>
+    <div class="bd-pista"><div class="bd-barra" id="bVar"></div><div class="bd-techo" id="tVar"></div></div>
+    <span class="bd-val" id="lVar"></span>
+  </div>
+
+  <div class="ctrl">
+    <label for="sVol">Volumen</label><input type="range" id="sVol" min="0" max="100" value="55"><output id="oVol"></output>
+    <label for="sVel">Velocidad</label><input type="range" id="sVel" min="0" max="100" value="30"><output id="oVel"></output>
+    <label for="sVar">Variedad</label><input type="range" id="sVar" min="0" max="100" value="25"><output id="oVar"></output>
+    <label for="sCap">Infraestructura</label><input type="range" id="sCap" min="10" max="100" value="70"><output id="oCap"></output>
+  </div>
+
+  <div class="bd-veredicto" id="vdBD"></div>
+
+  <p style="font-size:.85rem;color:#666;margin-bottom:0">La regla del simulador
+  —es <em>big data</em> si al menos una dimensión supera la capacidad— es un
+  dispositivo didáctico <span style="font-size:.95em">[GUILLITO]</span>. El
+  criterio es del profesor; el umbral por dimensión lo puse yo para que puedas
+  moverlo.</p>
+</div>
+
+<h3>La cuarta V no se arregla con más servidores</h3>
+
+<div class="cita">
+«Hay una cuarta V que se le llama la <strong>veracidad</strong>, que es básicamente
+estar seguro de que el dato que se está generando es veraz. […] Imaginemos que el
+sensor falla el 10 % de las veces: entonces ya no es tan veraz la información que
+tú tienes, y el manejo de esa información se complejiza aún más.»
+<span class="f">Clase 1, 19 de junio</span>
+</div>
+
+<p>Volumen, velocidad y variedad son problemas de <strong>capacidad</strong>: se
+atacan con infraestructura. La veracidad es un problema de
+<strong>confianza</strong>: duplicar el clúster no la mejora en nada. Por eso está
+aparte en el simulador — y por eso desemboca en <em>calidad de datos</em>, que en
+el Certamen 1 vale 2,0 puntos en una sola pregunta.</p>
+
+<details>
+<summary>Autocomprobación · selección múltiple, formato del profesor</summary>
+<p>¿Cuál de estas afirmaciones sobre Big Data es <strong>incorrecta</strong>?</p>
+<ol type="a">
+<li>Un proyecto deja de ser <em>big data</em> cuando la organización mejora su
+    infraestructura.</li>
+<li>Un conjunto de datos de 50 TB es, por su tamaño, un problema de <em>big data</em>.</li>
+<li>La variedad se refiere a que los datos llegan en formatos heterogéneos: texto,
+    imagen, señales, tablas.</li>
+<li>La veracidad apunta a la confiabilidad del dato, por ejemplo cuando un sensor
+    falla intermitentemente.</li>
+</ol>
+<hr style="border:0;border-top:1px dashed #ccc;margin:.9rem 0">
+<p><strong>La incorrecta es la (b).</strong> Y la razón es exactamente la frase del
+profesor: no hay un umbral absoluto. 50 TB pueden ser rutina para una organización
+con el clúster adecuado y un colapso para otra. El error de fondo es tratar una
+<em>relación</em> (dato frente a infraestructura) como una <em>cantidad</em>.</p>
+<p>La (a) suena a trampa y no lo es: es literalmente lo que él dijo —«seguramente
+después lo voy a resolver, y ya no sería un problema de big data».</p>
+</details>
+
+<h2>6 · La ruedita: el ciclo es iterativo, no lineal</h2>
+
+<div class="cita">
+«La figura que voy a mostrar es <strong>la figura más importante de este trimestre
+en este curso</strong>. […] Creo que ilustra cuál es la tarea y el día a día del
+científico de datos.»
+<span class="f">Clase 1, 19 de junio, presentando la rueda del proceso</span>
+</div>
+
+<p>Siete etapas, en sentido horario:</p>
+
+<p style="text-align:center;font-size:.9rem;line-height:2.2">
+<code>Requerimiento / pregunta</code> →
+<code>Recolección</code> →
+<code>Limpieza</code> →
+<code>Exploración</code> →
+<code>Modelamiento</code> →
+<code>Visualización y comunicación</code> →
+<code>Puesta en marcha</code> → <em>y vuelta al requerimiento</em>
+</p>
+
+<div class="vecino">
+El detalle de qué se hace y qué <em>no</em> se hace en cada etapa ya está en otro
+artefacto tuyo: <a href="triaje_de_problemas.html">triaje_de_problemas.html</a>,
+sección 1. Aquí no repito la rueda — aquí trabajamos <strong>las flechas hacia
+atrás</strong>, que es lo que evalúa la pregunta 4.
+</div>
+
+<div class="clave">
+<strong>La distinción del certamen: iterativo ≠ lineal.</strong> Un proceso en
+cascada avanza y no vuelve. El ciclo de ciencia de datos tiene flecha en los dos
+sentidos entre etapas vecinas, y retroceder <em>no</em> es señal de que algo salió
+mal: es el modo normal de operación.
+</div>
+
+<div class="cita">
+«Estas flechitas que están acá no están porque sea algo que <em>podría</em> pasar:
+es porque es habitual. […] Llego al modelamiento, los resultados no se ven como yo
+pienso que deberían verse, y ahí es cuando voy y me pregunto: ¿mi proceso de
+limpieza estuvo bien hecho?, ¿mi recolección está bien planteada? Y ahí es donde
+empiezo a volver atrás. Y <strong>la mayoría de las veces, yo diría el 90 %, me voy
+a encontrar con que tiene que ver con la limpieza de los datos</strong>: que algo
+faltó, que falta un paso intermedio de procesamiento. Esto es muy común.»
+<span class="f">Clase 2, 26 de junio · [FUENTE · Repo:
+<code>09_CLASES/transcripciones/02Clase_y_Ayudantía_..._26_Junio_plano.txt</code>]</span>
+</div>
+
+<h3>¿A qué etapa vuelves?</h3>
+
+<p>Cinco síntomas. Para cada uno, elige la etapa a la que hay que retroceder. Se
+puede fallar sin costo: la idea es ver <em>de qué depende</em> la respuesta.</p>
+
+<div id="simCiclo"></div>
+
+<div class="nota" id="marcador" style="display:none"></div>
+
+<h3>Dónde está la puesta en marcha en tu propio proyecto</h3>
+
+<p>La pregunta 4 del Certamen 1 junta «ciclo iterativo» con «puesta en producción».
+No es casualidad: la puesta en marcha es la etapa que más gente omite al describir
+el ciclo, porque es la única que no produce un archivo bonito.</p>
+
+<div class="peligro">
+<strong>Tu proyecto de Melbourne llega hasta la comunicación, no hasta la puesta en
+marcha.</strong> Entregaste métricas, gráficos y un informe. Nadie está tasando
+casas con tu modelo en producción. Eso no es un defecto del trabajo —el curso pide
+hasta ahí— pero sí es la respuesta honesta si te preguntan en qué etapa del ciclo
+quedó. <span style="font-size:.85rem">[INFERENCIA, sobre
+<code>06_ENTREGABLES/INFORME_MODELO_FCD_P3.md</code>]</span>
+</div>
+
+<h2>7 · El equipo: líder, reclutamiento, y por qué importa</h2>
+
+<p>Dos preguntas del Certamen 1 —la 3 y la 7— van sobre personas, no sobre
+técnica. Se contestan desde la palabra <em>interdisciplinario</em>.</p>
+
+<table>
+<tr><th>Rol</th><th>Qué aporta</th><th>Qué NO le corresponde</th></tr>
+<tr><td><strong>Líder del proyecto</strong></td>
+    <td>Traducir entre negocio y datos: convertir un malestar difuso en una
+        pregunta respondible, y un resultado técnico en una decisión.</td>
+    <td>Ser el mejor modelador del equipo. Si su valor es escribir el modelo, el
+        equipo no tiene líder, tiene un modelador más.</td></tr>
+<tr><td><strong>Experto de dominio</strong></td>
+    <td>Saber si la pregunta vale la pena, si el dato es plausible y si el
+        resultado es físicamente posible.</td>
+    <td>Escribir el código. Puede no programar nada y ser imprescindible.</td></tr>
+<tr><td><strong>Científico de datos</strong></td>
+    <td>Recolectar, limpiar, explorar, modelar, evaluar. Según el profesor, en casi
+        todo el ciclo «debe meter las manos en el código».</td>
+    <td>Decidir solo qué se hace con el hallazgo.</td></tr>
+<tr><td><strong>Ingeniero de datos / plataforma</strong></td>
+    <td>Que el dato exista, llegue a tiempo y se pueda reproducir.</td>
+    <td>Responder la pregunta de negocio.</td></tr>
+</table>
+
+<div class="clave">
+<strong>Sobre reclutar (pregunta 7).</strong> El profesor lo enmarcó así:
+«necesitamos gente que tenga buenas preguntas que queramos responder a partir de
+los datos y que sean capaces de generar valor». El criterio dominante no es el
+catálogo de algoritmos: es <strong>formular la pregunta correcta y comunicar el
+resultado</strong>. Él mismo reportó nueve años como científico de datos «sin haber
+abordado nunca un problema en el cual no haya trabajado con» otros.
+</div>
+
+<h2>8 · La ecuación: <code>Y = f(X) + ε</code></h2>
+
+<p>La definición dijo «datos potencialmente <strong>ruidosos</strong>». Esto es esa
+frase, escrita.</p>
+
+<div class="ecu">
+  <div class="formula">Y &nbsp;=&nbsp; f(X) &nbsp;+&nbsp; &epsilon;</div>
+
+  <table style="margin-top:0">
+  <tr><th>Símbolo</th><th>Qué es</th><th>Quién lo pone</th><th>En Melbourne</th></tr>
+  <tr><td><code>Y</code></td><td>El target: lo que quieres saber.</td>
+      <td><span class="rol r-decide">lo decide la persona</span></td>
+      <td><code>Price</code>, el precio de venta.</td></tr>
+  <tr><td><code>X</code></td><td>Las features: lo que sí tienes anotado.</td>
+      <td><span class="rol r-dato">viene del dato</span> y
+          <span class="rol r-decide">lo decide la persona</span> al elegir cuáles usar</td>
+      <td>9 numéricas + 3 categóricas. <code>Suburb</code>, <code>Date</code> y
+          otras seis quedaron fuera.</td></tr>
+  <tr><td><code>f</code></td><td>La relación verdadera entre X e Y. Existe, y nunca
+      la vas a ver.</td>
+      <td>—</td>
+      <td>Cómo el mercado de Melbourne fija un precio.</td></tr>
+  <tr><td><code>f&#770;</code> (efe gorro)</td><td>Tu aproximación a <code>f</code>.
+      Eso es «el modelo».</td>
+      <td><span class="rol r-cuenta">lo aprende el modelo</span></td>
+      <td>HistGradientBoosting sobre <code>log1p(Price)</code>.</td></tr>
+  <tr><td><code>&epsilon;</code></td><td>Todo lo que mueve a <code>Y</code> y
+      <strong>no está en X</strong>. Error irreducible.</td>
+      <td>—</td>
+      <td>El estado de la cocina, la urgencia del vendedor, quién más fue a ese
+          remate ese sábado.</td></tr>
+  </table>
+
+  <p style="margin-bottom:0"><strong>Qué problema resuelve.</strong> Separa dos
+  cosas que un alumno mezcla todo el tiempo: el error que cometes
+  <em>por tener mal el modelo</em> (reducible: mejor algoritmo, mejores features,
+  más datos) y el error que cometes <em>porque el mundo no está en la tabla</em>
+  (irreducible: no hay algoritmo que lo baje).</p>
+</div>
+
+<div class="pred" id="predEps">
+  <div class="q">Predice antes de tocar el deslizador.</div>
+  <p style="margin:.2rem 0 .5rem">Vas a subir &epsilon;, el ruido. El modelo
+  <em>perfecto</em> —el que acertara <code>f</code> exactamente— ¿qué error
+  tendría?</p>
+  <button data-r="cero">Cero: es perfecto</button>
+  <button data-r="sube">Sube con el ruido</button>
+  <button data-r="igual">Se queda igual</button>
+  <div class="veredicto" id="vEps"></div>
+</div>
+
+<div class="panel">
+  <canvas id="cv" width="860" height="360"></canvas>
+  <div class="ctrl">
+    <label for="sEps">Ruido &epsilon; (desv. típica)</label>
+    <input type="range" id="sEps" min="0" max="260" value="90">
+    <output id="oEps"></output>
+  </div>
+  <div class="met">
+    <div><div class="n" id="mIrr">—</div><div class="e">MAE del modelo perfecto</div></div>
+    <div><div class="n" id="mMod">—</div><div class="e">MAE de un modelo razonable</div></div>
+    <div><div class="n" id="mRed">—</div><div class="e">Parte reducible</div></div>
+  </div>
+  <p style="font-size:.85rem;color:#666;margin-bottom:0">Miles de AUD. La curva
+  negra es <code>f</code>; los puntos son <code>f(X)+&epsilon;</code>; la curva azul
+  punteada es <code>f&#770;</code>, un modelo bueno pero no exacto.<br>
+  Fíjate en la tercera cifra: con &epsilon; bajo, casi todo tu error es culpa tuya y
+  se puede arreglar; con &epsilon; alto, la <strong>parte reducible se encoge</strong>
+  y mejorar el modelo deja de pagar.
+  <span style="font-size:.95em">[GUILLITO]</span> — datos simulados con la escala de
+  Melbourne, no sus filas reales.</p>
+</div>
+
+<h3>El camino inverso: te dan la ecuación, reconstruye el fenómeno</h3>
+
+<p>En una prueba escrita te la van a entregar ya escrita. Desármala al revés.</p>
+
+<div class="panel">
+<p><strong>Te dan:</strong> <code>Y = f(X) + ε</code>, y te dicen que un modelo
+alcanza MAE 188.218 AUD sobre una mediana de 910.000.</p>
+
+<details>
+<summary>¿Qué se puede afirmar, y qué no, solo con eso?</summary>
+<p><strong>Se puede afirmar:</strong> el error típico equivale a un 20,7 % de la
+mediana (188.218 / 910.000). Y que ese error tiene dos partes sumadas: lo que se
+podría mejorar cambiando el modelo o las features, y lo que no se puede bajar
+porque depende de cosas que no están en <code>X</code>.</p>
+<p><strong>No se puede afirmar:</strong> cuánto vale cada parte. <code>ε</code>
+<strong>no es observable</strong> — si lo fuera, lo meterías en <code>X</code> y
+dejaría de ser <code>ε</code>. Nadie puede decirte «de esos 188.218, tantos son
+irreducibles».</p>
+<p><strong>Lo que sí da una cota útil:</strong> comparar contra un baseline. El
+baseline de mediana de tu propio proyecto da MAE 431.649. Tu modelo baja a
+188.218 — recortó 243.431 AUD de error <em>reducible</em>. Que quede más por
+recortar, y cuánto, no lo sabes.
+<span style="font-size:.85rem">[FUENTE · Repo:
+<code>05_RESULTADOS/resultados_temporal.json</code>]</span></p>
+</details>
+</div>
+
+<div class="nota">
+<strong>Conexión con lo que ya trabajaste.</strong> La brecha train/test de tu
+modelo final es 0,17 de R² (0,927 en 2016 contra 0,757 en 2017). Esa brecha
+<strong>no</strong> es <code>ε</code>: es error reducible mal repartido —el modelo
+ajustó detalles de 2016 que no se repiten en 2017. Confundir una cosa con la otra
+es el atajo por el que se cuela la palabra «sobreajuste» como etiqueta de cualquier
+empeoramiento.
+</div>
+
+<h2>9 · La pregunta que te va a hacer Guillito</h2>
+
+<div class="repreg">
+<strong>No la respondo aquí, a propósito.</strong><br><br>
+Tu modelo predice el precio de una casa en Melbourne. Un tasador humano también lo
+hace.<br><br>
+<strong>¿Qué aporta el modelo que el tasador no, y qué aporta el tasador que el
+modelo no?</strong><br><br>
+<span style="font-size:.9rem;color:#d4d4d4">Pista de método, no de contenido: la
+respuesta floja compara <em>exactitud</em>. La respuesta que vale compara
+<strong>escala, consistencia, trazabilidad y qué pasa con lo que no está en la
+tabla</strong> — es decir, usa la sección 8.</span>
+</div>
+
+<h2>10 · Procedimiento para el papel</h2>
+
+<p>El Certamen 1 abre con cuatro verdadero/falso <strong>con justificación</strong>.
+Ese formato tiene un método.</p>
+
+<ol>
+<li><strong>Subraya el cuantificador.</strong> <em>siempre, nunca, solo, todo,
+basta con, es suficiente</em>. Una afirmación absoluta cae con un solo
+contraejemplo.</li>
+<li><strong>Traduce a mecanismo.</strong> Reescribe la frase como «X ocurre porque
+Y». Si no puedes, la afirmación está vacía y probablemente es falsa.</li>
+<li><strong>Busca el contraejemplo concreto.</strong> Uno, con nombre: un rodal, un
+camión, tu propio proyecto.</li>
+<li><strong>Justifica nombrando el mecanismo</strong>, no repitiendo la afirmación
+en otras palabras. «Es falso porque no es interdisciplinario» no justifica nada;
+«es falso porque no hay experto de dominio que valide la pregunta» sí.</li>
+<li><strong>Si el dato no está, dilo.</strong> Declarar un vacío puntúa; rellenar
+con algo plausible, no.</li>
+</ol>
+
+<h2>11 · Errores que el formato castiga</h2>
+
+<div class="peligro">
+<ul style="margin:0">
+<li><strong>Definir Big Data por tamaño.</strong> Es una relación con la
+infraestructura, no un umbral de terabytes.</li>
+<li><strong>Llamar interdisciplinario a un equipo polivalente.</strong> Varias
+herramientas ≠ varias disciplinas.</li>
+<li><strong>Decir que una organización es <em>data-driven</em> porque usa muchos
+datos.</strong> Lo que define es quién tiene la última palabra.</li>
+<li><strong>Describir el ciclo como una cascada.</strong> Las flechas hacia atrás
+son el modo normal, no la excepción; y el destino más frecuente es la limpieza.</li>
+<li><strong>Omitir la puesta en marcha</strong> al enumerar las etapas.</li>
+<li><strong>Confundir ciencia de datos con la etapa de modelamiento.</strong> El
+modelo es una etapa, y no siempre hace falta.</li>
+<li><strong>Tratar <code>ε</code> como algo que se limpia.</strong> Es lo que no
+está en <code>X</code>: no se limpia, se acepta o se mide con nuevas features.</li>
+<li><strong>Justificar un V/F repitiendo el enunciado.</strong> Hay que nombrar el
+mecanismo.</li>
+</ul>
+</div>
+
+<footer>
+<strong>Fuentes de este artefacto.</strong><br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio_plano.txt</code> — definición, data-driven, las V, la rueda.<br>
+[FUENTE · Repo] <code>09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio_plano.txt</code> — las flechas hacia atrás y el 90 % de limpieza.<br>
+[FUENTE · Repo] <code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code> — estructura y temas del Certamen 1.<br>
+[FUENTE · Repo] <code>07_GUILLITO/patron_evaluacion.md</code> — formatos y errores que castiga.<br>
+[FUENTE · Repo] <code>05_RESULTADOS/resultados_temporal.json</code> — MAE 188.218, R² 0,757, baseline 431.649, brecha 0,17.<br>
+[INFERENCIA] la ausencia de <em>data-informed</em> en las transcripciones, y la etapa en que quedó el proyecto Melbourne.<br>
+[GUILLITO] el simulador de Big Data, el comparador de posturas y el gráfico de ruido.<br>
+<br>
+Las citas de clase provienen de transcripción automática: la puntuación está
+corregida, las palabras no.
+</footer>
+
+</main>
+
+<script>
+/* ---------------- 3 · posturas ---------------- */
+var POSTURAS = {
+  exp: {
+    t: "Por experiencia",
+    h: "El jefe de patrimonio decide adelantar la cosecha porque lleva veinte años viendo rodales y este «se ve listo». El modelo existe, pero nadie lo abre.",
+    q: "Decide: la persona. Los datos: no entran.",
+    f: "Falla cuando el año no se parece a los veinte anteriores. Y no deja rastro: si sale mal, no hay nada que revisar.",
+    v: "Es rápido y usa conocimiento real que no está en ninguna tabla."
+  },
+  inf: {
+    t: "Data-informed",
+    h: "El modelo proyecta que esperar seis meses sube el rendimiento un 4 %. El jefe de patrimonio lo lee, lo cruza con que el camino forestal se corta con lluvia fuerte, y decide cosechar ahora igual.",
+    q: "Decide: la persona. Los datos: entran como una entrada más, con peso.",
+    f: "Falla cuando «el criterio experto» se usa como comodín para ignorar siempre lo que el dato dice. Sin registro de por qué se desvió, es experiencia disfrazada.",
+    v: "Incorpora lo que el modelo no tiene en X —el estado del camino— sin renunciar a la evidencia."
+  },
+  drv: {
+    t: "Data-driven",
+    h: "La regla está escrita de antemano: si el modelo proyecta una ganancia mayor al 3 %, se espera. El modelo proyecta 4 %. Se espera. La orden sale sin reunión.",
+    q: "Decide: la regla, alimentada por datos. La persona: la diseñó antes, y puede revisarla después.",
+    f: "Falla cuando el dato entra mal y nadie lo nota —la cuarta V, veracidad—, o cuando el mundo cambia y la regla no. Necesita monitoreo, que es la etapa de puesta en marcha.",
+    v: "Escala a miles de rodales, es consistente entre personas, y queda auditable: se sabe exactamente por qué se decidió así."
+  }
+};
+function pintaPostura(k){
+  var p = POSTURAS[k];
+  document.getElementById('cajaPostura').innerHTML =
+    '<div style="font-weight:700;margin-bottom:.4rem">' + p.t + '</div>' +
+    '<div>' + p.h + '</div>' +
+    '<b>Quién decide</b>' + p.q +
+    '<b>Dónde falla</b>' + p.f +
+    '<b>Qué aporta</b>' + p.v;
+}
+(function(){
+  var btns = document.querySelectorAll('#segPostura button');
+  for (var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click', function(){
+      for (var j=0;j<btns.length;j++) btns[j].classList.remove('on');
+      this.classList.add('on');
+      pintaPostura(this.getAttribute('data-p'));
+    });
+  }
+  pintaPostura('exp');
+})();
+
+/* ---------------- 5 · Big Data ---------------- */
+(function(){
+  var ids = ['Vol','Vel','Var'];
+  var s = {}, o = {}, b = {}, t = {}, l = {};
+  for (var i=0;i<ids.length;i++){
+    s[ids[i]] = document.getElementById('s'+ids[i]);
+    o[ids[i]] = document.getElementById('o'+ids[i]);
+    b[ids[i]] = document.getElementById('b'+ids[i]);
+    t[ids[i]] = document.getElementById('t'+ids[i]);
+    l[ids[i]] = document.getElementById('l'+ids[i]);
+  }
+  var sCap = document.getElementById('sCap'), oCap = document.getElementById('oCap');
+  var vd = document.getElementById('vdBD');
+
+  var ETIQ = {
+    Vol: function(v){
+      if (v < 20) return 'megabytes';
+      if (v < 45) return 'gigabytes';
+      if (v < 70) return 'terabytes';
+      if (v < 88) return 'petabytes';
+      return 'exabytes';
+    },
+    Vel: function(v){
+      if (v < 20) return 'mensual';
+      if (v < 45) return 'diaria';
+      if (v < 70) return 'por hora';
+      if (v < 88) return 'por minuto';
+      return 'tiempo real';
+    },
+    Var: function(v){
+      if (v < 20) return '1 tabla';
+      if (v < 45) return 'tablas';
+      if (v < 70) return '+ texto';
+      if (v < 88) return '+ imágenes';
+      return '+ señales';
+    }
+  };
+
+  function dibuja(){
+    var cap = +sCap.value;
+    oCap.textContent = cap + ' / 100';
+    var supera = [], nombres = {Vol:'volumen', Vel:'velocidad', Var:'variedad'};
+    for (var i=0;i<ids.length;i++){
+      var k = ids[i], v = +s[k].value;
+      o[k].textContent = v + ' / 100';
+      l[k].textContent = ETIQ[k](v);
+      b[k].style.width = v + '%';
+      b[k].className = 'bd-barra ' + (v > cap ? 'bd-mal' : 'bd-ok');
+      t[k].style.left = 'calc(' + cap + '% - 1.5px)';
+      if (v > cap) supera.push(nombres[k]);
+    }
+    if (supera.length){
+      vd.className = 'bd-veredicto bd-si';
+      vd.innerHTML = 'Es un problema de <strong>big data</strong> — la infraestructura no alcanza en: ' +
+        supera.join(', ') + '. No porque el dato sea mucho, sino porque es más de lo que aguanta <em>esta</em> organización.';
+    } else {
+      vd.className = 'bd-veredicto bd-no';
+      vd.innerHTML = '<strong>No</strong> es big data. Puede ser muchísimo dato: si tu infraestructura lo procesa, es un problema de datos normal.';
+    }
+  }
+  for (var i=0;i<ids.length;i++) s[ids[i]].addEventListener('input', dibuja);
+  sCap.addEventListener('input', dibuja);
+  dibuja();
+
+  var pred = document.getElementById('predBD'), vBD = document.getElementById('vBD');
+  var RESP = {
+    si: 'Correcto, y fíjate <em>por qué</em>: el volumen no se movió, se movió la <strong>velocidad</strong>. Deja volumen y capacidad donde están y sube solo el deslizador de velocidad a 95: la barra se pone roja sola. Las tres V son puertas independientes — basta con que una supere la capacidad.',
+    no: 'Mira otra vez las tres barras. El volumen es una de las tres V, no la única. Deja volumen y capacidad quietos y sube solo <strong>velocidad</strong>: el mismo dato pasa a rojo. El error de fondo es leer <em>big data</em> como sinónimo de <em>muchos datos</em>.',
+    dep: 'Depende, sí — pero de algo concreto y nombrable: <strong>de la capacidad de la infraestructura</strong>. Sube velocidad a 95 y después sube la capacidad a 100: el mismo problema entra y sale de <em>big data</em> sin que el dato cambie. Eso es exactamente lo que dijo el profesor.'
+  };
+  var pb = pred.querySelectorAll('button');
+  for (var k=0;k<pb.length;k++){
+    pb[k].addEventListener('click', function(){
+      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
+      this.classList.add('elegida');
+      vBD.innerHTML = RESP[this.getAttribute('data-r')];
+      vBD.className = 'veredicto on';
+    });
+  }
+})();
+
+/* ---------------- 6 · simulador del ciclo ---------------- */
+(function(){
+  var ETAPAS = ['Requerimiento','Recolección','Limpieza','Exploración','Modelamiento','Comunicación','Puesta en marcha'];
+  var CASOS = [
+    { txt: 'El modelo de precios da resultados rarísimos: predice 12 millones para departamentos de un dormitorio. Revisas y hay filas con Landsize = 0 y otras con 40.000 m².',
+      ok: 'Limpieza',
+      fb: 'Valores fuera de rango → <strong>limpieza</strong>. Este es el caso que el profesor dice encontrar el 90 % de las veces: llega al modelamiento, el resultado no cuadra, y el problema estaba dos etapas atrás.' },
+    { txt: 'Quieres predecir el consumo de combustible por camión y turno, pero el sistema de despacho solo registra el consumo agregado por día de toda la flota.',
+      ok: 'Requerimiento',
+      fb: 'El dato al nivel que la pregunta exige <strong>no existe</strong>. Puedes intentar recolectarlo, pero si no se registra, hay que volver al <strong>requerimiento</strong> y replantear la pregunta a un nivel respondible. El profesor lo dijo así: «puedo darme cuenta de que parte fundamental de los datos no está disponible, entonces puedo volver atrás y refinar mi pregunta».' },
+    { txt: 'El modelo funciona bien en validación. Lo presentas a gerencia y la primera pregunta es: «¿y esto qué significa para el presupuesto del próximo trimestre?». No sabes responder.',
+      ok: 'Comunicación',
+      fb: 'No es un problema de modelo: es de <strong>comunicación</strong>. El profesor fue explícito: «no me sirve de nada llevar a cabo este proceso completo si no soy capaz de comunicárselo a los tomadores de decisiones». Un modelo que nadie sabe usar no produjo conocimiento.' },
+    { txt: 'Llevas un mes con el modelo en operación. Al principio acertaba; en las últimas tres semanas se degrada sin que nadie haya tocado el código.',
+      ok: 'Puesta en marcha',
+      fb: 'Detectarlo es función de la <strong>puesta en marcha</strong>: si no hay monitoreo, nadie se entera. Una vez detectado, el ciclo vuelve a girar — probablemente hacia recolección o requerimiento, porque cambió el mundo, no el código. Esta es la etapa que casi todos omiten al enumerar el ciclo.' },
+    { txt: 'Antes de modelar nada, notas que la columna CONSUMO de la planilla minera mezcla números de litros, IDs de camión y la palabra «mantención», además de un centinela -999.',
+      ok: 'Limpieza',
+      fb: 'Una columna con tres significados distintos es <strong>limpieza</strong> — sobrecarga semántica. Y es literalmente la pregunta 9B del Certamen 1, la que vale 2,0 puntos. Ojo con el reflejo de borrar: un centinela -999 hay que sacarlo, pero un consumo de 0 puede ser una medición real de un camión que no salió.' }
+  ];
+
+  var cont = document.getElementById('simCiclo');
+  var marcador = document.getElementById('marcador');
+  var aciertos = 0, respondidos = 0;
+
+  for (var i=0;i<CASOS.length;i++){
+    (function(c, idx){
+      var d = document.createElement('div');
+      d.className = 'sintoma';
+      var h = '<div class="txt">' + c.txt + '</div><div class="ciclo">';
+      for (var j=0;j<ETAPAS.length;j++) h += '<button data-e="' + ETAPAS[j] + '">' + ETAPAS[j] + '</button>';
+      h += '</div><div class="fb"></div>';
+      d.innerHTML = h;
+      cont.appendChild(d);
+
+      var fb = d.querySelector('.fb');
+      var bs = d.querySelectorAll('.ciclo button');
+      var yaContado = false;
+      for (var k=0;k<bs.length;k++){
+        bs[k].addEventListener('click', function(){
+          var e = this.getAttribute('data-e');
+          var bien = (e === c.ok);
+          for (var m=0;m<bs.length;m++){ bs[m].classList.remove('ok'); bs[m].classList.remove('no'); }
+          this.classList.add(bien ? 'ok' : 'no');
+          if (!bien){
+            for (var m=0;m<bs.length;m++){
+              if (bs[m].getAttribute('data-e') === c.ok) bs[m].classList.add('ok');
+            }
+          }
+          fb.innerHTML = (bien ? '<strong style="color:#059669">Sí.</strong> ' : '<strong style="color:#dc2626">No.</strong> ') + c.fb;
+          fb.className = 'fb on';
+          if (!yaContado){
+            yaContado = true; respondidos++;
+            if (bien) aciertos++;
+            marcador.style.display = 'block';
+            marcador.innerHTML = '<strong>' + aciertos + ' de ' + respondidos + '</strong> a la primera. ' +
+              (respondidos === CASOS.length
+                ? 'De los cinco síntomas, <strong>dos</strong> vuelven a limpieza. Ese sesgo no es del ejercicio: es el 90 % del que habló tu profesor.'
+                : 'Sigue.');
+          }
+        });
+      }
+    })(CASOS[i], i);
+  }
+})();
+
+/* ---------------- 8 · ruido irreducible ---------------- */
+(function(){
+  var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  var sEps = document.getElementById('sEps'), oEps = document.getElementById('oEps');
+  var mIrr = document.getElementById('mIrr'), mMod = document.getElementById('mMod'), mRed = document.getElementById('mRed');
+
+  var W = cv.width, H = cv.height;
+  var M = {l:62, r:18, t:18, b:44};
+  var X0 = 40, X1 = 320;            // superficie construida, m2
+  var Y0 = 0, Y1 = 2200;            // precio, miles AUD
+
+  // f verdadera: crece y se aplana (rendimiento decreciente del metro cuadrado)
+  function f(x){ return 250 + 1300 * (1 - Math.exp(-(x - X0) / 95)); }
+  // f-gorro: un modelo razonable. Acierta la forma, se equivoca en los parámetros.
+  function fh(x){ return 330 + 1180 * (1 - Math.exp(-(x - X0) / 118)); }
+
+  // ruido unitario fijo, generado una sola vez (reproducible)
+  var N = 150, pts = [];
+  var seed = 20260921;
+  // Park-Miller: los productos caben en el entero exacto de un double
+  function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  for (var i=0;i<N;i++){
+    var x = X0 + (X1 - X0) * rnd();
+    // Box-Muller para ruido normal unitario
+    var u1 = Math.max(rnd(), 1e-9), u2 = rnd();
+    var z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    pts.push({x:x, z:z});
+  }
+
+  function px(x){ return M.l + (x - X0) / (X1 - X0) * (W - M.l - M.r); }
+  function py(y){ return H - M.b - (y - Y0) / (Y1 - Y0) * (H - M.t - M.b); }
+
+  function dibuja(){
+    var sd = +sEps.value;
+    oEps.textContent = sd + ' mil';
+
+    ctx.clearRect(0,0,W,H);
+
+    // ejes
+    ctx.strokeStyle = '#d8d8d8'; ctx.lineWidth = 1; ctx.fillStyle = '#666';
+    ctx.font = '12px system-ui, sans-serif';
+    ctx.beginPath(); ctx.moveTo(M.l, M.t); ctx.lineTo(M.l, H-M.b); ctx.lineTo(W-M.r, H-M.b); ctx.stroke();
+    for (var g=0; g<=2000; g+=500){
+      var yy = py(g);
+      ctx.strokeStyle = '#efeeec'; ctx.beginPath(); ctx.moveTo(M.l, yy); ctx.lineTo(W-M.r, yy); ctx.stroke();
+      ctx.fillStyle = '#999'; ctx.textAlign = 'right'; ctx.fillText(g, M.l - 8, yy + 4);
+    }
+    ctx.fillStyle = '#666'; ctx.textAlign = 'center';
+    ctx.fillText('superficie construida (m²)', (M.l + W - M.r)/2, H - 12);
+    ctx.save(); ctx.translate(15, (M.t + H - M.b)/2); ctx.rotate(-Math.PI/2);
+    ctx.fillText('precio (miles AUD)', 0, 0); ctx.restore();
+
+    // puntos
+    var sumIrr = 0, sumMod = 0;
+    ctx.fillStyle = 'rgba(37,99,235,.34)';
+    for (var i=0;i<N;i++){
+      var p = pts[i];
+      var yv = f(p.x) + p.z * sd;
+      sumIrr += Math.abs(p.z * sd);
+      sumMod += Math.abs(yv - fh(p.x));
+      var cy = py(yv);
+      if (cy > M.t - 30 && cy < H - M.b + 30){
+        ctx.beginPath(); ctx.arc(px(p.x), Math.max(M.t, Math.min(H-M.b, cy)), 2.8, 0, 6.2832); ctx.fill();
+      }
+    }
+
+    // f verdadera
+    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2.4; ctx.beginPath();
+    for (var x=X0; x<=X1; x+=2){
+      var Xp = px(x), Yp = py(f(x));
+      if (x === X0) ctx.moveTo(Xp, Yp); else ctx.lineTo(Xp, Yp);
+    }
+    ctx.stroke();
+
+    // f gorro
+    ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2; ctx.setLineDash([7,5]); ctx.beginPath();
+    for (var x2=X0; x2<=X1; x2+=2){
+      var Xq = px(x2), Yq = py(fh(x2));
+      if (x2 === X0) ctx.moveTo(Xq, Yq); else ctx.lineTo(Xq, Yq);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // leyenda
+    ctx.textAlign = 'left'; ctx.font = '12px system-ui, sans-serif';
+    ctx.fillStyle = '#1a1a1a'; ctx.fillText('—  f  (la relación verdadera)', M.l + 12, M.t + 14);
+    ctx.fillStyle = '#2563eb'; ctx.fillText('- -  f̂  (tu modelo)', M.l + 12, M.t + 32);
+
+    var irr = sumIrr / N, mod = sumMod / N;
+    mIrr.textContent = Math.round(irr);
+    mMod.textContent = Math.round(mod);
+    mRed.textContent = Math.round(Math.max(0, mod - irr));
+  }
+  sEps.addEventListener('input', dibuja);
+  dibuja();
+
+  var pred = document.getElementById('predEps'), vEps = document.getElementById('vEps');
+  var RESP = {
+    cero: 'No. Y es el punto entero de la ecuación. El modelo perfecto acierta <code>f(X)</code>, pero <code>Y</code> no es <code>f(X)</code>: es <code>f(X) + ε</code>. Le queda encima todo <code>ε</code>. Sube el deslizador y mira la primera cifra: es el error de un modelo que no comete ningún error propio.',
+    sube: 'Exacto. Sube el deslizador y verifica: <strong>MAE del modelo perfecto</strong> crece junto con ε. Eso es el <em>error irreducible</em>. Ningún algoritmo, ninguna cantidad de datos y ningún ajuste lo baja — solo bajarlo consiguiendo <em>features nuevas</em> que capturen lo que hoy está en ε.',
+    igual: 'Prueba a moverlo. La primera cifra sube. El modelo perfecto acierta <code>f(X)</code>, pero lo observado es <code>f(X) + ε</code>: la distancia entre ambos <em>es</em> ε. El error del modelo perfecto no es cero ni es constante: es el tamaño del ruido.'
+  };
+  var pb = pred.querySelectorAll('button');
+  for (var k=0;k<pb.length;k++){
+    pb[k].addEventListener('click', function(){
+      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
+      this.classList.add('elegida');
+      vEps.innerHTML = RESP[this.getAttribute('data-r')];
+      vEps.className = 'veredicto on';
+    });
+  }
+})();
+</script>
+</body>
+</html>
