@@ -29,6 +29,14 @@ clases:
     tipo: ayudantia_y_clase
     material_oficial: 11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md
     hablantes: 'ayudantia P1 hasta ~1:46; despues clase del segundo docente'
+  # El archivo dice «11 Julio», pero la ayudante dice «hoy dia es 10» (0:04:44):
+  # el 10-jul de 2026 fue viernes, dia de clase, y el nombre sale probablemente
+  # de la hora UTC de la grabacion. La clase teorica que ese dia no hubo es la
+  # que se recupero el 15-jul. [INFERENCIA]
+  03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio:
+    fecha: '2026-07-10'
+    tipo: ayudantia
+    hablantes: 'ayudantia (cierra el P1 Pandas y recorre el P2 Calidad; deja ambos ejercicios de tarea); ese dia no hubo clase teorica'
   03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio:
     fecha: '2026-07-15'
     tipo: clase
@@ -100,13 +108,18 @@ conceptos:
     - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:16:26', fin: '0:17:44', hablante: titular, que: 'atributos, etiqueta y f(x)'}
     - {clase: 2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos, inicio: '0:10:03', fin: '0:13:18', hablante: titular, que: 'categorica frente a numerica; discretizacion'}
     - {clase: 2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:55:00', fin: '1:59:06', hablante: titular, que: 'el target es una decision: regresion o clasificacion'}
+    - {clase: 03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio, inicio: '0:12:36', fin: '0:12:57', hablante: ayudantia, que: 'que es cada fila: la calificacion de un usuario a una pelicula'}
   eda:
     - {clase: 04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:05:20', fin: '1:27:00', hablante: titular, que: 'la clase completa de EDA'}
     - {clase: 2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos, inicio: '1:19:25', fin: '1:21:04', hablante: titular, que: 'boxplots con pocos datos no aseguran significancia'}
+    - {clase: 03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio, inicio: '0:12:57', fin: '0:36:43', hablante: ayudantia, que: 'P1 sobre MovieLens: describe, filtros con & y |, value_counts, nunique, sort_values, groupby'}
   limpieza_preparacion:
     - {clase: 03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio, inicio: '0:59:41', fin: '1:16:23', hablante: titular, que: 'problemas tipicos, formato, camiones, fechas; anuncia el ejercicio tipo 9B'}
     - {clase: 04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:44:12', fin: '0:45:21', hablante: titular, que: 'camiones: muchos ceros y un valor anomalo'}
     - {clase: 01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio, inicio: '2:20:37', fin: '2:22:40', hablante: segundo_docente, que: 'sensores sin dato y el secador de pelo'}
+    - {clase: 03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio, inicio: '0:40:37', fin: '0:56:27', hablante: ayudantia, que: 'la calidad «siempre depende»; primera mirada a una tabla sucia; duplicados de filas y de indices'}
+    - {clase: 03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio, inicio: '0:56:27', fin: '1:16:16', hablante: ayudantia, que: 'fuera de rango y faltantes: blancos que no son NaN, fillna frente a dropna; antes, descartar columnas inutiles'}
+    - {clase: 03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio, inicio: '1:16:16', fin: '1:43:20', hablante: ayudantia, que: 'inconsistencias de texto (.str) y tipos incorrectos (astype, datetime); deja de tarea el ejercicio, resuelto el 17-jul'}
     - {clase: 04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio, inicio: '0:10:31', fin: '0:37:25', hablante: ayudantia, que: 'resuelve el P2 de calidad', spoiler: P2}
   train_validation_test:
     - {clase: 06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio, inicio: '0:43:55', fin: '0:54:42', hablante: titular, que: 'tres conjuntos; hiperparametros; por que validacion y test'}

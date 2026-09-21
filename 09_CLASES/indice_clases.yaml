@@ -12,7 +12,7 @@
 meta:
   creado: '2026-09-20'
   actualizado: '2026-09-21'
-  total_clases: 14
+  total_clases: 15
 clases:
   02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio:
     archivo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md
@@ -514,4 +514,16 @@ clases:
       generalizacion:
         menciones: 1
         primera_marca: 0:09:33
+    notebooklm: null
+  03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio:
+    archivo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md
+    plano: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio_plano.txt
+    integrada: '2026-09-21'
+    conceptos:
+      limpieza_preparacion:
+        menciones: 38
+        primera_marca: 0:01:37
+      fundamentos_ciencia_datos:
+        menciones: 3
+        primera_marca: 0:03:02
     notebooklm: null
