@@ -52,7 +52,7 @@ clases:
       llm:
         menciones: 1
         primera_marca: '1:55:32'
-    notebooklm: null
+    notebooklm: 3b4de32e-dfa1-4841-be3e-a7a24a49948a
   2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos:
     archivo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md
     plano: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos_plano.txt
@@ -253,7 +253,7 @@ clases:
       clasificacion:
         menciones: 1
         primera_marca: 0:13:31
-    notebooklm: null
+    notebooklm: a8143a03-66ab-48fa-b488-9e2a88278636
   04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio:
     archivo: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio.md
     plano: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio_plano.txt
@@ -268,7 +268,7 @@ clases:
       datos_features_target:
         menciones: 3
         primera_marca: '1:23:26'
-    notebooklm: null
+    notebooklm: 35b8ca72-70a6-4d34-b444-e0d4d1aca5ad
   04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio:
     archivo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md
     plano: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio_plano.txt
@@ -373,7 +373,7 @@ clases:
       matriz_confusion:
         menciones: 1
         primera_marca: 0:23:26
-    notebooklm: null
+    notebooklm: 760fa08d-21dd-4e93-a714-435f58189e0d
   06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio:
     archivo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md
     plano: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio_plano.txt
@@ -526,4 +526,4 @@ clases:
       fundamentos_ciencia_datos:
         menciones: 3
         primera_marca: 0:03:02
-    notebooklm: null
+    notebooklm: de349996-516f-4682-b4e2-237a285661bf
