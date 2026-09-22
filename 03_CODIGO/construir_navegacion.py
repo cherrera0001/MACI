@@ -1,22 +1,22 @@
 """
-Construye la navegacion de 07_DATITO/visual/ sin editar HTML a mano.
+Construye la navegacion de visual/ sin editar HTML a mano.
 
 QUE HACE
   1. En cada visual inyecta (o reemplaza) un bloque entre
          <!-- datito:nav:inicio -->  ...  <!-- datito:nav:fin -->
      justo despues de <main> (o de <body> si no hay main), con:
        - enlace al indice
-       - de donde viene y que habilita cada concepto (07_DATITO/grafo.yaml)
+       - de donde viene y que habilita cada concepto (grafo.yaml)
        - sus dos prioridades, y la tension si existe (G12)
        - las preguntas de certamen que entrena
        - DONDE SE ENSENO en clase: clase, rango, hablante y ruta completa de la
          transcripcion (09_CLASES/mapa_ensenanza.yaml)
-  2. Renderiza las dudas resueltas de 07_DATITO/dudas.yaml en cada visual que
+  2. Renderiza las dudas resueltas de dudas.yaml en cada visual que
      listan, en orden cronologico y con la respuesta oculta, entre
          <!-- datito:dudas:inicio -->  ...  <!-- datito:dudas:fin -->
      (antes del <footer>). Asi nada de lo que Datito responde queda solo en la
      terminal (spec.md G9, REGLA UNO-B).
-  3. Genera 07_DATITO/visual/index.html: ruta de repaso del certamen, dudas
+  3. Genera visual/index.html: ruta de repaso del certamen, dudas
      resueltas, distinciones (desde patron_evaluacion.md), cadenas y clases.
 
 Es idempotente: correrlo dos veces deja el mismo resultado. Lo que esta fuera
@@ -31,6 +31,10 @@ sigue escribiendo a mano (o con /datito-visual), porque eso no es mecanizable.
 USO
   python 03_CODIGO/construir_navegacion.py            # inyecta y genera
   python 03_CODIGO/construir_navegacion.py --revisar  # solo dice que cambiaria
+
+MULTI-CURSO (ADR-001)
+  Lee datito.config.yaml para resolver las rutas de course_id y learner_id.
+  Sin config → backward compatibility: curso=fcd-2026-2, alumno=cristobal_herrera
 """
 import argparse
 import html
@@ -38,17 +42,55 @@ import os
 import re
 import sys
 from datetime import date
+from pathlib import Path
 from urllib.parse import quote
 
 import yaml
 
-RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VISUAL = os.path.join(RAIZ, "07_DATITO", "visual")
+RAIZ = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TRANS = "09_CLASES/transcripciones"
 
 INI, FIN = "<!-- datito:nav:inicio -->", "<!-- datito:nav:fin -->"
 DINI, DFIN = "<!-- datito:dudas:inicio -->", "<!-- datito:dudas:fin -->"
-DUDAS = "07_DATITO/dudas.yaml"
+
+
+def cargar_config():
+    """Carga datito.config.yaml, con fallback para backward compatibility."""
+    config_path = RAIZ / "07_DATITO" / "datito.config.yaml"
+    if config_path.exists():
+        with open(config_path, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {"course_id": "fcd-2026-2", "learner_id": "cristobal_herrera"}
+
+
+def resolver_rutas(config):
+    """Resuelve las rutas del curso y alumno."""
+    course_id = config.get("course_id", "fcd-2026-2")
+    learner_id = config.get("learner_id", "cristobal_herrera")
+
+    course_root = RAIZ / "courses" / course_id
+    learner_root = RAIZ / "learners" / learner_id
+
+    # Fallback para backward compatibility
+    if not course_root.exists():
+        course_root = RAIZ / "07_DATITO"
+    if not learner_root.exists():
+        learner_root = RAIZ / "07_DATITO"
+
+    return {
+        "course_root": course_root,
+        "learner_root": learner_root,
+        "visual": course_root / "visual",
+        "dudas": learner_root / "dudas.yaml",
+        "grafo": course_root / "grafo.yaml",
+        "clases": course_root / "clases.yaml",
+        "mapa_ensenanza": Path("09_CLASES") / "mapa_ensenanza.yaml",
+    }
+
+
+RUTAS = resolver_rutas(cargar_config())
+VISUAL = str(RUTAS["visual"])
+DUDAS = str(RUTAS["dudas"])
 ESTADO_DUDA = {
     "resuelta": "resuelta en la sesión",
     "abierta": "quedó abierta en la sesión: aquí está la respuesta",
@@ -145,10 +187,9 @@ TAMBIEN = ["fundamentos_ciencia_datos", "datos_features_target", "clasificacion"
 
 # --------------------------------------------------------------------------
 # El curso (spec.md G14). El orden, la ficha Bloom y el cierre de cada clase
-# viven en 07_DATITO/clases.yaml; aqui solo se derivan prerrequisitos,
+# viven en clases.yaml; aqui solo se derivan prerrequisitos,
 # habilitaciones, tiempo de lectura y navegacion. LECCIONES se conserva por
 # compatibilidad: (n, titulo, visual, objetivo, bloom, prerrequisitos).
-CLASES_YAML = "07_DATITO/clases.yaml"
 BLOOM = ["Recordar", "Comprender", "Aplicar", "Analizar", "Evaluar", "Crear"]
 CURSO = {"clases": [], "unidades": {}, "por_archivo": {}, "de_concepto": {}, "con_visual": []}
 LECCIONES = []
@@ -847,8 +888,8 @@ def main():
     ap.add_argument("--revisar", action="store_true", help="no escribe; dice que cambiaria")
     a = ap.parse_args()
 
-    grafo = cargar("07_DATITO/grafo.yaml")
-    cur = cargar("07_DATITO/curriculum.yaml")
+    grafo = cargar(str(RUTAS["grafo"].relative_to(RAIZ)))
+    cur = cargar(str((RUTAS["course_root"] / "curriculum.yaml").relative_to(RAIZ)))
     mapa = cargar("09_CLASES/mapa_ensenanza.yaml")
     nombres = {c["id"]: c["nombre"] for c in cur["conceptos"]}
 

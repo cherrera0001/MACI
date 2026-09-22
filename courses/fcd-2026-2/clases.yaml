@@ -1,0 +1,675 @@
+# El curso: unidades y clases en orden de estudio (spec.md G14).
+#
+# FUENTE UNICA del orden. 03_CODIGO/construir_navegacion.py lee este archivo y
+# genera la portada (visual/index.html), la barra de cada clase (Anterior ·
+# Indice · Siguiente, ficha Bloom, activacion) y el cierre de cada clase.
+# Ningun HTML repite el orden a mano.
+#
+# NO se escriben aqui: prerrequisitos y lo que habilita cada clase (se derivan
+# de curriculum.yaml via grafo.yaml a partir de `conceptos`), ni el tiempo de
+# lectura (se calcula del texto del visual).
+#
+# El orden sigue los prerrequisitos del curriculo y la secuencia real de las
+# clases del profesor (regresion el 31-jul, clasificacion el 7-ago, DL/LLM/
+# agentes el 21-ago), y sube de comprender hacia analizar, evaluar y crear.
+#
+# visual: archivo en 07_DATITO/visual/ (con #ancla si la clase es una seccion),
+#         o null si la clase esta pendiente de construir.
+# tipo:   concepto (debe tener >= 3 preguntas con respuesta oculta) · repaso
+# Las respuestas del cierre llevan su etiqueta G4.
+
+unidades:
+  1: Del problema a los datos
+  2: 'Aprender una cantidad: regresión'
+  3: Medir si el modelo sirve
+  4: Clasificar y evaluar
+  5: Modelos más potentes
+  6: Integrar y rendir
+
+clases:
+
+  - n: 1
+    unidad: 1
+    titulo: '¿Qué problema resuelve la ciencia de datos?'
+    visual: fundamentos_ciencia_datos.html
+    tipo: concepto
+    conceptos: [fundamentos_ciencia_datos]
+    objetivo: 'Explicar qué problema resuelve la ciencia de datos, ubicar una organización en la escala data-driven y decidir cuándo no hace falta un modelo.'
+    activacion: 'Una minera guarda cada día millones de registros de sus camiones. ¿Eso la convierte en una organización data-driven? Responde antes de leer.'
+    bloom:
+      nivel: Comprender
+      evidencia: 'Explica con sus palabras la definición (interdisciplinario, conocimiento, datos) y ubica tres organizaciones en la escala de cinco etapas.'
+      actividad_final: 'Reconstruir la ruta de retroceso del ciclo que contó el profesor: de puesta en marcha a exploración.'
+      criterio_dominio: 'Ubica bien los tres casos y justifica con el criterio de la escala (¿los datos guían decisiones?), no con «usan muchos datos».'
+    cierre:
+      aprendiste:
+        - 'La ciencia de datos extrae conocimiento accionable desde datos, combinando varias disciplinas.'
+        - 'Tener datos no es ser data-driven: la escala de cinco etapas mide si los datos guían las decisiones.'
+        - 'El ciclo es iterativo: cuando algo falla se vuelve a una etapa anterior.'
+        - 'Big Data es una relación con la infraestructura disponible, no un número de terabytes.'
+      no_confundir:
+        - 'Usar muchos datos ≠ decidir a partir de los datos (C1 P2).'
+        - 'Dominios distintos ≠ fuentes de datos distintas (C1 P1).'
+        - 'Causa de los retrocesos (limpieza) ≠ tiempo invertido (recolección, limpieza, exploración).'
+      procedimiento:
+        - '¿Cuál es el requerimiento o pregunta? Sin él no hay ciencia de datos.'
+        - '¿Hay datos que la respondan? ¿Hace falta un modelo o basta un resumen?'
+        - 'Ubica la organización en la escala: ¿los datos guían decisiones o solo tareas puntuales?'
+        - 'Si algo falla en producción, identifica a qué etapa del ciclo volver.'
+      pregunta_final: 'Verdadero o falso: una empresa que registra todo en bases de datos ya es data-driven. Justifica.'
+      respuesta_final: 'Falso. Registrar datos es una etapa temprana de la escala; data-driven exige que las decisiones se tomen a partir de los datos. [FUENTE · Repo: 07_DATITO/visual/fundamentos_ciencia_datos.html §3]'
+
+  - n: 2
+    unidad: 1
+    titulo: 'Datos, filas, columnas, features y target'
+    visual: datos_features_target.html
+    tipo: concepto
+    conceptos: [datos_features_target]
+    objetivo: 'Distinguir fila, columna, feature, target, identificador y fuga de información en una tabla real.'
+    activacion: 'En Galaxy Zoo, las columnas p_el y p_cs predicen casi perfecto la clase de cada galaxia. ¿Por qué no se pueden usar para entrenar?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Clasifica cada columna de una tabla nueva como feature, target, identificador o fuga, y justifica cada decisión.'
+      actividad_final: 'Decidir si una columna produce fuga de información (Date en Melbourne; p_el en Galaxy Zoo).'
+      criterio_dominio: 'Clasifica sin error una tabla de seis o más columnas y detecta la fuga con el argumento «no existirá al momento de predecir».'
+    cierre:
+      aprendiste:
+        - 'Cada fila es una observación y cada columna una variable; qué es una fila se decide antes de modelar.'
+        - 'El target es una decisión tuya, no una propiedad de la columna.'
+        - 'Un identificador sirve para rastrear errores, no para predecir.'
+        - 'Fuga de información: usar una columna que no existirá cuando haya que predecir.'
+      no_confundir:
+        - 'Más filas ≠ más columnas (C2 P3).'
+        - 'Variable categórica sin orden ≠ numérica discretizada, que conserva el orden (C1 P6).'
+        - 'Dato ≠ información: la información son datos en un contexto.'
+      procedimiento:
+        - 'Define qué es una fila.'
+        - 'Marca el target: lo que quieres predecir.'
+        - 'Para cada columna: ¿existirá al momento de predecir? Si no, es fuga.'
+        - 'Separa los identificadores y clasifica el resto por tipo.'
+      pregunta_final: 'Quieres predecir si un cliente comprará, y el dataset trae «monto_final_pagado». ¿Es una buena feature?'
+      respuesta_final: 'No: ese monto se conoce después de la compra. Usarla es fuga de información: el modelo se vería excelente al validar y fallaría al predecir de verdad. [DATITO]'
+
+  - n: 3
+    unidad: 1
+    titulo: 'EDA: conocer los datos antes de modelar'
+    visual: eda.html
+    tipo: concepto
+    conceptos: [eda]
+    objetivo: 'Leer la distribución de una variable y detectar faltantes, atípicos y dificultades del problema antes de modelar.'
+    activacion: 'En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Interpreta un resumen (media, mediana, desviación, percentiles) y dice qué revela y qué no revela sobre la forma y la calidad.'
+      actividad_final: 'Camino inverso: reconstruir la forma de una distribución a partir de cinco números, sin gráfico.'
+      criterio_dominio: 'Distingue media de mediana ante asimetría y detecta un cero o centinela sospechoso con un argumento de calidad, no de estética.'
+    cierre:
+      aprendiste:
+        - 'Un resumen no determina la forma: hay que mirar la distribución.'
+        - 'La media se mueve con los extremos; la mediana no.'
+        - 'La varianza de una muestra divide por n − 1.'
+        - 'Correlación no es causalidad, y un gráfico puede engañar por su escala.'
+      no_confundir:
+        - 'Cantidad que describe una variable (varianza) ≠ cantidad que describe un clasificador (precisión, AUC) (C2 P4).'
+        - 'Hipótesis ≠ medición (C2 P11).'
+        - 'Necesario ≠ suficiente: toda falla trae vibración, no toda vibración es falla.'
+      procedimiento:
+        - 'Tipo de variable → gráfico adecuado.'
+        - 'Centro (media y mediana) y extensión (desviación, percentiles).'
+        - 'Busca ceros, centinelas y atípicos: ¿error o dato real?'
+        - 'Escribe hipótesis, no conclusiones.'
+      pregunta_final: 'Si la media es mucho mayor que la mediana, ¿qué te dice eso de la distribución?'
+      respuesta_final: 'Que tiene cola a la derecha: unos pocos valores altos arrastran la media, y la mediana representa mejor el caso típico. [DATITO]'
+
+  - n: 4
+    unidad: 1
+    titulo: 'Calidad, limpieza y preparación de datos'
+    visual: limpieza_preparacion.html
+    tipo: concepto
+    conceptos: [limpieza_preparacion]
+    objetivo: 'Decidir qué es un error de datos que se limpia y qué es una decisión de modelado que se documenta.'
+    activacion: 'En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer.'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Resuelve una tabla tipo 9B: identifica cada problema, lo clasifica y justifica su tratamiento.'
+      actividad_final: 'Resolver la 9B del Certamen 1 (consumo de camiones).'
+      criterio_dominio: 'Identifica centinela, atípico, sobrecarga semántica y formato; distingue atípico de error; justifica cada decisión con su efecto en la media.'
+    cierre:
+      aprendiste:
+        - 'Un centinela (−999) no es un número: sesga cualquier promedio.'
+        - 'Un atípico puede ser real o un error de digitación: se verifica, no se borra por defecto.'
+        - 'Excluir una columna útil o imputar son decisiones de modelado, no limpieza.'
+        - 'Una tabla bien formada: una fila por observación, identificadores que enlazan otras tablas, fechas completas.'
+      no_confundir:
+        - 'Limpiar (corregir lo mal registrado) ≠ decidir (excluir, imputar, elegir target).'
+        - 'Atípico ≠ error.'
+        - 'Faltante ≠ cero.'
+      procedimiento:
+        - 'Define la fila y las variables.'
+        - 'Busca centinelas, faltantes, tipos mezclados y atípicos.'
+        - 'Para cada uno: ¿está mal registrado (limpiar) o es una decisión (documentar)?'
+        - 'Calcula el efecto en la media antes y después.'
+      pregunta_final: '¿Por qué no basta con borrar en la 9B los valores a más de dos desviaciones de la media?'
+      respuesta_final: 'Porque los −999 inflan la desviación y pueden quedar dentro del corte, y porque un atípico puede ser real. Primero se tratan los centinelas como faltantes; después se evalúa cada atípico. [FUENTE · Repo: 07_DATITO/visual/limpieza_preparacion.html §6]'
+
+  - n: 5
+    unidad: 2
+    titulo: 'Regresión: predecir una cantidad'
+    visual: clase6_regresion.html
+    tipo: concepto
+    conceptos: [regresion]
+    objetivo: 'Explicar el modelo lineal ŷ = θ₀ + θ₁x: qué es dato, qué aprende el modelo y qué significa cada símbolo.'
+    activacion: 'El profesor quiere saber cuánto pesa un árbol sin cortarlo. ¿Qué medirías, y cómo lo usarías para predecir?'
+    bloom:
+      nivel: Comprender
+      evidencia: 'Explica θ₀ y θ₁ con sus unidades y predice un valor dentro del rango de los datos.'
+      actividad_final: '«Tu pregunta»: el árbol de 45 cm y el compañero que confunde θ₁ con el peso a radio cero.'
+      criterio_dominio: 'Nombra qué símbolo responde cada pregunta y declara cuándo una predicción es extrapolación.'
+    cierre:
+      aprendiste:
+        - 'Regresión: predecir un valor real, una cantidad.'
+        - 'θ₁ es cuánto cambia ŷ por unidad de x; θ₀ es ŷ cuando x = 0.'
+        - 'La regresión se llama lineal por ser lineal en los θ, no en x.'
+        - 'La complejidad del modelo es su número de parámetros.'
+      no_confundir:
+        - 'Pendiente (θ₁) ≠ intercepto (θ₀).'
+        - 'Lineal en θ ≠ lineal en x: la polinomial sigue siendo regresión lineal.'
+        - 'Predecir dentro del rango ≠ extrapolar.'
+      procedimiento:
+        - 'Identifica x (dato), y (target) y los θ (lo que aprende el modelo).'
+        - 'Interpreta θ₁ en unidades de y por unidad de x.'
+        - 'Antes de predecir, revisa el rango de x observado.'
+      pregunta_final: '¿Es ŷ = θ₀ + θ₁x + θ₂x² una regresión lineal?'
+      respuesta_final: 'Sí: es lineal en los parámetros, porque cada θ aparece una vez multiplicando un término; x² es solo una columna nueva. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:37:49]'
+
+  - n: 6
+    unidad: 2
+    titulo: 'Función de costo, error y R²'
+    visual: regresion_y_costo.html
+    tipo: concepto
+    conceptos: [regresion]
+    objetivo: 'Calcular el error de una recta, explicar por qué se eleva al cuadrado y leer el R² contra la media.'
+    activacion: 'Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas?'
+    bloom:
+      nivel: Aplicar
+      evidencia: 'Calcula MSE o MAE a mano con pocos puntos e interpreta el R² como comparación con predecir la media.'
+      actividad_final: 'Encontrar con los controles la recta de menor costo y explicar por qué ese es el mínimo.'
+      criterio_dominio: 'Calcula sin error un costo con tres o cuatro puntos e interpreta un R² igual a 0 y uno negativo.'
+    cierre:
+      aprendiste:
+        - 'La función de costo resume en un número qué tan lejos está la recta de los datos.'
+        - 'Elevar al cuadrado elimina el signo y castiga más los errores grandes.'
+        - 'Entrenar es elegir los θ que minimizan el costo.'
+        - 'R² compara con predecir siempre la media: 0 es igual que la media; negativo, peor.'
+      no_confundir:
+        - 'MAE (en unidades de y) ≠ MSE (en unidades al cuadrado).'
+        - 'R² alto en entrenamiento ≠ buen modelo fuera de la muestra.'
+        - '«R² está entre 0 y 1» es falso: puede ser negativo.'
+      procedimiento:
+        - 'Calcula cada residuo y − ŷ.'
+        - 'Eleva al cuadrado (MSE) o toma el valor absoluto (MAE) y promedia.'
+        - 'R² = 1 − SSres/SStot: compara con la media.'
+      pregunta_final: 'Un modelo tiene R² = −0,08 en test. ¿Qué significa?'
+      respuesta_final: 'Que predice peor que usar siempre la media de y: su suma de errores al cuadrado supera la de la media. [DATITO]'
+
+  - n: 7
+    unidad: 3
+    titulo: 'Train, validation y test'
+    visual: train_validation_test.html
+    tipo: concepto
+    conceptos: [train_validation_test]
+    objetivo: 'Separar entrenamiento, validación y test, y decir qué decisión se toma con cada uno.'
+    activacion: 'Si eliges el mejor modelo mirando el test, ¿ese número de test sigue siendo una medida honesta?'
+    bloom:
+      nivel: Aplicar
+      evidencia: 'Asigna cada decisión (ajustar θ, elegir hiperparámetro, reportar) al conjunto correcto.'
+      actividad_final: 'Rotular un gráfico de resultados: con qué se entrenó y sobre qué se evaluó cada barra.'
+      criterio_dominio: 'No usa el test para decidir y distingue parámetro de hiperparámetro en un caso nuevo.'
+    cierre:
+      aprendiste:
+        - 'El test se guarda «en el bolsillo»: no se usa para decidir.'
+        - 'La validación sirve para elegir hiperparámetros, como el grado del polinomio.'
+        - 'Si decides con un conjunto, su número queda optimista.'
+        - 'Un test debe representar los datos donde se usará el modelo.'
+      no_confundir:
+        - 'Parámetro (lo aprende el algoritmo) ≠ hiperparámetro (lo fijas tú antes).'
+        - 'Entrenado con ≠ evaluado sobre.'
+        - 'Elegir (validación) ≠ medir (test).'
+      procedimiento:
+        - 'Aparta el test primero.'
+        - 'Ajusta con train; elige con validación.'
+        - 'Mide una sola vez en test y reporta.'
+      pregunta_final: '¿Por qué hacen falta validación y test, si ambos son datos que el modelo no vio?'
+      respuesta_final: 'Porque al elegir con la validación, esa medida se vuelve optimista; el test, que no se usó para decidir, da la medida honesta. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50]'
+
+  - n: 8
+    unidad: 3
+    titulo: 'Validación cruzada y selección de modelos'
+    visual: validacion_cruzada.html
+    tipo: concepto
+    conceptos: [validacion_cruzada]
+    objetivo: 'Elegir una estrategia de validación y justificar por qué una sola partición puede engañar.'
+    activacion: 'Con una partición gana el polinomio de grado 7; con otra, el de grado 4. ¿Cuál eliges?'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Explica K-Fold, bootstrap y submuestreo, y elige uno según la cantidad de datos y su orden.'
+      actividad_final: 'Interpretar la distribución del error de validación y decir si el error de test cae dentro de ella.'
+      criterio_dominio: 'Justifica la estrategia y compara todos los modelos con la misma partición.'
+    cierre:
+      aprendiste:
+        - 'Re-particionar varias veces evita depender de una partición con suerte.'
+        - 'En K-Fold cada dato valida exactamente una vez.'
+        - 'El bootstrap muestrea con reemplazo; con muestras de tamaño n contiene cerca del 63,2 % de los datos distintos.'
+        - 'Los modelos se comparan con la misma partición.'
+      no_confundir:
+        - 'Una sola partición («validación nomás») ≠ validación cruzada.'
+        - 'Error promedio ≠ distribución del error.'
+        - 'Con orden temporal no se desordena al azar.'
+      procedimiento:
+        - '¿Cuántos datos hay? ¿Tienen orden temporal?'
+        - 'Elige la estrategia y fija la partición.'
+        - 'Compara por el promedio y por la dispersión del error.'
+        - 'El test sigue aparte.'
+      pregunta_final: 'En sklearn un modelo obtiene −0,8 y otro −1,2 (MSE negativo). ¿Cuál es mejor?'
+      respuesta_final: 'El de −0,8: más cercano a cero significa menor error. Lo explicó la ayudantía, que no entra al certamen. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51]'
+
+  - n: 9
+    unidad: 3
+    titulo: 'Generalización, extrapolación y datos no vistos'
+    visual: generalizacion.html
+    tipo: concepto
+    conceptos: [generalizacion]
+    objetivo: 'Decidir si una predicción es confiable según los datos que el modelo vio, y explicar una caída de rendimiento.'
+    activacion: 'Tu recta tiene R² = 0,93 con árboles de 8 a 22 cm de radio. Te piden el peso de uno de 45 cm. ¿Lo entregas?'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Distingue interpolar de extrapolar y descompone una caída de validación a test en sus mecanismos.'
+      actividad_final: 'Las dudas resueltas del árbol de 45 cm y del agrónomo, al final de esta clase.'
+      criterio_dominio: 'Declara la extrapolación y explica la caída con dos mecanismos: haber decidido con esos datos y el cambio de distribución.'
+    cierre:
+      aprendiste:
+        - 'Generalizar es funcionar con datos que el modelo no ha visto.'
+        - 'Fuera del rango observado se extrapola: el número existe, la evidencia no.'
+        - 'Una caída de validación a test puede venir de haber decidido con esos datos o de que los datos cambiaron.'
+      no_confundir:
+        - 'Interpolar ≠ extrapolar.'
+        - 'R² alto dentro del rango ≠ predicción confiable fuera de él.'
+        - 'Cambio de distribución ≠ sobreajuste, aunque se combinen.'
+      procedimiento:
+        - 'Compara el caso a predecir con el rango de los datos.'
+        - 'Si está fuera: declara la extrapolación o consigue datos.'
+        - 'Ante una caída: ¿decidiste con esos datos? ¿cambió la población?'
+      pregunta_final: 'El 29,1 % del test de 2017 son suburbios que no existen en los datos de 2016. ¿Qué tipo de problema de generalización es?'
+      respuesta_final: 'Un cambio de distribución: el modelo predice casos con un valor (el suburbio) que nunca vio, y solo puede apoyarse en variables que sí vio, como ubicación y tipo. [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]'
+
+  - n: 10
+    unidad: 3
+    titulo: 'Overfitting y underfitting'
+    visual: overfitting_underfitting.html
+    tipo: concepto
+    conceptos: [overfitting_underfitting]
+    objetivo: 'Diagnosticar sobreajuste y subajuste calculando la brecha, y proponer remedios del curso.'
+    activacion: 'El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Clasifica tres modelos con la brecha, nombra el mecanismo y propone un remedio coherente.'
+      actividad_final: 'La tabla A/B/C en el formato del profesor, y la versión con MAE.'
+      criterio_dominio: 'Calcula la brecha antes de etiquetar y lee bien una métrica de error, donde menos es mejor.'
+    cierre:
+      aprendiste:
+        - 'Brecha grande entre entrenamiento y prueba: sobreajuste. Malo en ambos: subajuste.'
+        - 'La complejidad (número de parámetros) mueve el balance entre ambos.'
+        - 'Un error de entrenamiento igual a cero no prueba calidad.'
+        - 'También se puede sobreajustar la validación: por eso existe el test.'
+      no_confundir:
+        - 'Sobreajuste ≠ subajuste ≠ error alto (C2 P2).'
+        - 'Más filas (reduce el sobreajuste) ≠ más columnas (lo aumenta) (C2 P3).'
+        - 'Error de entrenamiento ≠ calidad del modelo (C2 P7).'
+      procedimiento:
+        - 'Localiza el par de números: dentro y fuera del entrenamiento.'
+        - 'Calcula la brecha.'
+        - 'Clasifica: brecha grande → sobreajuste; malo en ambos → subajuste.'
+        - 'Nombra el mecanismo, no solo la etiqueta.'
+        - 'Remedio según la causa: simplificar, más filas, elegir con validación cruzada.'
+      pregunta_final: 'Con MAE (menos es mejor): P 0,15 / 0,92 y Q 0,71 / 0,78. ¿Cuál sobreajusta?'
+      respuesta_final: 'P: error muy bajo en entrenamiento y alto en prueba, con brecha 0,77. [FUENTE · Repo: 07_DATITO/dudas.yaml · 2026-09-19-mae-pqr]'
+
+  - n: 11
+    unidad: 4
+    titulo: 'Clasificación: cuando la etiqueta no es un número'
+    visual: clasificacion.html
+    tipo: concepto
+    conceptos: [clasificacion]
+    objetivo: 'Distinguir un problema de clasificación de uno de regresión, y explicar qué cambia en el error.'
+    activacion: '«Frío, templado, caliente»: ¿es un problema de clasificación o de regresión?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Decide el tipo de problema por el target y justifica por qué el MAE no aplica a clases.'
+      actividad_final: 'Clasificar cinco targets como regresión o clasificación, con su justificación.'
+      criterio_dominio: 'Decide por el target y no por las features, y reconoce una categoría con una variable numérica de fondo.'
+    cierre:
+      aprendiste:
+        - 'Clasificar es predecir una categoría.'
+        - 'Una variable categórica no tiene orden entre sus valores.'
+        - 'El modelo puede entregar una probabilidad, no solo una clase.'
+        - 'Un modelo 100 % perfecto es sospechoso.'
+      no_confundir:
+        - 'Categórica ≠ cualitativa.'
+        - 'Categoría ≠ discretización de un número.'
+        - 'Lo que define la tarea es el target, no las features.'
+      procedimiento:
+        - 'Mira el target: ¿número o categoría?'
+        - '¿Tiene orden? ¿Hay una variable numérica de fondo?'
+        - 'Elige la tarea según para qué usarás la predicción.'
+      pregunta_final: 'Predecir la nota de 1 a 7 de un alumno: ¿regresión o clasificación?'
+      respuesta_final: 'Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]'
+
+  - n: 12
+    unidad: 4
+    titulo: 'Matriz de confusión'
+    visual: matriz_confusion.html
+    tipo: concepto
+    conceptos: [matriz_confusion]
+    objetivo: 'Construir y leer una matriz de confusión, y pasar de tasas a conteos en una población.'
+    activacion: 'De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer?'
+    bloom:
+      nivel: Aplicar
+      evidencia: 'Construye la matriz desde un enunciado y verifica que los totales cierren.'
+      actividad_final: 'El ejercicio de los 100 pacientes, que el profesor llamó «lo más importante del curso».'
+      criterio_dominio: 'Declara la clase positiva, lee los rótulos de filas y columnas, y llega a 36 positivos en el ejercicio del profesor.'
+    cierre:
+      aprendiste:
+        - 'Cuatro casillas: VP, FP, FN, VN.'
+        - 'Qué clase es la positiva es una convención que se declara.'
+        - 'La matriz solo describe el conjunto de test, no la realidad.'
+        - 'Una tasa multiplicada por la población da un conteo.'
+      no_confundir:
+        - 'Filas = real ≠ filas = predicho: lee los rótulos (la lámina 19 pone lo predicho en las filas).'
+        - 'Falso positivo ≠ falso negativo.'
+        - 'Test ≠ realidad.'
+      procedimiento:
+        - 'Declara la clase positiva.'
+        - 'Ubica los positivos reales y los positivos predichos.'
+        - 'Obtén VP, FP, FN y VN, y verifica que los totales cierren.'
+      pregunta_final: 'En el caso de los 100 pacientes, ¿cuántos falsos positivos hay y cuál es la precisión?'
+      respuesta_final: 'FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]'
+
+  - n: 13
+    unidad: 4
+    titulo: 'Precisión, sensibilidad, exactitud y F1'
+    visual: metricas_clasificacion.html
+    tipo: concepto
+    conceptos: [metricas_clasificacion]
+    objetivo: 'Calcular exactitud, precisión, sensibilidad, FPR y F1 eligiendo el denominador correcto, e interpretarlas.'
+    activacion: 'Una alarma de fallas tiene recall 100 % y precisión 70 %. ¿Qué significa eso para el operador de la máquina?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Calcula las cinco métricas desde la lámina 19 e interpreta cada una en palabras del problema.'
+      actividad_final: 'El caso del pescado: redactar recall y precisión sin ambigüedad.'
+      criterio_dominio: 'Escribe la fórmula antes de sustituir y distingue FPR de 1 − precisión.'
+    cierre:
+      aprendiste:
+        - 'Cada métrica divide por un universo distinto.'
+        - 'La exactitud engaña cuando las clases están desbalanceadas.'
+        - 'F1 es la media armónica de precisión y sensibilidad.'
+        - 'El promedio macro trata igual a todas las clases.'
+      no_confundir:
+        - 'Precisión (÷ predichos positivos) ≠ sensibilidad (÷ positivos reales) ≠ exactitud (÷ total) (C2 P8).'
+        - 'FPR ≠ 1 − precisión (C2 P8).'
+        - 'Macro ≠ weighted.'
+      procedimiento:
+        - 'Declara la clase positiva y arma la matriz.'
+        - 'Identifica qué métrica te piden.'
+        - 'Escribe la fórmula antes de sustituir.'
+        - 'Calcula e interpreta en palabras del problema.'
+      pregunta_final: 'Con la lámina 19 (VP 6, FP 2, FN 1, VN 7), calcula FPR y 1 − precisión.'
+      respuesta_final: 'FPR = 2/9 ≈ 0,22 y 1 − precisión = 1 − 6/8 = 0,25: dividen por universos distintos. [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19]'
+
+  - n: 14
+    unidad: 4
+    titulo: 'ROC-AUC y elección del umbral'
+    visual: roc_auc.html
+    tipo: concepto
+    conceptos: [roc_auc]
+    objetivo: 'Elegir un punto de operación y comparar modelos por sus curvas ROC.'
+    activacion: 'El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor?'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Construye una curva ROC con cuatro puntos y decide si hay dominancia o cruce.'
+      actividad_final: 'La lámina 23, a mano.'
+      criterio_dominio: 'Compara curvas y no puntos, y justifica el umbral por el costo de cada error.'
+    cierre:
+      aprendiste:
+        - 'El modelo entrega un puntaje; el umbral lo decides tú.'
+        - 'Cada umbral es un punto; el modelo es la curva completa.'
+        - 'El AUC resume toda la curva, pero no fija el umbral.'
+      no_confundir:
+        - 'Punto de operación ≠ modelo (C2 P9).'
+        - 'AUC alto ≠ exactitud alta.'
+        - 'Subir el umbral baja TPR y FPR a la vez: no van en sentidos opuestos.'
+      procedimiento:
+        - 'Un modelo es una curva, no un punto.'
+        - 'Compara umbral a umbral: ¿uno tiene mayor TPR y menor FPR en todos?'
+        - 'Si domina en todos, es mejor sin ambigüedad.'
+        - 'Si se cruzan, depende del punto de operación.'
+      pregunta_final: 'Dos curvas ROC se cruzan. ¿Puedes decir cuál modelo es mejor sin más información?'
+      respuesta_final: 'No: depende del punto de operación, es decir, del costo relativo de falsos positivos y negativos. Solo una curva que domina en todos los umbrales es mejor sin ambigüedad. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7]'
+
+  - n: 15
+    unidad: 5
+    titulo: 'Árboles de decisión'
+    visual: arboles_y_ensambles.html#arboles
+    tipo: concepto
+    conceptos: [arboles_decision]
+    objetivo: 'Calcular la impureza de Gini de un corte y explicar cómo el árbol elige sus preguntas.'
+    activacion: 'Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides?'
+    bloom:
+      nivel: Aplicar
+      evidencia: 'Calcula el Gini ponderado de dos cortes y elige el mejor.'
+      actividad_final: 'El ejercicio de Gini con los números del profesor.'
+      criterio_dominio: 'Obtiene 0,46875 para un nodo con 3/8 y 5/8, y elige el corte de mayor ganancia.'
+    cierre:
+      aprendiste:
+        - 'El árbol divide los datos buscando grupos más puros.'
+        - 'El Gini de un nodo es su error esperado; se pondera por el tamaño de cada hijo.'
+        - 'El árbol se detiene por pureza, o antes, para no sobreajustar.'
+        - 'La medida de impureza es un hiperparámetro: se elige con validación cruzada.'
+      no_confundir:
+        - 'Ganancia de pureza (sirve para construir el árbol) ≠ métrica de evaluación (C2 P4).'
+        - 'Árbol sin límite ≠ buen modelo: sobreajusta.'
+      procedimiento:
+        - 'Calcula la impureza de cada hijo.'
+        - 'Pondera por el tamaño de cada hijo.'
+        - 'Compara con el padre y elige el corte de mayor ganancia.'
+      pregunta_final: '¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?'
+      respuesta_final: '1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]'
+
+  - n: 16
+    unidad: 5
+    titulo: 'Random Forest y ensambles'
+    visual: arboles_y_ensambles.html#random-forest
+    tipo: concepto
+    conceptos: [random_forest, gradient_boosting, ensembles]
+    objetivo: 'Explicar por qué combinar modelos mejora solo si sus errores no están correlacionados.'
+    activacion: 'Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Distingue número de modelos de diversidad, y explica el bootstrap de filas y los atributos al azar.'
+      actividad_final: 'El simulador de votación con correlación entre errores.'
+      criterio_dominio: 'Argumenta con la correlación de los errores (C2 P1) y explica la importancia de variables por conteo.'
+    cierre:
+      aprendiste:
+        - 'Random Forest: muchos árboles con filas por bootstrap y atributos al azar, que votan.'
+        - 'La importancia de una variable se cuenta por cuántas veces los árboles la usan para separar.'
+        - 'Boosting corrige en secuencia los errores de los árboles anteriores (no se enseñó como tema en clase).'
+        - 'El modelo final de Melbourne fue un HistGradientBoosting.'
+      no_confundir:
+        - 'Número de modelos ≠ diversidad (C2 P1).'
+        - 'En paralelo (Random Forest) ≠ en secuencia (boosting).'
+      procedimiento:
+        - '¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.'
+        - 'Diversidad: filas distintas (bootstrap) y atributos distintos.'
+      pregunta_final: 'Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?'
+      respuesta_final: 'No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]'
+
+  - n: 17
+    unidad: 5
+    titulo: 'Redes neuronales'
+    visual: redes_neuronales.html
+    tipo: concepto
+    conceptos: [redes_neuronales]
+    objetivo: 'Explicar un perceptrón y el ciclo de entrenamiento: forward, costo, backward y actualización.'
+    activacion: 'Tu regresión lineal ya es casi una neurona. ¿Qué le falta?'
+    bloom:
+      nivel: Comprender
+      evidencia: 'Escribe el ciclo de entrenamiento y hace un forward pass a mano.'
+      actividad_final: 'Un paso de descenso de gradiente, a mano.'
+      criterio_dominio: 'Nombra el rol de g (la no linealidad), de η (la tasa de aprendizaje) y de la retropropagación.'
+    cierre:
+      aprendiste:
+        - 'Un perceptrón es una regresión más una función g no lineal.'
+        - 'Entrenar es minimizar el costo con el gradiente.'
+        - 'Con η grande el descenso salta; con η chico avanza despacio.'
+        - 'La retropropagación calcula los gradientes capa por capa.'
+      no_confundir:
+        - 'ŷ no lineal en x ≠ frontera de una sola neurona, que sigue siendo recta.'
+        - 'Forward ≠ backward.'
+      procedimiento:
+        - 'Forward: calcula ŷ.'
+        - 'Calcula el costo.'
+        - 'Backward: calcula los gradientes.'
+        - 'Actualiza los pesos y repite.'
+      pregunta_final: '¿El perceptrón es un modelo lineal?'
+      respuesta_final: 'No: g lo transforma en un modelo no lineal en x [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:11]. Aun así, con una sola neurona y g monótona, la frontera de decisión es recta [DATITO].'
+
+  - n: 18
+    unidad: 5
+    titulo: 'Deep learning, LLM y agentes'
+    visual: dl_llm_agentes.html
+    tipo: concepto
+    conceptos: [deep_learning, llm, agentes_ia]
+    objetivo: 'Distinguir deep learning, LLM y agente, y separar lo que avanzó mediante redes de lo que lo hizo posible.'
+    activacion: 'Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente?'
+    bloom:
+      nivel: Analizar
+      evidencia: 'Separa en una lista qué es avance mediante redes y qué es factor habilitante, y explica el bucle del agente.'
+      actividad_final: 'Clasificar los siete ítems de la P6 y recorrer el simulador de agente de la P5.'
+      criterio_dominio: 'Explica la diferencia entre LLM y agente por el bucle cerrado: acción, observación, siguiente paso.'
+    cierre:
+      aprendiste:
+        - 'Deep learning: redes profundas que dominan imagen y texto cuando hay muchos datos.'
+        - 'Con pocos datos tabulares, los algoritmos clásicos suelen ganar.'
+        - 'Un LLM predice la siguiente palabra.'
+        - 'Un agente es un LLM con herramientas y objetivos, cuyo resultado vuelve y condiciona lo siguiente.'
+      no_confundir:
+        - 'Generar texto ≠ ejecutar acciones y observar su resultado (C2 P5).'
+        - 'Avance mediante redes ≠ factor que lo hizo posible (C2 P6).'
+        - 'GPT (el modelo) ≠ ChatGPT (el sistema).'
+      procedimiento:
+        - '¿Aprende sus propias variables? Es deep learning.'
+        - '¿Solo genera texto? Es un LLM.'
+        - '¿Actúa con herramientas y observa el resultado? Es un agente.'
+      pregunta_final: 'Un modelo genera un token especial que llama a una calculadora y usa el resultado para seguir. ¿Es un LLM o un agente?'
+      respuesta_final: 'Un agente: actúa con una herramienta y el resultado vuelve y condiciona lo que genera después. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44]'
+
+  - n: 19
+    unidad: 6
+    titulo: 'Repaso integrado: el proyecto Melbourne'
+    visual: null
+    tipo: repaso
+    conceptos: [train_validation_test, validacion_cruzada, generalizacion, overfitting_underfitting, regresion, gradient_boosting]
+    objetivo: 'Explicar el proyecto Melbourne de punta a punta y defender cada decisión con sus propias cifras.'
+    activacion: 'Si el profesor te pidiera tres minutos sobre tu proyecto, ¿con qué cifra empezarías y por qué?'
+    bloom:
+      nivel: Crear
+      evidencia: 'Una explicación oral de tres minutos: split temporal, validación dentro de 2016, modelo final y lo que la caída a 2017 significa.'
+      actividad_final: 'Defender el proyecto ante cuatro repreguntas del estilo del profesor.'
+      criterio_dominio: 'Usa solo cifras verificadas (MAE 188.218, R² 0,757, 29,1 % de suburbios nuevos) y nombra el mecanismo de cada una.'
+    cierre:
+      aprendiste: []
+      no_confundir: []
+      procedimiento: []
+      pregunta_final: ''
+      respuesta_final: ''
+
+  - n: 20
+    unidad: 6
+    titulo: 'Distinciones del Certamen 1'
+    visual: certamen_1.html
+    tipo: repaso
+    conceptos: [fundamentos_ciencia_datos, datos_features_target, eda, limpieza_preparacion]
+    objetivo: 'Resolver el Certamen 1 en el formato del profesor, justificando cada respuesta con su distinción.'
+    activacion: 'Antes de abrir cada pregunta: escribe tu respuesta y la distinción que la decide.'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Responde cada pregunta con justificación y la contrasta con la auditoría.'
+      actividad_final: 'La 9B completa, en papel.'
+      criterio_dominio: 'Justifica cada respuesta con un mecanismo o una fuente, no con intuición.'
+    cierre:
+      aprendiste:
+        - 'Cada pregunta se resuelve separando dos conceptos vecinos.'
+        - 'La 9B (2,0 puntos) se gana con procedimiento: fila, problemas, clasificación, tratamiento.'
+      no_confundir:
+        - 'Recordar una definición ≠ discriminar entre dos conceptos.'
+        - 'Tu versión del certamen puede no ser la de un compañero: se arma desde un banco de preguntas.'
+      procedimiento:
+        - 'Lee el enunciado dos veces y subraya la cláusula que acota.'
+        - 'Nombra la distinción que decide.'
+        - 'Responde y justifica con el mecanismo.'
+      pregunta_final: '¿Qué distinción decide la P2 del Certamen 1?'
+      respuesta_final: 'Usar datos ≠ decidir a partir de los datos: la escala de cinco etapas hacia data-driven. [FUENTE · Repo: 07_DATITO/visual/certamen_1.html]'
+
+  - n: 21
+    unidad: 6
+    titulo: 'Distinciones del Certamen 2'
+    visual: certamen_2.html
+    tipo: repaso
+    conceptos: [overfitting_underfitting, metricas_clasificacion, matriz_confusion, roc_auc, ensembles, llm, agentes_ia, redes_neuronales]
+    objetivo: 'Resolver el Certamen 2 nombrando en cada pregunta la distinción que la decide.'
+    activacion: 'Antes de abrir cada ficha: escribe la distinción que crees que decide la pregunta.'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Resuelve las once fichas y acierta la distinción de cada una.'
+      actividad_final: 'La P8 completa con la matriz oficial de la lámina 19, en papel.'
+      criterio_dominio: 'Nombra las once distinciones sin mirar la tabla y resuelve la P8 y la P9 a mano.'
+    cierre:
+      aprendiste:
+        - 'Sobreajuste, validación y ensambles pesan 36 %; métricas de clasificación, 27 %.'
+        - 'Todo es resoluble a mano, en papel.'
+      no_confundir:
+        - 'Comparar un punto ≠ comparar un modelo (P9).'
+        - 'FPR ≠ 1 − precisión (P8).'
+        - 'Número de modelos ≠ diversidad (P1).'
+      procedimiento:
+        - 'Identifica el formato: verdadero/falso, «cuál es incorrecta», varias correctas, figura o cálculo.'
+        - 'Nombra la distinción.'
+        - 'Resuelve por el mecanismo y ancla con la cifra.'
+      pregunta_final: '¿Qué distinción decide la P9 del Certamen 2?'
+      respuesta_final: 'Comparar un punto de operación ≠ comparar un modelo: un modelo es una curva ROC completa. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §1]'
+
+  - n: 22
+    unidad: 6
+    titulo: 'Transferencia: ¿qué problema tengo delante?'
+    visual: triaje_de_problemas.html
+    tipo: repaso
+    conceptos: []
+    objetivo: 'Ante un problema nuevo, identificar qué concepto aplica y proponer el procedimiento para resolverlo.'
+    activacion: 'Te dan un problema de otro dominio que nunca viste. ¿Cuál es la primera pregunta que te haces?'
+    bloom:
+      nivel: Crear
+      evidencia: 'Resuelve un problema de otro dominio descubriendo qué concepto aplica, sin que se lo nombren.'
+      actividad_final: 'Recorrer el triaje con tres problemas nuevos. El simulacro final integrado está pendiente de construir.'
+      criterio_dominio: 'Identifica bien el tipo de problema y la validación adecuada en tres casos de dominios distintos.'
+    cierre:
+      aprendiste:
+        - 'El primer paso ante un problema nuevo es clasificarlo: ¿qué se predice y cómo se validará?'
+        - 'Reconocer la estructura es lo que permite transferir: el árbol de 45 cm y el agrónomo de 1.200 mm son el mismo problema.'
+      no_confundir:
+        - 'Un problema nuevo ≠ un concepto nuevo: casi siempre es uno que ya viste en otro dominio.'
+      procedimiento:
+        - '¿Cuál es el target? ¿Es un número o una categoría?'
+        - '¿Hay orden temporal? Eso decide la validación.'
+        - '¿Las clases están balanceadas? Eso decide la métrica.'
+        - '¿Se pide predecir fuera del rango? Eso es extrapolación.'
+      pregunta_final: 'Una clínica quiere predecir qué pacientes faltarán a su hora, con registros de dos años. ¿Qué tipo de problema es y cómo lo validarías?'
+      respuesta_final: 'Clasificación binaria (falta o no falta). Hay orden temporal, así que se valida entrenando con el pasado y midiendo en el período más reciente; y como las faltas suelen ser minoría, se evalúa con precisión, recall o F1 en vez de exactitud. [DATITO]'

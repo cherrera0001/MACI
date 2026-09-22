@@ -1,0 +1,549 @@
+meta:
+  descripcion: Grafo de conceptos, generado desde curriculum.yaml. No editar a mano.
+  generado_por: 03_CODIGO/grafo_conceptual.py
+  importancia_curricular: numero de conceptos que quedan bloqueados si este no se comprende.
+    Es independiente de cuanto se pregunte en un certamen.
+cadenas:
+  del error a la validacion:
+  - regresion
+  - overfitting_underfitting
+  - generalizacion
+  - train_validation_test
+  - validacion_cruzada
+  de la clasificacion al AUC:
+  - clasificacion
+  - matriz_confusion
+  - metricas_clasificacion
+  - roc_auc
+  de un arbol a un ensamble:
+  - arboles_decision
+  - random_forest
+  - gradient_boosting
+  - ensembles
+  del dato al modelo:
+  - datos_features_target
+  - eda
+  - limpieza_preparacion
+  - regresion
+  hacia los sistemas actuales:
+  - redes_neuronales
+  - deep_learning
+  - llm
+  - agentes_ia
+conceptos:
+  fundamentos_ciencia_datos:
+    nombre: Fundamentos de Ciencia de Datos
+    viene_de: []
+    habilita:
+    - datos_features_target
+    habilita_indirectamente:
+    - agentes_ia
+    - arboles_decision
+    - clasificacion
+    - deep_learning
+    - eda
+    - ensembles
+    - generalizacion
+    - gradient_boosting
+    - limpieza_preparacion
+    - llm
+    - matriz_confusion
+    - metricas_clasificacion
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    - regresion
+    - roc_auc
+    - train_validation_test
+    - validacion_cruzada
+    requiere_antes: []
+    importancia_curricular: 20
+    prioridad_evaluacion:
+      peso: media
+      nota: 'C1: P1 a P4'
+    es_raiz: true
+    es_hoja: false
+    tension: null
+  datos_features_target:
+    nombre: Datos, filas, columnas, features y target
+    viene_de:
+    - fundamentos_ciencia_datos
+    habilita:
+    - eda
+    - regresion
+    - train_validation_test
+    habilita_indirectamente:
+    - agentes_ia
+    - arboles_decision
+    - clasificacion
+    - deep_learning
+    - ensembles
+    - generalizacion
+    - gradient_boosting
+    - limpieza_preparacion
+    - llm
+    - matriz_confusion
+    - metricas_clasificacion
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    - roc_auc
+    - validacion_cruzada
+    requiere_antes:
+    - fundamentos_ciencia_datos
+    importancia_curricular: 19
+    prioridad_evaluacion:
+      peso: media
+      nota: 'C1: P6 y 9A'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  eda:
+    nombre: Analisis exploratorio de datos (EDA)
+    viene_de:
+    - datos_features_target
+    habilita:
+    - limpieza_preparacion
+    habilita_indirectamente: []
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    importancia_curricular: 1
+    prioridad_evaluacion:
+      peso: baja
+      nota: 'C1: 9A, de forma indirecta'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  limpieza_preparacion:
+    nombre: Limpieza y preparacion de datos
+    viene_de:
+    - eda
+    habilita: []
+    habilita_indirectamente: []
+    requiere_antes:
+    - datos_features_target
+    - eda
+    - fundamentos_ciencia_datos
+    importancia_curricular: 0
+    prioridad_evaluacion:
+      peso: alta
+      nota: 'C1: 9A y 9B; la 9B vale 2,0 pts'
+    es_raiz: false
+    es_hoja: true
+    tension: 'muy preguntado y poco estructural: rinde puntos, no desbloquea otros conceptos'
+  train_validation_test:
+    nombre: Train / validation / test
+    viene_de:
+    - datos_features_target
+    habilita:
+    - generalizacion
+    - validacion_cruzada
+    habilita_indirectamente:
+    - agentes_ia
+    - arboles_decision
+    - deep_learning
+    - ensembles
+    - gradient_boosting
+    - llm
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    importancia_curricular: 11
+    prioridad_evaluacion:
+      peso: media
+      nota: transversal
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  validacion_cruzada:
+    nombre: Validacion cruzada
+    viene_de:
+    - train_validation_test
+    habilita:
+    - overfitting_underfitting
+    habilita_indirectamente:
+    - agentes_ia
+    - arboles_decision
+    - deep_learning
+    - ensembles
+    - gradient_boosting
+    - llm
+    - random_forest
+    - redes_neuronales
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - train_validation_test
+    importancia_curricular: 9
+    prioridad_evaluacion:
+      peso: baja
+      nota: aparece como remedio, no como pregunta propia
+    es_raiz: false
+    es_hoja: false
+    tension: 'fundacional pero poco preguntado: se necesita para 9 conceptos posteriores'
+  generalizacion:
+    nombre: Generalizacion
+    viene_de:
+    - train_validation_test
+    habilita:
+    - overfitting_underfitting
+    habilita_indirectamente:
+    - agentes_ia
+    - arboles_decision
+    - deep_learning
+    - ensembles
+    - gradient_boosting
+    - llm
+    - random_forest
+    - redes_neuronales
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - train_validation_test
+    importancia_curricular: 9
+    prioridad_evaluacion:
+      peso: media
+      nota: transversal a P2, P3, P7
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  overfitting_underfitting:
+    nombre: Overfitting y underfitting
+    viene_de:
+    - generalizacion
+    - validacion_cruzada
+    habilita:
+    - arboles_decision
+    habilita_indirectamente:
+    - agentes_ia
+    - deep_learning
+    - ensembles
+    - gradient_boosting
+    - llm
+    - random_forest
+    - redes_neuronales
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 8
+    prioridad_evaluacion:
+      peso: alta
+      nota: 'C2: P2, P3, P7 — 3 preguntas'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  regresion:
+    nombre: Regresion
+    viene_de:
+    - datos_features_target
+    habilita:
+    - clasificacion
+    habilita_indirectamente:
+    - matriz_confusion
+    - metricas_clasificacion
+    - roc_auc
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    importancia_curricular: 4
+    prioridad_evaluacion:
+      peso: baja
+      nota: casi no se pregunta directamente
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  clasificacion:
+    nombre: Clasificacion
+    viene_de:
+    - regresion
+    habilita:
+    - matriz_confusion
+    habilita_indirectamente:
+    - metricas_clasificacion
+    - roc_auc
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - regresion
+    importancia_curricular: 3
+    prioridad_evaluacion:
+      peso: media
+      nota: 'C1: P6; base de C2'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  matriz_confusion:
+    nombre: Matriz de confusion
+    viene_de:
+    - clasificacion
+    habilita:
+    - metricas_clasificacion
+    habilita_indirectamente:
+    - roc_auc
+    requiere_antes:
+    - clasificacion
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - regresion
+    importancia_curricular: 2
+    prioridad_evaluacion:
+      peso: alta
+      nota: 'C2: P8, con calculo manual'
+    es_raiz: false
+    es_hoja: false
+    tension: 'muy preguntado y poco estructural: rinde puntos, no desbloquea otros conceptos'
+  metricas_clasificacion:
+    nombre: Accuracy, precision, recall y F1
+    viene_de:
+    - matriz_confusion
+    habilita:
+    - roc_auc
+    habilita_indirectamente: []
+    requiere_antes:
+    - clasificacion
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - matriz_confusion
+    - regresion
+    importancia_curricular: 1
+    prioridad_evaluacion:
+      peso: alta
+      nota: 'C2: P4 y P8'
+    es_raiz: false
+    es_hoja: false
+    tension: 'muy preguntado y poco estructural: rinde puntos, no desbloquea otros conceptos'
+  roc_auc:
+    nombre: ROC y AUC
+    viene_de:
+    - metricas_clasificacion
+    habilita: []
+    habilita_indirectamente: []
+    requiere_antes:
+    - clasificacion
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - matriz_confusion
+    - metricas_clasificacion
+    - regresion
+    importancia_curricular: 0
+    prioridad_evaluacion:
+      peso: media
+      nota: 'C2: P9'
+    es_raiz: false
+    es_hoja: true
+    tension: null
+  arboles_decision:
+    nombre: Arboles de decision
+    viene_de:
+    - overfitting_underfitting
+    habilita:
+    - random_forest
+    habilita_indirectamente:
+    - agentes_ia
+    - deep_learning
+    - ensembles
+    - gradient_boosting
+    - llm
+    - redes_neuronales
+    requiere_antes:
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - overfitting_underfitting
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 7
+    prioridad_evaluacion:
+      peso: baja
+      nota: P4 menciona ganancia de pureza
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  random_forest:
+    nombre: Random Forest
+    viene_de:
+    - arboles_decision
+    habilita:
+    - gradient_boosting
+    habilita_indirectamente:
+    - agentes_ia
+    - deep_learning
+    - ensembles
+    - llm
+    - redes_neuronales
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - overfitting_underfitting
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 6
+    prioridad_evaluacion:
+      peso: baja
+      nota: no aparece directamente
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  gradient_boosting:
+    nombre: Gradient Boosting
+    viene_de:
+    - random_forest
+    habilita:
+    - ensembles
+    - redes_neuronales
+    habilita_indirectamente:
+    - agentes_ia
+    - deep_learning
+    - llm
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - overfitting_underfitting
+    - random_forest
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 5
+    prioridad_evaluacion:
+      peso: baja
+      nota: no aparece directamente
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  ensembles:
+    nombre: Ensembles
+    viene_de:
+    - gradient_boosting
+    habilita: []
+    habilita_indirectamente: []
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - gradient_boosting
+    - overfitting_underfitting
+    - random_forest
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 0
+    prioridad_evaluacion:
+      peso: media
+      nota: 'C2: P1'
+    es_raiz: false
+    es_hoja: true
+    tension: null
+  redes_neuronales:
+    nombre: Redes neuronales
+    viene_de:
+    - gradient_boosting
+    habilita:
+    - deep_learning
+    habilita_indirectamente:
+    - agentes_ia
+    - llm
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - gradient_boosting
+    - overfitting_underfitting
+    - random_forest
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 3
+    prioridad_evaluacion:
+      peso: baja
+      nota: 'C2: P6'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  deep_learning:
+    nombre: Deep learning
+    viene_de:
+    - redes_neuronales
+    habilita:
+    - llm
+    habilita_indirectamente:
+    - agentes_ia
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - gradient_boosting
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 2
+    prioridad_evaluacion:
+      peso: baja
+      nota: 'C2: P6, de forma indirecta'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  llm:
+    nombre: Modelos de lenguaje (LLM)
+    viene_de:
+    - deep_learning
+    habilita:
+    - agentes_ia
+    habilita_indirectamente: []
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - deep_learning
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - gradient_boosting
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 1
+    prioridad_evaluacion:
+      peso: baja
+      nota: 'C2: P5'
+    es_raiz: false
+    es_hoja: false
+    tension: null
+  agentes_ia:
+    nombre: Agentes de IA
+    viene_de:
+    - llm
+    habilita: []
+    habilita_indirectamente: []
+    requiere_antes:
+    - arboles_decision
+    - datos_features_target
+    - deep_learning
+    - fundamentos_ciencia_datos
+    - generalizacion
+    - gradient_boosting
+    - llm
+    - overfitting_underfitting
+    - random_forest
+    - redes_neuronales
+    - train_validation_test
+    - validacion_cruzada
+    importancia_curricular: 0
+    prioridad_evaluacion:
+      peso: baja
+      nota: 'C2: P5'
+    es_raiz: false
+    es_hoja: true
+    tension: null

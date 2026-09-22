@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Regresión y función de costo · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--gris:#9ca3af;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.65 "Segoe UI",system-ui,sans-serif}
+  main{max-width:860px;margin:0 auto}
+  h1{font-size:1.6rem;margin:0 0 .3rem}
+  h2{font-size:1.15rem;margin:2.5rem 0 .6rem;padding-top:1.2rem;
+     border-top:1px solid var(--linea)}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;
+         padding:1.2rem;margin:1rem 0}
+  canvas{width:100%;height:auto;display:block;touch-action:none}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem 1rem;
+        align-items:center;margin-top:1rem}
+  .ctrl label{font-weight:600;font-size:.9rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:600;
+               min-width:5.5rem;text-align:right}
+  input[type=range]{width:100%}
+  .marcador{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;
+            margin-top:1rem;text-align:center}
+  .marcador div{background:var(--fondo);border-radius:8px;padding:.7rem .4rem}
+  .marcador .n{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .marcador .e{font-size:.78rem;color:var(--suave);text-transform:uppercase;
+               letter-spacing:.04em}
+  .nota{background:#fffbeb;border-left:3px solid #f59e0b;padding:.8rem 1rem;
+        margin:1rem 0;font-size:.93rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1rem;
+         margin:1rem 0}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;
+         padding:.5rem 1rem;font-size:.9rem;cursor:pointer;font-weight:600}
+  button:hover{background:#1d4ed8}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
+  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
+         color:var(--suave);font-size:.85rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="6" id="clase-6">
+<div class="leccion-top"><span class="uni">Unidad 2 · Aprender una cantidad: regresión</span><b>Clase 6 de 22</b></div>
+<div class="barra"><span style="width:27.3%"></span></div>
+<div class="lt">Clase 6 · Función de costo, error y R²</div>
+<p><b>Objetivo.</b> Calcular el error de una recta, explicar por qué se eleva al cuadrado y leer el R² contra la media.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a>, <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
+<div><span class="et">habilita</span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div><span class="et">tiempo estimado</span>~15 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Calcula MSE o MAE a mano con pocos puntos e interpreta el R² como comparación con predecir la media.</li>
+<li><b>Actividad final:</b> Encontrar con los controles la recta de menor costo y explicar por qué ese es el mínimo.</li>
+<li><b>Criterio de dominio:</b> Calcula sin error un costo con tres o cuatro puntos e interpreta un R² igual a 0 y uno negativo.</li></ul></div>
+<div class="activ"><b>Activación.</b> Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="6"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="clase6_regresion.html">← Clase 5 · Regresión: predecir una cantidad</a></span><a href="index.html">Índice del curso</a><span><a href="train_validation_test.html">Clase 7 · Train, validation y test →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="clasificacion.html">Clasificacion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="certamen_2.html#p7">C2 P7</a></div>
+<details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Regresión, función de costo y R²</h1>
+<p class="sub">Mueve la recta con las barras. Todo se recalcula solo.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul (regresión)</p>
+
+
+<div class="grafo">
+  <span class="n">Limpieza de datos</span> &rarr;
+  <span class="n aqui">Regresión &middot; función de coste</span> &rarr;
+  <span class="n">Sobreajuste</span> &rarr;
+  <span class="n">Generalización</span>
+</div>
+
+<div class="vecino">
+<strong>Esto es el laboratorio.</strong> Aquí solo se experimenta con la función
+de coste: mover la recta y ver el error. Si lo que buscas es la <em>clase
+completa</em> &mdash;qué es regresión, de dónde sale la notación, qué significa
+cada símbolo&mdash; abre <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a>.
+</div>
+
+<h2>El problema, sin matemáticas</h2>
+
+<p>Una faena minera quiere saber <strong>cuánto combustible gasta un camión
+según la carga que transporta</strong>. Sirve para presupuestar, para detectar
+camiones que gastan de más, y para planificar.</p>
+
+<p>Registraron ocho viajes. Cada punto del gráfico es un viaje: la carga en
+toneladas y los litros que consumió.</p>
+
+<p><strong>La pregunta:</strong> si mañana sale un camión con 34 toneladas,
+¿cuántos litros va a gastar? No tenemos ese dato. Hay que estimarlo.</p>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> unos <strong>103 litros</strong> (102,8 L con la mejor recta
+exacta; el botón muestra 102,5 L porque las barras redondean la recta a pendiente 2,50 y
+partida 17,5).</p>
+<p><strong>Cómo se resuelve a mano</strong> (mínimos cuadrados, con los ocho viajes):</p>
+<ol>
+<li>Promedios: carga = 228 / 8 = <strong>28,5 t</strong>; litros = 712 / 8 = <strong>89 L</strong>.</li>
+<li>Para cada viaje, desvío de la carga (x − 28,5) y del consumo (y − 89). Suma de sus
+productos = <strong>2.202</strong>; suma de los desvíos de carga al cuadrado = <strong>880</strong>.</li>
+<li>Pendiente = 2.202 / 880 = <strong>2,502 L por tonelada</strong>.</li>
+<li>Punto de partida = 89 − 2,502 · 28,5 = <strong>17,69 L</strong> (la recta pasa por el punto promedio).</li>
+<li>Predicción: 17,69 + 2,502 · 34 = 17,69 + 85,07 = <strong>102,76 L</strong>.</li>
+</ol>
+<p>Con esa recta los ocho viajes quedan a menos de 4 L de ella (el mayor residuo es −3,74 L,
+el viaje de 26 t), así que «unos 103 L, más o menos 4» es una forma honesta de decirlo [INFERENCIA].</p>
+<p><strong>Error típico:</strong> responder el promedio, 89 L. Eso es la línea gris: ignora la
+carga, y justo la carga es lo que distingue a este camión. Otro error: tomar el viaje más
+parecido (35 t, 104 L) y copiarlo; un solo viaje trae su propio ruido.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> los ocho viajes son datos sintéticos de esta página
+[DATITO]; el cálculo es aritmética verificable sobre ellos [INFERENCIA]. La solución cerrada
+(pendiente = covarianza / varianza de x; partida = ȳ − pendiente · x̄) está en
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · §6.4.4, slides 18–19];
+ahí mismo consta que derivarla no se pide en certamen: basta entender qué significa.</p>
+</details>
+
+<div class="pred" data-p="costo">
+  <div class="q">Antes de tocar nada: si mueves la recta hasta que pase
+  <strong>exactamente por un punto</strong>, ¿qué le pasa al costo?</div>
+  <button data-r="cero">Baja a cero</button>
+  <button data-r="depende">Depende de los otros siete</button>
+  <button data-r="minimo">Llega a su mínimo</button>
+  <div class="veredicto"></div>
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> <strong>«Depende de los otros siete».</strong> Acertar un viaje
+  pone en cero una sola línea roja; el costo sigue siendo el promedio de las ocho, y las otras
+  siete no se enteran.</p>
+  <p><strong>Cómo se resuelve:</strong> costo = (1/8) · (0² + suma de los cuadrados de los otros
+  siete residuos). Con números de esta página: la mejor recta (pendiente 2,502, partida 17,69)
+  no pasa exacta por ningún viaje y su costo es <strong>5,50</strong>. Si la subes o bajas, sin
+  cambiar la pendiente, hasta que pase justo por el viaje de 26 t y 79 L, ese residuo queda en
+  0, pero los otros siete se agrandan y el costo sube a <strong>19,5</strong>.</p>
+  <p><strong>Error típico:</strong> «baja a cero» confunde <em>un</em> error con <em>el promedio</em>
+  de los errores. Y «llega a su mínimo» supone que la mejor recta toca puntos; en general no
+  toca ninguno, porque equilibra los ocho.</p>
+  <p style="margin-bottom:0"><strong>Origen:</strong> cálculo sobre los ocho viajes sintéticos de esta
+  página [DATITO]; costo como suma de residuos al cuadrado:
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · §6.4.3, slide 15].</p>
+  </details>
+</div>
+
+<div class="panel">
+  <canvas id="lienzo" width="820" height="440"></canvas>
+
+  <div class="ctrl">
+    <label for="m">Pendiente</label>
+    <input type="range" id="m" min="0" max="6" step="0.05" value="1.2">
+    <output id="mOut">1,20</output>
+
+    <label for="b">Punto de partida</label>
+    <input type="range" id="b" min="-20" max="100" step="0.5" value="20">
+    <output id="bOut">20,0</output>
+  </div>
+
+  <div class="marcador">
+    <div><div class="n" id="mse">–</div><div class="e">Costo (MSE)</div></div>
+    <div><div class="n" id="r2">–</div><div class="e">R²</div></div>
+    <div><div class="n" id="pred">–</div><div class="e">Litros si 34 t</div></div>
+  </div>
+
+  <p style="margin-top:1rem"><button id="mejor">Buscar la mejor recta</button>
+  <span style="color:var(--suave);font-size:.88rem;margin-left:.6rem">
+  Eso es «minimizar el riesgo»</span></p>
+</div>
+
+<h2>1 · Qué es cada cosa en el gráfico</h2>
+
+<table>
+<tr><th>En el gráfico</th><th>Nombre técnico</th><th>Qué es en la faena</th></tr>
+<tr><td>Puntos azules</td><td>Datos observados</td><td>Los ocho viajes que sí se registraron</td></tr>
+<tr><td>Recta negra</td><td>Modelo lineal</td><td>Tu regla para estimar viajes futuros</td></tr>
+<tr><td>Líneas rojas</td><td>Residuos</td><td>Cuánto te equivocas en cada viaje</td></tr>
+<tr><td>Línea gris punteada</td><td>La media</td><td>La predicción más tonta: «siempre el promedio»</td></tr>
+</table>
+
+<div class="clave">
+<strong>La recta tiene solo dos números.</strong> El punto de partida (dónde
+arranca) y la pendiente (cuánto sube por cada tonelada). Entrenar un modelo
+lineal es encontrar esos dos números. Nada más.
+</div>
+
+<h2>2 · La función de costo</h2>
+
+<p>Hay infinitas rectas posibles. Para elegir una necesitas
+<strong>un número que diga qué tan mala es</strong>.</p>
+
+<p>Ese número se construye así: para cada viaje mides el largo de su línea roja
+—cuánto te equivocaste—, lo elevas al cuadrado, y promedias los ocho.</p>
+
+<p><strong>¿Por qué al cuadrado?</strong> Dos razones prácticas:</p>
+<ul>
+<li>Si no, errar <code>+10</code> litros y <code>−10</code> litros se cancelaría
+y parecería que no fallaste</li>
+<li>Castiga más los errores grandes: equivocarte en 10 litros pesa 100;
+en 1 litro pesa 1. Fallar feo una vez es peor que fallar poquito varias</li>
+</ul>
+
+<div class="nota">
+<strong>Compruébalo.</strong> Mueve la pendiente hasta que la recta pase lejos de
+los puntos. El costo se dispara. Acércala y baja. <em>El costo es literalmente
+lo que estás viendo</em>: qué tan largas son las líneas rojas.
+</div>
+
+<h2>3 · Minimizar el riesgo</h2>
+
+<p>Ahora que tienes un número que mide lo mala que es cada recta, el problema
+deja de ser vago y se vuelve concreto: <strong>busca los dos números que hacen
+ese costo lo más pequeño posible.</strong></p>
+
+<p>Eso es todo lo que significa «minimizar el riesgo». Pulsa el botón y la
+computadora lo hace — para una recta hay una fórmula exacta, no hace falta
+tantear.</p>
+
+<div class="nota">
+<strong>El detalle que importa.</strong> Minimizas el error sobre
+<em>los ocho viajes que tienes</em>, no sobre todos los viajes posibles. Por eso
+se llama riesgo <strong>empírico</strong>. Y de ahí sale el sobreajuste: una
+recta puede quedar perfecta para esos ocho y fallar con el noveno.
+</div>
+
+<h2>4 · R²: comparado con no hacer nada</h2>
+
+<p>El costo está en «litros al cuadrado», que no significa nada para nadie.
+R² responde otra pregunta, y esa sí se entiende:</p>
+
+<p style="font-size:1.05rem"><strong>¿Cuánto mejor lo hago que si dijera siempre
+el promedio?</strong></p>
+
+<p>La línea gris punteada del gráfico es ese «siempre el promedio». Es el rival
+a batir, y no se mueve: <strong>depende solo de los datos, no de tu recta.</strong></p>
+
+<table>
+<tr><th>R²</th><th>Qué significa</th></tr>
+<tr><td class="num">1,00</td><td>Error cero. La recta pasa por todos los puntos</td></tr>
+<tr><td class="num">0,90</td><td>Tu error es el 10 % del que tendrías con el promedio</td></tr>
+<tr><td class="num">0,00</td><td><strong>Igual de bueno que decir siempre el promedio</strong></td></tr>
+<tr><td class="num">−0,08</td><td><strong>Peor que el promedio.</strong> Es el baseline de tu proyecto Melbourne</td></tr>
+</table>
+
+<div class="clave">
+<strong>R² = 0 no es «no acertó nada».</strong> Es «no aportó nada sobre decir el
+promedio». Y puede ser negativo, porque siempre puedes hacerlo peor que no
+pensar.
+</div>
+
+<div class="nota">
+<strong>Por eso no se entrena minimizando R².</strong> El rival —la línea gris—
+está fijo. Lo único que tu recta mueve son las líneas rojas. Así que minimizar
+R² y minimizar el costo <em>son la misma operación</em>. Escribirlo de la otra
+forma no agrega nada.
+</div>
+
+<h2>4b &middot; La fórmula del coste, desarmada</h2>
+
+<div class="ecu">
+  <div class="formula">MSE = (1/n) &middot; &Sigma; (y&#7522; &minus; &#375;&#7522;)&sup2;</div>
+  <table>
+  <tr><th>Parte</th><th>Qué es aquí</th><th>Rol</th></tr>
+  <tr><td><strong>y&#7522;</strong></td><td>Los litros que gastó de verdad el viaje i</td><td><span class="rol r-dato">es un dato</span></td></tr>
+  <tr><td><strong>&#375;&#7522;</strong></td><td>Los litros que predice tu recta</td><td><span class="rol r-aprende">sale del modelo</span></td></tr>
+  <tr><td><strong>y&#7522; &minus; &#375;&#7522;</strong></td><td>El largo de la línea roja del viaje i</td><td><span class="rol r-aprende">es el residuo</span></td></tr>
+  <tr><td><strong>( )&sup2;</strong></td><td>Que no se cancelen, y castigar más lo grande</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td><strong>&Sigma;</strong> y <strong>1/n</strong></td><td>Sumar los 8 viajes y promediar</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>Dos de las cinco partes son
+  decisiones tuyas, no verdades.</strong> Cambiar el cuadrado por valor absoluto
+  te da el MAE, y entonces los errores grandes dejan de pesar más. Ninguna de las
+  dos es «la correcta»: responden a preguntas distintas.</p>
+</div>
+
+<h2>4c &middot; Camino inverso: te dan la fórmula</h2>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    MSE = (1/n) &middot; &Sigma; (y&#7522; &minus; &#375;&#7522;)&sup2;
+  </div>
+
+  <details>
+    <summary>1 &middot; ¿Qué objeto del gráfico es cada término?</summary>
+    <p>Cada <code>(y&#7522; &minus; &#375;&#7522;)</code> es <strong>una línea roja</strong>.
+    Hay ocho, una por viaje. El cuadrado las convierte en áreas, la suma las junta
+    y el <code>1/n</code> devuelve un promedio.</p>
+    <p style="margin-bottom:0">Mover la recta cambia las ocho a la vez. Por eso el
+    número salta tanto.</p>
+  </details>
+
+  <details>
+    <summary>2 &middot; ¿Qué pasaría sin el cuadrado?</summary>
+    <p>Errar +10 y &minus;10 litros sumaría cero, y una recta pésima parecería
+    perfecta. El cuadrado impide que los errores se anulen entre sí.</p>
+    <p style="margin-bottom:0">Compruébalo: pon la recta atravesando la nube por el
+    medio pero muy inclinada. Los residuos son enormes y de signos opuestos.</p>
+  </details>
+
+  <details>
+    <summary>3 &middot; ¿En qué unidades está el resultado?</summary>
+    <p>En <strong>litros al cuadrado</strong>, que no significa nada para nadie. Por
+    eso existe el R&sup2;: traduce el coste a una escala interpretable comparándolo
+    con el modelo que responde siempre el promedio.</p>
+  </details>
+
+  <details>
+    <summary>4 &middot; ¿Y cómo se encuentra el mínimo?</summary>
+    <p>Para una recta hay <strong>fórmula exacta</strong> &mdash;mínimos cuadrados
+    ordinarios&mdash;, así que no hace falta tantear. El botón <em>Buscar la mejor
+    recta</em>, en el panel de arriba, la aplica.</p>
+    <p style="margin-bottom:0">Eso es <em>minimizar el riesgo empírico</em>: elegir
+    los parámetros que hacen mínimo el coste <strong>sobre los datos que tienes</strong>.
+    La palabra «empírico» es la que abre la puerta al sobreajuste.</p>
+  </details>
+</div>
+
+<h2>5 · Pruébalo tú</h2>
+
+<ol>
+<li>Pon la pendiente en <strong>0</strong>. La recta queda horizontal. Ajusta el
+punto de partida hasta el R² más alto que consigas. <em>¿A qué valor se acerca?
+¿Dónde queda la recta?</em>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el R² sube hasta <strong>0 exacto</strong>, y nunca pasa de ahí. Lo
+logras con el punto de partida en <strong>89</strong>: la recta queda encima de la línea gris
+punteada, el promedio.</p>
+<p><strong>Cómo se resuelve:</strong> con pendiente 0 la recta dice «siempre el mismo número». El
+número que hace mínima la suma de errores al cuadrado es el promedio, 712 / 8 = 89 L (costo
+694,25). Pero ese es justo el rival con que R² se compara, así que empatas con él: R² = 1 − 694,25
+/ 694,25 = 0. Cualquier otro valor lo hace peor: en 80, el costo sube a 775,25 y R² = −0,117.</p>
+<p><strong>Error típico:</strong> esperar un R² positivo «porque la recta está cerca de los puntos
+del medio». Una horizontal no usa la carga para nada; como mucho iguala al promedio.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> cálculo sobre los datos sintéticos de la página
+[DATITO]; que el promedio minimiza el error cuadrático de una constante es [INFERENCIA]
+(la misma lógica de la sección 4).</p>
+</details></li>
+<li>Pulsa <strong>Buscar la mejor recta</strong> y anota el costo.
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el marcador muestra un costo de <strong>5,6</strong> (R² 0,992). El
+mínimo exacto es <strong>5,50</strong>.</p>
+<p><strong>Por qué los dos números:</strong> la fórmula da pendiente 2,502 y partida 17,69, pero las
+barras solo aceptan pasos de 0,05 y 0,5, así que se quedan en 2,50 y 17,5. Con esa recta, la suma de
+los ocho cuadrados es 44,5 y el costo es 44,5 / 8 = 5,56. Con la recta exacta la suma es 44,0 y el
+costo 5,50.</p>
+<p><strong>Error típico:</strong> leer el 5,6 como «me equivoco 5,6 litros». Está en litros al
+cuadrado: su raíz, unos 2,35 L, es el tamaño típico del error expresado en litros.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> cálculo sobre los datos sintéticos de la página
+[DATITO] [INFERENCIA].</p>
+</details></li>
+<li>Mueve la pendiente <strong>0,2</strong> hacia arriba. Mira cuánto sube el
+costo con ese cambio mínimo.
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> sube de <strong>5,6 a 39,5</strong>, unas siete veces, y el R² cae
+de 0,992 a 0,943. Un cambio que en el gráfico casi no se ve.</p>
+<p><strong>Cómo se resuelve:</strong> subir la pendiente 0,2 cambia el residuo de cada viaje en
+0,2 · carga: 2,4 L en el viaje de 12 t y 9 L en el de 45 t. Esos cambios se elevan al cuadrado y se
+promedian: 0,04 × (promedio de las cargas al cuadrado, 922,25) ≈ <strong>36,9</strong> de costo
+extra si partes del mínimo exacto (5,50 → 42,4). Desde la recta redondeada del botón el salto es
+parecido: 5,6 → 39,5.</p>
+<p><strong>Error típico:</strong> pensar que un cambio chico en un parámetro da un cambio chico en el
+costo. Cerca del mínimo el costo crece con el <em>cuadrado</em> del alejamiento, y los viajes
+de mucha carga pesan más porque la pendiente se multiplica por la carga.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> cálculo sobre los datos sintéticos de la página
+[DATITO] [INFERENCIA].</p>
+</details></li>
+</ol>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero propone: <em>«usemos la suma de los errores sin elevarlos al
+cuadrado, así el número queda en litros y se entiende mejor»</em>.<br><br>
+<strong>¿Tiene razón en algo? ¿En qué se equivoca?</strong> Justifícalo con lo que
+pasa cuando un error es positivo y otro negativo.
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta en una frase:</strong> tiene razón en que el costo en litros al cuadrado no
+se entiende, pero se equivoca en el remedio: la suma de errores con signo se cancela y puede
+declarar perfecta una recta pésima; para volver a litros hay que usar el valor absoluto (MAE)
+o sacar raíz al MSE.</p>
+<p><strong>Respuesta modelo</strong> (como la escribiría un buen alumno):</p>
+<blockquote style="border-left:3px solid #059669;margin:.5rem 0;padding:.3rem .9rem;background:#fff">
+«Tiene razón en una cosa: el costo al cuadrado queda en litros², y eso no se lo puedo mostrar a
+nadie. Pero sumar los errores sin elevarlos no sirve, porque los positivos cancelan a los
+negativos: si en un viaje me paso por 10 litros y en otro me quedo corto por 10, la suma da 0 y
+parece que no me equivoqué. Peor aún: <em>cualquier</em> recta que pase por el punto promedio
+(28,5 t; 89 L) tiene suma de errores exactamente 0. La recta horizontal en 89 L, que ni siquiera
+usa la carga, daría 0, igual que la mejor recta; con esa medida no podría elegir entre ellas.
+Si lo que quiere es un número en litros, que promedie el valor absoluto de los errores (el MAE,
+unos 2,0 L para la mejor recta) o que saque la raíz del MSE (unos 2,35 L). Las dos impiden la
+cancelación; el cuadrado además castiga más los errores grandes.»
+</blockquote>
+<p><strong>Cómo se comprueba:</strong> la mejor recta tiene residuos 0,29 · −0,73 · 1,26 · −3,74 ·
+3,25 · −1,26 · 3,22 · −2,29, que suman 0. La horizontal en 89 L tiene residuos −41, −27, −15,
+−10, 7, 15, 32, 39, que también suman 0, con un costo de 694 contra 5,5. La suma no distingue
+entre las dos; el MSE sí.</p>
+<p><strong>Criterios de corrección:</strong></p>
+<ul>
+<li>Le concede algo concreto: la unidad (litros² no se interpreta).</li>
+<li>Muestra la cancelación con un ejemplo de signos opuestos (+10 y −10 → 0).</li>
+<li>Concluye que la suma con signo no sirve para <em>elegir</em> la recta, no solo que «da raro».</li>
+<li>Propone una alternativa que sí quede en litros sin cancelar: MAE o raíz del MSE.</li>
+<li>Extra: nota que la suma, además, crece con la cantidad de viajes; por eso se promedia.</li>
+</ul>
+<p><strong>Error típico:</strong> responder solo «hay que elevar al cuadrado porque sí», o decir
+que el compañero no tiene razón en nada. La unidad es un problema real; lo errado es el remedio.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> las razones del cuadrado (eliminar los signos,
+con el ejemplo de −100 y +100 que se cancelan, y castigar más los errores grandes a diferencia del
+valor absoluto) están en [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · §6.4.3];
+que en esa clase un estudiante nombró el MAE, en la misma sección. Las cifras son cálculos sobre los
+datos sintéticos de esta página [DATITO]. Escríbelo primero y llévaselo a Datito.</p>
+</details>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-6">
+<h2>Cierre de la Clase 6 · Función de costo, error y R²</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>La función de costo resume en un número qué tan lejos está la recta de los datos.</li><li>Elevar al cuadrado elimina el signo y castiga más los errores grandes.</li><li>Entrenar es elegir los θ que minimizan el costo.</li><li>R² compara con predecir siempre la media: 0 es igual que la media; negativo, peor.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>MAE (en unidades de y) ≠ MSE (en unidades al cuadrado).</li><li>R² alto en entrenamiento ≠ buen modelo fuera de la muestra.</li><li>«R² está entre 0 y 1» es falso: puede ser negativo.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Calcula cada residuo y − ŷ.</li><li>Eleva al cuadrado (MSE) o toma el valor absoluto (MAE) y promedia.</li><li>R² = 1 − SSres/SStot: compara con la media.</li></ol>
+<p><b>Viene de:</b> <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · <b>Sigue:</b> <a href="train_validation_test.html">Clase 7 · Train, validation y test</a></p>
+<p><b>Vuelve a tu activación:</b> Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Un modelo tiene R² = −0,08 en test. ¿Qué significa?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Que predice peor que usar siempre la media de y: su suma de errores al cuadrado supera la de la media. [DATITO]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="train_validation_test.html">Continuar → Clase 7 · Train, validation y test</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/regresion_y_costo.html</code> · funciona sin conexión ·
+fuentes: <code>11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md</code> (§6.4.3 función de costo,
+§6.4.4 solución cerrada); <code>05_RESULTADOS/resultados_temporal.json</code> (R² −0,08 del baseline
+de Melbourne).<br>
+Los ocho viajes del camión son <strong>datos sintéticos</strong> [DATITO], construidos para que el
+fenómeno se vea; todas las cifras de las respuestas plegadas son cálculos sobre esos ocho viajes. Cada
+pregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
+</footer>
+
+</main>
+
+<script>
+// Ocho viajes: carga en toneladas, consumo en litros.
+const D = [[12,48],[18,62],[22,74],[26,79],[30,96],[35,104],[40,121],[45,128]];
+const medY = D.reduce((s,p)=>s+p[1],0)/D.length;
+
+
+const PREDC={costo:{txt:{
+ depende:'<strong>Correcto.</strong> El coste promedia los ocho viajes. Clavar uno solo no dice nada: la recta puede pasar exacta por un punto y estar lejísimos de los otros siete, con un coste altísimo.',
+ cero:'<strong>No. La correcta es \u00abDepende de los otros siete\u00bb.</strong> Eso ser\u00eda cierto con un solo dato. Con ocho, el coste es el promedio de los ocho errores: acertar uno deja los otros siete intactos. Pru\u00e9balo &mdash; pasa la recta justo por un punto y mira el n\u00famero.',
+ minimo:'<strong>No. La correcta es \u00abDepende de los otros siete\u00bb.</strong> El m\u00ednimo no tiene por qu\u00e9 pasar por ning\u00fan punto. Pulsa <em>Buscar la mejor recta</em> y f\u00edjate: la soluci\u00f3n \u00f3ptima no toca ninguno exactamente, porque equilibra los ocho.'}}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PREDC[k].txt[b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
+
+const cv = document.getElementById('lienzo'), cx = cv.getContext('2d');
+const $ = id => document.getElementById(id);
+const fmt = (n,d=2) => n.toFixed(d).replace('.',',');
+
+// Márgenes y escalas
+const M = {l:62,r:24,t:24,b:52};
+const xMin=5, xMax=50, yMin=0, yMax=150;
+const px = x => M.l + (x-xMin)/(xMax-xMin)*(cv.width-M.l-M.r);
+const py = y => cv.height-M.b - (y-yMin)/(yMax-yMin)*(cv.height-M.t-M.b);
+
+function metricas(m,b){
+  let ssRes=0, ssTot=0;
+  for(const [x,y] of D){
+    const yh = m*x+b;
+    ssRes += (y-yh)**2;
+    ssTot += (y-medY)**2;
+  }
+  return {mse: ssRes/D.length, r2: 1-ssRes/ssTot};
+}
+
+// Mínimos cuadrados ordinarios: solución exacta.
+function mco(){
+  const n=D.length;
+  const sx=D.reduce((s,p)=>s+p[0],0), sy=D.reduce((s,p)=>s+p[1],0);
+  const sxy=D.reduce((s,p)=>s+p[0]*p[1],0), sxx=D.reduce((s,p)=>s+p[0]**2,0);
+  const m=(n*sxy-sx*sy)/(n*sxx-sx*sx);
+  return {m, b:(sy-m*sx)/n};
+}
+
+function dibujar(){
+  const m=+$('m').value, b=+$('b').value;
+  cx.clearRect(0,0,cv.width,cv.height);
+
+  // Rejilla y ejes
+  cx.strokeStyle='#e8e6e3'; cx.lineWidth=1; cx.font='12px system-ui';
+  cx.fillStyle='#666'; cx.textAlign='right';
+  for(let y=0;y<=150;y+=30){
+    cx.beginPath(); cx.moveTo(M.l,py(y)); cx.lineTo(cv.width-M.r,py(y)); cx.stroke();
+    cx.fillText(y,M.l-9,py(y)+4);
+  }
+  cx.textAlign='center';
+  for(let x=10;x<=50;x+=10){
+    cx.beginPath(); cx.moveTo(px(x),M.t); cx.lineTo(px(x),cv.height-M.b); cx.stroke();
+    cx.fillText(x,px(x),cv.height-M.b+20);
+  }
+  cx.fillStyle='#444'; cx.font='600 13px system-ui';
+  cx.fillText('Carga transportada (toneladas)',cv.width/2,cv.height-14);
+  cx.save(); cx.translate(16,cv.height/2); cx.rotate(-Math.PI/2);
+  cx.fillText('Combustible (litros)',0,0); cx.restore();
+
+  // Media: el rival a batir
+  cx.strokeStyle='#9ca3af'; cx.setLineDash([7,5]); cx.lineWidth=2;
+  cx.beginPath(); cx.moveTo(M.l,py(medY)); cx.lineTo(cv.width-M.r,py(medY)); cx.stroke();
+  cx.setLineDash([]);
+  cx.fillStyle='#6b7280'; cx.textAlign='left'; cx.font='12px system-ui';
+  cx.fillText('promedio · '+fmt(medY,1)+' L',M.l+8,py(medY)-8);
+
+  // Residuos
+  cx.strokeStyle='#dc2626'; cx.lineWidth=2;
+  for(const [x,y] of D){
+    cx.beginPath(); cx.moveTo(px(x),py(y)); cx.lineTo(px(x),py(m*x+b)); cx.stroke();
+  }
+
+  // La recta
+  cx.strokeStyle='#1a1a1a'; cx.lineWidth=2.5;
+  cx.beginPath(); cx.moveTo(px(xMin),py(m*xMin+b)); cx.lineTo(px(xMax),py(m*xMax+b)); cx.stroke();
+
+  // Puntos
+  for(const [x,y] of D){
+    cx.fillStyle='#2563eb'; cx.beginPath();
+    cx.arc(px(x),py(y),6,0,7); cx.fill();
+    cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
+  }
+
+  // Predicción para 34 t
+  const yp = m*34+b;
+  cx.fillStyle='#059669'; cx.beginPath();
+  cx.arc(px(34),py(yp),7,0,7); cx.fill();
+  cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
+
+  const r = metricas(m,b);
+  $('mOut').textContent = fmt(m);
+  $('bOut').textContent = fmt(b,1);
+  $('mse').textContent  = fmt(r.mse,1);
+  $('r2').textContent   = fmt(r.r2,3);
+  $('pred').textContent = fmt(yp,1);
+  $('r2').style.color   = r.r2 < 0 ? '#dc2626' : (r.r2 > .9 ? '#059669' : '#1a1a1a');
+}
+
+$('m').oninput = $('b').oninput = dibujar;
+$('mejor').onclick = () => {
+  const o = mco();
+  $('m').value = o.m; $('b').value = o.b;
+  dibujar();
+};
+dibujar();
+</script>
+</body>
+</html>

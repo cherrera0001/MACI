@@ -1,0 +1,36 @@
+# [PLACEHOLDER] Estado del alumno
+#
+# Este archivo se reemplaza al crear un learner con datito_init_learner.py.
+# No edites: solo Datito escribe aquí.
+
+meta:
+  alumno: "[Nombre]"
+  tutor: Datito
+  asignatura: "[Ramo]"
+  creado: null
+  ultima_sesion: null
+  sesiones_totales: 0
+  diagnostico_inicial_hecho: false
+
+resumen:
+  DOMINADO: 0
+  COMPRENDIDO: 0
+  COMPRENSION_PARCIAL: 0
+  EN_ESTUDIO: 0
+  REQUIERE_REPASO: 0
+  NO_ESTUDIADO: 0
+  siguiente_recomendado: null
+
+conceptos: []
+  # Se llena automáticamente desde curriculum.yaml
+  # Estructura de cada concepto:
+  #
+  # - id: concepto_1
+  #   estado: NO_ESTUDIADO
+  #   evidencias:
+  #     explicar: null
+  #     aplicar: null
+  #     interpretar: null
+  #     transferir: null
+  #   sesiones: 0
+  #   ultima_verificacion: null

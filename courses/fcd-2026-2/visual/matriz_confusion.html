@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Matriz de confusión y métricas · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.65rem;margin:0 0 .3rem}
+  h2{font-size:1.18rem;margin:2.5rem 0 .7rem;padding-top:1.2rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 1.6rem}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.3rem;margin:1.1rem 0}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .mini{width:auto;margin:.6rem 0}
+  .mini th,.mini td{text-align:center;padding:.35rem .8rem}
+  a{color:var(--azul)}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .preg{font-weight:600;margin:1rem 0 .3rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
+  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+
+  /* Ubicación en el grafo */
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+
+  /* Matriz */
+  .mtz{display:grid;grid-template-columns:auto 1fr 1fr;gap:4px;max-width:520px;margin:0 auto}
+  .mtz .cab{display:flex;align-items:center;justify-content:center;font-size:.8rem;
+            font-weight:600;color:var(--suave);padding:.4rem;text-align:center}
+  .celda{border-radius:8px;padding:.9rem .6rem;text-align:center;cursor:pointer;
+         transition:transform .12s;border:2px solid transparent}
+  .celda:hover{transform:translateY(-2px)}
+  .celda.sel{border-color:var(--tinta)}
+  .celda .v{font-size:1.8rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+  .celda .s{font-size:.76rem;font-weight:700;letter-spacing:.06em;margin-top:.2rem}
+  .tp{background:#d1fae5;color:#065f46}
+  .tn{background:#dbeafe;color:#1e3a8a}
+  .fp{background:#fed7aa;color:#9a3412}
+  .fn{background:#fecaca;color:#991b1b}
+
+  /* Controles con invitación a predecir */
+  .ctrl{margin-top:1.3rem}
+  .fila{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center}
+  .fila label{font-weight:600;font-size:.88rem}
+  .fila output{font-variant-numeric:tabular-nums;font-weight:700;min-width:3.2rem;text-align:right}
+  input[type=range]{width:100%}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.6rem .9rem;margin:.5rem 0 .9rem;font-size:.9rem}
+  .pred .q{font-weight:600;margin-bottom:.45rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.3rem .7rem;font-size:.84rem;cursor:pointer;
+               margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;font-size:.88rem;display:none}
+  .pred .veredicto.on{display:block}
+
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.7rem;margin-top:1.2rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.73rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  .met .f{font-size:.72rem;color:var(--suave);font-family:ui-monospace,monospace;margin-top:.3rem}
+
+  /* Ecuación desarmada */
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.25rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .ecu .formula .num{color:var(--verde);font-weight:700}
+  .ecu .formula .den{color:var(--azul);font-weight:700}
+  .ecu table{font-size:.87rem;margin:0}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+
+  #expl{margin-top:1.1rem;padding:.9rem 1.1rem;background:var(--fondo);border-radius:8px;
+        font-size:.93rem;min-height:3.2rem}
+  /* Matriz 3x3 de Galaxy Zoo */
+  td.gz{cursor:pointer;font-variant-numeric:tabular-nums;font-weight:600;transition:.12s}
+  td.gz:hover{background:#eff6ff}
+  td.gz.ok{background:#d1fae5;color:#065f46}
+  td.gz.sel{outline:2px solid var(--tinta);outline-offset:-2px}
+  #gzMtz th{text-align:center}
+  button.acc{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+             font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button.acc:hover{background:#1d4ed8}
+  button.acc.alt{background:#6b7280}button.acc.alt:hover{background:#4b5563}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.8rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0}
+  .repreg strong{color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="12" id="clase-12">
+<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 12 de 22</b></div>
+<div class="barra"><span style="width:54.5%"></span></div>
+<div class="lt">Clase 12 · Matriz de confusión</div>
+<p><b>Objetivo.</b> Construir y leer una matriz de confusión, y pasar de tasas a conteos en una población.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div><span class="et">habilita</span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
+<div><span class="et">tiempo estimado</span>~30 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Construye la matriz desde un enunciado y verifica que los totales cierren.</li>
+<li><b>Actividad final:</b> El ejercicio de los 100 pacientes, que el profesor llamó «lo más importante del curso».</li>
+<li><b>Criterio de dominio:</b> Declara la clase positiva, lee los rótulos de filas y columnas, y llega a 36 positivos en el ejercicio del profesor.</li></ul></div>
+<div class="activ"><b>Activación.</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="12"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="clasificacion.html">← Clase 11 · Clasificación: cuando la etiqueta no es un número</a></span><a href="index.html">Índice del curso</a><span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1 →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Matriz de confusion</b></span> · <span class="et">viene de</span><a href="clasificacion.html">Clasificacion</a> · <span class="et">habilita</span><a href="metricas_clasificacion.html">Accuracy, precision, recall y F1</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen alta (C2: P8, con calculo manual) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_2.html#p8">C2 P8</a></div>
+<details><summary>Dónde se enseñó en clase (4 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:44:25–0:47:52 · profesor — la convencion del positivo; contar VP, FP, FN, VN<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:44:25]</span></li><li><b>Clase del 7-ago</b> · 1:00:54–1:02:54 · profesor — construir la matriz; el caso multiclase<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:54]</span></li><li><b>Presentaciones del 4-sep</b> · 1:28:40–1:48:16 · profesor — ejercicio de 100 pacientes con 20 enfermos («lo mas importante del curso»)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:40]</span></li><li><b>Ayudantía del 7-ago</b> · 1:00:34–1:10:12 · ayudantía — el ejemplo Guitarra y el caso de 3 clases <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:34]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Matriz de confusión y sus métricas</h1>
+<p class="sub">Fundamentos de Ciencia de Datos · UdeC</p>
+
+<div class="grafo">
+  <span class="n">Clasificación</span> →
+  <span class="n aqui">Matriz de confusión</span> →
+  <span class="n">Precision, recall, F1</span> →
+  <span class="n">ROC y AUC</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> Este concepto viene de <em>clasificación</em> y
+habilita las métricas y la curva ROC. Si no queda claro aquí, esos dos se
+estudian a ciegas.<br><br>
+<strong>Tensión declarada:</strong> pesa mucho en la evaluación —la ficha P8 del
+Certamen 2 (cálculo de métricas desde la matriz, en <code>07_DATITO/patron_evaluacion.md</code>)
+pide calcularlo a mano: <a href="certamen_2.html#p8">certamen_2.html#p8</a>— y desbloquea solo dos
+conceptos: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> y
+<a href="roc_auc.html">roc_auc.html</a>. Rinde puntos; no es de los que sostienen el programa.<br><br>
+<strong>Notación:</strong> VP / FP / FN / VN, como en las láminas (en inglés y en scikit-learn: TP / FP / FN / TN)
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 17].
+</div>
+
+<h2 id="problema">1 · El problema, sin matemáticas</h2>
+
+<p>Un laboratorio analiza <strong>mamografías</strong> con un modelo que responde
+una sola cosa: <em>¿hay cáncer, sí o no?</em> (Caso simulado [DATITO]: los
+números salen de los sliders, no de un dataset. El ejercicio real del profesor
+con pacientes está en el <a href="#ejercicio-profesor">§6</a>.)</p>
+
+<p>Dos respuestas posibles, dos realidades posibles. Solo pueden pasar cuatro
+cosas, y esas cuatro cosas <strong>son</strong> la matriz de confusión.</p>
+
+<div class="panel">
+  <div class="mtz">
+    <div class="cab"></div>
+    <div class="cab">El modelo dice<br><strong>SÍ hay cáncer</strong></div>
+    <div class="cab">El modelo dice<br><strong>NO hay cáncer</strong></div>
+    <div class="cab">Realmente<br><strong>SÍ tiene</strong></div>
+    <div class="celda tp" data-k="tp"><div class="v" id="vTP">–</div><div class="s">VP</div></div>
+    <div class="celda fn" data-k="fn"><div class="v" id="vFN">–</div><div class="s">FN</div></div>
+    <div class="cab">Realmente<br><strong>NO tiene</strong></div>
+    <div class="celda fp" data-k="fp"><div class="v" id="vFP">–</div><div class="s">FP</div></div>
+    <div class="celda tn" data-k="tn"><div class="v" id="vTN">–</div><div class="s">VN</div></div>
+  </div>
+
+  <div id="expl">Pulsa una casilla para ver qué significa en el laboratorio.</div>
+
+  <div class="ctrl">
+    <div class="fila">
+      <label for="pac">Pacientes</label>
+      <input type="range" id="pac" min="100" max="2000" step="100" value="1000">
+      <output id="pacOut">1000</output>
+    </div>
+
+    <!-- Predicción 1 -->
+    <div class="pred" data-p="prev">
+      <div class="q">Antes de mover: si la enfermedad se vuelve <strong>más rara</strong>
+        y el modelo no cambia en nada, ¿qué le pasa a la <strong>precisión</strong>?</div>
+      <button data-r="sube">Sube</button>
+      <button data-r="baja">Baja</button>
+      <button data-r="igual">No cambia</button>
+      <div class="veredicto"></div>
+      <details class="resp">
+        <summary>Respuesta correcta y cómo se resuelve</summary>
+        <p><strong>Respuesta:</strong> la precisión <strong>baja</strong>, aunque el modelo no cambie.</p>
+        <p><strong>Cómo se resuelve</strong> (1.000 pacientes, detecta 80 % de las enfermas, descarta 90 % de las sanas):
+        con 5 % de enfermas hay 50 enfermas y 950 sanas → VP = 0,8 × 50 = 40, FP = 0,1 × 950 = 95, precisión = 40/135 ≈ 0,296.
+        Con 1 % hay 10 enfermas y 990 sanas → VP = 8, FP = 99, precisión = 8/107 ≈ 0,075.
+        Los VP salen de un grupo que se achica; los FP, de uno que crece.</p>
+        <p><strong>Error típico:</strong> «no cambia, porque el modelo es el mismo». Lo que es del modelo son la sensibilidad y la tasa de falsas alarmas; la precisión mezcla el modelo con cuántas enfermas hay.</p>
+        <p style="margin-bottom:0"><strong>Fuente:</strong> cifras de los sliders, simuladas [DATITO]; fórmula de precisión: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+      </details>
+    </div>
+    <div class="fila">
+      <label for="prev">Cuántas tienen cáncer</label>
+      <input type="range" id="prev" min="1" max="50" step="1" value="10">
+      <output id="prevOut">1,0 %</output>
+    </div>
+
+    <!-- Predicción 2 -->
+    <div class="pred" data-p="sens">
+      <div class="q">Si el modelo detecta <strong>más enfermas</strong> sin cambiar
+        nada más, ¿qué le pasa a los <strong>falsos negativos</strong>?</div>
+      <button data-r="suben">Suben</button>
+      <button data-r="bajan">Bajan</button>
+      <button data-r="igual">No cambian</button>
+      <div class="veredicto"></div>
+      <details class="resp">
+        <summary>Respuesta correcta y cómo se resuelve</summary>
+        <p><strong>Respuesta:</strong> los falsos negativos <strong>bajan</strong>.</p>
+        <p><strong>Cómo se resuelve:</strong> cada enferma termina como VP o como FN, así que VP + FN = total de enfermas, fijo.
+        Con 10 enfermas: si detecta 80 %, VP = 8 y FN = 2; si detecta 90 %, VP = 9 y FN = 1.</p>
+        <p><strong>Error típico:</strong> pensar que los FN dependen de las sanas. Los FN salen solo de la fila de las enfermas.</p>
+        <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO]; definición de FN: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 17].</p>
+      </details>
+    </div>
+    <div class="fila">
+      <label for="sens">Detecta enfermas</label>
+      <input type="range" id="sens" min="0" max="100" step="1" value="80">
+      <output id="sensOut">80 %</output>
+    </div>
+
+    <!-- Predicción 3 -->
+    <div class="pred" data-p="espe">
+      <div class="q">Si el modelo descarta <strong>peor</strong> a las sanas,
+        ¿qué métrica se resiente <strong>más</strong>?</div>
+      <button data-r="recall">La sensibilidad</button>
+      <button data-r="precision">La precisión</button>
+      <button data-r="ninguna">Ninguna</button>
+      <div class="veredicto"></div>
+      <details class="resp">
+        <summary>Respuesta correcta y cómo se resuelve</summary>
+        <p><strong>Respuesta:</strong> se resiente <strong>la precisión</strong>; la sensibilidad no se mueve.</p>
+        <p><strong>Cómo se resuelve:</strong> descartar peor a las sanas produce más FP, y FP está en el denominador de la precisión, VP/(VP+FP), pero no en el de la sensibilidad, VP/(VP+FN).
+        Con 10 enfermas, 990 sanas y sensibilidad 80 %: si descarta 90 % de las sanas, FP = 99 y precisión = 8/107 ≈ 0,075; si descarta 80 %, FP = 198 y precisión = 8/206 ≈ 0,039. La sensibilidad sigue en 0,80.</p>
+        <p><strong>Error típico:</strong> elegir «la sensibilidad» porque «el modelo empeoró». Hay que mirar qué casilla cambió y en qué fórmula aparece.</p>
+        <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO]; fórmulas: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+      </details>
+    </div>
+    <div class="fila">
+      <label for="espe">Descarta sanas</label>
+      <input type="range" id="espe" min="0" max="100" step="1" value="90">
+      <output id="espeOut">90 %</output>
+    </div>
+  </div>
+
+  <div class="met">
+    <div><div class="n" id="mAcc">–</div><div class="e">Exactitud</div><div class="f">(VP+VN)/N</div></div>
+    <div><div class="n" id="mPre">–</div><div class="e">Precisión</div><div class="f">VP/(VP+FP)</div></div>
+    <div><div class="n" id="mRec">–</div><div class="e">Sensibilidad</div><div class="f">VP/(VP+FN)</div></div>
+    <div><div class="n" id="mFpr">–</div><div class="e">FPR</div><div class="f">FP/(FP+VN)</div></div>
+    <div><div class="n" id="mF1">–</div><div class="e">F1</div><div class="f">2PR/(P+R)</div></div>
+  </div>
+
+  <p style="margin-top:1.1rem;text-align:center">
+    <button class="acc" id="bTonto">El modelo tonto</button>
+    <button class="acc alt" id="bBueno">Un modelo bueno</button>
+    <button class="acc alt" id="bEquil">Clases equilibradas</button>
+  </p>
+</div>
+
+<h2 id="casillas">2 · Las cuatro casillas, en el laboratorio</h2>
+
+<p>Antes de contar nada hay que decidir <strong>qué es «positivo»</strong>. Aquí:
+positivo = tiene cáncer. Es una convención, no una opinión sobre qué clase importa más:</p>
+
+<div class="cita">«uno de los objetos los voy a llamar positivos y los otros objetos los voy a dar los voy a llamar negativos y no es que a mí me gustan más los círculos que los triángulos es como la convención» <span class="f">Clase del 7-ago · 0:45:30–0:45:50 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Si das vuelta la convención, las casillas cambian de nombre (los FP pasan a ser FN
+y viceversa) y precisión, recall y FPR cambian de valor; la exactitud no. Por eso se
+escribe la convención <strong>antes</strong> de calcular.</p>
+
+<table>
+<tr><th>Sigla</th><th>Qué pasó</th><th>Consecuencia real</th></tr>
+<tr><td><strong>VP</strong></td><td>Tenía cáncer y el modelo lo detectó</td><td>Se trata a tiempo</td></tr>
+<tr><td><strong>VN</strong></td><td>No tenía y el modelo dijo que no</td><td>Se va tranquila a casa</td></tr>
+<tr><td><strong>FP</strong></td><td>No tenía, pero el modelo dijo que sí</td><td><strong>Falsa alarma.</strong> Angustia y biopsia innecesaria</td></tr>
+<tr><td><strong>FN</strong></td><td>Sí tenía, y el modelo dijo que no</td><td><strong>Cáncer no detectado.</strong> El error grave</td></tr>
+</table>
+
+<div class="clave">
+Un FP cuesta una biopsia. Un FN puede costar una vida. <strong>Ninguna métrica
+que mezcle los dos en un solo número sabe esto</strong>: lo decides tú, según el
+problema.
+</div>
+
+<div class="nota" id="lamina19">
+<strong>La matriz oficial viene dada vuelta respecto a esta.</strong> Aquí las
+<strong>filas son lo real</strong> y las columnas lo que dice el modelo (así la dibuja
+scikit-learn). En la lámina 19 del curso es al revés: <strong>filas = etiqueta
+predicha</strong>, columnas = etiqueta real. Esta es la matriz de la lámina, en
+<em>su</em> orientación (círculo = positivo):
+<table class="mini">
+<tr><th></th><th>Real: círculo</th><th>Real: triángulo</th></tr>
+<tr><th>Predicho: círculo</th><td>6 (VP)</td><td>2 (FP)</td></tr>
+<tr><th>Predicho: triángulo</th><td>1 (FN)</td><td>7 (VN)</td></tr>
+</table>
+Si la lees con la costumbre de scikit-learn, el 2 te parece un FN y el 1 un FP, y todo
+lo que sigue sale mal. <strong>Lee los rótulos antes de sumar una fila.</strong> El profesor
+lo dijo al armarla: da lo mismo cuál etiqueta va en cada eje
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:01:15–1:01:27]
+— y justamente por eso nunca puedes suponer la orientación [INFERENCIA].
+Las métricas de esta matriz, calculadas paso a paso, están en
+<a href="metricas_clasificacion.html#papel">metricas_clasificacion.html#papel</a>.
+<span style="display:block;font-size:.8rem;color:var(--suave);margin-top:.4rem">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19] ·
+orientación confirmada en la tabla de la lámina 19 de <code>11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md</code></span>
+</div>
+
+<h2 id="formulas">3 · Las fórmulas, desarmadas</h2>
+
+<p>Las cinco métricas usan casi los mismos números. <strong>Lo único que las
+separa es entre qué dividen</strong>, y eso equivale a qué pregunta responden.
+Definiciones oficiales: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].
+El trabajo con el umbral y con F1 sigue en <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+
+<div class="ecu">
+  <div class="formula">Precisión = <span class="num">VP</span> / (<span class="den">VP + FP</span>)</div>
+  <table>
+  <tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>VP</strong></td><td>Enfermas que el modelo marcó bien</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>FP</strong></td><td>Sanas que el modelo marcó por error</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>VP + FP</strong></td><td><strong>Todo lo que el modelo marcó como positivo</strong></td><td><span class="rol r-decide">lo decide el modelo</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>La pregunta que responde:</strong>
+  <em>de todo lo que marqué, ¿cuánto era de verdad?</em> El denominador es una
+  decisión del modelo, no un hecho del mundo.</p>
+</div>
+
+<div class="ecu">
+  <div class="formula">Sensibilidad = <span class="num">VP</span> / (<span class="den">VP + FN</span>)</div>
+  <table>
+  <tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>VP</strong></td><td>Enfermas detectadas</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>FN</strong></td><td>Enfermas que se escaparon</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>VP + FN</strong></td><td><strong>Todas las enfermas que existían</strong></td><td><span class="rol r-dato">es un dato del mundo</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>La pregunta:</strong>
+  <em>de todas las que estaban enfermas, ¿a cuántas encontré?</em> El denominador
+  <strong>no depende del modelo</strong>: existía antes de que el modelo opinara.</p>
+</div>
+
+<div class="clave">
+<strong>Ahí está toda la diferencia.</strong> Precisión y sensibilidad comparten
+numerador —el mismo VP— y dividen entre universos distintos: uno lo
+<strong>decide el modelo</strong>, el otro es un <strong>hecho del mundo</strong>.
+Por eso casi nunca coinciden.
+</div>
+
+<div class="ecu">
+  <div class="formula">FPR = <span class="num">FP</span> / (<span class="den">FP + VN</span>)</div>
+  <table>
+  <tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>FP</strong></td><td>Sanas marcadas por error</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>VN</strong></td><td>Sanas correctamente descartadas</td><td><span class="rol r-cuenta">se cuenta</span></td></tr>
+  <tr><td><strong>FP + VN</strong></td><td><strong>Todas las sanas que existían</strong></td><td><span class="rol r-dato">es un dato del mundo</span></td></tr>
+  </table>
+</div>
+
+<h2 id="camino-inverso">4 · Camino inverso: te dan la fórmula</h2>
+
+<p>En la prueba no te van a dar el laboratorio: te van a dar esto escrito en el
+papel. Haz el recorrido al revés.</p>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.3rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    FPR = FP / (FP + VN)
+  </div>
+
+  <p class="preg">1 · ¿Qué universo es el denominador?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> <code>FP + VN</code> son <strong>todas las personas que realmente no tenían la enfermedad</strong> (los negativos reales, N).</p>
+    <p><strong>Cómo se resuelve:</strong> busca qué tienen en común las dos casillas. FP = sana marcada como enferma; VN = sana marcada como sana. Las dos son sanas: juntas son la fila completa de las sanas. Es un dato del mundo: no cambia si cambias el modelo.</p>
+    <p><strong>Error típico:</strong> leer «FP + VN» como «todo lo que el modelo marcó como negativo». Eso sería FN + VN.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+  </details>
+
+  <p class="preg">2 · ¿Qué mide entonces el cociente?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> de todas las sanas, qué proporción recibió una falsa alarma: <strong>la tasa de falsos positivos</strong>.</p>
+    <p><strong>Cómo se resuelve:</strong> numerador = las sanas que el modelo marcó mal (FP); denominador = todas las sanas (FP + VN). Con la lámina 19: 2 triángulos marcados como círculo de 9 triángulos → 2/9 ≈ 22,2 %.</p>
+    <p><strong>Error típico:</strong> decir «la proporción de errores del modelo». Los errores totales son (FP + FN)/total; la FPR solo mira a las sanas.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 18–19].</p>
+  </details>
+
+  <p class="preg">3 · ¿Por qué NO es «uno menos la precisión»?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> porque la FPR divide por las sanas reales y la precisión divide por lo que el modelo marcó como positivo: son universos distintos, así que no se complementan.</p>
+    <table>
+    <tr><th></th><th>Denominador</th><th>¿De quién depende?</th></tr>
+    <tr><td>FPR</td><td><code>FP + VN</code> — las sanas reales</td><td>Del mundo</td></tr>
+    <tr><td>Precisión</td><td><code>VP + FP</code> — lo marcado positivo</td><td>Del modelo</td></tr>
+    </table>
+    <p><strong>Cómo se comprueba:</strong> lámina 19 → precisión = 6/8 = 75 %, así que 1 − precisión = 2/8 = 25 %; pero FPR = 2/9 ≈ 22,2 %. Mismo numerador (FP = 2), denominadores distintos (8 contra 9). Mueve cualquier slider de arriba y verás que <code>FPR + Precisión ≠ 1</code> casi siempre.</p>
+    <p><strong>Error típico:</strong> restar de 1 porque «las dos hablan de falsas alarmas». Es la trampa exacta de la ficha P8 del Certamen 2 (<a href="certamen_2.html#p8">certamen_2.html#p8</a>).</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 18–19]; distinción P8: [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1].</p>
+  </details>
+
+  <p class="preg">4 · ¿Y qué sí es «uno menos» algo?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> <code>FPR = 1 − especificidad</code>, porque la especificidad, <code>VN/(FP+VN)</code>, divide por las mismas sanas reales.</p>
+    <p><strong>Cómo se resuelve:</strong> mismo denominador, numeradores complementarios: FP + VN = N, así que FP/N + VN/N = 1. Con la lámina 19: 2/9 + 7/9 = 1. La regla general: <strong>solo se pueden restar de 1 dos métricas que compartan denominador.</strong></p>
+    <p><strong>Error típico:</strong> creer que cualquier par de métricas «opuestas» se complementa (precisión y FPR, recall y precisión).</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [INFERENCIA] a partir de las fórmulas de la lámina 18; la especificidad no aparece en la lámina 18; en clase solo la nombró un compañero, y el profesor le respondió que se estaba adelantando [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:50:00–0:50:15].</p>
+  </details>
+</div>
+
+<h2 id="exactitud">5 · Por qué la exactitud engaña</h2>
+
+<p>Pulsa <strong>«El modelo tonto»</strong> arriba: un modelo que dice
+<em>«ninguna tiene cáncer»</em> a todo el mundo. Mira su exactitud. Después su
+sensibilidad.</p>
+
+<div class="nota">
+Con enfermedades raras, decir «no» a todas acierta casi siempre — y no detecta a
+<strong>nadie</strong>. Por eso en tu desafío Galaxy Zoo la métrica oficial era
+<strong>F1-macro</strong> y no exactitud.
+</div>
+
+<h2 id="ejercicio-profesor">6 · El ejercicio del profesor: 20 de cada 100</h2>
+
+<p>El 4-sep, en las presentaciones del Hito 2, un grupo de compañeros mostraba
+un clasificador de tumores (positivo = maligno). El profesor los detuvo y les
+pidió traducir sus métricas a pacientes reales:</p>
+
+<div class="cita">«de cada 100 pacientes que yo atiendo 20 tienen realmente cáncer» <span class="f">Clase del 4-sep · 1:29:12–1:29:16 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Un compañero preguntó si esos 100 eran el conjunto de entrenamiento. El
+profesor dijo que no: son los pacientes <strong>a los que se les va a aplicar el
+modelo</strong> [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:29:33–1:29:57].</p>
+
+<div class="clave">
+<strong>Traducción a la matriz:</strong> positivos reales <strong>P = 20</strong>,
+negativos reales <strong>N = 80</strong>. Es la población donde se usa el modelo, no la del
+test. Con eso, cada tasa se convierte en pacientes multiplicando por P o por N.
+</div>
+
+<h3>Parte A · precisión 100 %, recall ~90 %</h3>
+
+<p>El modelo del grupo (random forest) tenía precisión 100 % y recall ⚠ ~90 %:
+en pantalla era ~90,5 % y el profesor lo redondeó a 90 % para que la cuenta
+saliera fácil [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:33:43–1:34:09].</p>
+
+<h3>Parte B · un punto de la curva ROC</h3>
+
+<p>Después señaló, con una flecha, un punto de la curva ROC del mismo grupo:</p>
+
+<div class="cita">«una tasa de verdaderos positivos de 1 y una tasa de falso positivos de 0,2» <span class="f">Clase del 4-sep · 1:35:29–1:35:35 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="pred" data-p="dieciseis">
+  <div class="q">Antes de armar nada: la FPR es 0,2 y hay 80 pacientes sin cáncer,
+  así que 0,2 × 80 = 16. <strong>¿Qué son esos 16?</strong></div>
+  <button data-r="fn">Falsos negativos</button>
+  <button data-r="fp">Falsos positivos</button>
+  <button data-r="vn">Verdaderos negativos</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> son <strong>16 falsos positivos</strong>: 16 personas sin cáncer a las que el modelo les dice que tienen cáncer.</p>
+  <p><strong>Cómo se resuelve:</strong> FPR = FP / (FP + VN) = FP / N. Despejas: FP = FPR × N = 0,2 × 80 = 16. Como sale de multiplicar por N (los que <em>no</em> tienen cáncer), solo pueden ser VN o FP; y como son los que el modelo marcó como positivos, son FP.</p>
+  <p><strong>Error típico:</strong> llamarlos «falsos negativos», que es exactamente lo que se respondió en clase
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:42:14–1:42:21].
+  Un falso negativo es un enfermo que el modelo deja ir; esos salen de la fila de los 20, no de los 80.
+  Otro error: multiplicar la FPR por 20 o por 100 en vez de por N = 80.</p>
+  <p style="margin-bottom:0"><strong>Fuente:</strong> la FPR y los 16 son del profesor (cita de arriba y
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36–1:43:45]);
+  la fórmula, [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+</details>
+
+<div class="panel">
+<p style="margin-top:0"><strong>Ejercicio de cálculo y producción.</strong> Con papel, sin mirar abajo:</p>
+<ol style="margin-bottom:0">
+  <li>Arma la matriz de la Parte A sobre los 100 pacientes (filas = real).</li>
+  <li>Arma la matriz de la Parte B.</li>
+  <li>Para cada una: ¿cuántos pacientes reciben un informe que dice «cáncer»? ¿Cuántos de esos no lo tienen? ¿Cuántos enfermos se van a casa sin diagnóstico? ¿Cuál es la precisión?</li>
+  <li>Explícale al médico, en tres frases y sin siglas, qué cambia entre A y B.</li>
+</ol>
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta en una frase:</strong> con A el médico recibe 18 informes de cáncer, todos verdaderos, y 2 enfermos se van sin diagnóstico; con B recibe 36 informes de cáncer, 16 de ellos de personas sanas, y ningún enfermo se va sin diagnóstico.</p>
+
+  <p><strong>Paso 1 · la población.</strong> P = 20 (con cáncer), N = 80 (sin cáncer), total 100.</p>
+
+  <p><strong>Paso 2 · Parte A</strong> (precisión 1, recall 0,9).
+  Recall = VP / P → VP = 0,9 × 20 = <strong>18</strong>; FN = 20 − 18 = <strong>2</strong>
+  (en clase: «detectaría 18», «perdería 2»
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:34:21–1:34:37]).
+  Precisión = VP / (VP + FP) = 1 → FP = <strong>0</strong>; VN = 80 − 0 = <strong>80</strong> [INFERENCIA].</p>
+  <table class="mini">
+  <tr><th></th><th>Dice: cáncer</th><th>Dice: sano</th><th>total</th></tr>
+  <tr><th>Tiene cáncer</th><td>VP 18</td><td>FN 2</td><td>20</td></tr>
+  <tr><th>No tiene</th><td>FP 0</td><td>VN 80</td><td>80</td></tr>
+  <tr><th>total</th><td>18</td><td>82</td><td>100</td></tr>
+  </table>
+  <p>Informes con «cáncer»: 18, todos correctos (precisión 18/18 = 1). Enfermos sin diagnóstico: 2.</p>
+
+  <p><strong>Paso 3 · Parte B</strong> (TPR 1, FPR 0,2).
+  TPR = VP / P → VP = 1 × 20 = <strong>20</strong>; FN = <strong>0</strong>.
+  FPR = FP / N → FP = 0,2 × 80 = <strong>16</strong>; VN = 80 − 16 = <strong>64</strong> [INFERENCIA].</p>
+  <table class="mini">
+  <tr><th></th><th>Dice: cáncer</th><th>Dice: sano</th><th>total</th></tr>
+  <tr><th>Tiene cáncer</th><td>VP 20</td><td>FN 0</td><td>20</td></tr>
+  <tr><th>No tiene</th><td>FP 16</td><td>VN 64</td><td>80</td></tr>
+  <tr><th>total</th><td>36</td><td>64</td><td>100</td></tr>
+  </table>
+  <p>La respuesta del profesor:</p>
+  <div class="cita">«entonces de los 100 pacientes 36 el modelo le va a decir que tiene cáncer aun cuando en realidad sólo 20 tiene cáncer» <span class="f">Clase del 4-sep · 1:45:11–1:45:18 · profesor ·
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+  <p>Precisión de B = VP / (VP + FP) = 20/36 ≈ <strong>0,556</strong> [DATITO] (esta cifra no se dijo en
+  clase): de cada 9 informes con «cáncer», 5 son reales y 4 no.</p>
+
+  <p><strong>Paso 4 · comparar.</strong></p>
+  <table>
+  <tr><th></th><th>A · precisión 1, recall 0,9</th><th>B · TPR 1, FPR 0,2</th></tr>
+  <tr><td>Enfermos detectados</td><td class="num">18 de 20</td><td class="num">20 de 20</td></tr>
+  <tr><td>Enfermos que se van sin diagnóstico</td><td class="num">2</td><td class="num">0</td></tr>
+  <tr><td>Sanos con informe de «cáncer»</td><td class="num">0</td><td class="num">16</td></tr>
+  <tr><td>Informes con «cáncer» en total</td><td class="num">18</td><td class="num">36</td></tr>
+  <tr><td>Precisión</td><td class="num">1</td><td class="num">≈ 0,556</td></tr>
+  </table>
+
+  <p><strong>Respuesta modelo para la frase 4</strong> [DATITO]: «Doctor, de cada 100 pacientes suyos, 20 tienen cáncer.
+  Con la primera configuración, el sistema le marca 18 como cáncer y acierta en todos, pero 2 personas con cáncer
+  se van a casa con un informe que dice que están sanas. Con la segunda, no se le escapa ningún enfermo, pero le
+  llegan 36 informes de cáncer y 16 son de personas sanas que tendrán que repetirse el examen; usted decide qué le
+  cuesta más.»</p>
+  <p>Tu versión está bien si habla de pacientes (18, 2, 16, 36) y no de porcentajes sueltos; si no confunde
+  «informes positivos» (36) con «enfermos» (20); y si deja la decisión al médico.</p>
+
+  <p><strong>Errores típicos (los reales de la clase):</strong> no usar N = 80 al pasar la FPR a pacientes
+  —costó varios minutos llegar a «los negativos son 80»
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:37:32–1:40:45]—;
+  llamar «falsos negativos» a los 16
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:42:14–1:42:21];
+  y decir que el médico recibe 20 informes de cáncer en B, olvidando sumar los 16 falsos positivos a los 20 verdaderos.</p>
+  <p style="margin-bottom:0"><strong>Fuente:</strong> planteo, tasas, 18/2, 16 y 36 del profesor (citas y marcas de arriba);
+  FP = 0 y VN = 80 en A, VN = 64 en B: [INFERENCIA]; precisión de B y respuesta modelo: [DATITO].</p>
+</details>
+
+<p>Un compañero propuso resolverlo «más fácil» con una matriz. La respuesta:</p>
+
+<div class="cita">«la matriz de confusión sólo tiene los datos de tu conjunto de test no tiene los datos de la realidad» <span class="f">Clase del 4-sep · 1:45:30–1:45:35 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Lo que eso significa [INFERENCIA]: los <em>conteos</em> de la matriz del informe
+vienen del reparto de clases del test, que no tiene por qué ser 20/80. Lo que sí
+viaja del test a la realidad son las <em>tasas</em> (TPR, FPR). Por eso se multiplica la
+tasa por la P o la N de la población donde se aplica el modelo, y recién ahí se
+arma una matriz <em>nueva</em>, la de los 100 pacientes.</p>
+
+<p>Otro compañero dijo que le costaba asociar maligno con «positivo». El profesor:</p>
+
+<div class="cita">«yo podría hacer exactamente el mismo argumento dando vuelta maligno y benigno […] y puedo tener la misma discusión» <span class="f">Clase del 4-sep · 1:48:16–1:48:26 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Y sobre el peso de este ejercicio en el curso, en sus palabras:</p>
+
+<div class="cita">«pero esto es demasiado importante creo que es lo más importante el curso» <span class="f">Clase del 4-sep · 1:41:58–1:42:00 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>La Parte B es un <strong>punto de operación</strong> de la curva ROC: otro punto
+de la misma curva daría otra matriz. Eso se trabaja en
+<a href="roc_auc.html">roc_auc.html</a> y es la distinción de la ficha P9
+(<a href="certamen_2.html#p9">certamen_2.html#p9</a>).</p>
+
+<h3>Variante de nivel 2 · minería (cifras ilustrativas [DATITO])</h3>
+
+<p>Una mina revisa 200 camiones de extracción por semana y 10 tienen una falla
+incipiente de rodamiento. El modelo opera en un punto con TPR 0,9 y FPR 0,1.
+<strong>¿Cuántos camiones manda a taller, cuántos de esos estaban bien, cuántas
+fallas se escapan y cuál es la precisión?</strong></p>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> manda 28 camiones a taller, 19 de ellos estaban bien, se escapa 1 falla y la precisión es 9/28 ≈ 32 %.</p>
+  <p><strong>Cómo se resuelve:</strong> P = 10, N = 200 − 10 = 190. VP = TPR × P = 0,9 × 10 = 9; FN = 10 − 9 = 1.
+  FP = FPR × N = 0,1 × 190 = 19; VN = 190 − 19 = 171. A taller: VP + FP = 9 + 19 = 28. Precisión = 9/28 ≈ 0,32.</p>
+  <table class="mini">
+  <tr><th></th><th>A taller</th><th>Sigue operando</th><th>total</th></tr>
+  <tr><th>Con falla</th><td>VP 9</td><td>FN 1</td><td>10</td></tr>
+  <tr><th>Sin falla</th><td>FP 19</td><td>VN 171</td><td>190</td></tr>
+  </table>
+  <p><strong>La lectura:</strong> con una FPR de «solo» 10 %, dos de cada tres camiones que van a taller
+  estaban bien, porque los sanos son 19 veces más que los fallados. Es el mismo mecanismo que la Parte B.</p>
+  <p><strong>Error típico:</strong> multiplicar la FPR por 200 (el total) en vez de por 190 (los sanos), o
+  leer «FPR 10 %» como «el 10 % de lo que va a taller está bien» (eso sería 1 − precisión, que aquí es 68 %).</p>
+  <p style="margin-bottom:0"><strong>Fuente:</strong> cifras ilustrativas [DATITO]; fórmulas de TPR y FPR:
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+</details>
+
+<h2 id="galaxias">7 · Tercer caso: tus galaxias</h2>
+
+<p>La mamografía enseña una cosa que Galaxy Zoo no: que un falso positivo y un
+falso negativo <strong>cuestan distinto</strong>. Pero tiene un límite — solo
+tiene dos clases.</p>
+
+<p>Tu desafío tiene tres, y con eso aparecen dos ideas nuevas: cómo se ve una
+matriz de <strong>3×3</strong>, y qué significa promediar métricas
+<strong>por clase</strong>.</p>
+
+<div class="grafo" style="background:#f0fdf4;border-left-color:var(--verde)">
+  <span style="font-size:.86rem"><strong>Datos reales.</strong>
+  <code>04_DATOS/GZ_mini_challenge_train.csv</code> · resultados de
+  <code>02_PROYECTO_FCD/Desafio/REPORT.md</code></span>
+</div>
+
+<h3>El reparto de clases, antes de mirar el modelo</h3>
+
+<table>
+<tr><th>Clase</th><th>Qué es</th><th>Filas</th><th>%</th></tr>
+<tr><td><strong>0</strong></td><td>No decidible · los humanos no se pusieron de acuerdo</td><td class="num">96</td><td class="num">9,6 %</td></tr>
+<tr><td><strong>1</strong></td><td>Espiral</td><td class="num">227</td><td class="num">22,7 %</td></tr>
+<tr><td><strong>2</strong></td><td>Elíptica</td><td class="num">677</td><td class="num">67,7 %</td></tr>
+</table>
+
+<div class="pred" data-p="gz">
+  <div class="q">Antes de ver nada: un modelo que responda <strong>siempre
+  «elíptica»</strong>, sin mirar la galaxia, ¿qué <strong>exactitud</strong>
+  obtiene?</div>
+  <button data-r="33">Un 33 %, hay tres clases</button>
+  <button data-r="50">Alrededor del 50 %</button>
+  <button data-r="68">Un 67,7 %</button>
+  <div class="veredicto"></div>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> un <strong>67,7 %</strong>.</p>
+    <p><strong>Cómo se resuelve:</strong> si responde siempre «elíptica», acierta exactamente en las galaxias que son elípticas y falla en todas las demás: exactitud = 677/1.000 = 0,677.</p>
+    <p><strong>Error típico:</strong> «33 %, porque hay tres clases». Eso solo vale si las clases vinieran en partes iguales; aquí el reparto es 96 / 227 / 677.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> reparto de clases de <code>04_DATOS/GZ_mini_challenge_train.csv</code> [FUENTE · Repo: 07_DATITO/referencia/material.md]; el cálculo es [INFERENCIA].</p>
+  </details>
+</div>
+
+<h3>Tu matriz real, 3×3</h3>
+
+<p>Con tres clases la matriz crece, pero se lee igual. El profesor lo planteó así al
+presentarla:</p>
+
+<div class="cita">«la matriz de confusión yo creo que es una de las herramientas más útiles para saber cómo se está comportando mi modelo […] seguramente los gatos van a confundir con los perros más que con una serpiente» <span class="f">Clase del 7-ago · 1:01:09–1:02:54 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>En tus galaxias pasa lo mismo: la clase 0 («no decidible») se confunde con
+espirales y elípticas porque está hecha de galaxias <em>entre</em> las dos [INFERENCIA].
+La matriz no solo cuenta errores: te dice <strong>con qué</strong> se confunde cada clase.</p>
+
+<p>Filas = lo que la galaxia <strong>era</strong>. Columnas = lo que el modelo
+<strong>dijo</strong>. Pulsa una celda.</p>
+
+<div class="panel">
+  <table id="gzMtz" style="text-align:center;max-width:560px;margin:0 auto">
+  <tr><th></th><th>pred 0</th><th>pred 1</th><th>pred 2</th><th style="background:#f1f0ee">total real</th></tr>
+  <tr><th>real 0</th>
+      <td class="gz ok" data-i="0" data-j="0">25</td>
+      <td class="gz" data-i="0" data-j="1">36</td>
+      <td class="gz" data-i="0" data-j="2">35</td>
+      <td class="num" style="background:#f1f0ee"><strong>96</strong></td></tr>
+  <tr><th>real 1</th>
+      <td class="gz" data-i="1" data-j="0">18</td>
+      <td class="gz ok" data-i="1" data-j="1">176</td>
+      <td class="gz" data-i="1" data-j="2">33</td>
+      <td class="num" style="background:#f1f0ee"><strong>227</strong></td></tr>
+  <tr><th>real 2</th>
+      <td class="gz" data-i="2" data-j="0">39</td>
+      <td class="gz" data-i="2" data-j="1">65</td>
+      <td class="gz ok" data-i="2" data-j="2">573</td>
+      <td class="num" style="background:#f1f0ee"><strong>677</strong></td></tr>
+  <tr><th style="background:#f1f0ee">total predicho</th>
+      <td class="num" style="background:#f1f0ee"><strong>82</strong></td>
+      <td class="num" style="background:#f1f0ee"><strong>277</strong></td>
+      <td class="num" style="background:#f1f0ee"><strong>641</strong></td>
+      <td class="num" style="background:#e5e3e0"><strong>1.000</strong></td></tr>
+  </table>
+  <div id="gzExpl" style="margin-top:1rem;padding:.9rem 1.1rem;background:var(--fondo);
+       border-radius:8px;font-size:.93rem;min-height:3rem">Pulsa una celda de la matriz.</div>
+</div>
+
+<div class="clave">
+<strong>Con tres clases, VP y FP dejan de ser absolutos.</strong> Se vuelven
+relativos a la clase que estés mirando. Para la clase 0, los 25 de la diagonal
+son sus VP; los 18 y 39 de su columna son sus FP; los 36 y 35 de su fila son sus
+FN. <strong>Las mismas cuatro casillas, una vez por clase.</strong>
+</div>
+
+<h3>Las métricas, por clase</h3>
+
+<table>
+<tr><th>Clase</th><th>Precisión</th><th>Sensibilidad</th><th>F1</th><th>Cómo sale la precisión</th></tr>
+<tr><td><strong>0</strong></td><td class="num">0,3049</td><td class="num">0,2604</td><td class="num"><strong>0,2809</strong></td><td class="num">25 / 82</td></tr>
+<tr><td><strong>1</strong></td><td class="num">0,6354</td><td class="num">0,7753</td><td class="num">0,6984</td><td class="num">176 / 277</td></tr>
+<tr><td><strong>2</strong></td><td class="num">0,8939</td><td class="num">0,8464</td><td class="num">0,8695</td><td class="num">573 / 641</td></tr>
+</table>
+
+<h3>Y ahora la comparación que importa</h3>
+
+<div class="panel" style="text-align:center">
+  <div class="met" style="max-width:520px;margin:0 auto">
+    <div><div class="n" style="color:var(--rojo)">77,4 %</div><div class="e">Exactitud</div><div class="f">(25+176+573)/1000</div></div>
+    <div><div class="n" style="color:var(--verde)">0,6163</div><div class="e">F1-macro</div><div class="f">(0,281+0,698+0,870)/3</div></div>
+    <div><div class="n" style="color:var(--suave)">67,7 %</div><div class="e">Modelo tonto</div><div class="f">siempre clase 2</div></div>
+  </div>
+</div>
+
+<div class="peligro">
+<strong>Mira los tres números juntos.</strong><br><br>
+La exactitud dice <strong>77,4 %</strong>, que suena bien. Pero el modelo tonto
+—responder siempre «elíptica»— ya saca <strong>67,7 %</strong>. Todo el trabajo
+del modelo aporta <strong>menos de 10 puntos</strong> de exactitud.<br><br>
+El F1-macro dice <strong>0,6163</strong> y es más honesto, porque promedia las
+tres clases por igual. La clase 0 tiene F1 <strong>0,2809</strong> — y arrastra
+el promedio hacia abajo en vez de esconderse detrás del 67,7 % de la clase
+mayoritaria.
+</div>
+
+<div class="nota">
+<strong>Por qué la clase 0 es tan difícil, y no es culpa del modelo.</strong><br><br>
+La clase 0 no es «otro tipo de galaxia»: es <em>«los votos humanos estaban
+divididos»</em>. Sus fracciones de voto medias son 0,356 y 0,271 —
+<strong>ninguna domina</strong>.<br><br>
+El modelo tendría que aprender a reconocer <strong>ausencia de consenso</strong>,
+que es una señal mucho más débil que una forma. Con 96 ejemplos de 1.000, no
+alcanza.
+</div>
+
+<h2 id="papel">8 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. Declarar cuál es la CLASE POSITIVA        "positivo = tiene cáncer"
+2. Leer los RÓTULOS de la matriz             ¿filas = real o filas = predicho?
+3. Localizar positivos reales y positivos predichos
+4. Escribir VP, VN, FP, FN
+5. Verificar que los marginales cierren      filas, columnas y total
+6. Identificar qué métrica piden
+7. Escribir la FÓRMULA antes de sustituir
+8. Sustituir, calcular
+9. Interpretar en palabras del problema      pacientes, camiones, galaxias
+</pre>
+
+<div class="clave">
+El paso 5 se salta siempre y es gratis: si los cuatro números no suman el total,
+contaste mal, y todo lo que sigue estará mal. El paso 2 es el que cambia FP por FN
+sin que te des cuenta: la lámina 19 pone filas = predicho.
+</div>
+
+<div class="peligro" id="errores">
+<strong>Errores que el formato castiga.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><strong>Sumar una fila sin mirar los rótulos</strong> (lámina 19: filas = predicho). FP y FN se cruzan.</li>
+<li><strong>Calcular sin declarar la clase positiva.</strong> «Maligno = positivo» o al revés da la misma discusión, pero otros números.</li>
+<li><strong>Multiplicar una tasa por el grupo equivocado:</strong> la FPR va por N (los negativos reales), el recall por P. En el ejercicio del 4-sep, costó llegar a N = 80.</li>
+<li><strong>Llamar falso negativo a un falso positivo.</strong> El nombre dice primero si acertó (verdadero/falso) y después qué dijo el modelo (positivo/negativo).</li>
+<li><strong>Copiar los conteos del test a la población real.</strong> Viajan las tasas, no los conteos.</li>
+<li><strong>Restar de 1 dos métricas que no comparten denominador</strong> (FPR ≠ 1 − precisión).</li>
+<li><strong>Reportar exactitud con clases desbalanceadas</strong> sin compararla con el modelo tonto.</li>
+</ul>
+</div>
+
+<div class="clave" style="border-left-color:var(--morado);background:#f5f3ff">
+<strong>Distinción de certamen · ficha P8:</strong> precisión (÷ predichos positivos)
+≠ sensibilidad (÷ positivos reales) ≠ exactitud (÷ total), y <strong>FPR ≠ 1 − precisión</strong>
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1]. Ver <a href="certamen_2.html#p8">certamen_2.html#p8</a>.
+</div>
+
+<div class="repreg">
+<strong>Antes de cerrar esto, explícaselo a alguien.</strong><br><br>
+Un compañero sostiene: <em>«si la precisión es 75 %, entonces el FPR es 25 %,
+porque uno menos precisión da la tasa de error»</em>.<br><br>
+<strong>¿Tiene razón? Justifícalo con los denominadores, y comprueba tu respuesta
+moviendo los sliders.</strong><br><br>
+Poder explicárselo a otro es la prueba de que lo entiendes. Y el formato de
+verdadero o falso <em>con justificación</em> es el que usan los certámenes
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §3].
+</div>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> <strong>no tiene razón</strong>: una precisión de 75 % no permite saber la FPR, porque las dos dividen por grupos distintos.</p>
+  <p><strong>Cómo se resuelve:</strong> 1 − precisión = FP/(VP + FP), dividido por lo que el modelo marcó como positivo.
+  FPR = FP/(FP + VN), dividido por los negativos reales. Con la lámina 19, la precisión es justo 75 % (6/8): 1 − precisión = 2/8 = 25 %,
+  pero FPR = 2/9 ≈ 22,2 %. Y en el ejercicio de la mina (§6), 1 − precisión ≈ 68 % con FPR = 10 %.</p>
+  <p><strong>Respuesta modelo</strong> [DATITO]: «No. El 25 % que sale de 1 − precisión es la parte de las alarmas que eran falsas:
+  divide por lo que el modelo marcó. La FPR es la parte de los negativos que recibieron una alarma: divide por todos los negativos reales.
+  Tienen el mismo numerador, los falsos positivos, pero distinto denominador, así que solo coinciden por casualidad.
+  En la lámina 19 dan 25 % y 22,2 %.»</p>
+  <p><strong>Error típico:</strong> aceptar la frase porque 25 % y 22,2 % «se parecen». Cerca no es igual, y con otra prevalencia se separan muchísimo.</p>
+  <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 18–19]; respuesta modelo [DATITO]. Llévala a Datito si quieres que te corrija la tuya.</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="metricas_clasificacion.html"><code>metricas_clasificacion.html</code></a> —
+    los denominadores de cada métrica, el umbral que las mueve y F1 (macro y weighted).</li>
+<li><a href="roc_auc.html"><code>roc_auc.html</code></a> — la Parte B del ejercicio del
+    profesor es un punto de una curva ROC; ahí se recorren todos.</li>
+<li>Dónde se pregunta, según las fichas de <code>07_DATITO/patron_evaluacion.md</code>:
+    <a href="certamen_2.html#p4">P4</a> (qué cantidad describe un clasificador),
+    <a href="certamen_2.html#p8">P8</a> (cálculo de métricas desde la matriz) y
+    <a href="certamen_2.html#p9">P9</a> (punto de operación ≠ modelo). Tres fichas salen de este artefacto.</li>
+<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    antes de elegir métrica hay que saber si las clases están equilibradas. El
+    árbol te lleva justo a esa bifurcación.</li>
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+    sobre qué conjunto se calcula la matriz. Calcularla sobre entrenamiento no
+    mide nada.</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-12">
+<h2>Cierre de la Clase 12 · Matriz de confusión</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Cuatro casillas: VP, FP, FN, VN.</li><li>Qué clase es la positiva es una convención que se declara.</li><li>La matriz solo describe el conjunto de test, no la realidad.</li><li>Una tasa multiplicada por la población da un conteo.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Filas = real ≠ filas = predicho: lee los rótulos (la lámina 19 pone lo predicho en las filas).</li><li>Falso positivo ≠ falso negativo.</li><li>Test ≠ realidad.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Declara la clase positiva.</li><li>Ubica los positivos reales y los positivos predichos.</li><li>Obtén VP, FP, FN y VN, y verifica que los totales cierren.</li></ol>
+<p><b>Viene de:</b> <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · <b>Sigue:</b> <a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></p>
+<p><b>Vuelve a tu activación:</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> En el caso de los 100 pacientes, ¿cuántos falsos positivos hay y cuál es la precisión?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="metricas_clasificacion.html">Continuar → Clase 13 · Precisión, sensibilidad, exactitud y F1</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/matriz_confusion.html</code> · funciona sin conexión ·
+fuentes: lámina FCD-2026-2_07_Clasificacion (láminas 17–19), transcripciones de la Clase del 7-ago y de la
+Clase del 4-sep (09_CLASES/transcripciones/), 02_PROYECTO_FCD/Desafio/REPORT.md, 07_DATITO/referencia/material.md,
+07_DATITO/patron_evaluacion.md.<br>
+<strong>Datos simulados [DATITO]:</strong> la mamografía del §1 (los sliders generan los conteos) y la variante
+de la mina (§6). <strong>Datos reales:</strong> la matriz oficial de la lámina 19; el planteo 20/80 y las tasas
+del ejercicio del profesor (§6); la matriz 3×3 de Galaxy Zoo del §7 (25/36/35 · 18/176/33 · 39/65/573,
+F1-macro 0,6163, <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>).
+</footer>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(n,d=3)=>isFinite(n)?n.toFixed(d).replace('.',','):'–';
+
+const TXT={
+ tp:'<strong>VP · Verdadero Positivo.</strong> Tenía cáncer y el modelo lo detectó. Es el acierto que justifica todo el sistema.',
+ tn:'<strong>VN · Verdadero Negativo.</strong> No tenía y el modelo dijo que no. Acierto silencioso: evita biopsias innecesarias.',
+ fp:'<strong>FP · Falso Positivo.</strong> No tenía y el modelo dijo que sí. Falsa alarma: angustia, biopsia, costo. Molesto, no mortal.',
+ fn:'<strong>FN · Falso Negativo.</strong> Tenía cáncer y el modelo dijo que no. Se va a casa creyéndose sana. <strong>Este es el error que mata</strong>, y el que ninguna métrica global castiga lo suficiente.'
+};
+document.querySelectorAll('.celda').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('.celda').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel'); $('expl').innerHTML=TXT[c.dataset.k];
+  };
+});
+
+// Predicciones: invitan, no bloquean. El slider funciona siempre.
+const PRED={
+ prev:{correcta:'baja', txt:{
+   baja:'<strong>Correcto.</strong> Aunque el modelo no cambie, al haber menos enfermas hay menos VP posibles y siguen apareciendo FP entre las muchas sanas. El denominador de la precisión se llena de falsos positivos. <strong>Compruébalo: baja la prevalencia y mira la precisión.</strong>',
+   sube:'<strong>No.</strong> Es la intuición natural y es al revés. Al haber menos enfermas hay menos VP posibles, y los FP siguen llegando desde el enorme grupo de sanas. La precisión cae. Mueve el slider y míralo.',
+   igual:'<strong>No.</strong> La precisión sí depende de cuántas enfermas hay, aunque el modelo no cambie: su denominador mezcla VP y FP, y el reparto de clases cambia esa mezcla. Mueve el slider.'}},
+ sens:{correcta:'bajan', txt:{
+   bajan:'<strong>Correcto.</strong> Las enfermas son VP o FN, no hay más opciones. Si detecta más, necesariamente se escapan menos: <code>VP + FN</code> es constante.',
+   suben:'<strong>No.</strong> Piensa en el total: las enfermas se reparten entre VP y FN, y ese total no cambia. Si VP sube, FN baja por fuerza.',
+   igual:'<strong>No.</strong> <code>VP + FN</code> es fijo —son todas las enfermas—, así que si uno sube el otro baja. No pueden quedarse igual.'}},
+ espe:{correcta:'precision', txt:{
+   precision:'<strong>Correcto.</strong> Descartar peor a las sanas produce más FP, y FP está en el denominador de la precisión. La sensibilidad ni se entera: su fórmula no contiene FP.',
+   recall:'<strong>No.</strong> Mira la fórmula: sensibilidad = VP/(VP+FN). No aparece FP por ninguna parte, así que fallar con las sanas no la toca.',
+   ninguna:'<strong>No.</strong> Más FP afecta directamente a la precisión, porque FP está en su denominador. Mueve el slider y compara.'}}
+};
+
+document.querySelectorAll('.pred').forEach(p=>{
+  const clave=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PRED[clave].txt[b.dataset.r];
+      v.classList.add('on');
+    };
+  });
+});
+
+function calc(){
+  const n=+$('pac').value, prev=+$('prev').value/1000;
+  const sens=+$('sens').value/100, espe=+$('espe').value/100;
+  const enfermas=Math.round(n*prev), sanas=n-enfermas;
+  const VP=Math.round(enfermas*sens), FN=enfermas-VP;
+  const VN=Math.round(sanas*espe),    FP=sanas-VN;
+
+  $('vTP').textContent=VP; $('vFN').textContent=FN;
+  $('vFP').textContent=FP; $('vTN').textContent=VN;
+  $('pacOut').textContent=n;
+  $('prevOut').textContent=fmt(prev*100,1)+' %';
+  $('sensOut').textContent=$('sens').value+' %';
+  $('espeOut').textContent=$('espe').value+' %';
+
+  const acc=(VP+VN)/n;
+  const pre=VP+FP?VP/(VP+FP):NaN;
+  const rec=VP+FN?VP/(VP+FN):NaN;
+  const fpr=FP+VN?FP/(FP+VN):NaN;
+  const f1=(pre+rec)?2*pre*rec/(pre+rec):NaN;
+
+  $('mAcc').textContent=fmt(acc); $('mPre').textContent=fmt(pre);
+  $('mRec').textContent=fmt(rec); $('mFpr').textContent=fmt(fpr);
+  $('mF1').textContent=fmt(f1);
+  $('mAcc').style.color=(acc>.9&&rec<.3)?'#dc2626':'#1a1a1a';
+  $('mRec').style.color=rec<.3?'#dc2626':'#1a1a1a';
+}
+['pac','prev','sens','espe'].forEach(id=>$(id).oninput=calc);
+
+$('bTonto').onclick=()=>{$('prev').value=10;$('sens').value=0;$('espe').value=100;calc();
+  $('expl').innerHTML='<strong>El modelo tonto.</strong> Dice «no tiene cáncer» a todas. Exactitud altísima, sensibilidad <strong>cero</strong>: no detectó a una sola enferma. Si reportas solo la exactitud, este modelo parece excelente.';};
+$('bBueno').onclick=()=>{$('prev').value=10;$('sens').value=92;$('espe').value=95;calc();
+  $('expl').innerHTML='<strong>Un modelo bueno.</strong> Detecta al 92 % de las enfermas y descarta al 95 % de las sanas. Fíjate igual en la precisión: aun así, la mayoría de las que marca están sanas. Eso pasa siempre con enfermedades raras.';};
+$('bEquil').onclick=()=>{$('prev').value=50;$('sens').value=80;$('espe').value=90;calc();
+  $('expl').innerHTML='<strong>Clases equilibradas.</strong> Con mitad y mitad, la exactitud vuelve a significar algo. La métrica no es buena o mala en abstracto: depende del reparto de clases.';};
+
+calc();
+
+// ---------- Ejercicio del profesor (4-sep): los 16 ----------
+PRED.dieciseis={correcta:'fp', txt:{
+ fp:'<strong>Correcto.</strong> Salen de multiplicar la FPR por los 80 que <em>no</em> tienen cáncer: son personas sanas a las que el modelo les dice que sí. Falsos positivos.',
+ fn:'<strong>No.</strong> Un falso negativo es un enfermo que el modelo deja ir, y esos salen de la fila de los 20. Estos 16 salen de los 80 sanos: son falsos positivos.',
+ vn:'<strong>No.</strong> Los verdaderos negativos son los sanos que el modelo deja tranquilos: 80 − 16 = 64. Los 16 son los sanos que el modelo marca como enfermos: falsos positivos.'}};
+
+// ---------- Tercer caso: Galaxy Zoo ----------
+PRED.gz={correcta:'68', txt:{
+ '68':'<strong>Correcto.</strong> La clase 2 es el 67,7 % de los datos, así que responder siempre «elíptica» acierta exactamente esa proporción. <strong>Sin haber mirado una sola galaxia.</strong> Ése es el listón que hay que superar, no el 33 %.',
+ '33':'<strong>No.</strong> El 33 % sería si las tres clases estuvieran repartidas por igual. No lo están: la clase 2 es el 67,7 %. Responder siempre la mayoritaria acierta esa proporción.',
+ '50':'<strong>No.</strong> Con tres clases desbalanceadas el número sale del reparto, no de una intuición: la clase 2 es el 67,7 %, así que responder siempre «elíptica» acierta el 67,7 %.'}};
+
+const GZ={
+ nombres:['0 · no decidible','1 · espiral','2 · elíptica'],
+ fila:[96,227,677], col:[82,277,641],
+ celda:[[25,36,35],[18,176,33],[39,65,573]]
+};
+document.querySelectorAll('td.gz').forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll('td.gz').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel');
+    const i=+c.dataset.i, j=+c.dataset.j, v=GZ.celda[i][j];
+    const real=GZ.nombres[i], pred=GZ.nombres[j];
+    let h;
+    if(i===j){
+      h=`<strong>${v} aciertos.</strong> Galaxias que eran <em>${real}</em> y el modelo dijo <em>${pred}</em>.<br>`+
+        `Son los <strong>VP de la clase ${i}</strong>: ${v} de ${GZ.fila[i]} reales (sensibilidad `+
+        `${(v/GZ.fila[i]).toFixed(4).replace('.',',')}) y ${v} de ${GZ.col[j]} predichas `+
+        `(precisión ${(v/GZ.col[j]).toFixed(4).replace('.',',')}).`;
+    } else {
+      h=`<strong>${v} errores.</strong> Eran <em>${real}</em> y el modelo dijo <em>${pred}</em>.<br>`+
+        `Para la <strong>clase ${i}</strong> son <strong>falsos negativos</strong>: se le escaparon. `+
+        `Para la <strong>clase ${j}</strong> son <strong>falsos positivos</strong>: las reclamó sin serlo.<br>`+
+        `<em>La misma casilla es FN para una clase y FP para otra. Eso es lo que cambia al pasar de dos clases a tres.</em>`;
+    }
+    document.getElementById('gzExpl').innerHTML=h;
+  };
+});
+</script>
+</body>
+</html>

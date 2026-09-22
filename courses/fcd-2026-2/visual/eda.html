@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Análisis exploratorio de datos · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:.7rem;margin-top:1.1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
+  .met .n{font-size:1.2rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  .met div.alarma .n{color:var(--rojo)}
+  .met div.bien .n{color:var(--verde)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button:hover{background:#1d4ed8}
+  button.off{background:#e5e7eb;color:#374151}
+  button.off:hover{background:#d1d5db}
+  input[type=range]{width:100%}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.5rem;text-align:right}
+  .pred{background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0 .2rem;font-size:.9rem}
+  .pred b{color:#5b21b6}
+  details{margin:.9rem 0;background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.6rem .9rem}
+  details[open]{padding-bottom:.9rem}
+  summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--azul)}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .grafo .fl{color:var(--morado);font-weight:700}
+  .ec{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;
+      text-align:center;font-size:1.15rem;font-family:"Cambria Math",Cambria,Georgia,serif}
+  .ec .peq{font-size:.82rem;color:var(--suave);display:block;margin-top:.5rem;font-family:inherit}
+  .leyenda{display:flex;gap:1.1rem;flex-wrap:wrap;font-size:.8rem;color:var(--suave);margin-top:.6rem}
+  .leyenda span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
+  .l-media::before{background:#dc2626}
+  .l-mediana::before{background:#059669}
+  .l-s::before{background:#2563eb}
+  .l-p::before{background:#7c3aed}
+  .botonera{margin:.4rem 0 1rem}
+  ol.proc{padding-left:1.3rem}
+  ol.proc li{margin:.4rem 0}
+  .barra{display:flex;align-items:center;gap:.5rem;margin:.3rem 0;font-size:.85rem}
+  .barra .et{width:105px;flex:0 0 auto}
+  .barra .tr{flex:1;height:15px;background:#f1f0ee;border-radius:3px;position:relative;overflow:hidden}
+  .barra .tr i{position:absolute;top:0;bottom:0;background:var(--azul);border-radius:3px}
+  .barra .tr i.neg{background:var(--rojo)}
+  .barra .vl{width:58px;text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto}
+  .cero{position:absolute;top:0;bottom:0;width:1px;background:#9ca3af}
+  a{color:var(--azul)}
+  .grafo a.n{color:inherit;text-decoration:none}
+  .grafo a.n:hover{border-color:var(--morado)}
+  .src{font-size:.82rem;color:var(--suave);margin-top:-.5rem}
+  footer{font-size:.85rem;color:var(--suave);margin-top:2.5rem;border-top:1px solid var(--linea);padding-top:1rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  @media(max-width:600px){.ctrl{grid-template-columns:1fr}.ctrl output{text-align:left}}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="3" id="clase-3">
+<div class="leccion-top"><span class="uni">Unidad 1 · Del problema a los datos</span><b>Clase 3 de 22</b></div>
+<div class="barra"><span style="width:13.6%"></span></div>
+<div class="lt">Clase 3 · EDA: conocer los datos antes de modelar</div>
+<p><b>Objetivo.</b> Leer la distribución de una variable y detectar faltantes, atípicos y dificultades del problema antes de modelar.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></div>
+<div><span class="et">tiempo estimado</span>~55 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Interpreta un resumen (media, mediana, desviación, percentiles) y dice qué revela y qué no revela sobre la forma y la calidad.</li>
+<li><b>Actividad final:</b> Camino inverso: reconstruir la forma de una distribución a partir de cinco números, sin gráfico.</li>
+<li><b>Criterio de dominio:</b> Distingue media de mediana ante asimetría y detecta un cero o centinela sospechoso con un argumento de calidad, no de estética.</li></ul></div>
+<div class="activ"><b>Activación.</b> En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="3"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="datos_features_target.html">← Clase 2 · Datos, filas, columnas, features y target</a></span><a href="index.html">Índice del curso</a><span><a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Analisis exploratorio de datos (EDA)</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="limpieza_preparacion.html">Limpieza y preparacion de datos</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C1: 9A, de forma indirecta) · <span class="et">certamen</span><a href="certamen_1.html#p9a">C1 P9A</a> · <a href="certamen_2.html#p4">C2 P4</a> · <a href="certamen_2.html#p11">C2 P11</a></div>
+<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 17-jul</b> · 0:05:20–1:27:00 · profesor — la clase completa de EDA<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:05:20]</span></li><li><b>Presentaciones del 14-ago</b> · 1:19:25–1:21:04 · profesor — boxplots con pocos datos no aseguran significancia<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:25]</span></li><li><b>Ayudantía del 10-jul</b> · 0:12:57–0:36:43 · ayudantía — P1 sobre MovieLens: describe, filtros con &amp; y |, value_counts, nunique, sort_values, groupby <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:12:57]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Análisis exploratorio de datos</h1>
+<p class="sub">Mirar los datos antes de modelarlos. Qué te dicen los resúmenes, y sobre todo qué te esconden.</p>
+
+<div class="grafo">
+  <a class="n" href="datos_features_target.html">Datos, features y target</a>
+  <span class="fl">→</span>
+  <span class="n aqui">EDA</span>
+  <span class="fl">→</span>
+  <a class="n" href="limpieza_preparacion.html">Limpieza y preparación</a>
+</div>
+<p style="font-size:.88rem;color:var(--suave);margin-top:-.4rem">
+  Primero tienes que saber qué es una fila y qué es una columna
+  (<a href="datos_features_target.html">datos, features y target</a>). Después de esto viene decidir
+  qué haces con lo que encontraste (<a href="limpieza_preparacion.html">limpieza y preparación</a>).
+  <em>El EDA no arregla nada: encuentra.</em>
+  <span style="display:block;margin-top:.3rem">[FUENTE · Repo: <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>]</span>
+</p>
+
+
+<h2>1 · Para qué sirve, según tu profesor</h2>
+
+<p>Abrió la clase sin gráficos. Si mides personas y la altura media es 1,8 metros, ¿qué te dice
+eso? El curso respondió que serían adultos; con una media de 0,9 metros, que podrían ser niños.
+Y ahí se detuvo:</p>
+
+<div class="cita">«Yo digo el primer dataset corresponde a un dataset de alturas de adultos. Eso es
+una hipótesis. Yo no lo sé porque no sé qué midió esto ni si son adultos o no. Pero es una hipótesis.»
+<span class="f">Clase del 17-jul · 0:10:24–0:10:39 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<div class="clave">
+  <strong>Medido ≠ supuesto.</strong> «La media es 1,8 m» es una <em>medición</em>: sale de los datos.
+  «Son adultos» es una <em>hipótesis</em>: la pusiste tú. El EDA produce las dos cosas y tu trabajo es
+  no mezclarlas. Es la distinción que el Certamen 2 cobró en su última ficha
+  (<a href="certamen_2.html#p11">P11: medido / supuesto / no disponible</a>).
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: <code>07_DATITO/patron_evaluacion.md</code>, §1]</span>
+</div>
+
+<p>Su ejemplo durante toda la clase es una máquina con sensores de voltaje, presión, rotación y
+<strong>vibración</strong>, más las fechas de mantención y de falla
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 5].
+La vibración va más o menos entre 30 y 60, y el histograma tiene una cola hacia la derecha: pocos
+valores altos, poco probables, que igual ocurren. Esa cola es justo lo que le interesa: son los
+momentos de las fallas
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:18:41–0:20:43].</p>
+
+<div class="pred">
+  <b>Predice antes de abrir:</b> en el gráfico de vibración del profesor, cada falla coincide con un
+  alza de vibración. ¿Basta entonces con vigilar la vibración para anticipar las fallas sin falsas
+  alarmas? Responde sí o no, y por qué.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta correcta: no.</strong> Que toda falla venga con alza de vibración no implica
+que toda alza venga con falla. Vigilando solo la vibración detectarías las fallas, pero también
+darías alarmas en alzas que no terminan en nada.</p>
+<p>Separó dos afirmaciones que suenan iguales y no lo son:</p>
+<div class="cita">«siempre que hay una falla hay una alza en vibraciones pero no siempre que hay una
+alza en vibraciones es la máquina falla […] la vibración me ayuda a detectar las fallas pero no es
+suficiente necesito algo más»
+<span class="f">Clase del 17-jul · 0:16:09–0:16:36 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+<p>Falla → alza: en estos datos la vibración alta acompaña a toda falla. Alza → falla: no siempre.
+La vibración es una buena feature, pero <strong>no suficiente</strong>: sola daría falsas alarmas, y
+hay que buscar otras variables (él mismo aceptó la fecha de mantención como candidata
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:17:44–0:17:56]).
+Esas falsas alarmas son los falsos positivos que vas a medir en
+<a href="metricas_clasificacion.html">métricas de clasificación</a> [INFERENCIA]. Y la forma del
+razonamiento es pariente de la ficha P6 del Certamen 2, causa ≠ condición habilitante
+(<a href="certamen_2.html#p6">certamen_2.html#p6</a>).</p>
+<p style="margin-bottom:0"><strong>Error típico:</strong> leer la flecha al revés. «Falla → alza» es
+una condición <em>necesaria</em> (sin alza no hubo falla); para anticipar sin falsas alarmas harías
+falta «alza → falla», que es <em>suficiente</em>, y los datos del profesor muestran alzas sin falla.
+Contestar «sí, porque siempre coinciden» es justo confundir las dos. [FUENTE · Repo:
+09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:16:09–0:16:36];
+los nombres «necesaria / suficiente» son [DATITO].</p>
+</details>
+
+<p>En la lámina 21 el profesor resume para qué sirve visualizar, y lo contó con el ejemplo de los
+camiones que verás en la sección 3:</p>
+
+<table>
+<tr><th>Para qué</th><th>Qué significa</th></tr>
+<tr><td><strong>Identificar patrones</strong></td><td>Patrones ocultos y tendencias que no se ven en las estadísticas</td></tr>
+<tr><td><strong>Formular hipótesis</strong></td><td>«hay muchos ceros → hay muchos camiones inactivos» (sección 3)</td></tr>
+<tr><td><strong>Decidir el siguiente paso</strong></td><td>De análisis o de modelamiento</td></tr>
+<tr><td><strong>Comunicar</strong></td><td>Presentar, proveer evidencia… e influenciar y persuadir. Ojo con esto último (sección 10)</td></tr>
+</table>
+<p class="src">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 21]
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:45–0:46:29]</p>
+
+<div class="clave">
+  <strong>La frase que ordena la unidad completa:</strong> el EDA existe porque
+  <strong>los números resumen y al resumir borran</strong>. Todo lo que viene ahora es
+  aprender qué se borró.
+</div>
+
+
+<h2>2 · El resumen no determina la forma</h2>
+
+<p>Tu profesor puso cuatro conjuntos de datos en pantalla. Cada uno tiene dos variables,
+<code>x</code> e <code>y</code>, y once filas. Y los cuatro tienen exactamente el mismo resumen:</p>
+
+<div class="panel">
+  <div class="met">
+    <div><div class="n">9,00</div><div class="e">media de x</div></div>
+    <div><div class="n">7,50</div><div class="e">media de y</div></div>
+    <div><div class="n">3,32</div><div class="e">desv. est. de x</div></div>
+    <div><div class="n">2,03</div><div class="e">desv. est. de y</div></div>
+    <div><div class="n">0,816</div><div class="e">correlación</div></div>
+    <div><div class="n">y = 3 + 0,5x</div><div class="e">recta ajustada</div></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--suave);margin:.8rem 0 0">
+    Estos seis números <strong>no cambian</strong> al apretar los botones de abajo.
+    Medias y desviaciones: las que el profesor leyó en clase
+    [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:42:14–0:42:44].
+    Correlación y recta: valores canónicos del cuarteto de Anscombe, que en clase no se leyeron en voz alta
+    [INFERENCIA]. Láminas 18 y 19.
+  </p>
+</div>
+
+<div class="pred">
+  <b>Antes de apretar nada, decide:</b> si los cuatro conjuntos tienen la misma media, la misma
+  desviación estándar, la misma correlación y la misma recta ajustada… ¿los cuatro gráficos se van
+  a parecer entre sí? Contesta <em>sí</em> o <em>no</em> en voz alta. Después mira.
+</div>
+
+<div class="panel">
+  <div class="botonera">
+    <button id="an1" class="an">Conjunto 1</button>
+    <button id="an2" class="an off">Conjunto 2</button>
+    <button id="an3" class="an off">Conjunto 3</button>
+    <button id="an4" class="an off">Conjunto 4</button>
+    <button id="anAll" class="off">Ver los cuatro</button>
+  </div>
+  <canvas id="cAns" width="860" height="380"></canvas>
+  <p id="anTxt" style="font-size:.9rem;margin:.8rem 0 0"></p>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta correcta: no.</strong> Los cuatro gráficos no se parecen en nada, aunque
+compartan media, desviación estándar, correlación y recta ajustada. El resumen no fija la forma.</p>
+<p>Si dijiste que sí, acabas de descubrir el motivo por el que existe esta unidad. Los cuatro
+conjuntos son radicalmente distintos:</p>
+<ul>
+<li><strong>1</strong> — una relación lineal con ruido. Es el único donde la recta describe lo que pasa.</li>
+<li><strong>2</strong> — una <em>curva</em>. La recta es la mejor línea recta posible, y aun así es la
+descripción equivocada del fenómeno.</li>
+<li><strong>3</strong> — una recta perfecta más <em>un solo</em> punto anómalo. Ese punto solo tuerce la recta.</li>
+<li><strong>4</strong> — diez puntos con el mismo valor de <code>x</code> y uno lejos. La correlación de
+0,816 la produce ese único punto: sin él no hay ninguna relación que medir.</li>
+</ul>
+<p>La conclusión del profesor frente a los cuatro gráficos: media, mediana, desviación estándar y
+percentiles ayudan, pero <strong>no bastan</strong> para darte el contexto real de lo que estás midiendo
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:43:15–0:43:25].</p>
+<p style="margin-bottom:0"><strong>Error típico:</strong> razonar «mismos números → mismos datos». Seis
+números no pueden guardar once pares de puntos: al resumir se pierde información, y muchas nubes
+distintas caben en el mismo resumen. Por eso, en una prueba, «¿se parecen?» se contesta con «no se
+puede saber sin graficar», nunca con «sí» [INFERENCIA].</p>
+</details>
+
+<div class="clave">
+  <strong>Lo que esto te habilita a decir:</strong> un resumen estadístico es una <em>proyección</em>
+  de los datos, y muchas nubes de puntos distintas proyectan lo mismo. Por eso se grafica:
+  no por estética, sino porque el resumen es matemáticamente incapaz de distinguirlas.
+</div>
+
+
+<h2 id="calidad">3 · Lo que el EDA destapa: ceros que quizá no son ceros</h2>
+
+<p>Justo después de Anscombe, el profesor planteó esto. Las cifras están escritas en la lámina, así
+que no dependen de la transcripción:</p>
+
+<div class="clave">
+  «Si yo les digo que el consumo medio de gasolina de los camiones de la compañía es 1440 litros,
+  pero los camiones que Ud. administra gastan sobre 2500 litros, qué me sugiere?»
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 20]</span>
+</div>
+
+<div class="pred">
+  <b>Antes de tocar los botones:</b> eres el administrador. Tu jefe te pone delante el 1.440 y tus 2.500.
+  ¿Qué gráfico le pedirías antes de aceptar que tus camiones gastan de más? Y si en ese gráfico aparecen
+  muchos ceros, ¿qué <em>dos</em> cosas distintas podrían significar?
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> pides la <strong>distribución</strong> del consumo camión por camión
+(un histograma), no solo el promedio. Si aparecen muchos ceros, pueden ser (1) <strong>camiones
+inactivos</strong>, un cero real, o (2) <strong>consumos que nadie reportó</strong>, un faltante
+disfrazado de cero. Con la planilla sola no se decide cuál.</p>
+<p><strong>Cómo se resuelve, con los 25 camiones ilustrativos del panel</strong> [DATITO]:</p>
+<ol class="proc">
+<li>15 camiones trabajando suman 36.000 L → su media es 36.000 / 15 = <strong>2.400 L</strong>.</li>
+<li>Si los 10 ceros son consumo real: 36.000 / 25 = <strong>1.440 L</strong>, la cifra de la lámina.
+Tus 2.500 quedan 2.500 / 1.440 − 1 ≈ <strong>74 %</strong> arriba.</li>
+<li>Si los 10 ceros son reportes que faltan, salen del cálculo: la media es 2.400 L y tus 2.500
+quedan solo 2.500 / 2.400 − 1 ≈ <strong>4 %</strong> arriba.</li>
+<li>Misma planilla, dos conclusiones opuestas. Lo que decide no es la estadística: es ir a ver quién
+anotó los datos y dónde estaban los camiones, que fue el siguiente paso que propuso el profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:45:28–0:45:38].</li>
+</ol>
+<p><strong>Error típico:</strong> aceptar 1.440 L como «lo que gasta un camión» y concluir que tus camiones
+gastan 74 % de más. La media de 1.440 no describe a ninguno: cae en el hueco entre los parados y los
+que trabajan. El otro error es elegir una de las dos lecturas sin decir que es un supuesto.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> 1.440 y 2.500 L,
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 20];
+las dos lecturas de los ceros, [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:12–0:45:23];
+el reparto 15 + 10 es ilustrativo [DATITO].</p>
+</details>
+
+<div class="panel">
+  <div class="botonera">
+    <button id="bCamReal">Los 0 son consumo real</button>
+    <button id="bCamFalta" class="off">Los 0 son reportes que faltan</button>
+  </div>
+  <canvas id="cCam" width="860" height="280"></canvas>
+  <div class="leyenda">
+    <span class="l-media">media</span>
+    <span class="l-mediana">mediana</span>
+    <span class="l-p">tus camiones: 2.500 L</span>
+  </div>
+  <div class="met" id="camMet"></div>
+  <p id="camTxt" style="font-size:.9rem;margin:.9rem 0 0"></p>
+  <p style="font-size:.8rem;color:var(--suave);margin:.5rem 0 0">
+    25 camiones, <strong>cifras ilustrativas</strong> construidas para reproducir la media de 1.440 L de la
+    lámina 20: 10 camiones en 0 y 15 entre 2.100 y 2.700 L. [DATITO]
+  </p>
+</div>
+
+<p>Lo que pasó en clase: con la distribución a la vista, el problema es la barra del cero.</p>
+
+<div class="cita">«hay un valor anómalo muy grande acá entonces hay muchos ceros ¿qué es lo que puede
+significar esto? muchos camiones inactivos […] si no hay ningún camión inactivo […] a lo mejor la gente
+no está reportando el consumo de gasolina»
+<span class="f">Clase del 17-jul · 0:44:12–0:45:23 · profesor; «muchos camiones inactivos» lo responde el curso ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<div class="nota">
+  <strong>Cómo leer «un valor anómalo muy grande».</strong> La figura no está en el texto de la lámina,
+  pero por lo que sigue («entonces hay muchos ceros») lo anómalo parece ser la <em>barra del cero</em>:
+  demasiados camiones en 0, no un camión que gasta muchísimo [INFERENCIA].
+</div>
+
+<p>Fíjate en la estructura del razonamiento, porque es el EDA completo en miniatura:</p>
+<ol class="proc">
+<li><strong>Distribución.</strong> La media de 1.440 no describe a ningún camión: casi todos están en 0
+o cerca de 2.400. Cae en el hueco entre los parados y los que trabajan.</li>
+<li><strong>Calidad.</strong> Un cero puede ser una medición real (camión inactivo) o un
+<em>faltante disfrazado de cero</em> (nadie anotó el consumo). En la tabla se ven idénticos.</li>
+<li><strong>Hipótesis.</strong> El curso propuso «camiones inactivos»; el profesor puso al lado la
+alternativa: no se está reportando.</li>
+<li><strong>Siguiente paso.</strong> Ninguna de las dos se decide con estadística. Él propuso ir a ver
+quién anotó los datos y dónde estaban los camiones
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:45:28–0:45:38].</li>
+</ol>
+
+<div class="peligro">
+  <strong>El precedente en tu Certamen 1.</strong> La <a href="certamen_1.html#p9b">pregunta 9B</a> es este
+  mismo registro de camiones, con un <code>0</code> (conductor enfermo: medición real, se queda), un
+  <code>−999</code> (en mantenimiento: faltante escrito como número) y un <code>2900</code> frente a 200
+  (atípico, no necesariamente error). Si los tratas igual, te equivocas en al menos uno. Qué hacer con
+  cada uno ya es <a href="limpieza_preparacion.html">limpieza y preparación</a>; al EDA le toca
+  <em>encontrarlos</em> y decir qué supone de cada uno.
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: <code>07_DATITO/visual/certamen_1.html</code>, ficha 9B]</span>
+</div>
+
+
+<h2>4 · Centralidad: dónde está el medio</h2>
+
+<table>
+<tr><th>Estadístico</th><th>Cómo se calcula</th><th>Cuándo lo usas</th></tr>
+<tr><td><strong>Media</strong> (promedio)</td><td>Sumas todo y divides por <code>n</code></td>
+    <td>Distribución simétrica y sin valores extremos</td></tr>
+<tr><td><strong>Mediana</strong></td><td>Ordenas y tomas el del medio (o el promedio de los dos del medio)</td>
+    <td>Hay cola o valores anómalos. Es el <strong>percentil 50</strong></td></tr>
+<tr><td><strong>Moda</strong></td><td>El valor que aparece más seguido</td>
+    <td>Variable <strong>categórica</strong>: única opción disponible</td></tr>
+</table>
+
+<h3>La razón por la que la moda existe</h3>
+
+<p>La lámina 11 lo dice en una línea: para variables categóricas ni la media ni la mediana tienen
+sentido; se usa la <strong>moda</strong>, el valor que aparece más seguido
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 11].
+En clase lo explicó por el orden: una categórica no se puede ordenar, así que no hay histograma por
+rangos, solo frecuencias
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:25:29–0:25:43].
+Su ejemplo para que se entendiera: nadie puede decir que el ornitorrinco viene antes que el conejo
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:27:48–0:28:00].</p>
+
+<p>En la máquina: <em>¿qué componente falló?</em> Componente 1, 2, 3 o 4. No hay orden
+—la 3 no es «más» que la 2—, así que no hay histograma, no hay media, no hay desviación estándar.
+Solo frecuencias, y la moda fue la <strong>componente 2</strong>.</p>
+
+<div class="clave">
+  <strong>Esta es la distinción que arrastra todo lo demás:</strong> variable numérica → tiene orden →
+  histograma, media, desviación. Variable categórica → no tiene orden → frecuencias, moda, gráfico
+  de barras. Si te ves promediando los códigos de una categórica de varios niveles (región 1, 2, 3),
+  algo se rompió antes. Hay una excepción útil, las binarias 0/1: la ves en las secciones 9 y 13.
+</div>
+
+<div class="nota">
+  <strong>El corolario:</strong> barras frente a líneas. El profesor mostró los mismos datos en barras y
+  en líneas (hombre/mujer; 10 y 12 años) y preguntó cuál era mejor. Un compañero respondió que en las
+  edades sí se puede <em>interpolar</em> y en las categorías no; el profesor lo confirmó y lo ilustró:
+  puedes imaginar a alguien de 11 años entre los de 10 y 12, pero entre hombre y mujer no hay algo al
+  medio. Categórica → barras. Numérica ordenada → línea.
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:06:14–1:07:41]</span>
+</div>
+
+
+<h2>5 · Extensión: qué tan representativo es ese medio</h2>
+
+<p>Saber dónde está el centro no basta. Dos distribuciones con la <strong>misma</strong> mediana pueden
+ser una compacta y la otra desparramada, y en ese caso la mediana significa cosas distintas en cada una.</p>
+
+<table>
+<tr><th>Medida</th><th>Fórmula</th><th>Qué aporta</th><th>Qué le falta</th></tr>
+<tr><td>Rango</td><td>máx − mín</td><td>El ancho total, en un número</td><td>Lo fija un solo dato en cada extremo</td></tr>
+<tr><td>Varianza</td><td>s²</td><td>Desviación media al cuadrado</td><td>Unidades al cuadrado: no se puede interpretar</td></tr>
+<tr><td>Desviación estándar</td><td>s = √s²</td><td>En las unidades de la variable</td><td><strong>No dice hacia qué lado</strong></td></tr>
+<tr><td>Percentiles</td><td>P5, P25, P50…</td><td>Sí dicen el lado</td><td>Hay que calcular varios</td></tr>
+</table>
+
+<h3>La varianza, desarmada</h3>
+
+<div class="ec">
+  s² = <span style="display:inline-block;vertical-align:middle;text-align:center">
+    <span style="display:block;border-bottom:1px solid var(--tinta);padding:0 .3rem">1</span>
+    <span style="display:block;padding:0 .3rem">n − 1</span></span>
+  · ∑<sub>i=1</sub><sup>n</sup> (x<sub>i</sub> − x̄)²
+  <span class="peq">varianza muestral</span>
+</div>
+
+<table>
+<tr><th>Pieza</th><th>Qué es</th></tr>
+<tr><td><code>x<sub>i</sub></code></td><td><strong>Dato.</strong> El valor de la observación <em>i</em>. Lo mediste</td></tr>
+<tr><td><code>x̄</code></td><td><strong>Se calcula desde los datos.</strong> La media. No la eliges</td></tr>
+<tr><td><code>n</code></td><td><strong>Dato.</strong> Cuántas observaciones tienes</td></tr>
+<tr><td><code>(x<sub>i</sub> − x̄)</code></td><td>La distancia de cada dato al centro. Es lo que queremos promediar</td></tr>
+<tr><td>El cuadrado</td><td>Dos razones, abajo</td></tr>
+<tr><td><code>n − 1</code></td><td>Corrección de sesgo, abajo</td></tr>
+<tr><td>Qué decides tú</td><td><strong>Qué variable medir</strong>, y si al final reportas <code>s</code> o percentiles</td></tr>
+</table>
+
+<h3>¿Por qué el cuadrado, y no el valor absoluto?</h3>
+
+<p>El profesor dio dos razones y la segunda es la que se olvida
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:31:20–0:32:26]
+(la lámina 13 la resume: al cuadrado, la varianza queda más sensible a outliers):</p>
+<ol>
+<li><strong>Para que sea positivo.</strong> Si sumaras las distancias con signo, las de arriba
+cancelarían las de abajo y siempre te daría cero. El cuadrado es «como una excusa» —palabras
+suyas— para volverlas positivas. El valor absoluto también serviría para esto.</li>
+<li><strong>Para hacerla <em>más</em> sensible a los valores anómalos, a propósito.</strong>
+Una distancia grande al cuadrado crece mucho más rápido que la misma distancia sin elevar.
+Un dato lejano pesa desproporcionadamente, y eso es deliberado: se quiere que un valor extremo
+grite.</li>
+</ol>
+
+<h3>¿Por qué <code>n − 1</code> y no <code>n</code>?</h3>
+
+<div class="cita">«si tú divides por n entonces este estimador que es la varianza se sesga […] cuando
+tengo datos infinito converge a la varianza real pero si yo no le pongo el menos uno entonces se sesga»
+<span class="f">Clase del 17-jul · 0:32:54–0:35:21 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<p>La idea: no tienes acceso a la varianza real de la población, solo a una muestra. La fórmula es
+un <strong>estimador</strong>. Con <code>n − 1</code>, al crecer la muestra converge al valor real;
+con <code>n</code>, converge a un valor equivocado aunque tuvieras datos infinitos. Con <code>n</code>
+grande la diferencia es despreciable; con <code>n</code> chico es enorme.</p>
+
+<h3>¿Por qué la raíz?</h3>
+
+<p>Unidades. Si mides vibración en mm/s, la varianza queda en <strong>mm²/s²</strong>, que no significa
+nada físico. La raíz devuelve la cantidad a mm/s, y recién ahí puedes decir «la mayoría de las máquinas
+están a ±6 mm/s del promedio» [DATITO: unidades y cifra ilustrativas]. El profesor la llamó un truco
+para recuperar las unidades de la variable (láminas 13 y 14)
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:35:46–0:36:39].</p>
+
+<details>
+<summary>Ejemplo numérico chico — hazlo a mano antes de abrir</summary>
+<p>Vibración de cinco máquinas: <strong>38, 40, 41, 42, 44</strong>.</p>
+<ol>
+<li>Media: (38+40+41+42+44) / 5 = 205 / 5 = <strong>41</strong></li>
+<li>Desviaciones: −3, −1, 0, +1, +3 &nbsp;→&nbsp; suman 0 (siempre suman 0, por eso el cuadrado)</li>
+<li>Cuadrados: 9, 1, 0, 1, 9 &nbsp;→&nbsp; suma = <strong>20</strong></li>
+<li>Varianza: 20 / (5 − 1) = <strong>5</strong> &nbsp;[mm²/s²]</li>
+<li>Desviación estándar: √5 = <strong>2,24</strong> &nbsp;[mm/s]</li>
+</ol>
+<p>Ahora cambia el 44 por un <strong>74</strong> —una máquina a punto de fallar—:</p>
+<ul>
+<li>Media: 235 / 5 = <strong>47</strong> (se movió 6 unidades)</li>
+<li>Mediana: sigue siendo <strong>41</strong> (no se movió nada)</li>
+<li>Cuadrados: 81, 49, 36, 25, 729 → suma 920 → s² = 230 → s = <strong>15,17</strong></li>
+</ul>
+<p>Un solo dato multiplicó la desviación estándar por casi 7. Fíjate en el 729: ese único término aporta
+el 79 % de la suma. Eso es la sensibilidad a los anómalos de la que habla el profesor, y aquí se ve
+el número exacto.</p>
+</details>
+
+
+<h2>6 · La desviación estándar no tiene lado. Los percentiles sí</h2>
+
+<p>Este es el hallazgo central de la clase, y es lo que hace que los percentiles no sean un adorno.</p>
+
+<div class="cita">«la ⟨desviación⟩ estándar no te dice hacia que lado esta va la ⟨asimetría⟩ de la
+distribución o sea no me dice tengo una cola más larga hacia la derecha o hacia la izquierda»
+⟨⟩ = corrección de transcripción [INFERENCIA]
+<span class="f">Clase del 17-jul · 0:38:01–0:38:11 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<p>Lo que sí se puede hacer, siguió, es calcular los percentiles. Y dio el método concreto para leerlos: compara la distancia de <strong>media − s a P5</strong> con la
+distancia de <strong>media + s a P95</strong>. Si una es mucho mayor que la otra, por ese lado está la cola
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:39:44–0:40:45].</p>
+
+<div class="pred">
+  <b>Predice antes de mover el control:</b> vas a estirar la cola de la distribución de vibración hacia
+  la derecha. Luego vas a apretar «reflejar», que da vuelta la distribución como un espejo: la cola queda
+  a la izquierda. <strong>¿El valor de <code>s</code> va a cambiar al reflejar?</strong> Piénsalo antes.
+</div>
+
+<div class="panel">
+  <div class="ctrl">
+    <label for="sk">Estirar la cola derecha</label>
+    <input type="range" id="sk" min="0" max="150" value="0" step="5">
+    <output id="oSk">simétrica</output>
+  </div>
+  <div class="botonera" style="margin-top:.7rem">
+    <button id="bEsp" class="off">Reflejar (espejo)</button>
+    <button id="bReset" class="off">Volver al inicio</button>
+  </div>
+  <canvas id="cVib" width="860" height="300"></canvas>
+  <div class="leyenda">
+    <span class="l-media">media</span>
+    <span class="l-mediana">mediana</span>
+    <span class="l-s">media ± s</span>
+    <span class="l-p">P5 y P95</span>
+  </div>
+  <div class="met">
+    <div><div class="n" id="vMedia">—</div><div class="e">media</div></div>
+    <div><div class="n" id="vMediana">—</div><div class="e">mediana</div></div>
+    <div><div class="n" id="vS">—</div><div class="e">desv. estándar</div></div>
+    <div><div class="n" id="vP5">—</div><div class="e">P5</div></div>
+    <div><div class="n" id="vP95">—</div><div class="e">P95</div></div>
+  </div>
+  <h3 style="margin-top:1.4rem">Las dos distancias del profesor</h3>
+  <div class="barra"><span class="et">(media−s) a P5</span><span class="tr"><i id="bIzq"></i></span><span class="vl" id="vIzq">—</span></div>
+  <div class="barra"><span class="et">(media+s) a P95</span><span class="tr"><i id="bDer"></i></span><span class="vl" id="vDer">—</span></div>
+  <p id="vDiag" style="font-size:.92rem;margin:.9rem 0 0;font-weight:600"></p>
+  <p style="font-size:.8rem;color:var(--suave);margin:.5rem 0 0">
+    240 mediciones de vibración, centradas en 41. Muestra fija: los números son reproducibles.
+    Cifras ilustrativas [DATITO · construido sobre el ejemplo de vibración de la Clase del 17-jul]
+  </p>
+</div>
+
+<details>
+<summary>La respuesta a la predicción</summary>
+<p><strong><code>s</code> no cambia al reflejar.</strong> Ni un decimal. Reflejar es restar cada dato
+de un valor fijo, y eso conserva todas las distancias al centro —que es lo único que mide la varianza—.
+La media y la mediana sí se reflejan, y P5 y P95 se intercambian.</p>
+<p>Entonces tienes dos distribuciones que <em>son</em> distintas —una con la cola a la derecha, otra a la
+izquierda— y que comparten exactamente el mismo <code>s</code>. Ese número, solo, no puede distinguirlas.
+Las distancias a P5 y P95 sí: se dan vuelta.</p>
+<p class="clave" style="margin-bottom:0"><strong>Regla para llevarte:</strong>
+la desviación estándar mide <em>cuánto</em>. Los percentiles miden <em>cuánto y hacia dónde</em>.</p>
+</details>
+
+<h3>El boxplot: los percentiles hechos dibujo</h3>
+
+<p>El profesor lo presentó así (lámina 41): la línea del medio es la mediana; la caja va del percentil
+25 al 75; los valores que quedan fuera del bigote se dibujan como puntos sueltos, y esos son los valores
+anómalos. Del bigote dijo que «es 1,5 por el rango intercuartil»
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:14:48–1:15:11].
+El rango intercuartil (RIC) es P75 − P25: el ancho de la caja.</p>
+
+<div class="nota">
+  <strong>Detalle que no cambia el criterio:</strong> 1,5 × RIC es el largo <em>máximo</em> del bigote.
+  En matplotlib y seaborn el bigote se detiene en el último dato que cae dentro de ese límite, así que
+  puede verse más corto [INFERENCIA].
+</div>
+
+<div class="pred">
+  <b>Calcula en papel:</b> vibración de nueve turnos, cifras ilustrativas [DATITO]:
+  <strong>36, 38, 39, 40, 41, 42, 43, 45, 70</strong>. Obtén mediana, P25, P75, RIC, los dos límites
+  de 1,5 × RIC, y decide qué dato se dibuja suelto. Después contesta: ¿lo borrarías?
+</div>
+
+<details>
+<summary>Solución paso a paso</summary>
+<ol class="proc">
+<li>Ya están ordenados; n = 9. Mediana = el 5.º dato = <strong>41</strong>.</li>
+<li>P25 y P75 con el método por defecto de pandas y numpy (posición (n − 1)·p, contando desde 0):
+P25 cae en la posición 2 → el 3.er dato = <strong>39</strong>; P75 cae en la posición 6 → el 7.º dato =
+<strong>43</strong>.</li>
+<li>RIC = 43 − 39 = <strong>4</strong>. 1,5 × RIC = <strong>6</strong>.</li>
+<li>Límites: 39 − 6 = <strong>33</strong> y 43 + 6 = <strong>49</strong>.</li>
+<li>El 70 supera 49 → se dibuja suelto: es atípico. El bigote de arriba llega hasta 45; el de abajo, hasta 36.</li>
+<li>Media = 394 / 9 = <strong>43,8</strong>, mayor que la mediana 41 → cola a la derecha, igual que en el control de arriba.</li>
+</ol>
+<p class="clave" style="margin-bottom:0"><strong>¿Lo borrarías?</strong> No por ser atípico. En este problema
+los valores altos de vibración son justamente los momentos de falla: borrar el 70 es borrar lo que quieres
+predecir. Atípico describe una <em>posición</em> en la distribución; error es un juicio que hay que
+verificar. Es el mismo criterio del 2900 de la <a href="certamen_1.html#p9b">9B</a>. (Otros textos calculan
+los cuartiles con otra regla y dan números algo distintos; el procedimiento no cambia.)</p>
+</details>
+
+<div class="pred">
+  <b>Verdadero o falso, con justificación</b> (uno de los tres formatos que anunció para el Certamen 1
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:28:11–1:28:15]):
+  «Si en el EDA los boxplots de una variable para tumores benignos y malignos no se traslapan, ya quedó
+  demostrado que esa variable separa las dos clases.»
+</div>
+
+<details>
+<summary>Respuesta, y lo que dijo el profesor sobre esto</summary>
+<p><strong>Falso.</strong> Un boxplot describe <em>la muestra que tienes</em>. Con pocos datos, dos cajas
+separadas pueden salir por azar, y el dibujo no te dice cuántos datos hay detrás de cada caja. El profesor
+lo advirtió comentando la presentación de un grupo de compañeros que había usado un test t para comparar
+tumores benignos y malignos:</p>
+<div class="cita">«fíjense que también tiene relación el estadístico T con el número de datos Entonces tú
+puedes tener unos boxplot hermosos como estos acá con tres datos y eso no te asegura significancia
+estadística»
+<span class="f">Clase del 14-ago · 1:20:37–1:20:49 · profesor, comentando una presentación de compañeros ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+<p>Antes les había preguntado si revisaron la normalidad que el test supone, y aclaró que esa herramienta
+no se enseña en el curso
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:27–1:21:04].
+Para el certamen, lo que te llevas es el criterio: <strong>el EDA propone una hipótesis; no la demuestra</strong>.
+Que el hablante es el profesor titular se infiere porque un compañero se dirige a él como «Profesor» en
+1:20:01 y porque él habla de lo que «no la enseñamos» en el curso [INFERENCIA].</p>
+</details>
+
+
+<h2>7 · Camino inverso: te dan cinco números, sin gráfico</h2>
+
+<p>En una prueba escrita no vas a tener el histograma. Vas a tener una tabla. Estos son los números
+reales de tu propio proyecto: los precios de las 7.244 propiedades de Melbourne vendidas en 2017,
+el conjunto de prueba con el que evaluaste tus seis modelos.</p>
+
+<table>
+<tr><th>Estadístico</th><th class="num">Valor (AUD)</th></tr>
+<tr><td>n</td><td class="num">7.244</td></tr>
+<tr><td>Media</td><td class="num">1.078.072</td></tr>
+<tr><td>Mediana</td><td class="num">910.000</td></tr>
+<tr><td>Desviación estándar</td><td class="num">629.743</td></tr>
+<tr><td>Mínimo</td><td class="num">131.000</td></tr>
+<tr><td>P5</td><td class="num">420.000</td></tr>
+<tr><td>P95</td><td class="num">2.260.000</td></tr>
+<tr><td>Máximo</td><td class="num">9.000.000</td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--suave);margin-top:-.5rem">
+  [FUENTE · Repo: calculado sobre <code>05_RESULTADOS/predicciones_2017.csv</code>, columna <code>Price</code>.
+  La mediana de 910.000 coincide con <code>meta.precio_mediana_2017</code> de <code>resultados_temporal.json</code>]
+</p>
+
+<div class="pred">
+  <b>Antes de seguir leyendo,</b> escribe en una hoja qué forma tiene esta distribución y por qué.
+  Tienes todo lo necesario. No mires el gráfico de más abajo todavía.
+</div>
+
+<details>
+<summary>Cómo se reconstruye la forma desde esos números</summary>
+<ol class="proc">
+<li><strong>Media contra mediana.</strong> 1.078.072 &gt; 910.000. La media está arriba de la mediana
+→ hay cola hacia la <strong>derecha</strong>. Primera señal, y ya alcanza para sospechar.</li>
+<li><strong>Distancia izquierda.</strong> media − s = 1.078.072 − 629.743 = <strong>448.329</strong>.
+P5 = 420.000. Diferencia: <strong>28.329</strong>.</li>
+<li><strong>Distancia derecha.</strong> media + s = <strong>1.707.815</strong>. P95 = 2.260.000.
+Diferencia: <strong>552.185</strong>.</li>
+<li><strong>Compara.</strong> 552.185 frente a 28.329: el lado derecho tiene <strong>19 veces</strong> más
+recorrido sobrante. Cola derecha confirmada, y fuerte.</li>
+<li><strong>Los extremos.</strong> mediana − mín = 779.000. máx − mediana = 8.090.000. Diez veces más.</li>
+<li><strong>Traduce a una frase del problema.</strong> «Hay muchas casas baratas y unas pocas mansiones
+que estiran el promedio.»</li>
+</ol>
+<p class="clave" style="margin-bottom:0"><strong>La consecuencia que duele:</strong> el
+<strong>61,5 %</strong> de las propiedades de 2017 se vendió por <em>menos</em> que el «precio promedio»
+de 1.078.072. Si un cliente te pregunta «¿cuánto cuesta una casa en Melbourne?» y le dices el promedio,
+le das un número que seis de cada diez casas no alcanzan. La mediana de 910.000 es la respuesta honesta.</p>
+</details>
+
+<h3>Y ahora sí, el gráfico</h3>
+
+<div class="panel">
+  <div class="botonera">
+    <button id="bCrudo">Price (crudo)</button>
+    <button id="bLog" class="off">log1p(Price)</button>
+  </div>
+  <canvas id="cMel" width="860" height="300"></canvas>
+  <div class="met" id="melMet"></div>
+  <p id="melTxt" style="font-size:.9rem;margin:.9rem 0 0"></p>
+</div>
+
+<div class="clave">
+  <strong>Esto no es una curiosidad: es la decisión de modelado que tomaste.</strong>
+  Tu modelo final, HistGradientBoosting, no se entrenó sobre <code>Price</code> sino sobre
+  <code>log1p(Price)</code>. El motivo está en los números de arriba: en escala logarítmica la
+  media (13,754) y la mediana (13,721) casi coinciden, y el 52,5 % de los datos queda bajo la media
+  en vez del 61,5 %. La asimetría desaparece.
+  <span style="display:block;margin-top:.4rem;font-size:.88rem">
+  <strong>Una decisión de EDA se convirtió en una decisión de modelo.</strong> Eso es lo que el EDA
+  produce: no gráficos bonitos, decisiones.</span>
+</div>
+
+<div class="peligro">
+  <strong>Pero el log no es gratis, y tu propio repositorio lo demuestra.</strong>
+  Ridge sobre <code>log1p(Price)</code> dio <strong>R² = −17,0</strong>: al deshacer la transformación
+  con <code>expm1</code>, los errores sobre los valores extremos se disparan exponencialmente.
+  La misma transformación que ayuda a un modelo de árboles destruye a uno lineal.
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">
+  [FUENTE · Repo: <code>07_DATITO/referencia/material.md</code> y <code>05_RESULTADOS/resultados_temporal.json</code>]</span>
+</div>
+
+
+<h2 id="dificultad">8 · Lo que el EDA dice (y no dice) de la dificultad del problema</h2>
+
+<p>Hasta aquí el EDA describía columnas. En un proyecto también tiene que responder una pregunta más
+incómoda: <em>¿qué tan difícil va a ser esto?</em> Tu proyecto entrena con 2016 y predice 2017. Estos son
+hallazgos reales del EDA de ese corte:</p>
+
+<table>
+<tr><th>Hallazgo</th><th class="num">2016 (train)</th><th class="num">2017 (test)</th></tr>
+<tr><td>Filas</td><td class="num">6.336</td><td class="num">7.244</td></tr>
+<tr><td>Mediana de <code>Price</code> (AUD)</td><td class="num">900.000</td><td class="num">910.000</td></tr>
+<tr><td>Filas de suburbios que no existen en el train</td><td class="num">—</td><td class="num">29,1 %</td></tr>
+<tr><td>Nulos en <code>CouncilArea</code></td><td class="num">0 %</td><td class="num">18,9 %</td></tr>
+<tr><td>Categorías de <code>CouncilArea</code> que solo aparecen en 2017</td><td class="num">—</td><td class="num">14, una se llama <code>Unavailable</code></td></tr>
+</table>
+<p class="src">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code>, bloque <code>meta</code>]
+[FUENTE · Repo: <code>07_DATITO/referencia/material.md</code>, experimento CouncilArea, y
+<code>05_RESULTADOS/experimento_councilarea_2026-09-18.json</code>, bloque <code>fase4_faltantes</code>]</p>
+
+<div class="pred">
+  <b>Ejercicio de interpretación.</b> Para cada una de las tres últimas filas escribe (a) qué te dice sobre
+  la dificultad de predecir 2017 con un modelo entrenado en 2016, y (b) qué <em>no</em> te dice. Después
+  ordénalas de la que más te preocupa a la que menos, con una razón por línea. No abras los criterios
+  hasta tener las tres respuestas escritas.
+</div>
+
+<details>
+<summary>Criterios para corregirte (no es una respuesta modelo)</summary>
+<ul>
+<li><strong>Medianas.</strong> Aprueba si separas lo que puede afirmar un resumen de <em>una sola</em>
+columna de lo que no puede, con un ejemplo concreto de cada lado. Si tu conclusión sobre la dificultad
+se apoya solo en esas dos cifras, repasa la sección 2 antes de seguir.</li>
+<li><strong>29,1 %.</strong> Aprueba si lo lees como un problema de <em>cobertura</em>: qué hace un modelo
+con una categoría que nunca vio, y en qué fracción del test pasa. Suma si propones cómo medirlo (tu
+repositorio ya separa el error por suburbios nuevos y conocidos en <code>resultados_temporal.json</code>).</li>
+<li><strong>CouncilArea.</strong> Aprueba si notas que el faltante <em>no es igual</em> en train y en test,
+y si tratas <code>Unavailable</code> como lo que parece: un faltante disfrazado de categoría, primo del
+cero de los camiones (sección 3).</li>
+<li><strong>Orden.</strong> No hay un orden único correcto; se corrige la razón. Una razón válida dice
+cuántas filas afecta y si el modelo puede compensarlo con otra columna.</li>
+<li><strong>Medido / supuesto.</strong> Cada frase tuya debería poder etiquetarse: «29,1 % de filas de
+suburbios nuevos» es medido; «eso va a subir el error» es hipótesis hasta que lo midas.</li>
+</ul>
+<p>Llévale tus tres respuestas a Datito: es la pregunta diagnóstica de este concepto, y se corrige en
+conversación.</p>
+</details>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>En una frase:</strong> las medianas casi no dicen nada de la dificultad; el 29,1 % dice que
+casi un tercio del test cae en barrios que el modelo nunca vio; y <code>CouncilArea</code> dice que
+una columna cambió de comportamiento entre 2016 y 2017. Preocupan en ese orden: 29,1 %, CouncilArea,
+medianas.</p>
+<table>
+<tr><th>Fila</th><th>(a) Qué te dice</th><th>(b) Qué no te dice</th></tr>
+<tr><td>Medianas 900.000 → 910.000</td>
+<td>El precio típico casi no se movió (+1,1 %). No hay un salto de nivel de un año a otro que el
+modelo deba adivinar.</td>
+<td>Si cambió la <em>mezcla</em> de propiedades (tipos, barrios), las colas, o la relación entre las
+columnas y el precio. Es el resumen de una sola columna: la lección de Anscombe (sección 2).</td></tr>
+<tr><td>29,1 % de filas de suburbios nuevos</td>
+<td>Un problema de <strong>cobertura</strong>: 7.244 × 0,291 ≈ 2.109 casas de 2017 están en barrios
+sin ningún ejemplo en el train. Un modelo que dependiera del nombre del barrio no tendría nada que
+usar en ellas.</td>
+<td>Cuánto sube el error. Eso hay que medirlo, y tu repositorio lo midió: el modelo final no usa
+<code>Suburb</code> (usa latitud, longitud, distancia, región), y su MAE en barrios nuevos es
+193.462 AUD contra 186.064 en barrios conocidos, un 4 % más. Hipótesis antes de medir; dato después.</td></tr>
+<tr><td><code>CouncilArea</code>: 0 % → 18,9 % de nulos, 14 categorías nuevas</td>
+<td>El faltante <strong>no es igual</strong> en train y en test: un modelo entrenado en 2016 nunca vio un
+nulo ni esas 14 comunas. Entre nulos y categorías nuevas, el 28,5 % de las filas de 2017 no aporta
+nada por esa columna. Y <code>Unavailable</code> es un faltante disfrazado de categoría, como el cero
+de los camiones.</td>
+<td>Si <code>CouncilArea</code> importa para el precio. Puede ser redundante con la región y las
+coordenadas. El experimento del repositorio midió que agregarla mejoraba apenas 599 AUD (0,38 %) en
+2016, y se dejó fuera.</td></tr>
+</table>
+<p><strong>Orden, con una razón por línea:</strong></p>
+<ol class="proc">
+<li><strong>29,1 %</strong> — afecta a unas 2.109 filas y no se puede eliminar: es una propiedad del
+futuro, no de una columna. Solo se compensa con otras columnas de ubicación.</li>
+<li><strong>CouncilArea</strong> — afecta a cerca del 28,5 % de las filas, pero se resuelve sacando la
+columna, a un costo medido de 0,38 %.</li>
+<li><strong>Medianas</strong> — no afectan a ninguna fila en particular; describen el centro y nada más.</li>
+</ol>
+<p><strong>Error típico:</strong> concluir «el problema es fácil porque las medianas son casi iguales»
+(un resumen no determina la forma), o afirmar «el 29,1 % va a subir mucho el error» como si fuera un
+resultado. Es una hipótesis hasta que se mide, y aquí la medición dio un 4 %. Otro orden también
+puede aprobar si la razón dice cuántas filas afecta y si otra columna lo compensa.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> filas, medianas, 29,1 %, columnas excluidas y MAE por
+suburbio nuevo y conocido del modelo «HistGradientBoosting | log»:
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]. Nulos, categorías nuevas, 28,5 % y
+experimento A/B: [FUENTE · Repo: 07_DATITO/referencia/material.md, experimento CouncilArea] y
+[FUENTE · Repo: 05_RESULTADOS/experimento_councilarea_2026-09-18.json]. El orden y sus razones:
+[DATITO].</p>
+</details>
+
+
+<h2>9 · Dos variables a la vez</h2>
+
+<p>Hasta aquí, una variable por vez. El paso siguiente es preguntar si dos se mueven juntas.
+La herramienta es el <strong>scatter plot</strong>, y el número es la <strong>correlación</strong>.</p>
+
+<p>Su ejemplo: altura en el eje X, peso en el eje Y. De inmediato sale una hipótesis —a más altura, más
+peso— y de la hipótesis sale un modelo: estimar el peso a partir de la altura
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:03:00–1:03:28].</p>
+
+<p>Ahí está el puente completo: <em>graficas → ves una relación → formulas una hipótesis →
+propones un modelo</em>. El EDA es lo que te dice qué features vale la pena probar.</p>
+
+<h3>Tus propias correlaciones</h3>
+
+<p>Correlación de Pearson de cada variable numérica con <code>Price</code>, sobre las 13.580 filas
+de Melbourne:</p>
+
+<table>
+<tr><th>Variable</th><th class="num">r con Price</th><th>Lectura</th></tr>
+<tr><td>Rooms</td><td class="num"><strong>0,497</strong></td><td>La más alta de todas, y aun así explica poco sola</td></tr>
+<tr><td>YearBuilt</td><td class="num">−0,262</td><td>Negativa: las más antiguas tienden a ser más caras</td></tr>
+<tr><td>Lattitude</td><td class="num">−0,213</td><td>Geografía pura: más al sur, más caro</td></tr>
+<tr><td>Longtitude</td><td class="num">0,204</td><td>Ídem, en el otro eje</td></tr>
+<tr><td>Distance</td><td class="num">−0,163</td><td>Más lejos del centro, más barato</td></tr>
+<tr><td>BuildingArea</td><td class="num">0,070</td><td>Sospechosamente baja. Ver la nota</td></tr>
+<tr><td>Landsize</td><td class="num"><strong>0,038</strong></td><td>El tamaño del terreno casi no predice el precio</td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--suave);margin-top:-.5rem">
+  [FUENTE · Repo: <code>05_RESULTADOS/correlacion_dashai.json</code>, n = 13.580]
+</p>
+
+<div class="nota">
+  <strong>Por qué <code>BuildingArea</code> da 0,070 y no hay que creerle.</strong>
+  Esa columna tenía muchos nulos, y se rellenaron todos con un mismo valor constante (130,60 m²).
+  Cientos de filas con un valor idéntico e inventado aplastan cualquier correlación hacia cero.
+  El 0,070 describe <em>el dataset después de imputar</em>, no el mundo.
+  <span style="display:block;margin-top:.3rem"><strong>Moraleja de EDA:</strong> un coeficiente bajo
+  puede venir del fenómeno o puede venir de lo que le hiciste al dato. Antes de descartar una variable
+  por su correlación, mira cuántos nulos tenía.</span>
+  <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: el propio
+  <code>correlacion_dashai.json</code> declara <code>rellenos_nulos: BuildingArea = 130,5965</code>]</span>
+</div>
+
+<h3>La matriz de correlación, leída como la leyó el profesor</h3>
+
+<p>Con el dataset del Titanic (sobrevivió o no, clase, sexo, edad, familiares a bordo, precio del
+pasaje), el profesor leyó la fila de supervivencia. Sexo aparece con −0,54 ⚠ (dicho en clase como
+«menos 54»; coincide con el valor conocido de ese dataset [INFERENCIA]). Para interpretarlo necesitó
+la codificación: «sé que cero es mujer y uno es hombre». Correlación negativa → a más «1», menos
+supervivencia → sobrevivieron más mujeres. El precio del pasaje, en cambio, correlaciona positivo:
+pasaje más caro, más probable sobrevivir
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:10:57–1:12:29].
+(El Titanic vuelve en el práctico P5; aquí solo está lo que el profesor leyó en clase, no resultados del
+práctico.)</p>
+
+<div class="nota">
+  <strong>Dos avisos de lectura.</strong> (1) Una categórica <em>binaria</em> codificada 0/1 sí admite
+  correlación, siempre que sepas qué es el 0 y qué es el 1: si inviertes el código, se invierte el signo
+  [INFERENCIA]. (2) En 1:13:50 la transcripción dice «la matrita confusión», pero por contexto sigue
+  hablando de la matriz de <strong>correlación</strong> —la recomienda para elegir variables en regresión—,
+  no de la <a href="matriz_confusion.html">matriz de confusión</a>, que es de clasificación [INFERENCIA]
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:13:50–1:14:12].
+</div>
+
+<h3>Correlación ≠ causalidad</h3>
+
+<p>El profesor partió con un ejemplo burdo a propósito: cuando sube la temperatura se venden más
+helados, y nadie concluiría que comprar helado sube la temperatura; pero en los noticieros se hace
+exactamente eso con correlaciones menos obvias
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:55:50–0:56:45].</p>
+
+<p>La segunda historia la aportó <strong>un compañero</strong>, y es real. Un colega suyo recibió un
+análisis que no le convencía. Para desarmarlo, se conectó a la base de recursos humanos, sacó el
+<strong>dígito verificador</strong> del RUT de todos los trabajadores y lo correlacionó con la variable de
+interés. <strong>El dígito verificador correlacionaba más</strong> que el análisis del otro ingeniero, y la
+conclusión irónica fue contratar más gente con esos dígitos verificadores
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:56:47–0:57:44].</p>
+
+<div class="clave">
+  <strong>Las tres cosas que te deja ese intercambio:</strong>
+  <ol style="margin:.5rem 0 0">
+  <li>Una correlación alta <strong>no es evidencia</strong> de nada por sí sola. Necesitas un
+  <em>mecanismo</em> que explique por qué una cosa movería a la otra. Esto lo planteó el mismo compañero
+  al introducir su historia
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:56:50–0:56:58].</li>
+  <li>Con muchos datos, <strong>algo va a correlacionar por puro azar</strong>, y hay que tener cuidado
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:57:46–0:57:56].</li>
+  <li>Existen los <strong>confusores</strong>: variables que no mediste y que mueven a otras dos a la vez.
+  Ves que suben juntas y no ves la causa real
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:58:26–0:58:46].</li>
+  </ol>
+</div>
+
+<div class="nota">
+  <strong>Y el caso extremo ya lo viste arriba:</strong> el conjunto 4 de Anscombe tiene correlación
+  0,816 producida por <em>un solo punto</em>. Diez observaciones idénticas más una lejos.
+  Si reportas ese 0,816 sin haber graficado, estás reportando un artefacto.
+</div>
+
+<h3>Varias variables y una clase: el EDA que pide el proyecto</h3>
+
+<p>Al llegar a los ejemplos finales se detuvo: «este es el tipo de cosas que yo espero que ustedes hagan
+en su análisis exploratorio»
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:16:01–1:16:09].
+El ejemplo: análisis químico de vinos de una misma región de Italia, de tres cultivadores, con 13
+medidas por vino (lámina 44). Su secuencia fue esta
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:17:33–1:23:34]:</p>
+
+<ol class="proc">
+<li><strong>Contar las clases.</strong> Hay más vinos del cultivador 1 que del 2 y del 0, y eso importa
+porque los modelos tienden a ajustarse a la clase más representada. Es el desbalance que después
+castigan las <a href="metricas_clasificacion.html">métricas de clasificación</a>.</li>
+<li><strong>Resumen por variable.</strong> Media, desviación, mínimo, P25, P50, P75 y máximo de las 13.
+Alcohol: media cercana a 13 y desviación 0,8, con la mediana parecida a la media → simétrica. Intensidad
+de color: media 5,05 y mediana 4,69 → corrida hacia valores bajos. (Cifras dichas en clase ⚠.)</li>
+<li><strong>Histograma por clase.</strong> Con el alcohol, el curso vio que el cultivador 1 hace vinos de
+menor graduación, pero que el alcohol no separa al 0 del 2; el profesor lo confirmó.</li>
+<li><strong>Dos variables juntas.</strong> Con ácido málico y alcohol planteó que ya se podía clasificar
+la procedencia del vino, y lo llamó una <em>hipótesis de clasificación</em>
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:22:25–1:22:46].
+En el gráfico 2D los tres grupos casi se separan: no será perfecto, pero se puede clasificar.</li>
+</ol>
+
+<div class="clave">
+  Fíjate en qué entrega el EDA al final: no un gráfico bonito, sino una <strong>hipótesis comprobable</strong>
+  que el modelo va a poner a prueba. Antes de <a href="clasificacion.html">clasificar</a>, ya sabes qué
+  variables deberían servir y por qué. Y, como viste con los boxplots de la sección 6, la hipótesis
+  todavía no está demostrada.
+</div>
+
+
+<h2 id="integridad">10 · Integridad visual</h2>
+
+<p>El profesor dedicó un bloque a gráficos que engañan (láminas 23 a 27). Su criterio de referencia es el de
+<strong>Tufte</strong>: transmitir el mayor número de ideas, en el menor tiempo, con la menor cantidad de
+tinta, en el menor espacio (lámina 22). Aclaró que hoy, sin imprenta, la tinta y el espacio importan menos
+que las ideas por unidad de tiempo
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:46:33–0:47:20].</p>
+
+<table>
+<tr><th>Ejemplo en clase</th><th>El truco</th></tr>
+<tr><td>Millas por galón: 18 en 1978, 27 en 1985</td><td>La figura del 85 se dibuja como diez veces más grande, aunque el valor no llega al doble</td></tr>
+<tr><td>«Yo corro mucho más rápido que ustedes»</td><td>Eje entre 8,09 y 8,1: una diferencia mínima parece enorme</td></tr>
+<tr><td>Cortes de impuestos: 35 % frente a 39,6 %</td><td>Se presenta como desastre una diferencia que «no es tanta» (probablemente un eje que no parte en cero; la figura no está en el texto de la lámina [INFERENCIA])</td></tr>
+<tr><td>Vacunación en Chile, cadena nacional</td><td>Escala logarítmica: una caída fuerte parece una bajita. Abajo, en detalle</td></tr>
+</table>
+<p class="src">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:47:23–0:53:26]</p>
+
+<h3>El caso chileno: una escala logarítmica en cadena nacional</h3>
+
+<p>Durante la pandemia se presentó en cadena nacional un gráfico del avance de la vacunación en Chile.
+Mirando solo la línea, la tasa parecía haber bajado apenas un poco
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:51:31–0:52:09].
+El profesor preguntó en qué escala estaba el eje, y la respuesta que quedó fue: logarítmica
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:52:12–0:52:24].
+En esa escala la distancia en el eje no es proporcional a la cantidad —cada tramo igual multiplica—, así
+que una caída grande se ve chica [INFERENCIA sobre la figura]. Él lo volvió a graficar en escala lineal:</p>
+
+<div class="cita">«entre este y este hay un décimo de la distancia entre este y este […] una baja en la
+tasa de vacunación de más o menos un 50% o sea estaba como en 1.5 y llegó como a 1.8 ⚠ casi un 50%»
+<span class="f">Clase del 17-jul · 0:52:32–0:53:02 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<div class="nota">
+  <strong>⚠ Las cifras no cuadran tal como quedaron transcritas.</strong> De 1,5 a 1,8 es una
+  <em>subida</em> del 20 %, no una baja de casi 50 %. Lo firme es lo que repitió dos veces: una baja de
+  más o menos la mitad, entre marzo y abril. Lo más probable es un error de transcripción en uno de los
+  números (con 0,8 en vez de 1,8 la baja sería de 47 %) [INFERENCIA]. La figura está en las láminas de
+  «Distorsión de escalas» (26 y 27), cuyo texto no se extrajo: si necesitas la cifra exacta, abre el PDF.
+</div>
+
+<div class="clave">
+  Su cierre: el gráfico lo presentó el gobierno de Chile para influir en la población, pero transmitía un
+  mensaje incorrecto
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:53:05–0:53:26].
+  Y la advertencia que había dejado en la lámina 21: la visualización sirve para persuadir, y
+  <strong>alguien va a intentar persuadirte a ti con un gráfico</strong>; hay que ser crítico, dijo, sin
+  que eso sea algo negativo
+  [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:46:15–0:46:29].
+  Antes de mirar la forma, mira el eje: si parte de cero, si la escala es lineal o logarítmica, si los
+  tamaños son proporcionales a los valores.
+</div>
+
+<h3>Sin gráfico también se engaña: el denominador</h3>
+
+<p>Al final del bloque, un compañero aportó un caso que había visto en redes sociales: una sola frase,
+sin gráfico, sobre accidentes laborales y días de la semana.</p>
+
+<div class="pred">
+  <b>Predice y calcula:</b> la publicación decía que un 25 % de los accidentes de trabajo se reportan un
+  viernes o un lunes, e insinuaba que la gente usa el accidente para alargar el fin de semana. Antes de
+  abrir: si los accidentes se repartieran parejo entre los 7 días, ¿qué porcentaje caería en viernes o
+  lunes? ¿El 25 % queda por encima o por debajo de eso?
+</div>
+
+<details>
+<summary>El cálculo, y lo que concluyó el compañero</summary>
+<ol class="proc">
+<li>Con reparto uniforme, cada día aporta 1/7 ≈ <strong>14,3 %</strong>.</li>
+<li>Viernes + lunes = 2/7 ≈ <strong>28,6 %</strong>.</li>
+<li>25 % &lt; 28,6 % → el dato queda <strong>por debajo</strong> de lo esperado. Si sugiere algo, es lo
+contrario de lo que insinuaba la publicación.</li>
+</ol>
+<div class="cita">«un 25% de los accidentes de trabajo se reportan un viernes o lunes […] ⟨supongamos⟩
+que es como una distribución uniforme que no es así, pero ⟨supongamos⟩ realmente debería ser un 30% […]
+si uno lo pensaba un poco decía todo lo contrario» ⟨⟩ = corrección de transcripción [INFERENCIA]
+<span class="f">Clase del 17-jul · 0:53:54–0:54:38 · un compañero ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+<p>Su «30 %» es el 28,6 % redondeado, y también dijo que cada día aporta cerca de un 15 % (14,3 %). El
+profesor lo tomó como un problema comunicacional que aparece de muchas formas
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:54:42–0:54:48].</p>
+<p class="clave" style="margin-bottom:0"><strong>El supuesto que conviene declarar:</strong> el propio
+compañero advirtió que el reparto real no es uniforme. Si en ese rubro solo se trabaja de lunes a viernes,
+la referencia sería 2/5 = 40 % y el 25 % quedaría todavía más abajo [DATITO]. Cambias el denominador y
+cambia la conclusión; por eso hay que escribirlo. Es el mismo problema que vas a encontrar en las
+<a href="metricas_clasificacion.html">métricas de clasificación</a>: un porcentaje sin su denominador no
+dice nada.</p>
+</details>
+
+
+<h2>11 · La distinción de certamen</h2>
+
+<div class="peligro">
+  <strong>Pregunta 4 del Certamen 2.</strong> «¿Cuál(es) de las siguientes son utilizadas para evaluar
+  un modelo de clasificación?» Alternativas: área bajo la curva ROC, <strong>varianza</strong>, ganancia
+  de pureza, tasa de falsos positivos y exactitud. Correctas: AUC, tasa de falsos positivos y exactitud.
+  <span style="display:block;margin-top:.5rem">La distinción de esta unidad es la que descarta la
+  varianza: <strong>una cantidad que describe un clasificador ≠ una cantidad que describe una
+  variable</strong>. AUC, tasa de falsos positivos y exactitud <em>solo existen</em> si hay un
+  clasificador y clases verdaderas contra las que comparar. La varianza existe con o sin clases: es un
+  estadístico descriptivo de una columna. (La ganancia de pureza cae por otra razón: sirve para
+  <em>construir</em> un árbol, no para evaluarlo.) Enunciado y análisis completos en
+  <a href="certamen_2.html#p4">certamen_2.html#p4</a>.</span>
+  <span style="display:block;margin-top:.4rem;font-size:.85rem">[FUENTE · Repo:
+  <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>, ficha P4]</span>
+</div>
+
+<p>Las otras distinciones de esta unidad, en el formato en que el profesor las pregunta:</p>
+
+<table>
+<tr><th>No confundas</th><th>Con</th><th>Lo que decide</th></tr>
+<tr><td>Media</td><td>Mediana</td><td>La media se arrastra hacia la cola; la mediana no. Con asimetría, reporta mediana</td></tr>
+<tr><td>Varianza</td><td>Desviación estándar</td><td>Las unidades. La varianza está al cuadrado y no se interpreta</td></tr>
+<tr><td>Desviación estándar</td><td>Percentiles</td><td><code>s</code> dice cuánto; los percentiles dicen cuánto <strong>y hacia dónde</strong></td></tr>
+<tr><td>Variable numérica</td><td>Variable categórica</td><td>Orden. Sin orden no hay histograma ni media: solo frecuencias y moda</td></tr>
+<tr><td>Gráfico de barras</td><td>Gráfico de líneas</td><td>Si puedes interpolar entre dos valores del eje X, línea. Si no, barras</td></tr>
+<tr><td>Correlación</td><td>Causalidad</td><td>El mecanismo. Sin mecanismo, <code>r</code> alto no es evidencia</td></tr>
+<tr><td>Resumen estadístico</td><td>Forma de la distribución</td><td>Anscombe: cuatro formas distintas, un solo resumen</td></tr>
+<tr><td>Un estadístico descriptivo</td><td>Una métrica de evaluación</td><td>Qué objeto describe: una variable o un modelo (<a href="certamen_2.html#p4">P4</a>)</td></tr>
+<tr><td>Medición</td><td>Hipótesis (supuesto)</td><td>¿Sale de los datos o la pusiste tú? «Media 1,8 m» es medido; «son adultos» es hipótesis (<a href="certamen_2.html#p11">P11</a>)</td></tr>
+<tr><td>Condición necesaria</td><td>Condición suficiente</td><td>Falla → alza de vibración no implica alza → falla. La feature ayuda, pero no basta</td></tr>
+<tr><td>Cero medido</td><td>Faltante disfrazado (0, −999, <code>Unavailable</code>)</td><td>¿Qué significaría ese valor si fuera real? Si no puedes contestarlo, es sospechoso (<a href="certamen_1.html#p9b">9B</a>)</td></tr>
+<tr><td>Atípico</td><td>Error</td><td>Atípico es una posición (fuera de 1,5 × RIC); error es un juicio que se verifica. El 2900 de la 9B y la vibración de 70 son atípicos, no errores probados</td></tr>
+<tr><td>Separación en un boxplot</td><td>Significancia estadística</td><td>El número de datos. Un boxplot bonito con tres datos no asegura nada</td></tr>
+</table>
+
+
+<h2>12 · Procedimiento para el papel</h2>
+
+<p>Te dan una tabla de números o una figura y te piden describirla. Esto es lo que haces, en orden:</p>
+
+<ol class="proc">
+<li><strong>Clasifica cada columna:</strong> ¿numérica o categórica? Esto decide todas las herramientas
+que puedes usar después.</li>
+<li><strong>Busca los faltantes, también los disfrazados:</strong> nulos, pero además ceros en exceso,
+códigos como −999, categorías como <code>Unavailable</code> y valores idénticos repetidos (el 130,60 de
+<code>BuildingArea</code>). Para cada uno pregúntate qué significaría si fuera real.</li>
+<li><strong>Para las categóricas:</strong> frecuencias y moda. Nada más. Si hay una categoría que se lleva
+casi todo, dilo: es desbalance.</li>
+<li><strong>Para las numéricas, el centro:</strong> media y mediana. <em>Las dos, siempre.</em>
+La comparación entre ambas es gratis y es tu primer diagnóstico.</li>
+<li><strong>Decide la asimetría:</strong> media &gt; mediana → cola derecha. media &lt; mediana → cola
+izquierda. media ≈ mediana → simétrica.</li>
+<li><strong>La extensión:</strong> rango y desviación estándar. Pregúntate si <code>s</code> es grande
+<em>comparado con la media</em>: <code>s</code> = 629.743 sobre una media de 1.078.072 es más de la mitad.
+Eso es una distribución muy ancha.</li>
+<li><strong>Confirma con percentiles:</strong> compara (media − s) contra P5 y (media + s) contra P95.
+La diferencia mayor marca el lado de la cola.</li>
+<li><strong>Mira los extremos:</strong> ¿el máximo está a una distancia razonable del P95, o está diez
+veces más lejos? Si te dan cuartiles, calcula los límites P25 − 1,5 × RIC y P75 + 1,5 × RIC. Lo que quede
+fuera es candidato a atípico: se marca y se verifica, no se borra por reflejo.</li>
+<li><strong>Escribe la conclusión en palabras del problema</strong>, no en jerga.
+No «la distribución presenta asimetría positiva» sino «hay muchas casas baratas y unas pocas mansiones
+que estiran el promedio».</li>
+<li><strong>Nombra la consecuencia práctica:</strong> qué estadístico reportarías, qué variable
+transformarías, qué hipótesis probarías después. El EDA termina en una decisión.</li>
+<li><strong>Etiqueta cada frase:</strong> medido o supuesto. «10 de 25 camiones marcan 0» es medido;
+«están inactivos» es hipótesis, y se escribe como tal.</li>
+</ol>
+
+
+<h2>13 · Errores que el formato castiga</h2>
+
+<ul>
+<li><strong>Reportar la media de una distribución con cola</strong> y presentarla como «lo típico».
+En Melbourne 2017, seis de cada diez casas están bajo esa media.</li>
+<li><strong>Promediar los códigos de una categórica de varios niveles.</strong> Si codificaste las
+regiones como 1, 2, 3, su promedio de 2,4 no significa nada: el código es arbitrario (lámina 11).
+<em>Matiz:</em> con una binaria 0/1 la cosa cambia. Su media es la proporción de unos, y su correlación
+con otra variable se puede leer si sabes qué es el 0 y qué es el 1: así leyó el profesor el sexo en el
+Titanic (sección 9). El error no es el número; es olvidar la codificación.</li>
+<li><strong>Tratar todos los ceros como mediciones, o todos como faltantes.</strong> Se decide caso a caso
+y se declara el supuesto: es la 9B.</li>
+<li><strong>Borrar un atípico por ser atípico.</strong> En la máquina del profesor, los valores altos son
+las fallas que quieres predecir.</li>
+<li><strong>Presentar una hipótesis del EDA como resultado.</strong> «Estas dos variables separan los
+vinos» es una hipótesis hasta que un modelo la pruebe, y un boxplot con pocos datos no la demuestra.</li>
+<li><strong>Creer que <code>s</code> te dice hacia qué lado está la cola.</strong> No lo hace, y dos
+distribuciones espejo lo prueban con el mismo <code>s</code>.</li>
+<li><strong>Interpretar la varianza en las unidades de la variable.</strong> Está al cuadrado.</li>
+<li><strong>Dividir por <code>n</code> al calcular la varianza muestral.</strong> Va <code>n − 1</code>.</li>
+<li><strong>Concluir desde un resumen sin haber graficado.</strong> Anscombe es literalmente el
+contraejemplo que el profesor mostró en pantalla.</li>
+<li><strong>Leer una correlación alta como causa.</strong> Falta el mecanismo, y puede ser azar
+o un confusor.</li>
+<li><strong>Descartar una variable por su correlación baja sin revisar sus nulos.</strong>
+Imputar con una constante empuja <code>r</code> hacia cero artificialmente.</li>
+<li><strong>Usar líneas para variables categóricas.</strong> La línea afirma que se puede interpolar,
+y no se puede.</li>
+<li><strong>Confundir un estadístico descriptivo con una métrica de evaluación.</strong>
+Es la trampa de la varianza en la P4 del Certamen 2.</li>
+</ul>
+
+
+<h2>14 · Transferencia: otro rubro, el mismo EDA</h2>
+
+<div class="pred">
+  <b>Riego en el Maule</b> (cifras ilustrativas [DATITO]). Una cooperativa agrícola registra el agua de
+  riego por predio y por semana durante una temporada: 400 registros. Resumen: media 1.180 m³, mediana
+  1.560 m³, P5 = 0, P95 = 2.300 m³, máximo 9.800 m³. El 31 % de los registros es exactamente 0.
+  <br>(a) ¿Hacia dónde tira la media y por qué? (b) Da dos lecturas del 31 % de ceros y el dato que irías
+  a buscar para distinguirlas. (c) ¿El 9.800 es un error? (d) ¿Qué número le darías al gerente como
+  «consumo típico de una semana de riego», y qué supuesto declaras?
+</div>
+
+<details>
+<summary>Solución</summary>
+<ol class="proc">
+<li><strong>(a)</strong> Media 1.180 &lt; mediana 1.560: la media queda <em>abajo</em>. Pero no la arrastra
+una cola larga de valores bajos, sino una masa de 124 ceros (31 % de 400) separada del resto. La regla
+«media &lt; mediana → cola izquierda» describe el síntoma; el EDA te obliga a mirar la causa. El 9.800,
+muy lejos del P95, tira hacia arriba, pero pesa poco al lado de 124 ceros.</li>
+<li><strong>(b)</strong> Lectura 1: semanas sin riego (llovió, cosecha, predio en barbecho) → ceros reales.
+Lectura 2: medidores sin lectura o planillas sin llenar → faltantes disfrazados de cero. Para distinguir:
+cruza con la lluvia de cada semana (si los ceros caen en semanas lluviosas, son creíbles) y mira si se
+concentran en ciertos predios, medidores o digitadores (si sí, huele a reporte). Es el razonamiento de
+los camiones, casi palabra por palabra.</li>
+<li><strong>(c)</strong> No se sabe desde el resumen. Es atípico —más de cuatro veces el P95—, pero puede
+ser un predio grande o una fuga. Se marca para verificar; no se borra.</li>
+<li><strong>(d)</strong> Si confirmas que los ceros son semanas sin riego, «¿cuánto se gasta en una semana
+en que se riega?» se responde con la mediana de los registros distintos de cero, y se dice así. Si no lo
+has confirmado, entregas la mediana de 1.560 m³ junto con el supuesto: «31 % de semanas en cero, sin
+verificar si son reales». Lo que no haces es entregar 1.180 como «lo típico».</li>
+</ol>
+</details>
+
+
+<h2>15 · Explícaselo a alguien</h2>
+
+<div class="pred">
+  <b>Producción:</b> tu jefe, ingeniero y sin formación en estadística, te muestra el promedio de 1.440 L
+  de la flota y tus 2.500 L. Escríbele un mensaje de no más de cinco frases que explique por qué ese
+  promedio todavía no prueba que tus camiones gasten de más, y qué propones revisar. Sin jerga: nada de
+  «asimetría» ni «imputación».
+</div>
+
+<details>
+<summary>Criterios de corrección</summary>
+<ul>
+<li>Pide ver la distribución, no solo el promedio.</li>
+<li>Nombra los ceros y da <em>dos</em> explicaciones posibles, sin afirmar cuál es la verdadera.</li>
+<li>Separa lo medido (el 1.440, el 2.500) de lo supuesto (que los ceros sean camiones parados).</li>
+<li>Termina en una acción concreta y verificable: revisar quién anotó, cruzar con la bitácora de operación.</li>
+<li>No acusa a nadie de mentir: ser crítico con los datos no es ser negativo con las personas.</li>
+</ul>
+<p>Escríbelo en papel y llévaselo a Datito.</p>
+</details>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>En una frase:</strong> el promedio de la flota todavía no sirve de vara, porque puede estar
+hundido por camiones que marcan 0 litros, y esos ceros pueden ser camiones parados o consumos que
+nadie anotó.</p>
+<p><strong>Respuesta modelo</strong> (cinco frases, sin jerga):</p>
+<blockquote style="border-left:3px solid #059669;margin:.5rem 0;padding:.3rem .9rem;background:#fff">
+«Jefe, el promedio de 1.440 litros junta a todos los camiones de la flota, y antes de compararlo con
+mis 2.500 necesito ver cuánto gasta cada camión por separado. Si varios camiones aparecen con 0 litros,
+el promedio baja mucho y cualquier camión que esté trabajando se va a ver caro al lado de ese número.
+Esos ceros pueden ser camiones que estuvieron parados o consumos que nadie anotó, y con la planilla sola
+no se puede saber cuál de las dos. Propongo revisar quién registró esos ceros y cruzarlos con la
+bitácora de operación de esas semanas. Con eso comparamos mis camiones contra los que de verdad
+estaban trabajando, que es la comparación justa.»
+</blockquote>
+<p><strong>Cómo se arma:</strong> (1) qué es lo medido: 1.440 y 2.500; (2) por qué el promedio no basta:
+la forma de los datos, los ceros; (3) las dos lecturas, sin elegir una; (4) una acción verificable; (5) qué
+se gana. Una frase por paso. Con los camiones ilustrativos del panel, la diferencia entre las dos lecturas
+es 74 % contra 4 % sobre la media, pero al jefe le basta la idea, no la cifra [DATITO].</p>
+<p><strong>Error típico:</strong> escribir «la distribución es asimétrica por imputación de ceros» (jerga
+que el jefe no puede usar), o afirmar como hecho que los ceros son camiones parados. Eso es una
+hipótesis y se dice como hipótesis.</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> cifras de la lámina 20
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 20]; las dos
+lecturas de los ceros y el paso de ir a ver quién anotó,
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:12–0:45:38];
+la redacción es [DATITO]. Intenta la tuya antes de abrir esto y llévasela a Datito.</p>
+</details>
+
+
+<h2>Antes de cerrar</h2>
+
+<div class="pred">
+  <b>Para responderle a Datito:</b> te doy dos columnas de un dataset de sensores de una planta.
+  La columna <code>temperatura</code> tiene media 78,4 y mediana 78,1. La columna
+  <code>horas_hasta_falla</code> tiene media 412 y mediana 190.
+  <strong>Sin ningún gráfico: ¿cuál de las dos transformarías antes de modelar, y qué estadístico
+  reportarías de cada una?</strong> Justifica con el criterio, no con el resultado.
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> transformaría <code>horas_hasta_falla</code> (con logaritmo, como
+<code>log1p</code>) y dejaría <code>temperatura</code> como está. De la temperatura reportaría la
+media (78,4) con su desviación estándar; de las horas hasta la falla, la <strong>mediana (190 h)</strong>
+con percentiles, no la media de 412.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="proc">
+<li><strong>Compara media y mediana, y compáralas contra la escala.</strong> Temperatura: 78,4 − 78,1 =
+0,3, apenas un 0,4 % de 78 → prácticamente simétrica. Horas: 412 frente a 190 → la media es 2,2 veces la
+mediana.</li>
+<li><strong>Decide el lado.</strong> En las horas, media &gt; mediana → cola a la derecha: la mayoría de
+las máquinas falla relativamente pronto y unas pocas duran muchísimo y arrastran el promedio.</li>
+<li><strong>Consecuencia de modelado.</strong> Con una cola así el logaritmo acerca media y mediana,
+como pasó con <code>Price</code> en Melbourne (61,5 % bajo la media en crudo, 52,5 % en logaritmo).
+La temperatura no tiene nada que corregir.</li>
+<li><strong>Consecuencia de reporte.</strong> «Una máquina típica dura unas 190 horas» es honesto; 412
+horas es un número que la mayoría de las máquinas no alcanza.</li>
+</ol>
+<p><strong>Error típico:</strong> mirar la diferencia en bruto sin escala («0,3 es poco, 222 es mucho»,
+que por casualidad acierta aquí pero falla si cambian las unidades), o transformar las dos «por si
+acaso». Otro: creer que el logaritmo siempre ayuda. En tu repositorio, Ridge sobre
+<code>log1p(Price)</code> dio R² −17,0: la transformación es una hipótesis que se valida con el modelo, no
+una regla. Y sin gráfico lo que tienes es una <em>sospecha</em> fuerte; se confirma con P5 y P95 si te
+los dan (sección 7).</p>
+<p style="margin-bottom:0"><strong>Origen:</strong> las dos columnas son ilustrativas [DATITO]; el criterio
+media contra mediana es el de las secciones 4, 7 y 12 de esta página; los porcentajes bajo la media:
+[FUENTE · Repo: 05_RESULTADOS/predicciones_2017.csv, columna Price]; el R² de Ridge:
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] y [FUENTE · Repo: 07_DATITO/referencia/material.md]. Llévale igual tu respuesta a Datito para que te
+repregunte.</p>
+</details>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-3">
+<h2>Cierre de la Clase 3 · EDA: conocer los datos antes de modelar</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un resumen no determina la forma: hay que mirar la distribución.</li><li>La media se mueve con los extremos; la mediana no.</li><li>La varianza de una muestra divide por n − 1.</li><li>Correlación no es causalidad, y un gráfico puede engañar por su escala.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Cantidad que describe una variable (varianza) ≠ cantidad que describe un clasificador (precisión, AUC) (C2 P4).</li><li>Hipótesis ≠ medición (C2 P11).</li><li>Necesario ≠ suficiente: toda falla trae vibración, no toda vibración es falla.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Tipo de variable → gráfico adecuado.</li><li>Centro (media y mediana) y extensión (desviación, percentiles).</li><li>Busca ceros, centinelas y atípicos: ¿error o dato real?</li><li>Escribe hipótesis, no conclusiones.</li></ol>
+<p><b>Viene de:</b> <a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · <b>Sigue:</b> <a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></p>
+<p><b>Vuelve a tu activación:</b> En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Si la media es mucho mayor que la mediana, ¿qué te dice eso de la distribución?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Que tiene cola a la derecha: unos pocos valores altos arrastran la media, y la mediana representa mejor el caso típico. [DATITO]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="limpieza_preparacion.html">Continuar → Clase 4 · Calidad, limpieza y preparación de datos</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/eda.html</code> · funciona sin conexión · fuentes: lámina
+oficial <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md</code>; transcripciones
+<code>09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md</code> (Clase del 17-jul)
+y <code>09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md</code>
+(Clase del 14-ago, presentaciones de compañeros comentadas por el profesor);
+<code>05_RESULTADOS/</code> (Melbourne); <code>07_DATITO/referencia/material.md</code>;
+<code>07_DATITO/patron_evaluacion.md</code>; <code>07_DATITO/visual/certamen_1.html</code>.
+NotebookLM no estuvo disponible en esta revisión.<br>
+<strong>Datos reales:</strong> las cifras de Melbourne (<code>predicciones_2017.csv</code>,
+<code>resultados_temporal.json</code>, <code>correlacion_dashai.json</code>,
+<code>experimento_councilarea_2026-09-18.json</code>), el cuarteto de Anscombe (valores canónicos; medias
+y desviaciones leídas en clase) y los 1440 y 2500 litros de la lámina 20.
+<strong>Cifras dichas en clase</strong> que no se pudieron contrastar con la lámina van marcadas con ⚠.
+<strong>Ilustrativos [DATITO]:</strong> las 240 vibraciones del simulador, las cinco máquinas de la
+varianza, los nueve turnos del boxplot, los 25 camiones, el riego del Maule y los sensores de «Antes de
+cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
+</footer>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- utilidades ---------- */
+function pct(a, p){                    // percentil con interpolación lineal (como numpy)
+  var s = a.slice().sort(function(x,y){return x-y;});
+  var i = (s.length - 1) * p / 100;
+  var lo = Math.floor(i), hi = Math.ceil(i);
+  if (lo === hi) return s[lo];
+  return s[lo] + (s[hi] - s[lo]) * (i - lo);
+}
+function media(a){ var t=0; for(var i=0;i<a.length;i++) t+=a[i]; return t/a.length; }
+function desv(a){ var m=media(a),t=0; for(var i=0;i<a.length;i++){var d=a[i]-m; t+=d*d;} return Math.sqrt(t/(a.length-1)); }
+function mediana(a){ return pct(a,50); }
+function fmt(x,d){
+  var s = x.toFixed(d===undefined?2:d);
+  var p = s.split(".");
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return p.length>1 ? p[0]+","+p[1] : p[0];
+}
+function prep(cv){                     // canvas nítido en pantallas hidpi
+  var r = window.devicePixelRatio || 1;
+  var w = cv.width, h = cv.height;
+  if (cv.dataset.done !== "1"){
+    cv.style.height = "auto";
+    cv.width = w * r; cv.height = h * r;
+    cv.dataset.w = w; cv.dataset.h = h; cv.dataset.done = "1";
+  }
+  var ctx = cv.getContext("2d");
+  ctx.setTransform(r,0,0,r,0,0);
+  ctx.clearRect(0,0,+cv.dataset.w,+cv.dataset.h);
+  return {ctx: ctx, W: +cv.dataset.w, H: +cv.dataset.h};
+}
+
+/* =========================================================
+   2 · CUARTETO DE ANSCOMBE
+   ========================================================= */
+var AX  = [10,8,13,9,11,14,6,4,12,7,5];
+var AX4 = [8,8,8,8,8,8,8,19,8,8,8];
+var AY  = {
+  1:[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68],
+  2:[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74],
+  3:[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],
+  4:[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89]
+};
+var ATXT = {
+  1:"Conjunto 1 — una relación lineal con ruido. Es el único de los cuatro donde la recta y = 3 + 0,5x describe de verdad lo que pasa.",
+  2:"Conjunto 2 — una curva, no una recta. La recta ajustada es la mejor línea recta posible y aun así es la descripción equivocada del fenómeno.",
+  3:"Conjunto 3 — una recta casi perfecta y UN punto anómalo. Ese punto solo tuerce la recta ajustada y baja la correlación.",
+  4:"Conjunto 4 — diez puntos con el mismo valor de x y uno lejos. La correlación de 0,816 la produce ese único punto: sin él no hay ninguna relación que medir.",
+  0:"Los cuatro a la vez. Mismo resumen de seis números, cuatro fenómenos distintos. Eso es lo que un resumen NO puede distinguir."
+};
+var anSel = 1;
+
+function anMarco(ctx,x0,y0,w,h,titulo){
+  ctx.strokeStyle="#d8d8d8"; ctx.lineWidth=1;
+  ctx.strokeRect(x0,y0,w,h);
+  if(titulo){ ctx.fillStyle="#666"; ctx.font="600 11px system-ui"; ctx.textAlign="left";
+    ctx.fillText(titulo, x0+6, y0+14); }
+}
+function anPlot(ctx,x0,y0,w,h,xs,ys,titulo){
+  anMarco(ctx,x0,y0,w,h,titulo);
+  var xmin=2, xmax=20, ymin=2, ymax=13.5;
+  function px(v){ return x0 + (v-xmin)/(xmax-xmin)*w; }
+  function py(v){ return y0 + h - (v-ymin)/(ymax-ymin)*h; }
+  // recta compartida y = 3 + 0.5x
+  ctx.strokeStyle="#2563eb"; ctx.lineWidth=1.6; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(px(xmin), py(3+0.5*xmin)); ctx.lineTo(px(xmax), py(3+0.5*xmax)); ctx.stroke();
+  ctx.setLineDash([]);
+  // puntos
+  ctx.fillStyle="#dc2626";
+  for(var i=0;i<xs.length;i++){
+    ctx.beginPath(); ctx.arc(px(xs[i]), py(ys[i]), 4, 0, 6.2832); ctx.fill();
+  }
+}
+function anDraw(){
+  var c = prep(document.getElementById("cAns"));
+  var ctx = c.ctx;
+  if (anSel === 0){
+    var w=(c.W-30)/2 - 6, h=(c.H-30)/2 - 6;
+    anPlot(ctx,10,10,w,h, AX, AY[1], "conjunto 1");
+    anPlot(ctx,20+w,10,w,h, AX, AY[2], "conjunto 2");
+    anPlot(ctx,10,20+h,w,h, AX, AY[3], "conjunto 3");
+    anPlot(ctx,20+w,20+h,w,h, AX4, AY[4], "conjunto 4");
+  } else {
+    var xs = (anSel===4) ? AX4 : AX;
+    anPlot(ctx, 10, 10, c.W-20, c.H-20, xs, AY[anSel], "conjunto "+anSel);
+    ctx.fillStyle="#2563eb"; ctx.font="600 12px system-ui"; ctx.textAlign="right";
+    ctx.fillText("y = 3 + 0,5x   ·   r = 0,816", c.W-18, c.H-18);
+  }
+  document.getElementById("anTxt").textContent = ATXT[anSel];
+  ["an1","an2","an3","an4"].forEach(function(id,k){
+    document.getElementById(id).className = "an" + (anSel===k+1 ? "" : " off");
+  });
+  document.getElementById("anAll").className = (anSel===0 ? "" : "off");
+}
+[1,2,3,4].forEach(function(k){
+  document.getElementById("an"+k).addEventListener("click", function(){ anSel=k; anDraw(); });
+});
+document.getElementById("anAll").addEventListener("click", function(){ anSel=0; anDraw(); });
+
+/* =========================================================
+   5 · VIBRACIÓN: ASIMETRÍA, s Y PERCENTILES
+   ========================================================= */
+var Z = [0.167,0.497,-0.140,-0.825,-0.340,-0.937,0.232,1.655,-0.382,-0.525,0.710,0.562,0.282,-0.869,0.133,0.938,-1.329,-0.343,-1.948,-1.268,-1.882,-0.096,-1.244,0.467,0.339,-0.043,-2.632,-0.434,0.111,0.291,-1.536,-0.366,-0.923,-0.734,1.345,-0.732,0.129,1.148,-0.484,0.041,0.288,0.236,-1.197,0.250,1.676,-1.555,1.121,0.298,-0.548,2.389,1.013,-1.168,0.248,0.806,-0.045,0.924,0.091,0.907,1.764,-0.586,0.391,-0.350,0.307,-1.154,-0.479,-0.053,1.164,1.438,-1.306,-0.718,0.884,-2.050,-0.350,0.057,1.563,0.932,-0.199,-0.244,-0.113,1.859,-0.311,-0.172,0.557,0.031,-0.054,-1.073,0.152,-0.328,1.462,0.891,0.138,0.908,-0.213,1.335,0.159,0.814,-1.270,0.551,-1.711,-2.097,-0.173,-0.835,0.348,2.661,-0.759,-0.528,0.394,0.713,-0.031,-0.064,0.946,0.743,-0.984,0.077,0.204,-1.007,0.454,-0.789,1.246,0.379,0.264,-0.492,0.033,-2.056,-1.092,0.569,-2.201,1.106,-1.776,1.006,-0.775,1.031,0.311,-1.543,1.554,1.768,0.092,-0.139,-0.012,-0.919,1.386,-0.438,0.108,-0.717,-0.531,-1.255,1.563,-0.006,1.239,0.180,-0.607,-0.198,-0.458,0.174,-0.252,-0.168,-1.367,-0.732,2.004,-0.581,-1.007,0.540,1.730,-1.451,-0.067,-0.537,-1.792,0.982,0.139,0.245,-0.671,0.671,-0.434,0.006,-1.067,-1.187,1.650,-0.398,0.489,0.128,-0.325,-0.399,0.866,-0.170,-0.003,0.190,1.473,0.922,0.591,-0.461,-1.371,1.221,1.240,0.009,0.768,1.034,1.089,1.189,-0.341,1.849,-1.221,1.123,0.714,1.136,2.254,1.815,-1.108,-1.712,1.073,-0.963,0.151,1.099,-1.662,-2.180,0.453,0.215,-0.108,0.208,-0.791,-1.517,-0.020,-0.915,-1.662,0.727,0.097,0.617,-0.934,-0.566,-0.945,-0.820,0.382,-0.705,0.561,0.543,2.416,-1.383,1.152,0.066,0.150,-1.446];
+var CENTRO = 41, ESCALA = 6;
+var vibK = 0, vibEsp = false;
+
+function vibMuestra(){
+  var out = [], i, d;
+  for(i=0;i<Z.length;i++){
+    d = ESCALA * Z[i];
+    if (d > 0) d = d * (1 + vibK);               // estira solo el lado derecho
+    out.push(CENTRO + d);
+  }
+  if (vibEsp){                                   // reflexión exacta en torno a CENTRO
+    for(i=0;i<out.length;i++) out[i] = 2*CENTRO - out[i];
+  }
+  return out;
+}
+
+function vibDraw(){
+  var a = vibMuestra();
+  var m = media(a), md = mediana(a), s = desv(a);
+  var p5 = pct(a,5), p95 = pct(a,95);
+  var dIzq = Math.abs((m - s) - p5), dDer = Math.abs(p95 - (m + s));
+
+  document.getElementById("vMedia").textContent   = fmt(m,1);
+  document.getElementById("vMediana").textContent = fmt(md,1);
+  document.getElementById("vS").textContent       = fmt(s,2);
+  document.getElementById("vP5").textContent      = fmt(p5,1);
+  document.getElementById("vP95").textContent     = fmt(p95,1);
+
+  var maxd = Math.max(dIzq, dDer, 0.5);
+  document.getElementById("bIzq").style.width = (dIzq/maxd*100)+"%";
+  document.getElementById("bDer").style.width = (dDer/maxd*100)+"%";
+  document.getElementById("bIzq").className = (dIzq > dDer*1.25) ? "neg" : "";
+  document.getElementById("bDer").className = (dDer > dIzq*1.25) ? "neg" : "";
+  document.getElementById("vIzq").textContent = fmt(dIzq,2);
+  document.getElementById("vDer").textContent = fmt(dDer,2);
+
+  var dg = document.getElementById("vDiag");
+  if (Math.abs(dDer - dIzq) < 0.6){
+    dg.style.color = "#059669";
+    dg.textContent = "Las dos distancias son casi iguales → distribución simétrica. Aquí media y mediana prácticamente coinciden, y s te sirve sola: no hay lado que informar.";
+  } else if (dDer > dIzq){
+    dg.style.color = "#dc2626";
+    dg.textContent = "La distancia de la derecha es " + (dDer/Math.max(dIzq,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la DERECHA. Y fíjate: media (" + fmt(m,1) + ") > mediana (" + fmt(md,1) + ").";
+  } else {
+    dg.style.color = "#dc2626";
+    dg.textContent = "La distancia de la izquierda es " + (dIzq/Math.max(dDer,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la IZQUIERDA. Y fíjate: media (" + fmt(m,1) + ") < mediana (" + fmt(md,1) + ").";
+  }
+
+  /* histograma */
+  var c = prep(document.getElementById("cVib")), ctx = c.ctx;
+  var lo = 0, hi = 82, nb = 41, bw = (hi-lo)/nb;
+  var bins = new Array(nb); for(var i=0;i<nb;i++) bins[i]=0;
+  for(i=0;i<a.length;i++){
+    var k = Math.floor((a[i]-lo)/bw);
+    if(k<0) k=0; if(k>=nb) k=nb-1;
+    bins[k]++;
+  }
+  var mx = 0; for(i=0;i<nb;i++) if(bins[i]>mx) mx=bins[i];
+  var L=42, R=12, T=14, B=34, W=c.W-L-R, H=c.H-T-B;
+  function px(v){ return L + (v-lo)/(hi-lo)*W; }
+
+  ctx.fillStyle="#93c5fd";
+  for(i=0;i<nb;i++){
+    if(!bins[i]) continue;
+    var bh = bins[i]/mx*H;
+    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
+  }
+  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
+  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
+  for(var v=0; v<=80; v+=10){ ctx.fillText(v, px(v), T+H+16); }
+  ctx.fillText("vibración (mm/s)", L+W/2, T+H+31);
+
+  function linea(v,color,etq,dash,arriba){
+    if(v<lo||v>hi) return;
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(px(v),T); ctx.lineTo(px(v),T+H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
+    ctx.fillText(etq, px(v), arriba ? T+10 : T+22);
+  }
+  linea(p5,  "#7c3aed","P5", [3,3], true);
+  linea(p95, "#7c3aed","P95",[3,3], true);
+  linea(m-s, "#2563eb","−s", [5,4], false);
+  linea(m+s, "#2563eb","+s", [5,4], false);
+  linea(md,  "#059669","mediana", null, true);
+  linea(m,   "#dc2626","media",   null, false);
+}
+
+var sk = document.getElementById("sk");
+sk.addEventListener("input", function(){
+  vibK = (+sk.value)/100;
+  document.getElementById("oSk").textContent = vibK === 0
+    ? "simétrica"
+    : "×" + (1+vibK).toFixed(2).replace(".",",");
+  vibDraw();
+});
+document.getElementById("bEsp").addEventListener("click", function(){
+  vibEsp = !vibEsp;
+  this.className = vibEsp ? "" : "off";
+  this.textContent = vibEsp ? "Reflejando (espejo activo)" : "Reflejar (espejo)";
+  vibDraw();
+});
+document.getElementById("bReset").addEventListener("click", function(){
+  vibK = 0; vibEsp = false; sk.value = 0;
+  document.getElementById("oSk").textContent = "simétrica";
+  var b = document.getElementById("bEsp");
+  b.className = "off"; b.textContent = "Reflejar (espejo)";
+  vibDraw();
+});
+
+/* =========================================================
+   6 · MELBOURNE 2017: CRUDO FRENTE A LOG
+   ========================================================= */
+/* Histogramas reales calculados sobre 05_RESULTADOS/predicciones_2017.csv (n = 7.244) */
+var MEL_CRUDO = {
+  bins: [0,5,55,220,428,632,777,691,707,588,402,345,424,358,273,203,198,156,124,117,75,55,66,49,40,47,27,26,24,15,22,18],
+  extra: 77, lo: 0, ancho: 100000,
+  ticks: [0,500000,1000000,1500000,2000000,2500000,3000000],
+  eje: function(v){ return (v/1000000).toFixed(1).replace(".",",") + "M"; },
+  et: "precio de venta (AUD)"
+};
+var MEL_LOG = {
+  bins: [1,3,6,19,85,181,366,672,1010,1148,996,955,728,530,269,156,77,24,9,6,2,1],
+  extra: 0, lo: 11.7, ancho: 0.2,
+  ticks: [12,13,14,15,16],
+  eje: function(v){ return v.toFixed(0); },
+  et: "log1p(precio)"
+};
+var MEL_STATS = {
+  crudo: {media:1078071.708, mediana:910000, s:629742.8217, p5:420000, p95:2260000, bajo:61.5, d:0},
+  log:   {media:13.7542,   mediana:13.7212, s:0.5137,  p5:12.9480, p95:14.6309, bajo:52.5, d:4}
+};
+var melSel = "crudo";
+
+function melDraw(){
+  var D = (melSel==="crudo") ? MEL_CRUDO : MEL_LOG;
+  var S = MEL_STATS[melSel];
+  var c = prep(document.getElementById("cMel")), ctx = c.ctx;
+  var nb = D.bins.length;
+  var hi = D.lo + nb*D.ancho;
+  var mx = 0; for(var i=0;i<nb;i++) if(D.bins[i]>mx) mx=D.bins[i];
+  var L=42,R=12,T=14,B=34,W=c.W-L-R,H=c.H-T-B;
+  function px(v){ return L + (v-D.lo)/(hi-D.lo)*W; }
+
+  ctx.fillStyle = (melSel==="crudo") ? "#fca5a5" : "#86efac";
+  for(i=0;i<nb;i++){
+    if(!D.bins[i]) continue;
+    var bh = D.bins[i]/mx*H;
+    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
+  }
+  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
+  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
+  for(var t=0; t<D.ticks.length; t++){
+    var tv = D.ticks[t];
+    if(tv < D.lo || tv > hi) continue;
+    ctx.fillText(D.eje(tv), px(tv), T+H+16);
+  }
+  ctx.fillText(D.et, L+W/2, T+H+31);
+
+  if(D.extra){
+    ctx.fillStyle="#991b1b"; ctx.font="600 11px system-ui"; ctx.textAlign="right";
+    ctx.fillText("↑ y 77 casas más, hasta 9,0M", L+W-6, T+18);
+  }
+  function linea(val,color,etq,dash,arriba){
+    if(val<D.lo||val>hi) return;
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(px(val),T); ctx.lineTo(px(val),T+H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
+    ctx.fillText(etq, px(val), arriba ? T+10 : T+24);
+  }
+  linea(S.p5,"#7c3aed","P5",[3,3],true);
+  linea(S.p95,"#7c3aed","P95",[3,3],true);
+  linea(S.media - S.s,"#2563eb","−s",[5,4],false);
+  linea(S.media + S.s,"#2563eb","+s",[5,4],false);
+  linea(S.mediana,"#059669","mediana",null,true);
+  linea(S.media,"#dc2626","media",null,false);
+
+  var dIzq = Math.abs((S.media - S.s) - S.p5);
+  var dDer = Math.abs(S.p95 - (S.media + S.s));
+  var raz  = (dDer/dIzq);
+  document.getElementById("melMet").innerHTML =
+    '<div><div class="n">'+fmt(S.media,S.d)+'</div><div class="e">media</div></div>' +
+    '<div><div class="n">'+fmt(S.mediana,S.d)+'</div><div class="e">mediana</div></div>' +
+    '<div><div class="n">'+fmt(S.s,S.d===0?0:4)+'</div><div class="e">desv. estándar</div></div>' +
+    '<div><div class="n">'+fmt(dIzq,S.d===0?0:4)+'</div><div class="e">(media−s) a P5</div></div>' +
+    '<div><div class="n">'+fmt(dDer,S.d===0?0:4)+'</div><div class="e">(media+s) a P95</div></div>' +
+    '<div class="'+(melSel==="crudo"?"alarma":"bien")+'"><div class="n">'+S.bajo.toFixed(1).replace(".",",")+' %</div><div class="e">bajo la media</div></div>';
+
+  document.getElementById("melTxt").innerHTML = (melSel==="crudo")
+    ? "<strong>Crudo.</strong> La media (roja) está claramente a la derecha de la mediana (verde). La distancia de la derecha es <strong>"+raz.toFixed(0)+" veces</strong> la de la izquierda. Y hay 77 casas fuera del gráfico, algunas hasta 9,0 millones. <strong>El 61,5 % de las propiedades cuesta menos que el promedio.</strong>"
+    : "<strong>En logaritmo.</strong> Media y mediana casi se tocan, y las dos distancias son comparables ("+raz.toFixed(1).replace(".",",")+"×, contra 19× en la escala cruda). La cola se comprimió. <strong>Ahora el 52,5 % queda bajo la media:</strong> casi la mitad exacta, que es lo que uno espera de una distribución simétrica. Por eso entrenaste sobre <code>log1p(Price)</code>.";
+
+  document.getElementById("bCrudo").className = (melSel==="crudo") ? "" : "off";
+  document.getElementById("bLog").className   = (melSel==="log")   ? "" : "off";
+}
+document.getElementById("bCrudo").addEventListener("click", function(){ melSel="crudo"; melDraw(); });
+document.getElementById("bLog").addEventListener("click",   function(){ melSel="log";   melDraw(); });
+
+/* =========================================================
+   3 · CAMIONES: ¿CEROS REALES O FALTANTES?
+   Cifras ilustrativas [DATITO]: 15 camiones con consumo (media 2.400 L)
+   + 10 en cero → media 1.440 L, la de la lámina 20.
+   ========================================================= */
+var CAM_POS = [2100,2150,2200,2250,2300,2350,2400,2400,2400,2450,2500,2550,2600,2650,2700];
+var CAM_CEROS = 10, CAM_TUYO = 2500;
+var camModo = "real";
+
+function camDraw(){
+  var datos = CAM_POS.slice(), i;
+  if (camModo === "real"){ for(i=0;i<CAM_CEROS;i++) datos.push(0); }
+  var m = media(datos), md = mediana(datos);
+  var sobre = (CAM_TUYO/m - 1) * 100;
+
+  var c = prep(document.getElementById("cCam")), ctx = c.ctx;
+  var lo = 0, hi = 3000, nb = 12, bw = (hi-lo)/nb;
+  var cnt = []; for(i=0;i<nb;i++) cnt.push(0);
+  cnt[0] += CAM_CEROS;
+  for(i=0;i<CAM_POS.length;i++){
+    var k = Math.floor((CAM_POS[i]-lo)/bw);
+    if(k>=nb) k=nb-1;
+    cnt[k]++;
+  }
+  var mx = 0; for(i=0;i<nb;i++) if(cnt[i]>mx) mx=cnt[i];
+  var L=42,R=12,T=26,B=34,W=c.W-L-R,H=c.H-T-B;
+  function px(v){ return L + (v-lo)/(hi-lo)*W; }
+
+  for(i=0;i<nb;i++){
+    if(!cnt[i]) continue;
+    var bh = cnt[i]/mx*H;
+    if(i===0){ ctx.fillStyle = (camModo==="real") ? "#fca5a5" : "#e5e7eb"; }
+    else { ctx.fillStyle = "#93c5fd"; }
+    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
+    if(i===0 && camModo!=="real"){
+      ctx.strokeStyle="#9ca3af"; ctx.setLineDash([4,3]);
+      ctx.strokeRect(L + 0.5, T+H-bh, W/nb - 1, bh);
+      ctx.setLineDash([]);
+    }
+  }
+  ctx.fillStyle = (camModo==="real") ? "#991b1b" : "#6b7280";
+  ctx.font="600 11px system-ui"; ctx.textAlign="left";
+  ctx.fillText(camModo==="real" ? "10 camiones en 0" : "10 sin reporte: fuera del cálculo", L+4, T-8);
+
+  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
+  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
+  for(var v=0; v<=3000; v+=500){ ctx.fillText(fmt(v,0), px(v), T+H+16); }
+  ctx.fillText("consumo semanal por camión (litros)", L+W/2, T+H+31);
+
+  function linea(val,color,etq,dash,y){
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    if(dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.moveTo(px(val),T); ctx.lineTo(px(val),T+H); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
+    ctx.fillText(etq, px(val), y);
+  }
+  linea(CAM_TUYO,"#7c3aed","tus 2.500",[5,4],T+H-6);
+  linea(md,"#059669","mediana",null,T+10);
+  linea(m,"#dc2626","media",null,T+22);
+
+  document.getElementById("camMet").innerHTML =
+    '<div><div class="n">'+datos.length+'</div><div class="e">camiones en el cálculo</div></div>' +
+    '<div><div class="n">'+fmt(m,0)+' L</div><div class="e">media</div></div>' +
+    '<div><div class="n">'+fmt(md,0)+' L</div><div class="e">mediana</div></div>' +
+    '<div class="'+(sobre>20?"alarma":"bien")+'"><div class="n">+'+fmt(sobre,0)+' %</div><div class="e">tus 2.500 sobre la media</div></div>';
+
+  document.getElementById("camTxt").innerHTML = (camModo==="real")
+    ? "<strong>Ceros como consumo real.</strong> La media es "+fmt(m,0)+" L —la de la lámina— y tus camiones quedan "+fmt(sobre,0)+" % por encima. Pero mira el histograma: ningún camión gasta cerca de "+fmt(m,0)+" L. La media cae en el hueco entre los parados y los que trabajan. Hipótesis que calza con esta lectura: <em>muchos camiones inactivos</em>."
+    : "<strong>Ceros como reportes que faltan.</strong> Si nadie anotó esos consumos, no son consumo: salen del cálculo. Con los "+datos.length+" camiones que sí reportaron, la media es "+fmt(m,0)+" L y tus 2.500 L quedan apenas "+fmt(sobre,0)+" % arriba. Hipótesis que calza: <em>la gente no está reportando</em>. El histograma no decide entre las dos: hay que ir a ver quién anotó.";
+
+  document.getElementById("bCamReal").className  = (camModo==="real")  ? "" : "off";
+  document.getElementById("bCamFalta").className = (camModo==="falta") ? "" : "off";
+}
+document.getElementById("bCamReal").addEventListener("click",  function(){ camModo="real";  camDraw(); });
+document.getElementById("bCamFalta").addEventListener("click", function(){ camModo="falta"; camDraw(); });
+
+/* ---------- arranque ---------- */
+anDraw();
+camDraw();
+vibDraw();
+melDraw();
+window.addEventListener("resize", function(){ anDraw(); camDraw(); vibDraw(); melDraw(); });
+
+})();
+</script>
+</body>
+</html>

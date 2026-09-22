@@ -1,0 +1,18 @@
+# [PLACEHOLDER] Dudas resueltas por Datito
+#
+# Se llena automáticamente durante sesiones. Cada respuesta se renderiza
+# en los visuales de los conceptos relacionados.
+#
+# No edites: solo Datito escribe aquí.
+
+# Estructura (si hay dudas):
+# - n: número de orden (1, 2, 3, ...)
+#   fecha: YYYY-MM-DD
+#   sesion: número de sesión
+#   concepto: id_concepto
+#   duda: "lo que preguntó"
+#   respuesta: "lo que respondió Datito"
+#   estado: resuelta | abierta | practica
+#   detalles_adicionales: "si los hay"
+
+dudas: []

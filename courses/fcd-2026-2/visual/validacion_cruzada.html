@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Validación cruzada · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
+  button.ok{background:var(--verde)}button.ok:hover{background:#047857}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .hist{display:flex;gap:3px;flex-wrap:wrap;margin-top:.6rem;min-height:2rem}
+  .hist span{background:#fff;border:1px solid var(--linea);border-radius:5px;
+             padding:.15rem .45rem;font-size:.8rem;font-variant-numeric:tabular-nums}
+  .hist span.rep{background:#fee2e2;border-color:#fca5a5;color:#991b1b;font-weight:700}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .fold{display:flex;height:34px;border-radius:6px;overflow:hidden;margin:.35rem 0;
+        font-size:.74rem;font-weight:700;color:#fff}
+  .fold div{display:flex;align-items:center;justify-content:center}
+  .f-tr{background:#93c5fd;color:#1e3a8a}.f-va{background:#d97706}.f-te{background:#059669}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul)}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="8" id="clase-8">
+<div class="leccion-top"><span class="uni">Unidad 3 · Medir si el modelo sirve</span><b>Clase 8 de 22</b></div>
+<div class="barra"><span style="width:36.4%"></span></div>
+<div class="lt">Clase 8 · Validación cruzada y selección de modelos</div>
+<p><b>Objetivo.</b> Elegir una estrategia de validación y justificar por qué una sola partición puede engañar.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="train_validation_test.html">Clase 7 · Train, validation y test</a></div>
+<div><span class="et">habilita</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
+<div><span class="et">tiempo estimado</span>~30 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Explica K-Fold, bootstrap y submuestreo, y elige uno según la cantidad de datos y su orden.</li>
+<li><b>Actividad final:</b> Interpretar la distribución del error de validación y decir si el error de test cae dentro de ella.</li>
+<li><b>Criterio de dominio:</b> Justifica la estrategia y compara todos los modelos con la misma partición.</li></ul></div>
+<div class="activ"><b>Activación.</b> Con una partición gana el polinomio de grado 7; con otra, el de grado 4. ¿Cuál eliges? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="8"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="train_validation_test.html">← Clase 7 · Train, validation y test</a></span><a href="index.html">Índice del curso</a><span><a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Validacion cruzada</b></span> · <span class="et">viene de</span><a href="train_validation_test.html">Train / validation / test</a> · <span class="et">habilita</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 9 · peso en certamen baja (aparece como remedio, no como pregunta propia) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_2.html#p3">C2 P3</a></div>
+<details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:02:14–0:02:38 · profesor — anuncia «la tecnica mas importante yo creo de quizas…»<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:02:14]</span></li><li><b>Clase del 31-jul</b> · 0:43:28–0:43:55 · profesor — la respuesta a la mayor parte de los problemas<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:43:28]</span></li><li><b>Clase del 31-jul</b> · 0:49:13–0:51:59 · profesor — sobreajustar la validacion; «validacion nomas»; estrategias<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:13]</span></li><li><b>Clase del 31-jul</b> · 0:55:04–1:15:03 · profesor — holdout, bootstrap, submuestreo y K-Fold<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:55:04]</span></li><li><b>Clase del 7-ago</b> · 1:03:34–1:04:25 · profesor — lo mismo en clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:03:34]</span></li><li><b>Ayudantía del 31-jul</b> · 1:25:10–1:30:40 · ayudantía — KFold en el P4 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:25:10]</span></li><li><b>Ayudantía del 7-ago</b> · 0:12:03–0:30:25 · ayudantía — k=5, busqueda de hiperparametros, MSE negativo <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:12:03]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Validación cruzada</h1>
+<p class="sub">Por qué una sola partición no basta, y qué cambia al rotarla.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31 de julio</p>
+
+<div class="grafo">
+  <span class="n">Train / validation / test</span> →
+  <span class="n aqui">Validación cruzada</span> →
+  <span class="n">Overfitting y underfitting</span> →
+  <span class="n">…y 8 conceptos más</span>
+</div>
+
+<div class="tension">
+<strong>Dónde estás, y una asimetría que conviene que sepas.</strong>
+Viene de <em>train / validation / test</em>, que ya tienes en
+<code>COMPRENDIDO</code>. Habilita el sobreajuste y, por cadena, los árboles, los
+ensambles y el boosting: <strong>9 conceptos quedan bloqueados si este no se
+entiende</strong>.<br><br>
+Y sin embargo su <strong>peso en la evaluación es bajo</strong>: aparece
+<em>como remedio, no como pregunta propia</em> — la respuesta a «¿y cómo
+arreglas el sobreajuste?», casi nunca el enunciado. Si decides cuánto estudiar
+mirando el certamen, esta es exactamente la que vas a subestimar.
+</div>
+
+<p>La valoración del profesor es de otra naturaleza. No la dijo al cerrar el tema:
+la <strong>anunció al inicio</strong> de la clase, y con reserva («yo creo»,
+«quizás»):</p>
+
+<div class="cita">«Para el final terminar viendo la técnica más importante yo creo de quizás toda la inteligencia artificial que es la ⟨validación⟩ cruzada.» <span class="f">Clase del 31-jul · 0:02:25–0:02:32 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<h2>1 · La frase que define el concepto</h2>
+
+<p>En la Clase del 31-jul el profesor explica el esquema de tres conjuntos
+—entrenamiento, validación, test— y elige el grado del polinomio con el de
+validación. Un compañero le pregunta qué hacer si justo con esa validación «dio el
+polinomio perfecto» por suerte. Y responde esto:</p>
+
+<div class="cita">«Esto que yo le acabo de mostrar acá no es validación cruzada, esto es validación nomás. […] La estrategia de validación cruzada hay distinta, pero una de esas es K-fold, otra de esas shuffle split y otra es ⟨bootstrapping⟩» <span class="f">Clase del 31-jul · 0:51:29–0:51:52 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="dist">
+<strong>La distinción que decide todo:</strong><br>
+<strong>Validación</strong> («validación nomás», el <em>holdout</em>) = con el test
+ya guardado, partir <strong>una vez</strong> en entrenamiento / validación y decidir
+con ese único número.<br>
+<strong>Validación cruzada</strong> = una <strong>familia de estrategias</strong> que
+<strong>re-particionan varias veces</strong> los datos que no son test, entrenan y
+validan en cada partición, y miran la <em>distribución</em> de los errores de
+validación (media o mediana, y su dispersión). <strong>K-Fold es una de
+ellas</strong>: la que además garantiza que cada dato valide exactamente una vez.
+Submuestreo aleatorio (<em>shuffle split</em>) y bootstrap son otras.<br><br>
+El profesor las separa explícitamente. Decir «hice validación cruzada» cuando solo
+se partió una vez es justo la confusión que esa respuesta corrige. [DATITO]
+</div>
+
+<p>Un matiz de vocabulario que conviene conocer antes del certamen. Tres minutos
+después, al presentar las estrategias, el profesor parte por el mismo esquema de
+una partición:</p>
+
+<div class="cita">«[…] qué estrategia hay de validación cruzada […] uno de eso el método de retención que el que acabamos de ver que el holdout method que es como que básicamente guardo un subconjunto pero el problema que tenemos con eso es que tengo un solo valor» <span class="f">Clase del 31-jul · 0:54:42–0:55:15 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<div class="nota">
+<strong>¿Tres estrategias o cuatro?</strong> A los 0:51:52 nombra tres (K-fold,
+shuffle split, bootstrapping). A los 0:55:04 pone el holdout como la primera
+estrategia de validación cruzada y anuncia las otras tres: submuestreo
+aleatorio, K-Fold y bootstrap
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:55:27–0:55:32].
+La lámina, según el Resumen de la Clase 6, también lista cuatro: holdout, bootstrap,
+submuestreo aleatorio y K-Fold
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 14].<br><br>
+Lectura coherente [INFERENCIA]: el holdout es el <strong>caso base</strong> de la
+lista (una partición, un solo valor, «validación nomás»); las otras tres lo
+<strong>repiten</strong> con particiones distintas, y eso es lo que las vuelve
+validación cruzada propiamente tal. <em>Shuffle split</em> es el nombre en
+scikit-learn del submuestreo aleatorio [INFERENCIA]. En el papel: nombra las
+cuatro y marca que el holdout entrega un solo valor. Es el mismo vocabulario de
+<a href="train_validation_test.html">train_validation_test.html</a>.
+</div>
+
+<p>Antes, en el mismo bloque, había dicho algo que conviene tener a mano:</p>
+
+<div class="cita">«[…] yo le digo a todo mi alumno, si es que no saben la respuesta a algún problema, tienen como respuesta validación cruzada. Porque validación cruzada es la respuesta a la mayor parte de los problemas del aprendizaje automático.» <span class="f">Clase del 31-jul · 0:43:37–0:43:55 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<h2>2 · El problema: el conjunto de validación puede tener suerte</h2>
+
+<p>Él mismo lo plantea, y es la razón de existir de todo lo que sigue:</p>
+
+<div class="cita">«[…] lo que podría ocurrir, que no necesariamente ocurre siempre, pero que yo haya escogido un modelo, un hiperparámetro que funcione muy bien para el conjunto de ⟨validación⟩. Que por chances, así como por azar […] se podría sobreajustar el conjunto de ⟨validación⟩. […] Porque yo estoy tomando una decisión sobre el modelo, utilizando el conjunto de ⟨validación⟩.» <span class="f">Clase del 31-jul · 0:49:13–0:50:05 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «alineación»)</span></div>
+
+<p>Fíjate en la reserva: «no necesariamente ocurre siempre». No dice que la
+validación simple mienta; dice que <strong>puede</strong> tener suerte, y que con un
+solo número no tienes cómo saberlo.</p>
+
+<div class="clave">
+<strong>Traducido:</strong> el conjunto de validación deja de ser un juez neutral
+en cuanto lo usas para <em>elegir</em>. Cada decisión que tomas mirándolo le
+transfiere un poco de tu optimismo. Con una sola partición, no tienes forma de
+saber si el grado que ganó es bueno de verdad o solo tuvo suerte con esas 5 filas.
+</div>
+
+<div class="pred" id="pred1">
+  <div class="q">Antes de tocar nada — predice:</div>
+  <p style="margin:.2rem 0 .6rem">Abajo hay 20 árboles. Voy a apartar 5 al azar
+  como validación, ajustar polinomios de grado 1 a 6 con los otros 15, y quedarme
+  con el grado que menor error dé en esos 5. <strong>Si repito el sorteo 10 veces,
+  ¿cuántos grados distintos crees que van a ganar?</strong></p>
+  <button data-v="1">Siempre el mismo</button>
+  <button data-v="2">Dos o tres distintos</button>
+  <button data-v="3">Cuatro o más distintos</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> casi siempre <strong>cuatro o más grados
+distintos</strong>; «siempre el mismo» no ocurre con estos datos.</p>
+<p><strong>Cómo se resuelve:</strong> 1) con 20 árboles y 5 en validación, cada
+sorteo deja fuera un grupo distinto de árboles; 2) el grado ganador es el que
+mejor calza con <em>esos</em> 5, así que hereda su azar; 3) al repetir el sorteo
+10 veces, el ganador salta. En 2.000 simulaciones de 10 sorteos con este mismo
+lienzo, salieron 4 o más ganadores distintos en ~84 % de los casos, 2 o 3 en
+~16 %, y nunca uno solo [DATITO: simulación con los datos ilustrativos de esta
+página].</p>
+<p><strong>Error típico:</strong> pensar que, como los datos no cambian, la
+decisión tampoco cambia. Lo que cambia es la partición, y con un solo número de
+validación la decisión depende de ella.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> la advertencia de que
+«por azar» la validación puede favorecer un hiperparámetro es del profesor (cita
+del §2) [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:13–0:50:05];
+los porcentajes son [DATITO].</p>
+</details>
+
+<h2>3 · La lotería de una sola partición</h2>
+
+<div class="panel">
+  <canvas id="lienzo" width="860" height="330"></canvas>
+  <div style="margin-top:.9rem">
+    <button id="sortear">Sortear otra partición</button>
+    <button id="sortear10" class="alt">Sortear 10 veces</button>
+    <button id="reiniciar" class="alt">Reiniciar</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="m-grado">—</div><div class="e">Grado ganador</div></div>
+    <div><div class="n" id="m-err">—</div><div class="e">Error en validación</div></div>
+    <div><div class="n" id="m-veces">0</div><div class="e">Sorteos</div></div>
+    <div><div class="n" id="m-distintos">0</div><div class="e">Ganadores distintos</div></div>
+  </div>
+  <div class="lbl">Historial de ganadores</div>
+  <div class="hist" id="hist"></div>
+  <p style="font-size:.88rem;color:var(--suave);margin:.7rem 0 0">
+    Los datos <strong>no cambian</strong> entre sorteos. Lo único que cambia es
+    <em>qué 5 árboles</em> caen en validación. Si el grado ganador salta, es que
+    tu decisión depende del sorteo, no de los datos.<br>
+    Los 20 árboles son <strong>cifras ilustrativas</strong> [DATITO] y representan
+    lo que queda <em>después</em> de guardar el test: el test no aparece porque no
+    participa en ningún sorteo.
+  </p>
+</div>
+
+<h2>4 · K-Fold: que cada dato sea validación exactamente una vez</h2>
+
+<p>En vez de apartar 5 y rezar, se parte el conjunto en <strong>k</strong> bloques
+disjuntos —aquí k = 4, de 5 árboles cada uno, el mismo k que usó el profesor en su
+dibujo
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:10:33–1:10:40]—
+y se rota cuál hace de validación. El test sigue guardado en todas las rondas: él
+dibuja primero «guardo siempre mi test» y recién después arma los k bloques
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:10:25].</p>
+
+<div class="panel">
+  <div id="folds"></div>
+  <div style="margin-top:.9rem">
+    <button id="correrkf" class="ok">Correr K-Fold (k = 4)</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="k-grado">—</div><div class="e">Grado ganador</div></div>
+    <div><div class="n" id="k-err">—</div><div class="e">Error promedio</div></div>
+    <div><div class="n" id="k-desv">—</div><div class="e">Desviación entre folds</div></div>
+    <div><div class="n" id="k-veces">0</div><div class="e">Corridas</div></div>
+  </div>
+  <div class="lbl">Historial de ganadores (K-Fold)</div>
+  <div class="hist" id="khist"></div>
+  <p style="font-size:.88rem;color:var(--suave);margin:.7rem 0 0">
+    Vuelve a correrlo varias veces. Compara cuánto salta <em>este</em> historial
+    contra el de arriba.
+  </p>
+</div>
+
+<div class="nota">
+<strong>Lo que acabas de ver, dicho en una línea:</strong> la validación simple
+te da <em>una</em> estimación del error; K-Fold te da <em>k</em> y promedia. No
+mejora el modelo — <strong>mejora tu estimación del error del modelo</strong>.
+Son cosas distintas y conviene no confundirlas al responder.
+</div>
+
+<h2>5 · La distribución del error: dónde debería caer el test</h2>
+
+<p>Repetir la partición no solo da un promedio. Da <strong>una nube de
+errores</strong> por cada candidato, y con ella una regla para revisar el test:</p>
+
+<div class="cita">«si yo lo hago varias ⟨veces⟩ entonces puedo saber más o menos la distribución del error […] y después al final lo aplico sobre el conjunto de test y en conjunto de test el error debiese caer dentro […] de la distribución de los errores del conjunto de ⟨validación⟩» <span class="f">Clase del 31-jul · 0:59:01–0:59:38 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p>Fue el punto que más costó en esa clase: al pedir que levantaran la mano quienes
+no habían entendido, hubo varias, y el profesor lo rehízo con un dibujo
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:00:44].
+El dibujo: en el eje horizontal el grado del polinomio, en el vertical el error de
+validación, varios puntos por grado; se elige el grado cuya nube está más cerca de
+cero y recién ahí se mira el test
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:03:08–1:06:22].
+Abajo está ese dibujo, con cifras ilustrativas [DATITO].</p>
+
+<div class="pred" id="pred2">
+  <div class="q">Antes de pulsar los botones — predice:</div>
+  <p style="margin:.2rem 0 .6rem">Con la partición bien hecha, ¿dónde debería caer
+  el error de test del grado elegido?</p>
+  <button data-v="media">Exactamente en la media de validación</button>
+  <button data-v="nube">Dentro de la nube de errores de validación</button>
+  <button data-v="bajo">Por debajo de todos: el modelo final ya está listo</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>dentro de la nube</strong> de errores de
+validación del grado elegido; no en un punto exacto.</p>
+<p><strong>Cómo se resuelve:</strong> 1) cada repetición de la partición da un error
+de validación: la nube es su distribución; 2) el test es otra muestra de datos no
+vistos, del mismo tipo si la partición está bien hecha; 3) por eso su error debe
+parecerse a uno más de la nube: cerca de la media, con la misma variabilidad;
+4) si cae fuera, se investiga antes de reportar.</p>
+<p><strong>Error típico:</strong> exigir que el test coincida con la media (es una
+muestra, varía), o esperar que salga mejor que todo porque el modelo final ya
+estaría listo (no ha visto más datos que en las repeticiones).</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> «el error debiese caer
+dentro […] de la distribución de los errores del conjunto de ⟨validación⟩»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:59:31–0:59:38]
+(⟨⟩ = corrección de transcripción [INFERENCIA]).</p>
+</details>
+
+<div class="panel">
+  <canvas id="nube" width="860" height="330"></canvas>
+  <div style="margin-top:.9rem">
+    <button id="remuestrear">Remuestrear (nueva nube)</button>
+    <button id="test-ok" class="ok">Evaluar el test · representativo</button>
+    <button id="test-mal" class="alt">Evaluar el test · no representativo</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="n-grado">—</div><div class="e">Grado elegido</div></div>
+    <div><div class="n" id="n-rango">—</div><div class="e">Nube de validación (mín–máx)</div></div>
+    <div><div class="n" id="n-test">—</div><div class="e">Error de test</div></div>
+    <div><div class="n" id="n-lectura">—</div><div class="e">Lectura</div></div>
+  </div>
+  <p id="n-texto" style="font-size:.88rem;color:var(--suave);margin:.7rem 0 0">
+    Cada punto es el error de validación de una repetición (submuestreo o
+    bootstrap). Cifras ilustrativas [DATITO]; el criterio «dentro = entre el mínimo
+    y el máximo de la nube» es una simplificación [DATITO]: el profesor habló de
+    media o mediana, desviación estándar o percentiles.
+  </p>
+  <p id="n-lect-txt" style="font-size:.92rem;margin:.5rem 0 0;font-weight:600"></p>
+</div>
+
+<div class="clave">
+<strong>Si el test cae fuera, algo raro pasa.</strong> Las causas que dio el
+profesor: el test tiene alguna anomalía, o se escogió un test que no es
+representativo del resto de los datos; con series de tiempo pasa si el test
+queda muy separado de la validación
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:22–1:07:22].
+Una tercera se desprende de lo que dijo en otra clase, comentando un proyecto de
+Melbourne [INFERENCIA]: que los datos cambian entre un período y otro, y que con
+la validación también se tomaron decisiones — está en
+<a href="generalizacion.html">generalizacion.html</a>.
+</div>
+
+<h2>6 · La ecuación, desarmada</h2>
+
+<div class="ecu">
+  <div class="f">CV<sub>(k)</sub> = (1/k) · Σ<sub>i=1..k</sub> L( f<sub>−i</sub> , D<sub>i</sub> )</div>
+  <table class="simb">
+  <tr><td>CV<sub>(k)</sub></td><td>La estimación del error por validación cruzada. <strong>Es un número que resume k números.</strong> <span class="rol r-aprende">lo calculas</span></td></tr>
+  <tr><td>k</td><td>Cuántos bloques. <strong>Lo decides tú</strong>: el profesor dibujó k = 4; 5 y 10 son habituales en la práctica [DATITO] <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>D<sub>i</sub></td><td>El bloque <em>i</em>, el que hace de validación en esa ronda <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>f<sub>−i</sub></td><td>El modelo entrenado con <strong>todo menos</strong> D<sub>i</sub>. El subíndice negativo es «sin el bloque i» <span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td>L</td><td>La función de pérdida: MAE, MSE, error de clasificación… <strong>La eliges tú</strong> <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>Σ</td><td>«Suma sobre las k rondas»</td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.7rem 0 0"><strong>Dos de los cinco símbolos
+  son decisiones tuyas</strong>, no verdades del problema: <code>k</code> y
+  <code>L</code>. Cambiarlas cambia el número. Por eso una respuesta que dice
+  «hice validación cruzada» sin decir <em>cuál</em> y <em>con qué métrica</em>
+  está incompleta.</p>
+</div>
+
+<h3>El camino inverso: te dan la fórmula en el papel</h3>
+
+<p>En una prueba escrita la ecuación llega primero. Esto es lo que hay que poder
+reconstruir, en orden:</p>
+
+<ol class="pasos">
+  <li><strong>¿Qué compara?</strong> Nada: no compara, <em>promedia</em>. Es una
+  media de k errores, no una diferencia entre dos cosas</li>
+  <li><strong>¿Por qué el subíndice −i?</strong> Porque el modelo de la ronda
+  <em>i</em> nunca vio el bloque <em>i</em>. Si lo hubiera visto, el error no
+  mediría generalización</li>
+  <li><strong>¿Cuántas veces se entrena el modelo?</strong> <strong>k veces</strong>,
+  una por ronda. Ese es el costo: validación cruzada es k veces más cara que
+  validación simple</li>
+  <li><strong>¿Cuántas veces se usa cada dato?</strong> k−1 veces para entrenar y
+  <strong>exactamente una</strong> para validar. Esa es la propiedad que define
+  K-Fold</li>
+  <li><strong>¿Qué pasa si k = n?</strong> Cada bloque tiene un solo dato. Se llama
+  <em>leave-one-out</em>: máximo aprovechamiento, máximo costo</li>
+</ol>
+
+<div class="peligro">
+<strong>El error que este formato castiga.</strong> Decir <em>«el CV dio 0,8»</em>
+como si fuera una métrica que se reporta. <strong>CV no es una métrica: es un
+método para estimar una métrica.</strong> Lo que se reporta es el MAE, la
+exactitud o el F1 — <em>estimados por validación cruzada</em>. Y la métrica final
+se reporta sobre el <strong>test</strong>, que sigue guardado en el bolsillo.
+</div>
+
+<h2>7 · Las estrategias: cuatro en la lámina, holdout es el caso base</h2>
+
+<p>En todas, el test ya está guardado y <strong>no cambia entre una iteración y
+otra</strong>
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:09:06–1:09:10].
+Lo que cambia es cómo se reparte el resto.</p>
+
+<table>
+<tr><th>Estrategia</th><th>Cómo parte (sin tocar el test)</th><th>Qué dijo el profesor</th></tr>
+<tr><td><strong>Holdout</strong><br><em>(método de retención)</em></td><td>Una sola vez; generalmente 2/3 entrenamiento y 1/3 validación</td><td>Entrega <strong>un solo valor</strong>: es el caso de una sola partición del §1 <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:55:39–0:55:49]</span></td></tr>
+<tr><td><strong>Submuestreo aleatorio</strong><br><em>(random subsampling; shuffle split)</em></td><td>Repite el holdout con particiones al azar <strong>sin reemplazo</strong> y promedia</td><td>«básicamente la misma idea» que bootstrap, pero sin reemplazo: el entrenamiento no repite datos <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:08:43–1:09:26]</span></td></tr>
+<tr><td><strong>K-Fold</strong></td><td>k bloques <strong>disjuntos</strong>; cada uno valida una vez</td><td>Cada dato queda validado exactamente una vez; sirve para comparar muchos modelos sobre la misma partición <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:12:44–1:13:48]</span></td></tr>
+<tr><td><strong>Bootstrap</strong></td><td>Muestrea <strong>con reemplazo</strong>; lo que no salió pasa a validación</td><td>El entrenamiento puede tener repetidos, la validación no; se usa cuando hay pocos datos <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:07:55–1:08:36]</span></td></tr>
+</table>
+
+<div class="nota">
+<strong>La diferencia que se pregunta:</strong> en K-Fold los bloques son
+<strong>disjuntos</strong> y cada dato valida <em>una vez</em>. En shuffle split
+los sorteos son independientes: un dato puede caer en validación tres veces y
+otro ninguna. En bootstrap el entrenamiento puede <strong>repetir</strong> filas.
+</div>
+
+<h3>Bootstrap y el 63,2 %</h3>
+
+<div class="cita">«[…] todo lo que no está dentro del conjunto de entrenamiento pasa al conjunto de ⟨validación⟩, en promedio un conjunto de entrenamiento de tamaño n con bootstrap contiene el orden del 63,2% de los datos» <span class="f">Clase del 31-jul · 0:57:34–0:57:47 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] · ⚠ número dicho en clase, contrastado abajo</span></div>
+
+<div class="ecu">
+  <div class="f">P(un dato sale al menos una vez) = 1 − (1 − 1/n)<sup>n</sup> → 1 − 1/e ≈ 0,632</div>
+  <p style="font-size:.92rem;margin:0">[INFERENCIA] En cada una de las n
+  extracciones, un dato fijo <em>no</em> sale con probabilidad 1 − 1/n. Que no salga
+  en ninguna de las n: (1 − 1/n)<sup>n</sup>, que para n grande tiende a 1/e ≈ 0,368.
+  Por eso el entrenamiento contiene, en promedio, ~63,2 % de los datos
+  <em>distintos</em> y la validación el ~36,8 % restante. El número coincide con la
+  lámina según el Resumen de la Clase 6
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 14].</p>
+</div>
+
+<div class="nota">
+<strong>Matiz: n o n'.</strong> Al definir el método, el profesor dijo que se
+generan subconjuntos «de tamaño n' menor que n»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:56:31],
+y el Resumen repite n' &lt; n. El 63,2 % vale para muestras de tamaño
+<strong>n</strong>, que es como lo dijo después. Si la muestra es de tamaño
+n' &lt; n, la fracción de datos distintos es menor: 1 − (1 − 1/n)<sup>n'</sup>
+[INFERENCIA]. En el papel, di de qué tamaño es la muestra antes de usar el 63,2 %.
+</div>
+
+<h3>¿Y si tengo pocos datos? Primero lo oficial</h3>
+
+<p>El práctico oficial P4 pone K-Fold justo bajo el título <em>«¿Y si tengo pocos
+datos de entrenamiento?»</em>
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l. 808–810].
+En la ayudantía del 7-ago se presentó K-Fold en ese mismo contexto (tramo confuso
+en la transcripción; ayudantía, no materia de certamen)
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:11:55–0:12:06].</p>
+
+<div class="nota">
+<strong>La postura del profesor en clase va en otra dirección.</strong>
+<div class="cita">«En general, yo lo que digo es, o como yo lo uso, es si tienen mucho, mucho datos que ⟨K-fold⟩ está bien, porque cada uno de los subconjunto va a tener mucho, mucho datos. […] si yo tengo muy pocos datos, ahí tenés que hacer bootstrapping» <span class="f">Clase del 31-jul · 1:14:06–1:14:59 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «hay ford») · ⚠ tramo con errores de reconocimiento</span></div>
+Sus razones: con pocos datos no hay muchas opciones para k —«yo tengo 100 datos,
+no puedo hacer K igual a 1000»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:12:27]—
+y cada bloque necesita datos suficientes para que la métrica tenga precisión: para
+perros y gatos, del orden de «unos 50 gato acá y 50 perros en cada conjunto»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:14:36].<br><br>
+<strong>Cómo leer las dos fuentes [INFERENCIA]:</strong> el P4 compara K-Fold
+contra partir una sola vez (con pocos datos, K-Fold aprovecha mejor cada fila); el
+profesor compara K-Fold contra bootstrap cuando los datos son <em>muy</em> pocos y
+cada bloque quedaría diminuto. <strong>Como el certamen lo escribe él, conviene
+preguntarle cuál criterio espera.</strong> Mientras tanto, en el papel declara el
+supuesto: «con muy pocos datos, bootstrap, como se dijo en clase; frente a un
+holdout, K-Fold, como en el P4».
+</div>
+
+<h3>Tres cosas más que dijo y que se preguntan bien</h3>
+<ul>
+<li><strong>Todas convergen si hubiera datos infinitos</strong>, pero «nadie tiene
+datos infinitos»: por eso la elección depende de la tarea
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:11:56–1:12:21].</li>
+<li><strong>Misma partición para todos los candidatos.</strong> Si vas a probar 20
+modelos, puedes usar «exactamente la misma partición para estos 20 modelos»; se
+suele hacer con K-Fold, pero también con los otros si muestreas primero
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:13:30–1:14:06].</li>
+<li><strong>Cuánto es «mucho» depende del problema</strong>
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:14:18–1:14:43]:
+se mide por lo que cae en cada bloque, no por el total.</li>
+</ul>
+
+<div class="peligro">
+<strong>Y la excepción que te toca de cerca.</strong> Si los datos tienen orden
+temporal y quieres predecir el futuro, mezclar para armar los folds mete datos del
+futuro en el entrenamiento. Tu proyecto de Melbourne separa por año: train 2016 →
+test 2017, <strong>sin mezclar entre años</strong>. Dentro de 2016 sí se usó K-Fold
+con mezcla (k = 5) para elegir el modelo
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · l. 76], y esa validación no
+podía ver lo que cambió en 2017. El profesor lo comentó en el Hito 2: está en
+<a href="generalizacion.html">generalizacion.html</a>. Y la partición temporal en
+sí, en <a href="train_validation_test.html">train_validation_test.html</a>.
+</div>
+
+<h2>8 · Por qué esto te importa a ti en particular</h2>
+
+<div class="clave">
+Tienes un error abierto registrado: <strong>diagnosticar sin calcular la
+brecha</strong>. Ante la tabla <code>A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39</code>
+dijiste <em>«A sobreajusta, B subajusta, C está bien»</em> sin calcular las
+diferencias.<br><br>
+<strong>La validación cruzada es la herramienta que convierte esa intuición en un
+número.</strong> No solo te da el error de validación: te da <strong>k</strong> de
+ellos, y con eso una desviación. Una brecha de 0,44 entre entrenamiento y
+validación significa una cosa si los folds varían ±0,02, y otra muy distinta si
+varían ±0,20.
+</div>
+
+<h2>9 · Ejercicios</h2>
+
+<div class="pred" id="pred3">
+  <div class="q">Antes del código — predice (esto viene de la ayudantía, no de las
+  clases del profesor):</div>
+  <p style="margin:.2rem 0 .6rem">En el P4, la búsqueda de hiperparámetros usa
+  <code>scoring='neg_mean_squared_error'</code>
+  [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l. 874].
+  Dos grados obtienen <strong>−120</strong> y <strong>−45</strong> [DATITO].
+  ¿Cuál es mejor?</p>
+  <button data-v="neg">−120: más negativo, mejor</button>
+  <button data-v="cero">−45: más cercano a cero, mejor</button>
+  <button data-v="igual">Da lo mismo: es el mismo error con otro signo</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>−45 es mejor</strong>: es un MSE de 45, menor
+que 120.</p>
+<p><strong>Cómo se resuelve:</strong> 1) el score es −MSE; 2) quítale el signo:
+−120 → MSE 120, −45 → MSE 45; 3) el MSE es un error, así que menor es mejor;
+4) por lo tanto, en el score, <strong>más cercano a cero es mejor</strong>.</p>
+<p><strong>Error típico:</strong> leer «más negativo, mejor», como si fuera una
+pérdida que se minimiza sin mirar el signo. Esa fue justamente la duda de la
+ayudantía.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> ayudantía del 7-ago, no
+materia de certamen: «entre más cercano a cero mejor»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51];
+el scoring del P4 [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l. 874].</p>
+</details>
+
+<h3>Cálculo a mano</h3>
+<p>K-Fold con k = 4, error de validación (MSE) de cada ronda, cifras ilustrativas
+[DATITO]:</p>
+<table>
+<tr><th></th><th>ronda 1</th><th>ronda 2</th><th>ronda 3</th><th>ronda 4</th></tr>
+<tr><td>Grado 2</td><td class="num">0,20</td><td class="num">0,22</td><td class="num">0,19</td><td class="num">0,23</td></tr>
+<tr><td>Grado 5</td><td class="num">0,12</td><td class="num">0,31</td><td class="num">0,15</td><td class="num">0,34</td></tr>
+</table>
+<p>(a) Calcula CV<sub>(4)</sub> de cada grado y elige. (b) ¿Qué habría elegido un
+holdout que solo hubiera visto la ronda 1? (c) Con bootstrap sobre n = 5 datos,
+¿qué fracción de datos distintos esperas en el entrenamiento? (d) Si pruebas 6
+grados con k = 4, ¿cuántas veces entrenas para decidir?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) CV grado 2 = 0,21 y grado 5 = 0,23: se elige el
+<strong>grado 2</strong>; (b) el holdout de la ronda 1 habría elegido el grado 5;
+(c) ~67,2 %; (d) 24 entrenamientos.</p>
+<p>(a) Grado 2: (0,20 + 0,22 + 0,19 + 0,23) / 4 = 0,84 / 4 = <strong>0,21</strong>.
+Grado 5: (0,12 + 0,31 + 0,15 + 0,34) / 4 = 0,92 / 4 = <strong>0,23</strong>. Se
+elige el <strong>grado 2</strong>, y además su dispersión es mucho menor.</p>
+<p>(b) En la ronda 1 el grado 5 gana (0,12 contra 0,20). Un holdout con esa
+partición habría elegido el grado 5: es la lotería del §3 con números.</p>
+<p>(c) 1 − (4/5)<sup>5</sup> = 1 − 0,32768 ≈ <strong>0,672</strong>, es decir
+~67,2 %. Con n pequeño la fracción es algo mayor que 63,2 %; se acerca a 63,2 % a
+medida que n crece [INFERENCIA].</p>
+<p>(d) 6 × 4 = <strong>24 entrenamientos</strong>. Ese es el costo de la validación
+cruzada: k veces más que un holdout por candidato.</p>
+<p><strong>Error típico:</strong> elegir el grado 5 porque tiene el error más bajo
+de la tabla (0,12). Ese valor es una sola ronda; lo que se compara es el promedio
+de las k rondas, mirando además cuánto varían. Otro error: en (c), responder
+63,2 % sin fijarse en que n = 5 es pequeño.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> K-Fold y el promedio de
+los errores, Clase del 31-jul
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:09:52–1:11:12];
+la fórmula de (c) es [INFERENCIA]; los números de la tabla son [DATITO].</p>
+</details>
+
+<h3>Interpretación</h3>
+<p>Repetiste 50 veces el submuestreo con el grado elegido: error de validación con
+mediana 0,15 y rango 0,11–0,20. El test da <strong>0,34</strong>. Cifras
+ilustrativas [DATITO]. ¿Qué le dices a quien pidió el modelo?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> «El modelo va a rendir peor de lo que prometía la
+validación; antes de usarlo hay que averiguar por qué el test se comporta
+distinto».</p>
+<p><strong>Cómo se resuelve:</strong> 1) ubica el test respecto de la nube: 0,34 está
+muy por encima del máximo 0,20; 2) aplica la regla del profesor: debería caer
+dentro; 3) como no cae, algo raro pasa; 4) traduce al problema, sin jerga.</p>
+<p>El test cae <strong>fuera</strong> de la distribución de los errores de
+validación, así que no se reporta como si nada. Según el profesor, algo raro
+pasa: el test tiene alguna anomalía o no es representativo del resto de los
+datos (§5). La traducción al problema: «el error que medimos al elegir no es el
+que vamos a tener; antes de usarlo hay que entender en qué se diferencia el test».
+Candidatos a revisar: si el test es de otro período, si hay datos anómalos, o si
+la validación se usó para tomar tantas decisiones que quedó optimista
+[INFERENCIA].</p>
+<p><strong>Error típico:</strong> reportar 0,34 como «el error del modelo» sin
+comentar la discrepancia, o reportar 0,15 porque «el test tuvo mala suerte». Ni lo
+uno ni lo otro: la diferencia es información y hay que explicarla.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> la regla y las causas
+son del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:22–1:06:47];
+las cifras son [DATITO].</p>
+</details>
+
+<h3>Transferencia: minería</h3>
+<p>Una planta concentradora tiene <strong>60 ensayos de laboratorio</strong>
+[DATITO] para predecir la recuperación de cobre desde la granulometría, y quiere
+comparar 3 modelos. Los ensayos no tienen orden temporal relevante. ¿Qué haces,
+paso a paso?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> guardar primero un test, comparar los 3 modelos con
+validación cruzada sobre la <strong>misma</strong> partición del resto (bootstrap
+según el profesor por ser muy pocos datos, o K-Fold como en el P4, declarando cuál)
+y evaluar una sola vez en el test.</p>
+<p>1) Guardar el test primero, por ejemplo 12 ensayos, y no tocarlo. 2) Quedan 48:
+son pocos. Según el profesor, con muy pocos datos, bootstrap; según el P4, K-Fold
+antes que un holdout. Con k = 4 cada bloque tendría 12 ensayos: pregúntate si 12
+bastan para que la métrica sea precisa. 3) Usar <strong>la misma partición</strong>
+para los 3 modelos. 4) Elegir por la distribución del error (media y dispersión),
+no por una ronda. 5) Evaluar una vez en el test y comprobar que cae dentro de la
+nube. [DATITO]</p>
+<p>Si los ensayos vinieran por campañas en el tiempo y el modelo fuera a usarse en
+la campaña siguiente, el orden temporal manda por sobre todo lo anterior.</p>
+<p><strong>Error típico:</strong> usar los 60 ensayos para comparar y reportar el
+mejor promedio de validación como desempeño final (no queda nada guardado), o
+evaluar cada modelo sobre particiones distintas (la comparación deja de ser
+justa).</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> guardar el test, misma
+partición para todos y bootstrap con pocos datos: Clase del 31-jul
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:13:30–1:14:59];
+K-Fold con pocos datos: P4 [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l. 808–810];
+el caso minero es [DATITO].</p>
+</details>
+
+<h2>10 · Distinción de certamen y errores que el formato castiga</h2>
+
+<div class="dist">
+<strong>Distinción de certamen.</strong><br>
+<strong>Validación</strong> (una partición, un número) <strong>≠ validación
+cruzada</strong> (re-particionar y mirar la distribución).<br>
+<strong>Estimar el error ≠ mejorar el modelo</strong>: la validación cruzada mejora
+tu estimación; el modelo mejora solo si con ella eliges mejor.<br><br>
+Dónde se pregunta: en la <a href="certamen_2.html#p3">P3 del Certamen 2</a> la
+afirmación «se puede medir el nivel de sobreajuste utilizando validación cruzada»
+es correcta. Y la brecha que mide está en
+<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>.
+</div>
+
+<table>
+<tr><th>Error</th><th>Por qué se castiga</th></tr>
+<tr><td>Llamar validación cruzada a una sola partición</td><td>Es «validación nomás» (§1): un solo valor, puede ser suerte</td></tr>
+<tr><td>Meter el test en los folds, o cambiarlo entre repeticiones</td><td>El test se guarda antes de todo y no cambia entre iteraciones (§7)</td></tr>
+<tr><td>Decir que la validación cruzada mejora el modelo</td><td>Mejora la estimación del error; el modelo no cambia por medirlo mejor</td></tr>
+<tr><td>Reportar solo el promedio</td><td>Sin la dispersión no sabes si el promedio es confiable, ni si el test cae dentro (§5)</td></tr>
+<tr><td>Decir que en bootstrap la validación tiene repetidos</td><td>Repite el <em>entrenamiento</em>; la validación no tiene repetidos (§7)</td></tr>
+<tr><td>Usar el 63,2 % sin decir el tamaño de la muestra</td><td>Vale para muestras de tamaño n, no n' &lt; n (§7)</td></tr>
+<tr><td>Leer el score negativo de scikit-learn al revés</td><td>Más cercano a cero es mejor (ayudantía; ver la predicción del §9)</td></tr>
+</table>
+
+<h2>11 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. ¿HAY ORDEN TEMPORAL?      sí → corte temporal, NO k-fold con mezcla
+2. APARTAR EL TEST           antes de todo. No cambia entre repeticiones
+3. ELEGIR LA ESTRATEGIA      holdout (1 valor) · submuestreo · K-Fold · bootstrap
+                             pocos datos: declarar el criterio (clase vs P4)
+4. ELEGIR k O REPETICIONES   el profesor dibujó k = 4. Declararlo
+5. ELEGIR LA PÉRDIDA L       MAE, MSE, F1… Declararla
+6. PARA CADA CANDIDATO       la MISMA partición: entrenar, medir en validación
+7. RESUMIR                   media o mediana + dispersión (la nube)
+8. DECIDIR                   el hiperparámetro con menor error de validación
+9. TEST, UNA VEZ             ¿cae dentro de la nube? si no, investigar
+10. REPORTAR                 la métrica del test, sin volver atrás
+</pre>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero te dice: <em>«hice validación cruzada: separé mis datos en
+entrenamiento, validación y test, y elegí el modelo con el de validación»</em>.<br><br>
+<strong>¿Hizo validación cruzada? Responde verdadero o falso con justificación, y
+nombra qué le falta exactamente.</strong><br><br>
+Pista: es lo que el profesor respondió a un compañero en la Clase del 31-jul (la
+cita del §1). Escríbelo con tus palabras y llévalo a Datito.
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>falso</strong>: lo que hizo es validación
+simple (holdout), no validación cruzada.</p>
+<p><strong>Respuesta modelo:</strong> «Falso. Separar una vez en entrenamiento,
+validación y test y elegir con la validación es validación, o holdout: da un solo
+número de error, y ese número puede favorecer por azar a un modelo que calzó bien
+con esas filas en particular. La validación cruzada repite la partición de los
+datos que no son test —con K-Fold, submuestreo aleatorio o bootstrap—, entrena y
+valida cada vez, y elige mirando la distribución de esos errores: su media y su
+dispersión. Le falta eso: repetir la partición con el test guardado y decidir con
+el resumen de las repeticiones, no con una sola.»</p>
+<p><strong>Cómo se resuelve:</strong> 1) identifica cuántas particiones hizo: una;
+2) nombra eso como holdout; 3) di el riesgo: suerte de la partición; 4) di lo que
+falta: repetir y resumir la distribución.</p>
+<p><strong>Criterios de corrección:</strong> dice falso; nombra el holdout; explica
+el riesgo del azar; nombra al menos una estrategia de validación cruzada; mantiene
+el test guardado; no dice que la validación cruzada «mejora el modelo».</p>
+<p><strong>Error típico:</strong> responder «verdadero, porque usó un conjunto de
+validación». Tener un conjunto de validación no es lo mismo que validación
+cruzada.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> «no es validación
+cruzada, esto es validación nomás»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:51:38].</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+    de dónde viene esto, y las cuatro estrategias dibujadas con el test aparte</li>
+<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué es
+    exactamente la brecha que la validación cruzada mide, y por qué el test de 2017
+    de Melbourne quedó por encima de la validación de 2016</li>
+<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+    el concepto que este habilita directamente</li>
+<li><a href="certamen_2.html#p3"><code>certamen_2.html#p3</code></a> — dónde se
+    pregunta: la P3 dice <em>«se puede medir el nivel de sobreajuste utilizando
+    validación cruzada»</em>, y es verdadera</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-8">
+<h2>Cierre de la Clase 8 · Validación cruzada y selección de modelos</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Re-particionar varias veces evita depender de una partición con suerte.</li><li>En K-Fold cada dato valida exactamente una vez.</li><li>El bootstrap muestrea con reemplazo; con muestras de tamaño n contiene cerca del 63,2 % de los datos distintos.</li><li>Los modelos se comparan con la misma partición.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Una sola partición («validación nomás») ≠ validación cruzada.</li><li>Error promedio ≠ distribución del error.</li><li>Con orden temporal no se desordena al azar.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>¿Cuántos datos hay? ¿Tienen orden temporal?</li><li>Elige la estrategia y fija la partición.</li><li>Compara por el promedio y por la dispersión del error.</li><li>El test sigue aparte.</li></ol>
+<p><b>Viene de:</b> <a href="train_validation_test.html">Clase 7 · Train, validation y test</a> · <b>Sigue:</b> <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></p>
+<p><b>Vuelve a tu activación:</b> Con una partición gana el polinomio de grado 7; con otra, el de grado 4. ¿Cuál eliges? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> En sklearn un modelo obtiene −0,8 y otro −1,2 (MSE negativo). ¿Cuál es mejor?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>El de −0,8: más cercano a cero significa menor error. Lo explicó la ayudantía, que no entra al certamen. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="generalizacion.html">Continuar → Clase 9 · Generalización, extrapolación y datos no vistos</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/validacion_cruzada.html</code> ·
+funciona sin conexión · fuentes: transcripción de la Clase del 31-jul
+(<code>09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md</code>),
+ayudantía del 7-ago, práctico P4 resuelto, Resumen de la Clase 6 y
+<code>03_CODIGO/modelamiento_temporal.py</code>.<br>
+Datos reales: las citas (con marca de tiempo verificable) y la configuración de
+K-Fold de tu proyecto. Datos ilustrativos [DATITO]: los 20 árboles de los
+lienzos, la nube de errores y todas las cifras de los ejercicios.
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- Datos: 20 arboles. Relacion cuadratica real + ruido. Semilla fija. ----
+let semilla = 20260731;
+function rnd(){ semilla = (semilla * 1664525 + 1013904223) % 4294967296; return semilla / 4294967296; }
+function gauss(){ return (rnd()+rnd()+rnd()+rnd()+rnd()+rnd()-3) / 1.5; }
+
+const DATOS = [];
+for (let i = 0; i < 20; i++){
+  const x = 10 + i * 1.4;                       // DAP 10 a 36.6 cm
+  const y = 0.02 + 0.0011 * x * x + 0.11 * gauss();   // volumen m3
+  DATOS.push({x, y: Math.max(0.05, y)});
+}
+const XMIN = 8, XMAX = 39, YMIN = 0, YMAX = 2.0;
+const GRADOS = [1,2,3,4,5,6];
+
+// ---- Ajuste polinomial por ecuaciones normales (x escalado a [-1,1]) ----
+function esc(x){ return (2*(x - XMIN)/(XMAX - XMIN)) - 1; }
+
+function ajustar(puntos, grado){
+  const m = grado + 1;
+  const A = Array.from({length:m}, () => new Array(m).fill(0));
+  const b = new Array(m).fill(0);
+  for (const p of puntos){
+    const u = esc(p.x);
+    const pot = [1]; for (let j = 1; j < 2*m; j++) pot.push(pot[j-1]*u);
+    for (let r = 0; r < m; r++){
+      for (let c = 0; c < m; c++) A[r][c] += pot[r+c];
+      b[r] += pot[r] * p.y;
+    }
+  }
+  for (let r = 0; r < m; r++) A[r][r] += 1e-9;          // regularizacion minima
+  // Gauss con pivoteo parcial
+  for (let c = 0; c < m; c++){
+    let piv = c;
+    for (let r = c+1; r < m; r++) if (Math.abs(A[r][c]) > Math.abs(A[piv][c])) piv = r;
+    [A[c], A[piv]] = [A[piv], A[c]]; [b[c], b[piv]] = [b[piv], b[c]];
+    if (Math.abs(A[c][c]) < 1e-12) return null;
+    for (let r = c+1; r < m; r++){
+      const f = A[r][c]/A[c][c];
+      for (let k = c; k < m; k++) A[r][k] -= f*A[c][k];
+      b[r] -= f*b[c];
+    }
+  }
+  const co = new Array(m).fill(0);
+  for (let r = m-1; r >= 0; r--){
+    let s = b[r];
+    for (let k = r+1; k < m; k++) s -= A[r][k]*co[k];
+    co[r] = s/A[r][r];
+  }
+  return co;
+}
+function evaluar(co, x){
+  const u = esc(x); let y = 0, p = 1;
+  for (const c of co){ y += c*p; p *= u; }
+  return y;
+}
+function mse(co, puntos){
+  if (!co) return Infinity;
+  let s = 0;
+  for (const p of puntos) s += (p.y - evaluar(co, p.x))**2;
+  return s/puntos.length;
+}
+
+// ---- Estado ----
+let idxVal = [], ganadores = [], kGanadores = [], coActual = null, gradoActual = null;
+
+function sortearIdx(){
+  const idx = DATOS.map((_,i)=>i);
+  for (let i = idx.length-1; i > 0; i--){
+    const j = Math.floor(rnd()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  return idx.slice(0,5).sort((a,b)=>a-b);
+}
+
+function unSorteo(){
+  idxVal = sortearIdx();
+  const val = idxVal.map(i=>DATOS[i]);
+  const tr  = DATOS.filter((_,i)=>!idxVal.includes(i));
+  let mejor = null, mejorE = Infinity;
+  for (const g of GRADOS){
+    const e = mse(ajustar(tr,g), val);
+    if (e < mejorE){ mejorE = e; mejor = g; }
+  }
+  gradoActual = mejor; coActual = ajustar(tr, mejor);
+  ganadores.push(mejor);
+  $('m-grado').textContent = mejor;
+  $('m-err').textContent = mejorE.toFixed(4);
+  $('m-veces').textContent = ganadores.length;
+  $('m-distintos').textContent = new Set(ganadores).size;
+  pintaHist('hist', ganadores);
+  dibuja();
+  veredicto();
+}
+
+function pintaHist(destino, arr){
+  const cont = $(destino); cont.innerHTML = '';
+  const cuenta = {};
+  arr.forEach(g => cuenta[g] = (cuenta[g]||0)+1);
+  arr.forEach(g => {
+    const s = document.createElement('span');
+    s.textContent = 'g' + g;
+    if (cuenta[g] === 1 && arr.length > 1) s.className = 'rep';
+    cont.appendChild(s);
+  });
+}
+
+function veredicto(){
+  if (ganadores.length < 10) return;
+  const d = new Set(ganadores).size;
+  const v = document.querySelector('#pred1 .veredicto');
+  const elegida = document.querySelector('#pred1 button.elegida');
+  if (!elegida || v.classList.contains('on')) return;
+  const val = elegida.dataset.v;
+  const real = d === 1 ? '1' : (d <= 3 ? '2' : '3');
+  v.innerHTML = '<strong>' + (val === real ? 'Acertaste.' : 'No era eso.') +
+    '</strong> Con 10 sorteos salieron <strong>' + d + ' grados distintos</strong> ganadores. ' +
+    (d > 1
+      ? 'Los datos no cambiaron ni una vez: lo único que cambió fue qué 5 árboles cayeron en validación. Tu decisión estaba dependiendo del sorteo.'
+      : 'Vuelve a sortear unas cuantas veces más: con 20 puntos la lotería casi siempre aparece.');
+  v.classList.add('on');
+}
+
+// ---- K-Fold ----
+function correrKFold(){
+  const idx = DATOS.map((_,i)=>i);
+  for (let i = idx.length-1; i > 0; i--){
+    const j = Math.floor(rnd()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  const k = 4, folds = [];
+  for (let i = 0; i < k; i++) folds.push(idx.slice(i*5, i*5+5).sort((a,b)=>a-b));
+
+  let mejor = null, mejorE = Infinity, mejorErrs = null;
+  for (const g of GRADOS){
+    const errs = folds.map(f => {
+      const val = f.map(i=>DATOS[i]);
+      const tr  = DATOS.filter((_,i)=>!f.includes(i));
+      return mse(ajustar(tr,g), val);
+    });
+    const prom = errs.reduce((a,b)=>a+b,0)/k;
+    if (prom < mejorE){ mejorE = prom; mejor = g; mejorErrs = errs; }
+  }
+  const media = mejorE;
+  const desv = Math.sqrt(mejorErrs.reduce((a,e)=>a+(e-media)**2,0)/mejorErrs.length);
+
+  kGanadores.push(mejor);
+  $('k-grado').textContent = mejor;
+  $('k-err').textContent = media.toFixed(4);
+  $('k-desv').textContent = '±' + desv.toFixed(4);
+  $('k-veces').textContent = kGanadores.length;
+  pintaHist('khist', kGanadores);
+
+  const cont = $('folds'); cont.innerHTML = '';
+  folds.forEach((f,i) => {
+    const fila = document.createElement('div');
+    fila.className = 'fold';
+    for (let b = 0; b < k; b++){
+      const d = document.createElement('div');
+      d.style.flex = '1';
+      d.className = (b === i) ? 'f-va' : 'f-tr';
+      d.textContent = (b === i) ? 'validación' : 'entrena';
+      fila.appendChild(d);
+    }
+    const t = document.createElement('div');   // el test queda aparte en todas las rondas
+    t.style.flex = '1.3';
+    t.className = 'f-te';
+    t.textContent = 'test · guardado';
+    fila.appendChild(t);
+    const etq = document.createElement('div');
+    etq.style.cssText = 'font-size:.78rem;color:#666;margin-bottom:.15rem';
+    etq.textContent = 'ronda ' + (i+1) + ' · error ' + mejorErrs[i].toFixed(4);
+    cont.appendChild(etq); cont.appendChild(fila);
+  });
+}
+
+// ---- Dibujo ----
+function dibuja(){
+  const c = $('lienzo'), g = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 58, MB = 42, MT = 14, MR = 14;
+  g.clearRect(0,0,W,H);
+  const px = x => ML + (x-XMIN)/(XMAX-XMIN)*(W-ML-MR);
+  const py = y => H-MB - (y-YMIN)/(YMAX-YMIN)*(H-MT-MB);
+
+  g.strokeStyle = '#e5e5e5'; g.lineWidth = 1;
+  for (let y = 0; y <= 2.0; y += 0.5){
+    g.beginPath(); g.moveTo(ML,py(y)); g.lineTo(W-MR,py(y)); g.stroke();
+    g.fillStyle = '#666'; g.font = '11px system-ui'; g.textAlign = 'right';
+    g.fillText(y.toFixed(1), ML-8, py(y)+4);
+  }
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(ML,MT); g.lineTo(ML,H-MB); g.lineTo(W-MR,H-MB); g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#666';
+  for (let x = 10; x <= 36; x += 5) g.fillText(x, px(x), H-MB+16);
+  g.fillText('DAP [cm]', (ML+W-MR)/2, H-8);
+  g.save(); g.translate(14, (MT+H-MB)/2); g.rotate(-Math.PI/2);
+  g.fillText('Volumen [m³]', 0, 0); g.restore();
+
+  if (coActual){
+    g.strokeStyle = '#d97706'; g.lineWidth = 2.5; g.beginPath();
+    let primero = true;
+    for (let x = XMIN; x <= XMAX; x += 0.25){
+      const y = evaluar(coActual, x);
+      const Y = Math.max(MT-40, Math.min(H-MB+40, py(y)));
+      primero ? (g.moveTo(px(x), Y), primero = false) : g.lineTo(px(x), Y);
+    }
+    g.stroke();
+  }
+  DATOS.forEach((p,i) => {
+    const esVal = idxVal.includes(i);
+    g.beginPath(); g.arc(px(p.x), py(p.y), esVal ? 7 : 5, 0, 7);
+    g.fillStyle = esVal ? '#dc2626' : '#2563eb';
+    g.fill();
+    if (esVal){ g.strokeStyle = '#7f1d1d'; g.lineWidth = 2; g.stroke(); }
+  });
+  g.textAlign = 'left'; g.font = '12px system-ui';
+  g.fillStyle = '#2563eb'; g.fillText('● entrenamiento (15)', ML+8, MT+14);
+  g.fillStyle = '#dc2626'; g.fillText('● validación (5)', ML+160, MT+14);
+  if (gradoActual){
+    g.fillStyle = '#d97706';
+    g.fillText('— grado ganador: ' + gradoActual, ML+290, MT+14);
+  }
+}
+
+// ---- Eventos ----
+$('sortear').onclick = unSorteo;
+$('sortear10').onclick = () => { for (let i = 0; i < 10; i++) unSorteo(); };
+$('reiniciar').onclick = () => {
+  ganadores = []; kGanadores = []; idxVal = []; coActual = null; gradoActual = null;
+  ['m-grado','m-err','k-grado','k-err','k-desv'].forEach(i => $(i).textContent = '—');
+  ['m-veces','m-distintos','k-veces'].forEach(i => $(i).textContent = '0');
+  $('hist').innerHTML = ''; $('khist').innerHTML = ''; $('folds').innerHTML = '';
+  dibuja();
+};
+$('correrkf').onclick = correrKFold;
+document.querySelectorAll('#pred1 button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('#pred1 button').forEach(x => x.classList.remove('elegida'));
+    b.classList.add('elegida');
+  };
+});
+
+// ---- Predicciones con veredicto inmediato (pred2, pred3) ----
+const VEREDICTOS = {
+  pred2: {
+    nube: '<strong>Eso es.</strong> El profesor: el error de test «debiese caer dentro» de la distribución de los errores de validación. No en un punto exacto: dentro del rango que describe la nube. Pulsa los dos botones de test y compara.',
+    media: '<strong>No exactamente.</strong> La media es el mejor resumen, pero el test es otra muestra: cae cerca, con la misma variabilidad que ves en la nube. Lo que se pide es que caiga <em>dentro</em> de ella.',
+    bajo: '<strong>No.</strong> Que el modelo esté «listo» no lo hace acertar más en datos nuevos. Un test muy por debajo de toda la nube también sería raro: podría ser un test demasiado fácil o poco representativo [INFERENCIA].'
+  },
+  pred3: {
+    cero: '<strong>Correcto.</strong> Es el MSE con el signo cambiado: −45 significa MSE 45, menor que 120. En la ayudantía del 7-ago surgió exactamente la duda «más negativo mejor», y la respuesta fue «entre más cercano a cero mejor» [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:00–0:29:51] (ayudantía). El ayudante explicó que en esa versión el scoring solo traía el MSE negativo.',
+    neg: '<strong>No, y es la trampa que apareció en la ayudantía.</strong> El número es −MSE: lo que importa es su valor absoluto. −120 es un MSE de 120, peor que 45. «Entre más cercano a cero mejor» [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51] (ayudantía).',
+    igual: '<strong>No.</strong> El signo es solo una convención de la librería; los valores absolutos son distintos: MSE 120 contra MSE 45. Más cercano a cero es mejor (ayudantía del 7-ago).'
+  }
+};
+Object.keys(VEREDICTOS).forEach(id => {
+  const p = document.getElementById(id);
+  p.querySelectorAll('button').forEach(b => {
+    b.onclick = () => {
+      p.querySelectorAll('button').forEach(x => x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v = p.querySelector('.veredicto');
+      v.innerHTML = VEREDICTOS[id][b.dataset.v];
+      v.classList.add('on');
+    };
+  });
+});
+
+// ---- Nube de errores de validacion por grado (cifras ilustrativas) ----
+let semNube = 7310;
+function rndN(){ semNube = (semNube * 1664525 + 1013904223) % 4294967296; return semNube / 4294967296; }
+function gaussN(){ return (rndN()+rndN()+rndN()+rndN()+rndN()+rndN()-3) / 1.5; }
+const N_MEDIA = [0.62, 0.24, 0.15, 0.18, 0.28, 0.46];
+const N_DESV  = [0.04, 0.03, 0.025, 0.04, 0.07, 0.13];
+const N_REP = 12;
+let nube = [], nTest = null;
+
+function resumen(arr){
+  const s = [...arr].sort((a,b)=>a-b);
+  return {min: s[0], max: s[s.length-1], media: arr.reduce((a,b)=>a+b,0)/arr.length};
+}
+function gradoElegido(){
+  let mejor = 0;
+  nube.forEach((col,i) => { if (resumen(col).media < resumen(nube[mejor]).media) mejor = i; });
+  return mejor;
+}
+function generarNube(){
+  nube = N_MEDIA.map((m,i) => Array.from({length:N_REP}, () => Math.max(0.03, m + N_DESV[i]*gaussN())));
+  nTest = null;
+  actualizarNube();
+}
+function evaluarTest(tipo){
+  const st = resumen(nube[gradoElegido()]);
+  nTest = (tipo === 'ok')
+    ? st.min + (0.2 + 0.6*rndN()) * (st.max - st.min)   // cae dentro de la nube
+    : st.max + 0.18 + 0.05*rndN();                        // test no representativo
+  actualizarNube();
+}
+function actualizarNube(){
+  const ge = gradoElegido(), st = resumen(nube[ge]);
+  $('n-grado').textContent = ge + 1;
+  $('n-rango').textContent = st.min.toFixed(2).replace('.',',') + '–' + st.max.toFixed(2).replace('.',',');
+  const lec = $('n-lectura');
+  if (nTest === null){
+    $('n-test').textContent = '—'; lec.textContent = '—'; lec.style.color = '';
+    $('n-lect-txt').textContent = '';
+  } else {
+    const dentro = nTest >= st.min && nTest <= st.max;
+    $('n-test').textContent = nTest.toFixed(2).replace('.',',');
+    lec.textContent = dentro ? 'dentro' : 'FUERA';
+    lec.style.color = dentro ? '#059669' : '#dc2626';
+    $('n-lect-txt').textContent = dentro
+      ? 'El test cae dentro de la nube: la validación representaba bien lo que el test mide. Se reporta el test.'
+      : 'El test cae fuera de la nube: algo raro pasa. Test con anomalías, test no representativo (por ejemplo, de otro período) o una validación que quedó optimista. No se reporta como si nada: se investiga.';
+  }
+  dibujaNube();
+}
+function dibujaNube(){
+  const c = $('nube'), g = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 58, MB = 42, MT = 28, MR = 14, YM = 0.9;
+  g.clearRect(0,0,W,H);
+  const px = i => ML + (i + 0.5)/6*(W - ML - MR);
+  const py = y => H - MB - Math.min(y, YM)/YM*(H - MT - MB);
+  g.strokeStyle = '#e5e5e5'; g.lineWidth = 1; g.font = '11px system-ui'; g.fillStyle = '#666'; g.textAlign = 'right';
+  for (let y = 0; y <= 0.8001; y += 0.2){
+    g.beginPath(); g.moveTo(ML, py(y)); g.lineTo(W-MR, py(y)); g.stroke();
+    g.fillText(y.toFixed(1).replace('.',','), ML-8, py(y)+4);
+  }
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(ML, MT); g.lineTo(ML, H-MB); g.lineTo(W-MR, H-MB); g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#666';
+  for (let i = 0; i < 6; i++) g.fillText('grado ' + (i+1), px(i), H-MB+16);
+  g.fillText('Hiperparámetro: grado del polinomio', (ML+W-MR)/2, H-6);
+  g.save(); g.translate(14, (MT+H-MB)/2); g.rotate(-Math.PI/2);
+  g.fillText('Error de validación (MSE)', 0, 0); g.restore();
+  const ge = gradoElegido();
+  nube.forEach((col,i) => {
+    const st = resumen(col);
+    if (i === ge){
+      g.fillStyle = 'rgba(5,150,105,.12)';
+      g.fillRect(px(i)-34, py(st.max), 68, py(st.min)-py(st.max));
+    }
+    col.forEach((e,j) => {
+      const jit = ((j % 6) - 2.5) * 7;
+      g.beginPath(); g.arc(px(i)+jit, py(e), 4, 0, 7);
+      g.fillStyle = (i === ge) ? '#059669' : '#2563eb'; g.fill();
+    });
+    g.strokeStyle = '#1a1a1a'; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(px(i)-22, py(st.media)); g.lineTo(px(i)+22, py(st.media)); g.stroke();
+  });
+  if (nTest !== null){
+    const x = px(ge) + 46, y = py(nTest);
+    g.fillStyle = '#dc2626';
+    g.beginPath(); g.moveTo(x, y-8); g.lineTo(x+8, y); g.lineTo(x, y+8); g.lineTo(x-8, y); g.closePath(); g.fill();
+    g.textAlign = 'left'; g.font = '600 12px system-ui'; g.fillText('test', x+11, y+4);
+  }
+  g.textAlign = 'left'; g.font = '12px system-ui';
+  g.fillStyle = '#2563eb'; g.fillText('● error de validación de una repetición', ML+8, 16);
+  g.fillStyle = '#1a1a1a'; g.fillText('— media', ML+262, 16);
+  g.fillStyle = '#059669'; g.fillText('▮ nube del grado elegido', ML+330, 16);
+  g.fillStyle = '#dc2626'; g.fillText('◆ test', ML+500, 16);
+}
+$('remuestrear').onclick = generarNube;
+$('test-ok').onclick = () => evaluarTest('ok');
+$('test-mal').onclick = () => evaluarTest('mal');
+
+dibuja();
+generarNube();
+</script>
+</main>
+</body>
+</html>

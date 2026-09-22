@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deep learning, LLM y agentes · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
+  button.ok{background:var(--verde)}button.ok:hover{background:#047857}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
+               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .hist{display:flex;gap:3px;flex-wrap:wrap;margin-top:.6rem;min-height:2rem}
+  .hist span{background:#fff;border:1px solid var(--linea);border-radius:5px;
+             padding:.15rem .45rem;font-size:.8rem;font-variant-numeric:tabular-nums}
+  .hist span.rep{background:#fee2e2;border-color:#fca5a5;color:#991b1b;font-weight:700}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .fold{display:flex;height:34px;border-radius:6px;overflow:hidden;margin:.35rem 0;
+        font-size:.74rem;font-weight:700;color:#fff}
+  .fold div{display:flex;align-items:center;justify-content:center}
+  .f-tr{background:#93c5fd;color:#1e3a8a}.f-va{background:#d97706}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  /* ---- agregados de este archivo ---- */
+  .grafo a.n{color:inherit;text-decoration:none}
+  .grafo a.n.aqui{color:#fff}
+  details{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.7rem 1rem;margin:.8rem 0}
+  details summary{cursor:pointer;font-weight:600;font-size:.92rem;color:var(--azul)}
+  details[open] summary{margin-bottom:.6rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .flujo{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;font-size:.8rem;margin:.8rem 0}
+  .flujo .b{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:.3rem .55rem}
+  .flujo .b.act{background:#fef3c7;border-color:var(--ambar);font-weight:700}
+  .dos{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:640px){.dos{grid-template-columns:1fr}}
+  .traza{font-family:ui-monospace,Consolas,monospace;font-size:.8rem;background:var(--fondo);
+         border:1px solid var(--linea);border-radius:8px;padding:.6rem .8rem;min-height:9rem;white-space:pre-wrap}
+  .traza .r{font-weight:700}
+  .traza .llm{color:#1e40af}.traza .tool{color:#9d174d}.traza .obs{color:#065f46}
+  .traza .usr{color:#374151}.traza .ins{color:#6b7280}.traza .mal{color:#dc2626;font-weight:700}
+  .cand{display:grid;grid-template-columns:8.5rem 1fr 3.6rem;gap:.35rem .6rem;align-items:center;font-size:.86rem;margin:.6rem 0}
+  .cand button{margin:0;padding:.3rem .5rem;font-size:.82rem;background:#fff;color:var(--azul);border:1.5px solid var(--azul)}
+  .cand button:hover{background:#eff6ff}
+  .cand .barra{height:14px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+  .cand .barra div{height:100%;background:var(--azul)}
+  .cand .p{font-variant-numeric:tabular-nums;text-align:right}
+  .texto{font-size:1.1rem;background:var(--fondo);border-radius:8px;padding:.6rem .9rem;min-height:2.4rem}
+  .texto .det{color:#9d174d;font-weight:700}
+  .corpus{font-family:ui-monospace,Consolas,monospace;font-size:.8rem;background:#fff;border:1px solid var(--linea);
+          border-radius:8px;padding:.6rem .9rem}
+  .item{margin:.6rem 0}
+  label.chk{display:inline-flex;align-items:center;gap:.35rem;font-size:.88rem;margin-right:1rem;cursor:pointer}
+  input[type=text]{font:inherit;font-size:.9rem;padding:.35rem .5rem;border:1px solid var(--linea);border-radius:6px;width:10rem}
+  .indice{font-size:.92rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="18" id="clase-18">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 18 de 22</b></div>
+<div class="barra"><span style="width:81.8%"></span></div>
+<div class="lt">Clase 18 · Deep learning, LLM y agentes</div>
+<p><b>Objetivo.</b> Distinguir deep learning, LLM y agente, y separar lo que avanzó mediante redes de lo que lo hizo posible.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~55 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Separa en una lista qué es avance mediante redes y qué es factor habilitante, y explica el bucle del agente.</li>
+<li><b>Actividad final:</b> Clasificar los siete ítems de la P6 y recorrer el simulador de agente de la P5.</li>
+<li><b>Criterio de dominio:</b> Explica la diferencia entre LLM y agente por el bucle cerrado: acción, observación, siguiente paso.</li></ul></div>
+<div class="activ"><b>Activación.</b> Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="18"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="redes_neuronales.html">← Clase 17 · Redes neuronales</a></span><a href="index.html">Índice del curso</a><span><a href="certamen_1.html">Clase 20 · Distinciones del Certamen 1 →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><a href="#deep-learning">Deep learning</a></span> · <span class="et">viene de</span><a href="redes_neuronales.html">Redes neuronales</a> · <span class="et">habilita</span><a href="#llm">Modelos de lenguaje (LLM)</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen baja (C2: P6, de forma indirecta) · <span class="et">certamen</span><a href="certamen_2.html#p6">C2 P6</a></div>
+<div class="fila"><span class="cpt"><a href="#llm">Modelos de lenguaje (LLM)</a></span> · <span class="et">viene de</span><a href="#deep-learning">Deep learning</a> · <span class="et">habilita</span><a href="#agentes">Agentes de IA</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="certamen_2.html#p5">C2 P5</a></div>
+<div class="fila"><span class="cpt"><a href="#agentes">Agentes de IA</a></span> · <span class="et">viene de</span><a href="#llm">Modelos de lenguaje (LLM)</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="certamen_2.html#p5">C2 P5</a></div>
+<details><summary>Dónde se enseñó en clase (9 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 1:37:26–1:53:00 · profesor — ImageNet, 2012, GPU, definicion, datos frente a desempeno<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:37:26]</span></li><li><b>Clase del 21-ago</b> · 2:54:51–2:56:10 · profesor — Premio Turing e historia<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:54:51]</span></li><li><b>Clase del 7-ago</b> · 1:35:32–1:36:34 · profesor — con datos tabulares un random forest puede ganar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:35:32]</span></li><li><b>Clase del 21-ago</b> · 2:11:41–2:35:37 · profesor — transformer, atencion, BERT, predecir la siguiente palabra<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:41]</span></li><li><b>Clase del 21-ago</b> · 2:43:47–2:46:54 · profesor — destilacion y limitaciones<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:43:47]</span></li><li><b>Clase del 31-jul</b> · 0:04:42–0:06:34 · profesor — GPT es el modelo; ChatGPT, el sistema<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:42]</span></li><li><b>Clase del 21-ago</b> · 2:45:33–2:54:43 · profesor — definicion, mecanismo de herramientas, multiagente, responsabilidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:45:33]</span></li><li><b>Clase del 21-ago</b> · 3:04:17–3:05:41 · profesor — uso autonomo del computador; agentes multimodales<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 3:04:17]</span></li><li><b>Clase del 31-jul</b> · 1:21:54–1:23:15 · profesor — un agente con un LLM de base<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:21:54]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Deep learning, LLM y agentes</h1>
+<p class="sub">Una sola cadena causal: cada eslabón agrega una pieza al anterior, y cada uno tiene
+su propia evidencia.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 21-ago (la clase del profesor empieza en 1:35:51)</p>
+
+<div class="grafo">
+  <a class="n" href="redes_neuronales.html">Redes neuronales</a> →
+  <a class="n aqui" href="#deep-learning">Deep learning</a> →
+  <a class="n aqui" href="#llm">LLM</a> →
+  <a class="n aqui" href="#agentes">Agentes</a>
+</div>
+
+<div class="tension">
+<strong>Dónde estás.</strong> Conceptos 19, 20 y 21 de 21, en un mismo archivo porque son
+eslabones de una cadena: si no ves qué agrega cada uno, los tres se funden en una sola nube
+llamada «IA».
+<table style="margin-top:.6rem">
+<tr><th>Eslabón</th><th>Qué agrega</th><th>Láminas de FCD-08</th></tr>
+<tr><td>Red neuronal → <a href="#deep-learning">deep learning</a></td><td>Muchas capas, muchos datos y GPU para entrenarlas</td><td>6–10, 65</td></tr>
+<tr><td>Deep learning → <a href="#llm">LLM</a></td><td>Atención (transformers) y una tarea: adivinar la palabra oculta, en particular la siguiente</td><td>33–40, 45</td></tr>
+<tr><td>LLM → <a href="#agentes">agente</a></td><td>Herramientas, memoria, objetivos y el bucle acción → observación</td><td>46–48</td></tr>
+</table>
+<strong>Por qué importa:</strong> la P5 y la P6 del Certamen 2 (0,5 pts cada una) salen de esta
+clase. Es una clase del profesor titular, así que entra. La charla del invitado de la misma
+sesión (antes de la clase, sobre datos personales) no es materia evaluable: solo aparece aquí como
+contexto, en la sección 2.
+</div>
+
+<p class="indice">Cada sección sigue el mismo orden: predicción → explicación con la fuente →
+ejercicios (aplicar, interpretar, transferir, producir) → distinción de certamen →
+procedimiento para el papel → errores castigados.</p>
+
+<!-- ============================================================ -->
+<h2 id="deep-learning">1 · Deep learning: cuando las redes encontraron datos y GPU</h2>
+
+<div class="pred">
+  <div class="q">Las redes neuronales existían desde los años 40. En 2012, en el desafío
+  ImageNet, el error bajó de golpe. Antes de leer: ¿qué cambió en 2012?</div>
+  <button data-p="idea">Se inventó la red neuronal profunda</button>
+  <button data-p="gpu">Se entrenaron redes en GPU sobre un dataset enorme</button>
+  <button data-p="clasico">Apareció un algoritmo clásico mejor</button>
+  <div class="veredicto" id="verDL1"></div>
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> en 2012 se entrenaron redes profundas en GPU sobre un dataset
+enorme (ImageNet, 1,2 M imágenes); la idea de red neuronal ya existía.</p>
+<ol class="pasos">
+<li>Fecha de la idea: el perceptrón es de los años 40 (clase y lámina 51), así que «se inventó
+en 2012» queda descartado.</li>
+<li>Qué dijo el profesor que pasó: se aplicó deep learning de forma significativa y los autores
+usaron GPU para ajustar la red muy rápido.</li>
+<li>Qué datos tenía: 1,2 M imágenes de entrenamiento (lámina 6).</li>
+</ol>
+<p><strong>Error típico:</strong> creer que 2012 fue el invento de las redes. Es error porque
+confunde la idea (antigua) con las condiciones que la hicieron funcionar (GPU y datos).</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:38–1:44:12] [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 6 y 51]</p>
+</details>
+
+<h3>Lo que pasó en ImageNet</h3>
+
+<p>ImageNet es un desafío de reconocimiento visual: <strong>1,2 millones de imágenes de
+entrenamiento y 1000 categorías de objetos</strong>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 6]</span>.
+Según el profesor, hasta 2011 el error rondaba el 25 %, en 2012 bajó a cerca de 16 %, siguió
+bajando y en 2015 llegó al nivel de la visión humana
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:42:46–1:43:36]</span> ⚠.</p>
+
+<div class="cita">«bajar el error en un desafío así importante en 10% en un año es lo que uno llama
+una revolución» <span class="f">Clase del 21-ago · 1:43:02–1:43:08 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Ese «10%» son <em>puntos</em> porcentuales: de ~25 a ~16, casi 10 puntos, como él mismo
+repite después
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:44:33–1:44:41]</span>.
+¿Y qué lo produjo? Lo que se aplicó de forma significativa fue deep learning, en buena parte
+porque los autores usaron <strong>GPU</strong> —tarjetas pensadas para videojuegos— para ajustar
+la red muy rápido. Soluciones con GPU en el desafío: 0 en 2010, 0 en 2011, 4 en 2012, 60 en
+2013 y 110 en 2014
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:38–1:44:31]</span> ⚠.</p>
+
+<div class="nota">
+<strong>⚠ Lo oficial primero.</strong> La lámina 6 dice «1.2M images de entrenamiento» y «1000
+categorías de objetos». En la grabación se escucha «1200 imágenes»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:42:10–1:42:12]</span>,
+lo que no calza con la lámina: error de dicción o del reconocimiento de voz. <strong>Manda la
+lámina: 1,2 millones.</strong> Los porcentajes de error y los conteos de GPU solo están en la
+voz (el gráfico de la lámina 7 no se extrae como texto), así que úsalos como orden de
+magnitud, no como cifra de memoria.
+</div>
+
+<p><strong>Las redes no nacieron en 2012.</strong> El perceptrón es de los años 40; las redes
+fueron populares en los 80, algo en los 90, después se abandonaron, y en 2012 despegaron. El
+Premio Turing 2018 reconoció a tres de sus pioneros por insistir cuando nadie creía en ellas
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:55:24–2:56:38]</span>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 51]</span>.
+Guarda esto para la P6: lo que cambió en 2012 no fue la idea, fueron las condiciones.</p>
+
+<h3>Qué es deep learning (la definición oficial)</h3>
+
+<div class="clave">
+<strong>Lámina 10:</strong> «Conjunto de algoritmos que modelan los datos a través de múltiples
+niveles de abstracción usando un conjunto de capas jerárquicas»
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 10]</span>.
+<br><br>
+Deep learning es el <em>concepto</em>; hoy se implementa casi siempre con <em>redes
+neuronales</em>
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:47:58–1:48:14]</span>.
+Y según el profesor, casi toda la IA que usamos hoy es deep learning
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:45:01–1:45:07]</span>.
+</div>
+
+<p>El ejemplo de clase son las caras: para reconocer una cara, primero hay que reconocer ojos,
+nariz y boca; para eso, antes, líneas, puntos y curvas. La red recibe los píxeles directamente,
+sin atributos calculados, y aprende sola esos niveles, sin que nadie le pida buscar líneas
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:46:58–1:47:56]</span>.
+Un compañero preguntó si eso ocurre de verdad o es teoría. La respuesta tiene un matiz que
+conviene recordar tal cual:</p>
+
+<div class="cita">«esto es un ejemplo como debiese funcionar como teóricamente en la práctica a veces
+funciona así a veces no y depende de la arquitectura» <span class="f">Clase del 21-ago ·
+1:52:26–1:52:34 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Agregó que en las redes de 2012–2014 sí se veían filtros parecidos a los que armaría un
+humano, y también muchos que un humano no armaría
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:51:52–1:52:14]</span>.
+La extracción automática de características está desarrollada en
+<a href="redes_neuronales.html">redes_neuronales.html</a>, sección 9.</p>
+
+<h3>La lámina que decide cuándo conviene: la 8</h3>
+
+<p>Lámina 8, «Técnicas de ML en función de la cantidad de datos»: desempeño contra cantidad de
+datos, con dos curvas, <em>Deep Learning</em> y <em>Algoritmos Clásicos</em>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8]</span>.
+El profesor advirtió que el gráfico es un dibujo, no una medición
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:45:17–1:45:23]</span>,
+y lo leyó así:</p>
+
+<div class="cita">«y si tu tienes pocos datos los algoritmos clásicos funcionan mejor que deep learning
+los algoritmos clásicos son como los que hemos estado viendo en este curso pero si tu tienes
+muchos datos deep learning funciona mucho mejor» <span class="f">Clase del 21-ago ·
+1:45:25–1:45:37 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>¿Cuántos datos son «muchos»? En la Clase del 7-ago el profesor respondió que no hay un
+número: depende del problema
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:15–1:36:22]</span>.
+Y cerró con una advertencia:</p>
+
+<div class="cita">«hay momentos en los cuales tú ⟨entrenas⟩ un random forest y ⟨entrenas⟩ una red neuronal
+muy compleja y el random forest lo supera y pasa mucho más seguido lo que uno creería»
+<span class="f">Clase del 7-ago · 1:36:29–1:36:34 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «entren a»)</span></div>
+
+<div class="nota">
+<strong>⚠ Posible lapsus en la misma respuesta del 7-ago.</strong> Unos segundos antes, la
+transcripción dice que si <em>no</em> llegas al régimen de datos suficientes para que deep
+learning le gane a un random forest, en general conviene usar deep learning
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:05–1:36:15]</span>.
+Eso contradice la lámina 8, la cita del 21-ago de arriba y la frase que viene justo después.
+Probable lapsus de dicción o error del ASR. <strong>Manda la lámina 8.</strong>
+</div>
+
+<div class="vecino">
+<strong>Y Melbourne.</strong> El mejor de tus seis modelos fue HistGradientBoosting sobre
+<code>log1p(Price)</code>: MAE <strong>188.218 AUD</strong> y R² <strong>0,757</strong> en las
+<strong>7.244</strong> propiedades de 2017, entrenado con <strong>6.336</strong> de 2016
+<span class="fuente">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]</span>. Entró una
+tabla con columnas elegidas por ti: el flujo clásico. Repaso del modelo ganador en
+<a href="arboles_y_ensambles.html#boosting">arboles_y_ensambles.html#boosting</a>.
+<br><br>
+Lo que <strong>no</strong> hay: ninguna red neuronal entrenada sobre Melbourne en el repositorio
+<span class="fuente">[NO EVIDENCIADO]</span>. «El boosting le gana a una red» no está medido en
+tus datos.
+<br><br>
+<strong>Tu pregunta</strong> (la de entrada de Datito para este concepto): en tus datos
+tabulares de Melbourne se espera que el boosting le gane a una red profunda. ¿Por qué, si el
+deep learning domina en imágenes y texto? Contéstala con la lámina 8 y la cita del 7-ago antes
+de abrir.
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> porque la ventaja del deep learning aparece con muchos datos y
+con señal cruda de la que extraer características, y Melbourne es lo contrario: 6.336 filas de
+entrenamiento en una tabla cuyas columnas ya eligió un humano; en ese régimen un modelo clásico
+de árboles suele ganar, aunque en tu repositorio no está medido.</p>
+<ol class="pasos">
+<li><strong>Cantidad de datos (lámina 8):</strong> con pocos datos los algoritmos clásicos
+funcionan mejor; con muchos, deep learning. 6.336 filas no se parecen a 1,2 M imágenes, aunque
+el cruce no tenga un número fijo (Clase del 7-ago).</li>
+<li><strong>Tipo de dato:</strong> la gracia de deep learning es extraer características desde
+el dato crudo (píxeles, texto). En Melbourne las características ya estaban calculadas: esa
+ventaja no tiene dónde operar.</li>
+<li><strong>Evidencia del profesor:</strong> un random forest supera a una red muy compleja
+«mucho más seguido» de lo que uno cree (cita del 7-ago).</li>
+<li><strong>Límite honesto:</strong> es una expectativa bien fundada, no una medición: no hay
+red entrenada sobre Melbourne en el repositorio.</li>
+</ol>
+<p><strong>Error típico:</strong> responder «porque el boosting es mejor que las redes». Es
+error porque convierte una dependencia del régimen de datos (lámina 8) en una jerarquía fija
+de métodos; en ImageNet la relación es la inversa.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:15–1:36:34]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:50:41–1:50:57]
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] · la aplicación a Melbourne es [INFERENCIA]</p>
+</details>
+
+<h3>Distinción de certamen · P6</h3>
+
+<div class="dist">
+<strong>Lámina 65, «Comentarios Finales»:</strong> «El gran boom se debe gracias a las redes
+neuronales artificiales, la gran cantidad de datos que hemos producido como humanidad y a
+avances en cómputo con tarjetas gráficas», aplicado a imágenes, texto y videos
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 65]</span>.
+<br><br>
+Ojo: la lámina pone <strong>los tres factores juntos</strong> como explicación del boom. La P6
+pregunta otra cosa: qué tecnologías son revoluciones recientes de la IA «mediante el uso de
+redes neuronales». <strong>Esa cláusula es lo que decide</strong>
+(<a href="certamen_2.html#p6">certamen_2.html#p6</a>).
+<br><br>
+Para ordenarlo, Datito usa un marco propio [DATITO]: <em>avance mediante redes</em> (un área
+donde las redes produjeron el salto) frente a <em>factor habilitante</em> (lo que hizo posible
+entrenarlas o usarlas). El expediente lo llama «causa ≠ condición habilitante». No es
+terminología del profesor: en el certamen argumenta con la cláusula del enunciado y con las
+láminas, no con el marco.
+</div>
+
+<p><strong>Ejercicio de aplicación.</strong> Clasifica cada ítem antes de ver el veredicto.</p>
+
+<div class="pred item"><div class="q">1 · Reconocer y localizar objetos en fotos (ImageNet)</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6a"></div></div>
+<div class="pred item"><div class="q">2 · Comprender y traducir texto (GLUE, transformers)</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6b"></div></div>
+<div class="pred item"><div class="q">3 · Tarjetas gráficas (GPU) para ajustar modelos</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6c"></div></div>
+<div class="pred item"><div class="q">4 · La enorme cantidad de datos que produjo la humanidad</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6d"></div></div>
+<div class="pred item"><div class="q">5 · Generar imágenes a partir de un texto (modelos de difusión)</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6e"></div></div>
+<div class="pred item"><div class="q">6 · Computación en la nube</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6f"></div></div>
+<div class="pred item"><div class="q">7 · Bases de datos relacionales</div>
+  <button data-p="red">avance mediante redes</button><button data-p="hab">factor habilitante</button><button data-p="nin">ninguno</button>
+  <div class="veredicto" id="verP6g"></div></div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve (los siete ítems)</summary>
+<p><strong>Respuesta:</strong> avances mediante redes son 1, 2 y 5; factores habilitantes son 3
+y 4; la nube (6) no es avance mediante redes (a lo más habilitante); las bases relacionales (7)
+no son ninguna de las dos.</p>
+<table>
+<tr><th>Ítem</th><th>Respuesta</th><th>Por qué</th><th>Fuente</th></tr>
+<tr><td>1 · Objetos en fotos</td><td>Avance mediante redes</td><td>El salto de ImageNet en 2012 lo dieron redes profundas</td><td>Láminas 6–7</td></tr>
+<tr><td>2 · Texto (GLUE)</td><td>Avance mediante redes</td><td>GPT, BERT y sucesores son transformers, redes basadas en atención</td><td>Láminas 33–34</td></tr>
+<tr><td>3 · GPU</td><td>Habilitante</td><td>Permitió entrenar redes rápido; no salió de ellas</td><td>Lámina 65; clase 1:43:50–1:44:12</td></tr>
+<tr><td>4 · Muchos datos</td><td>Habilitante</td><td>Las redes los necesitan para superar a los clásicos</td><td>Láminas 8 y 65</td></tr>
+<tr><td>5 · Imágenes desde texto</td><td>Avance mediante redes</td><td>Los modelos de difusión son redes que quitan ruido</td><td>Láminas 42–43; clase 2:36:49–2:37:37</td></tr>
+<tr><td>6 · Nube</td><td>No es avance mediante redes</td><td>La lámina 65 no la nombra; a lo más ayuda a entrenar y servir modelos [INFERENCIA]</td><td>P6 del Certamen 2</td></tr>
+<tr><td>7 · Bases relacionales</td><td>Ninguna</td><td>Anteriores y ajenas a las redes; no aparecen en la clase [INFERENCIA]</td><td>P6 del Certamen 2</td></tr>
+</table>
+<ol class="pasos">
+<li>Lee la cláusula: ¿la pregunta es por avances <em>mediante</em> redes o por los factores del
+boom?</li>
+<li>De cada ítem pregunta: ¿es un área donde las redes produjeron un salto, o algo que las hizo
+posibles, o nada de eso?</li>
+<li>Marca solo lo que responde a la cláusula.</li>
+</ol>
+<p><strong>Error típico:</strong> marcar la nube o la GPU porque «fueron clave». Es error porque
+son verdaderas como historia y falsas como respuesta a una pregunta acotada a «mediante el uso
+de redes neuronales».</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 6–8, 33–34, 42–43 y 65]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:50–1:44:12 y 2:36:49–2:37:37]
+[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · ficha P6] · marco «habilitante» [DATITO]</p>
+</details>
+
+<h3>Ejercicio de cálculo</h3>
+<p>Con las cifras dictadas en clase (⚠, orden de magnitud): error de ~25 % en 2011 y ~16 % en
+2012. (a) ¿Cuántos puntos porcentuales bajó? (b) ¿Qué porcentaje de los errores de 2011
+desapareció? (c) Si el conjunto de evaluación tuviera 100.000 imágenes [DATITO, cifra
+ilustrativa], ¿cuántas imágenes mal clasificadas menos habría?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) 9 puntos porcentuales; (b) desapareció el 36 % de los
+errores; (c) 9.000 imágenes mal clasificadas menos.</p>
+<ol class="pasos">
+<li>(a) Diferencia directa: 25 − 16 = 9 puntos. Es el «10%» redondeado de la cita.</li>
+<li>(b) Proporción sobre el punto de partida: 9 / 25 = 0,36 = 36 %.</li>
+<li>(c) 25 % de 100.000 = 25.000 errores; 16 % = 16.000; diferencia 9.000.</li>
+</ol>
+<p><strong>Error típico:</strong> decir que el error «bajó 9 %» o que bajó «un 10 % de los
+errores». Es error porque mezcla puntos porcentuales (resta) con cambio relativo (división):
+«bajó 9 puntos» y «bajó 36 %» describen el mismo salto.</p>
+<p class="fuente">Cifras dictadas: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:42:46–1:43:08] ⚠ · 100.000 imágenes [DATITO]</p>
+</details>
+
+<h3>Ejercicio de interpretación</h3>
+<p>Soluciones con GPU en el desafío: 0, 0, 4, 60 y 110 entre 2010 y 2014 (⚠ dictado). ¿Qué dicen
+esos números? ¿Prueban, por sí solos, que la GPU causó la caída del error?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> los números muestran que el uso de GPU se difundió
+<em>después</em> del resultado de 2012; por sí solos no prueban que la GPU causara la caída
+del error.</p>
+<ol class="pasos">
+<li>Mira el orden temporal: 4 soluciones con GPU en 2012 y 60 y 110 en los dos años siguientes.
+El aumento viene <em>después</em> del salto.</li>
+<li>Busca la explicación del profesor: al ver el resultado, los investigadores fueron a mirar
+cómo se hizo, vieron que usaban GPU y todos empezaron a usarlas
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:44:33–1:44:49]</span>.</li>
+<li>Pregunta qué aísla el conteo: nada. No separa el aporte de la GPU del de la red o del de los
+datos; la lámina 65 los presenta juntos.</li>
+<li>Tradúcelo a la P6: la GPU habilitó entrenar redes grandes; no es un «avance mediante
+redes».</li>
+</ol>
+<p><strong>Error típico:</strong> leer un conteo de adopción como prueba causal («como después
+todos usaron GPU, la GPU explicó el salto»). Es error porque la adopción es una consecuencia
+del resultado, y un conteo no separa causas que actuaron juntas.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:44:15–1:44:49] ⚠ ·
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 65] · lectura causal [INFERENCIA]</p>
+</details>
+
+<h3>Ejercicio de transferencia · forestal</h3>
+<p>[DATITO] Una forestal tiene dos fuentes: (a) 3.000 fichas de rodales con 15 variables
+medidas en terreno por técnicos, y (b) 2 millones de fotos de dron, de las cuales solo 20.000
+tienen etiqueta de especie. Para cada una: ¿qué te pide mirar la lámina 8 antes de elegir entre
+un algoritmo clásico y deep learning? ¿Qué trabajo haría la red por ti en (b) que en (a) ya está
+hecho?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> la lámina 8 pide mirar la cantidad de datos; para las fichas (a)
+conviene partir con un modelo clásico, y en las fotos (b) la red haría por ti la extracción de
+características que en (a) ya hicieron los técnicos.</p>
+<ol class="pasos">
+<li><strong>Lámina 8:</strong> mira la cantidad de datos, sabiendo que el cruce no tiene un
+número fijo: depende del problema (Clase del 7-ago). Nada de esto se decide sin validar.</li>
+<li><strong>(a)</strong> 3.000 filas y 15 variables ya elegidas por humanos: régimen de pocos
+datos y flujo clásico. Empieza por árboles, random forest o boosting; prueba una red solo si la
+validación lo justifica.</li>
+<li><strong>(b)</strong> Es señal cruda, píxeles. Ahí la red haría la extracción de
+características que en (a) hicieron los técnicos (clase 1:50:41–1:50:57).</li>
+<li><strong>Cuántos datos tiene (b) de verdad:</strong> para aprendizaje supervisado cuentan los
+<em>etiquetados</em> (20.000), no los 2 millones [INFERENCIA]. Las fotos sin etiqueta sirven
+con otra idea, el autoaprendizaje (<a href="#llm">sección 2</a>).</li>
+</ol>
+<p><strong>Error típico:</strong> decir «(b) tiene 2 millones de datos, así que deep learning
+gana seguro». Es error por dos lados: solo 20.000 tienen etiqueta, y la lámina 8 es un dibujo
+sin umbral; la decisión final la toma la validación.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:15–1:36:22]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:50:41–1:50:57] · caso forestal [DATITO]</p>
+</details>
+
+<h3>Producción · explícaselo a alguien</h3>
+<p>Tu jefe de turno en una mina te dice: «el deep learning ganó ImageNet, así que el modelo de
+consumo de combustible de los camiones (una tabla de 12 columnas) tiene que ser una red».
+Respóndele en cinco líneas. Escríbelo antes de abrir los criterios y llévalo a Datito.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> que una red haya ganado ImageNet no dice nada sobre una tabla de
+12 columnas: la ventaja del deep learning depende de tener muchos datos y señal cruda, así que
+hay que comparar modelos con validación antes de exigir una red.</p>
+<p><strong>Respuesta modelo (cinco líneas):</strong></p>
+<blockquote style="margin:.4rem 0 .8rem;padding-left:.8rem;border-left:3px solid #bbf7d0">
+«Jefe, ImageNet eran 1,2 millones de fotos, y la red ganó porque aprendió sola qué mirar en los
+píxeles. Nuestro caso es otro: una tabla de 12 columnas que ya elegimos nosotros, con bastantes
+menos filas. La lámina que vimos en el curso muestra que con pocos datos los modelos clásicos
+rinden mejor, y el profesor advirtió que un random forest le gana a una red compleja más seguido
+de lo que uno cree. Propongo entrenar un boosting y una red, validarlos con datos de otro período
+y quedarnos con el que se equivoque menos en litros.»
+</blockquote>
+<ol class="pasos">
+<li>Separa el tipo de dato: señal cruda (fotos) frente a tabla con columnas elegidas.</li>
+<li>Usa la lámina 8 sin inventarle un umbral.</li>
+<li>Cierra con un criterio verificable (validación fuera de muestra), no con prestigio.</li>
+</ol>
+<p><strong>Criterios con que Datito lo revisa:</strong> distingue los tipos de dato; usa la
+lámina 8 sin umbral inventado; propone validar; no afirma que «la red va a perder», porque
+tampoco está medido.</p>
+<p><strong>Error típico:</strong> contestar «las redes no sirven para tablas». Es error porque
+cambia un dogma por otro: la lámina 8 describe un régimen, no una prohibición.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 6 y 8]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:29–1:36:34] · caso minero y redacción [DATITO]</p>
+</details>
+
+<h3>Procedimiento para el papel</h3>
+<ol class="pasos">
+<li>¿La afirmación habla del <strong>concepto</strong> (niveles de abstracción, capas
+jerárquicas: lámina 10) o de la <strong>implementación</strong> (redes neuronales)?</li>
+<li>Si compara deep learning con algoritmos clásicos, busca la <strong>cantidad de
+datos</strong> (lámina 8). Sin ese dato, «siempre es mejor» es falso.</li>
+<li>Si pregunta por el <strong>boom</strong>: los tres factores de la lámina 65. Si pregunta por
+revoluciones <strong>«mediante redes»</strong>: áreas donde las redes dieron el salto (visión,
+lenguaje), no la infraestructura.</li>
+<li>Cifras: las de la lámina (1,2 M imágenes, 1000 categorías), no las de la voz.</li>
+</ol>
+
+<h3>Errores que el formato castiga</h3>
+<ul>
+<li>«Deep learning siempre funciona mejor que los algoritmos clásicos.» Solo con muchos datos,
+y el cruce depende del problema.</li>
+<li>«Las redes neuronales se inventaron en 2012.» El perceptrón es de los años 40.</li>
+<li>Marcar la GPU, los datos o la nube como «revolución mediante redes».</li>
+<li>Escribir que ImageNet tiene 1200 imágenes (error de la grabación; lámina 6: 1,2 M).</li>
+<li>Presentar el ejemplo de las caras como garantía: depende de la arquitectura.</li>
+<li>Usar «deep learning» y «red neuronal» como sinónimos exactos.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="llm">2 · LLM: una red que predice la siguiente palabra</h2>
+
+<p>Qué agrega este eslabón: una arquitectura (el <em>transformer</em>, basado en atención) y una
+tarea de entrenamiento muy simple: adivinar una palabra tapada, y en particular la siguiente.
+Antes de la explicación, un juguete.</p>
+
+<div class="pred">
+  <div class="q">El predictor de abajo solo «aprendió» de cuatro frases y solo mira la palabra
+  anterior. Antes de usarlo: ¿puede escribir una oración completa que no esté en esas cuatro
+  frases?</div>
+  <button data-p="si">Sí</button>
+  <button data-p="no">No, solo puede repetir frases que vio</button>
+  <button data-p="solo">Solo si le agregas esa frase al corpus</button>
+  <div class="veredicto" id="verLLM1"></div>
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> sí: el juguete puede escribir oraciones completas que no están
+en su corpus, porque encadena pares de palabras que sí vio; lo que no puede es usar una palabra
+que nunca vio.</p>
+<ol class="pasos">
+<li>Cada paso solo exige que la pareja (palabra anterior → siguiente) exista en el corpus.</li>
+<li>«perro» aparece en dos frases distintas, así que desde «hola» se puede saltar de una frase
+a la otra: hola → perro → se → puso → muy → bien → y → tú.</li>
+<li>Esa oración completa no está en ninguna de las cuatro frases: el indicador del panel lo
+confirma.</li>
+<li>Pero una palabra ausente del corpus («ratón») no está en ninguna fila de la tabla: nunca
+puede salir.</li>
+</ol>
+<p><strong>Error típico:</strong> creer que un modelo de siguiente palabra solo «repite frases
+memorizadas». Es error porque lo que guarda son probabilidades de continuación, no frases, y
+combinarlas produce secuencias nuevas.</p>
+<p class="fuente">Juguete [DATITO] · que un modelo no aprende lo que no está en sus datos:
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:26–0:04:42]</p>
+</details>
+
+<div class="panel">
+  <div class="lbl">Corpus del juguete [DATITO]</div>
+  <div class="corpus" id="corpus"></div>
+  <p class="fuente" style="margin:.4rem 0 0">La primera frase imita el ejemplo del profesor
+  en la Clase del 31-jul (le das «hola cómo estás» y predice «muy», después «bien»…)
+  [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:05:52–0:06:09];
+  la segunda es su frase del ejemplo de atención
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:16:07–2:16:11].
+  Las probabilidades salen de contar qué palabra siguió a cuál: cifras ilustrativas.</p>
+
+  <div class="lbl">Empieza con</div>
+  <button id="bIniHola" class="alt">hola</button>
+  <button id="bIniEl" class="alt">el</button>
+
+  <div class="lbl">Lo que lleva escrito</div>
+  <div class="texto" id="genTexto"></div>
+
+  <div class="lbl" id="candTit">Candidatas para la siguiente palabra</div>
+  <div id="cands"></div>
+
+  <div>
+    <button id="bMax">Elegir la más probable</button>
+    <button id="bSortear" class="ok">Sortear según las probabilidades</button>
+    <button id="bResetLLM" class="alt">Reiniciar</button>
+  </div>
+
+  <div class="met">
+    <div><div class="n" id="mPalabras">1</div><div class="e">tokens en el texto</div></div>
+    <div><div class="n" id="mProb">1</div><div class="e">probabilidad de la secuencia</div></div>
+    <div><div class="n" id="mCorpus">—</div><div class="e">¿oración completa en el corpus?</div></div>
+  </div>
+  <div id="genMsg" style="font-size:.9rem;margin-top:.7rem"></div>
+
+  <div class="lbl">¿El juguete conoce esta palabra?</div>
+  <input type="text" id="inPal" value="ratón" aria-label="palabra a consultar">
+  <button id="bPal" class="alt">Consultar</button>
+  <span id="outPal" style="font-size:.9rem;margin-left:.4rem"></span>
+</div>
+
+<div class="nota">
+<strong>[DATITO] Lo que el juguete no tiene.</strong> Solo mira la palabra anterior; un LLM mira
+todo el contexto previo mediante atención (el propio profesor explicó que predice la siguiente
+palabra considerando todas las anteriores
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:06:04–0:06:09]</span>).
+Tiene 15 palabras y probabilidades contadas a mano; un LLM tiene un vocabulario enorme y
+probabilidades que salen de una red con miles de millones de parámetros ajustados.
+</div>
+
+<p><strong>Tu pregunta</strong> (la de entrada de Datito para este concepto): un LLM solo
+predice el siguiente token. ¿Cómo puede algo así responder una pregunta que nunca vio
+escrita?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> porque no guarda preguntas y respuestas, sino regularidades de
+cómo continúa el texto dado todo el contexto; al recibir una pregunta nueva, genera palabra por
+palabra la continuación más plausible según esas regularidades, igual que el juguete arma
+oraciones que no estaban en su corpus, pero a una escala enorme.</p>
+<ol class="pasos">
+<li><strong>Qué aprende:</strong> probabilidades de la palabra siguiente, no frases (lo mismo que
+viste en el juguete).</li>
+<li><strong>Con qué contexto:</strong> el juguete solo mira la palabra anterior; un LLM mira todo
+lo escrito antes mediante atención, así que capta patrones mucho más largos (formato de pregunta
+y respuesta, gramática, asociaciones entre conceptos).</li>
+<li><strong>Con cuántos datos:</strong> fue entrenado con prácticamente todo el texto disponible,
+así que casi cualquier pregunta nueva se parece en su estructura a muchas que sí vio.</li>
+<li><strong>Por qué a veces falla:</strong> «plausible» no es «verdadero». Si la pregunta exige un
+hecho que no está en sus datos, continúa igual y alucina (lámina 45).</li>
+</ol>
+<p><strong>Error típico:</strong> responder «porque busca la respuesta en internet» o «porque
+entiende como una persona». Lo primero describe a un agente con herramienta, no a un LLM solo;
+lo segundo no explica el mecanismo que vio la clase.</p>
+<p class="fuente">[INFERENCIA] a partir de:
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:22:30–2:22:44 y 2:46:42–2:46:54]
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:06:04–0:06:34]
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]</p>
+</details>
+
+<h3>Qué es un LLM, en palabras del profesor</h3>
+
+<div class="cita">«los modelos que se llaman los grandes modelos del lenguaje […] large language model
+se le llaman la llm son simplemente modelos que predicen la siguiente palabra»
+<span class="f">Clase del 21-ago · 2:22:30–2:22:44 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Y son <em>large</em> porque tienen miles de millones de parámetros: son como la red de la
+clase, pero gigantes
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:22:47–2:22:57]</span>.
+En la Clase del 31-jul ya lo había adelantado, y agregó dos cosas que conviene separar: el
+modelo se <em>entrena</em> comparando la palabra que predice con la que realmente seguía, con la
+entropía cruzada como función de costo (la de clasificación); y cuando usas ChatGPT el modelo
+no se está entrenando, solo hace inferencia
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:08:06–0:11:04]</span>.</p>
+
+<div class="nota">
+<strong>⚠ «175 billones».</strong> La lámina 45 dice «GPT-3 tiene 175B de parámetros» y
+«Llama-2 tiene versiones de 7B, 13B, 70B»
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]</span>;
+en la grabación se dice «175 billones»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:45:43–2:45:47]</span>.
+Es un calco del inglés: <em>B = billion = 10⁹</em>. GPT-3 tiene 175 × 10⁹ = <strong>175 mil
+millones</strong> de parámetros, no 175 billones del español (10¹²).
+</div>
+
+<h3>Cómo se llega ahí: atención, BERT y la última palabra</h3>
+
+<p><strong>Atención.</strong> En 2017, el artículo <em>Attention is all you need</em> propuso
+armar el modelo solo con mecanismos de atención
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:14:54–2:15:18]</span>.
+La idea: para representar una palabra dentro de su oración, la red «presta atención» a las
+otras. En el ejemplo del profesor, para representar «ladró» en «El perro café se puso feliz y
+me ladró», pone 30 % de atención en «ladró», 30 % en «feliz», 30 % en «perro» y 10 % en «café»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:17:53–2:18:09]</span>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 35]</span>.
+Esos porcentajes los calcula otra red, a partir de las correlaciones entre los vectores de las
+palabras, normalizadas para que sumen 1
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:26:23–2:28:13]</span>;
+y el profesor aclaró que los números del ejemplo los puso él para ilustrar
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:28:42–2:28:44]</span>.
+Como cada representación se puede entrenar en paralelo, se pudo entrenar con muchísimos más
+datos: de ahí los <em>modelos fundacionales</em> (lámina 36)
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:18:24–2:19:17]</span>.</p>
+
+<p><strong>BERT.</strong> Tapa al azar cerca del 15 % de las palabras (lámina 38) y la red tiene
+que adivinar la palabra oculta. Así el entrenamiento se vuelve un problema de
+<strong>clasificación</strong>: elegir, entre todas las palabras posibles, la que falta
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:20:15–2:21:09]</span>.
+El paso que convierte eso en un generador de texto:</p>
+
+<div class="cita">«si yo puedo ⟨enmascarar⟩ una palabra entonces pues puedo ⟨enmascarar⟩ la última palabra
+enmascaro la última palabra y trato de predecir esa palabra» <span class="f">Clase del 21-ago ·
+2:21:18–2:21:28 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «mascarar»)</span></div>
+
+<p>Repetir eso, palabra tras palabra, es generar texto; por eso se llama modelo
+<em>generativo</em>
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:21:38–2:22:09]</span>
+(láminas 39–40, «Auto-Regressive Generative Transformers»). Es exactamente lo que hace el
+juguete de arriba, con una tabla en vez de una red.</p>
+
+<div class="clave">
+<strong>El mismo principio en imágenes [INFERENCIA].</strong> En la Clase del 31-jul el profesor
+explicó el autoaprendizaje (<em>self-supervised</em>): recortas un pedazo de la imagen de un
+perro y le pides al modelo que lo reconstruya (<em>in-painting</em>); no hay una etiqueta
+«perro», la etiqueta es el propio dato
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:17:14–1:17:56]</span>.
+Tapar una palabra y pedir que la adivine es la versión en texto de lo mismo. Por eso un LLM se
+puede entrenar con enormes cantidades de texto sin que nadie etiquete nada.
+</div>
+
+<h3>GPT no es ChatGPT, y la palabra «detente»</h3>
+
+<div class="cita">«gpt no es lo mismo que chat gpt gpt es el modelo lenguaje chat gpt es la herramienta
+que hoy en día es un sistema multiagente» <span class="f">Clase del 21-ago · 2:23:52–2:23:58 ·
+profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Ya lo había dicho en la Clase del 31-jul: ChatGPT es un sistema multiagente que tiene un LLM
+por detrás
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:51–0:05:08]</span>.
+Cuando aprietas enter, el modelo genera palabra por palabra y en algún momento genera una
+palabra especial que no te muestra, «detente»: ahí el sistema se detiene y te toca hablar
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:24:28–2:24:38]</span>.
+ChatGPT usa otras palabras especiales, por ejemplo una que activa el generador de imágenes
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:24:43–2:25:07]</span>.
+Guarda esa idea: es el mecanismo de los agentes (<a href="#agentes">sección 3</a>).</p>
+
+<p><strong>Por qué cuesta caro usarlo.</strong> Cada palabra generada es un <em>forward</em>
+completo por miles de millones de parámetros, para millones de personas a la vez; el gasto no
+está solo en entrenar
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:30:36–2:31:03]</span>.
+Qué es un <em>forward</em>: <a href="redes_neuronales.html">redes_neuronales.html</a>, sección 6.</p>
+
+<h3>Por qué alucinan</h3>
+
+<div class="clave">
+<strong>Lámina 45.</strong> Los LLM son muy buenos como asistente de escritura y de código. Son
+muy malos para: obtener respuestas basadas en hechos (alucinan), usar información posterior a su
+entrenamiento, y razonar y planificar. «Simplemente imitan a sus conjuntos de entrenamiento»
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]</span>.
+</div>
+
+<p>El ejemplo del profesor: si le preguntas a un LLM solo cómo estará el clima mañana, no tiene
+forma de saberlo, así que genera una palabra, otra y otra, e inventa
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:15–2:46:27]</span>;
+está entrenado para generar palabras que sigan la distribución del texto que la humanidad ha
+escrito
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:42–2:46:54]</span>.
+[DATITO] En el juguete lo ves directo: después de cada palabra <em>siempre</em> hay una
+siguiente con su probabilidad. El mecanismo no tiene una casilla para «no sé».</p>
+
+<div class="nota" style="font-size:.88rem">
+<strong>Contexto, no materia.</strong> En la misma sesión, antes de esta clase, un invitado habló
+de datos personales, regulación de la IA y propiedad intelectual
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 0:06:09–1:23:51]</span>.
+Está fuera del currículum evaluable. El único puente: el profesor dijo que estos modelos se
+ajustaron prácticamente con todo el texto que la humanidad ha generado
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:30:22–2:30:30]</span>;
+de dónde sale ese texto y con qué consentimiento era el tema del invitado.
+</div>
+
+<h3>Ejercicio de cálculo</h3>
+<p>Con la tabla del juguete (la ves en el panel al elegir cada palabra), calcula a mano la
+probabilidad que le asigna a (a) «hola cómo estás ⟨detente⟩» y a (b) «hola cómo estás muy bien y
+tú ⟨detente⟩», partiendo de «hola». Después compruébalo en el panel. ¿Cuál es más probable, y
+qué te dice eso sobre las respuestas largas?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) vale 1/4 = 0,25 y (b) vale 1/16 = 0,0625; la corta es cuatro
+veces más probable.</p>
+<ol class="pasos">
+<li>La probabilidad de una secuencia es el producto de las probabilidades de cada paso.</li>
+<li>(a) hola→cómo ½ · cómo→estás 1 · estás→⟨detente⟩ ½ = ¼ = 0,25.</li>
+<li>(b) hola→cómo ½ · cómo→estás 1 · estás→muy ½ · muy→bien ½ · bien→y 1 · y→tú ½ ·
+tú→⟨detente⟩ 1 = 1/16 = 0,0625.</li>
+<li>Cociente: 0,25 / 0,0625 = 4.</li>
+</ol>
+<p>Qué te dice: cada paso multiplica por un número ≤ 1, así que las secuencias largas tienden a
+ser menos probables, aunque (b) sea la frase completa del corpus. Por eso el momento en que sale
+«detente» importa tanto como las palabras: decide dónde termina la respuesta.</p>
+<p><strong>Error típico:</strong> sumar las probabilidades en vez de multiplicarlas, o creer que
+la frase del corpus tiene que ser la más probable. Sumar da números mayores que 1 y no
+representa «esto y después esto»; y el corpus no garantiza nada sobre la probabilidad de la
+frase completa.</p>
+<p class="fuente">[DATITO] tabla del juguete, contada desde su corpus</p>
+</details>
+
+<h3>Ejercicio de interpretación</h3>
+<p>La lámina 35 muestra, para «ladró», nueve pesos de atención: 0.0 0.3 0.1 0.0 0.0 0.3 0.0 0.0
+0.3. (a) ¿Qué significa el 0,3 de «perro»? (b) ¿Por qué suman 1? (c) ¿Qué <em>no</em> puedes
+concluir de estos números?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) el 30 % de la representación de «ladró» se arma mirando a
+«perro»; (b) suman 1 porque se normalizan como porcentajes; (c) no puedes concluir que sean los
+pesos de un modelo real ni que la red «entienda»: son ilustrativos.</p>
+<p>Correspondencia palabra→peso: sigue el orden de la frase dicho en clase (El, perro, café, se,
+puso, feliz, y, me, ladró); el texto extraído de la lámina desordena las palabras, así que la
+correspondencia es [INFERENCIA], coherente con lo que el profesor dictó.</p>
+<ol class="pasos">
+<li>(a) «perro» es el contexto que le dice a «ladró» quién ladró: por eso recibe peso.</li>
+<li>(b) Se calculan correlaciones y se normalizan para que sean porcentajes: 0,3 + 0,1 + 0,3 +
+0,3 = 1.</li>
+<li>(c) El profesor dijo que los números los puso él para ilustrar; en un modelo real los calcula
+una red. Y un peso dice cuánto aporta una palabra a un vector, no que haya comprensión.</li>
+</ol>
+<p><strong>Error típico:</strong> leer el 0,3 como «probabilidad de que la palabra sea perro», o
+creer que el programador fija esos pesos. Lo primero confunde atención con predicción; lo
+segundo contradice lo que se explicó en clase.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 35]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:17:53–2:18:09 y 2:26:23–2:28:44]</p>
+</details>
+
+<h3>Ejercicio de transferencia · estaciones meteorológicas</h3>
+<p>[DATITO] Tienes registros de 30 estaciones meteorológicas agrícolas con lecturas faltantes de
+temperatura. Alguien propone «hacer lo de BERT» para rellenarlas. ¿Qué sería exactamente? ¿Cuál
+es la etiqueta? ¿Es un problema de clasificación, como en BERT?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> «hacer lo de BERT» sería tapar lecturas conocidas y entrenar un
+modelo que las reconstruya desde el resto; la etiqueta es la propia lectura tapada, y como la
+temperatura es un número continuo el problema es de <strong>regresión</strong>, no de
+clasificación.</p>
+<ol class="pasos">
+<li>Tapa al azar una parte de las lecturas que <em>sí</em> conoces y entrena un modelo para
+reconstruirlas desde las otras horas y las otras estaciones.</li>
+<li>La etiqueta es el dato tapado: autoaprendizaje, como el in-painting de la Clase del 31-jul.
+Nadie tiene que etiquetar nada.</li>
+<li>BERT es clasificación porque elige entre las palabras de un vocabulario; una temperatura es
+continua: regresión. Mismo principio, otro tipo de problema.</li>
+<li>Valida con lecturas tapadas que el modelo nunca vio; si no, mides memoria y no
+reconstrucción (<a href="limpieza_preparacion.html">limpieza_preparacion.html</a>).</li>
+</ol>
+<p><strong>Error típico:</strong> decir «es clasificación, como BERT». Es error porque el tipo de
+problema lo define el tipo de etiqueta, no el truco de enmascarar.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:20:15–2:21:09]
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:17:14–1:17:56] · caso de estaciones [DATITO]</p>
+</details>
+
+<h3>Producción · explícaselo a alguien</h3>
+<p>Explícale a alguien que no estudia datos por qué ChatGPT puede inventar un dato con total
+seguridad. Usa solo dos ideas de esta sección y ninguna palabra técnica sin explicar. Llévalo a
+Datito.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> ChatGPT puede inventar con seguridad porque su modelo está hecho
+para continuar texto de forma plausible, palabra por palabra, y nada en ese mecanismo verifica
+si lo que escribe es cierto.</p>
+<p><strong>Respuesta modelo:</strong></p>
+<blockquote style="margin:.4rem 0 .8rem;padding-left:.8rem;border-left:3px solid #bbf7d0">
+«Por dentro, ChatGPT tiene un programa que hace una sola cosa: adivinar la palabra que viene,
+una tras otra, según cómo suele seguir el texto que leyó durante su entrenamiento. Siempre hay
+una palabra siguiente que “suena bien”, sepa o no la respuesta. Si le preguntas algo que no
+estaba en lo que leyó, como el clima de mañana, igual arma una respuesta que suena correcta.
+Suena segura porque imita cómo escribimos las personas, no porque haya comprobado nada.»
+</blockquote>
+<ol class="pasos">
+<li>Idea 1: el mecanismo es continuar texto palabra por palabra.</li>
+<li>Idea 2: ese mecanismo no verifica hechos; imita la forma del texto (lámina 45).</li>
+</ol>
+<p><strong>Criterios con que Datito lo revisa:</strong> dice qué hace el modelo; explica por qué
+eso no incluye verificar; si nombra ChatGPT, lo separa del modelo que tiene dentro; no promete
+que «con más datos deja de alucinar».</p>
+<p><strong>Error típico:</strong> explicarlo como «se equivoca porque le falta información».
+Es incompleto: aunque le falte, el mecanismo no tiene cómo decir «no sé», y por eso la respuesta
+sale igual de segura.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:15–2:46:54] · redacción [DATITO]</p>
+</details>
+
+<h3>Distinción de certamen · P5 (la mitad LLM)</h3>
+<div class="dist">
+Dos de las alternativas de la P5 se caen con la lámina 45: la que dice que los LLM son
+excelentes para hechos recientes y para planificar, y la que dice que no requieren muchos datos
+ni cómputo (<a href="certamen_2.html#p5">certamen_2.html#p5</a>). El enunciado pide responder
+«según la descripción»: se contrasta con la lámina, no con tu experiencia usando ChatGPT. La
+distinción que prepara la otra mitad: <strong>el modelo (GPT) ≠ el sistema
+(ChatGPT)</strong>. Pregunta: ¿son verdaderas las alternativas 1 y 4 de la P5?
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> las dos son falsas: la lámina 45 dice que los LLM son malos para
+hechos, para información posterior a su entrenamiento y para planificar, y que necesitan muchos
+datos y cómputo.</p>
+<ol class="pasos">
+<li>Alternativa 1 («excelentes para hechos recientes y planificar»): la lámina 45 dice lo
+contrario en los tres puntos.</li>
+<li>Alternativa 4 («no requieren grandes cantidades de datos ni cómputo»): la lámina 45 dice que,
+por tener miles de millones de parámetros, necesitan muchos datos y poder de cómputo.</li>
+</ol>
+<p><strong>Error típico:</strong> marcar la 1 porque «ChatGPT me responde cosas recientes». Es
+error porque eso lo hace el sistema con herramientas (un agente), no el LLM solo, y el enunciado
+pide contrastar con la descripción de clase.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]
+[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · ficha P5]</p>
+</details>
+
+<h3>Procedimiento para el papel</h3>
+<ol class="pasos">
+<li>¿La afirmación habla del <strong>modelo</strong> (un LLM, GPT) o de un
+<strong>sistema</strong> (ChatGPT, un agente)?</li>
+<li>Contrasta con las dos listas de la lámina 45: bueno para / malo para.</li>
+<li>Si la afirmación exige hechos verificados, información nueva o acciones, no describe a un
+LLM solo.</li>
+<li>Cifras con B: multiplica por 10⁹.</li>
+</ol>
+
+<h3>Errores que el formato castiga</h3>
+<ul>
+<li>«GPT y ChatGPT son lo mismo.»</li>
+<li>«El LLM busca en internet.» Solo, no: eso requiere una herramienta, y ya es un agente.</li>
+<li>«El modelo aprende mientras conversas con él.» Al usarlo solo hace inferencia.</li>
+<li>Leer «175 billones» como 175 × 10¹².</li>
+<li>«Los porcentajes de atención los fija el programador.» Los calcula una red; los del ejemplo
+eran ilustrativos.</li>
+<li>Decir que BERT resuelve un problema de regresión: elige una palabra, es clasificación.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="agentes">3 · Agentes: el LLM dentro de un bucle</h2>
+
+<p>Qué agrega este eslabón: al LLM se le dan herramientas, memoria y objetivos, y lo más
+importante, un <strong>bucle</strong>: lo que pasa al actuar vuelve y condiciona lo que sigue.</p>
+
+<div class="pred">
+  <div class="q">En el simulador de abajo, alguien pregunta por el clima de mañana. Antes de
+  correrlo: si activas «la herramienta falla», ¿qué hacen el LLM solo y el agente?</div>
+  <button data-p="a">Los dos inventan un pronóstico</button>
+  <button data-p="b">El LLM solo inventa igual; el agente recibe el error</button>
+  <button data-p="c">Los dos se detienen y avisan</button>
+  <div class="veredicto" id="verAG1"></div>
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el LLM solo inventa un pronóstico con o sin falla, porque no tiene
+herramienta ni observación; el agente recibe el error como observación y puede avisar o
+reintentar, aunque eso no garantiza que no alucine.</p>
+<ol class="pasos">
+<li>LLM solo: no hay herramienta, así que «la herramienta falla» no cambia nada; genera palabras
+plausibles e inventa (el ejemplo del clima del profesor).</li>
+<li>Agente: emite el token de herramienta, el sistema la ejecuta, y el resultado —aquí, el
+error— vuelve a su contexto.</li>
+<li>Con el error en el contexto, la continuación más razonable es avisar o reintentar.</li>
+<li>Pero si el LLM ignora la observación, alucina igual dentro del sistema.</li>
+</ol>
+<p><strong>Error típico:</strong> «el agente nunca inventa porque tiene herramientas». Es error:
+el bucle hace que el resultado entre al contexto, no obliga al LLM a usarlo bien.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:15–2:46:27, 2:50:44–2:51:08 y 2:53:37–2:54:19] · simulación [DATITO]</p>
+</details>
+
+<div class="panel">
+  <div class="flujo" id="flujoAg">
+    <span class="b" data-k="ins">instrucciones</span> →
+    <span class="b" data-k="usr">pregunta</span> →
+    <span class="b" data-k="llm">LLM genera tokens</span> →
+    <span class="b" data-k="tok">token de herramienta</span> →
+    <span class="b" data-k="tool">la herramienta se ejecuta</span> →
+    <span class="b" data-k="obs">observación vuelve</span> →
+    <span class="b" data-k="llm2">LLM sigue generando</span> →
+    <span class="b" data-k="det">⟨detente⟩</span>
+  </div>
+  <div>
+    <label class="chk"><input type="checkbox" id="chkFalla"> la herramienta falla</label>
+    <label class="chk"><input type="checkbox" id="chkIgnora"> el LLM ignora la observación</label>
+  </div>
+  <div>
+    <button id="bPasoAg">Paso siguiente</button>
+    <button id="bTodoAg" class="ok">Correr todo</button>
+    <button id="bResetAg" class="alt">Reiniciar</button>
+  </div>
+  <div class="dos" style="margin-top:.8rem">
+    <div><div class="lbl" style="margin-top:0">LLM solo</div><div class="traza" id="trazaLLM"></div></div>
+    <div><div class="lbl" style="margin-top:0">Agente (LLM + herramienta + bucle)</div><div class="traza" id="trazaAg"></div></div>
+  </div>
+  <div class="met">
+    <div><div class="n" id="mBucleLLM">—</div><div class="e">LLM solo: ¿volvió el resultado de una acción?</div></div>
+    <div><div class="n" id="mBucleAg">—</div><div class="e">agente: ¿volvió el resultado de una acción?</div></div>
+  </div>
+  <p class="fuente" style="margin:.6rem 0 0">[DATITO] Simulación con textos y cifras ilustrativas.
+  El caso del clima es el ejemplo del profesor
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:48:15–2:48:33].</p>
+</div>
+
+<h3>La separación que hizo el profesor</h3>
+
+<p>Un compañero preguntó por las bases de datos vectoriales que permiten buscar en un libro
+completo, justo después de que el profesor dijera que los LLM son malos con información
+posterior a su entrenamiento
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:59–2:47:17]</span>.
+La respuesta es la P5 en una línea:</p>
+
+<div class="cita">«bueno, lo que pasa es que estoy hablando de la LLM no estoy hablando de los agentes»
+<span class="f">Clase del 21-ago · 2:47:19–2:47:23 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="clave">
+<strong>Lámina 46 (definición oficial).</strong> Un agente puede realizar acciones autónomas sin
+intervención humana constante · puede contar con un humano en el proceso para mantener el
+control · tiene memoria para almacenar preferencias y conocimiento · un LLM puede encargarse del
+procesamiento de información y la toma de decisiones · debe percibir y procesar la información
+de su entorno · puede usar herramientas (internet, intérpretes de código, llamadas API) · puede
+colaborar con otros agentes o con humanos
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 46]</span>.
+<br><br>
+<strong>Lámina 47 (diagrama).</strong> Memoria, herramientas y objetivos alimentan al agente; el
+agente produce <em>acciones</em> sobre el <em>entorno</em>, y las <em>observaciones</em> vuelven
+al agente. El texto extraído de FCD-08 no trae la figura; el diagrama lo transcribe
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md · sección 8.9.2]</span>.
+</div>
+
+<p>En clase el profesor lo resumió así: el agente tiene por dentro acceso a un LLM que genera
+texto, además memoria, acceso a herramientas y objetivos muy claros
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:49:30–2:49:46]</span>.
+Se construye dándole instrucciones (qué tipo de agente es, en qué se especializa, cómo debe
+responder) y declarándole las herramientas que tiene: una API del clima, otro agente que genera
+imágenes
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:49:48–2:50:34]</span>.
+Y así funciona por dentro:</p>
+
+<div class="cita">«empiezan a generar el siguiente ⟨token⟩ en la siguiente palabra […] y generan una palabra
+especial con la cual se conectan a la herramienta ejecutan la herramienta después le devuelve
+⟨al agente⟩ recibe la respuesta de la herramienta […] y de nuevo siguen ⟨prediciendo⟩ la siguiente
+palabra» <span class="f">Clase del 21-ago · 2:50:44–2:51:08 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «toque», «a la gente» y «precisando»)</span></div>
+
+<div class="dist">
+<strong>Distinción de certamen · P5:</strong> generar texto <strong>≠</strong> ejecutar acciones
+y observar su resultado
+<span class="fuente">[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, fila P5]</span>.
+Fíjate en la cita: <strong>el agente también genera tokens</strong>; hasta la llamada a la
+herramienta es una «palabra especial». Así que la diferencia no es «genera texto / no genera
+texto». Es el <strong>bucle cerrado</strong>: el resultado de la acción vuelve como observación
+y condiciona la palabra siguiente (lámina 47). El LLM solo genera y no se entera de nada de lo
+que pasa afuera. Ficha completa: <a href="certamen_2.html#p5">certamen_2.html#p5</a>.
+<br><br>
+Pregunta de la P5: ¿cuál(es) de estas afirmaciones es(son) correcta(s) según la descripción?
+(1) los LLM son excelentes para hechos recientes y planificar a largo plazo; (2) un agente puede
+usar herramientas, almacenar conocimiento y actuar de forma autónoma, mientras que un LLM se
+limita principalmente al procesamiento de información y generación de texto; (3) los agentes no
+pueden colaborar con otros agentes ni con humanos; (4) los LLM no requieren grandes cantidades
+de datos ni poder de cómputo.
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> solo la 2 es correcta.</p>
+<ol class="pasos">
+<li>(1) Falsa: la lámina 45 dice que los LLM son malos para hechos, para información posterior a
+su entrenamiento y para razonar y planificar.</li>
+<li>(2) Correcta: la lámina 46 atribuye al agente herramientas, memoria y acción autónoma, y deja
+al LLM el procesamiento de información.</li>
+<li>(3) Falsa: la lámina 46 cierra con «pueden colaborar con otros agentes o con humanos».</li>
+<li>(4) Falsa: la lámina 45 dice que necesitan muchos datos y poder de cómputo.</li>
+</ol>
+<p><strong>Error típico:</strong> dudar de la 2 porque «el agente también genera texto». Es
+cierto que genera texto, pero la alternativa dice que el LLM <em>se limita</em> a eso, y el
+agente agrega herramientas, memoria y acción: la afirmación sigue siendo correcta.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 45–46]
+[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · ficha P5, enunciado textual de Canvas]</p>
+</details>
+
+<p><strong>El bucle no elimina la alucinación.</strong> En funciones críticas se arman varios
+agentes, uno que hace la tarea y otro que la revisa, con un auditor; eso baja la tasa de
+alucinación, pero igual se puede colar una en el sistema
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:53:37–2:54:19]</span>.
+Y queda la responsabilidad: si un sistema autónomo falla, ¿quién responde? Por eso hasta hoy
+los agentes suelen funcionar supervisados, como asistentes del humano
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:54:23–2:54:43]</span>.
+Ejemplos oficiales (lámina 48): agentes de monitoreo y mantenimiento, operacionales, de
+análisis documental y de asistencia a operadores.</p>
+
+<div class="cita">«el desarrollo agente es como desarrollo software con una LLM metida adentro y que
+básicamente funciona super bien tiene ciclos de razonamiento ciclos de chequeo, lo que están
+haciendo» <span class="f">Clase del 21-ago · 3:23:57–3:24:07 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Un detalle que confirma que el LLM es una pieza: el profesor contó en la Clase del 31-jul que
+en sus propios proyectos con agentes usa como <em>backbone</em> un LLM pagado, porque corre más
+rápido que en una GPU local
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:21:54–1:22:47]</span>.</p>
+
+<h3>Ejercicio de interpretación · leer una traza</h3>
+<p>[DATITO] Traza ilustrativa de un agente de bodega en una planta:</p>
+<div class="traza" style="min-height:0">1 [usuario]      ¿Quedan repuestos del rodamiento R-220?
+2 [LLM]          Voy a revisar el inventario.
+3 [LLM]          ⟨herramienta: inventario("R-220")⟩
+4 [herramienta]  {"stock": 0, "orden_en_curso": "OC-5531"}
+5 [LLM]          No quedan; hay una orden de compra en curso (OC-5531).
+6 [LLM]          ⟨detente⟩</div>
+<p>(a) ¿Qué líneas produce el LLM? (b) ¿Quién ejecuta la línea 4? (c) ¿Dónde se cierra el
+bucle? (d) ¿La línea 5 garantiza que no hubo alucinación?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) las líneas 2, 3, 5 y 6; (b) la línea 4 la ejecuta el sistema
+que rodea al LLM; (c) el bucle se cierra entre la 4 y la 5; (d) no, la línea 5 no garantiza que
+no haya alucinación.</p>
+<ol class="pasos">
+<li>(a) Incluye la 3 y la 6: la llamada a la herramienta y el «detente» también son tokens que
+genera el LLM.</li>
+<li>(b) El LLM no ejecuta nada; solo emite el token que pide la herramienta.</li>
+<li>(c) El resultado de la acción (línea 4) vuelve al contexto y la línea 5 depende de él. Sin la
+4, la 5 sería una invención.</li>
+<li>(d) El LLM pudo leer mal u omitir algo de la observación; por eso existen revisores y
+supervisión humana.</li>
+</ol>
+<p><strong>Error típico:</strong> atribuir la línea 4 al LLM («el LLM consultó el inventario»).
+Es error porque confunde pedir la acción (un token) con ejecutarla.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44–2:51:08 y 2:53:37–2:54:19] · traza [DATITO]</p>
+</details>
+
+<h3>Ejercicio de transferencia · planta concentradora</h3>
+<p>[DATITO] Dos sistemas en una planta: (A) un LLM al que le pegas las notas del turno y te
+devuelve el informe redactado; (B) un sistema que cada 5 minutos lee sensores por una API,
+detecta una vibración anómala, abre una orden de trabajo en el sistema de mantenimiento y
+consulta si quedó abierta. ¿Cuál es un agente según las láminas 46–47? Nombra qué atributos
+tiene cada uno y dónde está el bucle.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> B es un agente y A no: A es un LLM usado como asistente de
+escritura, mientras que B percibe, usa herramientas, actúa y observa el resultado de su acción.</p>
+<ol class="pasos">
+<li><strong>A</strong> procesa el texto que le das y genera texto (lámina 45, asistente de
+escritura). No percibe el entorno por sí mismo, no usa herramientas, no actúa.</li>
+<li><strong>B</strong> percibe el entorno (sensores), usa herramientas (la API de sensores y el
+sistema de mantenimiento), actúa (abre la orden) y observa el resultado (consulta si quedó
+abierta).</li>
+<li>El bucle de B: abrir la orden → consultar → la respuesta condiciona lo siguiente (lámina 47).
+Es casi literal el «agente de monitoreo y mantenimiento» de la lámina 48.</li>
+<li>Queda por decidir en B si hay un humano en el proceso (la lámina 46 lo permite) y quién
+responde si la orden sale mal.</li>
+</ol>
+<p><strong>Error típico:</strong> llamar agente a A «porque usa IA». Es error porque la
+definición exige atributos concretos (herramientas, percepción, acción), no el uso de un LLM.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 45–48] · caso de la planta [DATITO]</p>
+</details>
+
+<h3>Caso auditable: Datito como agente [INFERENCIA]</h3>
+<p>Este tutor es un sistema con un LLM adentro. Las piezas existen en el repositorio y las
+puedes abrir:</p>
+<table>
+<tr><th>Pieza</th><th>En Datito</th><th>Dónde mirar</th></tr>
+<tr><td>Instrucciones y objetivos</td><td>El protocolo pedagógico</td><td><code>.claude/skills/datito/SKILL.md</code>, <code>CLAUDE.md</code></td></tr>
+<tr><td>Herramientas</td><td>Leer y escribir archivos; consultar el cuaderno de NotebookLM por MCP</td><td><code>allowed-tools</code> en <code>SKILL.md</code>; <code>.mcp.json</code></td></tr>
+<tr><td>Memoria</td><td>Estado del aprendizaje y registro de sesiones</td><td><code>07_DATITO/progreso.yaml</code>, <code>07_DATITO/bitacora/</code></td></tr>
+<tr><td>Varios agentes</td><td>Tareas que corren aisladas</td><td><code>datito-visual</code>, <code>datito-corregir</code> (<code>context: fork</code>)</td></tr>
+<tr><td>Revisor</td><td>Auditor de diseño instruccional</td><td><code>.claude/skills/datito-pedagogia/SKILL.md</code></td></tr>
+</table>
+
+<h3>Producción · audítalo tú</h3>
+<p>Para cada atributo de la lámina 46, decide si Datito lo cumple y con qué archivo de la tabla
+lo pruebas. Después escribe, en cinco líneas, qué lo separa de un chatbot al que le adjuntas
+documentos. Llévalo a Datito: es la pregunta con que abre este concepto.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> lo que hace de Datito un agente y no un chatbot con documentos es
+que usa herramientas para actuar sobre su entorno (lee y escribe archivos, consulta NotebookLM),
+guarda memoria entre sesiones y cierra un bucle: lo que escribe (tu progreso) vuelve a leerse y
+condiciona la sesión siguiente [INFERENCIA].</p>
+<table>
+<tr><th>Atributo de la lámina 46</th><th>¿Lo cumple?</th><th>Evidencia</th></tr>
+<tr><td>Acciones autónomas</td><td>Sí, acotadas</td><td>Escribe <code>progreso.yaml</code> y la bitácora sin que tú edites nada</td></tr>
+<tr><td>Humano en el proceso</td><td>Sí</td><td>El bucle socrático espera tu respuesta (<code>CLAUDE.md</code>)</td></tr>
+<tr><td>Memoria</td><td>Sí</td><td><code>07_DATITO/progreso.yaml</code>, <code>07_DATITO/bitacora/</code></td></tr>
+<tr><td>LLM que procesa y decide</td><td>Sí</td><td>El modelo que ejecuta <code>SKILL.md</code></td></tr>
+<tr><td>Percibe su entorno</td><td>Sí</td><td>Lee el repositorio y tu estado antes de cada sesión</td></tr>
+<tr><td>Usa herramientas</td><td>Sí</td><td><code>allowed-tools</code> de <code>SKILL.md</code>; MCP en <code>.mcp.json</code></td></tr>
+<tr><td>Colabora con otros agentes</td><td>Sí</td><td>Forks <code>datito-visual</code>, <code>datito-corregir</code>; auditor <code>datito-pedagogia</code></td></tr>
+</table>
+<p><strong>Respuesta modelo (cinco líneas):</strong></p>
+<blockquote style="margin:.4rem 0 .8rem;padding-left:.8rem;border-left:3px solid #bbf7d0">
+«Un chatbot con documentos adjuntos solo genera texto a partir de lo que le pegaste: no hace
+nada fuera de la conversación y no se entera de nada que pase después. Datito tiene un LLM
+adentro, pero además herramientas (leer y escribir archivos, consultar NotebookLM), memoria que
+dura entre sesiones (<code>progreso.yaml</code> y la bitácora) y objetivos fijados en sus
+instrucciones. Actúa sobre su entorno —registra mi progreso— y en la sesión siguiente lee ese
+resultado y decide qué preguntarme. Ese bucle acción → observación es lo que la lámina 47 llama
+agente. Igual tiene límites: depende de sus herramientas y puede equivocarse.»
+</blockquote>
+<p><strong>Criterios con que Datito lo revisa:</strong> cada atributo con evidencia concreta (un
+archivo); nombra el bucle (qué acción, qué resultado vuelve, qué cambia después); reconoce lo que
+no puedes verificar; no confunde «tiene documentos» con «usa herramientas».</p>
+<p><strong>Error típico:</strong> «es un agente porque tiene mucha información». Es error: tener
+documentos es contexto, no herramientas ni acción; un chatbot con adjuntos también lo tiene.</p>
+<p class="fuente">[INFERENCIA] sobre <code>.claude/skills/datito/SKILL.md</code>,
+<code>CLAUDE.md</code>, <code>.mcp.json</code> y <code>07_DATITO/</code> ·
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 46–47]</p>
+</details>
+
+<div class="peligro">
+<strong>En el certamen, responde con las láminas 46–47, no con Datito.</strong> El caso sirve
+para entender; la corrección se hace contra la definición de la lámina.
+</div>
+
+<h3>Procedimiento para el papel</h3>
+<ol class="pasos">
+<li>Separa el <strong>componente</strong> (LLM) del <strong>sistema</strong> (agente): ¿qué
+sujeto tiene la afirmación?</li>
+<li>Busca en cada opción los atributos de la lámina 46.</li>
+<li>Pregunta si el resultado de una acción vuelve y condiciona lo siguiente (lámina 47).</li>
+<li>Desconfía de los absolutos: «no pueden colaborar», «nunca necesitan un humano», «no
+alucinan».</li>
+</ol>
+
+<h3>Errores que el formato castiga</h3>
+<ul>
+<li>«Un agente es un LLM con otro nombre», o «ChatGPT es un LLM».</li>
+<li>«El agente no genera texto, ejecuta.» Genera texto; la llamada a la herramienta es un
+token.</li>
+<li>«Un agente no alucina.» El bucle y los revisores bajan la tasa, no la anulan.</li>
+<li>«Autónomo significa sin humano.» La lámina 46 permite un humano en el proceso.</li>
+<li>«Los agentes no pueden colaborar con otros agentes ni con humanos.» Es la alternativa 3 de
+la P5, y es falsa.</li>
+<li>Responder con cómo funciona Datito en vez de con la lámina.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>4 · Qué tendría que verte hacer</h2>
+<table>
+<tr><th>Evidencia</th><th>Deep learning</th><th>LLM</th><th>Agentes</th></tr>
+<tr><td><strong>EXPLICAR</strong></td><td>Qué cambió en 2012 y por qué no fue la idea</td><td>Por qué «predecir la siguiente palabra» genera texto</td><td>Qué agrega el bucle al LLM</td></tr>
+<tr><td><strong>APLICAR</strong></td><td>Clasificar ítems según la cláusula de la P6</td><td>Probabilidad de una secuencia a mano</td><td>Marcar en una traza qué es LLM, herramienta y observación</td></tr>
+<tr><td><strong>INTERPRETAR</strong></td><td>Leer la lámina 8 sin inventarle un umbral</td><td>Leer un vector de atención</td><td>Decir qué garantiza y qué no una observación</td></tr>
+<tr><td><strong>TRANSFERIR</strong></td><td>Elegir entre clásico y red en otro dominio</td><td>«Hacer lo de BERT» con datos continuos</td><td>Distinguir agente de asistente en una planta</td></tr>
+</table>
+
+<div class="grafo">
+  <a class="n" href="redes_neuronales.html">Redes neuronales</a> →
+  <a class="n" href="#deep-learning">Deep learning</a> →
+  <a class="n" href="#llm">LLM</a> →
+  <a class="n" href="#agentes">Agentes</a> ·
+  <a class="n" href="certamen_2.html#p5">Certamen 2 · P5</a>
+  <a class="n" href="certamen_2.html#p6">Certamen 2 · P6</a>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-18">
+<h2>Cierre de la Clase 18 · Deep learning, LLM y agentes</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Deep learning: redes profundas que dominan imagen y texto cuando hay muchos datos.</li><li>Con pocos datos tabulares, los algoritmos clásicos suelen ganar.</li><li>Un LLM predice la siguiente palabra.</li><li>Un agente es un LLM con herramientas y objetivos, cuyo resultado vuelve y condiciona lo siguiente.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Generar texto ≠ ejecutar acciones y observar su resultado (C2 P5).</li><li>Avance mediante redes ≠ factor que lo hizo posible (C2 P6).</li><li>GPT (el modelo) ≠ ChatGPT (el sistema).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>¿Aprende sus propias variables? Es deep learning.</li><li>¿Solo genera texto? Es un LLM.</li><li>¿Actúa con herramientas y observa el resultado? Es un agente.</li></ol>
+<p><b>Viene de:</b> <a href="redes_neuronales.html">Clase 17 · Redes neuronales</a> · <b>Sigue:</b> <a href="certamen_1.html">Clase 20 · Distinciones del Certamen 1</a></p>
+<p><b>Vuelve a tu activación:</b> Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Un modelo genera un token especial que llama a una calculadora y usa el resultado para seguir. ¿Es un LLM o un agente?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Un agente: actúa con una herramienta y el resultado vuelve y condiciona lo que genera después. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="certamen_1.html">Continuar → Clase 20 · Distinciones del Certamen 1</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/dl_llm_agentes.html</code> · funciona sin conexión ·
+fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md</code> (mandan
+sobre la transcripción; el diagrama de la lámina 47 viene de
+<code>Resumen_Clase8_DL_LLMs_Agentes.md</code>) · transcripciones de la Clase del 21-ago
+(<code>2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md</code>, desde 1:35:51), de la Clase
+del 7-ago (<code>2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md</code>) y de la Clase del
+31-jul (<code>06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md</code>) · Certamen 2
+(<code>certamen_2.html</code>, <code>07_DATITO/patron_evaluacion.md</code>) · Melbourne
+(<code>05_RESULTADOS/resultados_temporal.json</code>).<br>
+Datos reales: cifras de las láminas (1,2 M imágenes, 1000 categorías, 175B parámetros) y de
+Melbourne (6.336 / 7.244 filas, MAE 188.218 AUD, R² 0,757). Dictados en clase y sin lámina que
+los confirme (⚠): porcentajes de error de ImageNet y conteos de GPU. Ilustrativos [DATITO]: el
+predictor de juguete y sus probabilidades, el simulador del agente, las trazas, la forestal, las
+estaciones y la planta concentradora.
+</footer>
+
+</main>
+<script>
+"use strict";
+/* ---------- utilidades ---------- */
+function $(id){return document.getElementById(id);}
+function rng(seed){var s=seed>>>0||1;return function(){s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
+function fmt(x,d){return x.toFixed(d===undefined?2:d).replace(".",",");}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+/* ================= predicciones y clasificación P6 ================= */
+var VER={
+  verDL1:{
+    idea:"No: el perceptrón es de los años 40, y las redes fueron populares en los 80 y algo en los 90 antes de caer en el olvido. En 2012 no cambió la idea, cambiaron las condiciones para entrenarla. Sigue leyendo.",
+    gpu:"Eso es lo que cuenta el profesor: los autores entrenaron la red en GPU, tarjetas pensadas para videojuegos, sobre un dataset de 1,2 millones de imágenes. Guárdalo para la P6: GPU y datos son condiciones del boom, no «avances mediante redes».",
+    clasico:"No: lo que se aplicó de forma significativa en 2012 fue deep learning, y desde entonces casi toda la IA que usamos lo es. Los algoritmos clásicos siguen ganando en otro régimen, el de pocos datos; eso lo dice la lámina 8, más abajo."
+  },
+  verP6a:{
+    red:"Correcto. Es el caso con que abre la clase (láminas 6–7): el salto de 2012 lo dieron redes profundas. En la P6 es la alternativa «detección de objetos en imágenes».",
+    hab:"No. Aquí no se pregunta qué lo hizo posible, sino si es un área donde las redes produjeron el salto. Lo es: láminas 6–7.",
+    nin:"No. Es el ejemplo central de la clase: el error de ImageNet cayó en 2012 gracias a redes profundas (láminas 6–7)."
+  },
+  verP6b:{
+    red:"Correcto. Láminas 33–34: GLUE y «Transformers in NLP». Los transformers son redes basadas en atención. En la P6 es la alternativa «procesamiento del lenguaje natural».",
+    hab:"No. La comprensión de texto no habilitó a las redes: es un área donde las redes (transformers) produjeron el salto. Láminas 33–34.",
+    nin:"No. El salto en GLUE vino de modelos como GPT y BERT, que son redes (láminas 33–34)."
+  },
+  verP6c:{
+    red:"No en el sentido de la P6. La GPU no salió de las redes: es lo que permitió entrenarlas rápido. Lámina 65 la cuenta como uno de los tres factores del boom.",
+    hab:"Correcto en el marco de Datito: la GPU hizo posible entrenar redes grandes (lámina 65, y lo que cuenta el profesor sobre 2012). Por eso no es una «revolución mediante redes».",
+    nin:"Tampoco. La lámina 65 la pone explícitamente entre los tres factores del boom: sin GPU no hay 2012."
+  },
+  verP6d:{
+    red:"No. Los datos no los produjeron las redes; al revés, las redes los necesitan. Lámina 65: la gran cantidad de datos es uno de los tres factores del boom.",
+    hab:"Correcto en el marco de Datito. Lámina 65 y lámina 8: con muchos datos el deep learning supera a los clásicos. Los datos habilitan; no son el avance.",
+    nin:"No. La lámina 65 lo nombra como factor del boom, y la lámina 8 explica por qué: con pocos datos, deep learning no conviene."
+  },
+  verP6e:{
+    red:"Correcto. En clase el profesor explicó los modelos de difusión como una red neuronal entrenada para sacar el ruido de a poco hasta formar la imagen (láminas 42–43). No estaba en la P6, pero pasa el mismo filtro.",
+    hab:"No. Generar imágenes no habilita nada aquí: es algo que se logró mediante redes (modelos de difusión, láminas 42–43).",
+    nin:"No. Los modelos de difusión son redes neuronales entrenadas para quitar ruido (láminas 42–43): es un avance mediante redes."
+  },
+  verP6f:{
+    red:"No, y esta es la trampa de la P6: la nube es verdadera como pieza de la historia y falsa como respuesta a una pregunta acotada a «mediante el uso de redes neuronales». No salió de las redes.",
+    hab:"Aceptable en el marco de Datito [INFERENCIA]: la lámina 65 no nombra la nube, pero los grandes centros de cómputo son parte de lo que permite entrenar y servir modelos grandes. Lo que importa para la P6 es que no es un avance mediante redes.",
+    nin:"Aceptable: la lámina 65 no la nombra entre los factores del boom. Lo decisivo para la P6 no cambia: no es un avance mediante redes, así que no se marca."
+  },
+  verP6g:{
+    red:"No. Son anteriores y ajenas a las redes neuronales [INFERENCIA]; ni aparecen en la clase.",
+    hab:"Difícil de sostener: la clase no las menciona como factor del boom (lámina 65 habla de redes, datos y GPU). Y para la P6 da igual: no son un avance mediante redes.",
+    nin:"Correcto [INFERENCIA]: no son un avance de las redes ni aparecen como factor del boom en la lámina 65."
+  },
+  verLLM1:{
+    si:"Compruébalo: parte con «hola» y elige perro → se → puso → muy → bien → y → tú. El indicador te dirá que esa oración no está en el corpus. Cada paso es un par de palabras que sí vio; la oración completa, no. Ahora busca lo que no puede hacer: consulta la palabra «ratón».",
+    no:"Pruébalo antes de quedarte con eso: parte con «hola» y arma hola → perro → se → puso → muy → bien → y → tú. Ninguna de las cuatro frases la contiene. El juguete combina pedazos que vio. Lo que no puede es usar una palabra que nunca vio: consulta «ratón».",
+    solo:"No hace falta: el juguete ya genera oraciones que no están en su corpus, combinando pares de palabras vistos. Lo que sí necesitaría agregar al corpus es una palabra nueva: consulta «ratón» y verás por qué."
+  },
+  verAG1:{
+    a:"Para el LLM solo, sí: no tiene herramienta, así que el botón no le cambia nada e inventa con o sin falla. El agente es distinto: el error vuelve como observación y entra a su contexto. Corre el simulador con la falla activada y mira el paso de la observación. Y no descartes del todo tu idea: activa también «el LLM ignora la observación».",
+    b:"Eso muestra el simulador, con un matiz que el profesor dejó explícito: el bucle hace que el error entre al contexto, no garantiza que el agente lo maneje bien. Activa «el LLM ignora la observación» y mira: puede alucinar igual, dentro del sistema.",
+    c:"El LLM solo no tiene cómo enterarse de la falla: no hay herramienta ni observación. Mira su carril: sigue generando y termina con un pronóstico inventado. Solo el agente recibe el error."
+  }
+};
+(function(){
+  var bloques=document.querySelectorAll(".pred");
+  Array.prototype.forEach.call(bloques,function(bl){
+    var v=bl.querySelector(".veredicto");
+    if(!v)return;
+    var clave=v.id;
+    Array.prototype.forEach.call(bl.querySelectorAll("button"),function(b){
+      b.addEventListener("click",function(){
+        Array.prototype.forEach.call(bl.querySelectorAll("button"),function(o){o.classList.remove("elegida");});
+        b.classList.add("elegida");
+        v.innerHTML=(VER[clave]&&VER[clave][b.getAttribute("data-p")])||"";
+        v.classList.add("on");
+      });
+    });
+  });
+})();
+
+/* ================= predictor de juguete ================= */
+var DET="⟨detente⟩";
+var CORPUS=[
+  "hola cómo estás muy bien y tú",
+  "el perro café se puso feliz y me ladró",
+  "el perro se puso muy feliz",
+  "hola perro cómo estás"
+];
+var BIG={},VOCAB={};
+CORPUS.forEach(function(f){
+  var w=f.split(" ").concat([DET]),i;
+  for(i=0;i<w.length;i++){
+    VOCAB[w[i]]=(VOCAB[w[i]]||0)+1;
+    if(i<w.length-1){
+      BIG[w[i]]=BIG[w[i]]||{};
+      BIG[w[i]][w[i+1]]=(BIG[w[i]][w[i+1]]||0)+1;
+    }
+  }
+});
+function candidatas(p){
+  var t=BIG[p]||{},tot=0,k,out=[];
+  for(k in t){if(Object.prototype.hasOwnProperty.call(t,k))tot+=t[k];}
+  for(k in t){if(Object.prototype.hasOwnProperty.call(t,k))out.push({w:k,n:t[k],p:t[k]/tot,tot:tot});}
+  out.sort(function(a,b){return b.p-a.p||(a.w<b.w?-1:1);});
+  return out;
+}
+var SEQ=["hola"],PASOS=[],R=rng(2026);
+function fr(n,d){return n===d?"1":n+"/"+d;}
+function renderLLM(){
+  var ult=SEQ[SEQ.length-1],fin=(ult===DET);
+  $("genTexto").innerHTML=SEQ.map(function(w){return w===DET?'<span class="det">'+esc(w)+'</span>':esc(w);}).join(" ");
+  var c=$("cands");c.innerHTML="";
+  if(fin){
+    $("candTit").textContent="El modelo generó el token especial: se detiene";
+  }else{
+    $("candTit").textContent="Candidatas para la palabra que sigue a «"+ult+"»";
+    var box=document.createElement("div");box.className="cand";
+    candidatas(ult).forEach(function(o){
+      var b=document.createElement("button");b.textContent=o.w;
+      b.addEventListener("click",function(){elegir(o);});
+      var bar=document.createElement("div");bar.className="barra";
+      var in1=document.createElement("div");in1.style.width=(100*o.p).toFixed(0)+"%";bar.appendChild(in1);
+      var p=document.createElement("div");p.className="p";p.textContent=fr(o.n,o.tot);
+      box.appendChild(b);box.appendChild(bar);box.appendChild(p);
+    });
+    c.appendChild(box);
+  }
+  var prob=1;PASOS.forEach(function(o){prob*=o.p;});
+  $("mPalabras").textContent=String(SEQ.length);
+  $("mProb").textContent=PASOS.length?(PASOS.map(function(o){return fr(o.n,o.tot);}).join("·")+(PASOS.length>1?" = "+fmt(prob,4):"")):"1";
+  $("mProb").style.fontSize=PASOS.length>4?".85rem":"1.4rem";
+  if(fin){
+    var frase=SEQ.slice(0,-1).join(" "),esta=CORPUS.indexOf(frase)>=0;
+    $("mCorpus").textContent=esta?"sí":"no";
+    $("mCorpus").style.color=esta?"#1a1a1a":"#059669";
+    $("genMsg").innerHTML="Generó <b>"+esc(DET)+"</b>: aquí el sistema se detiene y te toca hablar. "+
+      (esta?"Esta oración es una de las cuatro del corpus.":"<b>Esta oración completa no está en el corpus</b>: cada par de palabras sí lo vio, la combinación no.");
+  }else{
+    $("mCorpus").textContent="—";$("mCorpus").style.color="#1a1a1a";
+    $("genMsg").textContent="";
+  }
+}
+function elegir(o){if(SEQ[SEQ.length-1]===DET)return;SEQ.push(o.w);PASOS.push(o);renderLLM();}
+function iniciar(w){SEQ=[w];PASOS=[];renderLLM();}
+$("bIniHola").addEventListener("click",function(){iniciar("hola");});
+$("bIniEl").addEventListener("click",function(){iniciar("el");});
+$("bResetLLM").addEventListener("click",function(){iniciar(SEQ[0]);});
+$("bMax").addEventListener("click",function(){
+  var ult=SEQ[SEQ.length-1];if(ult===DET)return;
+  elegir(candidatas(ult)[0]);
+});
+$("bSortear").addEventListener("click",function(){
+  var ult=SEQ[SEQ.length-1];if(ult===DET)return;
+  var cs=candidatas(ult),u=R(),acc=0,i;
+  for(i=0;i<cs.length;i++){acc+=cs[i].p;if(u<acc||i===cs.length-1){elegir(cs[i]);return;}}
+});
+$("bPal").addEventListener("click",function(){
+  var w=$("inPal").value.trim().toLowerCase();
+  if(!w){$("outPal").textContent="";return;}
+  if(VOCAB[w]){$("outPal").innerHTML="Sí: aparece "+VOCAB[w]+(VOCAB[w]===1?" vez":" veces")+" en el corpus.";}
+  else{$("outPal").innerHTML="<b>No.</b> Nunca la vio, así que ninguna fila de su tabla la tiene como siguiente palabra: no puede generarla.";}
+});
+$("corpus").innerHTML=CORPUS.map(function(f,i){return (i+1)+". "+esc(f)+" "+esc(DET);}).join("<br>");
+renderLLM();
+
+/* ================= simulador del agente ================= */
+function guionAgente(falla,ignora){
+  var obs=falla?'ERROR 503: el servicio de clima no respondió':'{"lluvia": "80 %", "maxima": "13 °C"}';
+  var fin;
+  if(ignora){fin={k:"llm2",c:"mal",r:"[LLM]",t:"Mañana en Concepción: soleado, 19 °C.   ← ignoró la observación: alucinación dentro del sistema"};}
+  else if(falla){fin={k:"llm2",c:"llm",r:"[LLM]",t:"No pude obtener el pronóstico: el servicio de clima falló. ¿Lo intento de nuevo en un minuto?"};}
+  else{fin={k:"llm2",c:"llm",r:"[LLM]",t:"Mañana en Concepción: 80 % de probabilidad de lluvia y máxima de 13 °C."};}
+  return [
+    {k:"ins",c:"ins",r:"[instrucciones]",t:"Eres un asistente del clima. Tienes la herramienta clima(ciudad, día)."},
+    {k:"usr",c:"usr",r:"[usuario]",t:"¿Cómo va a estar el clima mañana en Concepción?"},
+    {k:"llm",c:"llm",r:"[LLM]",t:"Necesito el pronóstico."},
+    {k:"tok",c:"llm",r:"[LLM · token]",t:'⟨herramienta: clima("Concepción", "mañana")⟩'},
+    {k:"tool",c:"tool",r:"[herramienta]",t:(falla?"se ejecuta… y falla":"se ejecuta (la corre el sistema, no el LLM)")},
+    {k:"obs",c:(falla?"mal":"obs"),r:"[observación → contexto]",t:obs},
+    fin,
+    {k:"det",c:"llm",r:"[LLM · token]",t:"⟨detente⟩"}
+  ];
+}
+var GUION_LLM=[
+  {c:"ins",r:"[sin herramientas]",t:"(no tiene cómo consultar nada)"},
+  {c:"usr",r:"[usuario]",t:"¿Cómo va a estar el clima mañana en Concepción?"},
+  {c:"llm",r:"[LLM]",t:"Mañana en Concepción: soleado, 19 °C.   ← inventado: no tiene forma de saberlo"},
+  {c:"llm",r:"[LLM · token]",t:"⟨detente⟩"}
+];
+var PASO_AG=0;
+function renderAg(){
+  var falla=$("chkFalla").checked,ignora=$("chkIgnora").checked;
+  var g=guionAgente(falla,ignora),i,html="";
+  for(i=0;i<Math.min(PASO_AG,g.length);i++){
+    html+='<span class="r '+g[i].c+'">'+esc(g[i].r)+'</span> <span class="'+g[i].c+'">'+esc(g[i].t)+'</span>\n';
+  }
+  $("trazaAg").innerHTML=html||'<span class="ins">(aprieta «Paso siguiente»)</span>';
+  var h2="",nL=Math.min(PASO_AG,GUION_LLM.length);
+  for(i=0;i<nL;i++){
+    h2+='<span class="r '+GUION_LLM[i].c+'">'+esc(GUION_LLM[i].r)+'</span> <span class="'+GUION_LLM[i].c+'">'+esc(GUION_LLM[i].t)+'</span>\n';
+  }
+  if(falla&&PASO_AG>=3){h2+='<span class="ins">(«la herramienta falla» no le cambia nada: no tiene herramienta)</span>\n';}
+  $("trazaLLM").innerHTML=h2||'<span class="ins">(aprieta «Paso siguiente»)</span>';
+  var act=PASO_AG>0&&PASO_AG<=g.length?g[PASO_AG-1].k:"";
+  Array.prototype.forEach.call(document.querySelectorAll("#flujoAg .b"),function(b){
+    b.classList.toggle("act",b.getAttribute("data-k")===act);
+  });
+  var bl=$("mBucleLLM"),ba=$("mBucleAg");
+  bl.style.fontSize=ba.style.fontSize="1rem";
+  if(PASO_AG>=3){bl.textContent="no: no hubo acción";bl.style.color="#dc2626";}
+  else{bl.textContent="—";bl.style.color="#1a1a1a";}
+  if(PASO_AG>=7){
+    if(ignora){ba.textContent="volvió, pero no la usó";ba.style.color="#d97706";}
+    else{ba.textContent=falla?"sí: volvió el error y lo usó":"sí: volvió y la usó";ba.style.color="#059669";}
+  }else if(PASO_AG>=6){ba.textContent="volvió; falta ver si la usa";ba.style.color="#d97706";}
+  else{ba.textContent="—";ba.style.color="#1a1a1a";}
+}
+$("bPasoAg").addEventListener("click",function(){if(PASO_AG<8){PASO_AG++;}renderAg();});
+$("bTodoAg").addEventListener("click",function(){PASO_AG=8;renderAg();});
+$("bResetAg").addEventListener("click",function(){PASO_AG=0;renderAg();});
+$("chkFalla").addEventListener("change",renderAg);
+$("chkIgnora").addEventListener("change",renderAg);
+renderAg();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# [PLACEHOLDER] Errores observados y patrones de vigilancia
+#
+# Se llena automáticamente durante sesiones de estudio.
+# No edites: solo Datito escribe aquí.
+
+observados: []
+  # Cada entrada:
+  # - id: nombre_del_error
+  #   concepto: id_concepto
+  #   dijo: "lo que dijo el alumno textualmente"
+  #   deberia_ser: "la respuesta correcta"
+  #   veces: 1
+  #   fecha_primera: YYYY-MM-DD
+  #   fecha_ultima: YYYY-MM-DD
+  #   estado: abierto | cerrado | reincidente
+  #   nota: "por qué es un error, qué confunde"
+
+vigilados: []
+  # Errores que anticipa Datito (basado en este ramo).
+  # Se cargan al inicio de sesión para activar mecanismos de prevención.
+  #
+  # - id: error_comun_1
+  #   concepto: id_concepto
+  #   patron: "qué hace que aparezca"
+  #   como_reconocer: "señal de alerta"
+  #   como_intervenir: "pregunta o pista preventiva"

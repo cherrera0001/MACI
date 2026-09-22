@@ -1,0 +1,63 @@
+# Curriculum de [TU_RAMO]
+#
+# Archivo ESTATICO: define el plan de estudio.
+# El tutor NO lo modifica. El avance se registra en learners/{id}/progreso.yaml.
+
+meta:
+  alumno: "[Nombre]"
+  asignatura: "[Nombre del Ramo] (Período)"
+  universidad: "[Tu Universidad]"
+  proyecto_ancla: "[Opcional: tu proyecto clave, si lo hay]"
+  total_conceptos: 0
+  notebooklm:
+    nombre: null
+    id: null
+    total_fuentes: 0
+
+# Laboratorios, prácticos o ejercicios (opcional).
+# Estructura igual a FCD pero para tu ramo.
+practicos: {}
+  # P1:
+  #   nombre: "Laboratorio 1"
+  #   res: "ruta/a/archivo_resuelto.ipynb"
+  #   vacio: "ruta/a/archivo_sin_resolver.ipynb"
+  #   contenido: "breve descripción"
+  #   conceptos: [concepto_1, concepto_2]
+
+# Los N conceptos del ramo.
+# Estructura (cada concepto requiere):
+#
+#   id: identificador único (min-slug, ej: prediccion_lineal)
+#   nombre: "Nombre Legible"
+#   definicion: párrafo breve
+#   prerrequisitos: [lista de ids]
+#   habilita: [lista de ids que dependen de este]
+#   material_local: [rutas relativas al repo]
+#   sin_material_local: bool (true si depende solo de fuentes externas)
+#   practicos: [lista de P1, P2, etc.]
+#   pregunta_diagnostico: una pregunta para verificar comprensión
+
+conceptos: []
+  # EJEMPLO (descomenta y adapta):
+  #
+  # - id: concepto_1
+  #   nombre: "Mi Primer Concepto"
+  #   definicion: >-
+  #     Una definición breve: qué es, de dónde viene, por qué importa.
+  #     Máximo 3 oraciones.
+  #   prioridad1: "Aplicar el concepto"
+  #   prioridad2: "Entender cuándo NO se aplica"
+  #   prerrequisitos: []
+  #   habilita: [concepto_2, concepto_3]
+  #   material_local:
+  #     - "referencia/documento.md"
+  #     - "guias/guia_concepto1.md"
+  #   sin_material_local: false
+  #   practicos:
+  #     - id: P1
+  #       ejercicio: 1
+  #     - id: P2
+  #       ejercicio: "2a"
+  #   pregunta_diagnostico: >-
+  #     Una pregunta que separa "entiende" de "no entiende".
+  #     Usa datos concretos, no abstracciones.

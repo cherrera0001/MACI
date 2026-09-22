@@ -226,13 +226,64 @@ local y etiqueta el resto.
 
 ---
 
-## Para reutilizarlo en otro curso
+## Para reutilizarlo en otro curso (ADR-001: Arquitectura Multi-Curso)
 
-1. Editar `datito.config.yaml`: alumno, asignatura, proyectos
-2. Reescribir `curriculum.yaml` con los conceptos del nuevo programa
-3. Vaciar `progreso.yaml`, `errores_conceptuales.yaml` y `bitacora/`
-4. Reconstruir `patron_evaluacion.md` desde las evaluaciones anteriores del
-   nuevo profesor — es lo que más cambia y lo que más rinde
-5. `python 03_CODIGO/datito_estado.py`
+**Lectura recomendada:** [`01_DOCUMENTACION/ADR-001-multi-course.md`](../01_DOCUMENTACION/ADR-001-multi-course.md) — decisiones, tradeoffs, layout.
 
-Las skills de `.claude/skills/` **no se tocan**: leen de estos archivos.
+Datito se separó en **tres ámbitos**:
+- **Motor** (`datito-core`): skills, scripts, verificadores — no cambian
+- **Curso** (`courses/tu-ramo/`): curriculum, clases, material, visuales — lo llena el docente
+- **Alumno** (`learners/tu-alumno/`): progreso, errores, estado, dudas — automático
+
+### Quickstart (10 minutos)
+
+```bash
+# 1. Clona la plantilla
+cp -r courses/_template courses/tu-ramo-2026-2
+cd courses/tu-ramo-2026-2
+
+# 2. Edita datito.config.yaml, curriculum.yaml, clases.yaml
+
+# 3. Crea un alumno nuevo
+python 03_CODIGO/datito_init_learner.py --course tu-ramo-2026-2 --learner juan_perez
+
+# 4. Regenera
+python 03_CODIGO/construir_navegacion.py
+python 03_CODIGO/datito_estado.py
+
+# 5. Abre Claude Code
+/datito
+```
+
+### Layout
+
+```
+courses/
+  fcd-2026-2/                     ← Fundamentos de Ciencia de Datos (default)
+    datito.config.yaml
+    curriculum.yaml
+    clases.yaml
+    visual/
+    ...
+
+learners/
+  cristobal_herrera_fcd-2026-2/   ← Alumno 1
+    progreso.yaml
+    estado.md
+    ...
+  juan_perez_tu-ramo-2026-2/       ← Alumno 2 (otro curso)
+    progreso.yaml
+    ...
+```
+
+Las skills de `.claude/skills/` **no se tocan**: leen de `datito.config.yaml` para resolver rutas.
+
+### Backward Compatibility
+
+Si no hay `course_id` ni `learner_id` en `datito.config.yaml`, asumen:
+```yaml
+course_id: fcd-2026-2
+learner_id: cristobal_herrera
+```
+
+Sesiones antiguas funcionan sin cambios.

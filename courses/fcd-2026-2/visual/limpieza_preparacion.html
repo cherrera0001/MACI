@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Limpieza y preparación de datos · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  canvas{width:100%;height:auto;display:block}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin-top:1.1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
+  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.72rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
+  .met div.alarma .n{color:var(--rojo)}
+  .met div.bien .n{color:var(--verde)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
+         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
+  button:hover{background:#1d4ed8}
+  input[type=range]{width:100%}
+  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
+  .ctrl label{font-weight:600;font-size:.88rem}
+  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4rem;text-align:right}
+
+  .opts{display:grid;gap:.55rem;margin:0 0 1rem}
+  .opts label{display:flex;gap:.6rem;align-items:flex-start;background:var(--fondo);
+              border:1px solid var(--linea);border-radius:8px;padding:.6rem .8rem;
+              cursor:pointer;font-size:.9rem}
+  .opts label:hover{border-color:var(--azul)}
+  .opts input{margin-top:.28rem;flex:0 0 auto}
+  .opts .t{font-weight:600}
+  .opts .d{color:var(--suave);font-size:.84rem;display:block;font-weight:400}
+
+  .tabmin{max-width:430px;font-size:.87rem}
+  .tabmin td.et{width:62%}
+  tr.dia td{background:#f5f3ff;color:#5b21b6;font-weight:600;font-size:.82rem}
+  tr.fuera td{opacity:.32;text-decoration:line-through}
+  td.mal{color:var(--rojo);font-weight:700}
+  .badge{font-size:.68rem;font-weight:700;padding:.1rem .4rem;border-radius:20px;
+         margin-left:.4rem;white-space:nowrap;vertical-align:middle}
+  .b-cent{background:#fee2e2;color:#991b1b}
+  .b-atip{background:#fef3c7;color:#92400e}
+  .b-cero{background:#dbeafe;color:#1e40af}
+  .b-est{background:#ede9fe;color:#5b21b6}
+
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
+        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
+               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.5rem;display:none}
+  .pred .veredicto.on{display:block}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
+  .ecu .formula .num{color:var(--verde);font-weight:700}
+  .ecu .formula .den{color:var(--azul);font-weight:700}
+  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .repreg code{background:#333;color:#fbbf24}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
+          margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .dist{background:#1e1b4b;color:#e0e7ff;border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0}
+  .dist strong{color:#fbbf24}
+  .dist .vs{display:block;text-align:center;font-family:ui-monospace,monospace;
+            font-size:1.02rem;margin:.7rem 0;color:#fff}
+  pre{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;
+      font-size:.87rem;overflow-x:auto;margin:.9rem 0}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="4" id="clase-4">
+<div class="leccion-top"><span class="uni">Unidad 1 · Del problema a los datos</span><b>Clase 4 de 22</b></div>
+<div class="barra"><span style="width:18.2%"></span></div>
+<div class="lt">Clase 4 · Calidad, limpieza y preparación de datos</div>
+<p><b>Objetivo.</b> Decidir qué es un error de datos que se limpia y qué es una decisión de modelado que se documenta.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~45 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Resuelve una tabla tipo 9B: identifica cada problema, lo clasifica y justifica su tratamiento.</li>
+<li><b>Actividad final:</b> Resolver la 9B del Certamen 1 (consumo de camiones).</li>
+<li><b>Criterio de dominio:</b> Identifica centinela, atípico, sobrecarga semántica y formato; distingue atípico de error; justifica cada decisión con su efecto en la media.</li></ul></div>
+<div class="activ"><b>Activación.</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="4"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="eda.html">← Clase 3 · EDA: conocer los datos antes de modelar</a></span><a href="index.html">Índice del curso</a><span><a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Limpieza y preparacion de datos</b></span> · <span class="et">viene de</span><a href="eda.html">Analisis exploratorio de datos (EDA)</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen alta (C1: 9A y 9B; la 9B vale 2,0 pts) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_1.html#p9a">C1 P9A</a> · <a href="certamen_1.html#p9b">C1 P9B</a></div>
+<details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 15-jul</b> · 0:59:41–1:16:23 · profesor — problemas tipicos, formato, camiones, fechas; anuncia el ejercicio tipo 9B<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:59:41]</span></li><li><b>Clase del 17-jul</b> · 0:44:12–0:45:21 · profesor — camiones: muchos ceros y un valor anomalo<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:12]</span></li><li><b>Clase del 19-jun</b> · 2:20:37–2:22:40 · segundo docente — sensores sin dato y el secador de pelo<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:20:37]</span></li><li><b>Ayudantía del 10-jul</b> · 0:40:37–0:56:27 · ayudantía — la calidad «siempre depende»; primera mirada a una tabla sucia; duplicados de filas y de indices <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:40:37]</span></li><li><b>Ayudantía del 10-jul</b> · 0:56:27–1:16:16 · ayudantía — fuera de rango y faltantes: blancos que no son NaN, fillna frente a dropna; antes, descartar columnas inutiles <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:56:27]</span></li><li><b>Ayudantía del 10-jul</b> · 1:16:16–1:43:20 · ayudantía — inconsistencias de texto (.str) y tipos incorrectos (astype, datetime); deja de tarea el ejercicio, resuelto el 17-jul <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 1:16:16]</span></li><li><b>Ayudantía del 17-jul</b> · 0:10:31–0:37:25 · ayudantía — resuelve el P2 de calidad <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P2: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:10:31]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Limpieza y preparación de datos</h1>
+<p class="sub">Qué le pasa a un número cuando decides qué hacer con el de al lado.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<div class="grafo">
+  <span class="n">Datos, features y target</span> →
+  <span class="n">EDA</span> →
+  <span class="n aqui">Limpieza y preparación</span> →
+  <span class="n">todo el modelamiento</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> Viene de <em>EDA</em> —ahí <em>detectas</em> los
+problemas; aquí <em>decides</em> qué hacer con ellos— y va hacia el modelamiento
+completo: una columna con códigos centinela entra al modelo como si fueran
+litros.<br><br>
+<strong>Es la pregunta de mayor peso del Certamen 1.</strong> Aparece en la 9A y
+en la 9B, y <strong>la 9B sola vale 2,0 pts</strong>: la mitad de las ocho cerradas
+juntas (8 × 0,5 = 4,0) y la pregunta individual de mayor puntaje
+(<a href="certamen_1.html#p9b">certamen_1.html#p9b</a>).
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md, tabla de estructura]</span>
+</div>
+
+<h2>1 · La frase que lo ordena todo</h2>
+
+<div class="cita">
+«Los valores nulos los puedo: dejar, eliminar o reemplazar. Esto depende de los
+datos con los que trabaje y <strong>mi objetivo</strong>.»
+<span class="f">Enunciado del práctico · [FUENTE · Repo: 08_PRACTICA/2026_[P2]Calidad_de_Datos(vacio).ipynb]</span>
+</div>
+
+<p>Las tres primeras palabras son las técnicas. La última mitad de la frase es la
+que puntúa: <em>dejar, eliminar o reemplazar</em> son decisiones, y lo que las
+decide es <strong>tu objetivo</strong>. La misma fila entra o sale según qué estés
+midiendo. Y como son decisiones, se pueden tomar mal, en las dos direcciones. El
+profesor lo contó sobre un proyecto propio que tuvo que devolver de la puesta en
+marcha a la exploración:</p>
+
+<div class="cita">«a lo mejor es simplemente un problema en la limpieza que también puede ser que cuando hicimos la limpieza de los datos eliminamos cosas que no deberíamos haber eliminado o a lo mejor deberíamos haber eliminado cosas que no eliminamos.» <span class="f">Clase del 15-jul · 0:05:41–0:05:49 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+<h3>Limpiar ≠ decidir: dos trabajos que se hacen con las mismas funciones</h3>
+
+<p>El currículum lo dice en una línea: <em>«Decidir qué columna se excluye es una
+decisión de modelado, no de limpieza»</em>
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 07_DATITO/curriculum.yaml, <code>limpieza_preparacion.por_que_importa</code>]</span>.
+En pandas las dos cosas se ven iguales —un <code>dropna</code>, un
+<code>replace</code>, un <code>drop</code>—, pero responden preguntas distintas.</p>
+
+<div class="dist">
+<strong>LIMPIAR = corregir lo que está mal medido o mal registrado</strong>
+<span class="vs">¿el dato dice lo que pasó?</span>
+Tiene una respuesta que <strong>no depende de tu pregunta</strong>: un
+<code>−999</code> no es un consumo para ninguna pregunta.<br><br>
+<strong>DECIDIR (modelado) = elegir qué entra al modelo y cómo</strong>
+<span class="vs">¿qué necesito para responder mi pregunta?</span>
+Excluir una columna útil, imputar, dejar fuera un 0 real, elegir el target.
+<strong>Depende de la pregunta</strong>, y por eso se justifica, no se da por
+obvia.
+</div>
+
+<p>El ejemplo de limpieza del profesor es el más simple posible:</p>
+
+<div class="cita">«hay algunos valores incorrectos que son como medio obvio, como por ejemplo si yo estoy midiendo, no sé, peso y me da un valor negativo, […] yo sé que ese valor negativo está mal» <span class="f">Clase del 15-jul · 1:00:32–1:00:42 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+<p>Un peso negativo está mal para cualquier pregunta: eso es limpieza. En la
+lámina, esa línea es «Valores incorrectos: ¿cómo podemos detectarlos y
+corregirlos?», y va separada de los faltantes y del formato desordenado
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 22]</span>.
+La prueba rápida <span style="font-size:.82rem;color:var(--suave)">[DATITO]</span>:
+<strong>si cambias la pregunta, ¿la corrección sigue valiendo?</strong> Sí →
+limpiar. Depende → decidir.</p>
+
+<table>
+<tr><th>Situación</th><th>¿Limpiar o decidir?</th><th>Por qué</th></tr>
+<tr><td><code>−999</code> en la cantidad de un camión en mantención (9B)</td><td><strong>Limpiar</strong></td><td>Es un código, no una medición. Se pasa a nulo y el estado se muda a su propia columna</td></tr>
+<tr><td>«Camión 3 (en mantenimiento)» y «El Lunes» dentro de la columna <code>CONSUMO</code></td><td><strong>Limpiar</strong> (estructura)</td><td>Una columna con tres tipos de cosa. Se separa en fecha, id del camión y estado</td></tr>
+<tr><td><code>CouncilArea = "Unavailable"</code> en Melbourne 2017</td><td><strong>Limpiar</strong></td><td>Es un nulo escrito como texto: figura entre las 14 «categorías nuevas» de 2017</td></tr>
+<tr><td>El <code>2900</code> del camión 3</td><td><strong>Verificar</strong>, y recién después decidir</td><td>Puede estar mal registrado o ser real. Sin evidencia no se puede limpiar: se marca y se declara</td></tr>
+<tr><td>El <code>0</code> del conductor enfermo</td><td><strong>Decidir</strong></td><td>La medición es correcta. Entra o sale según preguntes por la flota o por un camión operativo</td></tr>
+<tr><td>Rellenar los faltantes de <code>Car</code> con la mediana y agregar <code>Car_missing</code></td><td><strong>Decidir</strong></td><td>Imputar no corrige nada: inventa valores (sección 7). Por eso se deja marcado dónde</td></tr>
+<tr><td>Excluir <code>BuildingArea</code> (47,5 % nulos) y <code>YearBuilt</code> (39,6 %)</td><td><strong>Decidir</strong></td><td>Los valores que sí están no están mal medidos. Excluirlas es una elección sobre el modelo, no una corrección</td></tr>
+<tr><td>Excluir <code>CouncilArea</code>: 0 % de nulos en 2016, 18,9 % en 2017 y 14 categorías nuevas</td><td><strong>Decidir</strong></td><td>La columna es útil en 2016; el problema es cómo llega a 2017. Con ella el error bajaba 599 AUD y aun así se conservó el modelo sin ella</td></tr>
+<tr><td>Usar <code>Price</code> (o <code>log1p(Price)</code>) como target</td><td><strong>Decidir</strong></td><td>Ningún dato está mal: es tu pregunta. Ver <a href="datos_features_target.html">datos_features_target.html</a></td></tr>
+</table>
+<p style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 07_DATITO/referencia/material.md, «Experimento CouncilArea» · 05_RESULTADOS/experimento_councilarea_2026-09-18.json (lista <code>categorias_solo_en_2017</code>, que incluye «Unavailable») · 05_RESULTADOS/auditoria_dashai_vs_crudo.json · <code>Car_missing</code>: 03_CODIGO/modelamiento_temporal.py]</p>
+
+<div class="clave">
+Fíjate en la fila de <code>CouncilArea</code>: aparece <strong>dos veces</strong>, una
+en cada lado. Reconocer que «Unavailable» es un nulo es limpieza. Decidir que la
+columna entera no entra al modelo es modelado. Mezclar las dos es el error que
+castiga el formato: «excluí la columna porque estaba sucia» no justifica nada si
+la columna, limpia, igual aportaba.
+</div>
+
+<div class="repreg">
+<strong>Transferencia · transporte.</strong><br><br>
+Una empresa de buses registra cada viaje: patente, fecha, kilómetros, velocidad
+media y litros cargados. Quiere entender el consumo por kilómetro <em>en hora
+punta</em>. Clasifica cada acción como <strong>limpiar</strong>,
+<strong>verificar</strong> o <strong>decidir</strong>:<br>
+(a) la velocidad media vale <code>−1</code> en los viajes sin señal GPS;<br>
+(b) la patente aparece como <code>ab-cd12</code>, <code>ABCD12</code> y <code>AB CD 12</code>;<br>
+(c) un viaje de 0 km con conductor asignado;<br>
+(d) excluir los viajes nocturnos;<br>
+(e) un bus con 900 litros cargados en un día;<br>
+(f) rellenar con el promedio los litros de los días de paro.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) limpiar, (b) limpiar, (c) decidir, (d) decidir,
+(e) verificar, (f) decidir.</p>
+<p><strong>Cómo se resuelve:</strong> a cada acción, la prueba de la sección:
+¿la corrección valdría igual si la pregunta fuera otra? Si sí, es limpieza. Si
+depende de la pregunta, es decisión. Si no sabes todavía si el valor está mal, es
+verificación.</p>
+<ul>
+<li><strong>(a) Limpiar.</strong> <code>−1</code> es un centinela: «sin señal» escrito
+como número. Pasa a nulo y la causa, si importa, a su propia columna. Igual que el
+<code>−999</code>.</li>
+<li><strong>(b) Limpiar.</strong> Es un mismo bus escrito de tres formas. Sin
+unificarla, un bus cuenta como tres.</li>
+<li><strong>(c) Decidir.</strong> Si el bus quedó en reserva, el 0 es real. Para el
+consumo por kilómetro no aporta (no hay kilómetros); para la disponibilidad de la
+flota, sí. Es el <code>0</code> del conductor enfermo.</li>
+<li><strong>(d) Decidir.</strong> Los viajes nocturnos no están mal: no responden
+tu pregunta sobre hora punta.</li>
+<li><strong>(e) Verificar.</strong> Puede ser una carga mal digitada o un estanque
+que se llenó por varios días. Es el <code>2900</code>.</li>
+<li><strong>(f) Decidir, y con cuidado.</strong> No corrige nada: inventa consumos
+de días en que el bus no operó. Si lo haces, deja una columna que marque dónde.</li>
+</ul>
+<p><strong>Error típico:</strong> llamar «limpieza» a (d) y a (f) porque se hacen
+con un filtro o un <code>fillna</code>. La función de pandas no decide qué tipo de
+trabajo es: lo decide si la acción depende de la pregunta.</p>
+<p style="font-size:.82rem;color:var(--suave)">[DATITO] Caso construido para este artefacto; cifras ilustrativas.</p>
+</details>
+
+<h2>2 · El caso: consumo de combustible en minería</h2>
+
+<p>Nueve días antes del Certamen 1, al explicar el formato, el profesor anunció
+exactamente este tipo de pregunta:</p>
+
+<div class="cita">«la última es de desarrollo donde van a tener que hacer algo como lo que acabamos de hacer, que básicamente le doy una tabla y le digo mira esta tabla presenta muchos problemas que presenta y cómo lo resolverían.» <span class="f">Clase del 15-jul · 1:16:17–1:16:29 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+<p>«Lo que acabamos de hacer» es el ejercicio de las láminas 27 y 28: la misma
+tabla de camiones con los días como filas separadoras, y su respuesta oficial
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · láminas 27–28]</span>.
+La 9B es una variante con trampas añadidas. Esta es su tabla completa, tal como
+está en el enunciado: un registro semanal de cuatro camiones, en litros.</p>
+
+<div class="nota" style="font-size:.88rem">
+<strong>Procedencia.</strong> El enunciado y la tabla vienen de
+<code>01_DOCUMENTACION/06_CERTAMEN1/</code>, material de un compañero:
+<strong>los enunciados son fiables, las respuestas de ese documento no están
+verificadas</strong>. Los cálculos de esta página se hacen aquí, delante de ti,
+y los puedes rehacer a mano.
+</div>
+
+<div class="panel">
+<table class="tabmin">
+<tr><th>CONSUMO</th><th style="text-align:right">CANTIDAD</th></tr>
+<tr class="dia"><td>El Lunes</td><td style="text-align:right">(vacío)</td></tr>
+<tr><td>Camión 1</td><td class="num">200</td></tr>
+<tr><td>Camión 2</td><td class="num">200</td></tr>
+<tr><td>Camión 3</td><td class="num mal">2900</td></tr>
+<tr><td>Camión 4</td><td class="num">200</td></tr>
+<tr class="dia"><td>El Martes</td><td style="text-align:right">(vacío)</td></tr>
+<tr><td>Camión 1</td><td class="num">200</td></tr>
+<tr><td>Camión 2 (conductor enfermo)</td><td class="num">0</td></tr>
+<tr><td>Camión 3 (en mantenimiento)</td><td class="num mal">−999</td></tr>
+<tr><td>Camión 4</td><td class="num">200</td></tr>
+<tr class="dia"><td>El Miércoles</td><td style="text-align:right">(vacío)</td></tr>
+<tr><td>Camión 1</td><td class="num">200</td></tr>
+<tr><td>Camión 2</td><td class="num">200</td></tr>
+<tr><td>Camión 3 (en mantenimiento)</td><td class="num mal">−999</td></tr>
+<tr><td>Camión 4</td><td class="num">200</td></tr>
+</table>
+</div>
+
+<p>Antes de tocar un número, tres cosas que se ven mirando la <em>estructura</em>,
+no los valores:</p>
+
+<table>
+<tr><th>Defecto</th><th>Qué pasa exactamente</th></tr>
+<tr><td><strong>Sobrecarga semántica</strong></td>
+    <td>La columna <code>CONSUMO</code> contiene tres tipos de cosa distintos:
+    días (<code>El Lunes</code>), identificadores (<code>Camión 3</code>) y
+    estados operativos (<code>en mantenimiento</code>). Una columna debe
+    contener <strong>un solo tipo de cosa</strong></td></tr>
+<tr><td><strong>Filas que no son observaciones</strong></td>
+    <td>Las tres filas de día son <em>separadores</em>. Una fila debería ser una
+    observación completa e independiente: <em>este camión, este día, tantos
+    litros</em>. Aquí el día vive en una fila de más arriba</td></tr>
+<tr><td><strong>La fecha no está en ninguna columna</strong></td>
+    <td>Consecuencia de lo anterior: no puedes filtrar por martes, ni agrupar
+    por día, ni ordenar. El dato existe pero no es consultable</td></tr>
+</table>
+
+<div class="clave">
+<strong>La estructura que arregla las tres de una vez</strong> —y esto es lo que
+más puntúa en la 9B, porque pide <em>diseño</em>, no detección:
+<pre style="margin:.7rem 0 0">fecha       | id_camion | consumo_litros | id_estado
+2026-06-01  |     1     |      200       | operativo
+2026-06-01  |     3     |     2900       | operativo   ← por verificar
+2026-06-02  |     2     |       0        | conductor_enfermo
+2026-06-02  |     3     |    (nulo)      | mantenimiento</pre>
+El estado <strong>no se borra: se muda</strong>. «Estaba en mantención» es
+información, no ruido.
+</div>
+
+<p>Dos detalles de esa estructura salen directo de la clase. El primero, el
+identificador del camión. Un compañero propuso quitar la palabra «camión» y dejar
+solo el número, y el profesor lo llevó más lejos:</p>
+
+<div class="cita">«Tú dijiste una muy buena idea. […] el ID del camión debería ser un ID numérico. O un ID que después yo pueda asociar directamente con otra tabla donde aparezcan las descripciones del camión por ejemplo.» <span class="f">Clase del 15-jul · 1:11:44–1:12:00 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md]</span></div>
+
+<p>El segundo, la fecha. «El Miércoles» no identifica un día: en la misma
+discusión se señaló que hay muchos miércoles y que hay que saber cuál es el
+miércoles exacto en que se midió
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:13:21–1:13:36] · profesor, atribución por contexto [INFERENCIA]</span>.
+Justo después un compañero defendió el formato ISO 8601 (año-mes-día), y lo
+presentó, medio en broma, como una manía personal de quien limpia datos seguido
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:13:40–1:13:50] · un compañero: se dirige al profesor como «Rofi», probable ASR de «Profe» [INFERENCIA]</span>.
+No lo dijo el profesor, pero la respuesta oficial usa justo ese formato:
+<code>2026-07-13</code>, <code>2026-07-14</code>, <code>2026-07-15</code>
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 28]</span>.</p>
+
+<h2>3 · Ahora los números. Predice antes de mover nada</h2>
+
+<p>El promedio de la columna <code>CANTIDAD</code>, tal como viene, sobre las 12
+filas que traen número, es <strong>208,50 litros</strong>. El consumo normal de
+estos camiones es 200.</p>
+
+<div class="peligro">
+<strong>Detente en esa cifra.</strong> 208,50 frente a 200 es un 4,3 % de
+diferencia. Si tu única verificación fuera «¿el promedio da algo razonable?»,
+<strong>esta tabla la pasa</strong>. Y tiene tres defectos graves dentro.
+</div>
+
+<div class="pred" data-p="cent">
+  <div class="q">Antes de tocar el panel: vas a tratar los dos <code>−999</code>
+  como lo que son —ausencia de medición— y sacarlos del cálculo.
+  <strong>No tocas nada más.</strong> ¿Hacia dónde se mueve el promedio?</div>
+  <button data-r="baja">Baja</button>
+  <button data-r="igual">Casi no se mueve</button>
+  <button data-r="sube">Sube mucho</button>
+  <div class="veredicto"></div>
+  <div style="font-size:.84rem;color:var(--suave);margin-top:.5rem">
+  Puedes mover el panel igual sin responder. La pregunta te espera acá.</div>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>sube mucho</strong>: de 208,50 a 450,00 litros.</p>
+<ol>
+<li>Suma de las 12 filas con número: 8 × 200 + 2900 + 0 + 2 × (−999) = 2.502.
+Media = 2.502 / 12 = 208,50.</li>
+<li>Sacas los dos −999: la suma pasa a 2.502 + 1.998 = 4.500 y n pasa a 10.</li>
+<li>Media = 4.500 / 10 = <strong>450,00</strong>.</li>
+</ol>
+<p>Los −999 tiraban la media hacia abajo y compensaban por casualidad al 2900,
+que la tira hacia arriba. Al sacarlos, el 2900 queda solo.</p>
+<p><strong>Error típico:</strong> pensar «saqué valores malos, así que la media
+mejora». Una limpieza correcta pero incompleta puede empeorar el resultado.</p>
+<p style="font-size:.82rem;color:var(--suave)">Cálculo con la tabla 9B · [FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md] · pasos [DATITO]</p>
+</details>
+
+<div class="panel">
+  <div class="opts">
+    <label><input type="checkbox" id="c_cent">
+      <span><span class="t">Tratar <code>−999</code> como nulo y excluirlo</span>
+      <span class="d">Dos filas. No es un consumo: es «no hubo medición» escrito como número</span></span></label>
+    <label><input type="checkbox" id="c_atip">
+      <span><span class="t">Excluir el <code>2900</code> hasta verificarlo</span>
+      <span class="d">Una fila. Puede ser error de digitación, falla de sensor, o un camión genuinamente distinto</span></span></label>
+    <label><input type="checkbox" id="c_cero">
+      <span><span class="t">Excluir el <code>0</code> del conductor enfermo</span>
+      <span class="d">Una fila. El 0 <em>sí</em> se midió. Excluirlo o no depende de qué estés preguntando</span></span></label>
+  </div>
+
+  <table class="tabmin" id="tabla"></table>
+
+  <div class="met">
+    <div><div class="n" id="m_n">12</div><div class="e">filas que entran (n)</div></div>
+    <div id="box_media"><div class="n" id="m_media">208,50</div><div class="e">media</div></div>
+    <div id="box_med"><div class="n" id="m_mediana">200,00</div><div class="e">mediana</div></div>
+    <div id="box_s"><div class="n" id="m_s">963,15</div><div class="e">desviación (n−1)</div></div>
+  </div>
+  <p id="lectura" style="font-size:.9rem;margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--linea)"></p>
+  <button id="reset" style="margin-top:.8rem">Volver al crudo</button>
+</div>
+
+<h3>Las cinco combinaciones que importan</h3>
+
+<table>
+<tr><th>Qué hiciste</th><th style="text-align:right">n</th><th style="text-align:right">media</th><th style="text-align:right">mediana</th><th>Lectura</th></tr>
+<tr><td>Nada. La tabla cruda</td><td class="num">12</td><td class="num">208,50</td><td class="num">200,00</td><td>Parece razonable. No lo es</td></tr>
+<tr><td>Solo saco los <code>−999</code></td><td class="num">10</td><td class="num"><strong>450,00</strong></td><td class="num">200,00</td><td><strong>Limpiaste y empeoró</strong></td></tr>
+<tr><td>Solo saco el <code>2900</code></td><td class="num">11</td><td class="num"><strong>−36,18</strong></td><td class="num">200,00</td><td>Consumo negativo: imposible</td></tr>
+<tr><td>Saco centinelas <em>y</em> el <code>2900</code></td><td class="num">9</td><td class="num">177,78</td><td class="num">200,00</td><td>Ya es creíble. El 0 lo baja</td></tr>
+<tr><td>…y también el día no operativo</td><td class="num">8</td><td class="num"><strong>200,00</strong></td><td class="num">200,00</td><td>Consumo por camión-día <em>operativo</em></td></tr>
+</table>
+
+<div class="clave">
+<strong>Mira la columna de la mediana.</strong> 200,00 en las cinco filas. En las
+ocho combinaciones posibles, de hecho. <strong>La mediana nunca se movió</strong>
+— tenía la respuesta desde antes de que limpiaras nada.
+</div>
+
+<h2>4 · La media, desarmada</h2>
+
+<div class="ecu">
+<div class="formula">x̄ = <span class="num">(x₁ + x₂ + … + x<sub>n</sub>)</span> / <span class="den">n</span></div>
+
+<table style="margin:0">
+<tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+<tr><td><code>x<sub>i</sub></code></td><td>El valor de cada fila que entra al cálculo</td>
+    <td><span class="rol r-dato">dato</span></td></tr>
+<tr><td><code>Σ</code></td><td>Sumar. La máquina no pregunta qué significa cada número</td>
+    <td><span class="rol r-cuenta">lo cuenta la máquina</span></td></tr>
+<tr><td><code>n</code></td><td><strong>Cuántas filas dejaste entrar</strong></td>
+    <td><span class="rol r-decide">lo decides tú</span></td></tr>
+</table>
+
+<p style="margin:.9rem 0 0;font-size:.93rem">Ese es el giro de todo este
+concepto. En una fórmula de estadística, <code>n</code> parece un hecho de la
+tabla. <strong>En un problema de limpieza, <code>n</code> es tu decisión</strong>
+— y por eso el mismo dato produce 208,50, 450,00, −36,18 o 200,00 sin que nadie
+mienta.</p>
+</div>
+
+<h3>Cuánto mueve un solo valor malo</h3>
+
+<p>Si una fila debía valer <code>x<sub>bueno</sub></code> y en la tabla aparece
+como <code>x<sub>malo</sub></code>, el promedio se desplaza exactamente:</p>
+
+<div class="ecu">
+<div class="formula">Δx̄ = <span class="num">(x<sub>malo</sub> − x<sub>bueno</sub>)</span> / <span class="den">n</span></div>
+<p style="margin:0;font-size:.93rem">Un solo valor contaminado mueve la media, y
+la mueve <em>dividido por n</em>: con tablas grandes se diluye, con tablas chicas
+la destroza. Con <code>n</code> = 12, no se diluye nada.</p>
+</div>
+
+<p>Apliquémoslo. Si los cuatro camiones consumieran 200 todos los días, la media
+sería 200. Los tres defectos la desplazan así:</p>
+
+<table>
+<tr><th>Defecto</th><th>Cuenta</th><th style="text-align:right">Δx̄</th></tr>
+<tr><td>El <code>2900</code> en vez de 200</td><td class="num">(2900 − 200) / 12</td><td class="num" style="color:var(--rojo)">+225,00</td></tr>
+<tr><td>Los dos <code>−999</code> en vez de 200</td><td class="num">2 × (−999 − 200) / 12</td><td class="num" style="color:var(--verde)">−199,83</td></tr>
+<tr><td>El <code>0</code> en vez de 200</td><td class="num">(0 − 200) / 12</td><td class="num" style="color:var(--verde)">−16,67</td></tr>
+<tr><th colspan="2" style="text-align:right">Desplazamiento neto</th><th style="text-align:right">+8,50</th></tr>
+</table>
+
+<div class="peligro">
+<strong>Ahí está el engaño, con la aritmética a la vista.</strong>
+200 + 225,00 − 199,83 − 16,67 = <strong>208,50</strong>.<br><br>
+Un valor absurdamente alto y dos absurdamente bajos <strong>se cancelaron
+casi exactamente</strong>. La media quedó a 8,50 litros de la verdad no porque
+los datos estuvieran bien, sino <em>por casualidad aritmética</em>. Y es también
+la razón de la fila 2 de la tabla anterior: al sacar los <code>−999</code>
+retiras el contrapeso, y el <code>2900</code> queda suelto empujando hacia
+arriba. <strong>Limpiar a medias es peor que no limpiar</strong>, porque destruye
+la cancelación sin arreglar la causa.
+</div>
+
+<div class="repreg">
+<strong>Ejercicio de cálculo, a mano.</strong><br><br>
+Supón que verificaste el <code>2900</code> y era un error de digitación: el valor
+real era <code>290</code>.<br>
+(a) Sin volver a sumar las 12 filas, usa Δx̄ para obtener la nueva media de la
+tabla cruda (con los <code>−999</code> todavía dentro).<br>
+(b) Calcula la media de las filas válidas: sin los <code>−999</code>, con el
+<code>290</code> corregido y con el <code>0</code>.<br>
+(c) ¿Qué te dice comparar (a) con (b)?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) −9,00 litros; (b) 189,00 litros; (c) con el
+atípico corregido, los centinelas ya no tienen contrapeso y hunden la media bajo
+cero: el defecto que manda ahora son los <code>−999</code>.</p>
+<ol>
+<li>(a) Δx̄ = (x<sub>malo</sub> − x<sub>bueno</sub>) / n, pero ahora el «malo» es
+el 2900 que sale y el «bueno» el 290 que entra: Δx̄ = (290 − 2900) / 12 =
+−2.610 / 12 = −217,50. Nueva media = 208,50 − 217,50 = <strong>−9,00</strong>.</li>
+<li>(b) Filas válidas: ocho de 200, el 290 y el 0 → n = 10. Suma = 1.600 + 290 +
+0 = 1.890. Media = 1.890 / 10 = <strong>189,00</strong>.</li>
+<li>(c) Misma tabla, dos decisiones distintas sobre los centinelas: −9,00 es un
+consumo imposible; 189,00 es creíble y queda bajo 200 solo por el 0 real del
+conductor enfermo.</li>
+</ol>
+<p><strong>Error típico:</strong> en (a), dividir la diferencia por 10 en vez de
+por 12 (la tabla cruda sigue teniendo 12 filas con número); en (b), sacar también
+el 0 «porque es raro», que es una decisión, no una corrección.</p>
+<p style="font-size:.82rem;color:var(--suave)">[DATITO] Variante construida sobre la tabla 9B real; el 290 es un supuesto del ejercicio.</p>
+</details>
+
+<h2>5 · Camino inverso: te dan los números, no la tabla</h2>
+
+<p>Este es el formato que más te va a costar, y el que más se parece a una
+pregunta de desarrollo. <strong>No ves ni una fila.</strong> Te entregan esto
+sobre un registro de consumo de combustible:</p>
+
+<div class="panel" style="max-width:520px">
+<table style="margin:0">
+<tr><td>n</td><td class="num"><strong>12</strong></td></tr>
+<tr><td>media</td><td class="num"><strong>208,50</strong> litros</td></tr>
+<tr><td>mediana</td><td class="num"><strong>200,00</strong> litros</td></tr>
+<tr><td>desviación estándar</td><td class="num"><strong>963,15</strong> litros</td></tr>
+</table>
+</div>
+
+<p><strong>Ejercicio de interpretación:</strong> ¿qué puedes afirmar sobre estos
+datos sin verlos? Escríbelo antes de abrir.</p>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+
+<p><strong>Respuesta:</strong> que la columna está contaminada con valores que no
+son consumos: la desviación es 4,6 veces la media y el rango que implican los
+estadísticos incluye consumos negativos, algo físicamente imposible.</p>
+
+<p><strong>Que están contaminados, y puedes demostrarlo.</strong></p>
+
+<p>La media y la mediana casi coinciden (208,50 frente a 200,00). Eso
+normalmente tranquiliza: sugiere una distribución simétrica y sin cola larga.
+<strong>Las dos medidas de centro te mienten a la vez.</strong></p>
+
+<p>Quien grita es la dispersión. Compara la desviación con la media:</p>
+
+<div class="ecu"><div class="formula">963,15 / 208,50 ≈ <span class="num">4,6</span></div>
+<p style="margin:0;font-size:.93rem">La desviación es <strong>4,6 veces la
+media</strong>. En consumo de combustible de camiones idénticos haciendo la misma
+faena, la variación esperable es de unos pocos puntos porcentuales. Una
+desviación de 963 litros alrededor de una media de 208 <strong>no describe un
+proceso físico</strong>: describe una columna con valores que no pertenecen a la
+misma variable.</p></div>
+
+<p><strong>Y hay una segunda pista aritmética.</strong> Con media 208,50 y
+desviación 963,15, valores a más de dos desviaciones del centro llegarían hasta
+208,50 + 2 × 963,15 ≈ 2.135 y bajarían hasta 208,50 − 2 × 963,15 ≈ −1.718.
+<strong>Un consumo de combustible no puede ser negativo.</strong> Que el rango
+plausible implicado por los estadísticos incluya números imposibles es prueba de
+que hay códigos, no mediciones.</p>
+
+<div class="clave"><strong>El procedimiento que acabas de usar:</strong> cuando
+solo tienes estadísticos, compara la dispersión con el centro, y luego pregunta
+si el rango que implican es <em>físicamente posible</em> para esa variable. El
+promedio no delata nada. La mediana tampoco. <strong>La desviación sí.</strong></div>
+
+<p><strong>Error típico:</strong> concluir que los datos están bien porque la
+media y la mediana casi coinciden. Coinciden por la cancelación de la sección 4,
+no porque la distribución sea limpia.</p>
+<p style="font-size:.82rem;color:var(--suave)">Estadísticos de la tabla 9B · razonamiento [DATITO] · la sensibilidad de la media y la varianza a atípicos: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · láminas 9 y 13]</p>
+</details>
+
+<h2>6 · La distinción que decide la pregunta</h2>
+
+<div class="dist">
+<strong>Un valor medido que vale cero ≠ un código que significa «no hay medición»</strong>
+<span class="vs">0 &nbsp;&nbsp;≠&nbsp;&nbsp; −999</span>
+Los dos son números. Los dos sobreviven a <code>dtype == float</code>. Ninguno de
+los dos es <code>NaN</code>. <code>isna()</code> devuelve <strong>False</strong>
+para ambos.<br><br>
+<strong>Nada dentro de la tabla los separa.</strong> Solo saberlo del dominio:
+un camión con el conductor enfermo no salió, y <em>consumió cero litros de
+verdad</em>. Un camión en mantención <em>no fue medido</em>, y alguien escribió
+−999 para que la celda no quedara vacía.
+</div>
+
+<table>
+<tr><th></th><th>El <code>0</code> del conductor enfermo</th><th>El <code>−999</code> de mantención</th></tr>
+<tr><td><strong>Qué es</strong></td><td>Una medición real que dio cero</td><td>Un código centinela: ausencia de dato disfrazada</td></tr>
+<tr><td><strong>¿Entra a un promedio?</strong></td><td><strong>Depende de la pregunta</strong></td><td><strong>Nunca.</strong> Se convierte en nulo, siempre</td></tr>
+<tr><td><strong>Si la pregunta es…</strong></td><td>«consumo medio de la flota por camión-día» → <strong>sí entra</strong>, ese día la flota gastó cero</td><td>No hay pregunta que lo admita. No es un consumo</td></tr>
+<tr><td><strong>Si la pregunta es…</strong></td><td>«consumo medio de un camión operativo» → <strong>no entra</strong>, ese camión no operó</td><td>—</td></tr>
+</table>
+
+<p>Esa fila doble es el corazón del asunto: <strong>la misma celda entra o sale
+según lo que estés midiendo</strong>, y por eso la justificación puntúa más que
+la decisión. Un <code>−999</code> no tiene esa ambigüedad: no representa nada
+medible.</p>
+
+<div class="nota">
+<strong>La versión que ya viste en clase.</strong> En las presentaciones del 14-ago,
+un grupo de compañeros que trabajaba con una planta de flotación minera —hierro,
+sílice como impureza— reportó esto sobre la calidad de sus datos:
+<div class="cita" style="margin:.6rem 0">«lo que dijimos, hay cero datos nulos explícitos hay 1.171 filas que están, o sea, índices que están duplicados» <span class="f">Presentaciones del 14-ago · 0:34:00–0:34:08 · un grupo de compañeros ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+Dijeron <em>explícitos</em> a propósito. Un informe de calidad puede reportar
+<strong>cero valores faltantes</strong> y la columna estar llena de datos ausentes
+— si están escritos como −999, como 0, como 9999, como «Unavailable» o como una
+fecha en 1900.
+</div>
+
+<div class="dist" style="background:#3b1a1a">
+<strong>Segunda distinción, la que más se falla: atípico ≠ error</strong>
+<span class="vs">2900 &nbsp;&nbsp;¿error de digitación o camión distinto?</span>
+El <code>−999</code> se resuelve con certeza: es un código, fuera.
+El <code>2900</code> <strong>no se resuelve desde la tabla</strong>. Puede ser un
+200 mal tecleado, un sensor descalibrado, o un camión de mayor tonelaje que
+legítimamente consume eso.<br><br>
+<strong>Decir «hay que verificarlo antes de decidir» no es rodeo: es la
+respuesta.</strong> Es exactamente lo que el profesor premia en la última
+pregunta del Certamen 2 (<a href="certamen_2.html#p11" style="color:#fbbf24">certamen_2.html#p11</a>),
+donde hay que separar lo <em>medido</em> de lo <em>supuesto</em> de lo <em>no
+disponible</em>. Borrar el 2900 sin decir por qué es inventar una respuesta
+plausible.
+</div>
+
+<h3>El precedente directo: los camiones de la clase de EDA</h3>
+
+<p>Una semana antes del certamen, el profesor hizo este mismo razonamiento en voz
+alta. La lámina plantea: el consumo medio de gasolina de los camiones de la
+compañía es 1440 litros, pero los que tú administras gastan sobre 2500; ¿qué
+sugiere eso?
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · lámina 20] · ⚠ las cifras que se oyen en la transcripción («1,440», «2,500») coinciden con la lámina.</span>
+Con el gráfico de la distribución delante, respondió:</p>
+
+<div class="cita">«hay un valor anómalo muy grande acá entonces hay muchos ceros ¿qué es lo que puede significar esto? […] pero si no hay ningún camión inactivo bueno entonces algo está pasando a lo mejor la gente no está reportando el consumo de gasolina» <span class="f">Clase del 17-jul · 0:44:12–0:45:23 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md]</span></div>
+
+<p>Entre medio, el curso propuso «muchos camiones inactivos» y él lo llamó una
+hipótesis, no una conclusión; el paso siguiente, dijo, es ir a ver quién anotó
+los datos <span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:45:03–0:45:32]</span>.
+Mira lo que <strong>no</strong> hizo: no borró el valor grande ni los ceros. Leyó
+dos explicaciones posibles para los ceros —un 0 real (camión inactivo) o un
+dato no reportado escrito como 0— y dijo cómo distinguirlas. Es la distinción
+<code>0</code> ≠ <code>−999</code> de la 9B, una semana antes de que la tuvieras en
+el papel. Más sobre esa lectura de la distribución en <a href="eda.html">eda.html</a>.</p>
+
+<h3>Errores que ninguna prueba estadística ve</h3>
+
+<p>El segundo docente (clase del 19-jun) dio dos ejemplos de datos malos que
+conviene tener juntos, porque fallan de formas opuestas:</p>
+
+<div class="cita">«ese sensor no estaba operando entonces voy a obtener valor valores nulos para ese día […] fue al lugar donde están los sensores de temperatura con un secador de pelo y empezó a tirar aire caliente […] la aplicación está conectada a estos datos erróneos» <span class="f">Clase del 19-jun · 2:21:45–2:22:36 · segundo docente ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md]</span></div>
+
+<p>El sensor apagado deja un hueco: se ve. El secador de pelo deja una
+temperatura alta en un día de calor, que es exactamente lo que un día de calor
+produce: <strong>no se ve</strong>. Ninguna valla de Tukey ni ninguna desviación
+estándar lo marca, porque el valor es plausible. Lo delata solo el conocimiento de
+cómo se registró el dato. (En la anécdota, alguien apostaba a que ese día pasaría
+de 30 grados.) <span style="font-size:.82rem;color:var(--suave)">[DATITO] lectura del ejemplo.</span></p>
+
+<div class="nota">
+<strong>⚠ Una receta que vas a escuchar, y por qué aquí no manda.</strong><br><br>
+<strong>Lo oficial.</strong> Las láminas dicen que la media y la varianza son
+<em>sensibles</em> a los atípicos
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_05_AnálisisExploratorio.md · láminas 9 y 13]</span>,
+y que los valores <em>incorrectos</em> hay que detectarlos y corregirlos
+<span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 22]</span>.
+En ningún lugar dicen que un valor lejano haya que sacarlo. Y en la respuesta de
+la lámina 28 conviven 350 y 3600, y los ceros, sin que ninguno se marque como
+error.<br><br>
+<strong>Lo que se dijo en la clase del 19-jun.</strong> Respondiendo a una
+pregunta sobre limpieza, el segundo docente describió otra práctica:
+<div class="cita" style="margin:.6rem 0">«si tengo datos atípicos dentro de mi base de datos y poder eliminar esos datos atípicos […] todos los datos que […] estén muy lejos de esta media y desde la ⟨desviación⟩ estándar […] los voy a sacar porque en realidad puede que estén alterando mi muestra» <span class="f">Clase del 19-jun · 2:07:22–2:07:46 · segundo docente ·
+[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «depiación»)</span></div>
+<strong>Por qué choca.</strong> Esa regla trata «lejano» como sinónimo de «malo»,
+que es justo la confusión atípico ≠ error. Y con la tabla de la 9B falla de forma
+medible: la media es 208,50 y la desviación 963,15. Sacar lo que esté a más de
+<strong>2</strong> desviaciones elimina solo el 2900 (el borde inferior es −1.717,8)
+y <strong>deja dentro los dos −999</strong>: la media queda en −36,18, un consumo
+negativo. Con <strong>3</strong> desviaciones (de −2.681 a 3.098) no sale nada. Los
+centinelas inflan la misma desviación que debería delatarlos.
+<span style="font-size:.82rem;color:var(--suave)">[DATITO] cálculo con los 12 valores de la 9B; puedes rehacerlo con el panel de la sección 3.</span><br><br>
+<strong>Qué hacer en el certamen:</strong> manda la lámina. Un valor lejano se
+marca, se verifica y se decide con una razón del dominio; no se saca por su
+distancia a la media.
+</div>
+
+<h2>7 · La trampa que te espera después: imputar</h2>
+
+<p>Ya sabes qué hacer con los <code>−999</code>: convertirlos en nulos. Pero
+entonces tienes huecos, y el paso siguiente que enseña todo el mundo es
+rellenarlos con la mediana — el valor más típico, el menos sospechoso de todos.</p>
+
+<p>Aquí hay 20 mediciones observadas de consumo (litros por camión-día) y 20
+huecos, porque el sensor estuvo caído medio mes
+<span style="font-size:.82rem;color:var(--suave)">[DATITO] cifras ilustrativas</span>. Vas a rellenar los huecos con la
+mediana, que es <strong>210 litros</strong>.</p>
+
+<div class="pred" data-p="imp">
+  <div class="q">Con los 20 valores reales y ningún relleno, el criterio de rango
+  intercuartílico (Tukey) no marca <strong>ningún</strong> atípico. Si rellenas
+  los 20 huecos con la mediana, ¿cuántos atípicos marca?</div>
+  <button data-r="menos">Menos todavía, o cero</button>
+  <button data-r="igual">Sigue en cero: metí valores normales</button>
+  <button data-r="mas">Sube</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>sube</strong>: de 0 atípicos a 18 de 40 cuando
+rellenas los 20 huecos con 210.</p>
+<ol>
+<li>Sin relleno (20 valores): Q1 = 177,50, Q3 = 263,75, RIC = 86,25. Valla =
+177,50 − 1,5 × 86,25 = 48,1 hasta 263,75 + 1,5 × 86,25 = 393,1. Todos los valores
+(120 a 330) caen dentro: 0 atípicos.</li>
+<li>Con 20 rellenos en 210 (40 valores): 22 valen 210 (los 20 rellenos y 2
+observados) y ocupan el centro de la lista ordenada, posiciones 10 a 31. Q1 y Q3
+caen dentro de ese bloque: Q1 = Q3 = 210, RIC = 0.</li>
+<li>Valla = [210 ; 210]. Todo valor distinto de 210 queda fuera: de los 20
+observados, solo dos valen 210, así que <strong>18</strong> se marcan como atípicos.</li>
+</ol>
+<p><strong>Error típico:</strong> pensar que rellenar con un valor «normal» no puede
+crear atípicos. La valla se calcula con los rellenos dentro: no cambiaron los datos,
+cambió la regla.</p>
+<p style="font-size:.82rem;color:var(--suave)">[DATITO] cifras ilustrativas; cuartiles con interpolación lineal, igual que el panel.</p>
+</details>
+
+<div class="panel">
+  <canvas id="lienzo" width="860" height="230"></canvas>
+  <div class="ctrl">
+    <label for="mimp">Huecos rellenados con la mediana</label>
+    <input type="range" id="mimp" min="0" max="20" step="1" value="0">
+    <output id="o_mimp">0 de 20</output>
+  </div>
+  <div class="met">
+    <div><div class="n" id="i_q1">177,50</div><div class="e">Q1</div></div>
+    <div><div class="n" id="i_q3">263,75</div><div class="e">Q3</div></div>
+    <div><div class="n" id="i_iqr">86,25</div><div class="e">rango intercuartil</div></div>
+    <div id="box_out"><div class="n" id="i_out">0</div><div class="e">atípicos</div></div>
+  </div>
+  <p id="i_lectura" style="font-size:.9rem;margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--linea)"></p>
+</div>
+
+<h3>Por qué pasa eso</h3>
+
+<p>El criterio de Tukey marca como atípico todo lo que caiga fuera de una
+<strong>valla</strong> construida a partir de la propia dispersión de los datos:</p>
+
+<div class="ecu">
+<div class="formula">valla = [ <span class="den">Q1</span> − 1,5·<span class="num">RIC</span> &nbsp;,&nbsp;
+<span class="den">Q3</span> + 1,5·<span class="num">RIC</span> ]
+&nbsp;&nbsp;&nbsp; <span class="num">RIC</span> = <span class="den">Q3 − Q1</span></div>
+<table style="margin:0">
+<tr><th>Símbolo</th><th>Qué es</th><th>Rol</th></tr>
+<tr><td><code>Q1</code>, <code>Q3</code></td><td>Los valores que dejan por debajo el 25 % y el 75 % de los datos</td>
+    <td><span class="rol r-cuenta">lo cuenta la máquina</span></td></tr>
+<tr><td><code>RIC</code></td><td>El ancho del 50 % central. <strong>La medida de dispersión</strong></td>
+    <td><span class="rol r-cuenta">lo cuenta la máquina</span></td></tr>
+<tr><td><code>1,5</code></td><td>Convención. No sale de ningún teorema</td>
+    <td><span class="rol r-decide">lo decides tú</span></td></tr>
+<tr><td><strong>qué filas entran</strong></td><td>Los valores observados, más los que acabas de inventar</td>
+    <td><span class="rol r-decide">lo decides tú</span></td></tr>
+</table>
+</div>
+
+<div class="peligro">
+<strong>El bucle.</strong> Cada valor que metes en la mediana aprieta el 50 %
+central. Q1 sube, Q3 baja, el RIC se encoge, la valla se cierra — y valores que
+eran perfectamente normales quedan afuera. <strong>No encontraste atípicos: los
+fabricaste.</strong> Con los 20 huecos rellenos, el RIC pasa de 86,25 a
+<strong>0</strong>: la valla colapsa sobre el punto 210 y <em>todo lo que no sea
+exactamente 210</em> es atípico.
+</div>
+
+<h3>Y a la varianza le pasa lo mismo, con fórmula exacta</h3>
+
+<p>Si rellenas <code>m</code> huecos con la <strong>media</strong> de lo
+observado, la media no se mueve ni un decimal — parece que no rompiste nada.
+Pero la varianza sí:</p>
+
+<div class="ecu">
+<div class="formula">s²<sub>nueva</sub> = s²<sub>vieja</sub> · <span class="num">(n − m − 1)</span> / <span class="den">(n − 1)</span></div>
+<p style="margin:0;font-size:.93rem">Porque cada valor imputado cae
+<em>exactamente</em> en la media: aporta cero a la suma de desviaciones al
+cuadrado, pero suma uno al denominador.</p>
+</div>
+
+<p>Con tres números, para que lo verifiques a mano. Tres mediciones —180, 200,
+220— y dos huecos:</p>
+
+<table style="max-width:620px">
+<tr><th></th><th style="text-align:right">Antes (3 valores)</th><th style="text-align:right">Después de imputar 2</th></tr>
+<tr><td>valores</td><td class="num">180 · 200 · 220</td><td class="num">180 · 200 · 220 · <strong>200</strong> · <strong>200</strong></td></tr>
+<tr><td>media</td><td class="num">200</td><td class="num">200 <em>(idéntica)</em></td></tr>
+<tr><td>Σ(x − x̄)²</td><td class="num">400 + 0 + 400 = 800</td><td class="num">800 <em>(idéntica)</em></td></tr>
+<tr><td>divide por (n−1)</td><td class="num">800 / 2 = <strong>400</strong></td><td class="num">800 / 4 = <strong>200</strong></td></tr>
+<tr><td>desviación</td><td class="num">20,00</td><td class="num"><strong>14,14</strong></td></tr>
+</table>
+
+<p>Y la fórmula lo predice sin calcular nada: <code>n</code> = 5,
+<code>m</code> = 2, así que s² queda multiplicada por (5 − 2 − 1)/(5 − 1) =
+2/4 = <strong>la mitad</strong>. 400 × 0,5 = 200. ✓</p>
+
+<h2>8 · Esto te pasó a ti, en tu propio proyecto</h2>
+
+<p>No es un ejemplo de manual. Es tu auditoría de Melbourne, y los números están
+en tu repositorio.</p>
+
+<div class="cita" style="border-left-color:var(--azul);background:#eff6ff;font-style:normal">
+De <strong>13.580</strong> propiedades:
+<code>BuildingArea</code> tenía <strong>6.450 nulos (47,5 %)</strong> y
+<code>YearBuilt</code> <strong>5.375 (39,6 %)</strong>.
+La vista que imputaba con la mediana reportaba <strong>0 valores faltantes</strong>.
+<span class="f">Tu proyecto · [FUENTE · Repo: 05_RESULTADOS/auditoria_dashai_vs_crudo.json]</span>
+</div>
+
+<table>
+<tr><th><code>BuildingArea</code></th><th style="text-align:right">Datos crudos</th><th style="text-align:right">Tras imputar la mediana</th></tr>
+<tr><td>Mediana</td><td class="num">126,00</td><td class="num">126,00 <em>(sin cambio)</em></td></tr>
+<tr><td>Q1</td><td class="num">93,00</td><td class="num">122,00</td></tr>
+<tr><td>Q3</td><td class="num">174,00</td><td class="num">129,94</td></tr>
+<tr><td><strong>RIC</strong></td><td class="num"><strong>81,00</strong></td><td class="num"><strong>7,94</strong></td></tr>
+<tr><td>Valla de Tukey</td><td class="num">[−28,5 ; 295,5]</td><td class="num">[110,1 ; 141,9]</td></tr>
+<tr><td><strong>Atípicos detectados</strong></td><td class="num"><strong>353</strong></td><td class="num" style="color:var(--rojo)"><strong>5.565</strong></td></tr>
+</table>
+
+<p>La mediana idéntica. El rango intercuartil dividido por diez. Y una
+herramienta informando <strong>5.565 atípicos</strong> en una columna que tenía
+353 — el <strong>41 % del dataset</strong> marcado como anómalo
+<em>por el relleno, no por los datos</em>. Con <code>YearBuilt</code> el efecto
+fue aún más brutal: <strong>de 6 atípicos a 3.975</strong>.</p>
+
+<div class="clave">
+Lo que hiciste con esa información fue lo correcto y es lo que hay que saber
+justificar: <strong>ninguna de las dos columnas entró al modelo final.</strong>
+Una columna con 47,5 % de huecos no aporta 52,5 % de información útil — aporta
+eso <em>más</em> un 47,5 % de valores inventados que el modelo trata como
+mediciones.
+</div>
+
+<div class="nota">
+<strong>El mismo criterio, aplicado a otra columna y con el resultado opuesto.</strong>
+<code>CouncilArea</code> tiene <strong>0 % de nulos en 2016 y 18,9 % en 2017</strong>,
+más 14 categorías nuevas. Incluirla mejoraba el error en 599 AUD (0,38 %) y ganaba
+20 de 25 comparaciones pareadas — y <strong>aun así se descartó</strong>, porque el
+28,5 % de las filas de 2017 no aportaban nada por esa vía. Una mejora medida no
+basta si sabes de dónde viene. Y ojo con la etiqueta: <strong>esto no fue
+limpieza</strong>. Ningún valor de <code>CouncilArea</code> se corrigió; se decidió
+que la columna no entra (tabla de la sección 1).
+<span style="display:block;font-size:.82rem;color:var(--suave);margin-top:.5rem">
+[FUENTE · Repo: 05_RESULTADOS/experimento_councilarea_2026-09-18.json · 07_DATITO/referencia/material.md, «Experimento CouncilArea»]</span>
+</div>
+
+<h2>9 · Las cuatro decisiones</h2>
+
+<p>El práctico 2 nombra tres. La 9B necesita una cuarta, y es la que separa una
+respuesta de 1,0 de una de 2,0:</p>
+
+<table>
+<tr><th>Decisión</th><th>Cuándo</th><th>Qué cuesta</th></tr>
+<tr><td><strong>Dejar</strong></td><td>El valor es real aunque sea raro. Los 682 «atípicos» de <code>Rooms</code> en Melbourne son casas de 5 a 10 piezas: existen</td><td>Nada, si lo justificas</td></tr>
+<tr><td><strong>Eliminar</strong></td><td>La fila no es una observación válida para tu pregunta</td><td>Pierdes n, y si el motivo del hueco se relaciona con lo que predices, introduces sesgo</td></tr>
+<tr><td><strong>Reemplazar</strong></td><td>Pocos huecos, y sabes por qué faltan</td><td><strong>Aplastas la dispersión.</strong> Es la sección 7 entera</td></tr>
+<tr><td><strong>Mover a otra columna</strong></td><td>El valor no es una medición, pero <em>significa algo</em>: <code>−999</code> = «en mantención»</td><td>Nada. Ganas una variable nueva (<code>id_estado</code>) que puede explicar patrones</td></tr>
+</table>
+
+<div class="clave">
+<strong>Por qué la cuarta vale puntos.</strong> Borrar el <code>−999</code> y
+seguir no es neutral: pierdes <em>qué camiones estuvieron en mantención y
+cuándo</em>. Esa es información operativa real. El dato malo de una columna es el
+dato bueno de otra.
+</div>
+
+<h2>10 · Procedimiento para el papel</h2>
+
+<pre>ANTE UNA TABLA SUCIA (9A · 9B)
+
+PRIMERO LA ESTRUCTURA, DESPUÉS LOS VALORES
+
+1. ¿QUÉ ES UNA FILA?          si no es una observación completa
+                              e independiente, la estructura está rota
+2. ¿QUÉ HAY EN CADA COLUMNA?  un solo tipo de cosa, o sobrecarga semántica
+3. ¿DÓNDE ESTÁN LOS METADATOS? fechas como encabezado = formato ancho, no tidy
+4. LA CLAVE                   ¿identifica? ¿está completa? ¿se repite?
+
+AHORA LOS VALORES
+
+5. TIPOS MEZCLADOS            'N/A' en texto junto a números y celdas vacías
+6. NÚMEROS IMPOSIBLES         -999 · 9999 · 0 · fechas en 1900
+      pregunta por cada uno:  ¿ES UNA MEDICIÓN O ES UN CÓDIGO?
+7. ATÍPICOS                   marcar, NO decidir sin verificar
+
+POR CADA DEFECTO, UNA DECISIÓN Y SU MOTIVO
+
+8. ¿LIMPIAR O DECIDIR?         si la corrección vale para cualquier pregunta,
+                              es limpieza; si depende de la pregunta, es decisión
+9. dejar · eliminar · reemplazar · MOVER a otra columna
+10. JUSTIFICAR POR EL OBJETIVO  "para responder X, esta fila (no) entra"
+11. PROPONER LA ESTRUCTURA FINAL   ID · fecha AAAA-MM-DD · id numérico · valor · estado
+12. DECLARAR LO QUE NO SE PUEDE DECIDIR SIN VERIFICAR</pre>
+
+<div class="nota">
+<strong>El paso 11 es el que vale los 2,0 puntos.</strong> Listar defectos es
+detectar; escribir las columnas de la tabla corregida es diseñar. La pregunta
+pide lo segundo.
+</div>
+
+<h2>11 · Errores que el formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Por qué está mal</th></tr>
+<tr><td>Verificar que «el promedio da algo razonable»</td><td>208,50 frente a 200 pasa cualquier chequeo de cordura, con tres defectos dentro</td></tr>
+<tr><td>Borrar el <code>−999</code> y seguir</td><td>Pierdes información legítima: qué camión estuvo en mantención. Se mueve, no se borra</td></tr>
+<tr><td>Reemplazar todos los nulos por 0</td><td>Conviertes «no sé» en «consumió cero». Son afirmaciones distintas y la segunda es falsa</td></tr>
+<tr><td>Imputar primero y buscar atípicos después</td><td>Los atípicos los fabricaste tú al encoger el RIC. 353 → 5.565 en tu propio proyecto</td></tr>
+<tr><td>Tratar el <code>0</code> y el <code>−999</code> igual «porque ambos son raros»</td><td>Uno se midió, el otro no. Es la distinción central de la pregunta</td></tr>
+<tr><td>Decidir sobre el <code>2900</code> sin verificar</td><td>Es lo único que la tabla no permite resolver. Declararlo es parte de la respuesta</td></tr>
+<tr><td>Listar los problemas y parar ahí</td><td>La 9B pide la estructura corregida. Detectar sin diseñar deja la mitad del puntaje</td></tr>
+<tr><td>Limpiar un defecto y dar por buena la media</td><td>Sacar solo los centinelas la llevó de 208,50 a 450,00. Ibas mejor antes</td></tr>
+<tr><td>Sacar todo lo que esté a más de k desviaciones de la media</td><td>Con k = 2 sale el 2900 y los dos −999 se quedan; con k = 3 no sale nada. Atípico ≠ error</td></tr>
+<tr><td>Llamar «limpieza» a excluir una columna útil</td><td>Es una decisión de modelado. Se justifica por la pregunta, no porque la columna «estaba sucia»</td></tr>
+<tr><td>Dejar «El Miércoles» como fecha</td><td>Hay muchos miércoles. La fecha va completa, año-mes-día, como en la lámina 28</td></tr>
+</table>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero te dice: <em>«ya limpié la tabla del certamen. Saqué todos los
+<code>−999</code>, que eran el problema evidente. Ahora el promedio da 450 litros
+y es confiable.»</em><br><br>
+<strong>¿Verdadero o falso? Justifícalo nombrando el mecanismo</strong> —no la
+etiqueta— <strong>y di qué estadístico debió mirar en lugar de la media.</strong><br><br>
+Es el formato exacto de tu profesor: verdadero o falso <em>con justificación</em>.
+Y poder explicárselo a otro es la prueba de que lo entiendes. Escríbelo en cinco
+líneas y llévalo a Datito.
+</div>
+
+<details>
+<summary>Criterios de corrección (no es una respuesta modelo)</summary>
+<ul>
+<li>Da un veredicto y lo justifica con un <strong>mecanismo</strong>, no con una
+etiqueta como «hay atípicos».</li>
+<li>Usa al menos un número de la tabla para mostrar el mecanismo.</li>
+<li>Reconoce que convertir los <code>−999</code> en nulo es correcto <em>y</em> que
+eso no basta: separa limpieza correcta de limpieza incompleta.</li>
+<li>Nombra el estadístico que debió mirar y dice por qué ese no se movió.</li>
+<li>No afirma que el <code>2900</code> es un error: lo deja como algo a verificar.</li>
+<li>Dice qué pregunta responde la media que finalmente reportaría (flota o
+camión operativo).</li>
+</ul>
+<p style="font-size:.82rem;color:var(--suave)">[DATITO] Criterios construidos para este artefacto.</p>
+</details>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>falso</strong>. Sacar los <code>−999</code> es
+correcto pero incompleto: compensaban al <code>2900</code>, y al quitarlos la media
+salta a 450 por culpa del <code>2900</code>. Debió mirar la mediana (y la
+desviación), no la media.</p>
+<p><strong>Respuesta modelo, como se la dirías al compañero:</strong></p>
+<div class="clave">
+«Falso. Convertir los −999 en nulos está bien: son códigos de "no hubo medición",
+no consumos. Pero te quedaste a medias. Los dos −999 bajaban la media en 199,83
+litros y el 2900 la subía en 225,00: se cancelaban casi exactos. Al sacar los −999,
+el 2900 quedó solo y la media saltó de 208,50 a 450,00, más del doble del consumo
+normal de 200. Que la media se mueva tanto al quitar dos filas ya es una alarma:
+queda otro valor dominándola. Tenías que mirar la mediana, que da 200,00 en todas
+las combinaciones porque no depende de los extremos, y la desviación, que en la
+tabla cruda es 963,15, más de cuatro veces la media. El 2900 no lo puedes dar por
+error sin verificarlo: lo marcas y lo declaras. Y di qué media reportas: si lo
+excluyes tras verificar, 177,78 es el consumo por camión-día de la flota (cuenta el
+0 del conductor enfermo) y 200,00 el de un camión operativo.»
+</div>
+<p><strong>Cómo se construye:</strong> (1) veredicto; (2) qué parte de lo que hizo
+está bien; (3) el mecanismo con números: cancelación 225,00 contra −199,83;
+(4) el estadístico robusto y por qué no se movió; (5) lo que queda por verificar;
+(6) qué pregunta responde cada media.</p>
+<p><strong>Error típico:</strong> responder «falso, porque hay un atípico» sin el
+mecanismo, o «verdadero, porque ya sacó los códigos». Los dos se quedan en la
+etiqueta.</p>
+<p style="font-size:.82rem;color:var(--suave)">Cifras de la tabla 9B, secciones 3 y 4 · redacción [DATITO]</p>
+</details>
+
+<div class="nota">
+<strong>Y la que viene después.</strong> Excluiste <code>BuildingArea</code> y
+<code>YearBuilt</code> de tu modelo de Melbourne. Ambas tenían información útil
+—el tamaño de la casa predice su precio, evidentemente—. <strong>Da una razón
+por la que excluir una columna con información útil puede mejorar el
+resultado.</strong> Tienes todo lo necesario en las secciones 7 y 8. Escríbela
+antes de abrir la respuesta.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> porque casi la mitad de sus valores no son
+mediciones sino rellenos, y la proporción de rellenos cambia entre el año de
+entrenamiento y el de prueba. El modelo aprende en 2016 una relación medio real y
+medio inventada, y en 2017 recibe una columna con todavía más valores inventados.
+Quitarla pierde algo de señal real, pero elimina una fuente de error que no se
+comporta igual en train y en test.</p>
+<ol>
+<li><strong>Qué hay en la columna:</strong> <code>BuildingArea</code> tiene 6.450
+nulos de 13.580 (47,5 %); <code>YearBuilt</code>, 5.375 (39,6 %).</li>
+<li><strong>Qué hace la imputación:</strong> casi la mitad de las casas pasa a
+«medir» 126 m², la mediana. El RIC cae de 81,00 a 7,94 y aparecen 5.565 atípicos
+fabricados (sección 8). La columna mezcla dos poblaciones: medidas y
+rellenadas.</li>
+<li><strong>Cambia entre años:</strong> <code>BuildingArea</code> tiene 43 % de nulos
+en 2016 y 51 % en 2017; <code>YearBuilt</code>, 35 % y 44 %. En test hay más
+rellenos que en train.</li>
+<li><strong>Consecuencia:</strong> lo que el modelo aprendió sobre esa columna en
+2016 se aplica en 2017 a una columna distinta. Es un cambio de distribución en la
+feature, no un problema de «pocos datos».</li>
+<li><strong>Balance:</strong> excluirla puede mejorar el resultado porque cambias
+una señal real pero inestable por nada, en vez de por ruido que parece medición.
+Para afirmarlo con número hay que compararlo, como se hizo con
+<code>CouncilArea</code>.</li>
+</ol>
+<p><strong>Error típico:</strong> «porque tenía nulos» (sin mecanismo) o «porque no
+era útil» (sí lo era: el tamaño de la casa predice su precio). Y llamarlo limpieza:
+es una decisión de modelado.</p>
+<p style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 05_RESULTADOS/auditoria_dashai_vs_crudo.json] · porcentajes por año: [FUENTE · Repo: 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md, §2, «calidad inconsistente entre años»] · el mecanismo, [INFERENCIA]</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="certamen_1.html#p9b"><code>certamen_1.html#p9b</code></a> — dónde se
+    pregunta: la <strong>9B</strong>, con el análisis de la respuesta. Y
+    <a href="certamen_1.html#p9a"><code>#p9a</code></a>, el caso de calificaciones,
+    que es el mismo concepto atacando la <em>estructura</em> en vez de los valores.</li>
+<li><a href="eda.html"><code>eda.html</code></a> — de dónde viene: ahí se
+    <em>detectan</em> los problemas que aquí se corrigen o se deciden.</li>
+<li><a href="datos_features_target.html"><code>datos_features_target.html</code></a>
+    — qué es una fila, qué es un identificador y qué columna no debe entrar nunca
+    (fuga de información). Es la otra mitad de las decisiones de modelado.</li>
+<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    qué tipo de problema tienes delante. Viene antes de decidir qué limpiar:
+    la pregunta define la limpieza.</li>
+<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — a dónde
+    va esto. Una columna imputada al 47,5 % es una fuente de brecha entre lo que
+    mides y lo que obtienes.</li>
+<li><code>08_PRACTICA/2026_[P2]Calidad_de_Datos(vacio).ipynb</code> — el
+    práctico. Duplicados, rangos, nulos, tipos y el ejercicio de Bob Esponja.
+    <strong>Hazlo sin mirar el <code>(res)</code>:</strong> es tu evidencia de
+    APLICAR.</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-4">
+<h2>Cierre de la Clase 4 · Calidad, limpieza y preparación de datos</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un centinela (−999) no es un número: sesga cualquier promedio.</li><li>Un atípico puede ser real o un error de digitación: se verifica, no se borra por defecto.</li><li>Excluir una columna útil o imputar son decisiones de modelado, no limpieza.</li><li>Una tabla bien formada: una fila por observación, identificadores que enlazan otras tablas, fechas completas.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Limpiar (corregir lo mal registrado) ≠ decidir (excluir, imputar, elegir target).</li><li>Atípico ≠ error.</li><li>Faltante ≠ cero.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Define la fila y las variables.</li><li>Busca centinelas, faltantes, tipos mezclados y atípicos.</li><li>Para cada uno: ¿está mal registrado (limpiar) o es una decisión (documentar)?</li><li>Calcula el efecto en la media antes y después.</li></ol>
+<p><b>Viene de:</b> <a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · <b>Sigue:</b> <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></p>
+<p><b>Vuelve a tu activación:</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Por qué no basta con borrar en la 9B los valores a más de dos desviaciones de la media?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque los −999 inflan la desviación y pueden quedar dentro del corte, y porque un atípico puede ser real. Primero se tratan los centinelas como faltantes; después se evalúa cada atípico. [FUENTE · Repo: 07_DATITO/visual/limpieza_preparacion.html §6]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="clase6_regresion.html">Continuar → Clase 5 · Regresión: predecir una cantidad</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/limpieza_preparacion.html</code> ·
+funciona sin conexión · fuentes: láminas
+<code>11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md</code> (22, 27, 28) y
+<code>FCD-2026-2_05_AnálisisExploratorio.md</code> (9, 13, 20); enunciado del P2
+<code>(vacio)</code>; transcripciones de las clases del 19-jun (segundo docente),
+15-jul y 17-jul y de las presentaciones del 14-ago (cada una citada arriba con su
+ruta completa; errores de ASR marcados con ⟨⟩ y ⚠);
+tabla 9B de <code>01_DOCUMENTACION/06_CERTAMEN1/</code>;
+<code>05_RESULTADOS/auditoria_dashai_vs_crudo.json</code>,
+<code>05_RESULTADOS/experimento_councilarea_2026-09-18.json</code>,
+<code>07_DATITO/referencia/material.md</code>.<br>
+Datos reales: la tabla 9B y todos sus cálculos (media, mediana, desviación,
+bandas de 2 y 3 desviaciones); las cifras de Melbourne (13.580 filas,
+<code>BuildingArea</code>, <code>YearBuilt</code>, <code>Rooms</code>,
+<code>CouncilArea</code>). Ilustrativos [DATITO]: las 20 mediciones y la mediana
+210 del panel de imputación, el ejemplo 180 · 200 · 220, la estructura destino con
+fechas de junio y el caso de buses.
+</footer>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=(v,d=2)=>v.toFixed(d).replace('.',',').replace('-','−');
+
+/* ---------- predicciones ---------- */
+const PRED={
+ cent:{txt:{
+  baja:'<strong>No, y es lo contrario.</strong> Los dos −999 estaban tirando el promedio hacia <em>abajo</em>: eran el contrapeso del 2900. Al sacarlos, el 2900 queda suelto. Marca la primera casilla y mira: <strong>208,50 → 450,00</strong>.',
+  igual:'<strong>No.</strong> Se mueve muchísimo. Los −999 aportaban −199,83 al promedio; retirarlos libera al 2900, que aporta +225. Marca la primera casilla: <strong>208,50 → 450,00</strong>. Hiciste una limpieza correcta y el resultado empeoró.',
+  sube:'<strong>Correcto, y es lo incómodo.</strong> Sube a <strong>450,00</strong>: más del doble. Los −999 estaban compensando al 2900 por pura casualidad aritmética. Al quitar el contrapeso queda el 2900 solo. <strong>Limpiar a medias es peor que no limpiar.</strong>'}},
+ imp:{txt:{
+  menos:'<strong>No.</strong> Sube, y muchísimo. Mueve el deslizador y mira el RIC: cada valor que metes en la mediana aprieta el 50 % central, la valla se cierra, y valores que eran normales quedan afuera.',
+  igual:'<strong>No, y es la trampa exacta.</strong> Los valores que metes son normales, sí — pero la valla que decide qué es atípico <em>se calcula con ellos dentro</em>. Al concentrarlos todos en 210, el RIC se derrumba. Mueve el deslizador a 20: de 0 atípicos a <strong>18</strong>.',
+  mas:'<strong>Correcto, y la magnitud sorprende igual.</strong> Pasa de 0 a <strong>18 atípicos de 40</strong>. Y no porque los datos cambiaran: la valla se calcula con los valores imputados dentro, el RIC pasa de 86,25 a 0, y todo lo que no sea exactamente 210 cae fuera. Es lo que te pasó con <code>BuildingArea</code>: 353 → 5.565.'}}};
+document.querySelectorAll('.pred').forEach(p=>{
+  const k=p.dataset.p;
+  p.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v=p.querySelector('.veredicto');
+      v.innerHTML=PRED[k].txt[b.dataset.r]; v.classList.add('on');
+    };
+  });
+});
+
+/* ---------- 1 · la tabla 9B ---------- */
+const FILAS=[
+ {et:'El Lunes',                     v:null,  t:'dia'},
+ {et:'Camión 1',                     v:200,   t:'ok'},
+ {et:'Camión 2',                     v:200,   t:'ok'},
+ {et:'Camión 3',                     v:2900,  t:'atip'},
+ {et:'Camión 4',                     v:200,   t:'ok'},
+ {et:'El Martes',                    v:null,  t:'dia'},
+ {et:'Camión 1',                     v:200,   t:'ok'},
+ {et:'Camión 2 (conductor enfermo)', v:0,     t:'cero'},
+ {et:'Camión 3 (en mantenimiento)',  v:-999,  t:'cent'},
+ {et:'Camión 4',                     v:200,   t:'ok'},
+ {et:'El Miércoles',                 v:null,  t:'dia'},
+ {et:'Camión 1',                     v:200,   t:'ok'},
+ {et:'Camión 2',                     v:200,   t:'ok'},
+ {et:'Camión 3 (en mantenimiento)',  v:-999,  t:'cent'},
+ {et:'Camión 4',                     v:200,   t:'ok'}];
+
+const BADGE={cent:['b-cent','centinela'],atip:['b-atip','atípico'],
+             cero:['b-cero','cero medido'],dia:['b-est','no es observación']};
+
+function mediana(a){const s=[...a].sort((x,y)=>x-y),n=s.length;
+  return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;}
+function desv(a){const n=a.length; if(n<2)return 0;
+  const m=a.reduce((s,x)=>s+x,0)/n;
+  return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(n-1));}
+
+function render(){
+  const fc=$('c_cent').checked, fa=$('c_atip').checked, fz=$('c_cero').checked;
+  const fuera=t=>(t==='dia')||(t==='cent'&&fc)||(t==='atip'&&fa)||(t==='cero'&&fz);
+
+  let html='<tr><th>CONSUMO</th><th style="text-align:right">CANTIDAD</th></tr>';
+  FILAS.forEach(f=>{
+    const out=fuera(f.t);
+    const cls=(f.t==='dia'?'dia':'')+(out?' fuera':'');
+    const b=BADGE[f.t]?`<span class="badge ${BADGE[f.t][0]}">${BADGE[f.t][1]}</span>`:'';
+    const val=f.v===null?'(vacío)':(f.v<0?'−'+Math.abs(f.v):f.v);
+    html+=`<tr class="${cls}"><td class="et">${f.et}${b}</td>`+
+          `<td class="num${(f.t==='cent'||f.t==='atip')?' mal':''}">${val}</td></tr>`;
+  });
+  $('tabla').innerHTML=html;
+
+  const v=FILAS.filter(f=>!fuera(f.t)).map(f=>f.v);
+  const n=v.length, media=v.reduce((s,x)=>s+x,0)/n, md=mediana(v), s=desv(v);
+  $('m_n').textContent=n;
+  $('m_media').textContent=fmt(media);
+  $('m_mediana').textContent=fmt(md);
+  $('m_s').textContent=fmt(s);
+
+  $('box_media').className = (media<0||media>400)?'alarma':(Math.abs(media-200)<1?'bien':'');
+  $('box_s').className     = (s>400)?'alarma':(s<1?'bien':'');
+  $('box_med').className   = 'bien';
+
+  let L='';
+  if(!fc&&!fa&&!fz) L='<strong>La tabla cruda.</strong> Media 208,50: a sólo 4,3 % de los 200 reales. Pasa cualquier chequeo rápido. Pero mira la desviación: <strong>963,15 litros</strong>, más de cuatro veces la media. Eso no lo produce ningún proceso físico.';
+  else if(fc&&!fa&&!fz) L='<strong>Limpiaste bien y empeoró.</strong> Sacaste los centinelas —correcto— y la media saltó a <strong>450,00</strong>. Estaban compensando al 2900. El 2900 sigue ahí.';
+  else if(!fc&&fa&&!fz) L='<strong>Media negativa: −36,18 litros.</strong> Un camión no puede consumir combustible negativo. Este es el mejor error posible: es <em>imposible</em>, así que no se te va a pasar. Los centinelas siguen dentro.';
+  else if(fc&&fa&&!fz) L='<strong>Ya es creíble: 177,78.</strong> Sigue por debajo de 200 porque el 0 del conductor enfermo entra al cálculo. Y eso <em>puede estar bien</em>: depende de si preguntas por la flota o por un camión operativo.';
+  else if(fc&&fa&&fz) L='<strong>200,00 exacto, y desviación 0.</strong> Los ocho camión-día operativos consumieron 200 litros cada uno. Este es el dato que la tabla contenía desde el principio, enterrado bajo tres defectos. Ojo: esta cifra responde «¿cuánto consume un camión operativo?», no «¿cuánto gasta la flota por día?».';
+  else if(!fc&&fa&&fz) L='<strong>−39,80.</strong> Sacaste el atípico y el cero, pero dejaste los centinelas: dos valores de −999 mandan sobre diez. Imposible y evidente.';
+  else if(fc&&!fa&&fz) L='<strong>500,00.</strong> Sin centinelas ni cero, el 2900 reparte su exceso entre nueve filas. La media se aleja más de la verdad cuanto más "limpias" alrededor del defecto real.';
+  else L='<strong>227,45.</strong> Sacaste el cero real pero dejaste los dos defectos que sí importan.';
+  L+=' <span style="color:var(--suave)">Mediana: <strong>200,00</strong>, como en las ocho combinaciones.</span>';
+  $('lectura').innerHTML=L;
+}
+['c_cent','c_atip','c_cero'].forEach(id=>$(id).addEventListener('change',render));
+$('reset').onclick=()=>{['c_cent','c_atip','c_cero'].forEach(id=>$(id).checked=false);render();};
+render();
+
+/* ---------- 2 · imputar con la mediana ---------- */
+const OBS=[120,140,150,160,170,180,190,200,205,210,210,220,230,250,260,275,290,300,310,330];
+const MED=210;
+function cuantil(a,p){const s=[...a].sort((x,y)=>x-y),n=s.length,h=(n-1)*p,
+  f=Math.floor(h),c=Math.min(f+1,n-1); return s[f]+(h-f)*(s[c]-s[f]);}
+
+const cv=$('lienzo'), cx=cv.getContext('2d');
+const mg={l:48,r:26,t:26,b:46}, xMin=90, xMax=350;
+const px=x=>mg.l+(x-xMin)/(xMax-xMin)*(cv.width-mg.l-mg.r);
+
+function dibujar(){
+  const m=+$('mimp').value;
+  const v=OBS.concat(Array(m).fill(MED));
+  const q1=cuantil(v,.25), q3=cuantil(v,.75), ric=q3-q1;
+  const lo=q1-1.5*ric, hi=q3+1.5*ric;
+  const out=v.filter(x=>x<lo||x>hi).length;
+
+  $('o_mimp').textContent=m+' de 20';
+  $('i_q1').textContent=fmt(q1); $('i_q3').textContent=fmt(q3);
+  $('i_iqr').textContent=fmt(ric); $('i_out').textContent=out;
+  $('box_out').className = out>0?'alarma':'bien';
+
+  cx.clearRect(0,0,cv.width,cv.height);
+  const base=cv.height-mg.b;
+
+  // zona dentro de la valla
+  const xa=Math.max(px(lo),mg.l), xb=Math.min(px(hi),cv.width-mg.r);
+  cx.fillStyle='#d1fae5'; cx.globalAlpha=.55;
+  cx.fillRect(xa,mg.t,Math.max(xb-xa,1.5),base-mg.t);
+  cx.globalAlpha=1;
+  // vallas
+  cx.strokeStyle='#059669'; cx.lineWidth=2; cx.setLineDash([5,4]);
+  [lo,hi].forEach(x=>{if(x>=xMin&&x<=xMax){cx.beginPath();
+    cx.moveTo(px(x),mg.t);cx.lineTo(px(x),base);cx.stroke();}});
+  cx.setLineDash([]);
+
+  // eje
+  cx.strokeStyle='#999'; cx.lineWidth=1;
+  cx.beginPath(); cx.moveTo(mg.l,base); cx.lineTo(cv.width-mg.r,base); cx.stroke();
+  cx.fillStyle='#666'; cx.font='12px system-ui'; cx.textAlign='center';
+  for(let x=100;x<=350;x+=50){
+    cx.beginPath(); cx.moveTo(px(x),base); cx.lineTo(px(x),base+5); cx.stroke();
+    cx.fillText(x,px(x),base+20);
+  }
+  cx.fillText('litros por camión-día',(mg.l+cv.width-mg.r)/2,base+38);
+
+  // puntos apilados
+  const cuenta={};
+  const dibujaPunto=(x,idx,color)=>{
+    const cy=base-9-idx*11;
+    cx.beginPath(); cx.arc(px(x),Math.max(cy,mg.t+5),4.2,0,7); cx.fillStyle=color; cx.fill();
+    cx.strokeStyle='#fff'; cx.lineWidth=1; cx.stroke();
+  };
+  OBS.forEach(x=>{
+    const i=(cuenta[x]=(cuenta[x]||0)); cuenta[x]++;
+    dibujaPunto(x,i,(x<lo||x>hi)?'#dc2626':'#2563eb');
+  });
+  for(let k=0;k<m;k++){
+    const i=(cuenta[MED]=(cuenta[MED]||0)); cuenta[MED]++;
+    dibujaPunto(MED,i,'#d97706');
+  }
+
+  // etiquetas
+  cx.font='600 12px system-ui'; cx.textAlign='left';
+  cx.fillStyle='#065f46';
+  cx.fillText('valla de Tukey: '+fmt(lo,1)+'  a  '+fmt(hi,1),mg.l+4,mg.t+2);
+  cx.textAlign='right'; cx.fillStyle='#92400e';
+  if(m>0) cx.fillText(m+' imputados en 210',cv.width-mg.r-4,mg.t+2);
+
+  let L;
+  if(m===0) L='<strong>Los 20 valores observados, sin tocar.</strong> La valla va de 48,1 a 393,1 y todos caben dentro: <strong>cero atípicos</strong>. Este es el dato real.';
+  else if(m<6) L='Todavía nada. La valla se está cerrando —mira el RIC bajar— pero aún no alcanza a ningún valor.';
+  else if(m<13) L='<strong>Empezaron a caer.</strong> Y ninguno de los valores observados cambió: cambió la <em>regla</em> que decide qué es atípico, porque se calcula con tus rellenos dentro.';
+  else if(m<20) L='<strong>Más de un tercio de las filas, marcadas.</strong> El 50 % central ya es casi todo relleno, así que el RIC mide la dispersión de un valor repetido: casi cero.';
+  else L='<strong>RIC = 0. La valla colapsó sobre el 210.</strong> Cualquier valor distinto de 210 es atípico: <strong>18 de 40</strong>. La media apenas se movió (220,00 → 215,00) y la mediana sigue en 210 — por eso el desastre no se ve mirando el centro. Esto es <code>BuildingArea</code>: 353 atípicos → 5.565.';
+  $('i_lectura').innerHTML=L;
+}
+$('mimp').addEventListener('input',dibujar);
+dibujar();
+</script>
+</body>
+</html>

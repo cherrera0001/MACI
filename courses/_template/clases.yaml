@@ -1,0 +1,54 @@
+# El curso: unidades y clases en orden (plantilla)
+#
+# FUENTE UNICA del orden de clase. construir_navegacion.py lo lee y genera
+# visual/index.html y la barra de cada visual.
+
+unidades:
+  # EDITAR: tus unidades temáticas
+  1: "Unidad 1: [Nombre]"
+  2: "Unidad 2: [Nombre]"
+  3: "Unidad 3: [Nombre]"
+  4: "Unidad 4: [Nombre]"
+
+clases: []
+  # EJEMPLO (descomenta, edita y multiplica):
+  #
+  # - n: 1
+  #   unidad: 1
+  #   titulo: "Mi Primera Clase"
+  #   visual: concepto_1.html      # archivo en visual/ (será generado o editado a mano)
+  #   tipo: concepto               # "concepto" o "repaso"
+  #   conceptos: [concepto_1]      # lista de ids del curriculum
+  #   objetivo: >-
+  #     Al terminar esta clase podrás...
+  #     (redacta en nivel Bloom que corresponda)
+  #   activacion: >-
+  #     Una pregunta o scenario para "calentar" el cerebro.
+  #     Debe ser concreta, con datos reales, no abstracta.
+  #   bloom:
+  #     nivel: Recordar              # o Comprender, Aplicar, Analizar, Evaluar, Crear
+  #     evidencia: >-
+  #       Cómo sabes que lo/la aprendió(ió).
+  #       Sé específico(a).
+  #     actividad_final: >-
+  #       Tarea del cierre: se hace sin ayuda.
+  #     criterio_dominio: >-
+  #       Cuándo decimos que domina el tema.
+  #   cierre:
+  #     aprendiste:
+  #       - "Punto 1"
+  #       - "Punto 2"
+  #     no_confundir:
+  #       - "Error común 1"
+  #       - "Error común 2"
+  #     procedimiento:
+  #       - "Paso 1"
+  #       - "Paso 2"
+  #     pregunta_final: "¿Verdadero o falso?... Justifica."
+  #     respuesta_final: >-
+  #       La respuesta. Cita tu fuente: [FUENTE · Repo: ruta/archivo.html]
+  #
+  # - n: 2
+  #   unidad: 1
+  #   titulo: "Segunda Clase"
+  #   ...

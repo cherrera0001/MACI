@@ -1,0 +1,10 @@
+# [AUTO-GENERADO] Grafo conceptual
+#
+# Este archivo se regenera con: python 03_CODIGO/grafo_conceptual.py
+# No edites a mano.
+#
+# Estructura: por cada concepto, sus importancia_curricular (cuántos lo requieren),
+# sus dos prioridades (según tu profesor), y la tensión entre ellas si existe.
+
+conceptos: {}
+  # Se genera automáticamente desde curriculum.yaml

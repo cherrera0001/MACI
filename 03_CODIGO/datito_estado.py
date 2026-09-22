@@ -1,5 +1,5 @@
 """
-Genera 07_DATITO/estado.md: el resumen compacto que Datito inyecta al abrir.
+Genera estado.md: el resumen compacto que Datito inyecta al abrir.
 
 Problema que resuelve: la skill inyectaba progreso.yaml y errores_conceptuales.yaml
 completos en cada invocacion -unos 20 KB- y ambos crecen con cada sesion. Datito
@@ -10,25 +10,70 @@ los errores abiertos. El detalle sigue en los YAML, que la skill lee bajo demand
 
 USO
   python 03_CODIGO/datito_estado.py
+
+MULTI-CURSO (ADR-001)
+  Lee datito.config.yaml para resolver las rutas de course_id y learner_id.
+  Sin config → backward compatibility: curso=fcd-2026-2, alumno=cristobal_herrera
 """
+import os
 from datetime import date
+from pathlib import Path
 
 import yaml
 
-BASE = r"F:\MACI\07_DATITO"
+# Resuelve rutas
+RAIZ = Path(__file__).parent.parent
+CONFIG_PATH = RAIZ / "07_DATITO" / "datito.config.yaml"
+
 ORDEN = ["DOMINADO", "COMPRENDIDO", "COMPRENSION_PARCIAL",
          "REQUIERE_REPASO", "EN_ESTUDIO", "NO_ESTUDIADO"]
 
 
-def cargar(nombre):
-    with open(f"{BASE}/{nombre}", encoding="utf-8") as f:
+def cargar_config():
+    """Carga datito.config.yaml, con fallback para backward compatibility."""
+    if CONFIG_PATH.exists():
+        with open(CONFIG_PATH, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {"course_id": "fcd-2026-2", "learner_id": "cristobal_herrera"}
+
+
+def resolver_rutas(config):
+    """Resuelve las rutas del curso y alumno."""
+    course_id = config.get("course_id", "fcd-2026-2")
+    learner_id = config.get("learner_id", "cristobal_herrera")
+
+    course_root = RAIZ / "courses" / course_id
+    learner_root = RAIZ / "learners" / learner_id
+
+    # Fallback para backward compatibility
+    if not course_root.exists():
+        course_root = RAIZ / "07_DATITO"
+    if not learner_root.exists():
+        learner_root = RAIZ / "07_DATITO"
+
+    return {
+        "course_root": course_root,
+        "learner_root": learner_root,
+        "curriculum": course_root / "curriculum.yaml",
+        "progreso": learner_root / "progreso.yaml",
+        "errores": learner_root / "errores_conceptuales.yaml",
+        "estado": learner_root / "estado.md",
+    }
+
+
+def cargar(path):
+    """Carga un archivo YAML."""
+    with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
 def main():
-    cur = cargar("curriculum.yaml")
-    pro = cargar("progreso.yaml")
-    err = cargar("errores_conceptuales.yaml")
+    config = cargar_config()
+    rutas = resolver_rutas(config)
+
+    cur = cargar(rutas["curriculum"])
+    pro = cargar(rutas["progreso"])
+    err = cargar(rutas["errores"])
 
     nombres = {c["id"]: c["nombre"] for c in cur["conceptos"]}
     por_estado = {}
@@ -103,12 +148,12 @@ def main():
     L.append(f"<!-- generado {date.today().isoformat()} -->")
 
     salida = "\n".join(L) + "\n"
-    with open(f"{BASE}/estado.md", "w", encoding="utf-8", newline="\n") as f:
+    with open(rutas["estado"], "w", encoding="utf-8", newline="\n") as f:
         f.write(salida)
 
     print(f"estado.md generado: {len(L)} lineas, {len(salida):,} bytes")
-    antes = sum(len(open(f"{BASE}/{n}", encoding="utf-8").read())
-                for n in ("progreso.yaml", "errores_conceptuales.yaml"))
+    antes = sum(len(open(rutas[n], encoding="utf-8").read())
+                for n in ("progreso", "errores"))
     print(f"reemplaza a {antes:,} bytes de YAML "
           f"({100 - len(salida) * 100 // antes}% menos)")
 

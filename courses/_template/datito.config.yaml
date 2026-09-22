@@ -1,0 +1,81 @@
+# Configuración de Datito para [TU_RAMO]
+#
+# Este archivo define metadatos del alumno y la asignatura.
+# Para reutilizar Datito en otro curso, edita este archivo y curriculum.yaml.
+#
+# No escribas secretos aquí — credenciales van en .env y ~/.notebooklm.
+
+course_id: tu-ramo-2026-2     # EDITAR: identificador único del curso (min-slug)
+learner_id: PLACEHOLDER        # Se reemplaza al crear el learner con datito_init_learner.py
+
+alumno:
+  nombre: "[Nombre del alumno]"
+  email: "[email del alumno]"
+
+asignatura:
+  nombre: "[Nombre del Ramo]"
+  periodo: T2-2026             # EDITAR: temporada
+  institucion: "[Tu Universidad]"
+  docente_practicos: "[Nombre docente]"
+
+# Cómo evalúa el profesor. Lo analizas de evaluaciones reales.
+evaluacion:
+  formato: "[ej: prueba escrita, sin Internet, sin código]"
+  calculo: "[ej: manual, papel y lápiz]"
+  formatos_de_pregunta:
+    - "[ej: verdadero/falso con justificación]"
+    - "[ej: selección múltiple]"
+    - "[ej: desarrollo con tabla de datos]"
+  firma_del_profesor: >-
+    [Resumen: cómo describe el profesor su filosofía de evaluación.
+     Cita sus certámenes reales.]
+
+# Tus proyectos como casos de estudio (opcional).
+proyectos: []
+  # - id: proyecto_1
+  #   nombre: "Tu Proyecto 1"
+  #   tipo: "[regresion, clasificacion, otro]"
+  #   datos: "ruta/al/dataset.csv"
+  #   resultados: "ruta/a/report.md"
+  #   ensena: [concepto_1, concepto_2]
+
+# Fuente externa: cuaderno de NotebookLM (opcional).
+notebooklm:
+  habilitado: false
+  notebook_id: null
+  nombre: null
+  servidor_mcp: notebooklm
+
+# Reglas pedagógicas personalizadas (opcional).
+pedagogia:
+  idioma: es
+  tratamiento: tu
+
+  # Concreción obligatoria: matemática antes de intuición o fórmulas abstractas
+  concrecion_obligatoria: true
+
+  # Dominios para los ejemplos (rota entre ellos, no repitas)
+  dominios:
+    - "dominio local 1"
+    - "dominio local 2"
+    - "dominio local 3"
+
+  preferir_visual: true
+  nivel: "Describe el nivel del alumno (principiante, profesional, etc.)"
+  intentos_antes_de_dar_la_solucion: 2
+  exige_calculo_manual: true
+  evidencia_para_dominado: [explicar, aplicar, interpretar, transferir]
+
+# --------------------------------------------------------------------------
+# INSTRUCCIONES DE USO
+#
+# 1. Edita este archivo: alumno, asignatura, evaluación.
+# 2. Llena curriculum.yaml con los conceptos del ramo.
+# 3. Llena clases.yaml con el orden de clase.
+# 4. Ejecuta: python 03_CODIGO/datito_init_learner.py --course tu-ramo-2026-2 --learner nombre_alumno
+# 5. Ejecuta: python 03_CODIGO/construir_navegacion.py
+# 6. Ejecuta: python 03_CODIGO/datito_estado.py
+# 7. Abre Claude Code y usa /datito
+#
+# Las skills de .claude/skills/ no se modifican: leen estos archivos.
+# --------------------------------------------------------------------------
