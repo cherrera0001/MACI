@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Genera estado.md: el resumen compacto que Datito inyecta al abrir.
 
@@ -9,56 +10,26 @@ Este resumen ronda las 30 lineas y no crece: solo lista lo que cambio de estado 
 los errores abiertos. El detalle sigue en los YAML, que la skill lee bajo demanda.
 
 USO
-  python 03_CODIGO/datito_estado.py
+  python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
+  python 03_CODIGO/datito_estado.py  # usa contexto guardado o error
 
-MULTI-CURSO (ADR-001)
-  Lee datito.config.yaml para resolver las rutas de course_id y learner_id.
-  Sin config → backward compatibility: curso=fcd-2026-2, alumno=cristobal_herrera
+MULTI-CURSO (Fase 1: Primera Entrega)
+  Usa context_manager para resolver curso y estudiante de forma centralizada.
+  Contexto inválido produce error claro (no silent fallback).
 """
-import os
+import argparse
+import sys
 from datetime import date
 from pathlib import Path
 
 import yaml
 
-# Resuelve rutas
-RAIZ = Path(__file__).parent.parent
-CONFIG_PATH = RAIZ / "07_DATITO" / "datito.config.yaml"
+# Importar context manager
+sys.path.insert(0, str(Path(__file__).parent))
+from context_manager import add_context_args, get_context
 
 ORDEN = ["DOMINADO", "COMPRENDIDO", "COMPRENSION_PARCIAL",
          "REQUIERE_REPASO", "EN_ESTUDIO", "NO_ESTUDIADO"]
-
-
-def cargar_config():
-    """Carga datito.config.yaml, con fallback para backward compatibility."""
-    if CONFIG_PATH.exists():
-        with open(CONFIG_PATH, encoding="utf-8") as f:
-            return yaml.safe_load(f) or {}
-    return {"course_id": "fcd-2026-2", "learner_id": "cristobal_herrera"}
-
-
-def resolver_rutas(config):
-    """Resuelve las rutas del curso y alumno."""
-    course_id = config.get("course_id", "fcd-2026-2")
-    learner_id = config.get("learner_id", "cristobal_herrera")
-
-    course_root = RAIZ / "courses" / course_id
-    learner_root = RAIZ / "learners" / learner_id
-
-    # Fallback para backward compatibility
-    if not course_root.exists():
-        course_root = RAIZ / "07_DATITO"
-    if not learner_root.exists():
-        learner_root = RAIZ / "07_DATITO"
-
-    return {
-        "course_root": course_root,
-        "learner_root": learner_root,
-        "curriculum": course_root / "curriculum.yaml",
-        "progreso": learner_root / "progreso.yaml",
-        "errores": learner_root / "errores_conceptuales.yaml",
-        "estado": learner_root / "estado.md",
-    }
 
 
 def cargar(path):
@@ -68,12 +39,18 @@ def cargar(path):
 
 
 def main():
-    config = cargar_config()
-    rutas = resolver_rutas(config)
+    # Resolver contexto
+    parser = argparse.ArgumentParser(description="Regenera estado.md del estudiante.")
+    add_context_args(parser)
+    args = parser.parse_args()
 
-    cur = cargar(rutas["curriculum"])
-    pro = cargar(rutas["progreso"])
-    err = cargar(rutas["errores"])
+    ctx = get_context(course_id=args.course, learner_id=args.learner)
+    # get_context lanza excepción si contexto es inválido
+
+    # Cargar datos
+    cur = cargar(ctx.paths.curriculum)
+    pro = cargar(ctx.paths.progreso)
+    err = cargar(ctx.paths.errores_conceptuales)
 
     nombres = {c["id"]: c["nombre"] for c in cur["conceptos"]}
     por_estado = {}
@@ -148,14 +125,16 @@ def main():
     L.append(f"<!-- generado {date.today().isoformat()} -->")
 
     salida = "\n".join(L) + "\n"
-    with open(rutas["estado"], "w", encoding="utf-8", newline="\n") as f:
+    with open(ctx.paths.estado, "w", encoding="utf-8", newline="\n") as f:
         f.write(salida)
 
-    print(f"estado.md generado: {len(L)} lineas, {len(salida):,} bytes")
-    antes = sum(len(open(rutas[n], encoding="utf-8").read())
-                for n in ("progreso", "errores"))
-    print(f"reemplaza a {antes:,} bytes de YAML "
-          f"({100 - len(salida) * 100 // antes}% menos)")
+    print(f"✅ estado.md generado ({len(L)} líneas, {len(salida):,} bytes)")
+    print(f"   Ubicación: {ctx.paths.estado.relative_to(ctx.paths.learner_root.parent.parent)}")
+
+    antes = sum(len(open(path, encoding="utf-8").read())
+                for path in (ctx.paths.progreso, ctx.paths.errores_conceptuales))
+    ratio = 100 - len(salida) * 100 // antes
+    print(f"   Reemplaza {antes:,} bytes de YAML ({ratio}% menos)")
 
 
 if __name__ == "__main__":

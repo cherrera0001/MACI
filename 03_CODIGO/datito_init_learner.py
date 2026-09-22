@@ -86,13 +86,30 @@ def init_learner(course_id, learner_id, force=False):
     learner_dir.mkdir(parents=True, exist_ok=True)
 
     # ========================================================================
-    # 1. datito.config.yaml (heredado del curso, con learner_id agregado)
+    # 1. datito.config.yaml (SOLO datos técnicos, NO hereda datos personales)
     # ========================================================================
-    learner_config = config.copy()
-    learner_config["learner_id"] = learner_id_full
-    # Asegura que course_id esté presente
-    if "course_id" not in learner_config:
-        learner_config["course_id"] = course_id
+    # CRÍTICO: No heredar nombre, email, proyectos del curso.
+    # Cada alumno empieza con identidad VACÍA.
+    learner_config = {
+        "course_id": course_id,
+        "learner_id": learner_id_full,
+
+        # NUEVO ALUMNO: datos vacíos esperan ser llenados manualmente
+        "alumno": {
+            "nombre": "[Nombre del alumno]",  # PLACEHOLDER
+            "email": "[Email del alumno]",    # PLACEHOLDER
+        },
+
+        # Referencia al curso, sin copiar
+        "asignatura": config.get("asignatura", {}),
+
+        # Configuración técnica (de solo lectura)
+        "pedagogia": config.get("pedagogia", {}),
+        "notebooklm": config.get("notebooklm", {}),
+    }
+    # Asegura que no queden valores heredados
+    learner_config.pop("evaluacion", None)
+    learner_config.pop("proyectos", None)
 
     config_learner = learner_dir / "datito.config.yaml"
     save_yaml(config_learner, learner_config)
