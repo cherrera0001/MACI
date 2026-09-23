@@ -1,0 +1,81 @@
+# MACI Platform — Course Manifest
+# Central registry of 6 UdeC courses and their processing status
+
+courses:
+  80014:
+    id: 80014
+    name: "Emprendimiento Tecnológico"
+    path: "courses/80014_Emprendimiento"
+    capabilities:
+      videos: false
+      notes: true
+      exercises: true
+      transcripts: false
+      dashboard: false
+    processor_script: "99_ARCHIVE/pipelines_legacy/procesar_80014.py"
+    last_processed: "2026-09-22T21:00:00Z"
+
+  80038:
+    id: 80038
+    name: "Procesos de Innovación"
+    path: "10_GRABACIÓN_CLASES/80038_Procesos_Innovacion"
+    capabilities:
+      videos: true
+      notes: true
+      exercises: false
+      transcripts: true
+      dashboard: true
+    processor_script: "99_ARCHIVE/pipelines_legacy/procesar_80038.py"
+    last_processed: "2026-09-22T21:10:00Z"
+
+  80714:
+    id: 80714
+    name: "Fundamentos de Bases de Datos"
+    path: "courses/80714_Fundamentos_BD"
+    capabilities:
+      videos: true
+      notes: false
+      exercises: false
+      transcripts: false
+      dashboard: false
+    processor_script: null
+    last_processed: "2026-09-22T21:15:00Z"
+
+  83703:
+    id: 83703
+    name: "Liderazgo"
+    path: "courses/83703_Liderazgo"
+    capabilities:
+      videos: false
+      notes: false
+      exercises: false
+      transcripts: false
+      dashboard: false
+    processor_script: null
+    last_processed: "2026-09-22T21:20:00Z"
+
+  83706:
+    id: 83706
+    name: "Prototipos y Creatividad"
+    path: "courses/83706_Prototipos"
+    capabilities:
+      videos: true
+      notes: false
+      exercises: false
+      transcripts: false
+      dashboard: false
+    processor_script: null
+    last_processed: "2026-09-22T21:25:00Z"
+
+  83707:
+    id: 83707
+    name: "Ciencias de Datos"
+    path: "courses/83707_Ciencias_Datos"
+    capabilities:
+      videos: false
+      notes: false
+      exercises: false
+      transcripts: false
+      dashboard: false
+    processor_script: null
+    last_processed: "2026-09-22T21:30:00Z"
