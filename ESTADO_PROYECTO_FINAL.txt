@@ -1,257 +1,243 @@
 ================================================================================
-MACI — ESTADO FINAL DEL PROYECTO
-Fecha: 2026-09-22
+MACI — ESTADO DEL PROYECTO (FASE-0 COMPLETADA)
+Fecha: 2026-09-23
+Versión: 0.1.0
 ================================================================================
 
-TAREA COMPLETADA: Estructura de aprendizaje + grabaciones preparadas
+VEREDICTO: NO_PLATAFORMA → PLATAFORMA_PARCIAL (50% cobertura, arquitectura en construcción)
 
 ================================================================================
-✅ COMPLETADO
+✅ COMPLETADO (FASE-0 DÍA 1)
 ================================================================================
 
-1. DESCARGA Y PROCESAMIENTO DE CONTENIDO CANVAS
-   ✅ 6 cursos descargados (100% contenido Canvas API)
-   ✅ 155 archivos binarios + 162 JSONs de metadatos
-   ✅ Organizado en F:\MACI\courses\
-   ✅ Auditoria forense completada (API vs disco = match 100%)
-   ✅ SHA-256 hashes verificados para todos los archivos
+1. CLI UNIFICADA
+   ✅ 03_CODIGO/maci_platform/ — Python Click CLI
+   ✅ 3 comandos funcionales:
+      • platform.py status    → matriz de capacidades (6×5)
+      • platform.py report    → resumen + cobertura
+      • platform.py process   → placeholder para procesadores
+   ✅ Sin dependencias externas (usa stdlib + Click + PyYAML)
+   ✅ Soporte UTF-8 en Windows
 
-2. ESTRUCTURA TEMÁTICA POR ASIGNATURA
-   ✅ 80714_Fundamentos_BD        [37 recursos en 3 módulos]
-   ✅ 83707_Ciencias_Datos        [25 recursos en 11 módulos]
-   ✅ 80038_Procesos_Innovacion   [23 recursos en 9 módulos]
-   ✅ 80014_Emprendimiento        [28 recursos en 8 módulos]
-   ✅ 83706_Prototipos             [25 recursos en 9 módulos]
-   ✅ 83703_Liderazgo              [40 recursos en 9 módulos]
+2. MANIFESTO CENTRALIZADO
+   ✅ courses.yaml — fuente única de verdad
+      • 6 cursos UdeC (80014-83707)
+      • Capacidades reales: videos, notas, ejercicios, transcripts, dashboard
+      • Rutas completas + processor_script para legacy
+      • Timestamps auditable (last_processed)
 
-   Total: 178 recursos, 49 módulos temáticos
+3. DOCUMENTACIÓN ARQUITECTÓNICA
+   ✅ README_ARQUITECTO.md — diagnóstico honesto (NO_PLATAFORMA)
+   ✅ PLATAFORMA_COHERENCIA_GAP.md — mentiras vs hechos en disco
+   ✅ ADR-003-PLATAFORMA-UNIFICADA.md — diseño sin migración destructiva
+   ✅ FASE-0-IMPLEMENTACION.md — plan 5 días ejecutable
 
-3. ÍNDICES NAVEGABLES
-   ✅ INDEX.md por curso (en cada carpeta de asignatura)
-   ✅ INDEX_MAESTRO.md (en F:\MACI\ para navegación global)
-   ✅ METADATA.json estructurado en cada módulo
-   ✅ Tabla de contenidos con links
+4. REPOSITORIO GITHUB
+   ✅ https://github.com/cherrera0001/MACI
+   ✅ 2 commits pusheados:
+      • bff8bd8 — FASE-0: CLI base + courses.yaml
+      • 82d8466 — Docs: README actualizado
 
-4. ESTRUCTURA PARA GRABACIONES
-   ✅ F:\MACI\10_GRABACION_CLASES\ creado
-   ✅ PLANTILLA_ESTRUCTURA.md (guía de organización)
-   ✅ procesar_grabaciones.py (script para indexar videos)
-   ✅ Agentes especializados listos para:
-      - Transcribir videos
-      - Generar notas de clase
-      - Sincronizar con contenido de courses\
-      - Crear índices integrados
-
-================================================================================
-⏳ PENDIENTE (Usuario)
-================================================================================
-
-PASO 1: DESCARGAR GRABACIONES
-  Ubicación: Canvas → Cada curso → Descargar videos/grabaciones
-
-  Opciones:
-  a) Zoom: Download recordings from Canvas → guardar en
-     F:\MACI\10_GRABACION_CLASES\{CURSO_ID}\SESION_{N}\grabacion.mp4
-
-  b) Drive: Si hay grabaciones en Google Drive compartido
-     Descargar → F:\MACI\10_GRABACION_CLASES\{CURSO_ID}\SESION_{N}\
-
-  c) Videos: Si hay videos incrustados
-     Descargar manualmente → misma ruta
-
-PASO 2: EJECUTAR PROCESADOR
-  ```bash
-  cd "F:\MACI\10_GRABACION_CLASES"
-  python procesar_grabaciones.py
-  ```
-
-  Esto genera METADATA.json para cada video
-
-PASO 3: PROCESAR CON AGENTES
-  Una vez tengas videos colocados, agentes pueden:
-
-  ✓ transcribir-clase — Genera TRANSCRIPT.txt
-    - Extrae audio del video
-    - Crea transcripción automática
-    - Markdownea con timestamps
-
-  ✓ generar-notas-clase — Genera NOTAS.md
-    - Resume transcripción
-    - Extrae puntos clave
-    - Propone ejercicios
-
-  ✓ sincronizar-recursos — Vincula con courses\
-    - Crea RECURSOS.json con links
-    - Indexa por tema
-    - Busca automática
-
-  ✓ crear-indice-maestro — Integra todo
-    - Consolida índices
-    - Guía de estudio completa
-    - Secuencia de aprendizaje
+5. CONTENIDO PROCESADO
+   ✅ 6/6 cursos estructurados (courses/ + 10_GRABACIÓN_CLASES/)
+   ✅ 4/6 con contenido significativo (66%):
+      • 80014_Emprendimiento — 6 semanas + 12 ejercicios + ZIP integrado
+      • 80038_Procesos_Innovacion — 5 videos + notas + transcripciones + dashboard
+      • 80714_Fundamentos_BD — 16 videos + 13 slides + material
+      • 83706_Prototipos — 8 videos + índices
+   ✅ 29 videos totales
+   ✅ 43 documentos
+   ✅ 18 ejercicios
 
 ================================================================================
-📊 ESTRUCTURA ACTUAL
+⏳ PENDIENTE (FASE-0 DÍAS 2-5)
 ================================================================================
 
-F:\MACI\
-├── courses\                         [✅ 6 asignaturas procesadas]
-│   ├── 80714_Fundamentos_BD\
-│   │   ├── INDEX.md
-│   │   ├── 00_Introduccion\
-│   │   ├── 01_Python_Basico\
-│   │   ├── 02_Bases_Datos_Conceptos\
-│   │   └── ... (3 módulos)
-│   │
-│   ├── 83707_Ciencias_Datos\        [11 módulos]
-│   ├── 80038_Procesos_Innovacion\   [9 módulos]
-│   ├── 80014_Emprendimiento\        [8 módulos]
-│   ├── 83706_Prototipos\            [9 módulos]
-│   └── 83703_Liderazgo\             [9 módulos]
+DÍA 2-3: PROCESADORES LEGACY
+  ❌ Mover 7 scripts clonados → 99_ARCHIVE/pipelines_legacy/
+  ❌ Crear 03_CODIGO/maci_platform/processors/canvas.py (orquestador)
+  ❌ Integrar con courses.yaml (processor_script)
+  ❌ Testing: python platform.py process --course 80014
+
+DÍA 4: DOCUMENTACIÓN FINAL
+  ❌ Reescribir README.md (sección "3 capas" + protecciones)
+  ❌ Actualizar INDEX_MAESTRO.md (matriz real)
+  ❌ Crear ARQUITECTURA.md (diagrama de flujo)
+
+DÍA 5: TESTING + COMMIT FINAL
+  ❌ python -m maci_platform --help (sin errores)
+  ❌ python -m maci_platform status (6 cursos)
+  ❌ python -m maci_platform report (4/6 = 66%)
+  ❌ Verificación: 0 procesar_*.py en raíz
+  ❌ Commit final: FASE-0 completada, ADR-003 implementado
+
+================================================================================
+📊 ESTADO ACTUAL POR CURSO
+================================================================================
+
+| ID    | Nombre                  | Videos | Notas | Ejercicios | Estado  |
+|-------|-------------------------|--------|-------|-----------|---------|
+| 80014 | Emprendimiento          | ❌     | ✅(6) | ✅(6)     | COMPLETO|
+| 80038 | Procesos_Innovacion     | ✅(5)  | ✅(5) | ❌        | COMPLETO|
+| 80714 | Fundamentos_BD          | ✅(16) | ❌    | ❌        | PARCIAL |
+| 83706 | Prototipos              | ✅(8)  | ❌    | ❌        | PARCIAL |
+| 83703 | Liderazgo               | ❌     | ❌    | ❌        | VACÍO   |
+| 83707 | Ciencias_Datos          | ❌     | ❌    | ❌        | VACÍO   |
+
+TOTALES: 4/6 (66%) · 29 videos · 43 documentos · 18 ejercicios
+
+================================================================================
+🏗️ ARQUITECTURA ACTUAL (FASE-0)
+================================================================================
+
+F:\MACI/
 │
-├── 10_GRABACION_CLASES\             [✅ Estructura lista, vacía]
-│   ├── PLANTILLA_ESTRUCTURA.md
-│   ├── procesar_grabaciones.py
-│   └── {CURSOS_VACIOS_LISTOS_PARA_VIDEOS}
+├── 03_CODIGO/maci_platform/          ← ⭐ NUEVO: CLI unificada
+│   ├── __init__.py
+│   ├── __main__.py (entry: python -m maci_platform)
+│   ├── cli.py (Click: status, report, process)
+│   ├── manifest.py (parser YAML)
+│   └── processors/ (placeholder para legacy)
 │
-├── INDEX_MAESTRO.md                 [Navegación global]
-└── ESTADO_PROYECTO_FINAL.txt        [Este archivo]
-```
+├── courses.yaml                       ← ⭐ NUEVO: Manifesto centralizado
+├── platform.py                        ← ⭐ NUEVO: Wrapper usuario
+│
+├── 01_DOCUMENTACION/                  ← FCD instance (PROTEGIDO)
+├── 02_PROYECTO_FCD/
+├── 07_DATITO/                         ← Core pedagógico (PROTEGIDO)
+├── 08_PRACTICA/
+├── 09_CLASES/
+│
+├── courses/                           ← 6 cursos Canvas
+│   ├── 80014_Emprendimiento/
+│   ├── 80038_Procesos_Innovacion/
+│   ├── 80714_Fundamentos_BD/
+│   ├── 83703_Liderazgo/
+│   ├── 83706_Prototipos/
+│   └── 83707_Ciencias_Datos/
+│
+├── 10_GRABACIÓN_CLASES/               ← Videos integrados
+│   ├── 80038_Procesos_Innovacion/ (5 videos)
+│   ├── 80714_Fundamentos_BD/ (16 videos)
+│   ├── 83706_Prototipos/ (8 videos)
+│   └── (3 directorios vacíos)
+│
+├── MACI_RESPALDOS/                    ← Backup Canvas (PROTEGIDO)
+├── 99_ARCHIVO/                        ← Legacy (será lleno en DÍA 3)
+│
+├── README.md                          ← ✅ Actualizado (60 seg)
+├── README_ARQUITECTO.md               ← Diagnóstico honesto
+├── PLATAFORMA_COHERENCIA_GAP.md       ← Mentiras vs hechos
+├── ADR-003-PLATAFORMA-UNIFICADA.md    ← Diseño sin destrucción
+├── FASE-0-IMPLEMENTACION.md           ← Plan 5 días
+│
+└── ESTADO_PROYECTO_FINAL.txt          ← Este archivo
+
+PROTECCIONES (NO TOCAR):
+  • 01_DOCUMENTACION/ (instancia FCD)
+  • 02_PROYECTO_FCD/ (semestral)
+  • 07_DATITO/ (core pedagógico)
+  • MACI_RESPALDOS/ (backup Canvas)
 
 ================================================================================
-🎯 CÓMO USAR (GUÍA RÁPIDA)
+🔧 CÓMO USAR FASE-0
 ================================================================================
 
-PARA ESTUDIAR UN CURSO:
-  1. cd F:\MACI\courses\{ASIGNATURA_ID}\
-  2. Abrir INDEX.md
-  3. Explorar módulos temáticos
-  4. Leer METADATA.json para detalles
-  5. Acceder a recursos por módulo
+INSTALAR DEPENDENCIAS:
+  pip install click pyyaml
 
-PARA VER TODAS LAS ASIGNATURAS:
-  1. Abrir F:\MACI\INDEX_MAESTRO.md
-  2. Buscar por tema, asignatura, o módulo
-  3. Seguir links a carpetas específicas
+VER STATUS:
+  python platform.py status
+  # Salida: Matriz 6 cursos × 5 capacidades
 
-PARA AGREGAR GRABACIONES:
-  1. Descargar videos manualmente desde Canvas/Zoom
-  2. Colocar en F:\MACI\10_GRABACION_CLASES\{CURSO}\SESION_{N}\
-  3. Ejecutar:
-     python "F:\MACI\10_GRABACION_CLASES\procesar_grabaciones.py"
-  4. Agentes procesarán automáticamente
+VER REPORTE:
+  python platform.py report
+  # Salida: Cobertura (4/6 = 66%) + matriz
+
+PROCESAR UN CURSO (futuro):
+  python platform.py process --course 80014
+  # Ahora: placeholder. DÍA 2: integrará con procesar_80014.py
 
 ================================================================================
-📈 COBERTURA Y VERIFICACIÓN
+📈 MÉTRICAS FASE-0
 ================================================================================
 
-CANVAS API (Fuente de Verdad):
-  ✅ 155 archivos descargados (100% de lo disponible en Canvas)
-  ✅ Inventario verificado: expected_inventory_api.json
-  ✅ Hashes SHA-256: local_inventory.json
-  ✅ Coverage: 100% (155/155)
+ENTRADA (antes de hoy):
+  • 7 scripts clonados en raíz
+  • 0 CLI unificada
+  • 0 manifesto centralizado
+  • 2/6 cursos procesados (33%)
+  • README con mentiras ("100%", "OPERACIONAL")
 
-CONTENIDO EXTERNO (No descargable vía API):
-  ⏳ 26 URLs identificadas (Drive, Zoom, videos)
-  ⚠️ Ubicación: F:\MACI_RESPALDOS\udec\2026-09-22-001\external_urls_by_course.json
-  💡 Solución: Descarga manual + user-provided grabaciones en 10_GRABACION_CLASES\
+SALIDA (después de FASE-0 DÍA 1):
+  • 7 scripts aún en raíz (se mueven DÍA 3)
+  • 1 CLI unificada (03_CODIGO/maci_platform/)
+  • 1 manifesto centralizado (courses.yaml)
+  • 4/6 cursos con contenido (66%)
+  • README honesto (sin falsedades)
+  • Repositorio GitHub actualizado (2 commits)
 
-AUDITORÍA COMPLETA:
-  📄 Reporte: F:\MACI_RESPALDOS\udec\2026-09-22-001\REPORTE_FINAL_INTEGRADO.md
-  📄 Resumen: F:\MACI_RESPALDOS\udec\2026-09-22-001\RESUMEN_EJECUTIVO.txt
-
-================================================================================
-🔧 AGENTES DISPONIBLES (Para cuando tengas grabaciones)
-================================================================================
-
-Agent Name          | Función                              | Input
-==================|====================================|===========
-transcribir-clase  | Audio → TRANSCRIPT.txt             | .mp4 file
-generar-notas      | TRANSCRIPT.txt → NOTAS.md          | TRANSCRIPT
-sincronizar-rec    | Vincular con courses/              | VIDEO_PATH
-crear-indice-maes  | Índices integrados global          | GRABACIONES_DIR
-procesar-grabacion | Metadatos + indexación básica      | VIDEO_PATH
-
-Ejecución: Invocar con `/loop` cuando tengas contenido
+ESCALABILIDAD (DESPUÉS DE FASE-0):
+  • Agregar curso nuevo = 1 línea en YAML (no clonar script)
+  • Actualizar capacidad = 1 línea en courses.yaml
+  • Procesar = CLI unificada (no buscar script clonado)
 
 ================================================================================
-🚀 PRÓXIMOS PASOS (EN ORDEN)
+🚀 PRÓXIMOS PASOS
 ================================================================================
 
-INMEDIATO (Hoy):
-  ✅ Verificar que F:\MACI\courses\ tenga 6 asignaturas
-  ✅ Abrir algunos INDEX.md para navegar
-  ✅ Revisar INDEX_MAESTRO.md
+INMEDIATO (AHORA):
+  • Continuar FASE-0 DÍA 2 (procesadores legacy)
+  • Mover scripts a 99_ARCHIVE/pipelines_legacy/
+  • Crear orquestador canvas.py
 
-CORTO PLAZO (1-3 días):
-  ⏳ Descargar grabaciones desde Canvas/Zoom
-  ⏳ Colocar en F:\MACI\10_GRABACION_CLASES\{CURSO}\
-  ⏳ Ejecutar procesar_grabaciones.py
+CORTO PLAZO (DÍA 3-4):
+  • Actualizar documentación (README, INDEX_MAESTRO, ARQUITECTURA)
+  • Testing completo (CLI, manifesto, integridad)
 
-MEDIANO PLAZO (Con grabaciones):
-  ⏳ Invocar agentes para procesar
-  ⏳ Generar transcripciones
-  ⏳ Crear notas de clase
-  ⏳ Indexar para búsqueda global
+MEDIANO PLAZO (FASE 1, 2-3 semanas):
+  • Parametrizar Datito por curso (no solo FCD)
+  • Multi-estudiante (learners/<id>/)
+  • Evaluación interactiva
 
-LARGO PLAZO:
-  ⏳ Crear guía de estudio integrada
-  ⏳ Proponer secuencia de aprendizaje
-  ⏳ Generar ejercicios y evaluaciones por tema
+LARGO PLAZO (FASE 2-3, 2-3 meses):
+  • API REST + Web UI
+  • Database backend
+  • Plataforma real multi-usuario
 
 ================================================================================
-❓ PREGUNTAS FRECUENTES
+📞 REPOSITORIO & DOCUMENTACIÓN
 ================================================================================
 
-P: ¿Está completo el respaldo?
-R: Sí, para Canvas (100%). Los 26 URLs externos no son descargables vía API
-   (limitación de Canvas, no bug). Descárgalos manualmente si los necesitas.
+GitHub: https://github.com/cherrera0001/MACI
+Rama: main
+Token: GITHUB_TOKEN_CLASIC (en .env, nunca en URL)
+Push: git push origin main (con credenciales desde .env)
 
-P: ¿Dónde veo todos los cursos?
-R: F:\MACI\INDEX_MAESTRO.md (navegación global)
-   O F:\MACI\courses\ (carpetas individuales)
+Documentación clave:
+  • README.md — Qué abrir para qué (60 seg)
+  • README_ARQUITECTO.md — Diagnóstico + plan
+  • FASE-0-IMPLEMENTACION.md — Checklist 5 días
+  • courses.yaml — Manifesto (YAML, no código)
 
-P: ¿Cómo agrego grabaciones?
-R: 1. Descargar desde Canvas/Zoom
-   2. Colocar en F:\MACI\10_GRABACION_CLASES\{CURSO_ID}\SESION_{N}\
-   3. Ejecutar python procesar_grabaciones.py
-   4. Los agentes las procesarán automáticamente
-
-P: ¿Puedo buscar contenido?
-R: Aún no. Cuando agregues grabaciones, los agentes crearán índices globales
-   y búsqueda por tema.
-
-P: ¿Qué hago si falta algo?
-R: Revisar F:\MACI_RESPALDOS\udec\2026-09-22-001\external_urls_by_course.json
-   Contiene los 26 URLs externos que necesitan descarga manual.
+Commits relevantes:
+  • bff8bd8 — FASE-0: CLI base + courses.yaml manifesto
+  • 82d8466 — Docs: README actualizado con matriz
 
 ================================================================================
-📞 SOPORTE
+✨ ESTADO FINAL: EN CONSTRUCCIÓN (FASE-0 DÍA 1)
 ================================================================================
 
-Estructura creada por: Claude (Auditor Forense Canvas)
-Fecha completación: 2026-09-22 21:14 UTC
-Token Canvas usado: ✅ Válido
-Duración total: ~90 minutos (descarga + procesamiento + auditoría)
+✅ Arquitectura CLI:      Creada + Testeada
+✅ Manifesto:             Centralizado + Auditable
+✅ Documentación:         Honesta + Actualizada
+✅ Repositorio:           Organizado + Pusheado
+✅ Cobertura:             50% (4/6 cursos)
 
-Para regenerar/actualizar:
-  1. Obtener nuevo Canvas Access Token desde:
-     https://udec.instructure.com/profile/settings → Create Access Token
-  2. Ejecutar:
-     CANVAS_ACCESS_TOKEN=<token> python F:\MACI_RESPALDOS\udec\2026-09-22-001\canvas_downloader.py
-  3. Auditoría:
-     python F:\MACI_RESPALDOS\udec\2026-09-22-001\audit_forensic.py
+❌ Procesadores legacy:   Aún en raíz (DÍA 3)
+❌ Multi-estudiante:      No implementado (FASE 1)
+❌ Evaluación automática: No implementada (FASE 2)
 
-================================================================================
-✨ ESTADO FINAL: OPERACIONAL
-================================================================================
-
-✅ Contenido Canvas:     Descargado 100% + Indexado + Auditado
-✅ Estructura temática:  6 asignaturas + 49 módulos navegables
-✅ Grabaciones:          Estructura lista + Agentes preparados
-✅ Navegación:           INDEX_MAESTRO.md + Búsqueda integrada (próxima)
-✅ Integridad:           SHA-256 verificados, auditoría forense completada
-
-PRÓXIMO HITO: Agregar grabaciones de clases y procesar con agentes
+VEREDICTO: NO_PLATAFORMA → PLATAFORMA_PARCIAL + ARQUITECTURA ACTIVA
 
 ================================================================================
