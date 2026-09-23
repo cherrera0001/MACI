@@ -1,16 +1,40 @@
-# MACI — Fundamentos de Ciencia de Datos
+# MACI — Plataforma de Aprendizaje Semestral (UdeC, T2-2026)
 
-Repositorio de trabajo de **Cristóbal Herrera** para Fundamentos de Ciencia de
-Datos (T2-2026), Universidad de Concepción.
+**Estado:** `FASE-0: CLI unificada` (en construcción)
 
-Contiene el proyecto semestral (Proyecto 3 — predicción de precios de propiedades
-en Melbourne), un desafío de clasificación (Galaxy Zoo), los laboratorios de la
-asignatura, la reconstrucción documental del Certamen 2, y **Guillito**, un tutor
-personal de Ciencia de Datos construido sobre este mismo material.
+Repositorio de trabajo de **Cristóbal Herrera**: instancia FCD + 6 cursos Canvas + tutor personal.
 
-**Punto de entrada:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)
-· **Orden documental:** [`01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md`](01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md)
-· **Contrato de Guillito:** [`spec.md`](spec.md)
+### 🎯 Qué Hay Aquí (60 segundos)
+
+| Quiero… | Abre… |
+|---------|-------|
+| **Estudiar FCD con tutor Datito** | `01_DOCUMENTACION/` + `07_DATITO/` (estable) |
+| **Ver 6 cursos Canvas (80014-83707)** | `courses/` + `10_GRABACIÓN_CLASES/` (procesados) |
+| **Ingerir un curso nuevo** | `python platform.py process --course <ID>` |
+| **Ver estado de cada curso** | `python platform.py status` (matriz) |
+| **Arquitectura + plan** | [`README_ARQUITECTO.md`](README_ARQUITECTO.md) |
+
+**Punto de entrada FCD:** [`01_DOCUMENTACION/00_INDICE_GENERAL.md`](01_DOCUMENTACION/00_INDICE_GENERAL.md)  
+**Especificación Datito:** [`spec.md`](spec.md)
+
+---
+
+## Capacidades Reales por Curso (FASE-0)
+
+```bash
+python platform.py report
+```
+
+| Curso | Videos | Notas | Ejercicios | Transcripciones | Estado |
+|-------|--------|-------|-----------|----------------|--------|
+| 80014_Emprendimiento | ❌ | ✅ (6) | ✅ (6) | ❌ | ✅ Completo |
+| 80038_Procesos_Innovacion | ✅ (5) | ✅ (5) | ❌ | ✅ | ✅ Completo |
+| 80714_Fundamentos_BD | ✅ (16) | ❌ | ❌ | ❌ | ⚠️ Parcial |
+| 83706_Prototipos | ✅ (8) | ❌ | ❌ | ❌ | ⚠️ Parcial |
+| 83703_Liderazgo | ❌ | ❌ | ❌ | ❌ | ❌ Vacío |
+| 83707_Ciencias_Datos | ❌ | ❌ | ❌ | ❌ | ❌ Vacío |
+
+**Cobertura:** 4/6 cursos (66%) · **Videos:** 29 · **Documentos:** 43+ · **Ejercicios:** 18
 
 ---
 
