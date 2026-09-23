@@ -55,7 +55,7 @@ Arquitectura **repo-nativa** (sin Obsidian como segunda verdad):
 | Drift README↔disco | [`DIAGNOSTICO_DRIFT.md`](01_DOCUMENTACION/DIAGNOSTICO_DRIFT.md) · `python 03_CODIGO/auditar_drift_documental.py` |
 | Certamen 2 | [`01_CERTAMEN2/00_LEEME.md`](01_DOCUMENTACION/01_CERTAMEN2/00_LEEME.md) |
 | Proyecto 3 | [`03_PROYECTO_MELBOURNE/00_LEEME.md`](01_DOCUMENTACION/03_PROYECTO_MELBOURNE/00_LEEME.md) |
-| Guillito | [`07_GUILLITO/00_LEEME.md`](07_GUILLITO/00_LEEME.md) |
+| Datito (Tutor FCD) | [`07_DATITO/00_LEEME.md`](07_DATITO/00_LEEME.md) |
 
 **Obsidian MCP / GitHub MCP:** no implementados. El mismo árbol se navega en GitHub con estos links relativos; estudio asistido ya usa NotebookLM (`.mcp.json`).
 
