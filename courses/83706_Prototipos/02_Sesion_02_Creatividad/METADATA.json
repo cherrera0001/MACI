@@ -1,0 +1,20 @@
+{
+  "module": "02_Sesion_02_Creatividad",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 3068946,
+      "type": "file",
+      "title": "2026G602 - Intro creatividad^J intro pruebas funcionales y no funcionales^J historias del usuario.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4753592",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G602+-+Intro+creatividad%5EJ+intro+pruebas+funcionales+y+no+funcionales%5EJ+historias+del+usuario.pdf",
+        "size": 2479702,
+        "sha256": "1d00231c30c51166dd9892ca08e0bd4dcc76cfc8221e310603bdb9e7627b17cc",
+        "url": "https://udec.instructure.com/files/4753592/download?download_frd=1&verifier=de1a2e15-4b4c-4a52-a05c-c6d784aa9f2e",
+        "timestamp": "2026-09-22T20:47:58.065361"
+      }
+    }
+  ]
+}

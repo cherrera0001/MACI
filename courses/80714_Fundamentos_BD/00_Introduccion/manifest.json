@@ -1,0 +1,392 @@
+{
+  "course_id": 80714,
+  "resources": [
+    {
+      "id": 2835262,
+      "type": "page",
+      "title": "Introducción a Google Colab",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/pages/introduccion-a-google-colab",
+      "status": "saved",
+      "path": "80714\\pages\\2835262.json"
+    },
+    {
+      "id": 2835263,
+      "type": "page",
+      "title": "Introducción a Python",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/pages/introduccion-a-python",
+      "status": "saved",
+      "path": "80714\\pages\\2835263.json"
+    },
+    {
+      "id": 2838806,
+      "type": "file",
+      "title": "Cheat Sheet Python [pdf]",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428183",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\cheat_sheet_python_cdia.pdf",
+        "size": 189948,
+        "sha256": "d08fcd44a7fc1a39819fb07b5d63cc5c68bf826b2f9a2351a13f9ecef5c22b40",
+        "url": "https://udec.instructure.com/files/4428183/download?download_frd=1&verifier=YYjNI2p6Wb7UXwywlGXTqJQIwaHjGtuUecVjLT5P",
+        "timestamp": "2026-09-22T20:38:24.090504"
+      }
+    },
+    {
+      "id": 2838809,
+      "type": "file",
+      "title": "Listado de ejercicios [pdf]",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428185",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\listado+propuesto.pdf",
+        "size": 197823,
+        "sha256": "f97226f419425d4e5a72111b30408027b05535043cd5a00d002df1d801fbac4d",
+        "url": "https://udec.instructure.com/files/4428185/download?download_frd=1&verifier=LJ7Ug6KX9nhvogDbTlzToaCMI59tArPG2fMeiYlI",
+        "timestamp": "2026-09-22T20:38:28.869790"
+      }
+    },
+    {
+      "id": 2838800,
+      "type": "file",
+      "title": "Syllabus Fundamentos de Bases de Datos y Algoritmos.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428167",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Syllabus+Fundamentos+de+Bases+de+Datos+y+Algoritmos.pdf",
+        "size": 181022,
+        "sha256": "64e4876bbc817572c12af122bc76aeaf08dfc7680b1ad2d111c6e99371136246",
+        "url": "https://udec.instructure.com/files/4428167/download?download_frd=1&verifier=iMQpBldCbPrUpyaD9mEd6Fn9s7buTWDAhXDUuSZN",
+        "timestamp": "2026-09-22T20:38:34.891706"
+      }
+    },
+    {
+      "id": 2835271,
+      "type": "page",
+      "title": "Resultados de aprendizaje",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/pages/resultados-de-aprendizaje",
+      "status": "saved",
+      "path": "80714\\pages\\2835271.json"
+    },
+    {
+      "id": 2835272,
+      "type": "page",
+      "title": "Cronograma del curso - parte 1",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/pages/cronograma-del-curso-parte-1",
+      "status": "saved",
+      "path": "80714\\pages\\2835272.json"
+    },
+    {
+      "id": 2835275,
+      "type": "file",
+      "title": "Clase 1.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428168",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+1.pdf",
+        "size": 842748,
+        "sha256": "b90ddbba313256e97577c8177ca93b48cf2d2364358d58c822269577d623a894",
+        "url": "https://udec.instructure.com/files/4428168/download?download_frd=1&verifier=6Axfdjqk2kHedRs0FB0lgiKKtcota5SoU3FEm4Hg",
+        "timestamp": "2026-09-22T20:38:43.892327"
+      }
+    },
+    {
+      "id": 2835277,
+      "type": "file",
+      "title": "Clase 2.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428169",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+2.pdf",
+        "size": 422531,
+        "sha256": "a8a038638000bf311e161d171ea2a321e6e1de02bc6e976c1fdce67fdc424467",
+        "url": "https://udec.instructure.com/files/4428169/download?download_frd=1&verifier=5TT31RKUtgqRu6jbrSt550G4As7EP4CKLd2Fm2GG",
+        "timestamp": "2026-09-22T20:38:50.048481"
+      }
+    },
+    {
+      "id": 2835280,
+      "type": "file",
+      "title": "Clase 3.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4428180",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+3.pdf",
+        "size": 488949,
+        "sha256": "6ce4cf3179ba74be807f5c755f1a74328e67b50136c5b318ef00519d52f57719",
+        "url": "https://udec.instructure.com/files/4428180/download?download_frd=1&verifier=r0LUrAolYT5QIxMmckqQTfE7cOpfLZMhQvq0OqzC",
+        "timestamp": "2026-09-22T20:38:56.125570"
+      }
+    },
+    {
+      "id": 2835284,
+      "type": "file",
+      "title": "Clase 4.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4444310",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+4.pdf",
+        "size": 326878,
+        "sha256": "266324d1454212a64e6d43d5defe0794989959b9ae771312cde7212d74764d6d",
+        "url": "https://udec.instructure.com/files/4444310/download?download_frd=1&verifier=JN5478OUuFRJIGg7mUmUhRzZzqUDIOS0EBGUIikf",
+        "timestamp": "2026-09-22T20:39:02.304040"
+      }
+    },
+    {
+      "id": 2835287,
+      "type": "file",
+      "title": "Clase 5.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4480482",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+5.pdf",
+        "size": 556251,
+        "sha256": "21822e3d63eefe737e2a085cb96039d679c5c3420c3666411f35f618ce2e9aa8",
+        "url": "https://udec.instructure.com/files/4480482/download?download_frd=1&verifier=4HYCZF9etpPx5hBWpuHFA2OkkGGVun690TmDrbbQ",
+        "timestamp": "2026-09-22T20:39:08.514467"
+      }
+    },
+    {
+      "id": 2835289,
+      "type": "file",
+      "title": "ejemplo_actualizado.csv",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423190",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\ejemplo_actualizado.csv",
+        "size": 131,
+        "sha256": "3b3586f4d88fe2321a1b01788cf9d35abb03906aff9f95a9191d74d3739d1984",
+        "url": "https://udec.instructure.com/files/4423190/download?download_frd=1&verifier=Jq4Rm7o6vlvCsbEKikF6tzEz4u3PsNr5kZkOQDmp",
+        "timestamp": "2026-09-22T20:39:12.752248"
+      }
+    },
+    {
+      "id": 2835290,
+      "type": "file",
+      "title": "ejemplo.csv",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423205",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\ejemplo.csv",
+        "size": 98,
+        "sha256": "17aea8182912950f532f9ea16932223b3fe63e8f2e1db3c3ad3bdff9792e02a0",
+        "url": "https://udec.instructure.com/files/4423205/download?download_frd=1&verifier=UXINDzSnjILyAO76DpczsZ6Pig8ZJmxGnLVNTR96",
+        "timestamp": "2026-09-22T20:39:17.193011"
+      }
+    },
+    {
+      "id": 2835291,
+      "type": "file",
+      "title": "areas.py",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423144",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\areas.py",
+        "size": 406,
+        "sha256": "9acec68936bc50382dff7dbd4bd84a93ef186347d494b5bff9fc90890ffbf59d",
+        "url": "https://udec.instructure.com/files/4423144/download?download_frd=1&verifier=bHAp9DiyaTJhAR7Vf9M491Or7dhEy3D0t4N2bAvk",
+        "timestamp": "2026-09-22T20:39:21.638608"
+      }
+    },
+    {
+      "id": 2835292,
+      "type": "file",
+      "title": "cartola_ejemplo.xls",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423150",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\cartola_ejemplo.xls",
+        "size": 12288,
+        "sha256": "e449aba40a644e8238d329a6c4f2c1b7fe6a4489060be746dde0c053986e14d4",
+        "url": "https://udec.instructure.com/files/4423150/download?download_frd=1&verifier=zzctfGtBZlJbQ0QFsoICclKHdx7IiFP4sahA43YI",
+        "timestamp": "2026-09-22T20:39:26.308271"
+      }
+    },
+    {
+      "id": 2835294,
+      "type": "file",
+      "title": "Clase 6.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4499873",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Clase+6.pdf",
+        "size": 587377,
+        "sha256": "bd0a3f49856174127b540cd5e07a15f7350c2d6ae3e4f6f3c24aa9f99717fe54",
+        "url": "https://udec.instructure.com/files/4499873/download?download_frd=1&verifier=Aq5MkhsjePcFTqqVWROoqLw0pqjbfoIAellC8GGN",
+        "timestamp": "2026-09-22T20:39:32.454750"
+      }
+    },
+    {
+      "id": 2880719,
+      "type": "file",
+      "title": "[Extra] presentacion.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4499874",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\presentacion.pdf",
+        "size": 5488068,
+        "sha256": "00ce827f300d3709ec4c5262c61851ac207eb372bea7685cbe0ba0469a882317",
+        "url": "https://udec.instructure.com/files/4499874/download?download_frd=1&verifier=5mY4ezS3dKSjlnFTde0p9C9DVjc8Awzq7nfvIH25",
+        "timestamp": "2026-09-22T20:39:37.714744"
+      }
+    },
+    {
+      "id": 2880722,
+      "type": "file",
+      "title": "Fuente de Datos.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4499879",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Fuente+de+Datos.xlsx",
+        "size": 43223047,
+        "sha256": "45ed32538ab23091edbbe14c0744a2963b6fb7186719388869bfc26eb2ac7de3",
+        "url": "https://udec.instructure.com/files/4499879/download?download_frd=1&verifier=ymEuYBa5bBurJCLNN7cyUztSpot5NytsMmEuaJmn",
+        "timestamp": "2026-09-22T20:39:44.598265"
+      }
+    },
+    {
+      "id": 2835296,
+      "type": "file",
+      "title": "Fuente de Datos Proyecto-2.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423207",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Fuente+de+Datos+Proyecto-2.xlsx",
+        "size": 43223047,
+        "sha256": "45ed32538ab23091edbbe14c0744a2963b6fb7186719388869bfc26eb2ac7de3",
+        "url": "https://udec.instructure.com/files/4423207/download?download_frd=1&verifier=GZLFOimjPVQUqQRlidecGi5MCPfMB78kSeFnQzPi",
+        "timestamp": "2026-09-22T20:39:50.415450"
+      }
+    },
+    {
+      "id": 2835297,
+      "type": "file",
+      "title": "Propuesta para documentar Dominios.docx",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423187",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Propuesta+para+documentar+Dominios.docx",
+        "size": 13634,
+        "sha256": "b90fee9433286ee962fedf44f283e0e011a646895f313a08f92e7b309cd1c386",
+        "url": "https://udec.instructure.com/files/4423187/download?download_frd=1&verifier=MD0UToYAbKmpoNdhhWlmxkmuLB0OfJuLlN1zZN75",
+        "timestamp": "2026-09-22T20:39:54.761097"
+      }
+    },
+    {
+      "id": 2888265,
+      "type": "file",
+      "title": "Semana 7 - Introducción a las BD - 2026-1.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4517031",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Semana+7+-+Introducci%C3%B3n+a+las+BD+-+2026-1.pdf",
+        "size": 1103273,
+        "sha256": "1179aa4a061b00acb067dc9c6d902f632597b2b14f588ac009339deccb7f6cec",
+        "url": "https://udec.instructure.com/files/4517031/download?download_frd=1&verifier=e3qusAR4oiKATHeZY9UpkmsgHecP4su9EUBLkZgh",
+        "timestamp": "2026-09-22T20:39:59.632718"
+      }
+    },
+    {
+      "id": 2835301,
+      "type": "assignment",
+      "title": "Diseño de Base de Datos",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/assignments/656939",
+      "status": "saved",
+      "path": "80714\\assignments\\2835301.json"
+    },
+    {
+      "id": 2897892,
+      "type": "file",
+      "title": "Semana 8 - Diseño de Bases de Datos 2026-1.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4544078",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Semana+8+-+Dise%C3%B1o+de+Bases+de+Datos+2026-1.pdf",
+        "size": 1240269,
+        "sha256": "73a3ffc535cb87622f9b11c3ca2ba0b73fecda6a4ed1f211a771dd419c4b4355",
+        "url": "https://udec.instructure.com/files/4544078/download?download_frd=1&verifier=8Z2pxhoFCR6FokseZDxALMahOO6hoh5Wo4eqF0Vx",
+        "timestamp": "2026-09-22T20:40:07.355426"
+      }
+    },
+    {
+      "id": 2835298,
+      "type": "file",
+      "title": "Guía 0: Iniciando Con PostgreSQL",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4423158",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\guia+0.pdf",
+        "size": 1694974,
+        "sha256": "644187096c48755c99abdb0b1f0fc21aa2ae616e6ff6e3c22f02dcd6d79791b2",
+        "url": "https://udec.instructure.com/files/4423158/download?download_frd=1&verifier=LBwPgGKYocDZz0Rz5LqGwabw7zTCPgXfuKFu47qz",
+        "timestamp": "2026-09-22T20:40:13.744431"
+      }
+    },
+    {
+      "id": 2901686,
+      "type": "file",
+      "title": "Cuentas de Postgresql.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4550715",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Cuentas+de+Postgresql.xlsx",
+        "size": 10513,
+        "sha256": "fa2cdcf397edfce63b82559ee6815742a8098e069f6c12febe323ef7a41b752b",
+        "url": "https://udec.instructure.com/files/4550715/download?download_frd=1&verifier=4raptx5Fbc9Brw21Uf2TfUjaWb032xiCqwy86yfx",
+        "timestamp": "2026-09-22T20:40:18.246492"
+      }
+    },
+    {
+      "id": 2835304,
+      "type": "assignment",
+      "title": "Implementación de Base de Datos",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/assignments/656940",
+      "status": "saved",
+      "path": "80714\\assignments\\2835304.json"
+    },
+    {
+      "id": 2902049,
+      "type": "file",
+      "title": "Semana 9 SQL e implementación.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4550953",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Semana+9+SQL+e+implementacio%CC%81n.pdf",
+        "size": 2117536,
+        "sha256": "5103640bd0a5b638b48c1bc0b5a9485115df7ca791f6ff8e54da6231ee87a29a",
+        "url": "https://udec.instructure.com/files/4550953/download?download_frd=1&verifier=TNypt2vlGTM9ETDOiF9TcpnAWqqbNy5Eye3vseZJ",
+        "timestamp": "2026-09-22T20:40:24.942853"
+      }
+    },
+    {
+      "id": 2920780,
+      "type": "file",
+      "title": "Semana 10 Bases de Datos Multidimensionales y big data.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4576433",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\Semana+10+Bases+de+Datos+Multidimensionales+y+big+data.pdf",
+        "size": 1538440,
+        "sha256": "c6a8e7c10ee4a85b41b205811a48c2035275e0d9f1da5ba525028715581d84c7",
+        "url": "https://udec.instructure.com/files/4576433/download?download_frd=1&verifier=8MUjj5DnUr5W8r7hMNzG8qQd9oBkehlIEp7WZNT4",
+        "timestamp": "2026-09-22T20:40:31.298893"
+      }
+    },
+    {
+      "id": 2920781,
+      "type": "file",
+      "title": "imagen_2026-05-29_200031680.png",
+      "url": "https://udec.instructure.com/api/v1/courses/80714/files/4576434",
+      "status": "downloaded",
+      "details": {
+        "path": "80714\\files\\imagen_2026-05-29_200031680.png",
+        "size": 106448,
+        "sha256": "0e40dc783396b9b3a5f9bfa67740ceda03ff3b755dfa654c959757a0f5be61e1",
+        "url": "https://udec.instructure.com/files/4576434/download?download_frd=1&verifier=Ht4jIbP4YzI2BqNwcxwOwoUakCuQp71FfuResGh6",
+        "timestamp": "2026-09-22T20:40:35.998185"
+      }
+    }
+  ],
+  "errors": [],
+  "state": "completed",
+  "completed_at": "2026-09-22T20:40:37.274523"
+}

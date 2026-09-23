@@ -1,0 +1,132 @@
+{
+  "module": "04_Lecturas_Creatividad",
+  "resource_count": 9,
+  "resources": [
+    {
+      "id": 3029959,
+      "type": "file",
+      "title": "Book_Austin Kleon - Steal Like an Artist-Workman Publ. Co..pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707059",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Austin+Kleon+-+Steal+Like+an+Artist-Workman+Publ.+Co..pdf",
+        "size": 6894313,
+        "sha256": "c04a4681e85b56ac9432207887414a5b8ccc4f1978b2fdbc375b69cf2c07273c",
+        "url": "https://udec.instructure.com/files/4707059/download?download_frd=1&verifier=wnduhjMdDNkIUKpXDwzHD2h7Gmz6Yvf8EW0S8zxZ",
+        "timestamp": "2026-09-22T20:48:15.946864"
+      }
+    },
+    {
+      "id": 3029960,
+      "type": "file",
+      "title": "Book_Dave Gray & Sunni Brown & James Macanufo - Gamestorming_ 83 juegos para innovadores, inconformistas y generadores del cambio.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707058",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Dave+Gray+%26+Sunni+Brown+%26+James+Macanufo+-+Gamestorming_+83+juegos+para+innovadores%2C+inconformistas+y+generadores+del+cambio.pdf",
+        "size": 14169264,
+        "sha256": "9834598b2073cd4e385921326b45c6903259b16758ea32c0edf3be10127a175f",
+        "url": "https://udec.instructure.com/files/4707058/download?download_frd=1&verifier=4F23kVyfXrJ2nGHj9KG3rCot6ecK7EJBv7wwimS7",
+        "timestamp": "2026-09-22T20:48:21.428021"
+      }
+    },
+    {
+      "id": 3029961,
+      "type": "file",
+      "title": "Book_Sherwin, David - Creative Workshop_ 80 Challenges to Sharpen Your Design Skills-F+W Media (2011).pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707060",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Sherwin%2C+David+-+Creative+Workshop_+80+Challenges+to+Sharpen+Your+Design+Skills-F%2BW+Media+%282011%29.pdf",
+        "size": 26646316,
+        "sha256": "a79c1d53308c03ee2c25059ee0e72330ef796b9bc0e63c9e762e33fb694ba3fb",
+        "url": "https://udec.instructure.com/files/4707060/download?download_frd=1&verifier=MVw2wN0mn856knf3GPtkK9YFgaCJ2le4d2FRweEK",
+        "timestamp": "2026-09-22T20:48:27.633594"
+      }
+    },
+    {
+      "id": 3029962,
+      "type": "file",
+      "title": "HBR – Collective Genius.PDF",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707061",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\HBR+%E2%80%93%C2%A0Collective+Genius.PDF",
+        "size": 504416,
+        "sha256": "e114920931de8e12c115adc9c48d400eec15149d9fe755e005a205133923e7a6",
+        "url": "https://udec.instructure.com/files/4707061/download?download_frd=1&verifier=EZ9atigtlj4g5CqqSPmq57IT9vHVxaWJcPx9LGDd",
+        "timestamp": "2026-09-22T20:48:32.427212"
+      }
+    },
+    {
+      "id": 3029963,
+      "type": "file",
+      "title": "HBR_Better brainstorming.PDF",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707062",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\HBR_Better+brainstorming.PDF",
+        "size": 186236,
+        "sha256": "01923a752ed807946ba5edb8da2729a66f1add3b42b81d0d3b8d84e882593d8d",
+        "url": "https://udec.instructure.com/files/4707062/download?download_frd=1&verifier=TXSgTJ2KlkczqNiU6WZlHosTXJzydbjJpWN3e5GK",
+        "timestamp": "2026-09-22T20:48:36.975608"
+      }
+    },
+    {
+      "id": 3029964,
+      "type": "file",
+      "title": "HBR_Curiosity.PDF",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707057",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\HBR_Curiosity.PDF",
+        "size": 550915,
+        "sha256": "59d888b1e433a74ddf3abb7abe99f7e1e459addf899033ed2e13318b395ecfeb",
+        "url": "https://udec.instructure.com/files/4707057/download?download_frd=1&verifier=o6qctrnZHtFd6BEneRU9F39TbhEwAo70VbEOqy4L",
+        "timestamp": "2026-09-22T20:48:41.906331"
+      }
+    },
+    {
+      "id": 3029965,
+      "type": "file",
+      "title": "HBR_Learning to learn.PDF",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707063",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\HBR_Learning+to+learn.PDF",
+        "size": 174790,
+        "sha256": "54ecb3fa759f535d8cb70a2cbfdb3614a79dd7abb6a016e1354caa75d37d980d",
+        "url": "https://udec.instructure.com/files/4707063/download?download_frd=1&verifier=qMhvdHIBqkAkmUVrvtck0NzjNxnNiEp5JAzJ9vSE",
+        "timestamp": "2026-09-22T20:48:46.574851"
+      }
+    },
+    {
+      "id": 3029966,
+      "type": "file",
+      "title": "Kleon, Austin - Show your work!_ 10 ways to share your creativity and get discovered-Workman Publishing Company (2014).pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707064",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Kleon%2C+Austin+-+Show+your+work%21_+10+ways+to+share+your+creativity+and+get+discovered-Workman+Publishing+Company+%282014%29.pdf",
+        "size": 9250627,
+        "sha256": "620e02fb4e9cabc002bbcf659f84c3ea2d97dda210fd94cc357543fd9f9f6dfc",
+        "url": "https://udec.instructure.com/files/4707064/download?download_frd=1&verifier=WMde2oD47wuTW5ut1uPv4Jkhmt2LuQdw6yvtwDS5",
+        "timestamp": "2026-09-22T20:48:52.287452"
+      }
+    },
+    {
+      "id": 3029967,
+      "type": "file",
+      "title": "Toolkit_Artefact-Tarot-Cards-of-Tech.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707065",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Toolkit_Artefact-Tarot-Cards-of-Tech.pdf",
+        "size": 1059461,
+        "sha256": "f159b55f247a0a92395787e3723ad170c813fb3795b35f610ddf745fa78fa96b",
+        "url": "https://udec.instructure.com/files/4707065/download?download_frd=1&verifier=GSPVwrfGqXal5D8wLHebO4WMJSQaA2Tb1XkYni3a",
+        "timestamp": "2026-09-22T20:48:57.385994"
+      }
+    }
+  ]
+}

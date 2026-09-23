@@ -1,0 +1,57 @@
+{
+  "module_id": "00_Introduccion",
+  "module_label": "Introducción al curso",
+  "item_count": 10,
+  "items": [
+    {
+      "id": "2835262",
+      "title": "Introducción a Google Colab: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835263",
+      "title": "Introducción a Python: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835285",
+      "title": "Laboratorio clase 4",
+      "type": "Page"
+    },
+    {
+      "id": "2835288",
+      "title": "Laboratorio clase 5",
+      "type": "Page"
+    },
+    {
+      "id": "2835295",
+      "title": "Laboratorio clase 6",
+      "type": "Page"
+    },
+    {
+      "id": "2835301",
+      "title": "Diseño de Base de Datos",
+      "type": "Page"
+    },
+    {
+      "id": "2835304",
+      "title": "Implementación de Base de Datos",
+      "type": "Page"
+    },
+    {
+      "id": "2888265",
+      "title": "Semana 7 - Introducción a las BD - 2026-1.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2897890",
+      "title": "Draw.io",
+      "type": "Page"
+    },
+    {
+      "id": "manifest",
+      "title": "",
+      "type": "Page"
+    }
+  ]
+}

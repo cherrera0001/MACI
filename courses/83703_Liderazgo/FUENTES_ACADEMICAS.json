@@ -1,0 +1,28 @@
+{
+  "liderazgo": [
+    {"autor": "Banks et al", "año": 2018, "titulo": "Construct redundancy en leader behaviors", "tipo": "Artículo académico"},
+    {"autor": "HBR", "año": 2016, "titulo": "Liderazgo que obtiene resultados", "tipo": "Artículo HBR"},
+    {"autor": "George et al", "año": 2007, "titulo": "Liderazgo auténtico", "tipo": "Artículo académico"},
+    {"autor": "Prieto et al", "año": 2010, "titulo": "Liderazgo Efectivo", "tipo": "Artículo académico"},
+    {"autor": "HBR", "año": 2020, "titulo": "Elogio del líder incompleto", "tipo": "Artículo HBR"},
+    {"autor": "Horney et al", "año": 2019, "titulo": "Innovation Leadership best practice", "tipo": "Reporte"},
+    {"autor": "Dutton y Heaphy", "año": 2003, "titulo": "High-Quality Connections", "tipo": "Artículo académico"},
+    {"autor": "Tushman y O'Reilly", "año": 2011, "titulo": "Ambidextrous CEO", "tipo": "Artículo académico"},
+    {"autor": "Puertas y Shahar", "año": 2012, "titulo": "Liderazgo Positivo", "tipo": "Artículo académico"},
+    {"autor": "Joly", "año": 2022, "titulo": "5 Principles of Purposeful Leadership", "tipo": "Artículo HBR"},
+    {"autor": "Rosing et al", "año": 2011, "titulo": "Ambidextrous Leadership", "tipo": "Artículo académico"}
+  ],
+  "equipos": [
+    {"autor": "Mathieu et al", "año": 2018, "titulo": "Team effectiveness", "tipo": "Revisión sistemática"},
+    {"autor": "Harvard ManageMentor", "año": 2016, "titulo": "Ocho maneras de construir equipos colaborativos", "tipo": "Guía práctica"},
+    {"autor": "Koman y Wolff", "año": 2017, "titulo": "Team Innovation", "tipo": "Revisión académica"},
+    {"autor": "Levi", "año": 2012, "titulo": "Definiendo el Éxito de un Equipo", "tipo": "Libro (capítulo)"},
+    {"autor": "Goleman et al", "año": 2002, "titulo": "Self-Awareness", "tipo": "Artículo académico"},
+    {"autor": "O'Neill y Marsick", "año": 2018, "titulo": "Team development interventions", "tipo": "Revisión sistemática"},
+    {"autor": "Shuffer", "año": 2018, "titulo": "Interventions Review", "tipo": "Revisión académica"},
+    {"autor": "Behfar y Gluesing", "año": 2018, "titulo": "Conflict in teams", "tipo": "Artículo académico"},
+    {"autor": "Stone y Heen", "año": 2010, "titulo": "Anticiparse al conflicto de equipo", "tipo": "Libro (extracto)"},
+    {"autor": "Breuer et al", "año": 2017, "titulo": "Trust in work teams", "tipo": "Revisión académica"},
+    {"autor": "Thrush", "año": 2016, "titulo": "Hard truth about innovative culture", "tipo": "Artículo académico"}
+  ]
+}

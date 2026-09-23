@@ -1,0 +1,520 @@
+{
+    "M骴ulo 1: Liderazgo":  [
+                                {
+                                    "id":  2959191,
+                                    "type":  "page",
+                                    "title":  "Introducci贸n Modulo Liderazgo",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/pages/introduccion-modulo-liderazgo",
+                                    "status":  "saved",
+                                    "path":  "83703\\pages\\2959191.json"
+                                },
+                                {
+                                    "id":  2972250,
+                                    "type":  "file",
+                                    "title":  "Jornada 1 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4641696",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+1+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  580641,
+                                                    "sha256":  "da0a57c838592727bbe5c21166a98c1c511f506b78add4163615a3d4c97a2f76",
+                                                    "url":  "https://udec.instructure.com/files/4641696/download?download_frd=1\u0026verifier=YhXwruyVd6CTEaqhj1agnJmzcaNfym9WCagEokHp",
+                                                    "timestamp":  "2026-09-22T20:50:03.026732"
+                                                }
+                                },
+                                {
+                                    "id":  2959197,
+                                    "type":  "file",
+                                    "title":  "HBR-Liderazgo-que-obtiene-resultados.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624114",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\HBR-Liderazgo-que-obtiene-resultados.pdf",
+                                                    "size":  411036,
+                                                    "sha256":  "8fdd9532029a701c709423e905b0a42230a618614c9b79cdb3e1e3171ee53995",
+                                                    "url":  "https://udec.instructure.com/files/4624114/download?download_frd=1\u0026verifier=YP8auuiHrM6yIOJK6RG6l3OaulUOKyxsq7H21u3t",
+                                                    "timestamp":  "2026-09-22T20:50:12.740357"
+                                                }
+                                },
+                                {
+                                    "id":  2959198,
+                                    "type":  "file",
+                                    "title":  "descubra_su_autentico_liderazgo_hbral Liderazgo aut茅ntico.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624117",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\descubra_su_autentico_liderazgo_hbral+Liderazgo+aut%C3%A9ntico.pdf",
+                                                    "size":  183138,
+                                                    "sha256":  "cb8091681701f357202873f463eafe62f365f2040987b8d7a997d2891f483ad7",
+                                                    "url":  "https://udec.instructure.com/files/4624117/download?download_frd=1\u0026verifier=7YprNM2HM06i4TNNFtdw7DvnVQAW5b3imtt6vKfU",
+                                                    "timestamp":  "2026-09-22T20:50:17.491186"
+                                                }
+                                },
+                                {
+                                    "id":  2959199,
+                                    "type":  "file",
+                                    "title":  "Prieto et al 2010 Liderazgo Efectivo.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624131",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Prieto+et+al+2010+Liderazgo+Efectivo.pdf",
+                                                    "size":  94149,
+                                                    "sha256":  "c0cc58da0ac42a24baecc283f0c347bb939178d330fdd5b123a7c4c52ca73678",
+                                                    "url":  "https://udec.instructure.com/files/4624131/download?download_frd=1\u0026verifier=h3mRX4hgPxKgGIAZlpEIaa93HKcxZCMzw5abWDGC",
+                                                    "timestamp":  "2026-09-22T20:50:22.078093"
+                                                }
+                                },
+                                {
+                                    "id":  2959201,
+                                    "type":  "assignment",
+                                    "title":  "Ta1: Plan de desarrollo de habilidades para el liderazgo",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/assignments/681119",
+                                    "status":  "saved",
+                                    "path":  "83703\\assignments\\2959201.json"
+                                },
+                                {
+                                    "id":  2972249,
+                                    "type":  "file",
+                                    "title":  "Jornada 2 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4641695",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+2+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  1105844,
+                                                    "sha256":  "3d83ebd56636226917774ed18c32fcc4fffbe5fc2a5f3cccced2d80b176d67fa",
+                                                    "url":  "https://udec.instructure.com/files/4641695/download?download_frd=1\u0026verifier=rH0ZdKB4ALQ4KK2mbLkCVeCSPSXNHAWi3mhAT1Gd",
+                                                    "timestamp":  "2026-09-22T20:50:28.706207"
+                                                }
+                                },
+                                {
+                                    "id":  2959205,
+                                    "type":  "file",
+                                    "title":  "Elogio del lider incompleto.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624090",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Elogio+del+lider+incompleto.pdf",
+                                                    "size":  137962,
+                                                    "sha256":  "a98fc0c806ba9543cfec37e5506e182d8558c263f0c10d2c8cd7637656f529eb",
+                                                    "url":  "https://udec.instructure.com/files/4624090/download?download_frd=1\u0026verifier=XkDkD6TMni2foWXf4AOuoAe5c03KsXciz9sIgAKd",
+                                                    "timestamp":  "2026-09-22T20:50:34.420682"
+                                                }
+                                },
+                                {
+                                    "id":  2959206,
+                                    "type":  "file",
+                                    "title":  "Innovation Leadership best practice 2019.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624127",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Innovation+Leadership+best+practice+2019.pdf",
+                                                    "size":  273393,
+                                                    "sha256":  "513b0ca807a8af4988735eff8bebee976eeb5a2fb33cb1d8b45912a0e064b19c",
+                                                    "url":  "https://udec.instructure.com/files/4624127/download?download_frd=1\u0026verifier=78PmnsBZkgI6m4hb6NnMfQ2Z1AP1HHoJOFErcxpj",
+                                                    "timestamp":  "2026-09-22T20:50:39.349431"
+                                                }
+                                },
+                                {
+                                    "id":  2959207,
+                                    "type":  "file",
+                                    "title":  "High_Quality_Connections Conexiones de Alta Calidad.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624109",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\High_Quality_Connections+Conexiones+de+Alta+Calidad.pdf",
+                                                    "size":  270483,
+                                                    "sha256":  "66d29534fcc0d6adb25ad6d25860725b4bf13221964dbeb99c704a9c9a5f3955",
+                                                    "url":  "https://udec.instructure.com/files/4624109/download?download_frd=1\u0026verifier=nr5KJJ83b0sP2CXcIxIn8ElziBjw2hsx351cVYnd",
+                                                    "timestamp":  "2026-09-22T20:50:44.161889"
+                                                }
+                                },
+                                {
+                                    "id":  2959208,
+                                    "type":  "assignment",
+                                    "title":  "Ta2: Conexiones de Alta Calidad MACI",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/assignments/681120",
+                                    "status":  "saved",
+                                    "path":  "83703\\assignments\\2959208.json"
+                                },
+                                {
+                                    "id":  2959214,
+                                    "type":  "file",
+                                    "title":  "Tushman Ambidextrous CEO 2011.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624139",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Tushman+Ambidextrous+CEO+2011.pdf",
+                                                    "size":  7291707,
+                                                    "sha256":  "eda56878578f49805081c4f87fecc19df01091f0ed211de62d9999fdd3b40695",
+                                                    "url":  "https://udec.instructure.com/files/4624139/download?download_frd=1\u0026verifier=cmrcHrGXTcVRZkgrGYclYgk1q8x85uCrT2U31Dss",
+                                                    "timestamp":  "2026-09-22T20:50:51.018946"
+                                                }
+                                },
+                                {
+                                    "id":  2959215,
+                                    "type":  "file",
+                                    "title":  "Puertas y Shahar 2012 Liderazgo-Positivo.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624084",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Puertas+y+Shahar+2012+Liderazgo-Positivo.pdf",
+                                                    "size":  191747,
+                                                    "sha256":  "167da4b685414815c97eaae89dc49e9852abd60f1f6323ffecbfa65addc52543",
+                                                    "url":  "https://udec.instructure.com/files/4624084/download?download_frd=1\u0026verifier=zmnsmNsJ8HH8uSrUcXXg1TXsR0KhuHTLKbrFxgQp",
+                                                    "timestamp":  "2026-09-22T20:50:55.719786"
+                                                }
+                                },
+                                {
+                                    "id":  2959216,
+                                    "type":  "file",
+                                    "title":  "Joly 2022 5 Principles of Purposeful Leadership HBR.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624138",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Joly+2022+5+Principles+of+Purposeful+Leadership+HBR.pdf",
+                                                    "size":  427788,
+                                                    "sha256":  "814010038f44e23cc3fb5ab0017f73d6b26b96b6273e03eb7177d4bd2aaff5a0",
+                                                    "url":  "https://udec.instructure.com/files/4624138/download?download_frd=1\u0026verifier=cXLcMa5YBsVEaRouSt4fcaLve7NA9l9SZhc3ji1V",
+                                                    "timestamp":  "2026-09-22T20:51:00.555918"
+                                                }
+                                },
+                                {
+                                    "id":  2959218,
+                                    "type":  "file",
+                                    "title":  "Rosing et al 2011 Ambidextrous Leadership.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624116",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Rosing+et+al+2011+Ambidextrous+Leadership.pdf",
+                                                    "size":  367358,
+                                                    "sha256":  "dae01cff8dbcf94771f44a9c833a8c95055dff73d1fc306cc8318ce3c62639c3",
+                                                    "url":  "https://udec.instructure.com/files/4624116/download?download_frd=1\u0026verifier=2r1IPugpSQT9OgwdE0nVPih9bEwpa4ElEe9pcDMQ",
+                                                    "timestamp":  "2026-09-22T20:51:05.380550"
+                                                }
+                                },
+                                {
+                                    "id":  2988036,
+                                    "type":  "file",
+                                    "title":  "Jornada 3 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4663934",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+3+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  1115110,
+                                                    "sha256":  "70c201862ceeceba0a54ce1c1b7ef89b31e3944c299c017a28d2d320d6530d25",
+                                                    "url":  "https://udec.instructure.com/files/4663934/download?download_frd=1\u0026verifier=sp21oZVhj89i8HMLXo0Rye4EsYfyTIJbdG6IpFdh",
+                                                    "timestamp":  "2026-09-22T20:51:10.257038"
+                                                }
+                                },
+                                {
+                                    "id":  2998948,
+                                    "type":  "file",
+                                    "title":  "Jornada 4 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4673031",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+4+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  381792,
+                                                    "sha256":  "9ab39af5d7537e5fef09be8eb5f038446cb2105fa8edccee91aa5630f84f1635",
+                                                    "url":  "https://udec.instructure.com/files/4673031/download?download_frd=1\u0026verifier=7PaKdkrKnephfuVnIvrOOO1QB3n2LtdZXqdgMST2",
+                                                    "timestamp":  "2026-09-22T20:51:17.807708"
+                                                }
+                                },
+                                {
+                                    "id":  3009094,
+                                    "type":  "file",
+                                    "title":  "Jornada 5 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4683598",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+5+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  669960,
+                                                    "sha256":  "cb78dc9828d9e700d937385ee6ca68f45fecaded2327959925884335f781bc56",
+                                                    "url":  "https://udec.instructure.com/files/4683598/download?download_frd=1\u0026verifier=Gw4vYxaIfPBl5XzSeftBSu0UG9QB2SFkLEkfE1Fb",
+                                                    "timestamp":  "2026-09-22T20:51:55.046397"
+                                                }
+                                },
+                                {
+                                    "id":  3014657,
+                                    "type":  "file",
+                                    "title":  "Jornada 6 MACI Liderazgo y Equipos para la innovaci贸n 2026.pdf",
+                                    "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4689808",
+                                    "status":  "downloaded",
+                                    "details":  {
+                                                    "path":  "83703\\files\\Jornada+6+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+                                                    "size":  511499,
+                                                    "sha256":  "a9bf85a2a9718b59efcf3049935f5d146e07b04dceba94b6e5fb5d0dbaca31c8",
+                                                    "url":  "https://udec.instructure.com/files/4689808/download?download_frd=1\u0026verifier=NPBJDsuKrczSQPw1kt3UgKlX8SPlDbtQUC0X2Zr6",
+                                                    "timestamp":  "2026-09-22T20:52:50.122334"
+                                                }
+                                }
+                            ],
+    "M骴ulo de Inicio":  [
+                             {
+                                 "id":  2959188,
+                                 "type":  "page",
+                                 "title":  "Bienvenida y presentaci贸n del docente 2026",
+                                 "url":  "https://udec.instructure.com/api/v1/courses/83703/pages/bienvenida-y-presentacion-del-docente-2026",
+                                 "status":  "saved",
+                                 "path":  "83703\\pages\\2959188.json"
+                             },
+                             {
+                                 "id":  2959189,
+                                 "type":  "page",
+                                 "title":  "Normativa de uso del aula virtual y reglamento general-3",
+                                 "url":  "https://udec.instructure.com/api/v1/courses/83703/pages/normativa-de-uso-del-aula-virtual-y-reglamento-general-3",
+                                 "status":  "saved",
+                                 "path":  "83703\\pages\\2959189.json"
+                             },
+                             {
+                                 "id":  2959196,
+                                 "type":  "file",
+                                 "title":  "Banks et al 2018 Construct redundancy en leader behaviors.pdf",
+                                 "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624087",
+                                 "status":  "downloaded",
+                                 "details":  {
+                                                 "path":  "83703\\files\\Banks+et+al+2018+Construct+redundancy+en+leader+behaviors.pdf",
+                                                 "size":  279775,
+                                                 "sha256":  "21f4b0071fcae5ad21721b2856f3a5c88d6d7a57c0e14293716b3262c5ec88d1",
+                                                 "url":  "https://udec.instructure.com/files/4624087/download?download_frd=1\u0026verifier=GGY4RHykR2DraaAhCGJQTR2beowDU02tAD7rYsvM",
+                                                 "timestamp":  "2026-09-22T20:50:07.758495"
+                                             }
+                             }
+                         ],
+    "M骴ulo 2: Equipos":  [
+                              {
+                                  "id":  2959220,
+                                  "type":  "page",
+                                  "title":  "Introducci贸n M贸dulo 2-2026",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/pages/introduccion-modulo-2-2026",
+                                  "status":  "saved",
+                                  "path":  "83703\\pages\\2959220.json"
+                              },
+                              {
+                                  "id":  2959224,
+                                  "type":  "file",
+                                  "title":  "Casos a desarrollar en clase en forma grupal.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624140",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Casos+a+desarrollar+en+clase+en+forma+grupal.pdf",
+                                                  "size":  412544,
+                                                  "sha256":  "e118d920e89c1c7033efca0d44add96f7fe5b7ccc26833903fa59207248c3954",
+                                                  "url":  "https://udec.instructure.com/files/4624140/download?download_frd=1\u0026verifier=QtNLdHg5HWTlg5AG5vWxZJb5yQZkbPlvWuo052J3",
+                                                  "timestamp":  "2026-09-22T20:51:22.659593"
+                                              }
+                              },
+                              {
+                                  "id":  2959226,
+                                  "type":  "file",
+                                  "title":  "Mathieu et.al 2018 annurev-orgpsych-Team effectiveness.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624134",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Mathieu+et.al+2018+annurev-orgpsych-Team+effectiveness.pdf",
+                                                  "size":  405730,
+                                                  "sha256":  "752c5518e13da61606e3e244eb46d6c5671eb61f427d8133a9c65f98c5fc70a6",
+                                                  "url":  "https://udec.instructure.com/files/4624134/download?download_frd=1\u0026verifier=fmgYzc8VvcY65wJiue4PxDfogRhW6oAIbu3rwQZl",
+                                                  "timestamp":  "2026-09-22T20:51:27.645314"
+                                              }
+                              },
+                              {
+                                  "id":  2959227,
+                                  "type":  "file",
+                                  "title":  "Ocho maneras de construir equipos colaborativos.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624135",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Ocho+maneras+de+construir+equipos+colaborativos.pdf",
+                                                  "size":  189049,
+                                                  "sha256":  "19e25fc3fb4b356a625812509d65c64e9b002246c8dd0c4ba6af33e382d9e049",
+                                                  "url":  "https://udec.instructure.com/files/4624135/download?download_frd=1\u0026verifier=aZgevM1tGQMyuOl0uK5MCMCZQGIgHKVHHXxR4VSt",
+                                                  "timestamp":  "2026-09-22T20:51:32.433668"
+                                              }
+                              },
+                              {
+                                  "id":  2959228,
+                                  "type":  "file",
+                                  "title":  "Team Innovation Review 2017 annurev-orgpsych.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624142",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Team+Innovation+Review+2017+annurev-orgpsych.pdf",
+                                                  "size":  289580,
+                                                  "sha256":  "92c186fbd846a14246a9fe8c42aa117f26df24dfe3aeee69dcfd89232aaa4321",
+                                                  "url":  "https://udec.instructure.com/files/4624142/download?download_frd=1\u0026verifier=HE9Rjxr6GuyXnSd5BviLSoZricJmhPsQqTRZSUSC",
+                                                  "timestamp":  "2026-09-22T20:51:37.399875"
+                                              }
+                              },
+                              {
+                                  "id":  2959230,
+                                  "type":  "file",
+                                  "title":  "What self awareness really is.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624088",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\What+self+awareness+really+is.pdf",
+                                                  "size":  918062,
+                                                  "sha256":  "b21ecf52dec37cee6668f4ea3892f9fbc2afbdd1bd82a953919967ea68c7d2c8",
+                                                  "url":  "https://udec.instructure.com/files/4624088/download?download_frd=1\u0026verifier=gMPRuUCvtuNwuA1qfhTygKRFlTRN3hHXje6aWBwl",
+                                                  "timestamp":  "2026-09-22T20:51:43.916076"
+                                              }
+                              },
+                              {
+                                  "id":  2959231,
+                                  "type":  "file",
+                                  "title":  "Levi - Cap 2 - Definiendo el 脡xito de un Equipo.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624141",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Levi+-+Cap+2+-+Definiendo+el+%C3%89xito+de+un+Equipo.pdf",
+                                                  "size":  219117,
+                                                  "sha256":  "19dcec569eb8d1952c72f5d8f286b08b13850e2e5aef6faf1dd58850cc3ce4df",
+                                                  "url":  "https://udec.instructure.com/files/4624141/download?download_frd=1\u0026verifier=zEIyKIdwNqMwa9YTTo2WE0p7yxR0RQ5J8iD9Kk1D",
+                                                  "timestamp":  "2026-09-22T20:51:48.694737"
+                                              }
+                              },
+                              {
+                                  "id":  2959239,
+                                  "type":  "assignment",
+                                  "title":  "Ta3a: Diagn贸stico de Equipo",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/assignments/681121",
+                                  "status":  "saved",
+                                  "path":  "83703\\assignments\\2959239.json"
+                              },
+                              {
+                                  "id":  2959234,
+                                  "type":  "file",
+                                  "title":  "Instrucciones y Fotos Actv. Diversidad.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624094",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Instrucciones+y+Fotos+Actv.+Diversidad.pdf",
+                                                  "size":  2354325,
+                                                  "sha256":  "524d17825f2357a2f3bd6b897e85d6df5399dbeffed6dc7ce20186b3ad6dc250",
+                                                  "url":  "https://udec.instructure.com/files/4624094/download?download_frd=1\u0026verifier=tXC7eVCW1gMnX8hlzu5DgvhS1C4a0EhuemTrb4kL",
+                                                  "timestamp":  "2026-09-22T20:52:00.062374"
+                                              }
+                              },
+                              {
+                                  "id":  2959236,
+                                  "type":  "file",
+                                  "title":  "Diagn贸stico y correcci贸n de equipos disfuncionales.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624102",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Diagn%C3%B3stico+y+correcci%C3%B3n+de+equipos+disfuncionales.pdf",
+                                                  "size":  110791,
+                                                  "sha256":  "83660252047ad39ccbea99b5d9d2209a984523568c5f6bbd4faca9d27176f563",
+                                                  "url":  "https://udec.instructure.com/files/4624102/download?download_frd=1\u0026verifier=omMNIKEvu8A0ufX19lpcKVehANXDUTgTrNtWr3i6",
+                                                  "timestamp":  "2026-09-22T20:52:05.064531"
+                                              }
+                              },
+                              {
+                                  "id":  2959237,
+                                  "type":  "file",
+                                  "title":  "Team development interventios 2018.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624136",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Team+development+interventios+2018.pdf",
+                                                  "size":  604966,
+                                                  "sha256":  "9c41a3c40e43d365fd66e3d803b01c4f2709369a2b162d44d4d74dfd65237b30",
+                                                  "url":  "https://udec.instructure.com/files/4624136/download?download_frd=1\u0026verifier=DKOWDctz2tzBCoaNDDSnjdhXz6tcUHdyu2x9K9S2",
+                                                  "timestamp":  "2026-09-22T20:52:11.069565"
+                                              }
+                              },
+                              {
+                                  "id":  2959238,
+                                  "type":  "file",
+                                  "title":  "To Improve your team first work on yourself.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624137",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\To+Improve+your+team+first+work+on+yourself.pdf",
+                                                  "size":  486538,
+                                                  "sha256":  "6e6dddd0b63dfb71be7f7eaea317b93f792fbfe72a6a0260dec1d0f96a5a65a2",
+                                                  "url":  "https://udec.instructure.com/files/4624137/download?download_frd=1\u0026verifier=7ot4c2ierr07omyLU2NvO3i3eENfhEaA41p1Bssf",
+                                                  "timestamp":  "2026-09-22T20:52:16.141575"
+                                              }
+                              },
+                              {
+                                  "id":  2959242,
+                                  "type":  "assignment",
+                                  "title":  "Ta3b: Intervenci贸n de Equipo",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/assignments/681122",
+                                  "status":  "saved",
+                                  "path":  "83703\\assignments\\2959242.json"
+                              },
+                              {
+                                  "id":  3009093,
+                                  "type":  "file",
+                                  "title":  "Shuffer 2018 ReviewInterventions.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4683597",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Shuffer+2018+ReviewInterventions.pdf",
+                                                  "size":  746062,
+                                                  "sha256":  "909e67d5e95a2ec647bb2afcb329cff4638b8a7783acb0f52891a6cce4f8ff6d",
+                                                  "url":  "https://udec.instructure.com/files/4683597/download?download_frd=1\u0026verifier=UD0xxfLu9E8VMZND9N0yTmFoCKxwJTmbqr605S2y",
+                                                  "timestamp":  "2026-09-22T20:52:22.735972"
+                                              }
+                              },
+                              {
+                                  "id":  2959244,
+                                  "type":  "file",
+                                  "title":  "Conflict in team 2018.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624125",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Conflict+in+team+2018.pdf",
+                                                  "size":  509673,
+                                                  "sha256":  "c2f3aabbbb5fa90978772bc4b42c150cc45b9f8cd9df80bdf37fa12737abf51c",
+                                                  "url":  "https://udec.instructure.com/files/4624125/download?download_frd=1\u0026verifier=6Yh5RJVpP3jPCD0GxgcNkz7gb8ZSPupo3yxDl8gk",
+                                                  "timestamp":  "2026-09-22T20:52:27.739739"
+                                              }
+                              },
+                              {
+                                  "id":  2959245,
+                                  "type":  "file",
+                                  "title":  "C贸mo anticiparse al conflicto de equipo.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624145",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\C%C3%B3mo+anticiparse+al+conflicto+de+equipo.pdf",
+                                                  "size":  491094,
+                                                  "sha256":  "a75106613679808dc95c7a92015ab346a056532a88ae70851518d14002c31dfe",
+                                                  "url":  "https://udec.instructure.com/files/4624145/download?download_frd=1\u0026verifier=we7egAKKt0FU6fOQ347jnnLLOsekD9ivOTnUvYM0",
+                                                  "timestamp":  "2026-09-22T20:52:32.888832"
+                                              }
+                              },
+                              {
+                                  "id":  2959246,
+                                  "type":  "file",
+                                  "title":  "Trust in work teams  2017.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624146",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\Trust+in+work+teams++2017.pdf",
+                                                  "size":  1181012,
+                                                  "sha256":  "ab275b14d4416cb91986ab6b4e4ef78a946164e38eaef26e085120cf229b84c6",
+                                                  "url":  "https://udec.instructure.com/files/4624146/download?download_frd=1\u0026verifier=NGdgN6BJcwuAvWX8g2Uy3jx1LTvvJjIDNxo1QGom",
+                                                  "timestamp":  "2026-09-22T20:52:38.162424"
+                                              }
+                              },
+                              {
+                                  "id":  2959248,
+                                  "type":  "file",
+                                  "title":  "The hard truth about innovative culture.pdf",
+                                  "url":  "https://udec.instructure.com/api/v1/courses/83703/files/4624147",
+                                  "status":  "downloaded",
+                                  "details":  {
+                                                  "path":  "83703\\files\\The+hard+truth+about+innovative+culture.pdf",
+                                                  "size":  478810,
+                                                  "sha256":  "396ec177262fd2e5f246eb43f721ce7c55de7c1a8505ee327c01960392c21c2b",
+                                                  "url":  "https://udec.instructure.com/files/4624147/download?download_frd=1\u0026verifier=gApt7kS2X7t85Dx1RCEETQjsqXaJSGG5JXCnFaaj",
+                                                  "timestamp":  "2026-09-22T20:52:45.072568"
+                                              }
+                              }
+                          ]
+}

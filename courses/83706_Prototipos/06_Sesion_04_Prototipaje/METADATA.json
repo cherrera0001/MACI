@@ -1,0 +1,48 @@
+{
+  "module": "06_Sesion_04_Prototipaje",
+  "resource_count": 3,
+  "resources": [
+    {
+      "id": 3099552,
+      "type": "file",
+      "title": "2026G604 - Prototipaje conceptual.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4796076",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G604+-+Prototipaje+conceptual.pdf",
+        "size": 2601566,
+        "sha256": "0414aaa831ca5ceba6a20d167b14744d478d45c927a9df1677bb8450556d5957",
+        "url": "https://udec.instructure.com/files/4796076/download?download_frd=1&verifier=337ff1cd-87dd-40c9-b9d2-e52d3fd7a951",
+        "timestamp": "2026-09-22T20:49:28.871194"
+      }
+    },
+    {
+      "id": 3099584,
+      "type": "file",
+      "title": "2026G604-02 - Opcional Tácticas.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4796121",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G604-02+-+Opcional+Ta%CC%81cticas.pdf",
+        "size": 2386286,
+        "sha256": "3b46a52acdc07ca81bb31c5d45dbfd6e7605749543843539a4bbd8d624907ca8",
+        "url": "https://udec.instructure.com/files/4796121/download?download_frd=1&verifier=3d6f94e6-47b4-42b5-af89-929290a07564",
+        "timestamp": "2026-09-22T20:49:33.975348"
+      }
+    },
+    {
+      "id": 3099583,
+      "type": "file",
+      "title": "2026G6T2 - Instrucciones trabajo 02.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4796120",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G6T2+-+Instrucciones+trabajo+02.pdf",
+        "size": 58874,
+        "sha256": "bd12eb97303635b573143e39bce960188523c0c46dd7eb1fec14faa84753f595",
+        "url": "https://udec.instructure.com/files/4796120/download?download_frd=1&verifier=f2b0bf0c-de80-4654-9a57-a1c9ba6a1506",
+        "timestamp": "2026-09-22T20:49:38.467349"
+      }
+    }
+  ]
+}

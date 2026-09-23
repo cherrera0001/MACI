@@ -1,0 +1,34 @@
+{
+  "module": "07_Sesion_05_Roadmapping",
+  "resource_count": 2,
+  "resources": [
+    {
+      "id": 3107753,
+      "type": "file",
+      "title": "2026G605 -  Roadmapping.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4811737",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G605+-++Roadmapping.pdf",
+        "size": 1327577,
+        "sha256": "5792d94918cbc2e84bc6ac4d35ee0ce1732ae2d85d99f52b1814faae8a3cc629",
+        "url": "https://udec.instructure.com/files/4811737/download?download_frd=1&verifier=8b3d9fec-e47a-431f-a1c6-e1bec6b064cf",
+        "timestamp": "2026-09-22T20:49:45.035014"
+      }
+    },
+    {
+      "id": 3107754,
+      "type": "file",
+      "title": "2026G6TF - Instrucciones trabajo final.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4811738",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G6TF+-+Instrucciones+trabajo+final.pdf",
+        "size": 58208,
+        "sha256": "d0c1442681aaa101d86c51b3bad5fd393ca97db5bab482cc8d8ac06460325d04",
+        "url": "https://udec.instructure.com/files/4811738/download?download_frd=1&verifier=b19c7d56-5fe2-45fa-a6db-0d2393cbd4c3",
+        "timestamp": "2026-09-22T20:49:49.621131"
+      }
+    }
+  ]
+}

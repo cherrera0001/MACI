@@ -1,0 +1,48 @@
+{
+  "module": "00_Inicio",
+  "resource_count": 3,
+  "resources": [
+    {
+      "id": 3030067,
+      "type": "file",
+      "title": "2026G6 - Syllabus Prototipos y Creatividad.docx",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707159",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G6+-+Syllabus+Prototipos+y+Creatividad.docx",
+        "size": 69433,
+        "sha256": "84ad2d3dd0e489612b3a50c0681df174cf75851c2cc4769d277e23e4384590d2",
+        "url": "https://udec.instructure.com/files/4707159/download?download_frd=1&verifier=UrJ4lSUczdis31SH9jMfIHwWYENF4XkZKNhgQKnk",
+        "timestamp": "2026-09-22T20:47:33.858658"
+      }
+    },
+    {
+      "id": 3088281,
+      "type": "file",
+      "title": "Nomina Equipos-v2.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4777852",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Nomina+Equipos-v2.xlsx",
+        "size": 12205,
+        "sha256": "f35f5e4436b2a13ba618bdbdb49e8aefc80facf8a4848b51e967c8b52e722461",
+        "url": "https://udec.instructure.com/files/4777852/download?download_frd=1&verifier=3ef15445-c19b-462e-94e7-5f581e2ac615",
+        "timestamp": "2026-09-22T20:47:38.839714"
+      }
+    },
+    {
+      "id": 3115134,
+      "type": "file",
+      "title": "MACI - Notas finales.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4831660",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\MACI+-+Notas+finales.xlsx",
+        "size": 5937,
+        "sha256": "2e903a62bc37361aadfcec9db6ef6bb6554266ebc4c806288cac58971fb9262e",
+        "url": "https://udec.instructure.com/files/4831660/download?download_frd=1&verifier=5914d079-55e7-478f-b5ea-57d67c691e31",
+        "timestamp": "2026-09-22T20:47:43.381442"
+      }
+    }
+  ]
+}

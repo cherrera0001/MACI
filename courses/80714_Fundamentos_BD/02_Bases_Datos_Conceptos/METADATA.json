@@ -1,0 +1,137 @@
+{
+  "module_id": "02_Bases_Datos_Conceptos",
+  "module_label": "Bases de Datos: Conceptos",
+  "item_count": 26,
+  "items": [
+    {
+      "id": "2835271",
+      "title": "Resultados de aprendizaje: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835272",
+      "title": "Cronograma del curso - parte 1: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835275",
+      "title": "Clase 1.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835277",
+      "title": "Clase 2.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835280",
+      "title": "Clase 3.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835284",
+      "title": "Clase 4.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835287",
+      "title": "Clase 5.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835289",
+      "title": "ejemplo_actualizado.csv: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835290",
+      "title": "ejemplo.csv: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835291",
+      "title": "areas.py: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835292",
+      "title": "cartola_ejemplo.xls: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835294",
+      "title": "Clase 6.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835296",
+      "title": "Fuente de Datos Proyecto-2.xlsx: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835297",
+      "title": "Propuesta para documentar Dominios.docx: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2835298",
+      "title": "guia 0.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2838800",
+      "title": "Syllabus Fundamentos de Bases de Datos y Algoritmos.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2838809",
+      "title": "listado propuesto.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2880719",
+      "title": "presentacion.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2880722",
+      "title": "Fuente de Datos.xlsx: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2897892",
+      "title": "Semana 8 - Diseño de Bases de Datos 2026-1.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2901686",
+      "title": "Cuentas de Postgresql.xlsx: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2902049",
+      "title": "Semana 9 SQL e implementación.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2920780",
+      "title": "Semana 10 Bases de Datos Multidimensionales y big data.pdf: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "2920781",
+      "title": "imagen_2026-05-29_200031680.png: 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "indice",
+      "title": "4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    },
+    {
+      "id": "syllabus",
+      "title": "Programa del curso para 4321004-0 FUNDAMENTOS DE BASES DE DATOS Y ALGORITMOS (T1-2026)",
+      "type": "Page"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "module": "99_Archivos_Generales",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 3068973,
+      "type": "file",
+      "title": "2026G6T1 - Instrucciones trabajo 01.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4753641",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G6T1+-+Instrucciones+trabajo+01.pdf",
+        "size": 59048,
+        "sha256": "6dbe018f41b4bfb15b4dcdeee7e489e3066339dae97baa47528841ba2c2775bf",
+        "url": "https://udec.instructure.com/files/4753641/download?download_frd=1&verifier=238468f4-bb85-4bdb-a7ea-d296cac8f4e8",
+        "timestamp": "2026-09-22T20:48:02.556933"
+      }
+    }
+  ]
+}

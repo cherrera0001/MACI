@@ -1,0 +1,20 @@
+{
+  "module": "01_Sesion_01_Intro",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 3037078,
+      "type": "file",
+      "title": "2026G601 - Prototipos y creatividad - Intro.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4713413",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G601+-+Prototipos+y+creatividad+-+Intro.pdf",
+        "size": 6642720,
+        "sha256": "2fe005785e2fd202e6863ddf9b5c90462be7570b726dd7a3bb7e4bd832fd8308",
+        "url": "https://udec.instructure.com/files/4713413/download?download_frd=1&verifier=CUSFCnzD6WHM3nod7uxylFx3wb7G0VMvO15ieR10",
+        "timestamp": "2026-09-22T20:47:51.471575"
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "module": "05_Lecturas_Complementarias",
+  "resource_count": 4,
+  "resources": [
+    {
+      "id": 3029955,
+      "type": "file",
+      "title": "Book_Designing for the Digital Age. How to Create Human-Centered Products and Services.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707052",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Designing+for+the+Digital+Age.+How+to+Create+Human-Centered+Products+and+Services.pdf",
+        "size": 20500709,
+        "sha256": "91eea5d4c7a604d07706cfcc9f3a7e7ed27e48cc8d60bc2be5be463230664c21",
+        "url": "https://udec.instructure.com/files/4707052/download?download_frd=1&verifier=I9UqggI9MaZsHnbm3QfgUUsWRmLKkEWXBQvIhRPs",
+        "timestamp": "2026-09-22T20:49:03.270483"
+      }
+    },
+    {
+      "id": 3029956,
+      "type": "file",
+      "title": "Book_Mapping Experiences.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707053",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Mapping+Experiences.pdf",
+        "size": 85783888,
+        "sha256": "5ccbce58c6efa285f641bfb07e3621f9064ec0ca5c636d9dd989aaf2119cbd96",
+        "url": "https://udec.instructure.com/files/4707053/download?download_frd=1&verifier=3qSis16GrVuB4a0QpNl3sZHzGGVWybX3YK8OMH6V",
+        "timestamp": "2026-09-22T20:49:12.006383"
+      }
+    },
+    {
+      "id": 3029957,
+      "type": "file",
+      "title": "Book_Lean Analytics_ Use Data to Build a Better Startup Faster-O'Reilly Media (2013).pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707051",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Lean+Analytics_+Use+Data+to+Build+a+Better+Startup+Faster-O%27Reilly+Media+%282013%29.pdf",
+        "size": 12193620,
+        "sha256": "1b0045eb59cfb4df9d24690daa0ebef370c79265b54828e2a09f564856c5a358",
+        "url": "https://udec.instructure.com/files/4707051/download?download_frd=1&verifier=iWvneQBcX1SDxq8zd5nIyJbWdhXSkyfr3HI6HeuE",
+        "timestamp": "2026-09-22T20:49:17.486313"
+      }
+    },
+    {
+      "id": 3029958,
+      "type": "file",
+      "title": "Book_Testing business ideas.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4707050",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\Book_Testing+business+ideas.pdf",
+        "size": 62825569,
+        "sha256": "8999b8ffb4adfc98484ebc6dc6a4811ed2f92d0de6d9c1a17f2841f492105af2",
+        "url": "https://udec.instructure.com/files/4707050/download?download_frd=1&verifier=JXz2I6uaqoI8pyYG3I5dKZLCshdJhcjlasPwBt7K",
+        "timestamp": "2026-09-22T20:49:22.647080"
+      }
+    }
+  ]
+}

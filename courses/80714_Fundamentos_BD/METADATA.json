@@ -1,0 +1,122 @@
+﻿{
+    "materials":  {
+                      "categories":  {
+                                         "datos":  0,
+                                         "documentos":  3,
+                                         "slides":  13,
+                                         "codigos":  1
+                                     },
+                      "path":  "courses/80714_Fundamentos_BD/00_MATERIAL",
+                      "total_count":  19
+                  },
+    "course":  {
+                   "semester":  "T2",
+                   "code":  "80714",
+                   "name":  "Fundamentos en Bases de Datos y Algoritmos",
+                   "year":  2026
+               },
+    "generated_date":  "2026-09-22T21:34:05Z",
+    "recordings":  {
+                       "path":  "10_GRABACIÓN_CLASES/80714_Fundamentos_BD",
+                       "total_size_gb":  5.32,
+                       "items":  [
+                                     {
+                                         "date":  "2026-04-13",
+                                         "size_mb":  493.7,
+                                         "filename":  "2026-03-06Recording_1920x1080.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-13",
+                                         "size_mb":  512.5,
+                                         "filename":  "2026-03-13Recording_1920x1080.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-13",
+                                         "size_mb":  501.1,
+                                         "filename":  "2026-03-20Recording_1920x1080.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-13",
+                                         "size_mb":  496.4,
+                                         "filename":  "2026-03-27Recording_1920x1080.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-13",
+                                         "size_mb":  565,
+                                         "filename":  "2026-04-10 Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-17",
+                                         "size_mb":  508.7,
+                                         "filename":  "2026-04-17T22_17_42Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-04-24",
+                                         "size_mb":  613,
+                                         "filename":  "2026-04-24T22_06_45Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-05-08",
+                                         "size_mb":  242.3,
+                                         "filename":  "2026-05-08T22_11_33Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-05-15",
+                                         "size_mb":  574.1,
+                                         "filename":  "2026-05-15T22_02_32Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-05-29",
+                                         "size_mb":  188.6,
+                                         "filename":  "2026-05-29T22_09_51Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2026-06-04",
+                                         "size_mb":  385.4,
+                                         "filename":  "2026-06-03T22_09_51Z Fundamentos en bases de datos y algorítmos.mp4",
+                                         "type":  "clase"
+                                     },
+                                     {
+                                         "date":  "2025-03-13",
+                                         "size_mb":  99.6,
+                                         "filename":  "Cápsula clase 2.mp4",
+                                         "type":  "capsula"
+                                     },
+                                     {
+                                         "date":  "2025-03-20",
+                                         "size_mb":  67.5,
+                                         "filename":  "Cápsula clase 3.mp4",
+                                         "type":  "capsula"
+                                     },
+                                     {
+                                         "date":  "2025-03-27",
+                                         "size_mb":  80.7,
+                                         "filename":  "Cápsula clase 4.mp4",
+                                         "type":  "capsula"
+                                     },
+                                     {
+                                         "date":  "2025-04-03",
+                                         "size_mb":  46.4,
+                                         "filename":  "Cápsula clase 5.mp4",
+                                         "type":  "capsula"
+                                     },
+                                     {
+                                         "date":  "2025-04-10",
+                                         "size_mb":  73.2,
+                                         "filename":  "Cápsula clase 6.mp4",
+                                         "type":  "capsula"
+                                     }
+                                 ],
+                       "total_count":  16
+                   }
+}

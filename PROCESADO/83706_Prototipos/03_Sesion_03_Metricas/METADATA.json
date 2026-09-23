@@ -1,0 +1,20 @@
+{
+  "module": "03_Sesion_03_Metricas",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 3088277,
+      "type": "file",
+      "title": "2026G603 - Métricas de prototipaje.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83706/files/4777848",
+      "status": "downloaded",
+      "details": {
+        "path": "83706\\files\\2026G603+-+Me%CC%81tricas+de+prototipaje.pdf",
+        "size": 1638610,
+        "sha256": "cb5d1ce3301d38b9a32d55897585bdae68ad4639b1a7a73abeaad4b2437959e9",
+        "url": "https://udec.instructure.com/files/4777848/download?download_frd=1&verifier=da66abbd-f2f4-48ab-acc7-e392c20f961a",
+        "timestamp": "2026-09-22T20:48:09.069401"
+      }
+    }
+  ]
+}
