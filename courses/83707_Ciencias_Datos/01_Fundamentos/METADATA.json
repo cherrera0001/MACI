@@ -1,0 +1,26 @@
+{
+  "modulo": "01_Fundamentos",
+  "titulo": "Fundamentos de Ciencia de Datos",
+  "created": "2026-09-22T21:10:31.979835",
+  "items": 1,
+  "contenidos": [
+    {
+      "title": "FCD-2026-2_02_CienciaDeDatos.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4648058?module_item_id=2973865",
+      "source_json": "2973865.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_02_CienciaDeDatos.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4648058/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Fundamentos teóricos de la ciencia de datos, ciclo de vida, metodología y aplicaciones en la práctica.",
+  "estadisticas": {
+    "total": 1,
+    "documentos": 1,
+    "notebooks": 0
+  }
+}

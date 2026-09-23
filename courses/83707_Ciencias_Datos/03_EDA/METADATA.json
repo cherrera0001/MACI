@@ -1,0 +1,62 @@
+{
+  "modulo": "03_EDA",
+  "titulo": "Análisis Exploratorio",
+  "created": "2026-09-22T21:10:31.981767",
+  "items": 4,
+  "contenidos": [
+    {
+      "title": "2026_[P1]Laboratorio_Pandas_(vacio).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4640030?module_item_id=2970836",
+      "source_json": "2970836.json",
+      "downloads": [
+        {
+          "title": "Download 2026_[P1]Laboratorio_Pandas_(vacio).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4640030/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "[P1]Laboratorio_Pandas_(res).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4658664?module_item_id=2985825",
+      "source_json": "2985825.json",
+      "downloads": [
+        {
+          "title": "Download [P1]Laboratorio_Pandas_(res).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4658664/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "2026_[P3]Numpy_+_Análisis_Descriptivo_(vacio).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4672754?module_item_id=2998925",
+      "source_json": "2998925.json",
+      "downloads": [
+        {
+          "title": "Download 2026_[P3]Numpy_+_Análisis_Descriptivo_(vacio).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4672754/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "2026_[P3]Numpy_+_Análisis_Descriptivo_(res).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4689607?module_item_id=3013935",
+      "source_json": "3013935.json",
+      "downloads": [
+        {
+          "title": "Download 2026_[P3]Numpy_+_Análisis_Descriptivo_(res).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4689607/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Análisis exploratorio de datos con Pandas y NumPy. Estadística descriptiva y visualización de patrones.",
+  "estadisticas": {
+    "total": 4,
+    "documentos": 0,
+    "notebooks": 4
+  }
+}

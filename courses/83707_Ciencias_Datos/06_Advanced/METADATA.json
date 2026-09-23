@@ -1,0 +1,42 @@
+{
+  "modulo": "06_Advanced",
+  "titulo": "Deep Learning, LLMs y Agents",
+  "created": "2026-09-22T21:10:31.984010",
+  "items": 2,
+  "contenidos": [
+    {
+      "title": "FCD-2026-2_08_DL_LLMs_Agents.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4782653?module_item_id=3090710",
+      "source_json": "3090710.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_08_DL_LLMs_Agents.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4782653/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "[MACI 2026] Desafio.pptx.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4827942?module_item_id=3113569",
+      "source_json": "3113569.json",
+      "downloads": [
+        {
+          "title": "Download [MACI 2026] Desafio.pptx.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4827942/download?download_frd=1"
+        },
+        {
+          "title": "Anterior",
+          "url": "https://udec.instructure.com/courses/83707/modules/items/3113150"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Deep Learning, Large Language Models y sistemas de agentes. Desafío final del curso.",
+  "estadisticas": {
+    "total": 2,
+    "documentos": 2,
+    "notebooks": 0
+  }
+}

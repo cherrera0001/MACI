@@ -1,0 +1,50 @@
+{
+  "modulo": "02_Calidad",
+  "titulo": "Calidad de Datos",
+  "created": "2026-09-22T21:10:31.980819",
+  "items": 3,
+  "contenidos": [
+    {
+      "title": "2026_[P2]Calidad_de_Datos(vacio).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4662521?module_item_id=2987252",
+      "source_json": "2987252.json",
+      "downloads": [
+        {
+          "title": "Download 2026_[P2]Calidad_de_Datos(vacio).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4662521/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "FCD-2026-2_04_CalidadDeDatos.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4672763?module_item_id=2998926",
+      "source_json": "2998926.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_04_CalidadDeDatos.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4672763/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "2026_[P2]Calidad_de_Datos(res).ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4672821?module_item_id=2998932",
+      "source_json": "2998932.json",
+      "downloads": [
+        {
+          "title": "Download 2026_[P2]Calidad_de_Datos(res).ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4672821/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Evaluación, limpieza y preparación de datos. Incluye laboratorio práctico con ejercicios resueltos y para completar.",
+  "estadisticas": {
+    "total": 3,
+    "documentos": 1,
+    "notebooks": 2
+  }
+}

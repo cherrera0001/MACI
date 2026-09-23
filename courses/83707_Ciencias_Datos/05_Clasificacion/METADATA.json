@@ -1,0 +1,38 @@
+{
+  "modulo": "05_Clasificacion",
+  "titulo": "Clasificación",
+  "created": "2026-09-22T21:10:31.983465",
+  "items": 2,
+  "contenidos": [
+    {
+      "title": "FCD-2026-2_07_Clasificacion.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4712905?module_item_id=3036401",
+      "source_json": "3036401.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_07_Clasificacion.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4712905/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "[MACI_2026]_GZMiniChallenge.ipynb",
+      "type": "notebook",
+      "url": "https://udec.instructure.com/courses/83707/files/4826671?module_item_id=3113149",
+      "source_json": "3113149.json",
+      "downloads": [
+        {
+          "title": "Download [MACI_2026]_GZMiniChallenge.ipynb",
+          "url": "https://udec.instructure.com/courses/83707/files/4826671/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Problemas de clasificación binaria y multiclase. Galaxy Zoo Mini Challenge. Laboratorio práctico.",
+  "estadisticas": {
+    "total": 2,
+    "documentos": 1,
+    "notebooks": 1
+  }
+}

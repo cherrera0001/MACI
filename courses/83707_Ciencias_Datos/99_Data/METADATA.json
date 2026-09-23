@@ -1,0 +1,26 @@
+{
+  "modulo": "99_Data",
+  "titulo": "Datos y Recursos",
+  "created": "2026-09-22T21:10:31.984827",
+  "items": 1,
+  "contenidos": [
+    {
+      "title": "data.zip",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4826672?module_item_id=3113150",
+      "source_json": "3113150.json",
+      "downloads": [
+        {
+          "title": "Download data.zip",
+          "url": "https://udec.instructure.com/courses/83707/files/4826672/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Conjunto de datos completo para todos los laboratorios. Incluye archivos para el proyecto Melbourne y Galaxy Zoo.",
+  "estadisticas": {
+    "total": 1,
+    "documentos": 1,
+    "notebooks": 0
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "modulo": "04_Regresion",
+  "titulo": "Regresión",
+  "created": "2026-09-22T21:10:31.982380",
+  "items": 1,
+  "contenidos": [
+    {
+      "title": "FCD-2026-2_06_Regresion.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4689800?module_item_id=3014655",
+      "source_json": "3014655.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_06_Regresion.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4689800/download?download_frd=1"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Modelos de regresión lineal y no lineal. Evaluación de predicciones. Laboratorio práctico.",
+  "estadisticas": {
+    "total": 1,
+    "documentos": 1,
+    "notebooks": 0
+  }
+}

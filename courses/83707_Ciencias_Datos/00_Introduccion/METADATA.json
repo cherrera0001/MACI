@@ -1,0 +1,62 @@
+{
+  "modulo": "00_Introduccion",
+  "titulo": "Introducción y Programa",
+  "created": "2026-09-22T21:10:31.978662",
+  "items": 4,
+  "contenidos": [
+    {
+      "title": "Syllabus Fundamentos de Ciencia de Datos.docx",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4643981?module_item_id=2973051",
+      "source_json": "2973051.json",
+      "downloads": [
+        {
+          "title": "Download Syllabus Fundamentos de Ciencia de Datos.docx",
+          "url": "https://udec.instructure.com/courses/83707/files/4643981/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "FCD-2026-2_01_Intro.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4647966?module_item_id=2973854",
+      "source_json": "2973854.json",
+      "downloads": [
+        {
+          "title": "Download FCD-2026-2_01_Intro.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4647966/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "Proyectos FCD 2026-2.pdf",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/files/4675047?module_item_id=2999909",
+      "source_json": "2999909.json",
+      "downloads": [
+        {
+          "title": "Download Proyectos FCD 2026-2.pdf",
+          "url": "https://udec.instructure.com/courses/83707/files/4675047/download?download_frd=1"
+        }
+      ]
+    },
+    {
+      "title": "Programa del curso para 4321001-0 FUNDAMENTOS DE CIENCIAS DE DATOS (T2-2026)",
+      "type": "documento",
+      "url": "https://udec.instructure.com/courses/83707/assignments/syllabus",
+      "source_json": "syllabus.json",
+      "downloads": [
+        {
+          "title": "Salte a hoy",
+          "url": "https://udec.instructure.com/courses/83707/assignments/syllabus#"
+        }
+      ]
+    }
+  ],
+  "descripcion": "Material de inicio del curso: syllabus, programa, descripción de proyectos e introducción a los conceptos clave.",
+  "estadisticas": {
+    "total": 4,
+    "documentos": 4,
+    "notebooks": 0
+  }
+}
