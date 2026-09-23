@@ -38,12 +38,15 @@ auth.json
 !.env.example
 
 # Grabaciones de clase: pesan cientos de MB. Se versionan las transcripciones,
-# no los videos.
+# no los videos. EXCEPCIÓN: archivos NOTAS y INDEX (documentación de estudio).
 09_CLASES/video/
 *.mp4
 *.mkv
 *.webm
 10_GRABACIÓN_CLASES/
+!10_GRABACIÓN_CLASES/**/NOTAS*.md
+!10_GRABACIÓN_CLASES/**/INDEX.md
+!10_GRABACIÓN_CLASES/**/METADATA.json
 *.zip
 
 # Presentaciones originales: se versiona el texto extraido, no los PDF de 20 MB
