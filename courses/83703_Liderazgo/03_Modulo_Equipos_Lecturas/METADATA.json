@@ -1,0 +1,76 @@
+{
+  "module": "03_Modulo_Equipos_Lecturas",
+  "resource_count": 5,
+  "resources": [
+    {
+      "id": 2959206,
+      "type": "file",
+      "title": "Innovation Leadership best practice 2019.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624127",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Innovation+Leadership+best+practice+2019.pdf",
+        "size": 273393,
+        "sha256": "513b0ca807a8af4988735eff8bebee976eeb5a2fb33cb1d8b45912a0e064b19c",
+        "url": "https://udec.instructure.com/files/4624127/download?download_frd=1&verifier=78PmnsBZkgI6m4hb6NnMfQ2Z1AP1HHoJOFErcxpj",
+        "timestamp": "2026-09-22T20:50:39.349431"
+      }
+    },
+    {
+      "id": 2959214,
+      "type": "file",
+      "title": "Tushman Ambidextrous CEO 2011.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624139",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Tushman+Ambidextrous+CEO+2011.pdf",
+        "size": 7291707,
+        "sha256": "eda56878578f49805081c4f87fecc19df01091f0ed211de62d9999fdd3b40695",
+        "url": "https://udec.instructure.com/files/4624139/download?download_frd=1&verifier=cmrcHrGXTcVRZkgrGYclYgk1q8x85uCrT2U31Dss",
+        "timestamp": "2026-09-22T20:50:51.018946"
+      }
+    },
+    {
+      "id": 2959215,
+      "type": "file",
+      "title": "Puertas y Shahar 2012 Liderazgo-Positivo.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624084",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Puertas+y+Shahar+2012+Liderazgo-Positivo.pdf",
+        "size": 191747,
+        "sha256": "167da4b685414815c97eaae89dc49e9852abd60f1f6323ffecbfa65addc52543",
+        "url": "https://udec.instructure.com/files/4624084/download?download_frd=1&verifier=zmnsmNsJ8HH8uSrUcXXg1TXsR0KhuHTLKbrFxgQp",
+        "timestamp": "2026-09-22T20:50:55.719786"
+      }
+    },
+    {
+      "id": 2959216,
+      "type": "file",
+      "title": "Joly 2022 5 Principles of Purposeful Leadership HBR.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624138",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Joly+2022+5+Principles+of+Purposeful+Leadership+HBR.pdf",
+        "size": 427788,
+        "sha256": "814010038f44e23cc3fb5ab0017f73d6b26b96b6273e03eb7177d4bd2aaff5a0",
+        "url": "https://udec.instructure.com/files/4624138/download?download_frd=1&verifier=cXLcMa5YBsVEaRouSt4fcaLve7NA9l9SZhc3ji1V",
+        "timestamp": "2026-09-22T20:51:00.555918"
+      }
+    },
+    {
+      "id": 2959218,
+      "type": "file",
+      "title": "Rosing et al 2011 Ambidextrous Leadership.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624116",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Rosing+et+al+2011+Ambidextrous+Leadership.pdf",
+        "size": 367358,
+        "sha256": "dae01cff8dbcf94771f44a9c833a8c95055dff73d1fc306cc8318ce3c62639c3",
+        "url": "https://udec.instructure.com/files/4624116/download?download_frd=1&verifier=2r1IPugpSQT9OgwdE0nVPih9bEwpa4ElEe9pcDMQ",
+        "timestamp": "2026-09-22T20:51:05.380550"
+      }
+    }
+  ]
+}

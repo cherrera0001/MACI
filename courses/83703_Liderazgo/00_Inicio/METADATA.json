@@ -1,0 +1,38 @@
+{
+  "module": "00_Inicio",
+  "resource_count": 4,
+  "resources": [
+    {
+      "id": 2959188,
+      "type": "page",
+      "title": "Bienvenida y presentación del docente 2026",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/pages/bienvenida-y-presentacion-del-docente-2026",
+      "status": "saved",
+      "path": "83703\\pages\\2959188.json"
+    },
+    {
+      "id": 2959189,
+      "type": "page",
+      "title": "Normativa de uso del aula virtual y reglamento general-3",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/pages/normativa-de-uso-del-aula-virtual-y-reglamento-general-3",
+      "status": "saved",
+      "path": "83703\\pages\\2959189.json"
+    },
+    {
+      "id": 2959191,
+      "type": "page",
+      "title": "Introducción Modulo Liderazgo",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/pages/introduccion-modulo-liderazgo",
+      "status": "saved",
+      "path": "83703\\pages\\2959191.json"
+    },
+    {
+      "id": 2959220,
+      "type": "page",
+      "title": "Introducción Módulo 2-2026",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/pages/introduccion-modulo-2-2026",
+      "status": "saved",
+      "path": "83703\\pages\\2959220.json"
+    }
+  ]
+}

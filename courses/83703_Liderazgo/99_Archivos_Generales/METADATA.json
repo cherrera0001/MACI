@@ -1,0 +1,174 @@
+{
+  "module": "99_Archivos_Generales",
+  "resource_count": 12,
+  "resources": [
+    {
+      "id": 2959226,
+      "type": "file",
+      "title": "Mathieu et.al 2018 annurev-orgpsych-Team effectiveness.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624134",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Mathieu+et.al+2018+annurev-orgpsych-Team+effectiveness.pdf",
+        "size": 405730,
+        "sha256": "752c5518e13da61606e3e244eb46d6c5671eb61f427d8133a9c65f98c5fc70a6",
+        "url": "https://udec.instructure.com/files/4624134/download?download_frd=1&verifier=fmgYzc8VvcY65wJiue4PxDfogRhW6oAIbu3rwQZl",
+        "timestamp": "2026-09-22T20:51:27.645314"
+      }
+    },
+    {
+      "id": 2959227,
+      "type": "file",
+      "title": "Ocho maneras de construir equipos colaborativos.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624135",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Ocho+maneras+de+construir+equipos+colaborativos.pdf",
+        "size": 189049,
+        "sha256": "19e25fc3fb4b356a625812509d65c64e9b002246c8dd0c4ba6af33e382d9e049",
+        "url": "https://udec.instructure.com/files/4624135/download?download_frd=1&verifier=aZgevM1tGQMyuOl0uK5MCMCZQGIgHKVHHXxR4VSt",
+        "timestamp": "2026-09-22T20:51:32.433668"
+      }
+    },
+    {
+      "id": 2959228,
+      "type": "file",
+      "title": "Team Innovation Review 2017 annurev-orgpsych.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624142",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Team+Innovation+Review+2017+annurev-orgpsych.pdf",
+        "size": 289580,
+        "sha256": "92c186fbd846a14246a9fe8c42aa117f26df24dfe3aeee69dcfd89232aaa4321",
+        "url": "https://udec.instructure.com/files/4624142/download?download_frd=1&verifier=HE9Rjxr6GuyXnSd5BviLSoZricJmhPsQqTRZSUSC",
+        "timestamp": "2026-09-22T20:51:37.399875"
+      }
+    },
+    {
+      "id": 2959230,
+      "type": "file",
+      "title": "What self awareness really is.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624088",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\What+self+awareness+really+is.pdf",
+        "size": 918062,
+        "sha256": "b21ecf52dec37cee6668f4ea3892f9fbc2afbdd1bd82a953919967ea68c7d2c8",
+        "url": "https://udec.instructure.com/files/4624088/download?download_frd=1&verifier=gMPRuUCvtuNwuA1qfhTygKRFlTRN3hHXje6aWBwl",
+        "timestamp": "2026-09-22T20:51:43.916076"
+      }
+    },
+    {
+      "id": 2959231,
+      "type": "file",
+      "title": "Levi - Cap 2 - Definiendo el Éxito de un Equipo.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624141",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Levi+-+Cap+2+-+Definiendo+el+%C3%89xito+de+un+Equipo.pdf",
+        "size": 219117,
+        "sha256": "19dcec569eb8d1952c72f5d8f286b08b13850e2e5aef6faf1dd58850cc3ce4df",
+        "url": "https://udec.instructure.com/files/4624141/download?download_frd=1&verifier=zEIyKIdwNqMwa9YTTo2WE0p7yxR0RQ5J8iD9Kk1D",
+        "timestamp": "2026-09-22T20:51:48.694737"
+      }
+    },
+    {
+      "id": 2959237,
+      "type": "file",
+      "title": "Team development interventios 2018.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624136",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Team+development+interventios+2018.pdf",
+        "size": 604966,
+        "sha256": "9c41a3c40e43d365fd66e3d803b01c4f2709369a2b162d44d4d74dfd65237b30",
+        "url": "https://udec.instructure.com/files/4624136/download?download_frd=1&verifier=DKOWDctz2tzBCoaNDDSnjdhXz6tcUHdyu2x9K9S2",
+        "timestamp": "2026-09-22T20:52:11.069565"
+      }
+    },
+    {
+      "id": 2959238,
+      "type": "file",
+      "title": "To Improve your team first work on yourself.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624137",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\To+Improve+your+team+first+work+on+yourself.pdf",
+        "size": 486538,
+        "sha256": "6e6dddd0b63dfb71be7f7eaea317b93f792fbfe72a6a0260dec1d0f96a5a65a2",
+        "url": "https://udec.instructure.com/files/4624137/download?download_frd=1&verifier=7ot4c2ierr07omyLU2NvO3i3eENfhEaA41p1Bssf",
+        "timestamp": "2026-09-22T20:52:16.141575"
+      }
+    },
+    {
+      "id": 3009093,
+      "type": "file",
+      "title": "Shuffer 2018 ReviewInterventions.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4683597",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Shuffer+2018+ReviewInterventions.pdf",
+        "size": 746062,
+        "sha256": "909e67d5e95a2ec647bb2afcb329cff4638b8a7783acb0f52891a6cce4f8ff6d",
+        "url": "https://udec.instructure.com/files/4683597/download?download_frd=1&verifier=UD0xxfLu9E8VMZND9N0yTmFoCKxwJTmbqr605S2y",
+        "timestamp": "2026-09-22T20:52:22.735972"
+      }
+    },
+    {
+      "id": 2959244,
+      "type": "file",
+      "title": "Conflict in team 2018.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624125",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Conflict+in+team+2018.pdf",
+        "size": 509673,
+        "sha256": "c2f3aabbbb5fa90978772bc4b42c150cc45b9f8cd9df80bdf37fa12737abf51c",
+        "url": "https://udec.instructure.com/files/4624125/download?download_frd=1&verifier=6Yh5RJVpP3jPCD0GxgcNkz7gb8ZSPupo3yxDl8gk",
+        "timestamp": "2026-09-22T20:52:27.739739"
+      }
+    },
+    {
+      "id": 2959245,
+      "type": "file",
+      "title": "Cómo anticiparse al conflicto de equipo.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624145",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\C%C3%B3mo+anticiparse+al+conflicto+de+equipo.pdf",
+        "size": 491094,
+        "sha256": "a75106613679808dc95c7a92015ab346a056532a88ae70851518d14002c31dfe",
+        "url": "https://udec.instructure.com/files/4624145/download?download_frd=1&verifier=we7egAKKt0FU6fOQ347jnnLLOsekD9ivOTnUvYM0",
+        "timestamp": "2026-09-22T20:52:32.888832"
+      }
+    },
+    {
+      "id": 2959246,
+      "type": "file",
+      "title": "Trust in work teams  2017.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624146",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Trust+in+work+teams++2017.pdf",
+        "size": 1181012,
+        "sha256": "ab275b14d4416cb91986ab6b4e4ef78a946164e38eaef26e085120cf229b84c6",
+        "url": "https://udec.instructure.com/files/4624146/download?download_frd=1&verifier=NGdgN6BJcwuAvWX8g2Uy3jx1LTvvJjIDNxo1QGom",
+        "timestamp": "2026-09-22T20:52:38.162424"
+      }
+    },
+    {
+      "id": 2959248,
+      "type": "file",
+      "title": "The hard truth about innovative culture.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624147",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\The+hard+truth+about+innovative+culture.pdf",
+        "size": 478810,
+        "sha256": "396ec177262fd2e5f246eb43f721ce7c55de7c1a8505ee327c01960392c21c2b",
+        "url": "https://udec.instructure.com/files/4624147/download?download_frd=1&verifier=gApt7kS2X7t85Dx1RCEETQjsqXaJSGG5JXCnFaaj",
+        "timestamp": "2026-09-22T20:52:45.072568"
+      }
+    }
+  ]
+}

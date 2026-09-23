@@ -1,0 +1,76 @@
+{
+  "module": "01_Modulo_Liderazgo_Lecturas",
+  "resource_count": 5,
+  "resources": [
+    {
+      "id": 2959196,
+      "type": "file",
+      "title": "Banks et al 2018 Construct redundancy en leader behaviors.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624087",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Banks+et+al+2018+Construct+redundancy+en+leader+behaviors.pdf",
+        "size": 279775,
+        "sha256": "21f4b0071fcae5ad21721b2856f3a5c88d6d7a57c0e14293716b3262c5ec88d1",
+        "url": "https://udec.instructure.com/files/4624087/download?download_frd=1&verifier=GGY4RHykR2DraaAhCGJQTR2beowDU02tAD7rYsvM",
+        "timestamp": "2026-09-22T20:50:07.758495"
+      }
+    },
+    {
+      "id": 2959197,
+      "type": "file",
+      "title": "HBR-Liderazgo-que-obtiene-resultados.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624114",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\HBR-Liderazgo-que-obtiene-resultados.pdf",
+        "size": 411036,
+        "sha256": "8fdd9532029a701c709423e905b0a42230a618614c9b79cdb3e1e3171ee53995",
+        "url": "https://udec.instructure.com/files/4624114/download?download_frd=1&verifier=YP8auuiHrM6yIOJK6RG6l3OaulUOKyxsq7H21u3t",
+        "timestamp": "2026-09-22T20:50:12.740357"
+      }
+    },
+    {
+      "id": 2959198,
+      "type": "file",
+      "title": "descubra_su_autentico_liderazgo_hbral Liderazgo auténtico.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624117",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\descubra_su_autentico_liderazgo_hbral+Liderazgo+aut%C3%A9ntico.pdf",
+        "size": 183138,
+        "sha256": "cb8091681701f357202873f463eafe62f365f2040987b8d7a997d2891f483ad7",
+        "url": "https://udec.instructure.com/files/4624117/download?download_frd=1&verifier=7YprNM2HM06i4TNNFtdw7DvnVQAW5b3imtt6vKfU",
+        "timestamp": "2026-09-22T20:50:17.491186"
+      }
+    },
+    {
+      "id": 2959199,
+      "type": "file",
+      "title": "Prieto et al 2010 Liderazgo Efectivo.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624131",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Prieto+et+al+2010+Liderazgo+Efectivo.pdf",
+        "size": 94149,
+        "sha256": "c0cc58da0ac42a24baecc283f0c347bb939178d330fdd5b123a7c4c52ca73678",
+        "url": "https://udec.instructure.com/files/4624131/download?download_frd=1&verifier=h3mRX4hgPxKgGIAZlpEIaa93HKcxZCMzw5abWDGC",
+        "timestamp": "2026-09-22T20:50:22.078093"
+      }
+    },
+    {
+      "id": 2959205,
+      "type": "file",
+      "title": "Elogio del lider incompleto.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624090",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Elogio+del+lider+incompleto.pdf",
+        "size": 137962,
+        "sha256": "a98fc0c806ba9543cfec37e5506e182d8558c263f0c10d2c8cd7637656f529eb",
+        "url": "https://udec.instructure.com/files/4624090/download?download_frd=1&verifier=XkDkD6TMni2foWXf4AOuoAe5c03KsXciz9sIgAKd",
+        "timestamp": "2026-09-22T20:50:34.420682"
+      }
+    }
+  ]
+}

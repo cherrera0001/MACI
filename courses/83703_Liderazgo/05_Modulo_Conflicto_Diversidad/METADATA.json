@@ -1,0 +1,48 @@
+{
+  "module": "05_Modulo_Conflicto_Diversidad",
+  "resource_count": 3,
+  "resources": [
+    {
+      "id": 2959224,
+      "type": "file",
+      "title": "Casos a desarrollar en clase en forma grupal.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624140",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Casos+a+desarrollar+en+clase+en+forma+grupal.pdf",
+        "size": 412544,
+        "sha256": "e118d920e89c1c7033efca0d44add96f7fe5b7ccc26833903fa59207248c3954",
+        "url": "https://udec.instructure.com/files/4624140/download?download_frd=1&verifier=QtNLdHg5HWTlg5AG5vWxZJb5yQZkbPlvWuo052J3",
+        "timestamp": "2026-09-22T20:51:22.659593"
+      }
+    },
+    {
+      "id": 2959234,
+      "type": "file",
+      "title": "Instrucciones y Fotos Actv. Diversidad.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624094",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Instrucciones+y+Fotos+Actv.+Diversidad.pdf",
+        "size": 2354325,
+        "sha256": "524d17825f2357a2f3bd6b897e85d6df5399dbeffed6dc7ce20186b3ad6dc250",
+        "url": "https://udec.instructure.com/files/4624094/download?download_frd=1&verifier=tXC7eVCW1gMnX8hlzu5DgvhS1C4a0EhuemTrb4kL",
+        "timestamp": "2026-09-22T20:52:00.062374"
+      }
+    },
+    {
+      "id": 2959236,
+      "type": "file",
+      "title": "Diagnóstico y corrección de equipos disfuncionales.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624102",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Diagn%C3%B3stico+y+correcci%C3%B3n+de+equipos+disfuncionales.pdf",
+        "size": 110791,
+        "sha256": "83660252047ad39ccbea99b5d9d2209a984523568c5f6bbd4faca9d27176f563",
+        "url": "https://udec.instructure.com/files/4624102/download?download_frd=1&verifier=omMNIKEvu8A0ufX19lpcKVehANXDUTgTrNtWr3i6",
+        "timestamp": "2026-09-22T20:52:05.064531"
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "module": "03_Modulo_Equipos_Jornadas",
+  "resource_count": 4,
+  "resources": [
+    {
+      "id": 2988036,
+      "type": "file",
+      "title": "Jornada 3 MACI Liderazgo y Equipos para la innovación 2026.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4663934",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Jornada+3+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+        "size": 1115110,
+        "sha256": "70c201862ceeceba0a54ce1c1b7ef89b31e3944c299c017a28d2d320d6530d25",
+        "url": "https://udec.instructure.com/files/4663934/download?download_frd=1&verifier=sp21oZVhj89i8HMLXo0Rye4EsYfyTIJbdG6IpFdh",
+        "timestamp": "2026-09-22T20:51:10.257038"
+      }
+    },
+    {
+      "id": 2998948,
+      "type": "file",
+      "title": "Jornada 4 MACI Liderazgo y Equipos para la innovación 2026.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4673031",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Jornada+4+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+        "size": 381792,
+        "sha256": "9ab39af5d7537e5fef09be8eb5f038446cb2105fa8edccee91aa5630f84f1635",
+        "url": "https://udec.instructure.com/files/4673031/download?download_frd=1&verifier=7PaKdkrKnephfuVnIvrOOO1QB3n2LtdZXqdgMST2",
+        "timestamp": "2026-09-22T20:51:17.807708"
+      }
+    },
+    {
+      "id": 3009094,
+      "type": "file",
+      "title": "Jornada 5 MACI Liderazgo y Equipos para la innovación 2026.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4683598",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Jornada+5+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+        "size": 669960,
+        "sha256": "cb78dc9828d9e700d937385ee6ca68f45fecaded2327959925884335f781bc56",
+        "url": "https://udec.instructure.com/files/4683598/download?download_frd=1&verifier=Gw4vYxaIfPBl5XzSeftBSu0UG9QB2SFkLEkfE1Fb",
+        "timestamp": "2026-09-22T20:51:55.046397"
+      }
+    },
+    {
+      "id": 3014657,
+      "type": "file",
+      "title": "Jornada 6 MACI Liderazgo y Equipos para la innovación 2026.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4689808",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Jornada+6+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+        "size": 511499,
+        "sha256": "a9bf85a2a9718b59efcf3049935f5d146e07b04dceba94b6e5fb5d0dbaca31c8",
+        "url": "https://udec.instructure.com/files/4689808/download?download_frd=1&verifier=NPBJDsuKrczSQPw1kt3UgKlX8SPlDbtQUC0X2Zr6",
+        "timestamp": "2026-09-22T20:52:50.122334"
+      }
+    }
+  ]
+}

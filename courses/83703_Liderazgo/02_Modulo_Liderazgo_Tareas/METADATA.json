@@ -1,0 +1,52 @@
+{
+  "module": "02_Modulo_Liderazgo_Tareas",
+  "resource_count": 5,
+  "resources": [
+    {
+      "id": 2959201,
+      "type": "assignment",
+      "title": "Ta1: Plan de desarrollo de habilidades para el liderazgo",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/assignments/681119",
+      "status": "saved",
+      "path": "83703\\assignments\\2959201.json"
+    },
+    {
+      "id": 2959207,
+      "type": "file",
+      "title": "High_Quality_Connections Conexiones de Alta Calidad.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4624109",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\High_Quality_Connections+Conexiones+de+Alta+Calidad.pdf",
+        "size": 270483,
+        "sha256": "66d29534fcc0d6adb25ad6d25860725b4bf13221964dbeb99c704a9c9a5f3955",
+        "url": "https://udec.instructure.com/files/4624109/download?download_frd=1&verifier=nr5KJJ83b0sP2CXcIxIn8ElziBjw2hsx351cVYnd",
+        "timestamp": "2026-09-22T20:50:44.161889"
+      }
+    },
+    {
+      "id": 2959208,
+      "type": "assignment",
+      "title": "Ta2: Conexiones de Alta Calidad MACI",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/assignments/681120",
+      "status": "saved",
+      "path": "83703\\assignments\\2959208.json"
+    },
+    {
+      "id": 2959239,
+      "type": "assignment",
+      "title": "Ta3a: Diagnóstico de Equipo",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/assignments/681121",
+      "status": "saved",
+      "path": "83703\\assignments\\2959239.json"
+    },
+    {
+      "id": 2959242,
+      "type": "assignment",
+      "title": "Ta3b: Intervención de Equipo",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/assignments/681122",
+      "status": "saved",
+      "path": "83703\\assignments\\2959242.json"
+    }
+  ]
+}

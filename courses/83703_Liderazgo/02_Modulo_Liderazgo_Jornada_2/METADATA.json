@@ -1,0 +1,20 @@
+{
+  "module": "02_Modulo_Liderazgo_Jornada_2",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 2972249,
+      "type": "file",
+      "title": "Jornada 2 MACI Liderazgo y Equipos para la innovación 2026.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/83703/files/4641695",
+      "status": "downloaded",
+      "details": {
+        "path": "83703\\files\\Jornada+2+MACI+Liderazgo+y+Equipos+para+la+innovaci%C3%B3n+2026.pdf",
+        "size": 1105844,
+        "sha256": "3d83ebd56636226917774ed18c32fcc4fffbe5fc2a5f3cccced2d80b176d67fa",
+        "url": "https://udec.instructure.com/files/4641695/download?download_frd=1&verifier=rH0ZdKB4ALQ4KK2mbLkCVeCSPSXNHAWi3mhAT1Gd",
+        "timestamp": "2026-09-22T20:50:28.706207"
+      }
+    }
+  ]
+}
