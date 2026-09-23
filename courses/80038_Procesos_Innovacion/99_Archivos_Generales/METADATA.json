@@ -1,0 +1,132 @@
+{
+  "module": "99_Archivos_Generales",
+  "resource_count": 9,
+  "resources": [
+    {
+      "id": 2902068,
+      "type": "file",
+      "title": "G603 - MACI - PI - Definición.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4551068",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G603+-+MACI+-+PI+-+Definicio%CC%81n.pdf",
+        "size": 3423595,
+        "sha256": "f1aa97c4af7c168634f238828664168f70cc5b9f201291baade35dbd0201d69d",
+        "url": "https://udec.instructure.com/files/4551068/download?download_frd=1&verifier=Dm2hAzzHz76JVwQTTnpfsup7ZblH8KBfuJugcQH5",
+        "timestamp": "2026-09-22T20:43:49.050907"
+      }
+    },
+    {
+      "id": 2906825,
+      "type": "file",
+      "title": "G604 - MACI - PI - Selección de un foco de innovación.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4560844",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G604+-+MACI+-+PI+-+Seleccio%CC%81n+de+un+foco+de+innovacio%CC%81n.pdf",
+        "size": 2274913,
+        "sha256": "1ba1150d7886d07d23e19b88af9647a8c4888665587b030200894d6e60bed7d9",
+        "url": "https://udec.instructure.com/files/4560844/download?download_frd=1&verifier=pzrYq3XT7yTXZDSFxC4qEZxdd4UI5WRrMFROZTvf",
+        "timestamp": "2026-09-22T20:43:55.550576"
+      }
+    },
+    {
+      "id": 2920826,
+      "type": "file",
+      "title": "05G6 - MACI - Diccionario.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577060",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\05G6+-+MACI+-+Diccionario.pdf",
+        "size": 201337,
+        "sha256": "63e47acf1f1004c3bbf9dace6f6aac119d8af5ae9247b40ef7df5c3fb16a886e",
+        "url": "https://udec.instructure.com/files/4577060/download?download_frd=1&verifier=AZ5niTSFzRmFvwdtltlfMtpUCWqzDLapp7zeCD3C",
+        "timestamp": "2026-09-22T20:44:11.979953"
+      }
+    },
+    {
+      "id": 2920827,
+      "type": "file",
+      "title": "05G6 - MACI - PI - Tipos de innovación.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577061",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\05G6+-+MACI+-+PI+-+Tipos+de+innovacio%CC%81n.pdf",
+        "size": 3732509,
+        "sha256": "6ed47d05d733a1d31c4fad150b3edb40c20c0c9ee9a96e92815cda21c8c98de6",
+        "url": "https://udec.instructure.com/files/4577061/download?download_frd=1&verifier=0xXIIrOAFw3CGCjct57TThK1RrbGl8gsijXslxIG",
+        "timestamp": "2026-09-22T20:44:17.274260"
+      }
+    },
+    {
+      "id": 2924306,
+      "type": "file",
+      "title": "notas-ev1.xlsx",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4581707",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\notas-ev1.xlsx",
+        "size": 7598,
+        "sha256": "6942faae62ebe073fd5bebb7d032522721fbf281b9450fd7d3e36f11589f881f",
+        "url": "https://udec.instructure.com/files/4581707/download?download_frd=1&verifier=LxLli8VkjCXvEQI5WWl5XPWrvs3s5o4nvhaHCLbP",
+        "timestamp": "2026-09-22T20:44:28.671694"
+      }
+    },
+    {
+      "id": 2920843,
+      "type": "file",
+      "title": "G1-smartsense.md",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577115",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G1-smartsense.md",
+        "size": 15296,
+        "sha256": "1e819a7a1ff7bd49718be3165f5185b94c40420c150808193010315ef3cf3b62",
+        "url": "https://udec.instructure.com/files/4577115/download?download_frd=1&verifier=mIR8ZgV5ieW1InXpUaEavv81YtUok22bspUdIWeb",
+        "timestamp": "2026-09-22T20:44:39.179404"
+      }
+    },
+    {
+      "id": 2920844,
+      "type": "file",
+      "title": "G2-copilot-virtual.md",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577116",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G2-copilot-virtual.md",
+        "size": 14666,
+        "sha256": "5118f15fbbf158754e2b61b7fd88b5f84b8e97f4a0c26d09c00ce9e4aa7192fc",
+        "url": "https://udec.instructure.com/files/4577116/download?download_frd=1&verifier=cn0VatqIAtLXlt2f6qnEFq3Nhep6Y67FJUjDjb4f",
+        "timestamp": "2026-09-22T20:44:43.696384"
+      }
+    },
+    {
+      "id": 2920845,
+      "type": "file",
+      "title": "G3-smartpet.md",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577117",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G3-smartpet.md",
+        "size": 14829,
+        "sha256": "1e41ba037c7eafdd6dacf9159b0968f18cc0e3febf6346a595df83269fd31048",
+        "url": "https://udec.instructure.com/files/4577117/download?download_frd=1&verifier=8akEsETRrk1Z5Q4XnL8OOnQ7bURFjyk5FE4UnYi0",
+        "timestamp": "2026-09-22T20:44:48.179974"
+      }
+    },
+    {
+      "id": 2920846,
+      "type": "file",
+      "title": "G4-twinlab.md",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577119",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\G4-twinlab.md",
+        "size": 15686,
+        "sha256": "8898a65030c07e9a2b4f911c165fe70ed9ee9d7509239f81f005270fe2cc377a",
+        "url": "https://udec.instructure.com/files/4577119/download?download_frd=1&verifier=v8dmQ0SbUcyBMvsmw9xUdJdNj4NX4Vp6NREyUj2l",
+        "timestamp": "2026-09-22T20:44:52.537661"
+      }
+    }
+  ]
+}

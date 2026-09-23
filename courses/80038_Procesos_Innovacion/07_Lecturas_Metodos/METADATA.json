@@ -1,0 +1,20 @@
+{
+  "module": "07_Lecturas_Metodos",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 2885131,
+      "type": "file",
+      "title": "Book_The Startup Owner's Manual_ The Step-By-Step Guide for Building a Great Company-K & S Ranch (2012)_Steve Blank, Bob Dorf.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4511988",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Book_The+Startup+Owner%27s+Manual_+The+Step-By-Step+Guide+for+Building+a+Great+Company-K+%26+S+Ranch+%282012%29_Steve+Blank%2C+Bob+Dorf.pdf",
+        "size": 28970450,
+        "sha256": "1cd83195871945e62e8e0701a87708d36b120576af47d9637ea3e2a73c4aab89",
+        "url": "https://udec.instructure.com/files/4511988/download?download_frd=1&verifier=D0a9TmhDRlLccR2ykZAFWYuZfcTgPVaZUof03rqJ",
+        "timestamp": "2026-09-22T20:43:01.191160"
+      }
+    }
+  ]
+}

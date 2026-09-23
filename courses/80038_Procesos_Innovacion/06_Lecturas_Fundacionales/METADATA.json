@@ -1,0 +1,34 @@
+{
+  "module": "06_Lecturas_Fundacionales",
+  "resource_count": 2,
+  "resources": [
+    {
+      "id": 2885130,
+      "type": "file",
+      "title": "Book_Designing for the Digital Age. How to Create Human-Centered Products and Services_Goodwin K..pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4511987",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Book_Designing+for+the+Digital+Age.+How+to+Create+Human-Centered+Products+and+Services_Goodwin+K..pdf",
+        "size": 20500709,
+        "sha256": "91eea5d4c7a604d07706cfcc9f3a7e7ed27e48cc8d60bc2be5be463230664c21",
+        "url": "https://udec.instructure.com/files/4511987/download?download_frd=1&verifier=rAdua861weKazkMxmlWwE1IUD2OiOYyEdw1AubiW",
+        "timestamp": "2026-09-22T20:42:54.655169"
+      }
+    },
+    {
+      "id": 2885133,
+      "type": "file",
+      "title": "Book_Ten types of innovation.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4511990",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Book_Ten+types+of+innovation.pdf",
+        "size": 6694657,
+        "sha256": "05cc01b88fb8e69ea61b15272426842cd5d29710dada0a1beaaee3cee8ee1957",
+        "url": "https://udec.instructure.com/files/4511990/download?download_frd=1&verifier=jsin6QiOLOEwAtC9y0Vo8Am9hakOfyfa53253mdT",
+        "timestamp": "2026-09-22T20:43:14.180987"
+      }
+    }
+  ]
+}

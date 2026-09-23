@@ -1,0 +1,34 @@
+{
+  "module": "08_Practicos_Entregas",
+  "resource_count": 2,
+  "resources": [
+    {
+      "id": 2898986,
+      "type": "file",
+      "title": "PI - Entrega 01.docx",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4548563",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\PI+-+Entrega+01.docx",
+        "size": 18793,
+        "sha256": "3a9db25e8c39e94356108a1096b7c5310ea627365567bb11c530e06238221059",
+        "url": "https://udec.instructure.com/files/4548563/download?download_frd=1&verifier=h7iEq4BYtO43IlVd5ogsQz9UFwwnJRBSXTxeNtQ3",
+        "timestamp": "2026-09-22T20:44:24.136413"
+      }
+    },
+    {
+      "id": 2920825,
+      "type": "file",
+      "title": "Instrucciones - Entrega final.docx",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4577059",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Instrucciones+-+Entrega+final.docx",
+        "size": 18269,
+        "sha256": "ba6e9b16190e73324f774278ba394b2748c8a407718a463d4ac8ea655353a26e",
+        "url": "https://udec.instructure.com/files/4577059/download?download_frd=1&verifier=J0wcLcb6X04SSPP0Sr3KAv5TiS3siudTltoXFbMM",
+        "timestamp": "2026-09-22T20:44:34.495205"
+      }
+    }
+  ]
+}

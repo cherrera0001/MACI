@@ -1,0 +1,20 @@
+{
+  "module": "01_Sesion_01_Proceso_General",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 2888320,
+      "type": "file",
+      "title": "Sesion 01 - Proceso General.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4517653",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+01+-+Proceso+General.pdf",
+        "size": 3083271,
+        "sha256": "3303407ecb2d9ae902d09aedad6cbdc0ab0a5629234d95bf6dc7ccbfeef7f078",
+        "url": "https://udec.instructure.com/files/4517653/download?download_frd=1&verifier=ni6TbEBjtNDUxM72yTSeamwCS4ZRIx8IswFrfRF1",
+        "timestamp": "2026-09-22T20:43:20.801159"
+      }
+    }
+  ]
+}

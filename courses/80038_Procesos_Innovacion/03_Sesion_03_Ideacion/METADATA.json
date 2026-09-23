@@ -1,0 +1,34 @@
+{
+  "module": "03_Sesion_03_Ideacion",
+  "resource_count": 2,
+  "resources": [
+    {
+      "id": 2897885,
+      "type": "file",
+      "title": "Sesion 03 - MIT_Innovation Process Benefits_ The Journey as Reward.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544019",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+03+-+MIT_Innovation+Process+Benefits_+The+Journey+as+Reward.pdf",
+        "size": 734996,
+        "sha256": "e16cae5973416cabae57f4053049de2802e66fec7a9d29d7b99f0e464b2a12ed",
+        "url": "https://udec.instructure.com/files/4544019/download?download_frd=1&verifier=b9z9UOwexq7hOFw08ugItk8VwWON7ILHQBDJ7Ati",
+        "timestamp": "2026-09-22T20:43:39.104608"
+      }
+    },
+    {
+      "id": 2897886,
+      "type": "file",
+      "title": "Sesion 03 - PIM_Establishing an NPD best practices framework.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544020",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+03+-+PIM_Establishing+an+NPD+best+practices+framework.pdf",
+        "size": 153929,
+        "sha256": "aa2269a9a965b6a13d6fcca33eda6302eaa471baf60bf85e702cbb9b4048cf3e",
+        "url": "https://udec.instructure.com/files/4544020/download?download_frd=1&verifier=go03xfSaK1b0rbusFhtfUnpmTjM9ZEQDxJ9TXjg2",
+        "timestamp": "2026-09-22T20:43:43.762574"
+      }
+    }
+  ]
+}

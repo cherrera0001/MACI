@@ -1,0 +1,48 @@
+{
+  "module": "05_Sesion_05_Testeo",
+  "resource_count": 3,
+  "resources": [
+    {
+      "id": 2885132,
+      "type": "file",
+      "title": "Book_Testing business ideas.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4511989",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Book_Testing+business+ideas.pdf",
+        "size": 62825569,
+        "sha256": "8999b8ffb4adfc98484ebc6dc6a4811ed2f92d0de6d9c1a17f2841f492105af2",
+        "url": "https://udec.instructure.com/files/4511989/download?download_frd=1&verifier=Y37rGB3oKRW0jNBg6zKiUgQsQhsfvTJ60wVNVnld",
+        "timestamp": "2026-09-22T20:43:08.731677"
+      }
+    },
+    {
+      "id": 2897887,
+      "type": "file",
+      "title": "Sesion 05 - Elsevier_An investigation into new product process steps, deficiencies, and impact.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544021",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+05+-+Elsevier_An+investigation+into+new+product+process+steps%2C+deficiencies%2C+and+impact.pdf",
+        "size": 2047831,
+        "sha256": "f6afb6f4ee91de2665f47aec62e0ce1122a38eb025d704308503bd9ef847574d",
+        "url": "https://udec.instructure.com/files/4544021/download?download_frd=1&verifier=T6uQfLVTR2XXW2Z2k0CIjbWuDkOP7u6YWXwKMXZS",
+        "timestamp": "2026-09-22T20:44:02.182634"
+      }
+    },
+    {
+      "id": 2897888,
+      "type": "file",
+      "title": "Sesion 05 - MIT_How to Catalyze Innovation in Your Organization.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544023",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+05+-+MIT_How+to+Catalyze+Innovation+in+Your+Organization.pdf",
+        "size": 878805,
+        "sha256": "a1d6f92b90d238414f653fce06912341e0f834c33bff6cc25ed51a130ad11bd7",
+        "url": "https://udec.instructure.com/files/4544023/download?download_frd=1&verifier=rWWzNKhQpiABPML5YxV6ijwlaqyfAvzyWPzPG7Y8",
+        "timestamp": "2026-09-22T20:44:07.340805"
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "module": "02_Sesion_02_Entendimiento",
+  "resource_count": 2,
+  "resources": [
+    {
+      "id": 2897883,
+      "type": "file",
+      "title": "Sesion 02 - Entendimiento.pdf",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544007",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+02+-+Entendimiento.pdf",
+        "size": 3387091,
+        "sha256": "f52df02cec24ad0f78f3b259146431f09b7d17666e8262fc95998c6840d3f962",
+        "url": "https://udec.instructure.com/files/4544007/download?download_frd=1&verifier=8DN0vVMzg2TKx63aD06M1nkd7kkniZAKOtNGFpMs",
+        "timestamp": "2026-09-22T20:43:27.773862"
+      }
+    },
+    {
+      "id": 2897884,
+      "type": "file",
+      "title": "Sesion 02 - HBR_Why design thinking works.PDF",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4544015",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Sesion+02+-+HBR_Why+design+thinking+works.PDF",
+        "size": 508429,
+        "sha256": "45a67bc564ff89b983a590fa646f00adb283da852a29d76fc071ec990955ed04",
+        "url": "https://udec.instructure.com/files/4544015/download?download_frd=1&verifier=2PFL9skAf5oSHgXgnz4b8jhRtQBUEYSQdSBPBxIa",
+        "timestamp": "2026-09-22T20:43:33.021060"
+      }
+    }
+  ]
+}

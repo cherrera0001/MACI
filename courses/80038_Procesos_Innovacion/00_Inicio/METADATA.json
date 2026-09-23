@@ -1,0 +1,20 @@
+{
+  "module": "00_Inicio",
+  "resource_count": 1,
+  "resources": [
+    {
+      "id": 2885134,
+      "type": "file",
+      "title": "Syllabus Procesos de Innovación - 2026.docx",
+      "url": "https://udec.instructure.com/api/v1/courses/80038/files/4511991",
+      "status": "downloaded",
+      "details": {
+        "path": "80038\\files\\Syllabus+Procesos+de+Innovacio%CC%81n+-+2026.docx",
+        "size": 64548,
+        "sha256": "424802ad6193f16edf2c61a8ecdaa3eba877d87e492654502616f533c9f2c4a3",
+        "url": "https://udec.instructure.com/files/4511991/download?download_frd=1&verifier=puo9unzHSSJXhZzX8tmidg4EUwWefLQWwxygUrye",
+        "timestamp": "2026-09-22T20:42:47.166695"
+      }
+    }
+  ]
+}
