@@ -1,0 +1,31 @@
+{
+  "module": "08_Talleres",
+  "resource_count": 5,
+  "resources": [
+    {
+      "id": 2855719,
+      "title": "Taller 1 - Emp. Tec - 2026.pdf",
+      "timestamp": "2026-09-22T20:45:12.113202"
+    },
+    {
+      "id": 2855720,
+      "title": "Taller 2 - Emp. Tec - 2026.pdf",
+      "timestamp": "2026-09-22T20:45:17.180249"
+    },
+    {
+      "id": 2855721,
+      "title": "Taller 3 - Emp. Tec - 2026.pdf",
+      "timestamp": "2026-09-22T20:45:22.359332"
+    },
+    {
+      "id": 2855718,
+      "title": "Taller 4 - Emp. Tec - 2026.pdf",
+      "timestamp": "2026-09-22T20:45:27.575695"
+    },
+    {
+      "id": 2874484,
+      "title": "Taller 5 - Emp. Tec - 2026.pdf",
+      "timestamp": "2026-09-22T20:45:32.880413"
+    }
+  ]
+}
