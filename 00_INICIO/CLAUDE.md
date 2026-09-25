@@ -42,14 +42,14 @@ usuario. Corregir y construir artefactos sí, porque no necesitan esperarlo.
 
 Explicar un concepto nuevo genera un HTML en `07_DATITO/01_CONCEPTOS/visual/`. El chat
 queda para el bucle socrático: preguntar, esperar, diagnosticar, dar una pista.
-Es la garantía G9 de `spec.md`.
+Es la garantía G9 de `00_INICIO/spec.md`.
 
 Y antes de una fórmula: situación real → qué pregunta responde → números
 pequeños → **recién entonces** la notación.
 
 **Una respuesta también es exposición.** Si Cristóbal pide la respuesta
 correcta, o Datito resuelve o corrige algo, se escribe primero en
-`07_DATITO/00_INICIO/dudas.yaml` y se renderiza con `python 03_CODIGO/construir_navegacion.py`
+`07_DATITO/00_INICIO/dudas.yaml` y se renderiza con `python 03_SCRIPTS/construir_navegacion.py`
 en el visual del tema; el chat lleva a lo más la frase corta y la ruta. Lo
 explicado solo en la terminal se pierde (spec.md G9; reportado tres veces).
 
@@ -88,7 +88,7 @@ Tras cada sesion hay que regenerar el resumen, o la siguiente abre con datos
 viejos:
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/datito_estado.py
 ```
 
 ### Estados y evidencia
@@ -104,21 +104,21 @@ Cristobal diga "entendi" no es evidencia de nada.
 
 ## Fuentes y su jerarquia
 
-1. Material FCD del repositorio — `08_PRACTICA/` (laboratorios del curso),
-   `01_DOCUMENTACION/`, `02_PROYECTO_FCD/`
+1. Material FCD del repositorio — `06_LABORATORIOS/` (laboratorios del curso),
+   `01_DOCUMENTACION/`, `08_PROYECTO_FCD/`
 2. Cuaderno de NotebookLM — MCP `notebooklm`, 66 fuentes
-3. Proyectos propios — Melbourne (`05_RESULTADOS/`), Galaxy Zoo (`02_PROYECTO_FCD/Desafio/`)
+3. Proyectos propios — Melbourne (`09_RESULTADOS/`), Galaxy Zoo (`08_PROYECTO_FCD/Desafio/`)
 4. Fuentes academicas externas — solo si lo anterior no alcanza
 
-Las transcripciones de clase (`09_CLASES/`) son material del curso de nivel 1,
+Las transcripciones de clase (`05_CLASES/transcripciones/`) son material del curso de nivel 1,
 pero ceden ante laminas y practicos. Se citan con ruta completa del `.md` y
-marca de tiempo; `09_CLASES/mapa_ensenanza.yaml` dice donde se enseno cada
+marca de tiempo; `05_CLASES/mapa_ensenanza.yaml` dice donde se enseno cada
 concepto y quien hablaba. Solo las clases del profesor titular entran al
 certamen, no las ayudantias (clase del 15-jul, 1:18:16).
 
 ### Los practicos
 
-`08_PRACTICA/` tiene los 5 laboratorios del curso (P1 Pandas, P2 Calidad de
+`06_LABORATORIOS/` tiene los 5 laboratorios del curso (P1 Pandas, P2 Calidad de
 Datos, P3 Numpy y Analisis Descriptivo, P4 Regresion, P5 Clasificacion), cada
 uno en version `(res)` resuelta y `(vacio)` sin resolver. Cubren 12 de los 21
 conceptos del curriculum.
@@ -153,7 +153,7 @@ notebooklm auth check --json         # debe devolver "status": "ok"
 
 ## Cifras del proyecto Melbourne
 
-Verificadas en `05_RESULTADOS/resultados_temporal.json`. Usalas como ejemplo
+Verificadas en `09_RESULTADOS/resultados_temporal.json`. Usalas como ejemplo
 concreto en vez de inventar numeros:
 
 - Train 6.336 propiedades de 2016, test 7.244 de 2017
@@ -162,7 +162,7 @@ concreto en vez de inventar numeros:
 - **29,1% del test son suburbios que no existen en el train**
 - 6 modelos comparados, cada uno sobre target crudo y logaritmico
 
-`99_ARCHIVO/_obsoleto_split_aleatorio/` conserva una version invalidada que
+`10_ARCHIVO/_obsoleto_split_aleatorio/` conserva una version invalidada que
 anunciaba *"81% Precision"* con split aleatorio. Se mantiene a proposito: es el
 mejor material disponible para ensenar fuga de informacion.
 
@@ -170,10 +170,10 @@ mejor material disponible para ensenar fuga de informacion.
 
 ## Convenciones del repositorio
 
-Estructura numerada por funcion (`01_` a `07_`, mas `99_ARCHIVO`). Ningun
-documento suelto en la raiz.
+Estructura numerada por funcion (`00_INICIO`, `01_` a `10_ARCHIVO`). Ningun
+documento suelto en la raiz excepto `.env*` y `.claude/`.
 
 El repositorio usa etiquetas auditables en su documentacion: `[EVIDENCIA]`,
 `[INFERENCIA]`, `[NO EVIDENCIADO]`. Respetalas al editar documentos existentes.
 
-Los scripts se ejecutan **desde la raiz** (`F:\MACI`), no desde `03_CODIGO/`.
+Los scripts se ejecutan **desde la raiz** (`F:\MACI`), no desde `03_SCRIPTS/`.
