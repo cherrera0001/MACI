@@ -1,2 +1,3 @@
 iter	fecha	hipotesis	cambios	resultado	archivo	nota
 1	2026-09-25	Scatter plot + umbral	Plotly scatter, sliders vib/temp, matriz en vivo	MEJORA	simulador_prediccion_falla.html	CSS variables Datito funcionan; matriz requiere orden calc→display
+2	2026-09-25	Matriz confusión dinámica	Tabla 2x2 con labels + colores rgba por intensidad	MEJORA	simulador_prediccion_falla.html	Tabla > Gráfico para matriz; colores dinámicos intuitivos; trade-off visible

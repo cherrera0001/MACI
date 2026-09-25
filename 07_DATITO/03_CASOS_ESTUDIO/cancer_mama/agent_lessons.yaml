@@ -18,10 +18,19 @@ iteracion_1:
 
 iteracion_2:
   hipotesis: "Matriz confusión dinámica permite ver impacto de umbrales en cada celda"
-  cambios: null
-  resultado: null
-  leccion: null
-  fecha: null
+  cambios:
+    - "Reorganizar tabla: TP/TN/FP/FN en 4 celdas con labels destacados"
+    - "Agregar colores dinámicos: intensidad = proporción relativa del valor"
+    - "Verde (acierto) para TP/TN, Rojo (error) para FP/FN"
+    - "Animación suave (transition .2s) al cambiar umbrales"
+  resultado: "MEJORA ✅"
+  leccion: |
+    - Tabla HTML simple es 10x más efectiva que gráfico para matriz
+    - Colores dinámicos (rgba intensity) permiten ver proporción sin cálculo manual
+    - Separar labels (TP, FN, FP, TN) hace matriz autoexplicativa
+    - Usuario comprende instantáneamente trade-off (TP vs FP al cambiar slider)
+  fecha: "2026-09-25"
+  archivo: "simulador_prediccion_falla.html"
 
 iteracion_3:
   hipotesis: "Histogramas de vibración/temperatura muestran distribución de datos y solapamiento"

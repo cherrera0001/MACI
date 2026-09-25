@@ -101,13 +101,25 @@
         </tr>
         <tr>
           <th style="border:1px solid var(--linea); padding:8px; text-align:right">Real FALLA</th>
-          <td style="border:1px solid var(--linea); padding:8px; background:#f0fdf4; font-weight:700; color:var(--acierto)" id="tp">-</td>
-          <td style="border:1px solid var(--linea); padding:8px; background:var(--error-bg); font-weight:700; color:var(--error)" id="fn">-</td>
+          <td style="border:1px solid var(--linea); padding:12px; text-align:center; font-weight:700; font-size:1.2rem; transition:background .2s, color .2s" id="tp-cell">
+            <span style="display:block; font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:4px">TP</span>
+            <span id="tp">-</span>
+          </td>
+          <td style="border:1px solid var(--linea); padding:12px; text-align:center; font-weight:700; font-size:1.2rem; background:var(--error-bg); transition:background .2s, color .2s" id="fn-cell">
+            <span style="display:block; font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:4px">FN</span>
+            <span id="fn">-</span>
+          </td>
         </tr>
         <tr>
           <th style="border:1px solid var(--linea); padding:8px; text-align:right">Real OK</th>
-          <td style="border:1px solid var(--linea); padding:8px; background:var(--error-bg); font-weight:700; color:var(--error)" id="fp">-</td>
-          <td style="border:1px solid var(--linea); padding:8px; background:#f0fdf4; font-weight:700; color:var(--acierto)" id="tn">-</td>
+          <td style="border:1px solid var(--linea); padding:12px; text-align:center; font-weight:700; font-size:1.2rem; background:var(--error-bg); transition:background .2s, color .2s" id="fp-cell">
+            <span style="display:block; font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:4px">FP</span>
+            <span id="fp">-</span>
+          </td>
+          <td style="border:1px solid var(--linea); padding:12px; text-align:center; font-weight:700; font-size:1.2rem; transition:background .2s, color .2s" id="tn-cell">
+            <span style="display:block; font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:4px">TN</span>
+            <span id="tn">-</span>
+          </td>
         </tr>
       </table>
     </div>
@@ -141,7 +153,7 @@
 
   <footer>
     [FUENTE · Clase 7 — Clasificación, FCD-2026-2_07_Clasificacion.pdf]<br>
-    Simulador interactivo para aprender predicción de falla · Iteración 1: HTML base + scatter plot
+    Simulador interactivo para aprender predicción de falla · Iteración 2: Matriz confusión dinámica (colores por intensidad)
   </footer>
 </div>
 
@@ -180,6 +192,22 @@
     document.getElementById('tn').textContent = tn;
     document.getElementById('fp').textContent = fp;
     document.getElementById('fn').textContent = fn;
+
+    // Colorear celdas dinámicamente
+    const max_val = Math.max(tp, tn, fp, fn, 1);
+    const tp_intensity = Math.max(0.3, tp / max_val);
+    const tn_intensity = Math.max(0.3, tn / max_val);
+    const fp_intensity = Math.max(0.3, fp / max_val);
+    const fn_intensity = Math.max(0.3, fn / max_val);
+
+    document.getElementById('tp-cell').style.background = `rgba(47, 107, 70, ${tp_intensity * 0.15})`;
+    document.getElementById('tp-cell').style.color = 'var(--acierto)';
+    document.getElementById('tn-cell').style.background = `rgba(47, 107, 70, ${tn_intensity * 0.15})`;
+    document.getElementById('tn-cell').style.color = 'var(--acierto)';
+    document.getElementById('fp-cell').style.background = `rgba(155, 50, 38, ${fp_intensity * 0.15})`;
+    document.getElementById('fp-cell').style.color = 'var(--error)';
+    document.getElementById('fn-cell').style.background = `rgba(155, 50, 38, ${fn_intensity * 0.15})`;
+    document.getElementById('fn-cell').style.color = 'var(--error)';
 
     // Métricas
     const recall = (tp + fn) > 0 ? (tp / (tp + fn)).toFixed(3) : '-';
