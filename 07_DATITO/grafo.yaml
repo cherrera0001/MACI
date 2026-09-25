@@ -1,0 +1,117 @@
+# Grafo de dependencias de conceptos (formato simplificado)
+# Cada concepto lista sus prerrequisitos y dependientes
+
+conceptos:
+  fundamentos_ciencia_datos:
+    titulo: "Fundamentos en Ciencia de Datos"
+    archivo: "01_fundamentos.html"
+    prioridad: 1
+    depende_de: []
+    habilita:
+      - datos_features_target
+      - eda
+  
+  datos_features_target:
+    titulo: "Datos, filas, columnas, features y target"
+    archivo: "02_datos_features_target.html"
+    prioridad: 2
+    depende_de: [fundamentos_ciencia_datos]
+    habilita: [eda, train_validation_test]
+  
+  eda:
+    titulo: "EDA y análisis exploratorio"
+    archivo: "03_eda.html"
+    prioridad: 3
+    depende_de: [datos_features_target]
+    habilita: [limpieza_preparacion, generalizacion]
+  
+  limpieza_preparacion:
+    titulo: "Limpieza y preparación de datos"
+    archivo: "04_limpieza_preparacion.html"
+    prioridad: 4
+    depende_de: [eda]
+    habilita: [train_validation_test]
+  
+  train_validation_test:
+    titulo: "Train, validation, test split"
+    archivo: "05_train_validation_test.html"
+    prioridad: 5
+    depende_de: [limpieza_preparacion]
+    habilita: [validacion_cruzada, generalizacion]
+  
+  validacion_cruzada:
+    titulo: "Validación cruzada"
+    archivo: "06_validacion_cruzada.html"
+    prioridad: 6
+    depende_de: [train_validation_test]
+    habilita: [generalizacion]
+  
+  generalizacion:
+    titulo: "Generalización y error"
+    archivo: "07_generalizacion.html"
+    prioridad: 7
+    depende_de: [eda, train_validation_test]
+    habilita: [overfitting_underfitting]
+  
+  overfitting_underfitting:
+    titulo: "Overfitting y underfitting"
+    archivo: "08_overfitting_underfitting.html"
+    prioridad: 8
+    depende_de: [generalizacion]
+    habilita: [regresion, clasificacion]
+  
+  regresion:
+    titulo: "Regresión"
+    archivo: "09_regresion.html"
+    prioridad: 9
+    depende_de: [overfitting_underfitting]
+    habilita: []
+  
+  clasificacion:
+    titulo: "Clasificación"
+    archivo: "10_clasificacion.html"
+    prioridad: 10
+    depende_de: [overfitting_underfitting]
+    habilita: [matriz_confusion]
+  
+  matriz_confusion:
+    titulo: "Matriz de confusión"
+    archivo: "11_matriz_confusion.html"
+    prioridad: 11
+    depende_de: [clasificacion]
+    habilita: [metricas_clasificacion]
+  
+  metricas_clasificacion:
+    titulo: "Métricas de clasificación"
+    archivo: "12_metricas_clasificacion.html"
+    prioridad: 12
+    depende_de: [matriz_confusion]
+    habilita: [roc_auc]
+  
+  roc_auc:
+    titulo: "ROC y AUC"
+    archivo: "13_roc_auc.html"
+    prioridad: 13
+    depende_de: [metricas_clasificacion]
+    habilita: [arboles_decision]
+  
+  arboles_decision:
+    titulo: "Árboles de decisión"
+    archivo: "14_arboles_decision.html"
+    prioridad: 14
+    depende_de: [roc_auc]
+    habilita: []
+  
+  redes_neuronales:
+    titulo: "Redes neuronales"
+    archivo: "18_redes_neuronales.html"
+    prioridad: 18
+    depende_de: [overfitting_underfitting]
+    habilita: [deep_learning]
+  
+  deep_learning:
+    titulo: "Deep learning"
+    archivo: "19_deep_learning.html"
+    prioridad: 19
+    depende_de: [redes_neuronales]
+    habilita: []
