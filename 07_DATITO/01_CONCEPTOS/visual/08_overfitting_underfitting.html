@@ -2,89 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Sobreajuste y subajuste · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
-  .dist a{color:#4338ca}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block;border-radius:8px}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
-         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
-  button:hover{background:#1d4ed8}
-  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
-  button.ok{background:var(--verde)}button.ok:hover{background:#047857}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
-               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.6rem;display:none}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
-          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
-  .simb{font-size:.88rem}
-  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
-  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-aprende{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-top:1rem}
-  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
-  .met .n{font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
-  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
-  .vecino a{color:var(--azul)}
-  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
-  ol.pasos li{margin-bottom:.4rem}
-  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1rem}
-  .ctrl label{font-weight:600;font-size:.88rem}
-  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:5rem;text-align:right}
-  input[type=range]{width:100%}
-  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary:before{content:"▸ ";font-weight:700}
-  details[open] summary:before{content:"▾ "}
-  details[open] summary{margin-bottom:.7rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-  .spoiler{background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:.5rem .8rem;font-size:.88rem;margin-bottom:.7rem}
-  .vf{margin:.4rem 0 .2rem;font-weight:600}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="10" id="clase-10">
@@ -879,253 +803,60 @@ y los errores del P4. Ilustrativos [DATITO]: los pinos del simulador (semilla fi
 A/B/C y el caso de los buses.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-const $ = id => document.getElementById(id);
-const fmt = (v, d) => v.toFixed(d).replace('.', ',');
-
-// ---- Predicciones: se responden con un clic; nunca bloquean los controles ----
-const PRED = {
-  curva: {
-    ambos: '<strong>No.</strong> El de entrenamiento sí baja siempre, pero el de validación no: mueve el deslizador hasta 12 y mira la curva naranja. Pasado cierto grado el modelo empieza a perseguir el ruido de estos 13 pinos, y eso se paga fuera.',
-    u: '<strong>Eso es.</strong> Entrenamiento nunca sube (cada grado puede imitar al anterior), y validación forma una U: baja mientras el modelo aprende la forma, sube cuando empieza a memorizar. Compruébalo recorriendo del 1 al 12.',
-    ambosu: '<strong>Casi.</strong> Validación sí baja y después sube. Pero el de entrenamiento no puede subir al agregar grado: el polinomio de grado mayor siempre puede copiar al de grado menor poniendo en cero los θ nuevos. Por eso el entrenamiento no sirve para elegir.',
-    cruz: '<strong>No.</strong> Es al revés en los dos. Con grado 1 los dos errores son altos (subajuste); al subir el grado el de entrenamiento baja hasta llegar a 0 en grado 12.'
-  },
-  cero: {
-    mejor: '<strong>No.</strong> Con tantos parámetros como datos, cualquier polinomio pasa por todos los puntos, tenga o no la forma real. En el simulador, el grado 12 tiene error de entrenamiento 0 y el peor error de validación.',
-    sobre: '<strong>Tampoco, aunque es una buena alarma.</strong> Un 0 de entrenamiento es sospechoso, no un veredicto: el veredicto lo da el error fuera. Abre abajo la paradoja de la ayudantía: un grado que pasa perfecto por todos los puntos y aun así gana en validación.',
-    nada: '<strong>Eso es.</strong> El 0 de entrenamiento no distingue un modelo que aprendió de uno que memorizó. Hace falta el error en datos que no vio, y comparar: la brecha. Es la P7.'
-  }
-};
-document.querySelectorAll('.pred').forEach(p => {
-  const k = p.dataset.p;
-  p.querySelectorAll('button').forEach(b => {
-    b.onclick = () => {
-      p.querySelectorAll('button').forEach(x => x.classList.remove('elegida'));
-      b.classList.add('elegida');
-      const v = p.querySelector('.veredicto');
-      v.innerHTML = PRED[k][b.dataset.r];
-      v.classList.add('on');
-    };
-  });
-});
-
-// ---- Datos [DATITO]: altura de pinos (m) segun edad (anos). Cifras inventadas, semilla fija ----
-function crearRng(s){ return function(){ s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
-const rnd = crearRng(221743);
-function gauss(){ let v = 0; for (let i = 0; i < 12; i++) v += rnd(); return v - 6; }
-const XMIN = 2, XMAX = 38, DE = 1.2;
-const verdad = x => 31 * Math.pow(1 - Math.exp(-0.085 * x), 1.7);
-const TR = [], VA = [], EX = [];
-for (let i = 0; i < 13; i++){
-  const x = XMIN + i * 3 + (i > 0 && i < 12 ? (rnd() - 0.5) * 1.2 : 0);
-  TR.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
-}
-for (let i = 0; i < 12; i++){
-  const x = XMIN + 0.5 + (XMAX - XMIN - 1) * (i + rnd()) / 12;
-  VA.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
-}
-for (let i = 0; i < 26; i++){
-  const x = XMIN + (XMAX - XMIN) * (i + rnd()) / 26;
-  EX.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
-}
-
-// ---- Ajuste por minimos cuadrados. Base de Chebyshev (mismo polinomio, mejor condicionado) ----
-const u = x => 2 * (x - XMIN) / (XMAX - XMIN) - 1;
-function base(x, g){
-  const t = u(x), T = [1, t];
-  for (let k = 2; k <= g; k++) T.push(2 * t * T[k-1] - T[k-2]);
-  return T.slice(0, g + 1);
-}
-function ajustar(P, g){
-  const m = g + 1;
-  const A = Array.from({length: m}, () => new Array(m).fill(0)), b = new Array(m).fill(0);
-  for (const p of P){
-    const B = base(p.x, g);
-    for (let r = 0; r < m; r++){
-      for (let c = 0; c < m; c++) A[r][c] += B[r] * B[c];
-      b[r] += B[r] * p.y;
-    }
-  }
-  for (let c = 0; c < m; c++){
-    let piv = c;
-    for (let r = c + 1; r < m; r++) if (Math.abs(A[r][c]) > Math.abs(A[piv][c])) piv = r;
-    [A[c], A[piv]] = [A[piv], A[c]]; [b[c], b[piv]] = [b[piv], b[c]];
-    for (let r = c + 1; r < m; r++){
-      const k = A[r][c] / A[c][c];
-      for (let j = c; j < m; j++) A[r][j] -= k * A[c][j];
-      b[r] -= k * b[c];
-    }
-  }
-  const co = new Array(m).fill(0);
-  for (let r = m - 1; r >= 0; r--){
-    let s = b[r];
-    for (let j = r + 1; j < m; j++) s -= A[r][j] * co[j];
-    co[r] = s / A[r][r];
-  }
-  return co;
-}
-function evaluar(co, x){ const B = base(x, co.length - 1); let s = 0; for (let k = 0; k < co.length; k++) s += co[k] * B[k]; return s; }
-function ecm(co, P){ let s = 0; for (const p of P) s += (p.y - evaluar(co, p.x)) ** 2; return s / P.length; }
-
-// Se calcula todo una vez: 12 grados x 2 modos (13 filas / 39 filas)
-const MODOS = [TR, TR.concat(EX)];
-const TABLA = MODOS.map(P => {
-  const filas = [];
-  for (let g = 1; g <= 12; g++){ const co = ajustar(P, g); filas.push({g, co, tr: ecm(co, P), va: ecm(co, VA)}); }
-  const minVa = Math.min(...filas.map(f => f.va));
-  filas.forEach(f => f.lec = lectura(f.tr, f.va, minVa));
-  return filas;
-});
-function lectura(tr, va, minVa){
-  if (tr > 2 * minVa && va > 2 * minVa) return {txt: 'Subajuste', cls: 'sub', col: '#b45309'};
-  if (va - tr >= minVa) return {txt: 'Sobreajuste', cls: 'sobre', col: '#dc2626'};
-  if (va - tr >= 0.5 * minVa) return {txt: 'Se abre la brecha', cls: 'medio', col: '#be185d'};
-  return {txt: 'Ajuste razonable', cls: 'ok', col: '#059669'};
-}
-
-let grado = 1, modo = 0;
-
-// ---- Dibujo 1: datos y curva ajustada ----
-function dibujaAjuste(){
-  const c = $('c-ajuste'), g = c.getContext('2d');
-  const W = c.width, H = c.height, ML = 56, MR = 16, MT = 24, MB = 44;
-  const X0 = 0, X1 = 40, Y0 = 0, Y1 = 38;
-  const px = x => ML + (x - X0) / (X1 - X0) * (W - ML - MR);
-  const py = y => H - MB - (y - Y0) / (Y1 - Y0) * (H - MT - MB);
-  g.clearRect(0, 0, W, H);
-  g.font = '11px system-ui'; g.lineWidth = 1;
-  for (let y = 0; y <= 35; y += 5){
-    g.strokeStyle = '#ececec'; g.beginPath(); g.moveTo(ML, py(y)); g.lineTo(W - MR, py(y)); g.stroke();
-    g.fillStyle = '#666'; g.textAlign = 'right'; g.fillText(y, ML - 8, py(y) + 4);
-  }
-  g.textAlign = 'center';
-  for (let x = 0; x <= 40; x += 5) g.fillText(x, px(x), H - MB + 16);
-  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
-  g.beginPath(); g.moveTo(ML, MT); g.lineTo(ML, H - MB); g.lineTo(W - MR, H - MB); g.stroke();
-  g.fillStyle = '#444'; g.font = '600 12px system-ui';
-  g.fillText('Edad del pino [años]', (ML + W - MR) / 2, H - 8);
-  g.save(); g.translate(15, (MT + H - MB) / 2); g.rotate(-Math.PI / 2); g.fillText('Altura [m]', 0, 0); g.restore();
-
-  // curva recortada al area del grafico
-  const fila = TABLA[modo][grado - 1];
-  g.save(); g.beginPath(); g.rect(ML, MT, W - ML - MR, H - MT - MB); g.clip();
-  g.strokeStyle = '#1a1a1a'; g.lineWidth = 2.5; g.beginPath();
-  let primero = true;
-  for (let x = XMIN; x <= XMAX + 1e-9; x += 0.05){
-    const Y = Math.max(-50, Math.min(H + 50, py(evaluar(fila.co, x))));
-    if (primero){ g.moveTo(px(x), Y); primero = false; } else g.lineTo(px(x), Y);
-  }
-  g.stroke(); g.restore();
-
-  if (modo === 1) EX.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 3.5, 0, 7); g.fillStyle = '#93c5fd'; g.fill(); });
-  TR.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 5, 0, 7); g.fillStyle = '#2563eb'; g.fill(); });
-  VA.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 5, 0, 7); g.strokeStyle = '#d97706'; g.lineWidth = 2.2; g.stroke(); });
-
-  g.textAlign = 'left'; g.font = '12px system-ui';
-  g.fillStyle = '#2563eb'; g.fillText('● entrenamiento (' + MODOS[modo].length + ')', ML + 10, MT + 4);
-  g.fillStyle = '#d97706'; g.fillText('○ validación (12)', ML + 175, MT + 4);
-  g.fillStyle = '#1a1a1a'; g.fillText('— polinomio de grado ' + grado, ML + 300, MT + 4);
-  g.fillStyle = '#9ca3af'; g.textAlign = 'right'; g.fillText('cifras ilustrativas [DATITO]', W - MR - 4, MT + 4);
-}
-
-// ---- Dibujo 2: curva de complejidad ----
-function dibujaCurva(){
-  const c = $('c-curva'), g = c.getContext('2d');
-  const W = c.width, H = c.height, ML = 56, MR = 16, MT = 26, MB = 44, YTOP = 10;
-  const filas = TABLA[modo];
-  const px = k => ML + (k - 0.5) / 12 * (W - ML - MR);
-  const py = y => H - MB - Math.min(y, YTOP) / YTOP * (H - MT - MB);
-  g.clearRect(0, 0, W, H);
-  // zonas
-  const fondo = {sub: '#fef3c7', sobre: '#fee2e2', medio: '#fdf2f8', ok: '#f0fdf4'};
-  filas.forEach(f => { g.fillStyle = fondo[f.lec.cls]; g.fillRect(px(f.g - 0.5), MT, px(f.g + 0.5) - px(f.g - 0.5), H - MT - MB); });
-  const rotulos = {sub: 'subajuste', sobre: 'sobreajuste'};
-  ['sub', 'sobre'].forEach(cls => {
-    const ks = filas.filter(f => f.lec.cls === cls).map(f => f.g);
-    if (!ks.length) return;
-    g.fillStyle = cls === 'sub' ? '#92400e' : '#991b1b'; g.font = '600 11px system-ui'; g.textAlign = 'center';
-    g.fillText(rotulos[cls], (px(Math.min(...ks)) + px(Math.max(...ks))) / 2, MT + 14);
-  });
-  // ejes
-  g.font = '11px system-ui'; g.fillStyle = '#666'; g.textAlign = 'right';
-  for (let y = 0; y <= YTOP; y += 2){
-    g.strokeStyle = '#e5e5e5'; g.lineWidth = 1; g.beginPath(); g.moveTo(ML, py(y)); g.lineTo(W - MR, py(y)); g.stroke();
-    g.fillText(y, ML - 8, py(y) + 4);
-  }
-  g.textAlign = 'center';
-  for (let k = 1; k <= 12; k++) g.fillText(k, px(k), H - MB + 16);
-  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
-  g.beginPath(); g.moveTo(ML, MT); g.lineTo(ML, H - MB); g.lineTo(W - MR, H - MB); g.stroke();
-  g.fillStyle = '#444'; g.font = '600 12px system-ui';
-  g.fillText('Grado del polinomio (más grado = más parámetros = más complejidad)', (ML + W - MR) / 2, H - 8);
-  g.save(); g.translate(15, (MT + H - MB) / 2); g.rotate(-Math.PI / 2); g.fillText('ECM [m²]', 0, 0); g.restore();
-  // grado actual
-  g.setLineDash([5, 4]); g.strokeStyle = '#7c3aed'; g.lineWidth = 1.5;
-  g.beginPath(); g.moveTo(px(grado), MT); g.lineTo(px(grado), H - MB); g.stroke(); g.setLineDash([]);
-  // lineas
-  function linea(clave, color){
-    g.strokeStyle = color; g.lineWidth = 2.5; g.beginPath();
-    filas.forEach((f, i) => { const X = px(f.g), Y = py(f[clave]); if (i === 0) g.moveTo(X, Y); else g.lineTo(X, Y); });
-    g.stroke();
-    filas.forEach(f => {
-      const X = px(f.g), Y = py(f[clave]), fuera = f[clave] > YTOP;
-      g.fillStyle = color; g.beginPath();
-      if (fuera){ g.moveTo(X, Y - 7); g.lineTo(X - 6, Y + 3); g.lineTo(X + 6, Y + 3); g.closePath(); }
-      else g.arc(X, Y, f.g === grado ? 6 : 3.5, 0, 7);
-      g.fill();
-      if (fuera){ g.font = '600 10px system-ui'; g.textAlign = 'center'; g.fillText(fmt(f[clave], 1) + ' ↑', X, Y + 16); }
-    });
-  }
-  linea('tr', '#2563eb');
-  linea('va', '#d97706');
-  g.textAlign = 'left'; g.font = '12px system-ui';
-  g.fillStyle = '#2563eb'; g.fillText('— entrenamiento', W - MR - 250, MT - 8);
-  g.fillStyle = '#d97706'; g.fillText('— validación', W - MR - 130, MT - 8);
-}
-
-function pintaTabla(){
-  const filas = TABLA[modo];
-  let h = '<table><tr><th>Grado</th><th>Parámetros</th><th>ECM entren.</th><th>ECM valid.</th><th>Brecha</th><th>Lectura</th></tr>';
-  filas.forEach(f => {
-    h += '<tr><td>' + f.g + '</td><td class="num">' + (f.g + 1) + '</td><td class="num">' + fmt(f.tr, 3) +
-         '</td><td class="num">' + fmt(f.va, 3) + '</td><td class="num">' + fmt(f.va - f.tr, 3) +
-         '</td><td style="color:' + f.lec.col + '">' + f.lec.txt + '</td></tr>';
-  });
-  h += '</table><p style="font-size:.85rem;color:#666;margin:0">Modo actual: ' + MODOS[modo].length +
-       ' pinos de entrenamiento. Cifras ilustrativas [DATITO].</p>';
-  $('tabla').innerHTML = h;
-}
-
-function actualizar(){
-  const f = TABLA[modo][grado - 1];
-  $('grado').value = grado;
-  $('grado-out').textContent = grado;
-  $('m-par').textContent = grado + 1;
-  $('m-tr').textContent = fmt(f.tr, 3);
-  $('m-va').textContent = fmt(f.va, 3);
-  $('m-br').textContent = (f.va - f.tr >= 0 ? '+' : '') + fmt(f.va - f.tr, 3);
-  $('m-lec').textContent = f.lec.txt;
-  $('m-lec').style.color = f.lec.col;
-  $('b-filas').textContent = modo === 0 ? 'Más filas: pasar de 13 a 39 pinos de entrenamiento' : 'Volver a 13 pinos de entrenamiento';
-  dibujaAjuste();
-  dibujaCurva();
-  pintaTabla();
-}
-
-$('grado').oninput = () => { grado = +$('grado').value; actualizar(); };
-$('b-g1').onclick = () => { grado = 1; actualizar(); };
-$('b-g12').onclick = () => { grado = 12; actualizar(); };
-$('b-mejor').onclick = () => {
-  const filas = TABLA[modo];
-  grado = filas.reduce((m, f) => f.va < m.va ? f : m, filas[0]).g;
-  actualizar();
-};
-$('b-filas').onclick = () => { modo = 1 - modo; actualizar(); };
-
-actualizar();
-</script>
 </body>
 </html>

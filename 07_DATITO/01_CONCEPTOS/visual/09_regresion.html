@@ -2,84 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Regresión y función de costo · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--gris:#9ca3af;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.65 "Segoe UI",system-ui,sans-serif}
-  main{max-width:860px;margin:0 auto}
-  h1{font-size:1.6rem;margin:0 0 .3rem}
-  h2{font-size:1.15rem;margin:2.5rem 0 .6rem;padding-top:1.2rem;
-     border-top:1px solid var(--linea)}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;
-         padding:1.2rem;margin:1rem 0}
-  canvas{width:100%;height:auto;display:block;touch-action:none}
-  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem 1rem;
-        align-items:center;margin-top:1rem}
-  .ctrl label{font-weight:600;font-size:.9rem}
-  .ctrl output{font-variant-numeric:tabular-nums;font-weight:600;
-               min-width:5.5rem;text-align:right}
-  input[type=range]{width:100%}
-  .marcador{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;
-            margin-top:1rem;text-align:center}
-  .marcador div{background:var(--fondo);border-radius:8px;padding:.7rem .4rem}
-  .marcador .n{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .marcador .e{font-size:.78rem;color:var(--suave);text-transform:uppercase;
-               letter-spacing:.04em}
-  .nota{background:#fffbeb;border-left:3px solid #f59e0b;padding:.8rem 1rem;
-        margin:1rem 0;font-size:.93rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1rem;
-         margin:1rem 0}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;
-         padding:.5rem 1rem;font-size:.9rem;cursor:pointer;font-weight:600}
-  button:hover{background:#1d4ed8}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.8rem 0}
-  th,td{border:1px solid var(--linea);padding:.45rem .6rem;text-align:left}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
-        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
-               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.5rem;display:none}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
-                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
-  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-aprende{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary:before{content:"▸ ";font-weight:700}
-  details[open] summary:before{content:"▾ "}
-  details[open] summary{margin-bottom:.7rem}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
-          margin:1.1rem 0;font-size:.92rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
-         color:var(--suave);font-size:.85rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="6" id="clase-6">
@@ -483,126 +412,60 @@ fenómeno se vea; todas las cifras de las respuestas plegadas son cálculos sobr
 pregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-// Ocho viajes: carga en toneladas, consumo en litros.
-const D = [[12,48],[18,62],[22,74],[26,79],[30,96],[35,104],[40,121],[45,128]];
-const medY = D.reduce((s,p)=>s+p[1],0)/D.length;
-
-
-const PREDC={costo:{txt:{
- depende:'<strong>Correcto.</strong> El coste promedia los ocho viajes. Clavar uno solo no dice nada: la recta puede pasar exacta por un punto y estar lejísimos de los otros siete, con un coste altísimo.',
- cero:'<strong>No. La correcta es \u00abDepende de los otros siete\u00bb.</strong> Eso ser\u00eda cierto con un solo dato. Con ocho, el coste es el promedio de los ocho errores: acertar uno deja los otros siete intactos. Pru\u00e9balo &mdash; pasa la recta justo por un punto y mira el n\u00famero.',
- minimo:'<strong>No. La correcta es \u00abDepende de los otros siete\u00bb.</strong> El m\u00ednimo no tiene por qu\u00e9 pasar por ning\u00fan punto. Pulsa <em>Buscar la mejor recta</em> y f\u00edjate: la soluci\u00f3n \u00f3ptima no toca ninguno exactamente, porque equilibra los ocho.'}}};
-document.querySelectorAll('.pred').forEach(p=>{
-  const k=p.dataset.p;
-  p.querySelectorAll('button').forEach(b=>{
-    b.onclick=()=>{
-      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
-      b.classList.add('elegida');
-      const v=p.querySelector('.veredicto');
-      v.innerHTML=PREDC[k].txt[b.dataset.r]; v.classList.add('on');
-    };
-  });
-});
-
-const cv = document.getElementById('lienzo'), cx = cv.getContext('2d');
-const $ = id => document.getElementById(id);
-const fmt = (n,d=2) => n.toFixed(d).replace('.',',');
-
-// Márgenes y escalas
-const M = {l:62,r:24,t:24,b:52};
-const xMin=5, xMax=50, yMin=0, yMax=150;
-const px = x => M.l + (x-xMin)/(xMax-xMin)*(cv.width-M.l-M.r);
-const py = y => cv.height-M.b - (y-yMin)/(yMax-yMin)*(cv.height-M.t-M.b);
-
-function metricas(m,b){
-  let ssRes=0, ssTot=0;
-  for(const [x,y] of D){
-    const yh = m*x+b;
-    ssRes += (y-yh)**2;
-    ssTot += (y-medY)**2;
-  }
-  return {mse: ssRes/D.length, r2: 1-ssRes/ssTot};
-}
-
-// Mínimos cuadrados ordinarios: solución exacta.
-function mco(){
-  const n=D.length;
-  const sx=D.reduce((s,p)=>s+p[0],0), sy=D.reduce((s,p)=>s+p[1],0);
-  const sxy=D.reduce((s,p)=>s+p[0]*p[1],0), sxx=D.reduce((s,p)=>s+p[0]**2,0);
-  const m=(n*sxy-sx*sy)/(n*sxx-sx*sx);
-  return {m, b:(sy-m*sx)/n};
-}
-
-function dibujar(){
-  const m=+$('m').value, b=+$('b').value;
-  cx.clearRect(0,0,cv.width,cv.height);
-
-  // Rejilla y ejes
-  cx.strokeStyle='#e8e6e3'; cx.lineWidth=1; cx.font='12px system-ui';
-  cx.fillStyle='#666'; cx.textAlign='right';
-  for(let y=0;y<=150;y+=30){
-    cx.beginPath(); cx.moveTo(M.l,py(y)); cx.lineTo(cv.width-M.r,py(y)); cx.stroke();
-    cx.fillText(y,M.l-9,py(y)+4);
-  }
-  cx.textAlign='center';
-  for(let x=10;x<=50;x+=10){
-    cx.beginPath(); cx.moveTo(px(x),M.t); cx.lineTo(px(x),cv.height-M.b); cx.stroke();
-    cx.fillText(x,px(x),cv.height-M.b+20);
-  }
-  cx.fillStyle='#444'; cx.font='600 13px system-ui';
-  cx.fillText('Carga transportada (toneladas)',cv.width/2,cv.height-14);
-  cx.save(); cx.translate(16,cv.height/2); cx.rotate(-Math.PI/2);
-  cx.fillText('Combustible (litros)',0,0); cx.restore();
-
-  // Media: el rival a batir
-  cx.strokeStyle='#9ca3af'; cx.setLineDash([7,5]); cx.lineWidth=2;
-  cx.beginPath(); cx.moveTo(M.l,py(medY)); cx.lineTo(cv.width-M.r,py(medY)); cx.stroke();
-  cx.setLineDash([]);
-  cx.fillStyle='#6b7280'; cx.textAlign='left'; cx.font='12px system-ui';
-  cx.fillText('promedio · '+fmt(medY,1)+' L',M.l+8,py(medY)-8);
-
-  // Residuos
-  cx.strokeStyle='#dc2626'; cx.lineWidth=2;
-  for(const [x,y] of D){
-    cx.beginPath(); cx.moveTo(px(x),py(y)); cx.lineTo(px(x),py(m*x+b)); cx.stroke();
-  }
-
-  // La recta
-  cx.strokeStyle='#1a1a1a'; cx.lineWidth=2.5;
-  cx.beginPath(); cx.moveTo(px(xMin),py(m*xMin+b)); cx.lineTo(px(xMax),py(m*xMax+b)); cx.stroke();
-
-  // Puntos
-  for(const [x,y] of D){
-    cx.fillStyle='#2563eb'; cx.beginPath();
-    cx.arc(px(x),py(y),6,0,7); cx.fill();
-    cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
-  }
-
-  // Predicción para 34 t
-  const yp = m*34+b;
-  cx.fillStyle='#059669'; cx.beginPath();
-  cx.arc(px(34),py(yp),7,0,7); cx.fill();
-  cx.strokeStyle='#fff'; cx.lineWidth=2; cx.stroke();
-
-  const r = metricas(m,b);
-  $('mOut').textContent = fmt(m);
-  $('bOut').textContent = fmt(b,1);
-  $('mse').textContent  = fmt(r.mse,1);
-  $('r2').textContent   = fmt(r.r2,3);
-  $('pred').textContent = fmt(yp,1);
-  $('r2').style.color   = r.r2 < 0 ? '#dc2626' : (r.r2 > .9 ? '#059669' : '#1a1a1a');
-}
-
-$('m').oninput = $('b').oninput = dibujar;
-$('mejor').onclick = () => {
-  const o = mco();
-  $('m').value = o.m; $('b').value = o.b;
-  dibujar();
-};
-dibujar();
-</script>
 </body>
 </html>

@@ -2,89 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Datos, filas, columnas, features y target · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block;border-radius:8px}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
-         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
-  button:hover{background:#1d4ed8}
-  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
-               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.6rem;display:none;font-size:.93rem}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
-          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
-  .simb{font-size:.88rem}
-  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
-  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-aprende{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-top:1rem}
-  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
-  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
-  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
-  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
-  ol.pasos li{margin-bottom:.45rem}
-  details{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.7rem 1rem;margin:.8rem 0}
-  details summary{cursor:pointer;font-weight:600;font-size:.92rem;color:#374151}
-  details[open] summary{margin-bottom:.6rem;border-bottom:1px solid var(--linea);padding-bottom:.5rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-  .cols{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0}
-  .cols button{font-family:ui-monospace,monospace;font-size:.82rem;font-weight:600;
-               background:#fff;color:#374151;border:1.5px solid var(--linea);padding:.4rem .7rem;margin:0}
-  .cols button:hover{border-color:var(--azul);background:#eff6ff}
-  .cols button.esY{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-  .cols button.esX{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
-  .ctrl{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin:.7rem 0;font-size:.88rem}
-  .ctrl input[type=range]{flex:1;min-width:180px}
-  .ctrl b{font-variant-numeric:tabular-nums;min-width:3.5rem;display:inline-block}
-  .fuente{font-size:.78rem;color:var(--suave);font-style:normal}
-  .tag{font-size:.68rem;font-weight:700;padding:.1rem .4rem;border-radius:4px;background:#e5e7eb;color:#374151}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="2" id="clase-2">
@@ -1300,175 +1224,60 @@ literalmente el método de tu profesor.</p>
   ρ = 0,76, no una corrida de tu modelo).
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-/* ---------- utilidades de predicción ---------- */
-function predic(id, correcta, textos){
-  var box = document.getElementById(id);
-  var vd  = box.querySelector('.veredicto');
-  box.querySelectorAll('button').forEach(function(b){
-    b.addEventListener('click', function(){
-      box.querySelectorAll('button').forEach(function(x){x.classList.remove('elegida');});
-      b.classList.add('elegida');
-      box.dataset.respuesta = b.dataset.v;
-      vd.innerHTML = textos[b.dataset.v];
-      vd.classList.add('on');
-    });
-  });
-}
-
-predic('pred1', 'no', {
-  si : '<b>Revisa.</b> Mueve el target a <code>Type</code> en el panel de abajo y mira el tipo de problema. La pista: ¿qué significaría predecir «2,7» cuando los valores posibles son casa, townhouse y unidad?',
-  no : '<b>Correcto, y el porqué importa.</b> <code>Price</code> es continuo: se puede estar cerca. <code>Type</code> es categórico: o aciertas o no. Cambia el target y cambia la naturaleza del error, las métricas y hasta el modelo.',
-  ns : 'Vale. Mueve el target en el panel de abajo y vuelve a esta pregunta después. La clave está en qué valores puede tomar la columna que elegiste.'
-});
-
-predic('pred2', 'sube', {
-  baja  : '<b>Casi, pero al revés.</b> Eso pasa en <em>datos nuevos</em>, no en entrenamiento. Sobre las mismas filas con que se ajustó, más columnas siempre dan más libertad para pegarse a los datos. Sube p en el panel y mira la curva azul.',
-  igual : '<b>No.</b> Es la intuición más común y es la que castiga la P3. El ruido no aporta señal, pero sí aporta <em>libertad</em>: con más columnas el modelo tiene más formas de calzar las filas que ya vio. Sube p y mira la azul.',
-  sube  : '<b>Exacto — y ese es el problema.</b> Sube porque el modelo aprovecha el ruido para calzar <em>estas</em> filas. Como el ruido no se repite en filas nuevas, el R² de test cae. Ahora sube p y mira la distancia entre las dos curvas.'
-});
-
-predic('pred3', 'alto', {
-  bajo  : '<b>No.</b> Son votos humanos, sí, pero el <code>label</code> se construyó desde esos votos. Mira el panel de abajo: una regla de una línea con esas dos columnas acierta 998 de 1.000.',
-  igual : '<b>No, sube muchísimo.</b> No aportan «un poco más de señal»: traen la respuesta adentro. Mira el panel de abajo.',
-  alto  : '<b>Exacto, y por eso es una trampa.</b> Casi perfecto en validación, porque el <code>label</code> se armó desde esos votos. Y en el test ni siquiera corre: esas columnas no existen ahí. Mira el panel de abajo.'
-});
-
-/* ---------- 3 · selector de target ---------- */
-var VARS = [
-  {n:'Rooms',        t:'Regresión',     q:'¿Cuántas habitaciones tiene esta propiedad?'},
-  {n:'Distance',     t:'Regresión',     q:'¿A qué distancia del centro está esta propiedad?'},
-  {n:'Bathroom',     t:'Regresión',     q:'¿Cuántos baños tiene esta propiedad?'},
-  {n:'Landsize',     t:'Regresión',     q:'¿Qué superficie de terreno tiene?'},
-  {n:'Type',         t:'Clasificación', q:'¿Es una casa, un townhouse o una unidad?', k:3},
-  {n:'Regionname',   t:'Clasificación', q:'¿En qué región metropolitana está?', k:5},
-  {n:'Price',        t:'Regresión',     q:'¿Cuánto costará esta propiedad?'}
-];
-var yActual = 'Price';
-var cont = document.getElementById('colsMel');
-
-function pintaCols(){
-  cont.innerHTML = '';
-  VARS.forEach(function(v){
-    var b = document.createElement('button');
-    b.textContent = v.n;
-    b.className = (v.n === yActual) ? 'esY' : 'esX';
-    b.title = (v.n === yActual) ? 'Es el target' : 'Haz clic para convertirla en target';
-    b.addEventListener('click', function(){ yActual = v.n; pintaCols(); });
-    cont.appendChild(b);
-  });
-  var v = VARS.filter(function(x){return x.n === yActual;})[0];
-  document.getElementById('mTarget').textContent = v.n;
-  document.getElementById('mP').textContent = VARS.length - 1;
-  document.getElementById('mTipo').textContent = v.t;
-  var extra = v.t === 'Clasificación'
-    ? ' <br><span style="font-size:.9rem">El error deja de tener grados: con ' + v.k +
-      ' clases posibles, o aciertas la clase o no. No existe «te pasaste por poco».</span>'
-    : ' <br><span style="font-size:.9rem">El error tiene magnitud: puedes equivocarte por poco o por mucho, y eso se mide en las mismas unidades de la variable.</span>';
-  document.getElementById('mPregunta').innerHTML =
-    '<b>La pregunta que responde el modelo:</b> «' + v.q + '»' + extra +
-    '<br><span style="font-size:.9rem;color:#666">Las otras 6 variables pasan a ser features. ' +
-    '<b>' + v.n + ' ya no puede estar entre ellas</b>: si el modelo viera el target como entrada, copiaría la respuesta.</span>';
-}
-pintaCols();
-
-/* ---------- 7 · n contra p ---------- */
-var RHO = 0.76;
-var cv  = document.getElementById('cv'), cx = cv.getContext('2d');
-var sn = document.getElementById('sn'), sp = document.getElementById('sp');
-
-function r2train(p,n){ return 1 - (1-RHO)*(1 - p/n); }
-function r2test(p,n){  return (p >= n-1) ? -99 : RHO - (1-RHO)*p/(n-p); }
-
-function dibuja(){
-  var n = +sn.value, p = Math.min(+sp.value, n-2);
-  if (p < 1) p = 1;
-  var W = cv.width, H = cv.height, L = 58, R = 16, T = 18, B = 34;
-  var pMax = Math.min(400, n-2); if (pMax < 2) pMax = 2;
-  var yTop = 1.05, yBot = -0.55;
-  var X  = function(v){ return L + (v/pMax)*(W-L-R); };
-  var Y  = function(v){ return T + (yTop-v)/(yTop-yBot)*(H-T-B); };
-
-  cx.clearRect(0,0,W,H);
-  cx.fillStyle = '#faf9f7'; cx.fillRect(0,0,W,H);
-
-  /* rejilla y eje Y */
-  cx.font = '11px system-ui'; cx.textAlign = 'right'; cx.textBaseline = 'middle';
-  [1,0.75,0.5,0.25,0,-0.25,-0.5].forEach(function(v){
-    cx.strokeStyle = (v===0) ? '#9ca3af' : '#e5e7eb';
-    cx.lineWidth = (v===0) ? 1.2 : 1;
-    cx.beginPath(); cx.moveTo(L, Y(v)); cx.lineTo(W-R, Y(v)); cx.stroke();
-    cx.fillStyle = '#6b7280'; cx.fillText(v.toFixed(2), L-7, Y(v));
-  });
-
-  /* banda: zona donde la brecha ya es grave */
-  cx.fillStyle = 'rgba(220,38,38,.05)';
-  var pGrave = null;
-  for (var q=1; q<=pMax; q++){ if (r2train(q,n)-r2test(q,n) > 0.10){ pGrave = q; break; } }
-  if (pGrave){ cx.fillRect(X(pGrave), T, (W-R)-X(pGrave), H-T-B); }
-
-  /* curvas */
-  function curva(fn, color, ancho){
-    cx.strokeStyle = color; cx.lineWidth = ancho; cx.beginPath();
-    var primero = true;
-    for (var q=1; q<=pMax; q++){
-      var v = fn(q,n); if (v < yBot) v = yBot;
-      if (primero){ cx.moveTo(X(q), Y(v)); primero = false; } else { cx.lineTo(X(q), Y(v)); }
-    }
-    cx.stroke();
-  }
-  curva(r2train, '#2563eb', 2.4);
-  curva(r2test,  '#dc2626', 2.4);
-
-  /* línea vertical en p actual */
-  cx.strokeStyle = '#111'; cx.lineWidth = 1.4; cx.setLineDash([4,4]);
-  cx.beginPath(); cx.moveTo(X(p), T); cx.lineTo(X(p), H-B); cx.stroke();
-  cx.setLineDash([]);
-
-  var tr = r2train(p,n), te = Math.max(r2test(p,n), yBot);
-  [[tr,'#2563eb'],[te,'#dc2626']].forEach(function(d){
-    cx.fillStyle = d[1]; cx.beginPath(); cx.arc(X(p), Y(d[0]), 5, 0, 6.29); cx.fill();
-    cx.strokeStyle = '#fff'; cx.lineWidth = 1.6; cx.stroke();
-  });
-
-  /* eje X */
-  cx.textAlign = 'center'; cx.textBaseline = 'top'; cx.fillStyle = '#6b7280';
-  [1, Math.round(pMax*0.25), Math.round(pMax*0.5), Math.round(pMax*0.75), pMax].forEach(function(q){
-    cx.fillText(q, X(q), H-B+6);
-  });
-  cx.fillStyle = '#374151'; cx.font = '600 11px system-ui';
-  cx.fillText('p  ·  número de features', (L+W-R)/2, H-14);
-
-  /* leyenda */
-  cx.textAlign = 'left'; cx.textBaseline = 'middle'; cx.font = '600 12px system-ui';
-  cx.fillStyle = '#2563eb'; cx.fillRect(L+10, T+10, 16, 3);
-  cx.fillText('R² entrenamiento', L+32, T+11);
-  cx.fillStyle = '#dc2626'; cx.fillRect(L+10, T+30, 16, 3);
-  cx.fillText('R² en datos nuevos', L+32, T+31);
-
-  /* lecturas */
-  document.getElementById('vn').textContent  = n;
-  document.getElementById('vp').textContent  = p;
-  document.getElementById('mTr').textContent = tr.toFixed(3);
-  var teReal = r2test(p,n);
-  document.getElementById('mTe').textContent = (teReal < -5) ? '≪ 0' : teReal.toFixed(3);
-  var br = tr - teReal;
-  var eBr = document.getElementById('mBr');
-  eBr.textContent = (br > 5) ? 'enorme' : br.toFixed(3);
-  eBr.style.color = br > 0.10 ? '#dc2626' : (br > 0.04 ? '#d97706' : '#059669');
-  document.getElementById('mRaz').textContent = (n/p).toFixed(0);
-}
-
-sn.addEventListener('input', dibuja);
-sp.addEventListener('input', dibuja);
-function preset(n,p){ return function(){ sn.value = n; sp.value = p; dibuja(); }; }
-document.getElementById('bMel' ).addEventListener('click', preset(6336, 23));
-document.getElementById('bSub' ).addEventListener('click', preset(6336, 334));
-document.getElementById('bPoco').addEventListener('click', preset(120, 23));
-dibuja();
-window.addEventListener('resize', dibuja);
-</script>
 </body>
 </html>

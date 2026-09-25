@@ -2,100 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Curva ROC y AUC · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo a.n{color:inherit;text-decoration:none}
-  .grafo a.n:hover{border-color:var(--morado)}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block;border-radius:8px}
-  canvas.cuad{max-width:460px;margin:0 auto;border:1px solid var(--linea)}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
-         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
-  button:hover{background:#1d4ed8}
-  button.alt{background:#6b7280}button.alt:hover{background:#4b5563}
-  button.ok{background:var(--verde)}button.ok:hover{background:#047857}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;
-               border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.6rem;display:none}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
-          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
-  .simb{font-size:.88rem}
-  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
-  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-aprende{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  .r-cuenta{background:#f3f4f6;color:#374151}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:.6rem;margin-top:.4rem}
-  .met>div{background:var(--fondo);border-radius:8px;padding:.6rem .5rem;text-align:center}
-  .met .n{font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.1rem}
-  .met .d{font-size:.74rem;color:var(--suave);font-family:ui-monospace,monospace}
-  .met .ac{color:var(--verde)}.met .er{color:var(--rojo)}
-  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
-  .vecino a{color:var(--azul)}
-  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
-  ol.pasos li{margin-bottom:.4rem}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-  /* agregados para este visual */
-  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.8rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul)}
-  details[open] summary{margin-bottom:.7rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-  details.resp .r1{font-weight:600}
-  details.resp .err{color:#991b1b}
-  .ctl{margin:.9rem 0 .3rem}
-  .ctl label{display:block;font-size:.88rem;font-weight:600;margin-bottom:.25rem}
-  .ctl label .v{float:right;font-variant-numeric:tabular-nums;color:var(--suave);font-weight:400}
-  input[type=range]{width:100%;accent-color:var(--azul)}
-  .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.1rem;align-items:start;margin-top:1rem}
-  @media(max-width:720px){.duo{grid-template-columns:1fr}}
-  .leyenda{font-size:.84rem;color:var(--suave);margin:.5rem 0 0}
-  .leyenda b.p{color:var(--azul)}.leyenda b.n{color:var(--ambar)}
-  .lectura{margin:1rem 0 0;font-size:.93rem;background:var(--fondo);border-radius:8px;padding:.8rem 1rem}
-  .fuente{font-size:.82rem;color:var(--suave);margin:.4rem 0 0}
-  .ok-t{color:var(--verde);font-weight:700}.mal-t{color:var(--rojo);font-weight:700}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="14" id="clase-14">
@@ -1019,423 +932,60 @@ figura; el 20/80 del 4-sep; las cifras de Galaxy Zoo (§8.3 y §10 de REPORT.md)
 perros y 5 gatos, los modelos Y, A y B, y el caso minero.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-(function(){
-  "use strict";
-  var $ = function(id){ return document.getElementById(id); };
-  function coma(x, d){ return x.toFixed(d).replace(".", ","); }
-  function pct(x){ return (x === null || !isFinite(x)) ? "—" : coma(x*100, 1) + " %"; }
-
-  /* ---------------------------------------------------------------
-     Marco común de una ROC
-     --------------------------------------------------------------- */
-  function marcoRoc(c){
-    var g = c.getContext("2d"), W = c.width, H = c.height;
-    var ML = 56, MB = 46, MT = 16, MR = 18;
-    var px = function(f){ return ML + f*(W - ML - MR); };
-    var py = function(t){ return H - MB - t*(H - MB - MT); };
-    g.clearRect(0, 0, W, H);
-    g.fillStyle = "#fff"; g.fillRect(0, 0, W, H);
-    g.strokeStyle = "#eeeeee"; g.lineWidth = 1;
-    for (var k = 0; k <= 10; k++){
-      var v = k/10;
-      g.beginPath(); g.moveTo(px(v), py(0)); g.lineTo(px(v), py(1)); g.stroke();
-      g.beginPath(); g.moveTo(px(0), py(v)); g.lineTo(px(1), py(v)); g.stroke();
-    }
-    g.strokeStyle = "#1a1a1a"; g.lineWidth = 1.5;
-    g.beginPath(); g.moveTo(px(0), py(1)); g.lineTo(px(0), py(0)); g.lineTo(px(1), py(0)); g.stroke();
-    g.fillStyle = "#666"; g.font = "12px system-ui, sans-serif"; g.textAlign = "center";
-    for (k = 0; k <= 10; k += 2) g.fillText(coma(k/10, 1), px(k/10), py(0) + 16);
-    g.textAlign = "right";
-    for (k = 0; k <= 10; k += 2) g.fillText(coma(k/10, 1), px(0) - 7, py(k/10) + 4);
-    g.textAlign = "center";
-    g.fillText("TFP = FP / N", (px(0) + px(1))/2, H - 10);
-    g.save(); g.translate(16, (py(0) + py(1))/2); g.rotate(-Math.PI/2);
-    g.fillText("TVP = VP / P", 0, 0); g.restore();
-    g.setLineDash([6, 5]); g.strokeStyle = "#9ca3af"; g.lineWidth = 1.3;
-    g.beginPath(); g.moveTo(px(0), py(0)); g.lineTo(px(1), py(1)); g.stroke();
-    g.setLineDash([]);
-    g.fillStyle = "#9ca3af"; g.textAlign = "left";
-    g.fillText("azar", px(0.74), py(0.66));
-    g.fillStyle = "#059669"; g.fillText("ideal (0, 1)", px(0) + 6, py(1) + 14);
-    return {g: g, px: px, py: py};
-  }
-  function trazo(m, pts, color, ancho){
-    var g = m.g;
-    g.strokeStyle = color; g.lineWidth = ancho; g.beginPath();
-    for (var i = 0; i < pts.length; i++){
-      var x = m.px(pts[i][0]), y = m.py(pts[i][1]);
-      if (i === 0) g.moveTo(x, y); else g.lineTo(x, y);
-    }
-    g.stroke();
-  }
-  function relleno(m, pts, color){
-    var g = m.g;
-    g.fillStyle = color; g.beginPath();
-    g.moveTo(m.px(0), m.py(0));
-    for (var i = 0; i < pts.length; i++) g.lineTo(m.px(pts[i][0]), m.py(pts[i][1]));
-    g.lineTo(m.px(1), m.py(0)); g.closePath(); g.fill();
-  }
-  function punto(m, f, t, color, r){
-    var g = m.g;
-    g.beginPath(); g.arc(m.px(f), m.py(t), r, 0, 2*Math.PI);
-    g.fillStyle = color; g.fill();
-    g.strokeStyle = "#fff"; g.lineWidth = 1.5; g.stroke();
-  }
-  function rotulo(m, f, t, txt, color){
-    var g = m.g;
-    g.font = "12px system-ui, sans-serif"; g.fillStyle = color;
-    g.textAlign = f > 0.6 ? "right" : "left";
-    var dx = f > 0.6 ? -9 : 9, dy = t > 0.9 ? 16 : -8;
-    g.fillText(txt, m.px(f) + dx, m.py(t) + dy);
-  }
-
-  /* ---------------------------------------------------------------
-     A · SIMULADOR: 50 positivos y 150 negativos [DATITO]
-     --------------------------------------------------------------- */
-  var NP = 50, NN = 150;
-  var semilla = 20260921;
-  function rnd(){ semilla = (semilla * 1664525 + 1013904223) % 4294967296; return semilla / 4294967296; }
-  function gauss(){
-    var u = 0, v = 0;
-    while (u === 0) u = rnd();
-    while (v === 0) v = rnd();
-    return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
-  }
-  var zP = [], zN = [], i;
-  for (i = 0; i < NP; i++) zP.push(gauss());
-  for (i = 0; i < NN; i++) zN.push(gauss());
-  function sigm(x){ return 1/(1 + Math.exp(-x)); }
-  var K = 1.1;
-  var est = {u: 0.5, sep: 1.6};
-
-  function puntajes(sep){
-    return {
-      p: zP.map(function(z){ return sigm(K*(z + sep/2)); }),
-      n: zN.map(function(z){ return sigm(K*(z - sep/2)); })
-    };
-  }
-  function conteos(S, u){
-    var vp = 0, fp = 0;
-    S.p.forEach(function(s){ if (s >= u) vp++; });
-    S.n.forEach(function(s){ if (s >= u) fp++; });
-    return {vp: vp, fn: NP - vp, fp: fp, vn: NN - fp};
-  }
-  function curva(S){
-    var todos = S.p.map(function(s){ return {s: s, pos: true}; })
-      .concat(S.n.map(function(s){ return {s: s, pos: false}; }));
-    todos.sort(function(a, b){ return b.s - a.s; });
-    var pts = [[0, 0]], tp = 0, fp = 0, k = 0;
-    while (k < todos.length){
-      var s = todos[k].s;
-      while (k < todos.length && todos[k].s === s){
-        if (todos[k].pos) tp++; else fp++;
-        k++;
-      }
-      pts.push([fp/NN, tp/NP]);
-    }
-    return pts;
-  }
-  function aucPares(S){
-    var c = 0;
-    for (var a = 0; a < S.p.length; a++){
-      for (var b = 0; b < S.n.length; b++){
-        if (S.p[a] > S.n[b]) c += 1; else if (S.p[a] === S.n[b]) c += 0.5;
-      }
-    }
-    return c/(NP*NN);
-  }
-  function tri(g, x, y, r){
-    g.beginPath();
-    g.moveTo(x, y - r); g.lineTo(x + r*0.95, y + r*0.75); g.lineTo(x - r*0.95, y + r*0.75);
-    g.closePath();
-  }
-  function etiqueta(g, x, y, txt, color, alin){
-    g.font = "bold 12px system-ui, sans-serif"; g.textAlign = alin;
-    var w = g.measureText(txt).width;
-    var x0 = alin === "right" ? x - w - 4 : x - 4;
-    g.fillStyle = "rgba(255,255,255,.88)"; g.fillRect(x0, y - 12, w + 8, 17);
-    g.fillStyle = color; g.fillText(txt, x, y);
-  }
-
-  function dibujaDist(S, u, c){
-    var cv = $("cDist"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
-    var ML = 22, MR = 22, MT = 30, MB = 40;
-    var mid = MT + (H - MT - MB)/2;
-    var px = function(s){ return ML + s*(W - ML - MR); };
-    g.clearRect(0, 0, W, H); g.fillStyle = "#fff"; g.fillRect(0, 0, W, H);
-    g.fillStyle = "rgba(37,99,235,.07)";
-    g.fillRect(px(u), MT, px(1) - px(u), H - MT - MB);
-    g.strokeStyle = "#d8d8d8"; g.lineWidth = 1;
-    g.beginPath(); g.moveTo(px(0), mid); g.lineTo(px(1), mid); g.stroke();
-    g.strokeStyle = "#1a1a1a";
-    g.beginPath(); g.moveTo(px(0), H - MB); g.lineTo(px(1), H - MB); g.stroke();
-    g.fillStyle = "#666"; g.font = "12px system-ui, sans-serif"; g.textAlign = "center";
-    for (var k = 0; k <= 10; k++){
-      var x = px(k/10);
-      g.beginPath(); g.moveTo(x, H - MB); g.lineTo(x, H - MB + 4); g.stroke();
-      g.fillText(coma(k/10, 1), x, H - MB + 17);
-    }
-    g.fillText("puntaje que entrega el modelo", (px(0) + px(1))/2, H - 5);
-
-    var NB = 50;
-    function apila(arr){
-      var cnt = [];
-      for (var b = 0; b < NB; b++) cnt.push(0);
-      return arr.map(function(s){
-        var b = Math.min(NB - 1, Math.floor(s*NB));
-        return {s: s, k: cnt[b]++};
-      });
-    }
-    var ap = apila(S.p), an = apila(S.n);
-    var maxP = 1, maxN = 1;
-    ap.forEach(function(o){ if (o.k + 1 > maxP) maxP = o.k + 1; });
-    an.forEach(function(o){ if (o.k + 1 > maxN) maxN = o.k + 1; });
-    var alto = (H - MT - MB)/2 - 8;
-    var paso = Math.min(7, alto/maxP, alto/maxN);
-    var r = Math.max(1.8, Math.min(3.2, paso*0.46));
-    ap.forEach(function(o){
-      var x = px(o.s), y = mid - 4 - paso*(o.k + 0.5);
-      g.beginPath(); g.arc(x, y, r, 0, 2*Math.PI);
-      if (o.s >= u){ g.fillStyle = "#2563eb"; g.fill(); }
-      else { g.strokeStyle = "#2563eb"; g.lineWidth = 1.2; g.stroke(); }
-    });
-    an.forEach(function(o){
-      var x = px(o.s), y = mid + 4 + paso*(o.k + 0.5);
-      tri(g, x, y, r*1.15);
-      if (o.s >= u){ g.fillStyle = "#d97706"; g.fill(); }
-      else { g.strokeStyle = "#d97706"; g.lineWidth = 1.2; g.stroke(); }
-    });
-
-    g.strokeStyle = "#1a1a1a"; g.lineWidth = 2;
-    g.beginPath(); g.moveTo(px(u), MT - 6); g.lineTo(px(u), H - MB); g.stroke();
-    g.font = "bold 12px system-ui, sans-serif"; g.fillStyle = "#1a1a1a";
-    g.textAlign = u > 0.75 ? "right" : "left";
-    g.fillText("umbral " + coma(u, 2) + (u > 0.75 ? "  ← declaro positivo →" : "  declaro positivo →"),
-               px(u) + (u > 0.75 ? -6 : 6), MT - 12);
-
-    etiqueta(g, px(0) + 6, MT + 14, "FN = " + c.fn, "#dc2626", "left");
-    etiqueta(g, px(1) - 6, MT + 14, "VP = " + c.vp, "#059669", "right");
-    etiqueta(g, px(0) + 6, H - MB - 8, "VN = " + c.vn, "#059669", "left");
-    etiqueta(g, px(1) - 6, H - MB - 8, "FP = " + c.fp, "#dc2626", "right");
-  }
-
-  function dibujaRocSim(pts, c, verArea){
-    var m = marcoRoc($("cRoc"));
-    if (verArea) relleno(m, pts, "rgba(124,58,237,.14)");
-    trazo(m, pts, "#7c3aed", 2.5);
-    var f = c.fp/NN, t = c.vp/NP;
-    punto(m, f, t, "#1a1a1a", 6.5);
-    rotulo(m, f, t, "(" + coma(f, 2) + "; " + coma(t, 2) + ")", "#1a1a1a");
-  }
-
-  var ultimo = null;
-  function actualizar(){
-    var S = puntajes(est.sep);
-    var c = conteos(S, est.u);
-    var pts = curva(S);
-    var auc = aucPares(S);
-    var tpr = c.vp/NP, fpr = c.fp/NN;
-    var dec = c.vp + c.fp;
-    var pre = dec > 0 ? c.vp/dec : null;
-    var acc = (c.vp + c.vn)/(NP + NN);
-
-    $("vU").textContent = coma(est.u, 2);
-    $("vSep").textContent = coma(est.sep, 1);
-    $("mVP").textContent = c.vp; $("mFN").textContent = c.fn;
-    $("mFP").textContent = c.fp; $("mVN").textContent = c.vn;
-    $("mTPR").textContent = pct(tpr); $("dTPR").textContent = c.vp + " / " + NP;
-    $("mFPR").textContent = pct(fpr); $("dFPR").textContent = c.fp + " / " + NN;
-    $("mPre").textContent = pct(pre); $("dPre").textContent = c.vp + " / " + dec;
-    $("mAcc").textContent = pct(acc); $("dAcc").textContent = (c.vp + c.vn) + " / " + (NP + NN);
-    $("mAUC").textContent = coma(auc, 3);
-
-    dibujaDist(S, est.u, c);
-    dibujaRocSim(pts, c, $("chkArea").checked);
-
-    var txt = "Umbral " + coma(est.u, 2) + ": de los " + NP + " positivos reales detectas <strong>" +
-      c.vp + "</strong> (TVP " + pct(tpr) + ") y se te escapan " + c.fn + ". De los " + NN +
-      " negativos reales alarmas a <strong>" + c.fp + "</strong> (TFP " + pct(fpr) + "). ";
-    txt += dec > 0
-      ? "De los " + dec + " que declaras positivos, " + c.vp + " lo son: precisión " + pct(pre) + "."
-      : "No declaras ningún positivo: la precisión queda indefinida (0/0).";
-    $("lectura").innerHTML = txt;
-    ultimo = {tpr: tpr, fpr: fpr, auc: auc};
-  }
-
-  /* --- predicción 1: subir el umbral --- */
-  var elegU = null, uAlElegir = null, tasasAlElegir = null;
-  var botonesU = document.querySelectorAll("#predU button");
-  botonesU.forEach(function(b){
-    b.addEventListener("click", function(){
-      botonesU.forEach(function(x){ x.classList.remove("elegida"); });
-      b.classList.add("elegida");
-      elegU = b.getAttribute("data-v");
-      uAlElegir = est.u;
-      tasasAlElegir = {tpr: ultimo.tpr, fpr: ultimo.fpr};
-      document.querySelector("#predU .veredicto").classList.remove("on");
-    });
-  });
-  function veredictoU(){
-    var box = document.querySelector("#predU .veredicto");
-    if (!elegU || box.classList.contains("on")) return;
-    if (Math.abs(est.u - uAlElegir) < 0.05) return;
-    var subio = est.u > uAlElegir;
-    var mov = "Moviste el umbral de " + coma(uAlElegir, 2) + " a " + coma(est.u, 2) +
-      ": TVP pasó de " + pct(tasasAlElegir.tpr) + " a " + pct(ultimo.tpr) +
-      " y TFP de " + pct(tasasAlElegir.fpr) + " a " + pct(ultimo.fpr) + ". ";
-    var h;
-    if (subio){
-      h = "<strong>" + (elegU === "bajan" ? "Acertaste." : "No era eso.") + "</strong> " + mov +
-        "Al subir el umbral <strong>bajan las dos</strong> (o se quedan quietas si ningún caso cruzó la raya). " +
-        "Nunca van en sentidos opuestos: subir el umbral solo puede <em>sacar</em> casos de la zona positiva, " +
-        "nunca meterlos, así que VP y FP solo bajan, mientras P y N no cambian.";
-    } else {
-      h = "<strong>Ojo: bajaste el umbral en vez de subirlo.</strong> " + mov +
-        "Al bajarlo <strong>suben las dos</strong>; al subirlo, por la misma razón, <strong>bajan las dos</strong>. " +
-        (elegU === "bajan" ? "Tu predicción era la correcta." : "La respuesta a la pregunta era «bajan las dos».");
-    }
-    h += " El compromiso real es entre <em>detectar más</em> (TVP alto) y <em>alarmar menos</em> (TFP bajo): " +
-      "como las dos tasas se mueven juntas, ganar en una es perder en la otra.";
-    box.innerHTML = h;
-    box.classList.add("on");
-  }
-
-  /* --- predicción 2: separar las nubes --- */
-  var elegS = null, sepAlElegir = null, aucAlElegir = null;
-  var botonesS = document.querySelectorAll("#predS button");
-  botonesS.forEach(function(b){
-    b.addEventListener("click", function(){
-      botonesS.forEach(function(x){ x.classList.remove("elegida"); });
-      b.classList.add("elegida");
-      elegS = b.getAttribute("data-v");
-      sepAlElegir = est.sep;
-      aucAlElegir = ultimo.auc;
-      document.querySelector("#predS .veredicto").classList.remove("on");
-    });
-  });
-  function veredictoS(){
-    var box = document.querySelector("#predS .veredicto");
-    if (!elegS || box.classList.contains("on")) return;
-    if (Math.abs(est.sep - sepAlElegir) < 0.35) return;
-    var separo = est.sep > sepAlElegir;
-    var mov = "La separación pasó de " + coma(sepAlElegir, 1) + " a " + coma(est.sep, 1) +
-      " y el AUC de " + coma(aucAlElegir, 3) + " a " + coma(ultimo.auc, 3) + ". ";
-    var h = "<strong>" + (elegS === "esquina" ? "Acertaste." : "No era eso.") + "</strong> " + mov;
-    h += separo
-      ? "La curva se pegó a la esquina (0, 1): con las nubes más separadas, hay umbrales que capturan casi todos los positivos casi sin falsas alarmas. "
-      : "Juntaste las nubes, así que la curva se acercó a la diagonal. Al revés —separarlas— la empuja hacia la esquina (0, 1). ";
-    h += "La curva cambió porque cambió el <em>modelo</em> (qué tan bien ordena); el umbral solo elige un punto de ella. " +
-      "Con separación 0 cae sobre la diagonal: el puntaje no distingue más que una moneda.";
-    box.innerHTML = h;
-    box.classList.add("on");
-  }
-
-  function fijarU(v){ est.u = v; $("sU").value = v; actualizar(); veredictoU(); }
-  $("sU").addEventListener("input", function(){ fijarU(parseFloat(this.value)); });
-  $("bU0").addEventListener("click", function(){ fijarU(0); });
-  $("bU5").addEventListener("click", function(){ fijarU(0.5); });
-  $("bU1").addEventListener("click", function(){ fijarU(1); });
-  function fijarS(v){ est.sep = v; $("sSep").value = v; actualizar(); veredictoS(); }
-  $("sSep").addEventListener("input", function(){ fijarS(parseFloat(this.value)); });
-  $("bSep0").addEventListener("click", function(){ fijarS(0); });
-  $("chkArea").addEventListener("change", actualizar);
-
-  /* ---------------------------------------------------------------
-     B · LÁMINA 23: curva y trapecios (datos oficiales)
-     --------------------------------------------------------------- */
-  var LAM = [[0, 0], [0, 0.3], [0, 0.6], [0.2, 0.8], [0.6, 1], [1, 1]];
-  function dibujaLam(){
-    var m = marcoRoc($("cLam"));
-    trazo(m, LAM, "#7c3aed", 2.5);
-    var nombres = ["panel 1", "panel 2", "panel 3", "panel 4"];
-    for (var k = 1; k <= 4; k++){
-      punto(m, LAM[k][0], LAM[k][1], "#1a1a1a", 5.5);
-      var g = m.g;
-      g.font = "12px system-ui, sans-serif"; g.fillStyle = "#1a1a1a"; g.textAlign = "left";
-      g.fillText(nombres[k-1] + " (" + coma(LAM[k][0], 1) + "; " + coma(LAM[k][1], 1) + ")",
-                 m.px(LAM[k][0]) + 9, m.py(LAM[k][1]) + (k === 4 ? 16 : 4));
-    }
-  }
-  function dibujaTrap(){
-    var m = marcoRoc($("cTrap")), g = m.g;
-    var colores = ["rgba(37,99,235,.22)", "rgba(5,150,105,.22)", "rgba(217,119,6,.25)"];
-    var tramos = [[LAM[2], LAM[3]], [LAM[3], LAM[4]], [LAM[4], LAM[5]]];
-    var areas = ["0,140", "0,360", "0,400"];
-    tramos.forEach(function(tr, k){
-      var a = tr[0], b = tr[1];
-      g.fillStyle = colores[k]; g.beginPath();
-      g.moveTo(m.px(a[0]), m.py(0)); g.lineTo(m.px(a[0]), m.py(a[1]));
-      g.lineTo(m.px(b[0]), m.py(b[1])); g.lineTo(m.px(b[0]), m.py(0));
-      g.closePath(); g.fill();
-      g.strokeStyle = "rgba(0,0,0,.25)"; g.lineWidth = 1; g.stroke();
-      g.fillStyle = "#1a1a1a"; g.font = "bold 13px system-ui, sans-serif"; g.textAlign = "center";
-      g.fillText(areas[k], m.px((a[0] + b[0])/2), m.py(0.35));
-    });
-    trazo(m, LAM, "#7c3aed", 2.5);
-    for (var k = 1; k <= 4; k++) punto(m, LAM[k][0], LAM[k][1], "#1a1a1a", 5);
-    g.fillStyle = "#1a1a1a"; g.font = "bold 13px system-ui, sans-serif"; g.textAlign = "center";
-    g.fillText("AUC = 0,140 + 0,360 + 0,400 = 0,900", m.px(0.5), m.py(0.12));
-  }
-
-  /* ---------------------------------------------------------------
-     C · DOS CURVAS QUE SE CRUZAN [DATITO]
-     --------------------------------------------------------------- */
-  var CA = [[0, 0], [0, 0.5], [0.1, 0.6], [0.3, 0.7], [0.6, 0.8], [1, 1]];
-  var CB = [[0, 0], [0, 0.1], [0.1, 0.3], [0.3, 0.75], [0.6, 0.95], [1, 1]];
-  function tprEn(cur, f){
-    var best = 0;
-    for (var k = 0; k < cur.length - 1; k++){
-      var x0 = cur[k][0], y0 = cur[k][1], x1 = cur[k+1][0], y1 = cur[k+1][1];
-      if (f >= x0 && f <= x1){
-        var y = (x1 === x0) ? Math.max(y0, y1) : y0 + (y1 - y0)*(f - x0)/(x1 - x0);
-        if (y > best) best = y;
-      }
-    }
-    return best;
-  }
-  function areaTrap(cur){
-    var a = 0;
-    for (var k = 0; k < cur.length - 1; k++) a += (cur[k+1][0] - cur[k][0])*(cur[k][1] + cur[k+1][1])/2;
-    return a;
-  }
-  var AUC_A = areaTrap(CA), AUC_B = areaTrap(CB);
-  function dibujaCruce(f){
-    var m = marcoRoc($("cCruce")), g = m.g;
-    trazo(m, CA, "#2563eb", 2.6);
-    trazo(m, CB, "#d97706", 2.6);
-    /* cruce: 0,6 + 0,5u = 0,3 + 2,25u  ->  u = 0,3/1,75 */
-    var fc = 0.1 + 0.3/1.75, tc = tprEn(CA, fc);
-    g.strokeStyle = "#7c3aed"; g.lineWidth = 2;
-    g.beginPath(); g.arc(m.px(fc), m.py(tc), 7, 0, 2*Math.PI); g.stroke();
-    g.font = "12px system-ui, sans-serif"; g.fillStyle = "#7c3aed"; g.textAlign = "left";
-    g.fillText("se cruzan (TFP ≈ " + coma(fc, 2) + ")", m.px(fc) + 10, m.py(tc) + 18);
-    g.setLineDash([4, 4]); g.strokeStyle = "#1a1a1a"; g.lineWidth = 1.2;
-    g.beginPath(); g.moveTo(m.px(f), m.py(0)); g.lineTo(m.px(f), m.py(1)); g.stroke();
-    g.setLineDash([]);
-    var ta = tprEn(CA, f), tb = tprEn(CB, f);
-    punto(m, f, ta, "#2563eb", 6);
-    punto(m, f, tb, "#d97706", 6);
-    g.font = "bold 12px system-ui, sans-serif"; g.textAlign = "left";
-    g.fillStyle = "#2563eb"; g.fillText("A · AUC " + coma(AUC_A, 3), m.px(0.62), m.py(0.30));
-    g.fillStyle = "#d97706"; g.fillText("B · AUC " + coma(AUC_B, 3), m.px(0.62), m.py(0.22));
-    var txt = "Con TFP tolerado = " + coma(f, 2) + ": A detecta <strong>" + pct(ta) + "</strong> de los positivos y B <strong>" + pct(tb) + "</strong>. ";
-    if (Math.abs(ta - tb) < 0.005) txt += "Empate en este punto.";
-    else txt += "En este punto de operación gana <strong>" + (ta > tb ? "A" : "B") + "</strong>.";
-    txt += " El AUC es el mismo para los dos (" + coma(AUC_A, 3) + "): no sirve para decidir aquí.";
-    $("gan").innerHTML = txt;
-    $("vF").textContent = coma(f, 2);
-  }
-  $("sF").addEventListener("input", function(){ dibujaCruce(parseFloat(this.value)); });
-
-  /* --- inicio --- */
-  actualizar();
-  dibujaLam();
-  dibujaTrap();
-  dibujaCruce(0.1);
-})();
-</script>
 </body>
 </html>

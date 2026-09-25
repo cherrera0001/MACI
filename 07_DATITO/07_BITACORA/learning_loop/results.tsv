@@ -1,0 +1,17 @@
+ts	family	hypothesis	target_file	metric	score	decision	lesson_id
+# append rows; do not delete history
+2026-09-25T21:42:20Z	visual	baseline template v1	07_DATITO\01_CONCEPTOS\visual\_TEMPLATE_CANONICO.html	template_gates	0.7143	discard	VIZ-KEEP-001
+2026-09-25T21:42:20Z	visual	detect VIZ-FAIL-001 CDN gradient	07_DATITO\visual\certamen3_p1a_roc_detallado.html	template_gates	0.2857	discard	VIZ-FAIL-001
+2026-09-25T21:43:24Z	visual	baseline template v1 after comment-strip gates	07_DATITO\01_CONCEPTOS\visual\_TEMPLATE_CANONICO.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T21:43:25Z	visual	confirm discard VIZ-FAIL-001 CDN	07_DATITO\visual\certamen3_p1a_roc_detallado.html	template_gates	0.2857	discard	VIZ-FAIL-001
+2026-09-25T22:01:59Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/01_fundamentos_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:02:17Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/03_eda_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:02:52Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/02_datos_features_target_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:02:52Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:02:53Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/13_roc_auc_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:23Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/04_limpieza_preparacion_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:23Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/06_validacion_cruzada_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:23Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/07_generalizacion_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:24Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/09_regresion_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:24Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/14_arboles_decision_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:03:25Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/18_redes_neuronales_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001

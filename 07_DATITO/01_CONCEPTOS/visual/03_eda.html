@@ -2,87 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Análisis exploratorio de datos · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:.7rem;margin-top:1.1rem}
-  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
-  .met .n{font-size:1.2rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
-  .met div.alarma .n{color:var(--rojo)}
-  .met div.bien .n{color:var(--verde)}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
-         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
-  button:hover{background:#1d4ed8}
-  button.off{background:#e5e7eb;color:#374151}
-  button.off:hover{background:#d1d5db}
-  input[type=range]{width:100%}
-  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
-  .ctrl label{font-weight:600;font-size:.88rem}
-  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.5rem;text-align:right}
-  .pred{background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0 .2rem;font-size:.9rem}
-  .pred b{color:#5b21b6}
-  details{margin:.9rem 0;background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.6rem .9rem}
-  details[open]{padding-bottom:.9rem}
-  summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--azul)}
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .grafo .fl{color:var(--morado);font-weight:700}
-  .ec{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;
-      text-align:center;font-size:1.15rem;font-family:"Cambria Math",Cambria,Georgia,serif}
-  .ec .peq{font-size:.82rem;color:var(--suave);display:block;margin-top:.5rem;font-family:inherit}
-  .leyenda{display:flex;gap:1.1rem;flex-wrap:wrap;font-size:.8rem;color:var(--suave);margin-top:.6rem}
-  .leyenda span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
-  .l-media::before{background:#dc2626}
-  .l-mediana::before{background:#059669}
-  .l-s::before{background:#2563eb}
-  .l-p::before{background:#7c3aed}
-  .botonera{margin:.4rem 0 1rem}
-  ol.proc{padding-left:1.3rem}
-  ol.proc li{margin:.4rem 0}
-  .barra{display:flex;align-items:center;gap:.5rem;margin:.3rem 0;font-size:.85rem}
-  .barra .et{width:105px;flex:0 0 auto}
-  .barra .tr{flex:1;height:15px;background:#f1f0ee;border-radius:3px;position:relative;overflow:hidden}
-  .barra .tr i{position:absolute;top:0;bottom:0;background:var(--azul);border-radius:3px}
-  .barra .tr i.neg{background:var(--rojo)}
-  .barra .vl{width:58px;text-align:right;font-variant-numeric:tabular-nums;flex:0 0 auto}
-  .cero{position:absolute;top:0;bottom:0;width:1px;background:#9ca3af}
-  a{color:var(--azul)}
-  .grafo a.n{color:inherit;text-decoration:none}
-  .grafo a.n:hover{border-color:var(--morado)}
-  .src{font-size:.82rem;color:var(--suave);margin-top:-.5rem}
-  footer{font-size:.85rem;color:var(--suave);margin-top:2.5rem;border-top:1px solid var(--linea);padding-top:1rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-  @media(max-width:600px){.ctrl{grid-template-columns:1fr}.ctrl output{text-align:left}}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="3" id="clase-3">
@@ -1305,403 +1231,60 @@ varianza, los nueve turnos del boxplot, los 25 camiones, el riego del Maule y lo
 cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-(function(){
-"use strict";
-
-/* ---------- utilidades ---------- */
-function pct(a, p){                    // percentil con interpolación lineal (como numpy)
-  var s = a.slice().sort(function(x,y){return x-y;});
-  var i = (s.length - 1) * p / 100;
-  var lo = Math.floor(i), hi = Math.ceil(i);
-  if (lo === hi) return s[lo];
-  return s[lo] + (s[hi] - s[lo]) * (i - lo);
-}
-function media(a){ var t=0; for(var i=0;i<a.length;i++) t+=a[i]; return t/a.length; }
-function desv(a){ var m=media(a),t=0; for(var i=0;i<a.length;i++){var d=a[i]-m; t+=d*d;} return Math.sqrt(t/(a.length-1)); }
-function mediana(a){ return pct(a,50); }
-function fmt(x,d){
-  var s = x.toFixed(d===undefined?2:d);
-  var p = s.split(".");
-  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  return p.length>1 ? p[0]+","+p[1] : p[0];
-}
-function prep(cv){                     // canvas nítido en pantallas hidpi
-  var r = window.devicePixelRatio || 1;
-  var w = cv.width, h = cv.height;
-  if (cv.dataset.done !== "1"){
-    cv.style.height = "auto";
-    cv.width = w * r; cv.height = h * r;
-    cv.dataset.w = w; cv.dataset.h = h; cv.dataset.done = "1";
-  }
-  var ctx = cv.getContext("2d");
-  ctx.setTransform(r,0,0,r,0,0);
-  ctx.clearRect(0,0,+cv.dataset.w,+cv.dataset.h);
-  return {ctx: ctx, W: +cv.dataset.w, H: +cv.dataset.h};
-}
-
-/* =========================================================
-   2 · CUARTETO DE ANSCOMBE
-   ========================================================= */
-var AX  = [10,8,13,9,11,14,6,4,12,7,5];
-var AX4 = [8,8,8,8,8,8,8,19,8,8,8];
-var AY  = {
-  1:[8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68],
-  2:[9.14,8.14,8.74,8.77,9.26,8.10,6.13,3.10,9.13,7.26,4.74],
-  3:[7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73],
-  4:[6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.50,5.56,7.91,6.89]
-};
-var ATXT = {
-  1:"Conjunto 1 — una relación lineal con ruido. Es el único de los cuatro donde la recta y = 3 + 0,5x describe de verdad lo que pasa.",
-  2:"Conjunto 2 — una curva, no una recta. La recta ajustada es la mejor línea recta posible y aun así es la descripción equivocada del fenómeno.",
-  3:"Conjunto 3 — una recta casi perfecta y UN punto anómalo. Ese punto solo tuerce la recta ajustada y baja la correlación.",
-  4:"Conjunto 4 — diez puntos con el mismo valor de x y uno lejos. La correlación de 0,816 la produce ese único punto: sin él no hay ninguna relación que medir.",
-  0:"Los cuatro a la vez. Mismo resumen de seis números, cuatro fenómenos distintos. Eso es lo que un resumen NO puede distinguir."
-};
-var anSel = 1;
-
-function anMarco(ctx,x0,y0,w,h,titulo){
-  ctx.strokeStyle="#d8d8d8"; ctx.lineWidth=1;
-  ctx.strokeRect(x0,y0,w,h);
-  if(titulo){ ctx.fillStyle="#666"; ctx.font="600 11px system-ui"; ctx.textAlign="left";
-    ctx.fillText(titulo, x0+6, y0+14); }
-}
-function anPlot(ctx,x0,y0,w,h,xs,ys,titulo){
-  anMarco(ctx,x0,y0,w,h,titulo);
-  var xmin=2, xmax=20, ymin=2, ymax=13.5;
-  function px(v){ return x0 + (v-xmin)/(xmax-xmin)*w; }
-  function py(v){ return y0 + h - (v-ymin)/(ymax-ymin)*h; }
-  // recta compartida y = 3 + 0.5x
-  ctx.strokeStyle="#2563eb"; ctx.lineWidth=1.6; ctx.setLineDash([5,4]);
-  ctx.beginPath(); ctx.moveTo(px(xmin), py(3+0.5*xmin)); ctx.lineTo(px(xmax), py(3+0.5*xmax)); ctx.stroke();
-  ctx.setLineDash([]);
-  // puntos
-  ctx.fillStyle="#dc2626";
-  for(var i=0;i<xs.length;i++){
-    ctx.beginPath(); ctx.arc(px(xs[i]), py(ys[i]), 4, 0, 6.2832); ctx.fill();
-  }
-}
-function anDraw(){
-  var c = prep(document.getElementById("cAns"));
-  var ctx = c.ctx;
-  if (anSel === 0){
-    var w=(c.W-30)/2 - 6, h=(c.H-30)/2 - 6;
-    anPlot(ctx,10,10,w,h, AX, AY[1], "conjunto 1");
-    anPlot(ctx,20+w,10,w,h, AX, AY[2], "conjunto 2");
-    anPlot(ctx,10,20+h,w,h, AX, AY[3], "conjunto 3");
-    anPlot(ctx,20+w,20+h,w,h, AX4, AY[4], "conjunto 4");
-  } else {
-    var xs = (anSel===4) ? AX4 : AX;
-    anPlot(ctx, 10, 10, c.W-20, c.H-20, xs, AY[anSel], "conjunto "+anSel);
-    ctx.fillStyle="#2563eb"; ctx.font="600 12px system-ui"; ctx.textAlign="right";
-    ctx.fillText("y = 3 + 0,5x   ·   r = 0,816", c.W-18, c.H-18);
-  }
-  document.getElementById("anTxt").textContent = ATXT[anSel];
-  ["an1","an2","an3","an4"].forEach(function(id,k){
-    document.getElementById(id).className = "an" + (anSel===k+1 ? "" : " off");
-  });
-  document.getElementById("anAll").className = (anSel===0 ? "" : "off");
-}
-[1,2,3,4].forEach(function(k){
-  document.getElementById("an"+k).addEventListener("click", function(){ anSel=k; anDraw(); });
-});
-document.getElementById("anAll").addEventListener("click", function(){ anSel=0; anDraw(); });
-
-/* =========================================================
-   5 · VIBRACIÓN: ASIMETRÍA, s Y PERCENTILES
-   ========================================================= */
-var Z = [0.167,0.497,-0.140,-0.825,-0.340,-0.937,0.232,1.655,-0.382,-0.525,0.710,0.562,0.282,-0.869,0.133,0.938,-1.329,-0.343,-1.948,-1.268,-1.882,-0.096,-1.244,0.467,0.339,-0.043,-2.632,-0.434,0.111,0.291,-1.536,-0.366,-0.923,-0.734,1.345,-0.732,0.129,1.148,-0.484,0.041,0.288,0.236,-1.197,0.250,1.676,-1.555,1.121,0.298,-0.548,2.389,1.013,-1.168,0.248,0.806,-0.045,0.924,0.091,0.907,1.764,-0.586,0.391,-0.350,0.307,-1.154,-0.479,-0.053,1.164,1.438,-1.306,-0.718,0.884,-2.050,-0.350,0.057,1.563,0.932,-0.199,-0.244,-0.113,1.859,-0.311,-0.172,0.557,0.031,-0.054,-1.073,0.152,-0.328,1.462,0.891,0.138,0.908,-0.213,1.335,0.159,0.814,-1.270,0.551,-1.711,-2.097,-0.173,-0.835,0.348,2.661,-0.759,-0.528,0.394,0.713,-0.031,-0.064,0.946,0.743,-0.984,0.077,0.204,-1.007,0.454,-0.789,1.246,0.379,0.264,-0.492,0.033,-2.056,-1.092,0.569,-2.201,1.106,-1.776,1.006,-0.775,1.031,0.311,-1.543,1.554,1.768,0.092,-0.139,-0.012,-0.919,1.386,-0.438,0.108,-0.717,-0.531,-1.255,1.563,-0.006,1.239,0.180,-0.607,-0.198,-0.458,0.174,-0.252,-0.168,-1.367,-0.732,2.004,-0.581,-1.007,0.540,1.730,-1.451,-0.067,-0.537,-1.792,0.982,0.139,0.245,-0.671,0.671,-0.434,0.006,-1.067,-1.187,1.650,-0.398,0.489,0.128,-0.325,-0.399,0.866,-0.170,-0.003,0.190,1.473,0.922,0.591,-0.461,-1.371,1.221,1.240,0.009,0.768,1.034,1.089,1.189,-0.341,1.849,-1.221,1.123,0.714,1.136,2.254,1.815,-1.108,-1.712,1.073,-0.963,0.151,1.099,-1.662,-2.180,0.453,0.215,-0.108,0.208,-0.791,-1.517,-0.020,-0.915,-1.662,0.727,0.097,0.617,-0.934,-0.566,-0.945,-0.820,0.382,-0.705,0.561,0.543,2.416,-1.383,1.152,0.066,0.150,-1.446];
-var CENTRO = 41, ESCALA = 6;
-var vibK = 0, vibEsp = false;
-
-function vibMuestra(){
-  var out = [], i, d;
-  for(i=0;i<Z.length;i++){
-    d = ESCALA * Z[i];
-    if (d > 0) d = d * (1 + vibK);               // estira solo el lado derecho
-    out.push(CENTRO + d);
-  }
-  if (vibEsp){                                   // reflexión exacta en torno a CENTRO
-    for(i=0;i<out.length;i++) out[i] = 2*CENTRO - out[i];
-  }
-  return out;
-}
-
-function vibDraw(){
-  var a = vibMuestra();
-  var m = media(a), md = mediana(a), s = desv(a);
-  var p5 = pct(a,5), p95 = pct(a,95);
-  var dIzq = Math.abs((m - s) - p5), dDer = Math.abs(p95 - (m + s));
-
-  document.getElementById("vMedia").textContent   = fmt(m,1);
-  document.getElementById("vMediana").textContent = fmt(md,1);
-  document.getElementById("vS").textContent       = fmt(s,2);
-  document.getElementById("vP5").textContent      = fmt(p5,1);
-  document.getElementById("vP95").textContent     = fmt(p95,1);
-
-  var maxd = Math.max(dIzq, dDer, 0.5);
-  document.getElementById("bIzq").style.width = (dIzq/maxd*100)+"%";
-  document.getElementById("bDer").style.width = (dDer/maxd*100)+"%";
-  document.getElementById("bIzq").className = (dIzq > dDer*1.25) ? "neg" : "";
-  document.getElementById("bDer").className = (dDer > dIzq*1.25) ? "neg" : "";
-  document.getElementById("vIzq").textContent = fmt(dIzq,2);
-  document.getElementById("vDer").textContent = fmt(dDer,2);
-
-  var dg = document.getElementById("vDiag");
-  if (Math.abs(dDer - dIzq) < 0.6){
-    dg.style.color = "#059669";
-    dg.textContent = "Las dos distancias son casi iguales → distribución simétrica. Aquí media y mediana prácticamente coinciden, y s te sirve sola: no hay lado que informar.";
-  } else if (dDer > dIzq){
-    dg.style.color = "#dc2626";
-    dg.textContent = "La distancia de la derecha es " + (dDer/Math.max(dIzq,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la DERECHA. Y fíjate: media (" + fmt(m,1) + ") > mediana (" + fmt(md,1) + ").";
-  } else {
-    dg.style.color = "#dc2626";
-    dg.textContent = "La distancia de la izquierda es " + (dIzq/Math.max(dDer,0.01)).toFixed(1).replace(".",",") + "× mayor → la cola está a la IZQUIERDA. Y fíjate: media (" + fmt(m,1) + ") < mediana (" + fmt(md,1) + ").";
-  }
-
-  /* histograma */
-  var c = prep(document.getElementById("cVib")), ctx = c.ctx;
-  var lo = 0, hi = 82, nb = 41, bw = (hi-lo)/nb;
-  var bins = new Array(nb); for(var i=0;i<nb;i++) bins[i]=0;
-  for(i=0;i<a.length;i++){
-    var k = Math.floor((a[i]-lo)/bw);
-    if(k<0) k=0; if(k>=nb) k=nb-1;
-    bins[k]++;
-  }
-  var mx = 0; for(i=0;i<nb;i++) if(bins[i]>mx) mx=bins[i];
-  var L=42, R=12, T=14, B=34, W=c.W-L-R, H=c.H-T-B;
-  function px(v){ return L + (v-lo)/(hi-lo)*W; }
-
-  ctx.fillStyle="#93c5fd";
-  for(i=0;i<nb;i++){
-    if(!bins[i]) continue;
-    var bh = bins[i]/mx*H;
-    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
-  }
-  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
-  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
-  for(var v=0; v<=80; v+=10){ ctx.fillText(v, px(v), T+H+16); }
-  ctx.fillText("vibración (mm/s)", L+W/2, T+H+31);
-
-  function linea(v,color,etq,dash,arriba){
-    if(v<lo||v>hi) return;
-    ctx.strokeStyle=color; ctx.lineWidth=2;
-    if(dash) ctx.setLineDash(dash);
-    ctx.beginPath(); ctx.moveTo(px(v),T); ctx.lineTo(px(v),T+H); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
-    ctx.fillText(etq, px(v), arriba ? T+10 : T+22);
-  }
-  linea(p5,  "#7c3aed","P5", [3,3], true);
-  linea(p95, "#7c3aed","P95",[3,3], true);
-  linea(m-s, "#2563eb","−s", [5,4], false);
-  linea(m+s, "#2563eb","+s", [5,4], false);
-  linea(md,  "#059669","mediana", null, true);
-  linea(m,   "#dc2626","media",   null, false);
-}
-
-var sk = document.getElementById("sk");
-sk.addEventListener("input", function(){
-  vibK = (+sk.value)/100;
-  document.getElementById("oSk").textContent = vibK === 0
-    ? "simétrica"
-    : "×" + (1+vibK).toFixed(2).replace(".",",");
-  vibDraw();
-});
-document.getElementById("bEsp").addEventListener("click", function(){
-  vibEsp = !vibEsp;
-  this.className = vibEsp ? "" : "off";
-  this.textContent = vibEsp ? "Reflejando (espejo activo)" : "Reflejar (espejo)";
-  vibDraw();
-});
-document.getElementById("bReset").addEventListener("click", function(){
-  vibK = 0; vibEsp = false; sk.value = 0;
-  document.getElementById("oSk").textContent = "simétrica";
-  var b = document.getElementById("bEsp");
-  b.className = "off"; b.textContent = "Reflejar (espejo)";
-  vibDraw();
-});
-
-/* =========================================================
-   6 · MELBOURNE 2017: CRUDO FRENTE A LOG
-   ========================================================= */
-/* Histogramas reales calculados sobre 05_RESULTADOS/predicciones_2017.csv (n = 7.244) */
-var MEL_CRUDO = {
-  bins: [0,5,55,220,428,632,777,691,707,588,402,345,424,358,273,203,198,156,124,117,75,55,66,49,40,47,27,26,24,15,22,18],
-  extra: 77, lo: 0, ancho: 100000,
-  ticks: [0,500000,1000000,1500000,2000000,2500000,3000000],
-  eje: function(v){ return (v/1000000).toFixed(1).replace(".",",") + "M"; },
-  et: "precio de venta (AUD)"
-};
-var MEL_LOG = {
-  bins: [1,3,6,19,85,181,366,672,1010,1148,996,955,728,530,269,156,77,24,9,6,2,1],
-  extra: 0, lo: 11.7, ancho: 0.2,
-  ticks: [12,13,14,15,16],
-  eje: function(v){ return v.toFixed(0); },
-  et: "log1p(precio)"
-};
-var MEL_STATS = {
-  crudo: {media:1078071.708, mediana:910000, s:629742.8217, p5:420000, p95:2260000, bajo:61.5, d:0},
-  log:   {media:13.7542,   mediana:13.7212, s:0.5137,  p5:12.9480, p95:14.6309, bajo:52.5, d:4}
-};
-var melSel = "crudo";
-
-function melDraw(){
-  var D = (melSel==="crudo") ? MEL_CRUDO : MEL_LOG;
-  var S = MEL_STATS[melSel];
-  var c = prep(document.getElementById("cMel")), ctx = c.ctx;
-  var nb = D.bins.length;
-  var hi = D.lo + nb*D.ancho;
-  var mx = 0; for(var i=0;i<nb;i++) if(D.bins[i]>mx) mx=D.bins[i];
-  var L=42,R=12,T=14,B=34,W=c.W-L-R,H=c.H-T-B;
-  function px(v){ return L + (v-D.lo)/(hi-D.lo)*W; }
-
-  ctx.fillStyle = (melSel==="crudo") ? "#fca5a5" : "#86efac";
-  for(i=0;i<nb;i++){
-    if(!D.bins[i]) continue;
-    var bh = D.bins[i]/mx*H;
-    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
-  }
-  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
-  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
-  for(var t=0; t<D.ticks.length; t++){
-    var tv = D.ticks[t];
-    if(tv < D.lo || tv > hi) continue;
-    ctx.fillText(D.eje(tv), px(tv), T+H+16);
-  }
-  ctx.fillText(D.et, L+W/2, T+H+31);
-
-  if(D.extra){
-    ctx.fillStyle="#991b1b"; ctx.font="600 11px system-ui"; ctx.textAlign="right";
-    ctx.fillText("↑ y 77 casas más, hasta 9,0M", L+W-6, T+18);
-  }
-  function linea(val,color,etq,dash,arriba){
-    if(val<D.lo||val>hi) return;
-    ctx.strokeStyle=color; ctx.lineWidth=2;
-    if(dash) ctx.setLineDash(dash);
-    ctx.beginPath(); ctx.moveTo(px(val),T); ctx.lineTo(px(val),T+H); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
-    ctx.fillText(etq, px(val), arriba ? T+10 : T+24);
-  }
-  linea(S.p5,"#7c3aed","P5",[3,3],true);
-  linea(S.p95,"#7c3aed","P95",[3,3],true);
-  linea(S.media - S.s,"#2563eb","−s",[5,4],false);
-  linea(S.media + S.s,"#2563eb","+s",[5,4],false);
-  linea(S.mediana,"#059669","mediana",null,true);
-  linea(S.media,"#dc2626","media",null,false);
-
-  var dIzq = Math.abs((S.media - S.s) - S.p5);
-  var dDer = Math.abs(S.p95 - (S.media + S.s));
-  var raz  = (dDer/dIzq);
-  document.getElementById("melMet").innerHTML =
-    '<div><div class="n">'+fmt(S.media,S.d)+'</div><div class="e">media</div></div>' +
-    '<div><div class="n">'+fmt(S.mediana,S.d)+'</div><div class="e">mediana</div></div>' +
-    '<div><div class="n">'+fmt(S.s,S.d===0?0:4)+'</div><div class="e">desv. estándar</div></div>' +
-    '<div><div class="n">'+fmt(dIzq,S.d===0?0:4)+'</div><div class="e">(media−s) a P5</div></div>' +
-    '<div><div class="n">'+fmt(dDer,S.d===0?0:4)+'</div><div class="e">(media+s) a P95</div></div>' +
-    '<div class="'+(melSel==="crudo"?"alarma":"bien")+'"><div class="n">'+S.bajo.toFixed(1).replace(".",",")+' %</div><div class="e">bajo la media</div></div>';
-
-  document.getElementById("melTxt").innerHTML = (melSel==="crudo")
-    ? "<strong>Crudo.</strong> La media (roja) está claramente a la derecha de la mediana (verde). La distancia de la derecha es <strong>"+raz.toFixed(0)+" veces</strong> la de la izquierda. Y hay 77 casas fuera del gráfico, algunas hasta 9,0 millones. <strong>El 61,5 % de las propiedades cuesta menos que el promedio.</strong>"
-    : "<strong>En logaritmo.</strong> Media y mediana casi se tocan, y las dos distancias son comparables ("+raz.toFixed(1).replace(".",",")+"×, contra 19× en la escala cruda). La cola se comprimió. <strong>Ahora el 52,5 % queda bajo la media:</strong> casi la mitad exacta, que es lo que uno espera de una distribución simétrica. Por eso entrenaste sobre <code>log1p(Price)</code>.";
-
-  document.getElementById("bCrudo").className = (melSel==="crudo") ? "" : "off";
-  document.getElementById("bLog").className   = (melSel==="log")   ? "" : "off";
-}
-document.getElementById("bCrudo").addEventListener("click", function(){ melSel="crudo"; melDraw(); });
-document.getElementById("bLog").addEventListener("click",   function(){ melSel="log";   melDraw(); });
-
-/* =========================================================
-   3 · CAMIONES: ¿CEROS REALES O FALTANTES?
-   Cifras ilustrativas [DATITO]: 15 camiones con consumo (media 2.400 L)
-   + 10 en cero → media 1.440 L, la de la lámina 20.
-   ========================================================= */
-var CAM_POS = [2100,2150,2200,2250,2300,2350,2400,2400,2400,2450,2500,2550,2600,2650,2700];
-var CAM_CEROS = 10, CAM_TUYO = 2500;
-var camModo = "real";
-
-function camDraw(){
-  var datos = CAM_POS.slice(), i;
-  if (camModo === "real"){ for(i=0;i<CAM_CEROS;i++) datos.push(0); }
-  var m = media(datos), md = mediana(datos);
-  var sobre = (CAM_TUYO/m - 1) * 100;
-
-  var c = prep(document.getElementById("cCam")), ctx = c.ctx;
-  var lo = 0, hi = 3000, nb = 12, bw = (hi-lo)/nb;
-  var cnt = []; for(i=0;i<nb;i++) cnt.push(0);
-  cnt[0] += CAM_CEROS;
-  for(i=0;i<CAM_POS.length;i++){
-    var k = Math.floor((CAM_POS[i]-lo)/bw);
-    if(k>=nb) k=nb-1;
-    cnt[k]++;
-  }
-  var mx = 0; for(i=0;i<nb;i++) if(cnt[i]>mx) mx=cnt[i];
-  var L=42,R=12,T=26,B=34,W=c.W-L-R,H=c.H-T-B;
-  function px(v){ return L + (v-lo)/(hi-lo)*W; }
-
-  for(i=0;i<nb;i++){
-    if(!cnt[i]) continue;
-    var bh = cnt[i]/mx*H;
-    if(i===0){ ctx.fillStyle = (camModo==="real") ? "#fca5a5" : "#e5e7eb"; }
-    else { ctx.fillStyle = "#93c5fd"; }
-    ctx.fillRect(L + i/nb*W + 0.5, T+H-bh, W/nb - 1, bh);
-    if(i===0 && camModo!=="real"){
-      ctx.strokeStyle="#9ca3af"; ctx.setLineDash([4,3]);
-      ctx.strokeRect(L + 0.5, T+H-bh, W/nb - 1, bh);
-      ctx.setLineDash([]);
-    }
-  }
-  ctx.fillStyle = (camModo==="real") ? "#991b1b" : "#6b7280";
-  ctx.font="600 11px system-ui"; ctx.textAlign="left";
-  ctx.fillText(camModo==="real" ? "10 camiones en 0" : "10 sin reporte: fuera del cálculo", L+4, T-8);
-
-  ctx.strokeStyle="#9ca3af"; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(L,T+H); ctx.lineTo(L+W,T+H); ctx.stroke();
-  ctx.fillStyle="#666"; ctx.font="11px system-ui"; ctx.textAlign="center";
-  for(var v=0; v<=3000; v+=500){ ctx.fillText(fmt(v,0), px(v), T+H+16); }
-  ctx.fillText("consumo semanal por camión (litros)", L+W/2, T+H+31);
-
-  function linea(val,color,etq,dash,y){
-    ctx.strokeStyle=color; ctx.lineWidth=2;
-    if(dash) ctx.setLineDash(dash);
-    ctx.beginPath(); ctx.moveTo(px(val),T); ctx.lineTo(px(val),T+H); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle=color; ctx.font="600 10px system-ui"; ctx.textAlign="center";
-    ctx.fillText(etq, px(val), y);
-  }
-  linea(CAM_TUYO,"#7c3aed","tus 2.500",[5,4],T+H-6);
-  linea(md,"#059669","mediana",null,T+10);
-  linea(m,"#dc2626","media",null,T+22);
-
-  document.getElementById("camMet").innerHTML =
-    '<div><div class="n">'+datos.length+'</div><div class="e">camiones en el cálculo</div></div>' +
-    '<div><div class="n">'+fmt(m,0)+' L</div><div class="e">media</div></div>' +
-    '<div><div class="n">'+fmt(md,0)+' L</div><div class="e">mediana</div></div>' +
-    '<div class="'+(sobre>20?"alarma":"bien")+'"><div class="n">+'+fmt(sobre,0)+' %</div><div class="e">tus 2.500 sobre la media</div></div>';
-
-  document.getElementById("camTxt").innerHTML = (camModo==="real")
-    ? "<strong>Ceros como consumo real.</strong> La media es "+fmt(m,0)+" L —la de la lámina— y tus camiones quedan "+fmt(sobre,0)+" % por encima. Pero mira el histograma: ningún camión gasta cerca de "+fmt(m,0)+" L. La media cae en el hueco entre los parados y los que trabajan. Hipótesis que calza con esta lectura: <em>muchos camiones inactivos</em>."
-    : "<strong>Ceros como reportes que faltan.</strong> Si nadie anotó esos consumos, no son consumo: salen del cálculo. Con los "+datos.length+" camiones que sí reportaron, la media es "+fmt(m,0)+" L y tus 2.500 L quedan apenas "+fmt(sobre,0)+" % arriba. Hipótesis que calza: <em>la gente no está reportando</em>. El histograma no decide entre las dos: hay que ir a ver quién anotó.";
-
-  document.getElementById("bCamReal").className  = (camModo==="real")  ? "" : "off";
-  document.getElementById("bCamFalta").className = (camModo==="falta") ? "" : "off";
-}
-document.getElementById("bCamReal").addEventListener("click",  function(){ camModo="real";  camDraw(); });
-document.getElementById("bCamFalta").addEventListener("click", function(){ camModo="falta"; camDraw(); });
-
-/* ---------- arranque ---------- */
-anDraw();
-camDraw();
-vibDraw();
-melDraw();
-window.addEventListener("resize", function(){ anDraw(); camDraw(); vibDraw(); melDraw(); });
-
-})();
-</script>
 </body>
 </html>

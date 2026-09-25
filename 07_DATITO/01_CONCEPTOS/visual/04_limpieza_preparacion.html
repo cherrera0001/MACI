@@ -2,112 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Limpieza y preparación de datos · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin-top:1.1rem}
-  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
-  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.72rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
-  .met div.alarma .n{color:var(--rojo)}
-  .met div.bien .n{color:var(--verde)}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
-         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
-  button:hover{background:#1d4ed8}
-  input[type=range]{width:100%}
-  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
-  .ctrl label{font-weight:600;font-size:.88rem}
-  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:4rem;text-align:right}
-
-  .opts{display:grid;gap:.55rem;margin:0 0 1rem}
-  .opts label{display:flex;gap:.6rem;align-items:flex-start;background:var(--fondo);
-              border:1px solid var(--linea);border-radius:8px;padding:.6rem .8rem;
-              cursor:pointer;font-size:.9rem}
-  .opts label:hover{border-color:var(--azul)}
-  .opts input{margin-top:.28rem;flex:0 0 auto}
-  .opts .t{font-weight:600}
-  .opts .d{color:var(--suave);font-size:.84rem;display:block;font-weight:400}
-
-  .tabmin{max-width:430px;font-size:.87rem}
-  .tabmin td.et{width:62%}
-  tr.dia td{background:#f5f3ff;color:#5b21b6;font-weight:600;font-size:.82rem}
-  tr.fuera td{opacity:.32;text-decoration:line-through}
-  td.mal{color:var(--rojo);font-weight:700}
-  .badge{font-size:.68rem;font-weight:700;padding:.1rem .4rem;border-radius:20px;
-         margin-left:.4rem;white-space:nowrap;vertical-align:middle}
-  .b-cent{background:#fee2e2;color:#991b1b}
-  .b-atip{background:#fef3c7;color:#92400e}
-  .b-cero{background:#dbeafe;color:#1e40af}
-  .b-est{background:#ede9fe;color:#5b21b6}
-
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
-        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
-               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.5rem;display:none}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
-                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
-  .ecu .formula .num{color:var(--verde);font-weight:700}
-  .ecu .formula .den{color:var(--azul);font-weight:700}
-  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-cuenta{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary:before{content:"▸ ";font-weight:700}
-  details[open] summary:before{content:"▾ "}
-  details[open] summary{margin-bottom:.7rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  .repreg code{background:#333;color:#fbbf24}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;
-          margin:1.1rem 0;font-size:.92rem}
-  .vecino a{color:var(--azul)}
-  .dist{background:#1e1b4b;color:#e0e7ff;border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0}
-  .dist strong{color:#fbbf24}
-  .dist .vs{display:block;text-align:center;font-family:ui-monospace,monospace;
-            font-size:1.02rem;margin:.7rem 0;color:#fff}
-  pre{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;
-      font-size:.87rem;overflow-x:auto;margin:.9rem 0}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="4" id="clase-4">
@@ -1112,182 +1013,60 @@ bandas de 2 y 3 desviaciones); las cifras de Melbourne (13.580 filas,
 fechas de junio y el caso de buses.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-const $=id=>document.getElementById(id);
-const fmt=(v,d=2)=>v.toFixed(d).replace('.',',').replace('-','−');
-
-/* ---------- predicciones ---------- */
-const PRED={
- cent:{txt:{
-  baja:'<strong>No, y es lo contrario.</strong> Los dos −999 estaban tirando el promedio hacia <em>abajo</em>: eran el contrapeso del 2900. Al sacarlos, el 2900 queda suelto. Marca la primera casilla y mira: <strong>208,50 → 450,00</strong>.',
-  igual:'<strong>No.</strong> Se mueve muchísimo. Los −999 aportaban −199,83 al promedio; retirarlos libera al 2900, que aporta +225. Marca la primera casilla: <strong>208,50 → 450,00</strong>. Hiciste una limpieza correcta y el resultado empeoró.',
-  sube:'<strong>Correcto, y es lo incómodo.</strong> Sube a <strong>450,00</strong>: más del doble. Los −999 estaban compensando al 2900 por pura casualidad aritmética. Al quitar el contrapeso queda el 2900 solo. <strong>Limpiar a medias es peor que no limpiar.</strong>'}},
- imp:{txt:{
-  menos:'<strong>No.</strong> Sube, y muchísimo. Mueve el deslizador y mira el RIC: cada valor que metes en la mediana aprieta el 50 % central, la valla se cierra, y valores que eran normales quedan afuera.',
-  igual:'<strong>No, y es la trampa exacta.</strong> Los valores que metes son normales, sí — pero la valla que decide qué es atípico <em>se calcula con ellos dentro</em>. Al concentrarlos todos en 210, el RIC se derrumba. Mueve el deslizador a 20: de 0 atípicos a <strong>18</strong>.',
-  mas:'<strong>Correcto, y la magnitud sorprende igual.</strong> Pasa de 0 a <strong>18 atípicos de 40</strong>. Y no porque los datos cambiaran: la valla se calcula con los valores imputados dentro, el RIC pasa de 86,25 a 0, y todo lo que no sea exactamente 210 cae fuera. Es lo que te pasó con <code>BuildingArea</code>: 353 → 5.565.'}}};
-document.querySelectorAll('.pred').forEach(p=>{
-  const k=p.dataset.p;
-  p.querySelectorAll('button').forEach(b=>{
-    b.onclick=()=>{
-      p.querySelectorAll('button').forEach(x=>x.classList.remove('elegida'));
-      b.classList.add('elegida');
-      const v=p.querySelector('.veredicto');
-      v.innerHTML=PRED[k].txt[b.dataset.r]; v.classList.add('on');
-    };
-  });
-});
-
-/* ---------- 1 · la tabla 9B ---------- */
-const FILAS=[
- {et:'El Lunes',                     v:null,  t:'dia'},
- {et:'Camión 1',                     v:200,   t:'ok'},
- {et:'Camión 2',                     v:200,   t:'ok'},
- {et:'Camión 3',                     v:2900,  t:'atip'},
- {et:'Camión 4',                     v:200,   t:'ok'},
- {et:'El Martes',                    v:null,  t:'dia'},
- {et:'Camión 1',                     v:200,   t:'ok'},
- {et:'Camión 2 (conductor enfermo)', v:0,     t:'cero'},
- {et:'Camión 3 (en mantenimiento)',  v:-999,  t:'cent'},
- {et:'Camión 4',                     v:200,   t:'ok'},
- {et:'El Miércoles',                 v:null,  t:'dia'},
- {et:'Camión 1',                     v:200,   t:'ok'},
- {et:'Camión 2',                     v:200,   t:'ok'},
- {et:'Camión 3 (en mantenimiento)',  v:-999,  t:'cent'},
- {et:'Camión 4',                     v:200,   t:'ok'}];
-
-const BADGE={cent:['b-cent','centinela'],atip:['b-atip','atípico'],
-             cero:['b-cero','cero medido'],dia:['b-est','no es observación']};
-
-function mediana(a){const s=[...a].sort((x,y)=>x-y),n=s.length;
-  return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;}
-function desv(a){const n=a.length; if(n<2)return 0;
-  const m=a.reduce((s,x)=>s+x,0)/n;
-  return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(n-1));}
-
-function render(){
-  const fc=$('c_cent').checked, fa=$('c_atip').checked, fz=$('c_cero').checked;
-  const fuera=t=>(t==='dia')||(t==='cent'&&fc)||(t==='atip'&&fa)||(t==='cero'&&fz);
-
-  let html='<tr><th>CONSUMO</th><th style="text-align:right">CANTIDAD</th></tr>';
-  FILAS.forEach(f=>{
-    const out=fuera(f.t);
-    const cls=(f.t==='dia'?'dia':'')+(out?' fuera':'');
-    const b=BADGE[f.t]?`<span class="badge ${BADGE[f.t][0]}">${BADGE[f.t][1]}</span>`:'';
-    const val=f.v===null?'(vacío)':(f.v<0?'−'+Math.abs(f.v):f.v);
-    html+=`<tr class="${cls}"><td class="et">${f.et}${b}</td>`+
-          `<td class="num${(f.t==='cent'||f.t==='atip')?' mal':''}">${val}</td></tr>`;
-  });
-  $('tabla').innerHTML=html;
-
-  const v=FILAS.filter(f=>!fuera(f.t)).map(f=>f.v);
-  const n=v.length, media=v.reduce((s,x)=>s+x,0)/n, md=mediana(v), s=desv(v);
-  $('m_n').textContent=n;
-  $('m_media').textContent=fmt(media);
-  $('m_mediana').textContent=fmt(md);
-  $('m_s').textContent=fmt(s);
-
-  $('box_media').className = (media<0||media>400)?'alarma':(Math.abs(media-200)<1?'bien':'');
-  $('box_s').className     = (s>400)?'alarma':(s<1?'bien':'');
-  $('box_med').className   = 'bien';
-
-  let L='';
-  if(!fc&&!fa&&!fz) L='<strong>La tabla cruda.</strong> Media 208,50: a sólo 4,3 % de los 200 reales. Pasa cualquier chequeo rápido. Pero mira la desviación: <strong>963,15 litros</strong>, más de cuatro veces la media. Eso no lo produce ningún proceso físico.';
-  else if(fc&&!fa&&!fz) L='<strong>Limpiaste bien y empeoró.</strong> Sacaste los centinelas —correcto— y la media saltó a <strong>450,00</strong>. Estaban compensando al 2900. El 2900 sigue ahí.';
-  else if(!fc&&fa&&!fz) L='<strong>Media negativa: −36,18 litros.</strong> Un camión no puede consumir combustible negativo. Este es el mejor error posible: es <em>imposible</em>, así que no se te va a pasar. Los centinelas siguen dentro.';
-  else if(fc&&fa&&!fz) L='<strong>Ya es creíble: 177,78.</strong> Sigue por debajo de 200 porque el 0 del conductor enfermo entra al cálculo. Y eso <em>puede estar bien</em>: depende de si preguntas por la flota o por un camión operativo.';
-  else if(fc&&fa&&fz) L='<strong>200,00 exacto, y desviación 0.</strong> Los ocho camión-día operativos consumieron 200 litros cada uno. Este es el dato que la tabla contenía desde el principio, enterrado bajo tres defectos. Ojo: esta cifra responde «¿cuánto consume un camión operativo?», no «¿cuánto gasta la flota por día?».';
-  else if(!fc&&fa&&fz) L='<strong>−39,80.</strong> Sacaste el atípico y el cero, pero dejaste los centinelas: dos valores de −999 mandan sobre diez. Imposible y evidente.';
-  else if(fc&&!fa&&fz) L='<strong>500,00.</strong> Sin centinelas ni cero, el 2900 reparte su exceso entre nueve filas. La media se aleja más de la verdad cuanto más "limpias" alrededor del defecto real.';
-  else L='<strong>227,45.</strong> Sacaste el cero real pero dejaste los dos defectos que sí importan.';
-  L+=' <span style="color:var(--suave)">Mediana: <strong>200,00</strong>, como en las ocho combinaciones.</span>';
-  $('lectura').innerHTML=L;
-}
-['c_cent','c_atip','c_cero'].forEach(id=>$(id).addEventListener('change',render));
-$('reset').onclick=()=>{['c_cent','c_atip','c_cero'].forEach(id=>$(id).checked=false);render();};
-render();
-
-/* ---------- 2 · imputar con la mediana ---------- */
-const OBS=[120,140,150,160,170,180,190,200,205,210,210,220,230,250,260,275,290,300,310,330];
-const MED=210;
-function cuantil(a,p){const s=[...a].sort((x,y)=>x-y),n=s.length,h=(n-1)*p,
-  f=Math.floor(h),c=Math.min(f+1,n-1); return s[f]+(h-f)*(s[c]-s[f]);}
-
-const cv=$('lienzo'), cx=cv.getContext('2d');
-const mg={l:48,r:26,t:26,b:46}, xMin=90, xMax=350;
-const px=x=>mg.l+(x-xMin)/(xMax-xMin)*(cv.width-mg.l-mg.r);
-
-function dibujar(){
-  const m=+$('mimp').value;
-  const v=OBS.concat(Array(m).fill(MED));
-  const q1=cuantil(v,.25), q3=cuantil(v,.75), ric=q3-q1;
-  const lo=q1-1.5*ric, hi=q3+1.5*ric;
-  const out=v.filter(x=>x<lo||x>hi).length;
-
-  $('o_mimp').textContent=m+' de 20';
-  $('i_q1').textContent=fmt(q1); $('i_q3').textContent=fmt(q3);
-  $('i_iqr').textContent=fmt(ric); $('i_out').textContent=out;
-  $('box_out').className = out>0?'alarma':'bien';
-
-  cx.clearRect(0,0,cv.width,cv.height);
-  const base=cv.height-mg.b;
-
-  // zona dentro de la valla
-  const xa=Math.max(px(lo),mg.l), xb=Math.min(px(hi),cv.width-mg.r);
-  cx.fillStyle='#d1fae5'; cx.globalAlpha=.55;
-  cx.fillRect(xa,mg.t,Math.max(xb-xa,1.5),base-mg.t);
-  cx.globalAlpha=1;
-  // vallas
-  cx.strokeStyle='#059669'; cx.lineWidth=2; cx.setLineDash([5,4]);
-  [lo,hi].forEach(x=>{if(x>=xMin&&x<=xMax){cx.beginPath();
-    cx.moveTo(px(x),mg.t);cx.lineTo(px(x),base);cx.stroke();}});
-  cx.setLineDash([]);
-
-  // eje
-  cx.strokeStyle='#999'; cx.lineWidth=1;
-  cx.beginPath(); cx.moveTo(mg.l,base); cx.lineTo(cv.width-mg.r,base); cx.stroke();
-  cx.fillStyle='#666'; cx.font='12px system-ui'; cx.textAlign='center';
-  for(let x=100;x<=350;x+=50){
-    cx.beginPath(); cx.moveTo(px(x),base); cx.lineTo(px(x),base+5); cx.stroke();
-    cx.fillText(x,px(x),base+20);
-  }
-  cx.fillText('litros por camión-día',(mg.l+cv.width-mg.r)/2,base+38);
-
-  // puntos apilados
-  const cuenta={};
-  const dibujaPunto=(x,idx,color)=>{
-    const cy=base-9-idx*11;
-    cx.beginPath(); cx.arc(px(x),Math.max(cy,mg.t+5),4.2,0,7); cx.fillStyle=color; cx.fill();
-    cx.strokeStyle='#fff'; cx.lineWidth=1; cx.stroke();
-  };
-  OBS.forEach(x=>{
-    const i=(cuenta[x]=(cuenta[x]||0)); cuenta[x]++;
-    dibujaPunto(x,i,(x<lo||x>hi)?'#dc2626':'#2563eb');
-  });
-  for(let k=0;k<m;k++){
-    const i=(cuenta[MED]=(cuenta[MED]||0)); cuenta[MED]++;
-    dibujaPunto(MED,i,'#d97706');
-  }
-
-  // etiquetas
-  cx.font='600 12px system-ui'; cx.textAlign='left';
-  cx.fillStyle='#065f46';
-  cx.fillText('valla de Tukey: '+fmt(lo,1)+'  a  '+fmt(hi,1),mg.l+4,mg.t+2);
-  cx.textAlign='right'; cx.fillStyle='#92400e';
-  if(m>0) cx.fillText(m+' imputados en 210',cv.width-mg.r-4,mg.t+2);
-
-  let L;
-  if(m===0) L='<strong>Los 20 valores observados, sin tocar.</strong> La valla va de 48,1 a 393,1 y todos caben dentro: <strong>cero atípicos</strong>. Este es el dato real.';
-  else if(m<6) L='Todavía nada. La valla se está cerrando —mira el RIC bajar— pero aún no alcanza a ningún valor.';
-  else if(m<13) L='<strong>Empezaron a caer.</strong> Y ninguno de los valores observados cambió: cambió la <em>regla</em> que decide qué es atípico, porque se calcula con tus rellenos dentro.';
-  else if(m<20) L='<strong>Más de un tercio de las filas, marcadas.</strong> El 50 % central ya es casi todo relleno, así que el RIC mide la dispersión de un valor repetido: casi cero.';
-  else L='<strong>RIC = 0. La valla colapsó sobre el 210.</strong> Cualquier valor distinto de 210 es atípico: <strong>18 de 40</strong>. La media apenas se movió (220,00 → 215,00) y la mediana sigue en 210 — por eso el desastre no se ve mirando el centro. Esto es <code>BuildingArea</code>: 353 atípicos → 5.565.';
-  $('i_lectura').innerHTML=L;
-}
-$('mimp').addEventListener('input',dibujar);
-dibujar();
-</script>
 </body>
 </html>

@@ -2,111 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Fundamentos de Ciencia de Datos · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
-  canvas{width:100%;height:auto;display:block}
-  .ctrl{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem 1rem;align-items:center;margin-top:1.1rem}
-  .ctrl label{font-weight:600;font-size:.88rem}
-  .ctrl output{font-variant-numeric:tabular-nums;font-weight:700;min-width:5.5rem;text-align:right}
-  input[type=range]{width:100%}
-  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin-top:1.1rem}
-  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .4rem;text-align:center}
-  .met .n{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .met .e{font-size:.72rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.15rem}
-  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;
-         font-size:.86rem;cursor:pointer;font-weight:600;margin:.15rem .3rem .15rem 0}
-  button:hover{background:#1d4ed8}
-
-  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
-         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
-  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
-  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
-  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;
-        padding:.7rem 1rem;margin:1rem 0;font-size:.92rem}
-  .pred .q{font-weight:600;margin-bottom:.5rem}
-  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;
-               padding:.3rem .7rem;font-size:.84rem;cursor:pointer;margin:.15rem .3rem .15rem 0;font-weight:600}
-  .pred button:hover{background:#fef3c7}
-  .pred button.elegida{background:var(--ambar);color:#fff}
-  .pred .veredicto{margin-top:.5rem;display:none}
-  .pred .veredicto.on{display:block}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
-  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.25rem;text-align:center;
-                padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.9rem}
-  .rol{font-size:.7rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
-  .r-dato{background:#dbeafe;color:#1e40af}
-  .r-cuenta{background:#d1fae5;color:#065f46}
-  .r-decide{background:#fce7f3;color:#9d174d}
-  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary:before{content:"\25B8  ";font-weight:700}
-  details[open] summary:before{content:"\25BE  "}
-  details[open] summary{margin-bottom:.7rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
-  .repreg strong{color:#fbbf24}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
-  .vecino a{color:var(--azul)}
-  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.6rem .9rem;margin:.9rem 0;font-size:.92rem}
-  .dist a{color:var(--azul)}
-
-  /* --- Big Data --- */
-  .bd-fila{display:grid;grid-template-columns:5.5rem 1fr 4.5rem;gap:.7rem;align-items:center;margin:.55rem 0}
-  .bd-fila .nom{font-weight:600;font-size:.86rem}
-  .bd-pista{position:relative;height:26px;background:#f1f0ee;border-radius:5px;overflow:hidden}
-  .bd-barra{height:100%;border-radius:5px;transition:width .12s linear}
-  .bd-ok{background:#a7f3d0}
-  .bd-mal{background:#fca5a5}
-  .bd-techo{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--tinta);z-index:2}
-  .bd-val{font-size:.8rem;font-variant-numeric:tabular-nums;text-align:right;color:var(--suave)}
-  .bd-veredicto{margin-top:1rem;padding:.8rem 1rem;border-radius:8px;font-weight:600}
-  .bd-si{background:#fef2f2;border-left:3px solid var(--rojo)}
-  .bd-no{background:#f0fdf4;border-left:3px solid var(--verde)}
-
-  /* --- postura data-driven --- */
-  .seg{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
-  .seg button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600}
-  .seg button.on{background:var(--azul);border-color:var(--azul);color:#fff}
-  .caja-postura{background:var(--fondo);border-radius:8px;padding:.9rem 1.1rem;font-size:.93rem;min-height:9rem}
-  .caja-postura b{display:block;margin-top:.6rem}
-
-  /* --- ciclo --- */
-  .ciclo{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
-  .ciclo button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600;font-size:.8rem}
-  .ciclo button.ok{background:#d1fae5;border-color:var(--verde);color:#065f46}
-  .ciclo button.no{background:#fee2e2;border-color:var(--rojo);color:#991b1b}
-  .sintoma{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.1rem;margin:.9rem 0}
-  .sintoma .txt{font-style:italic;margin-bottom:.3rem}
-  .sintoma .fb{font-size:.9rem;margin-top:.5rem;display:none}
-  .sintoma .fb.on{display:block}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="1" id="clase-1">
@@ -1253,313 +1155,60 @@ inventados. Las citas de clase provienen de transcripción automática y van
 literales; las correcciones van entre ⟨⟩.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>Fundamentos de Ciencia de Datos</h1>
+<p class="sub">Aprende qué es, cómo funciona, cuándo usar</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-/* ---------------- 3 · posturas ---------------- */
-var POSTURAS = {
-  exp: {
-    t: "Por experiencia",
-    h: "El jefe de patrimonio decide adelantar la cosecha porque lleva veinte años viendo rodales y este «se ve listo». El modelo existe, pero nadie lo abre.",
-    q: "Decide: la persona. Los datos: no entran.",
-    f: "Falla cuando el año no se parece a los veinte anteriores. Y no deja rastro: si sale mal, no hay nada que revisar.",
-    v: "Es rápido y usa conocimiento real que no está en ninguna tabla."
-  },
-  inf: {
-    t: "Data-informed (vocabulario externo, no del curso)",
-    h: "El modelo proyecta que esperar seis meses sube el rendimiento un 4 %. El jefe de patrimonio lo lee, lo cruza con que el camino forestal se corta con lluvia fuerte, y decide cosechar ahora igual.",
-    q: "Decide: la persona. Los datos: entran como una entrada más, con peso.",
-    f: "Falla cuando «el criterio experto» se usa como comodín para ignorar siempre lo que el dato dice. Sin registro de por qué se desvió, es experiencia disfrazada.",
-    v: "Incorpora lo que el modelo no tiene en X —el estado del camino— sin renunciar a la evidencia."
-  },
-  drv: {
-    t: "Data-driven",
-    h: "La regla está escrita de antemano: si el modelo proyecta una ganancia mayor al 3 %, se espera. El modelo proyecta 4 %. Se espera. La orden sale sin reunión.",
-    q: "Decide: la regla, alimentada por datos. La persona: la diseñó antes, y puede revisarla después.",
-    f: "Falla cuando el dato entra mal y nadie lo nota —la cuarta V, veracidad—, o cuando el mundo cambia y la regla no. Necesita monitoreo, que es la etapa de puesta en marcha.",
-    v: "Escala a miles de rodales, es consistente entre personas, y queda auditable: se sabe exactamente por qué se decidió así."
-  }
-};
-function pintaPostura(k){
-  var p = POSTURAS[k];
-  document.getElementById('cajaPostura').innerHTML =
-    '<div style="font-weight:700;margin-bottom:.4rem">' + p.t + '</div>' +
-    '<div>' + p.h + '</div>' +
-    '<b>Quién decide</b>' + p.q +
-    '<b>Dónde falla</b>' + p.f +
-    '<b>Qué aporta</b>' + p.v;
-}
-(function(){
-  var btns = document.querySelectorAll('#segPostura button');
-  for (var i=0;i<btns.length;i++){
-    btns[i].addEventListener('click', function(){
-      for (var j=0;j<btns.length;j++) btns[j].classList.remove('on');
-      this.classList.add('on');
-      pintaPostura(this.getAttribute('data-p'));
-    });
-  }
-  pintaPostura('exp');
-})();
-
-/* ---------------- 5 · Big Data ---------------- */
-(function(){
-  var ids = ['Vol','Vel','Var'];
-  var s = {}, o = {}, b = {}, t = {}, l = {};
-  for (var i=0;i<ids.length;i++){
-    s[ids[i]] = document.getElementById('s'+ids[i]);
-    o[ids[i]] = document.getElementById('o'+ids[i]);
-    b[ids[i]] = document.getElementById('b'+ids[i]);
-    t[ids[i]] = document.getElementById('t'+ids[i]);
-    l[ids[i]] = document.getElementById('l'+ids[i]);
-  }
-  var sCap = document.getElementById('sCap'), oCap = document.getElementById('oCap');
-  var vd = document.getElementById('vdBD');
-
-  var ETIQ = {
-    Vol: function(v){
-      if (v < 20) return 'megabytes';
-      if (v < 45) return 'gigabytes';
-      if (v < 70) return 'terabytes';
-      if (v < 88) return 'petabytes';
-      return 'exabytes';
-    },
-    Vel: function(v){
-      if (v < 20) return 'mensual';
-      if (v < 45) return 'diaria';
-      if (v < 70) return 'por hora';
-      if (v < 88) return 'por minuto';
-      return 'tiempo real';
-    },
-    Var: function(v){
-      if (v < 20) return '1 tabla';
-      if (v < 45) return 'tablas';
-      if (v < 70) return '+ texto';
-      if (v < 88) return '+ imágenes';
-      return '+ señales';
-    }
-  };
-
-  function dibuja(){
-    var cap = +sCap.value;
-    oCap.textContent = cap + ' / 100';
-    var supera = [], nombres = {Vol:'volumen', Vel:'velocidad', Var:'variedad'};
-    for (var i=0;i<ids.length;i++){
-      var k = ids[i], v = +s[k].value;
-      o[k].textContent = v + ' / 100';
-      l[k].textContent = ETIQ[k](v);
-      b[k].style.width = v + '%';
-      b[k].className = 'bd-barra ' + (v > cap ? 'bd-mal' : 'bd-ok');
-      t[k].style.left = 'calc(' + cap + '% - 1.5px)';
-      if (v > cap) supera.push(nombres[k]);
-    }
-    if (supera.length){
-      vd.className = 'bd-veredicto bd-si';
-      vd.innerHTML = 'Es un problema de <strong>big data</strong> — la infraestructura no alcanza en: ' +
-        supera.join(', ') + '. No porque el dato sea mucho, sino porque es más de lo que aguanta <em>esta</em> organización.';
-    } else {
-      vd.className = 'bd-veredicto bd-no';
-      vd.innerHTML = '<strong>No</strong> es big data. Puede ser muchísimo dato: si tu infraestructura lo procesa, es un problema de datos normal.';
-    }
-  }
-  for (var i=0;i<ids.length;i++) s[ids[i]].addEventListener('input', dibuja);
-  sCap.addEventListener('input', dibuja);
-  dibuja();
-
-  var pred = document.getElementById('predBD'), vBD = document.getElementById('vBD');
-  var RESP = {
-    si: 'Correcto, y fíjate <em>por qué</em>: el volumen no se movió, se movió la <strong>velocidad</strong>. Deja volumen y capacidad donde están y sube solo el deslizador de velocidad a 95: la barra se pone roja sola. Las tres V son puertas independientes — basta con que una supere la capacidad.',
-    no: 'Mira otra vez las tres barras. El volumen es una de las tres V, no la única. Deja volumen y capacidad quietos y sube solo <strong>velocidad</strong>: el mismo dato pasa a rojo. El error de fondo es leer <em>big data</em> como sinónimo de <em>muchos datos</em>.',
-    dep: 'Depende, sí — pero de algo concreto y nombrable: <strong>de la capacidad de la infraestructura</strong>. Sube velocidad a 95 y después sube la capacidad a 100: el mismo problema entra y sale de <em>big data</em> sin que el dato cambie. Eso es exactamente lo que dijo el profesor.'
-  };
-  var pb = pred.querySelectorAll('button');
-  for (var k=0;k<pb.length;k++){
-    pb[k].addEventListener('click', function(){
-      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
-      this.classList.add('elegida');
-      vBD.innerHTML = RESP[this.getAttribute('data-r')];
-      vBD.className = 'veredicto on';
-    });
-  }
-})();
-
-/* ---------------- 6 · simulador del ciclo ---------------- */
-(function(){
-  var ETAPAS = ['Requerimiento','Recolección','Limpieza','Exploración','Modelamiento','Comunicación','Puesta en marcha'];
-  var CASOS = [
-    { txt: 'El modelo de precios da resultados rarísimos: predice 12 millones para departamentos de un dormitorio. Revisas y hay filas con Landsize = 0 y otras con 40.000 m².',
-      ok: 'Limpieza',
-      fb: 'Valores fuera de rango → <strong>limpieza</strong>. Este es el caso que el segundo docente dice encontrar el 90 % de las veces que retrocede: llega al modelamiento, el resultado no cuadra, y el problema estaba dos etapas atrás.' },
-    { txt: 'Quieres predecir el consumo de combustible por camión y turno, pero el sistema de despacho solo registra el consumo agregado por día de toda la flota.',
-      ok: 'Requerimiento',
-      fb: 'El dato al nivel que la pregunta exige <strong>no existe</strong>. Puedes intentar recolectarlo, pero si no se registra, hay que volver al <strong>requerimiento</strong> y replantear la pregunta a un nivel respondible. El segundo docente lo explicó así en la clase del 19-jun: si al recolectar descubres que parte fundamental de los datos no está disponible, vuelves atrás y refinas la pregunta. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:02:23–2:02:44]</span>' },
-    { txt: 'El modelo funciona bien en validación. Lo presentas a gerencia y la primera pregunta es: «¿y esto qué significa para el presupuesto del próximo trimestre?». No sabes responder.',
-      ok: 'Comunicación',
-      fb: 'No es un problema de modelo: es de <strong>comunicación</strong>. El segundo docente fue explícito: de nada sirve el proceso completo si, una vez encontrada la respuesta, no eres capaz de comunicársela a los tomadores de decisiones. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:04:43–2:05:02]</span> Un modelo que nadie sabe usar no produjo conocimiento.' },
-    { txt: 'Llevas un mes con el modelo en operación. Al principio acertaba; en las últimas tres semanas se degrada sin que nadie haya tocado el código.',
-      ok: 'Puesta en marcha',
-      fb: 'Detectarlo es función de la <strong>puesta en marcha</strong>: si no hay monitoreo, nadie se entera. Una vez detectado, el ciclo vuelve a girar — probablemente hacia recolección o requerimiento, porque cambió el mundo, no el código. Esta es la etapa que casi todos omiten al enumerar el ciclo.' },
-    { txt: 'Antes de modelar nada, notas que la columna CONSUMO de la planilla minera mezcla números de litros, IDs de camión y la palabra «mantención», además de un centinela -999.',
-      ok: 'Limpieza',
-      fb: 'Una columna con tres significados distintos es <strong>limpieza</strong> — sobrecarga semántica. Y es literalmente la pregunta 9B del Certamen 1, la que vale 2,0 puntos. Ojo con el reflejo de borrar: un centinela -999 hay que sacarlo, pero un consumo de 0 puede ser una medición real de un camión que no salió.' }
-  ];
-
-  var cont = document.getElementById('simCiclo');
-  var marcador = document.getElementById('marcador');
-  var aciertos = 0, respondidos = 0;
-
-  for (var i=0;i<CASOS.length;i++){
-    (function(c, idx){
-      var d = document.createElement('div');
-      d.className = 'sintoma';
-      var h = '<div class="txt">' + c.txt + '</div><div class="ciclo">';
-      for (var j=0;j<ETAPAS.length;j++) h += '<button data-e="' + ETAPAS[j] + '">' + ETAPAS[j] + '</button>';
-      h += '</div><div class="fb"></div>';
-      d.innerHTML = h;
-      cont.appendChild(d);
-
-      var fb = d.querySelector('.fb');
-      var bs = d.querySelectorAll('.ciclo button');
-      var yaContado = false;
-      for (var k=0;k<bs.length;k++){
-        bs[k].addEventListener('click', function(){
-          var e = this.getAttribute('data-e');
-          var bien = (e === c.ok);
-          for (var m=0;m<bs.length;m++){ bs[m].classList.remove('ok'); bs[m].classList.remove('no'); }
-          this.classList.add(bien ? 'ok' : 'no');
-          if (!bien){
-            for (var m=0;m<bs.length;m++){
-              if (bs[m].getAttribute('data-e') === c.ok) bs[m].classList.add('ok');
-            }
-          }
-          fb.innerHTML = (bien ? '<strong style="color:#059669">Sí.</strong> ' : '<strong style="color:#dc2626">No.</strong> ') + c.fb;
-          fb.className = 'fb on';
-          if (!yaContado){
-            yaContado = true; respondidos++;
-            if (bien) aciertos++;
-            marcador.style.display = 'block';
-            marcador.innerHTML = '<strong>' + aciertos + ' de ' + respondidos + '</strong> a la primera. ' +
-              (respondidos === CASOS.length
-                ? 'De los cinco síntomas, <strong>dos</strong> vuelven a limpieza. Ese sesgo no es del ejercicio: es el 90 % del que habló el segundo docente (causa de retrocesos, no tiempo invertido).'
-                : 'Sigue.');
-          }
-        });
-      }
-    })(CASOS[i], i);
-  }
-})();
-
-/* ---------------- 8 · ruido irreducible ---------------- */
-(function(){
-  var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
-  var sEps = document.getElementById('sEps'), oEps = document.getElementById('oEps');
-  var mIrr = document.getElementById('mIrr'), mMod = document.getElementById('mMod'), mRed = document.getElementById('mRed');
-
-  var W = cv.width, H = cv.height;
-  var M = {l:62, r:18, t:18, b:44};
-  var X0 = 40, X1 = 320;            // superficie construida, m2
-  var Y0 = 0, Y1 = 2200;            // precio, miles AUD
-
-  // f verdadera: crece y se aplana (rendimiento decreciente del metro cuadrado)
-  function f(x){ return 250 + 1300 * (1 - Math.exp(-(x - X0) / 95)); }
-  // f-gorro: un modelo razonable. Acierta la forma, se equivoca en los parámetros.
-  function fh(x){ return 330 + 1180 * (1 - Math.exp(-(x - X0) / 118)); }
-
-  // ruido unitario fijo, generado una sola vez (reproducible)
-  var N = 150, pts = [];
-  var seed = 20260921;
-  // Park-Miller: los productos caben en el entero exacto de un double
-  function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
-  for (var i=0;i<N;i++){
-    var x = X0 + (X1 - X0) * rnd();
-    // Box-Muller para ruido normal unitario
-    var u1 = Math.max(rnd(), 1e-9), u2 = rnd();
-    var z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-    pts.push({x:x, z:z});
-  }
-
-  function px(x){ return M.l + (x - X0) / (X1 - X0) * (W - M.l - M.r); }
-  function py(y){ return H - M.b - (y - Y0) / (Y1 - Y0) * (H - M.t - M.b); }
-
-  function dibuja(){
-    var sd = +sEps.value;
-    oEps.textContent = sd + ' mil';
-
-    ctx.clearRect(0,0,W,H);
-
-    // ejes
-    ctx.strokeStyle = '#d8d8d8'; ctx.lineWidth = 1; ctx.fillStyle = '#666';
-    ctx.font = '12px system-ui, sans-serif';
-    ctx.beginPath(); ctx.moveTo(M.l, M.t); ctx.lineTo(M.l, H-M.b); ctx.lineTo(W-M.r, H-M.b); ctx.stroke();
-    for (var g=0; g<=2000; g+=500){
-      var yy = py(g);
-      ctx.strokeStyle = '#efeeec'; ctx.beginPath(); ctx.moveTo(M.l, yy); ctx.lineTo(W-M.r, yy); ctx.stroke();
-      ctx.fillStyle = '#999'; ctx.textAlign = 'right'; ctx.fillText(g, M.l - 8, yy + 4);
-    }
-    ctx.fillStyle = '#666'; ctx.textAlign = 'center';
-    ctx.fillText('superficie construida (m²)', (M.l + W - M.r)/2, H - 12);
-    ctx.save(); ctx.translate(15, (M.t + H - M.b)/2); ctx.rotate(-Math.PI/2);
-    ctx.fillText('precio (miles AUD)', 0, 0); ctx.restore();
-
-    // puntos
-    var sumIrr = 0, sumMod = 0;
-    ctx.fillStyle = 'rgba(37,99,235,.34)';
-    for (var i=0;i<N;i++){
-      var p = pts[i];
-      var yv = f(p.x) + p.z * sd;
-      sumIrr += Math.abs(p.z * sd);
-      sumMod += Math.abs(yv - fh(p.x));
-      var cy = py(yv);
-      if (cy > M.t - 30 && cy < H - M.b + 30){
-        ctx.beginPath(); ctx.arc(px(p.x), Math.max(M.t, Math.min(H-M.b, cy)), 2.8, 0, 6.2832); ctx.fill();
-      }
-    }
-
-    // f verdadera
-    ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2.4; ctx.beginPath();
-    for (var x=X0; x<=X1; x+=2){
-      var Xp = px(x), Yp = py(f(x));
-      if (x === X0) ctx.moveTo(Xp, Yp); else ctx.lineTo(Xp, Yp);
-    }
-    ctx.stroke();
-
-    // f gorro
-    ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2; ctx.setLineDash([7,5]); ctx.beginPath();
-    for (var x2=X0; x2<=X1; x2+=2){
-      var Xq = px(x2), Yq = py(fh(x2));
-      if (x2 === X0) ctx.moveTo(Xq, Yq); else ctx.lineTo(Xq, Yq);
-    }
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // leyenda
-    ctx.textAlign = 'left'; ctx.font = '12px system-ui, sans-serif';
-    ctx.fillStyle = '#1a1a1a'; ctx.fillText('—  f  (la relación verdadera)', M.l + 12, M.t + 14);
-    ctx.fillStyle = '#2563eb'; ctx.fillText('- -  f̂  (tu modelo)', M.l + 12, M.t + 32);
-
-    var irr = sumIrr / N, mod = sumMod / N;
-    mIrr.textContent = Math.round(irr);
-    mMod.textContent = Math.round(mod);
-    mRed.textContent = Math.round(Math.max(0, mod - irr));
-  }
-  sEps.addEventListener('input', dibuja);
-  dibuja();
-
-  var pred = document.getElementById('predEps'), vEps = document.getElementById('vEps');
-  var RESP = {
-    cero: 'No. Y es el punto entero de la ecuación. El modelo perfecto acierta <code>f(X)</code>, pero <code>Y</code> no es <code>f(X)</code>: es <code>f(X) + ε</code>. Le queda encima todo <code>ε</code>. Sube el deslizador y mira la primera cifra: es el error de un modelo que no comete ningún error propio.',
-    sube: 'Exacto. Sube el deslizador y verifica: <strong>MAE del modelo perfecto</strong> crece junto con ε. Eso es el <em>error irreducible</em>. Ningún algoritmo, ninguna cantidad de datos y ningún ajuste lo baja — solo bajarlo consiguiendo <em>features nuevas</em> que capturen lo que hoy está en ε.',
-    igual: 'Prueba a moverlo. La primera cifra sube. El modelo perfecto acierta <code>f(X)</code>, pero lo observado es <code>f(X) + ε</code>: la distancia entre ambos <em>es</em> ε. El error del modelo perfecto no es cero ni es constante: es el tamaño del ruido.'
-  };
-  var pb = pred.querySelectorAll('button');
-  for (var k=0;k<pb.length;k++){
-    pb[k].addEventListener('click', function(){
-      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
-      this.classList.add('elegida');
-      vEps.innerHTML = RESP[this.getAttribute('data-r')];
-      vEps.className = 'veredicto on';
-    });
-  }
-})();
-</script>
 </body>
 </html>
