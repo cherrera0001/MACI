@@ -1,5 +1,5 @@
 """
-Verifica que los visuales de 07_DATITO/visual/ sirvan para estudiar sin
+Verifica que los visuales de 07_DATITO/01_CONCEPTOS/visual/ sirvan para estudiar sin
 conexion y que sus citas de clase se puedan comprobar.
 
 QUE COMPRUEBA
@@ -229,7 +229,7 @@ def main():
     ap.add_argument("--estricto", action="store_true")
     a = ap.parse_args()
     fallos, avisos, resumen = revisar()
-    print("Verificacion de visuales (07_DATITO/visual/)")
+    print("Verificacion de visuales (07_DATITO/01_CONCEPTOS/visual/)")
     print("=" * 74)
     print(resumen)
     for f in fallos:

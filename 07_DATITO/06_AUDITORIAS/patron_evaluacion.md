@@ -159,7 +159,7 @@ Deducidos de las distinciones que cada pregunta exige:
 `limpieza_preparacion` sube al segundo lugar por el peso de la 9B: dos puntos en
 una sola pregunta de desarrollo, con la tabla a la vista y resoluble en papel.
 
-Material de repaso por concepto: `07_DATITO/visual/index.html` (ruta de repaso,
+Material de repaso por concepto: `07_DATITO/01_CONCEPTOS/visual/index.html` (ruta de repaso,
 distinciones y clases donde se enseñó cada una).
 
 ### Por qué `overfitting_underfitting` va primero

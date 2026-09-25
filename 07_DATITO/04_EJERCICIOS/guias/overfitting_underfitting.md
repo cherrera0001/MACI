@@ -6,7 +6,7 @@ Fundamentos de Ciencia de Datos, UdeC T2-2026.
 **Por qué esta guía existe:** sobreajuste y validación concentran el **36 %** del
 Certamen 2 (preguntas 1, 2, 3 y 7). Es el bloque de mayor peso del curso.
 
-**Versión interactiva:** `07_DATITO/visual/overfitting_underfitting.html`.
+**Versión interactiva:** `07_DATITO/01_CONCEPTOS/visual/overfitting_underfitting.html`.
 
 ---
 

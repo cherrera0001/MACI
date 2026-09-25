@@ -25,7 +25,7 @@ Carpeta: [`01_CERTAMEN2/`](01_CERTAMEN2/)
 **Conclusión del expediente, en una línea:** el material local permite reconstruir **parcialmente** un proceso de comprensión — con doble anclaje (guía de estudio + trabajo propio) en seis de las once fichas, anclaje solo en la guía en otras, y zonas que ningún archivo explica del todo (secuencia temporal del estudio; cifras AUC de P9).
 
 > **Corrección estructural, 2026-09-20.** El expediente trabaja con **11 fichas**, pero el registro real de Canvas muestra **10 preguntas numeradas más un «Espaciador»** de tipo `text_only_question` y **0 puntos** —el ítem de la matriz de confusión—. Desde ahí, la numeración del expediente va **corrida en uno** respecto del sistema. Detalle y evidencia en
-> [`07_DATITO/visual/certamen_2.html`](../07_DATITO/visual/certamen_2.html). Al hablar de una pregunta, **nómbrala por tema, no por número**.
+> [`07_DATITO/04_EJERCICIOS/certamen_2.html`](../07_DATITO/04_EJERCICIOS/certamen_2.html). Al hablar de una pregunta, **nómbrala por tema, no por número**.
 
 ---
 

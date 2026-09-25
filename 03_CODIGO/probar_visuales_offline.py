@@ -1,5 +1,5 @@
 """
-Abre cada visual de 07_DATITO/visual/ en un navegador real SIN RED y lo usa:
+Abre cada visual de 07_DATITO/01_CONCEPTOS/visual/ en un navegador real SIN RED y lo usa:
 mueve todos los controles, pulsa los botones y abre las soluciones. Informa
 errores de JavaScript y cualquier intento de pedir algo fuera del disco.
 

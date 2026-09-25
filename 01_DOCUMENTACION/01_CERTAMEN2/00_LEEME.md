@@ -14,7 +14,7 @@ Un análisis de **si el material local de `F:\MACI` permite reconstruir un proce
 > Los análisis de contenido **siguen siendo válidos** —los temas y su
 > tratamiento no cambian—, pero **no cites números de pregunta**: nómbralas por
 > tema. Evidencia en
-> [`../../07_DATITO/visual/certamen_2.html`](../../07_DATITO/visual/certamen_2.html).
+> [`../../07_DATITO/04_EJERCICIOS/certamen_2.html`](../../07_DATITO/04_EJERCICIOS/certamen_2.html).
 
 ## Qué NO es
 

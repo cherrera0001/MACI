@@ -51,10 +51,10 @@ Todo lo demás en esta arquitectura es consecuencia de esa línea divisoria.
 
 | Skill | Ejecución | Escribe | Para qué |
 |---|---|---|---|
-| `datito` | Conversación | `progreso.yaml`, `errores_conceptuales.yaml`, `bitacora/` | El bucle socrático: problema → respuesta → diagnóstico → pista |
+| `datito` | Conversación | `00_INICIO/progreso.yaml`, `00_INICIO/errores_conceptuales.yaml`, `07_BITACORA/` | El bucle socrático: problema → respuesta → diagnóstico → pista |
 | `datito-progreso` | Conversación | **nada** | Informe de estado. Solo lectura, por diseño |
-| `datito-visual` | Fork | `visual/*.html` | Un artefacto HTML autocontenido por concepto |
-| `datito-corregir` | Fork | `progreso.yaml`, `errores_conceptuales.yaml` | Corrige un lote entero y devuelve informe |
+| `datito-visual` | Fork | `01_CONCEPTOS/visual/*.html` | Un artefacto HTML autocontenido por concepto |
+| `datito-corregir` | Fork | `00_INICIO/progreso.yaml`, `00_INICIO/errores_conceptuales.yaml` | Corrige un lote entero y devuelve informe |
 | `datito-pedagogia` | Fork | **nada** | Audita el diseño instruccional contra Bloom y alineamiento constructivo |
 
 Dos de las cinco son de **solo lectura**, y eso es deliberado: separar
@@ -92,7 +92,7 @@ separados por **quién escribe**, no por tema:
         │                errores_conceptuales.yaml   │
         │                observados / vigilados      │
         │                        │                   │
-        │                   bitacora/                │
+        │                   07_BITACORA/              │
         │                   una por sesión           │
         │                                            │
         └──────────────────────────────────────►  grafo.yaml
@@ -115,13 +115,13 @@ estado.md        1.105 bytes   ← lo que se inyecta en cada sesión  (95 % meno
 ```
 
 Datito no lee el YAML entero al arrancar: lee el resumen. La verdad completa
-sigue disponible para cuando haga falta, pero el arranque de cada sesión cuesta
+sigue disponible para cuando haga falta (en `00_INICIO/progreso.yaml`), pero el arranque de cada sesión cuesta
 **un kilobyte**, no veinte. Es una decisión de presupuesto de contexto, y tiene
 un precio: **hay que regenerar el resumen después de cada sesión** o la
 siguiente abre con datos viejos.
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_CODIGO/datito_estado.py    # regenera 00_INICIO/estado.md
 ```
 
 Ese comando no es opcional. Es la contrapartida de la optimización.
@@ -136,11 +136,11 @@ Suena a preferencia de estilo. No lo es — es un invariante arquitectónico con
 consecuencias:
 
 ```
-.claude/skills/datito/SKILL.md      se carga en CADA invocación   → aquí van las REGLAS
-07_DATITO/datito.config.yaml      NO se carga automáticamente   → aquí van solo DATOS
+.claude/skills/datito/SKILL.md              se carga en CADA invocación   → aquí van las REGLAS
+07_DATITO/00_INICIO/datito.config.yaml    NO se carga automáticamente   → aquí van solo DATOS
 ```
 
-Si una regla de conducta se escribe en `datito.config.yaml`, el modelo **nunca
+Si una regla de conducta se escribe en `00_INICIO/datito.config.yaml`, el modelo **nunca
 la lee** salvo que algo la abra explícitamente. La regla existe en el
 repositorio, parece configurada, y no gobierna nada. Es peor que no escribirla:
 crea la ilusión de que está aplicada.
@@ -159,7 +159,7 @@ consultable**, no texto en el chat. La arquitectura lo implementa así:
 ```
   explicar un concepto
           │
-          ├──► /datito-visual  (fork)  ──► 07_DATITO/visual/<concepto>.html
+          ├──► /datito-visual  (fork)  ──► 01_CONCEPTOS/visual/<concepto>.html
           │                                   autocontenido · sin conexión
           │                                   sin CDN · sin dependencias
           │
@@ -180,13 +180,13 @@ Tres propiedades que no son accidentales:
    clase y minuto se enseñó. Ese bloque **no se escribe a mano**: lo inyecta
    `03_CODIGO/construir_navegacion.py` entre los marcadores
    `<!-- datito:nav:inicio -->` y `<!-- datito:nav:fin -->`, desde
-   `grafo.yaml` y `09_CLASES/mapa_ensenanza.yaml`, y genera `visual/index.html`.
+   `00_INICIO/grafo.yaml` y `09_CLASES/mapa_ensenanza.yaml`, y genera `01_CONCEPTOS/visual/00_index.html`.
 
 ### Estado actual de los artefactos
 
 Al 2026-09-21: **20 artefactos más el índice**, que cubren los 21 conceptos
-(cuatro comparten `arboles_y_ensambles.html` y tres `dl_llm_agentes.html`). La
-lista comentada está en `07_DATITO/00_LEEME.md` y en `visual/index.html`.
+(cuatro comparten `14_arboles_decision.html` y tres `19_deep_learning.html`). La
+lista comentada está en `00_INICIO/00_LEEME.md` y en `01_CONCEPTOS/visual/00_index.html`.
 
 | Tipo | Artefactos |
 |---|---|
@@ -223,7 +223,7 @@ pipeline propio, fuera del bucle de estudio:
           │
           │  construir_navegacion.py
           ▼
-07_DATITO/visual/                bloque «Dónde se enseñó» en cada visual + index.html
+07_DATITO/01_CONCEPTOS/visual/   bloque «Dónde se enseñó» en cada visual + 00_index.html
           │
           └──► (opcional) subida a NotebookLM, si la sesión MCP está viva
 ```
@@ -266,11 +266,11 @@ python 03_CODIGO/verificar_contrato.py
 
 | Comprobación | Qué mira realmente |
 |---|---|
-| **G1** no simula respuestas | Ninguna respuesta del alumno aparece escrita por Datito en las bitácoras |
+| **G1** no simula respuestas | Ninguna respuesta del alumno aparece escrita por Datito en `07_BITACORA/` |
 | **G8** reglas donde se leen | `SKILL.md` referencia el config; el config tiene pocas marcas de regla |
-| **G9** exposición consultable | Cada concepto trabajado tiene material asociado |
-| **G14** el material es un curso | Cada clase de `clases.yaml` con visual tiene barra, ficha Bloom, cierre y ≥ 3 preguntas con respuesta; la portada existe |
-| **G9** lo respondido queda escrito | Cada duda de `dudas.yaml` está renderizada en sus visuales, y cada bitácora desde el 2026-09-21 declara sus «Dudas registradas» |
+| **G9** exposición consultable | Cada concepto trabajado tiene material asociado en `01_CONCEPTOS/visual/` |
+| **G14** el material es un curso | Cada clase de `00_INICIO/clases.yaml` con visual tiene barra, ficha Bloom, cierre y ≥ 3 preguntas con respuesta; la portada existe |
+| **G9** lo respondido queda escrito | Cada duda de `00_INICIO/dudas.yaml` está renderizada en sus visuales, y cada bitácora desde el 2026-09-21 declara sus «Dudas registradas» |
 | **G9** visuales sin red y citables | Ningún recurso remoto, enlaces y anclas existen, JS sin errores de sintaxis, cada cita de clase es un `.md` completo con una marca que existe (`verificar_visuales.py`) |
 | **G12** dos prioridades | Los 21 conceptos tienen ambas prioridades; las tensiones están declaradas |
 | **G13** sin deficiencia inferida | Cada error registrado tiene evidencia textual |
@@ -325,7 +325,7 @@ La garantía **G6** convierte eso en comportamiento definido:
                 NO ocultarlo
 ```
 
-**Jerarquía de fuentes (G5):**
+**Jerarquía de fuentes (G5):** (ver `02_REFERENCIA/fuentes.md`)
 
 1. Material FCD del repositorio — `08_PRACTICA/`, `01_DOCUMENTACION/`, `02_PROYECTO_FCD/`
 2. Cuaderno de NotebookLM — 66 fuentes

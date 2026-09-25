@@ -237,7 +237,7 @@ def g9_lo_respondido_queda_escrito():
             if not d.get(campo):
                 problemas.append(f"{d.get('id')} sin {campo}")
         for v in d.get("visuales") or []:
-            html_v = leer(f"07_DATITO/visual/{v}") or ""
+            html_v = leer(f"07_DATITO/01_CONCEPTOS/visual/{v}") or ""
             if f'id="duda-{d.get("id")}"' not in html_v:
                 problemas.append(f"{d.get('id')} no esta en {v} (correr construir_navegacion.py)")
     for f in sorted(glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*.md"))):
@@ -269,7 +269,7 @@ def g14_el_material_es_un_curso():
     if texto is None:
         return FALLO, "no existe 07_DATITO/clases.yaml"
     clases = (yaml.safe_load(texto) or {}).get("clases") or []
-    portada = leer("07_DATITO/visual/index.html") or ""
+    portada = leer("07_DATITO/01_CONCEPTOS/visual/index.html") or ""
     if 'id="curso"' not in portada:
         return FALLO, "visual/index.html no es la portada del curso (correr construir_navegacion.py)"
     problemas, pendientes = [], 0
@@ -281,7 +281,7 @@ def g14_el_material_es_un_curso():
             pendientes += 1
             continue
         base, _, ancla = c["visual"].partition("#")
-        html_c = leer(f"07_DATITO/visual/{base}")
+        html_c = leer(f"07_DATITO/01_CONCEPTOS/visual/{base}")
         if html_c is None:
             problemas.append(f"clase {c['n']}: no existe {base}")
             continue

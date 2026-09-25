@@ -41,69 +41,104 @@ el de la sesión.
 
 ```
 07_DATITO/
-├── 00_LEEME.md              este archivo
-├── datito.config.yaml     DATOS del alumno. Las reglas viven en la skill
-├── curriculum.yaml          21 conceptos: orden, prerrequisitos, material, prácticos
-├── progreso.yaml            estado y cadena de evidencia          ← lo escribe Datito
-├── errores_conceptuales.yaml  errores observados + patrones vigilados  ← ídem
-├── estado.md                resumen autogenerado, es lo que se inyecta
-├── patron_evaluacion.md     cómo evalúa el profesor, desde sus certámenes reales
+├── 00_INICIO/               bienvenida, arquitectura, estado, curriculum
+│   ├── 00_LEEME.md              este archivo
+│   ├── ARQUITECTURA.md           componentes, planos de datos, invariantes
+│   ├── datito.config.yaml        DATOS del alumno. Las reglas viven en la skill
+│   ├── curriculum.yaml           21 conceptos: orden, prerrequisitos, material
+│   ├── clases.yaml               22 clases, unidades, cierre de aprendizaje
+│   ├── progreso.yaml             estado y cadena de evidencia ← lo escribe Datito
+│   ├── errores_conceptuales.yaml errores observados ← ídem
+│   ├── estado.md                 resumen autogenerado, se inyecta en sesión
+│   ├── dudas.yaml                respuestas de Datito, se renderizan en visuales
+│   └── grafo.yaml                relaciones conceptuales
 │
-├── referencia/              se carga bajo demanda, no en cada sesión
-│   ├── fuentes.md               jerarquía, etiquetado, NotebookLM
-│   ├── memoria.md               estados, evidencia, qué escribir y dónde
-│   └── material.md              prácticos, certámenes, Melbourne, Galaxy Zoo
+├── 01_CONCEPTOS/            los 21 conceptos en orden del curriculum
+│   └── visual/                   HTML interactivos (01_fundamentos.html → 19_deep_learning.html)
+│       └── 00_index.html         portada: 22 clases, navegación, síntesis
 │
-├── visual/                  artefactos HTML para leer en el navegador
-├── guias/                   material de referencia escrito
-├── cuadernillos/            problemas CON solución — enseñan
-├── certamenes/              problemas SIN solución — miden
-├── entregas/                donde dejas tus respuestas para corregir
-├── transferencia/           dataset sintético de otro dominio
-├── dudas.yaml               lo que Datito respondió, en orden → aparece en los visuales
-├── bitacora/                una entrada por sesión
-└── osint_*.md               investigación de fuentes públicas (en pausa)
+├── 02_REFERENCIA/           fuentes, documentación, material externo
+│   ├── fuentes.md               jerarquía de prioridad, etiquetado, NotebookLM
+│   ├── material.md              prácticos, certámenes, proyectos Melbourne/Galaxy Zoo
+│   ├── memoria.md               estados, cadena de evidencia, qué y dónde escribir
+│   └── clase6_regresion.html    material adicional de referencia
+│
+├── 03_CASOS_ESTUDIO/        aplicaciones con herramientas dinámicas
+│   ├── cancer_mama/             diagnóstico de mama: matriz confusión real, 3 modelos
+│   ├── RESUMEN_INTEGRACION.md   síntesis de cómo integran caso y concepto
+│   └── [futuros casos]
+│
+├── 04_EJERCICIOS/           problemas, certámenes, entregas
+│   ├── cuadernillos/            problemas CON solución — enseñan
+│   ├── guias/                   material escrito: temas claves
+│   ├── certamenes/              certámenes sin solución — miden
+│   ├── entregas/                donde dejas respuestas para corregir
+│   └── *.html                   dinamicos: triaje, simuladores, certámenes HTML
+│
+├── 05_TRANSFERENCIA/        datasets y scripts de otro dominio
+│   ├── generar_dataset.py       generador sintético de problemas
+│   ├── 00_CONTEXTO.md           definición y uso
+│   └── entregas_*.csv           datasets de años anteriores
+│
+├── 06_AUDITORIAS/           verificación pedagógica, artefactos
+│   ├── auditoria_pedagogica.md      checklist de enseñanza
+│   ├── auditoria_adversarial.md     casos extremos de fuga, overfitting
+│   ├── auditoria_artefactos.md      validación de los HTML visuales
+│   └── patron_evaluacion.md         cómo evalúa el profesor desde sus certámenes
+│
+├── 07_BITACORA/             una entrada por sesión
+│   └── YYYY-MM-DD-concepto.md
+│
+├── 08_SCRIPTS/              scripts centralizados (si existen)
+│
+└── 09_PERSONAL/             datos del alumno, OSINT, investigación privada
+    └── osint_*.md               investigación de fuentes públicas (en pausa)
 ```
 
 ---
 
 ## Lo que ya puedes abrir
 
-### Visuales interactivos — `visual/`
+### Visuales interactivos — `01_CONCEPTOS/visual/`
 
-**Empieza por [`visual/index.html`](visual/index.html)**: la portada del curso.
+**Empieza por [`01_CONCEPTOS/visual/00_index.html`](../01_CONCEPTOS/visual/00_index.html)**: la portada del curso.
 Son 22 clases en 6 unidades, ordenadas por prerrequisitos (fuente única:
 [`clases.yaml`](clases.yaml)); cada una abre con objetivo, ficha Bloom y
 activación, y cierra con síntesis, procedimiento y pregunta final. Incluye el
 repaso del certamen y las dudas resueltas. Todo abre con doble clic, sin Internet.
 
-| Archivo | Concepto |
-|---|---|
-| `fundamentos_ciencia_datos.html` | Qué problema resuelve la ciencia de datos; data-driven; Big Data; el ciclo |
-| `datos_features_target.html` | Fila, columna, feature, target, identificador y fuga de información |
-| `eda.html` | Centralidad, extensión, distribución, correlación, integridad visual |
-| `limpieza_preparacion.html` | Calidad de datos sobre la tabla real de la 9B; limpiar ≠ decidir modelado |
-| `train_validation_test.html` | Los tres conjuntos y por qué el test se guarda |
-| `validacion_cruzada.html` | Holdout, bootstrap, submuestreo y K-Fold |
-| `generalizacion.html` | Datos no vistos: interpolar, extrapolar, cambio de distribución |
-| `overfitting_underfitting.html` | La curva de complejidad y el diagnóstico por la brecha |
-| `clase6_regresion.html` · `regresion_y_costo.html` | La Clase 6 completa · el laboratorio de la función de costo |
-| `clasificacion.html` | Cuando la etiqueta no es un número |
-| `matriz_confusion.html` | Construir y leer la matriz; el ejercicio de 100 pacientes del profesor |
-| `metricas_clasificacion.html` | Exactitud, precisión, recall, F1: el denominador |
-| `roc_auc.html` | Umbral, punto de operación, curva ROC y AUC |
-| `arboles_y_ensambles.html` | Árboles, Random Forest, boosting y ensambles |
-| `redes_neuronales.html` · `dl_llm_agentes.html` | Perceptrón y entrenamiento · deep learning, LLM y agentes |
-| `certamen_1.html` · `certamen_2.html` | Los certámenes auditados pregunta por pregunta |
-| `triaje_de_problemas.html` | Qué tipo de problema tengo delante |
+| # | Archivo | Concepto |
+|---|---|---|
+| 1 | `01_fundamentos.html` | Qué problema resuelve la ciencia de datos; data-driven; Big Data; el ciclo |
+| 2 | `02_datos_features_target.html` | Fila, columna, feature, target, identificador y fuga de información |
+| 3 | `03_eda.html` | Centralidad, extensión, distribución, correlación, integridad visual |
+| 4 | `04_limpieza_preparacion.html` | Calidad de datos sobre la tabla real de la 9B; limpiar ≠ decidir modelado |
+| 5 | `05_train_validation_test.html` | Los tres conjuntos y por qué el test se guarda |
+| 6 | `06_validacion_cruzada.html` | Holdout, bootstrap, submuestreo y K-Fold |
+| 7 | `07_generalizacion.html` | Datos no vistos: interpolar, extrapolar, cambio de distribución |
+| 8 | `08_overfitting_underfitting.html` | La curva de complejidad y el diagnóstico por la brecha |
+| 9 | `09_regresion.html` | La Clase 6 completa: la función de costo y MAE |
+| 10 | `10_clasificacion.html` | Cuando la etiqueta no es un número |
+| 11 | `11_matriz_confusion.html` | Construir y leer la matriz; el ejercicio de 100 pacientes del profesor |
+| 12 | `12_metricas_clasificacion.html` | Exactitud, precisión, recall, F1: el denominador |
+| 13 | `13_roc_auc.html` | Umbral, punto de operación, curva ROC y AUC |
+| 14 | `14_arboles_decision.html` | Árboles de decisión, Random Forest, boosting y ensambles |
+| 18 | `18_redes_neuronales.html` | Perceptrón y entrenamiento |
+| 19 | `19_deep_learning.html` | Deep learning, LLM y agentes |
+
+**Especiales** (en `04_EJERCICIOS/` y casos de estudio):
+- `certamen_1.html` · `certamen_2.html` — Los certámenes auditados pregunta por pregunta
+- `triaje_de_problemas.html` — Qué tipo de problema tengo delante
+- `simulador_prediccion_falla.html` — Herramienta dinámica para explorar umbrales
+- Caso estudio `cancer_mama/matriz_confusion_dinamica.html` — Matriz interactiva de 114 pacientes
 
 Cada visual cita la clase donde se enseñó con ruta completa y marca de tiempo.
 La barra superior de cada uno la genera `03_CODIGO/construir_navegacion.py`.
 
 ### Material escrito
 
-- `guias/overfitting_underfitting.md` — los dos criterios, la inversión de métrica, remedios por mecanismo, procedimiento de siete pasos
-- `cuadernillos/01_sobreajuste_y_calidad_de_datos.md` — nueve problemas con solución plegable, en los formatos del profesor
+- `04_EJERCICIOS/guias/overfitting_underfitting.md` — los dos criterios, la inversión de métrica, remedios por mecanismo, procedimiento de siete pasos
+- `04_EJERCICIOS/cuadernillos/01_sobreajuste_y_calidad_de_datos.md` — nueve problemas con solución plegable, en los formatos del profesor
 
 ---
 
@@ -143,7 +178,7 @@ equivocado.
 
 ## Cómo evalúa tu profesor
 
-Detalle en [`patron_evaluacion.md`](patron_evaluacion.md). El hallazgo central:
+Detalle en [`06_AUDITORIAS/patron_evaluacion.md`](../06_AUDITORIAS/patron_evaluacion.md). El hallazgo central:
 
 **Las 11 fichas del Certamen 2 comparten un mismo campo sin excepción:
 *distinción conceptual clave*.** Cada pregunta se resuelve separando dos
