@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de Predicción de Falla — Vibración vs Temperatura</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  :root{
+    --tinta:#1c1f24;
+    --tinta2:#4a5058;
+    --papel:#fbfaf7;
+    --caja:#ffffff;
+    --linea:#ddd8cf;
+    --acierto:#2f6b46;
+    --acierto-bg:#e6f0ea;
+    --error:#9b3226;
+    --error-bg:#f6e6e3;
+    --real:#2b5d8c;
+    --real-bg:#e3ecf4;
+    --pred:#8a5a12;
+    --pred-bg:#f6eddc;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--papel); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16.5px; line-height:1.62;
+  }
+  .hoja{max-width:960px; margin:0 auto; padding:34px 26px 90px}
+  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
+  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
+  h2{font-size:1.22rem; margin:52px 0 12px; padding-top:18px; border-top:1px solid var(--linea); letter-spacing:-.01em}
+  p{margin:0 0 13px}
+  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0}
+  @media(max-width:800px){.grid-2{grid-template-columns:1fr}}
+
+  .control-row{margin-bottom:20px}
+  label{display:block; font-weight:600; font-size:.9rem; margin-bottom:8px; color:var(--tinta)}
+  input[type="range"]{width:100%; height:6px; border-radius:3px; background:var(--linea); outline:none; -webkit-appearance:none}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:var(--real); cursor:pointer}
+  input[type="range"]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; background:var(--real); cursor:pointer; border:none}
+
+  .valor-display{display:inline-block; background:var(--real-bg); color:var(--real); padding:4px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin-left:10px}
+
+  button{
+    background:var(--real); color:white; border:none; padding:12px 24px;
+    border-radius:6px; font-size:.95rem; font-weight:600; cursor:pointer;
+    transition:background .16s; width:100%; margin-top:10px;
+  }
+  button:hover{background:#1e4d6d}
+
+  .grafico{width:100%; height:400px; margin:20px 0}
+  .metricas-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:18px 0}
+  @media(max-width:600px){.metricas-grid{grid-template-columns:1fr}}
+
+  .metrica{
+    background:var(--caja); border:1px solid var(--linea); border-radius:8px;
+    padding:12px; text-align:center;
+  }
+  .metrica-label{font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px}
+  .metrica-valor{font-size:1.6rem; font-weight:700; color:var(--real); font-variant-numeric:tabular-nums}
+
+  .peligro{background:var(--error-bg); border-left:3px solid var(--error); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
+  .clave{background:var(--real-bg); border-left:3px solid var(--real); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
+
+  footer{max-width:960px; margin:0 auto; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem; text-align:center}
+</style>
+</head>
+<body>
+<div class="hoja">
+  <h1>Simulador de Predicción de Falla</h1>
+  <p class="sub">Vibración vs Temperatura — Aprende a establecer umbrales y evaluar modelos</p>
+
+  <div class="caja">
+    <h2>Controles de Umbral</h2>
+    <div class="control-row">
+      <label>Umbral de Vibración (0-10): <span class="valor-display" id="umbral-vib">5.0</span></label>
+      <input type="range" id="slider-vib" min="0" max="10" step="0.1" value="5.0" oninput="actualizar()">
+    </div>
+    <div class="control-row">
+      <label>Umbral de Temperatura (20-80°C): <span class="valor-display" id="umbral-temp">60</span></label>
+      <input type="range" id="slider-temp" min="20" max="80" step="1" value="60" oninput="actualizar()">
+    </div>
+    <button onclick="actualizar()">Actualizar Predicción</button>
+  </div>
+
+  <h2>Scatter Plot: Vibración vs Temperatura</h2>
+  <p style="font-size:.9rem; color:var(--tinta2)">Rojo = FALLA real | Verde = SIN FALLA real | Línea azul = Tu umbral</p>
+  <div id="scatter" class="grafico"></div>
+
+  <div class="grid-2">
+    <div>
+      <h2>Matriz de Confusión</h2>
+      <table style="width:100%; border-collapse:collapse; font-size:.9rem">
+        <tr style="background:var(--real-bg)">
+          <th style="border:1px solid var(--linea); padding:8px"></th>
+          <th style="border:1px solid var(--linea); padding:8px">Predice FALLA</th>
+          <th style="border:1px solid var(--linea); padding:8px">Predice OK</th>
+        </tr>
+        <tr>
+          <th style="border:1px solid var(--linea); padding:8px; text-align:right">Real FALLA</th>
+          <td style="border:1px solid var(--linea); padding:8px; background:#f0fdf4; font-weight:700; color:var(--acierto)" id="tp">-</td>
+          <td style="border:1px solid var(--linea); padding:8px; background:var(--error-bg); font-weight:700; color:var(--error)" id="fn">-</td>
+        </tr>
+        <tr>
+          <th style="border:1px solid var(--linea); padding:8px; text-align:right">Real OK</th>
+          <td style="border:1px solid var(--linea); padding:8px; background:var(--error-bg); font-weight:700; color:var(--error)" id="fp">-</td>
+          <td style="border:1px solid var(--linea); padding:8px; background:#f0fdf4; font-weight:700; color:var(--acierto)" id="tn">-</td>
+        </tr>
+      </table>
+    </div>
+
+    <div>
+      <h2>Métricas</h2>
+      <div class="metricas-grid">
+        <div class="metrica">
+          <div class="metrica-label">Recall</div>
+          <div class="metrica-valor" id="recall">-</div>
+        </div>
+        <div class="metrica">
+          <div class="metrica-label">Precision</div>
+          <div class="metrica-valor" id="precision">-</div>
+        </div>
+        <div class="metrica">
+          <div class="metrica-label">F1-Score</div>
+          <div class="metrica-valor" id="f1">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clave">
+    <strong>Objetivo:</strong> Mueve los umbrales para encontrar el mejor balance entre detectar fallas (Recall) y no generar falsas alarmas (Precision).
+  </div>
+
+  <div class="peligro">
+    <strong>En mantenimiento predictivo:</strong> ¿Es peor perder una falla (FN) o tener una falsa alarma (FP)? Eso decide dónde pones el umbral.
+  </div>
+
+  <footer>
+    [FUENTE · Clase 7 — Clasificación, FCD-2026-2_07_Clasificacion.pdf]<br>
+    Simulador interactivo para aprender predicción de falla · Iteración 1: HTML base + scatter plot
+  </footer>
+</div>
+
+<script>
+  // Dataset: vibración, temperatura, falla (1=SÍ, 0=NO)
+  const data = [
+    [2.1, 35, 0], [2.3, 38, 0], [2.5, 40, 0], [2.8, 42, 0], [3.0, 44, 0],
+    [3.2, 45, 0], [3.5, 48, 0], [3.8, 50, 0], [4.0, 52, 0], [4.2, 54, 0],
+    [4.5, 55, 0], [4.8, 57, 0], [5.0, 58, 0], [5.2, 59, 0], [5.5, 60, 0],
+    [5.8, 61, 0], [6.0, 62, 0],
+    [6.5, 65, 1], [6.8, 67, 1], [7.0, 68, 1], [7.2, 69, 1], [7.5, 70, 1],
+    [7.8, 72, 1], [8.0, 73, 1], [8.2, 74, 1], [8.5, 75, 1], [8.8, 77, 1],
+    [9.0, 78, 1], [9.2, 79, 1], [9.5, 80, 1], [9.8, 81, 1]
+  ];
+
+  function actualizar() {
+    const vib_umbral = parseFloat(document.getElementById('slider-vib').value);
+    const temp_umbral = parseFloat(document.getElementById('slider-temp').value);
+
+    document.getElementById('umbral-vib').textContent = vib_umbral.toFixed(1);
+    document.getElementById('umbral-temp').textContent = temp_umbral.toFixed(0);
+
+    // Predicción: falla si AMBOS umbrales se superan
+    let tp = 0, tn = 0, fp = 0, fn = 0;
+
+    data.forEach(([vib, temp, real_falla]) => {
+      const pred_falla = (vib >= vib_umbral && temp >= temp_umbral) ? 1 : 0;
+
+      if (real_falla === 1 && pred_falla === 1) tp++;
+      else if (real_falla === 1 && pred_falla === 0) fn++;
+      else if (real_falla === 0 && pred_falla === 1) fp++;
+      else tn++;
+    });
+
+    document.getElementById('tp').textContent = tp;
+    document.getElementById('tn').textContent = tn;
+    document.getElementById('fp').textContent = fp;
+    document.getElementById('fn').textContent = fn;
+
+    // Métricas
+    const recall = (tp + fn) > 0 ? (tp / (tp + fn)).toFixed(3) : '-';
+    const precision = (tp + fp) > 0 ? (tp / (tp + fp)).toFixed(3) : '-';
+    const f1 = (recall !== '-' && precision !== '-')
+      ? (2 * (recall * precision) / (parseFloat(recall) + parseFloat(precision))).toFixed(3)
+      : '-';
+
+    document.getElementById('recall').textContent = recall;
+    document.getElementById('precision').textContent = precision;
+    document.getElementById('f1').textContent = f1;
+
+    dibujar_scatter(vib_umbral, temp_umbral);
+  }
+
+  function dibujar_scatter(vib_umbral, temp_umbral) {
+    const sin_falla = data.filter(d => d[2] === 0);
+    const con_falla = data.filter(d => d[2] === 1);
+
+    const trace1 = {
+      x: sin_falla.map(d => d[0]),
+      y: sin_falla.map(d => d[1]),
+      mode: 'markers',
+      name: 'Sin falla',
+      marker: {size: 8, color: 'rgba(47, 107, 70, 0.7)'},
+      type: 'scatter'
+    };
+
+    const trace2 = {
+      x: con_falla.map(d => d[0]),
+      y: con_falla.map(d => d[1]),
+      mode: 'markers',
+      name: 'Falla real',
+      marker: {size: 8, color: 'rgba(155, 50, 38, 0.7)'},
+      type: 'scatter'
+    };
+
+    // Línea de decisión
+    const trace_line = {
+      x: [vib_umbral, vib_umbral],
+      y: [20, 80],
+      mode: 'lines',
+      name: 'Tu umbral',
+      line: {color: 'rgba(43, 93, 140, 0.8)', width: 2, dash: 'dash'},
+      type: 'scatter'
+    };
+
+    const layout = {
+      title: '',
+      xaxis: {title: 'Vibración', range: [0, 10]},
+      yaxis: {title: 'Temperatura (°C)', range: [20, 85]},
+      hovermode: 'closest',
+      margin: {l: 60, r: 60, t: 40, b: 60},
+      plot_bgcolor: 'rgba(251, 250, 247, 1)',
+      paper_bgcolor: 'white',
+      height: 400
+    };
+
+    Plotly.newPlot('scatter', [trace1, trace2, trace_line], layout, {responsive: true});
+  }
+
+  // Inicializar
+  actualizar();
+</script>
+</body>
+</html>
