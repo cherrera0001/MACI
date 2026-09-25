@@ -1,155 +1,210 @@
-# MACI — Plataforma de Aprendizaje Semestral (UdeC, T2-2026)
+# MACI — Fundamentos de Ciencia de Datos (UdeC, T2-2026)
 
-**Estado:** `FASE-0: CLI unificada` (en construcción)  
-**Cobertura:** 4/6 cursos (66%) · 29 videos · 43 documentos · 18 ejercicios  
+**Estado:** Restructurado (2026-09-25)  
+**Autor:** Cristóbal Herrera  
 **Repositorio:** https://github.com/cherrera0001/MACI
 
 ---
 
 ## 🎯 Qué Es MACI
 
-MACI es una plataforma en construcción que integra:
-1. **Instancia FCD** — Proyecto semestral + Datito tutor (estable, no cambiar)
-2. **6 cursos Canvas** — 80014, 80038, 80714, 83703, 83706, 83707 (procesados)
-3. **CLI unificada** — `platform.py` para gestionar cursos sin scripts clonados
+MACI es el repositorio de trabajo de Cristóbal Herrera para:
 
-**Veredicto actual:** NO_PLATAFORMA → PLATAFORMA_PARCIAL (arquitectura activa)
+1. **Proyecto FCD Semestral** — Predicción de precios en Melbourne (2016→2017)
+2. **Desafío Galaxy Zoo** — Clasificación de imágenes astronómicas
+3. **Datito** — Tutor personal interactivo para Fundamentos de Ciencia de Datos
+4. **Reconstrucción Certamen 2** — Documentación de la evaluación
 
----
-
-## ⚡ Inicio Rápido (60 segundos)
-
-```bash
-# Ver estado de cada curso
-python platform.py status
-
-# Ver reporte + cobertura
-python platform.py report
-
-# Procesar un curso (futuro: DÍA 2)
-python platform.py process --course 80014
-```
-
-| Quiero… | Abre… |
-|---------|-------|
-| **Estudiar FCD con Datito** | `01_DOCUMENTACION/` + `07_DATITO/` |
-| **Ver 6 cursos Canvas** | `courses/` + `10_GRABACIÓN_CLASES/` |
-| **Arquitectura + plan** | [`README_ARQUITECTO.md`](README_ARQUITECTO.md) |
-| **Diagnóstico honesto** | [`PLATAFORMA_COHERENCIA_GAP.md`](PLATAFORMA_COHERENCIA_GAP.md) |
-| **Implementación FASE-0** | [`FASE-0-IMPLEMENTACION.md`](FASE-0-IMPLEMENTACION.md) |
+Estructura lógica, navegable, con documentación completa.
 
 ---
 
-## 📊 Capacidades por Curso
+## ⚡ Inicio Rápido
 
-```
-python platform.py report
-```
-
-| Curso | Videos | Notas | Ejercicios | Estado |
-|-------|--------|-------|-----------|--------|
-| 80014_Emprendimiento | ❌ | ✅ (6) | ✅ (6) | ✅ Completo |
-| 80038_Procesos_Innovacion | ✅ (5) | ✅ (5) | ❌ | ✅ Completo |
-| 80714_Fundamentos_BD | ✅ (16) | ❌ | ❌ | ⚠️ Parcial |
-| 83706_Prototipos | ✅ (8) | ❌ | ❌ | ⚠️ Parcial |
-| 83703_Liderazgo | ❌ | ❌ | ❌ | ❌ Vacío |
-| 83707_Ciencias_Datos | ❌ | ❌ | ❌ | ❌ Vacío |
+| Quiero… | Carpeta | Archivo |
+|---------|---------|---------|
+| **Aprender con Datito** | `07_DATITO/` | [`00_INICIO/00_LEEME.md`](../07_DATITO/00_INICIO/00_LEEME.md) |
+| **Ver proyecto Melbourne** | `08_PROYECTO_FCD/` | Análisis + notebooks |
+| **Laboratorios (P1-P5)** | `06_LABORATORIOS/` | Ejercicios + soluciones |
+| **Clases + transcripciones** | `05_CLASES/` | `.md` + audio |
+| **Datos procesados** | `02_DATOS/` | cancer/, melbourne/, etc |
+| **Resultados + métricas** | `09_RESULTADOS/` | JSON, CSV, visualizaciones |
+| **Scripts (centralizados)** | `03_SCRIPTS/` | datito_*.py, verificar_*.py |
+| **Documentación FCD** | `01_DOCUMENTACION/` | Guías, índices, especificaciones |
 
 ---
 
-## 🏗️ Estructura
+## 📁 Estructura Completa
 
 ```
 F:\MACI/
-├── 03_SCRIPTS/maci_platform/          ← CLI unificada (NUEVO)
-├── courses.yaml                       ← Manifesto centralizado (NUEVO)
-├── platform.py                        ← Wrapper usuario (NUEVO)
 │
-├── 01_DOCUMENTACION/                  ← FCD instance (PROTEGIDO)
-├── 07_DATITO/                         ← Tutor pedagógico (PROTEGIDO)
+├── 00_INICIO/                    ← Inicio: README, CLAUDE.md, índices
+│   ├── README.md                 (este archivo)
+│   ├── CLAUDE.md                 (instrucciones del proyecto)
+│   ├── spec.md                   (especificaciones Datito)
+│   └── INDEX_MAESTRO.md          (índice general de todo)
 │
-├── courses/                           ← 6 cursos Canvas
-├── 10_GRABACIÓN_CLASES/               ← 29 videos integrados
+├── 01_DOCUMENTACION/             ← Documentación del curso FCD
+│   ├── 00_INDICE_GENERAL.md      (mapa completo del material)
+│   ├── guias/                    (guías temáticas)
+│   ├── referencias/              (material de consulta)
+│   └── especificaciones/         (definiciones formales)
 │
-├── README_ARQUITECTO.md               ← Diagnóstico
-├── PLATAFORMA_COHERENCIA_GAP.md       ← Mentiras vs hechos
-├── ADR-003-PLATAFORMA-UNIFICADA.md    ← Diseño
-├── FASE-0-IMPLEMENTACION.md           ← Plan 5 días
-└── ESTADO_PROYECTO_FINAL.txt          ← Status actual
+├── 02_DATOS/                     ← Datasets procesados
+│   ├── cancer/                   (Wisconsin Diagnostic)
+│   ├── melbourne/                (Housing 2016-2017)
+│   ├── galaxy-zoo/               (Imágenes astronómicas)
+│   └── raw/                      (sin procesar)
+│
+├── 03_SCRIPTS/                   ← Scripts Python centralizados (41 total)
+│   ├── datito_*.py               (tutor: estado, navegación, etc)
+│   ├── dashai_*.py               (integración DashAI)
+│   ├── procesar_*.py             (procesamiento datos)
+│   ├── verificar_*.py            (auditoría: rutas, artefactos, G1/G9)
+│   └── probar_*.py               (testing offline)
+│
+├── 04_NOTEBOOKS/                 ← Análisis interactivos (.ipynb)
+│   └── [análisis exploratorios]
+│
+├── 05_CLASES/                    ← Clases + grabaciones
+│   ├── transcripciones/          (faster-whisper + markdown)
+│   ├── laminas/                  (presentaciones)
+│   ├── mapa_ensenanza.yaml       (quién enseñó qué, cuándo)
+│   └── [22 clases ordenadas]
+│
+├── 06_LABORATORIOS/              ← Prácticos del curso (P1-P5)
+│   ├── P1_Pandas/                (vacio + resuelto)
+│   ├── P2_Calidad_Datos/
+│   ├── P3_Numpy_Descriptivo/
+│   ├── P4_Regresion/
+│   └── P5_Clasificacion/
+│
+├── 07_DATITO/                    ← Tutor personal (estructura dedicada)
+│   ├── 00_INICIO/                (curriculum, progreso, config)
+│   ├── 01_CONCEPTOS/             (21 visuales HTML 01-21)
+│   ├── 02_REFERENCIA/            (fuentes, memoria, material)
+│   ├── 03_CASOS_ESTUDIO/         (cancer_mama + futuras)
+│   ├── 04_EJERCICIOS/            (guías, cuadernillos, certamenes)
+│   ├── 05_TRANSFERENCIA/         (datasets sintéticos)
+│   ├── 06_AUDITORIAS/            (evaluaciones)
+│   ├── 07_BITACORA/              (sesiones por fecha)
+│   └── 09_PERSONAL/              (datos privados del alumno)
+│
+├── 08_PROYECTO_FCD/              ← Proyecto Melbourne + Galaxy Zoo
+│   ├── Melbourne/                (análisis temporal 2016→2017)
+│   ├── Desafio/                  (Galaxy Zoo clasificación)
+│   └── [outputs, reports]
+│
+├── 09_RESULTADOS/                ← Entregables + métricas
+│   ├── melbourne/                (MAE, R², matrices confusion)
+│   ├── galaxy-zoo/
+│   ├── resultados_temporal.json  (verificados: MAE 188.218, R² 0.757)
+│   └── [visualizaciones HTML]
+│
+├── 10_ARCHIVO/                   ← Histórico (deprecated, old versions)
+│   ├── obsoleto_split_aleatorio/ (ejemplo de fuga de información)
+│   ├── canvas_respaldos/
+│   └── [anteriores iteraciones]
+│
+└── .claude/
+    ├── skills/datito/SKILL.md    (protocolo pedagógico)
+    └── [configuración MCP]
 ```
 
 ---
 
-## 🚀 Próximas Fases
+## 🎓 Cómo Usar Este Repositorio
 
-**FASE-0** (esta semana):
-- ✅ DÍA 1: CLI + manifesto (HECHO)
-- ⏳ DÍA 2-3: Procesadores legacy
-- ⏳ DÍA 4: Documentación
-- ⏳ DÍA 5: Testing
+### Para Estudiar (Datito)
 
-**FASE-1** (2-3 semanas):
-- Multi-estudiante (learners/<id>/)
-- Parametrizar Datito por curso
-
-**FASE-2+** (2-3 meses):
-- API REST + Web UI
-- Database backend
-- Evaluación automática
-
----
-
-## 📚 Documentación Clave
-
-| Documento | Qué es | Para quién |
-|-----------|--------|-----------|
-| [`README_ARQUITECTO.md`](README_ARQUITECTO.md) | Diagnóstico honesto: NO_PLATAFORMA actual | Arquitectos, PMs |
-| [`PLATAFORMA_COHERENCIA_GAP.md`](PLATAFORMA_COHERENCIA_GAP.md) | Mentiras en README vs hechos en disco | Auditores |
-| [`ADR-003-PLATAFORMA-UNIFICADA.md`](ADR-003-PLATAFORMA-UNIFICADA.md) | Diseño de 3 capas (sin destruir nada) | Implementadores |
-| [`FASE-0-IMPLEMENTACION.md`](FASE-0-IMPLEMENTACION.md) | Checklist 5 días con código | Developers |
-| [`ESTADO_PROYECTO_FINAL.txt`](ESTADO_PROYECTO_FINAL.txt) | Status actual + métricas | Todos |
-
----
-
-## 💻 Para Desarrolladores
-
-**Instalar:**
 ```bash
-pip install click pyyaml
+cd F:\MACI
+python 03_SCRIPTS/datito_estado.py     # actualizar estado
 ```
 
-**Desarrollo:**
+Abre: [`07_DATITO/01_CONCEPTOS/00_index.html`](../07_DATITO/01_CONCEPTOS/00_index.html) en el navegador.
+
+O invoca la skill en Claude Code:
+```
+/datito
+```
+
+### Para Revisar Proyecto Melbourne
+
 ```bash
-python platform.py --help
-python -m maci_platform --help  # o así
+cd F:\MACI
+# Ver datos
+ls 02_DATOS/melbourne/
+
+# Ver análisis
+ls 08_PROYECTO_FCD/Melbourne/
+
+# Ver resultados
+cat 09_RESULTADOS/resultados_temporal.json
 ```
 
-**Tests:**
-- [ ] `status` lista 6 cursos
-- [ ] `report` muestra 4/6 = 66%
-- [ ] UTF-8 sin errores Windows
-- [ ] No hay `procesar_*.py` en raíz (van a 99_ARCHIVE/ en DÍA 3)
+**Cifras verificadas:**
+- Train: 6.336 propiedades (2016)
+- Test: 7.244 propiedades (2017)
+- MAE: **188.218 AUD**
+- R²: **0,757**
+- ⚠️ 29,1% del test son suburbios NO en train (data leakage risk)
+
+### Para Ejecutar Scripts
+
+**Todos los scripts se ejecutan desde raíz**, no desde `03_SCRIPTS/`:
+
+```bash
+cd F:\MACI
+python 03_SCRIPTS/datito_estado.py                    # regen estado
+python 03_SCRIPTS/construir_navegacion.py             # regen visuales
+python 03_SCRIPTS/verificar_artefactos.py             # audit HTML
+python 03_SCRIPTS/verificar_g1_g9.py                  # audit garantías
+```
+
+---
+
+## 📋 Archivos Especiales
+
+| Archivo | Propósito | Quién modifica |
+|---------|-----------|----------------|
+| `00_INICIO/CLAUDE.md` | Instrucciones del proyecto | Usuario solo |
+| `00_INICIO/spec.md` | Especificaciones Datito (G1-G14) | Usuario solo |
+| `07_DATITO/00_INICIO/curriculum.yaml` | 21 conceptos del curso | Lectura (NO editar durante sesión) |
+| `07_DATITO/00_INICIO/progreso.yaml` | Estado de aprendizaje | Solo Datito |
+| `07_DATITO/00_INICIO/dudas.yaml` | Respuestas dadas en sesión | Solo Datito |
+| `07_DATITO/07_BITACORA/*.md` | Sesiones por fecha | Solo Datito |
+| `09_RESULTADOS/resultados_temporal.json` | Métricas verificadas | Manual solo |
 
 ---
 
 ## 🔒 Lo Que NO Cambiar
 
-Protegido (estable, funcional):
-- `01_DOCUMENTACION/` — Instancia FCD semestral
-- `08_PROYECTO_FCD/` — Proyecto Melbourne + Galaxy Zoo
-- `07_DATITO/` — Core pedagógico
-- `MACI_RESPALDOS/` — Backup Canvas
+Protegido (funcional, estable):
+- `01_DOCUMENTACION/` — Material del curso
+- `07_DATITO/00_INICIO/curriculum.yaml` — Plan pedagógico fijo
+- `08_PROYECTO_FCD/` — Proyecto semestral
+- `09_RESULTADOS/resultados_temporal.json` — Fuente de verdad
 
 ---
 
-## 📞 Contacto & Contribuciones
+## 🛠️ Convenciones
+
+- **Estructura:** Carpetas numeradas por función (`00_` a `10_`)
+- **Índices:** Cada carpeta principal tiene `00_INDICE.md` o `README.md`
+- **Rutas:** Scripts se ejecutan desde `F:\MACI` (raíz)
+- **Etiquetas:** `[EVIDENCIA]`, `[INFERENCIA]`, `[NO EVIDENCIADO]` en documentos
+- **Commits:** Mensaje claro + hash verificable en `09_RESULTADOS/`
+
+---
+
+## 📞 Contacto
 
 **Repositorio:** https://github.com/cherrera0001/MACI  
 **Branch:** main  
-**Token:** GITHUB_TOKEN_CLASIC (en `.env`)
-
-Para reportar errores o sugerir mejoras: revisar `PLATAFORMA_COHERENCIA_GAP.md` primero.
+**Credenciales:** Usar `GITHUB_TOKEN_CLASIC` de `.env`
 
 ---
 
-**Última actualización:** 2026-09-23 · FASE-0 DÍA 1
+**Última actualización:** 2026-09-25 · Restructuración completa (00_INICIO a 10_ARCHIVO)
