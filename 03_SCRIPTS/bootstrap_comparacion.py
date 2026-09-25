@@ -17,7 +17,7 @@ from sklearn.metrics import mean_absolute_error
 warnings.filterwarnings("ignore")
 rng = np.random.default_rng(42)
 
-CSV = r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
+CSV = r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
 df = pd.read_csv(CSV); df["Date"] = pd.to_datetime(df["Date"], dayfirst=True); df["Year"] = df["Date"].dt.year
 tr, te = df[df.Year == 2016].copy(), df[df.Year == 2017].copy()
 NUM = ["Rooms", "Distance", "Bedroom2", "Bathroom", "Car", "Landsize", "BuildingArea", "YearBuilt", "Lattitude", "Longtitude", "Propertycount"]
@@ -38,7 +38,7 @@ for n, m in modelos.items():
 out = te[["Suburb", "Type", "Regionname", "Rooms", "Distance", "Price"]].copy()
 for n in pred: out[f"pred_{n.replace(' ', '_')}"] = pred[n]
 out["suburbio_nuevo"] = ~te["Suburb"].isin(set(tr["Suburb"]))
-out.to_csv(r"F:\MACI\05_RESULTADOS\predicciones_2017.csv", index=False)
+out.to_csv(r"F:\MACI\09_RESULTADOS\predicciones_2017.csv", index=False)
 
 # --- bootstrap pareado
 res = {"bootstrap_delta_MAE": {}}
@@ -78,5 +78,5 @@ imp = sorted(zip(NUM + CAT, pi.importances_mean, pi.importances_std), key=lambda
 res["importancia_permutacion_2017"] = [dict(feature=f, mean=float(m), std=float(s)) for f, m, s in imp]
 print("\nImportancia por permutacion (2017, delta MAE log):")
 for f, m, s in imp: print(f"  {f:14s} {m:+.4f} ± {s:.4f}")
-json.dump(res, open(r"F:\MACI\05_RESULTADOS\comparacion_estadistica.json", "w"), indent=2, default=str)
+json.dump(res, open(r"F:\MACI\09_RESULTADOS\comparacion_estadistica.json", "w"), indent=2, default=str)
 print("\nGuardado: comparacion_estadistica.json, predicciones_2017.csv")

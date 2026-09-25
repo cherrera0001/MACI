@@ -132,7 +132,7 @@ patrones_vigilados:
       exactamente sobre el valor real.
     senal: Usar las palabras acierto, correcto o porcentaje al hablar de R2.
     desmontaje: >-
-      Pedirle que senale UNA prediccion correcta en 05_RESULTADOS/predicciones_2017.csv.
+      Pedirle que senale UNA prediccion correcta en 09_RESULTADOS/predicciones_2017.csv.
       No hay ninguna exacta, y aun asi el R2 es 0,757. La nocion de acierto se
       cae sola.
 
@@ -181,7 +181,7 @@ patrones_vigilados:
       Proponer train_test_split con shuffle para Melbourne, o defender el 81%
       de la version obsoleta como si fuera comparable.
     desmontaje: >-
-      Su propio repositorio: 99_ARCHIVO/_obsoleto_split_aleatorio/ anuncia "81%
+      Su propio repositorio: 10_ARCHIVO/_obsoleto_split_aleatorio/ anuncia "81%
       Precision" y fue invalidado. Un numero mas alto midiendo mal.
 
   - id: mirar_el_test_para_elegir_modelo
@@ -220,5 +220,5 @@ patrones_vigilados:
       informacion, o no estar disponibles al momento de predecir.
     senal: Preguntar por que no se usaron BuildingArea y YearBuilt, asumiendo que fue un descuido.
     desmontaje: >-
-      Fueron excluidas deliberadamente. Revisar 03_CODIGO/preparar_dashai.py y la
+      Fueron excluidas deliberadamente. Revisar 03_SCRIPTS/preparar_dashai.py y la
       lista 'excluidas' del curriculum.

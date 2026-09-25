@@ -6,8 +6,8 @@ Crea la estructura de directorios y archivos necesarios para un alumno nuevo,
 clonando desde la plantilla de su curso.
 
 USO
-  python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner juan_perez
-  python 03_CODIGO/datito_init_learner.py --course estadistica-2026-2 --learner maria_gonzalez
+  python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner juan_perez
+  python 03_SCRIPTS/datito_init_learner.py --course estadistica-2026-2 --learner maria_gonzalez
 """
 import argparse
 import os
@@ -179,7 +179,7 @@ def init_learner(course_id, learner_id, force=False):
     # ========================================================================
     estado_md = f"""# Estado del alumno
 
-> Generado por `03_CODIGO/datito_estado.py`. **No editar a mano.**
+> Generado por `03_SCRIPTS/datito_estado.py`. **No editar a mano.**
 
 Alumno: **{alumno_nombre}** · sesiones: **0** · última: ninguna
 
@@ -223,10 +223,10 @@ Ningún error registrado aún.
     print("Próximos pasos:")
     print()
     print("  1. Regenerar navegación:")
-    print("     python 03_CODIGO/construir_navegacion.py")
+    print("     python 03_SCRIPTS/construir_navegacion.py")
     print()
     print("  2. Regenerar estado:")
-    print("     python 03_CODIGO/datito_estado.py")
+    print("     python 03_SCRIPTS/datito_estado.py")
     print()
     print("  3. Abrir Claude Code en la raíz:")
     print("     /datito")

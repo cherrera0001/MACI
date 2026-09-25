@@ -35,7 +35,7 @@ F:\MACI/                          ← Repositorio de desarrollo
 │       ├── dudas.yaml            ← PROBLEMA: debería estar en learners/, pero...
 │       └── ...
 │
-└── 03_CODIGO/
+└── 03_SCRIPTS/
     ├── context_manager.py        ← NUEVO (fase 1, no probado)
     ├── datito_estado.py          ← MODIFICADO (usa context_manager)
     └── ... (múltiples scripts aún con rutas hardcodeadas)
@@ -94,7 +94,7 @@ visual/:
 
 ```bash
 # Lo que DEBERÍA funcionar pero no:
-python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner juan
+python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner juan
 # Resultado esperado: "✅ Contexto válido"
 # Resultado real: ??? (no verificado)
 ```
@@ -153,7 +153,7 @@ learners/cristobal_herrera_fcd-2026-2/
 Cambio anterior dijo "actualizar scripts" pero verifi:
 
 ```python
-# 03_CODIGO/construir_navegacion.py (línea 193)
+# 03_SCRIPTS/construir_navegacion.py (línea 193)
 RUTAS = resolver_rutas(cargar_config())
 
 # Problema: cargar_config() busca en 07_DATITO/

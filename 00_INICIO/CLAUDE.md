@@ -79,7 +79,7 @@ ahi.
 | `07_DATITO/00_INICIO/clases.yaml` | El curso: 22 clases en orden, ficha Bloom y cierre de cada una (spec.md G14) |
 | `07_DATITO/00_INICIO/dudas.yaml` | Toda respuesta dada en sesion, en orden. Se renderiza en los visuales |
 | `07_DATITO/07_BITACORA/` | Una entrada por sesion |
-| `09_CLASES/transcripciones/` | Clases transcritas con faster-whisper |
+| `05_CLASES/transcripciones/` | Clases transcritas con faster-whisper |
 
 Solo Datito escribe en `00_INICIO/progreso.yaml`, `00_INICIO/errores_conceptuales.yaml`,
 `00_INICIO/dudas.yaml` y `07_BITACORA/`. `00_INICIO/curriculum.yaml` es de solo lectura durante las sesiones.

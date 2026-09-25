@@ -15,7 +15,7 @@ Datito está acoplado a:
 
 Queremos que otro estudiante pueda:
 1. Subir su propio curriculum a `courses/su-ramo/`
-2. Usar el mismo código base (`03_CODIGO/`, `.claude/skills/`)
+2. Usar el mismo código base (`03_SCRIPTS/`, `.claude/skills/`)
 3. Tener su propio progreso aislado en `learners/otro-alumno/`
 4. Sin que se rompan las garantías G1–G14
 
@@ -51,7 +51,7 @@ F:\MACI/
 ├── 01_DOCUMENTACION/
 │   └── ADR-001-multi-course.md          ← este documento
 │
-├── 03_CODIGO/
+├── 03_SCRIPTS/
 │   ├── construir_navegacion.py          ✏️ lee config, resuelve paths
 │   ├── datito_estado.py                 ✏️ idem
 │   ├── datito_init_learner.py           ✨ NUEVO: inicializa learner
@@ -231,13 +231,13 @@ mv learners/cristobal_herrera/ (es nuevo, sus archivos dinámicos)
 
 5. **Crear perfiles de alumnos:**
    ```bash
-   python 03_CODIGO/datito_init_learner.py --course estadistica-2026-2 --learner juan_perez
+   python 03_SCRIPTS/datito_init_learner.py --course estadistica-2026-2 --learner juan_perez
    ```
 
 6. **Regenerar navegación:**
    ```bash
-   python 03_CODIGO/construir_navegacion.py
-   python 03_CODIGO/datito_estado.py
+   python 03_SCRIPTS/construir_navegacion.py
+   python 03_SCRIPTS/datito_estado.py
    ```
 
 Listo. El docente ahora tiene:

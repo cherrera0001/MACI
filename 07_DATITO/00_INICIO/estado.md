@@ -1,6 +1,6 @@
 # Estado del alumno
 
-> Generado por `03_CODIGO/datito_estado.py`. **No editar a mano.**
+> Generado por `03_SCRIPTS/datito_estado.py`. **No editar a mano.**
 > El detalle completo esta en `progreso.yaml` y
 > `errores_conceptuales.yaml`; leelos solo si necesitas el historial.
 

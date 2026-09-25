@@ -10,7 +10,7 @@
 
 No se hizo pregunta diagnóstica: el repositorio ya daba la evidencia. Cristóbal
 había construido un split de tres vías temporal y lo tenía documentado en
-`05_RESULTADOS/dashai_split_indices.json`. La clase partió desde ahí, no desde
+`09_RESULTADOS/dashai_split_indices.json`. La clase partió desde ahí, no desde
 la definición.
 
 ## Qué se enseñó

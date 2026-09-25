@@ -20,9 +20,9 @@ Orden de magnitud en esta maquina: una clase de 90 minutos con 'medium' tarda
 entre 30 y 60 minutos. Conviene dejarlo corriendo en segundo plano.
 
 USO
-  uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
-  uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py "<ruta.mp4>"
-  uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --listar
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py "<ruta.mp4>"
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --todas
 """
 import argparse
 import glob
@@ -33,7 +33,7 @@ import time
 from datetime import timedelta
 
 ORIGEN = r"C:\Users\herre\Downloads"
-DESTINO = r"F:\MACI\09_CLASES\transcripciones"
+DESTINO = r"F:\MACI\05_CLASES\transcripciones"
 PATRON = "*Fundamentos*.mp4"
 
 

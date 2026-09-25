@@ -260,7 +260,7 @@ sostenida por un solo dataset, el de logística.
   `dl_llm_agentes`: los 21 conceptos tienen visual. Segmentación sigue sin uno
   porque no está entre los 21.
 - **Navegación.** Cada visual tiene un bloque generado por
-  `03_CODIGO/construir_navegacion.py` (viene de, habilita, prioridades, preguntas
+  `03_SCRIPTS/construir_navegacion.py` (viene de, habilita, prioridades, preguntas
   de certamen, dónde se enseñó) y existe `visual/index.html`.
 
 Además, al integrar las 14 transcripciones aparecieron errores de hecho en los
@@ -275,7 +275,7 @@ visuales, y se corrigieron contra la clase o la lámina. Por ejemplo:
   (`redes_neuronales`).
 
 Las citas de clase ahora llevan ruta completa y marca, y
-`03_CODIGO/verificar_visuales.py` comprueba que cada marca exista. Esa
+`03_SCRIPTS/verificar_visuales.py` comprueba que cada marca exista. Esa
 comprobación entró al contrato.
 
 **[NO EVIDENCIADO]** Sigue abierto: la fidelidad de la transcripción frente al

@@ -3,9 +3,9 @@
 Ningun numero del informe se escribe a mano."""
 import json, os, datetime
 os.chdir(r"F:\MACI")
-T = json.load(open("05_RESULTADOS/resultados_temporal.json")); R, M = T["resultados"], T["meta"]
-C = json.load(open("05_RESULTADOS/comparacion_estadistica.json"))
-D = json.load(open("05_RESULTADOS/dashai_resultados.json")) if os.path.exists("05_RESULTADOS/dashai_resultados.json") else {}
+T = json.load(open("09_RESULTADOS/resultados_temporal.json")); R, M = T["resultados"], T["meta"]
+C = json.load(open("09_RESULTADOS/comparacion_estadistica.json"))
+D = json.load(open("09_RESULTADOS/dashai_resultados.json")) if os.path.exists("09_RESULTADOS/dashai_resultados.json") else {}
 f0 = lambda x: f"{x:,.0f}"; f3 = lambda x: f"{x:.3f}"
 
 ORDEN = ["Baseline (mediana)", "Ridge (lineal)", "Arbol de decision", "Random Forest", "Gradient Boosting", "HistGradientBoosting"]

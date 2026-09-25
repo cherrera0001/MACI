@@ -121,7 +121,7 @@ un precio: **hay que regenerar el resumen después de cada sesión** o la
 siguiente abre con datos viejos.
 
 ```bash
-python 03_CODIGO/datito_estado.py    # regenera 00_INICIO/estado.md
+python 03_SCRIPTS/datito_estado.py    # regenera 00_INICIO/estado.md
 ```
 
 Ese comando no es opcional. Es la contrapartida de la optimización.
@@ -178,9 +178,9 @@ Tres propiedades que no son accidentales:
 3. **Están enlazados entre sí.** Los artefactos forman un grafo navegable:
    cada concepto declara de dónde viene, qué habilita, dónde se evalúa y en qué
    clase y minuto se enseñó. Ese bloque **no se escribe a mano**: lo inyecta
-   `03_CODIGO/construir_navegacion.py` entre los marcadores
+   `03_SCRIPTS/construir_navegacion.py` entre los marcadores
    `<!-- datito:nav:inicio -->` y `<!-- datito:nav:fin -->`, desde
-   `00_INICIO/grafo.yaml` y `09_CLASES/mapa_ensenanza.yaml`, y genera `01_CONCEPTOS/visual/00_index.html`.
+   `00_INICIO/grafo.yaml` y `05_CLASES/mapa_ensenanza.yaml`, y genera `01_CONCEPTOS/visual/00_index.html`.
 
 ### Estado actual de los artefactos
 
@@ -209,17 +209,17 @@ pipeline propio, fuera del bucle de estudio:
           │  transcribir_cola.py     extrae uno, transcribe, borra el mp4
           │  transcribir_clases.py   faster-whisper int8 · CPU · sin ffmpeg
           ▼
-09_CLASES/transcripciones/       <clase>.md  (con marcas de tiempo)
+05_CLASES/transcripciones/       <clase>.md  (con marcas de tiempo)
                                  <clase>_plano.txt  (para grep)
           │
           │  integrar_clase.py
           ▼
-09_CLASES/indice_clases.yaml     qué concepto se MENCIONA, y en qué minuto
+05_CLASES/indice_clases.yaml     qué concepto se MENCIONA, y en qué minuto
           │                      (automático: cuenta palabras, no sabe quién habla)
           │
           │  curación a mano
           ▼
-09_CLASES/mapa_ensenanza.yaml    dónde se ENSEÑA: rango, hablante, si es ayudantía
+05_CLASES/mapa_ensenanza.yaml    dónde se ENSEÑA: rango, hablante, si es ayudantía
           │
           │  construir_navegacion.py
           ▼
@@ -261,7 +261,7 @@ Lo que separa este sistema de un conjunto de instrucciones bien escritas es que
 **doce comprobaciones de sus garantías son un test que corre**:
 
 ```bash
-python 03_CODIGO/verificar_contrato.py
+python 03_SCRIPTS/verificar_contrato.py
 ```
 
 | Comprobación | Qué mira realmente |
@@ -296,7 +296,7 @@ Esto importa tanto como lo anterior, y conviene tenerlo escrito:
 
 La prueba de comportamiento —abrir cada visual en Edge sin red, mover todos los
 controles y registrar errores de JavaScript— no está en el contrato porque
-necesita un navegador: `uv run --with playwright python 03_CODIGO/probar_visuales_offline.py`.
+necesita un navegador: `uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py`.
 
 Un contrato parcialmente verificable es honesto si declara su parte no
 verificable. Uno que pretende verificarse entero, miente.
@@ -327,7 +327,7 @@ La garantía **G6** convierte eso en comportamiento definido:
 
 **Jerarquía de fuentes (G5):** (ver `02_REFERENCIA/fuentes.md`)
 
-1. Material FCD del repositorio — `08_PRACTICA/`, `01_DOCUMENTACION/`, `02_PROYECTO_FCD/`
+1. Material FCD del repositorio — `06_LABORATORIOS/`, `01_DOCUMENTACION/`, `08_PROYECTO_FCD/`
 2. Cuaderno de NotebookLM — 66 fuentes
 3. Proyectos propios — Melbourne, Galaxy Zoo
 4. Fuentes académicas externas — solo si lo anterior no alcanza
@@ -406,7 +406,7 @@ Los dos que exige el contrato (`spec.md` §3):
 
 Y dos más que aporta la arquitectura, no el contrato:
 
-3. **Los prácticos `(vacío)`.** `08_PRACTICA/` tiene los 5 laboratorios del
+3. **Los prácticos `(vacío)`.** `06_LABORATORIOS/` tiene los 5 laboratorios del
    curso en versión resuelta y sin resolver. Los `(vacío)` son evidencia de
    APLICAR que **no escribió Datito**.
 4. **`datito-pedagogia`.** Un auditor separado que no enseña, y cuyo trabajo
@@ -455,7 +455,7 @@ CLAUDE.md                        ← hace que Claude Code reconozca a Datito. Ma
   referencia/                    ← fuentes y material, bajo demanda
   guias/ · cuadernillos/ · certamenes/
 
-03_CODIGO/
+03_SCRIPTS/
   datito_estado.py             ← regenera estado.md   ← CORRER TRAS CADA SESIÓN
   grafo_conceptual.py            ← regenera grafo.yaml
   verificar_contrato.py          ← el contrato como test
@@ -466,10 +466,10 @@ CLAUDE.md                        ← hace que Claude Code reconozca a Datito. Ma
   verificar_visuales.py          ← sin red, enlaces, citas (lo llama el contrato)
   probar_visuales_offline.py     ← cada visual en Edge sin red, con sus controles
 
-09_CLASES/                       ← transcripciones + índice + mapa_ensenanza.yaml
+05_CLASES/                       ← transcripciones + índice + mapa_ensenanza.yaml
 10_GRABACIÓN_CLASES/             ← los ZIP. Gitignorado
 11_PRESENTACIÓN/                 ← PDF gitignorados; el _markdown/ sí se versiona
-08_PRACTICA/                     ← los 5 laboratorios, (res) y (vacío)
+06_LABORATORIOS/                     ← los 5 laboratorios, (res) y (vacío)
 ```
 
 ---
@@ -521,9 +521,9 @@ Ninguna arquitectura es gratis. Estas son las cuentas:
 ## Verificación rápida
 
 ```bash
-python 03_CODIGO/verificar_contrato.py     # debe dar 12 ok · 0 fallos
-python 03_CODIGO/construir_navegacion.py   # regenera navegación e index.html
-python 03_CODIGO/datito_estado.py        # regenera estado.md
-python 03_CODIGO/grafo_conceptual.py       # regenera grafo.yaml
-python 03_CODIGO/transcribir_cola.py --listar   # qué clases faltan
+python 03_SCRIPTS/verificar_contrato.py     # debe dar 12 ok · 0 fallos
+python 03_SCRIPTS/construir_navegacion.py   # regenera navegación e index.html
+python 03_SCRIPTS/datito_estado.py        # regenera estado.md
+python 03_SCRIPTS/grafo_conceptual.py       # regenera grafo.yaml
+python 03_SCRIPTS/transcribir_cola.py --listar   # qué clases faltan
 ```

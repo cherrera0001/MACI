@@ -33,7 +33,7 @@ Una persona distinta del fundador (ej: María García) puede:
 
 ### A. Context Manager Centralizado
 
-**Archivo:** `03_CODIGO/context_manager.py` (350 líneas)
+**Archivo:** `03_SCRIPTS/context_manager.py` (350 líneas)
 
 **Qué hace:**
 - Resuelve `course_id` (ej: `fcd-2026-2`) y `learner_id` (ej: `juan_perez`)
@@ -47,7 +47,7 @@ Una persona distinta del fundador (ej: María García) puede:
 
 ### B. Identidad del Estudiante Desacoplada
 
-**Cambio:** `03_CODIGO/datito_init_learner.py` (±50 líneas modificadas)
+**Cambio:** `03_SCRIPTS/datito_init_learner.py` (±50 líneas modificadas)
 
 **Antes:**
 ```yaml
@@ -74,7 +74,7 @@ learner_config = {
 
 ### C. Scripts Multi-Contexto
 
-**Cambio:** `03_CODIGO/datito_estado.py` (reescrito)
+**Cambio:** `03_SCRIPTS/datito_estado.py` (reescrito)
 
 **Antes:**
 ```python
@@ -90,7 +90,7 @@ ctx = get_context(course_id=args.course, learner_id=args.learner)
 
 **Uso:**
 ```bash
-python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner maria
+python 03_SCRIPTS/datito_estado.py --course fcd-2026-2 --learner maria
 # ✅ estado.md generado en learners/maria_fcd-2026-2/
 ```
 
@@ -142,7 +142,7 @@ python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner maria
 ### Test 1: Context Manager Válido ✅
 
 ```bash
-python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner cristobal_herrera
+python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner cristobal_herrera
 # Output:
 # ✅ Contexto válido
 #    Curso: fcd-2026-2
@@ -154,7 +154,7 @@ python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner cristobal_herr
 ### Test 2: Context Inválido (Error Claro) ✅
 
 ```bash
-python 03_CODIGO/context_manager.py --course inexistente --learner juan
+python 03_SCRIPTS/context_manager.py --course inexistente --learner juan
 # Output:
 # ❌ Contexto inválido:
 # Curso 'inexistente' no existe.
@@ -164,7 +164,7 @@ python 03_CODIGO/context_manager.py --course inexistente --learner juan
 ### Test 3: datito_estado Usa Context ✅
 
 ```bash
-python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
+python 03_SCRIPTS/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
 # ✅ estado.md generado (30 líneas, 1.105 bytes)
 #    Ubicación: learners/cristobal_herrera/estado.md
 #    Reemplaza 20.000 bytes de YAML (94% menos)
@@ -173,7 +173,7 @@ python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner cristobal_herrer
 ### Test 4: Sin Contexto → Error (No Default) ❌ FALTA
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/datito_estado.py
 # Debe ser: ❌ course_id no especificado
 # Actualmente: (probablemente falla o intenta backward compat)
 ```
@@ -181,7 +181,7 @@ python 03_CODIGO/datito_estado.py
 ### Test 5: Nuevo Alumno No Hereda Identidad ✅
 
 ```bash
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner maria
 cat learners/maria_fcd-2026-2/datito.config.yaml | grep nombre
 # Output:
 # nombre: "[Nombre del alumno]"  ← NOT "Cristóbal"
@@ -191,8 +191,8 @@ cat learners/maria_fcd-2026-2/datito.config.yaml | grep nombre
 
 ```bash
 # Crear dos
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner juan
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner juan
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner maria
 
 # Ambos tienen progreso.yaml separado ✅
 # PERO dudas.yaml sigue en courses/ → accesible a ambos ❌
@@ -236,8 +236,8 @@ python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
 #    - Cambiar paths en construir_navegacion.py
 #    - Validar que no se exporten datos privados
 # 3. Test de aislamiento: 
-#    python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner juan
-#    python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner maria
+#    python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner juan
+#    python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner maria
 #    # Verificar que progreso está separado
 ```
 
@@ -298,5 +298,5 @@ Próximo hito: Fase 1 completada = dos estudiantes con datos privados verificado
 
 - **Diagnóstico:** `01_DOCUMENTACION/DIAGNOSTICO-PLATAFORMA-ABIERTA.md`
 - **Plan:** `01_DOCUMENTACION/PRIMERA-ENTREGA-PLAN.md`
-- **Context Manager:** `03_CODIGO/context_manager.py`
+- **Context Manager:** `03_SCRIPTS/context_manager.py`
 - **Logs:** commit `9e0ad57`

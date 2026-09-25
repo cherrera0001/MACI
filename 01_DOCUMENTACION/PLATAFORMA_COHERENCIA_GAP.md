@@ -11,15 +11,15 @@
 ### Dimensión A: Instancia FCD (Proyecto Semestral Cristóbal)
 ```
 01_DOCUMENTACION/          [Material documental del semestre]
-02_PROYECTO_FCD/           [Melbourne housing + Galaxy Zoo]
-03_CODIGO/                 [Scripts de análisis]
-04_DATOS/                  [Datasets]
-05_RESULTADOS/             [Outputs FCD]
+08_PROYECTO_FCD/           [Melbourne housing + Galaxy Zoo]
+03_SCRIPTS/                 [Scripts de análisis]
+02_DATOS/                  [Datasets]
+09_RESULTADOS/             [Outputs FCD]
 06_ENTREGABLES/            [Reportes finales]
 07_DATITO/                 [Tutor personal Cristóbal]
-08_PRACTICA/               [Labs del curso (P1-P5)]
-09_CLASES/                 [Transcripciones clase]
-99_ARCHIVO/                [Obsoleto, no usar]
+06_LABORATORIOS/               [Labs del curso (P1-P5)]
+05_CLASES/                 [Transcripciones clase]
+10_ARCHIVO/                [Obsoleto, no usar]
 ```
 **Propietario:** Estudiante (Cristóbal Herrera)  
 **Alcance:** Un semestre, un estudiante, FCD específicamente  
@@ -198,7 +198,7 @@ F:\MACI\courses/
   → Contiene copia nueva y procesada
 
 PROBLEMA: ¿Cuál es fuente de verdad? Alumno usa vieja.
-SOLUCIÓN: PROCESADO/ debe estar en 99_ARCHIVO
+SOLUCIÓN: PROCESADO/ debe estar en 10_ARCHIVO
 ```
 
 ---
@@ -286,7 +286,7 @@ Score: 0/7 = NO_PLATAFORMA
 1. Una CLI unificada (`python -m platform.cli process --course <id>`)
 2. Un directorio legible (`README explica qué abrir para qué`)
 3. Una matriz de capacidades actualizada (para no mentir en README)
-4. 99_ARCHIVO/pipelines_legacy/ (para los 7 scripts clonados)
+4. 10_ARCHIVO/pipelines_legacy/ (para los 7 scripts clonados)
 
 **Esto es una semana de arquitectura. Vale más que 3 semanas de más scripts clonados.**
 

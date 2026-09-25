@@ -194,7 +194,7 @@ P parece excelente con 0,15 en entrenamiento. Esa cifra no sirve para decidir.
 
 ## 8 · Tu propio proyecto como caso real
 
-`05_RESULTADOS/resultados_temporal.json`, modelos sobre `log1p(Price)`:
+`09_RESULTADOS/resultados_temporal.json`, modelos sobre `log1p(Price)`:
 
 | Modelo | R² train 2016 | R² test 2017 | Brecha |
 |---|---|---|---|

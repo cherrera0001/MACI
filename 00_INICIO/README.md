@@ -61,7 +61,7 @@ python platform.py report
 
 ```
 F:\MACI/
-├── 03_CODIGO/maci_platform/          ← CLI unificada (NUEVO)
+├── 03_SCRIPTS/maci_platform/          ← CLI unificada (NUEVO)
 ├── courses.yaml                       ← Manifesto centralizado (NUEVO)
 ├── platform.py                        ← Wrapper usuario (NUEVO)
 │
@@ -136,7 +136,7 @@ python -m maci_platform --help  # o así
 
 Protegido (estable, funcional):
 - `01_DOCUMENTACION/` — Instancia FCD semestral
-- `02_PROYECTO_FCD/` — Proyecto Melbourne + Galaxy Zoo
+- `08_PROYECTO_FCD/` — Proyecto Melbourne + Galaxy Zoo
 - `07_DATITO/` — Core pedagógico
 - `MACI_RESPALDOS/` — Backup Canvas
 

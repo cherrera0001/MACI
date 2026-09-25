@@ -10,19 +10,19 @@
 
 ### DÍA 1: Estructura Base (8h)
 
-- [ ] Crear `03_CODIGO/platform/` (nuevo directorio)
+- [ ] Crear `03_SCRIPTS/platform/` (nuevo directorio)
   ```bash
-  mkdir -p 03_CODIGO/platform/
-  mkdir -p 03_CODIGO/platform/processors
-  mkdir -p 03_CODIGO/platform/utils
+  mkdir -p 03_SCRIPTS/platform/
+  mkdir -p 03_SCRIPTS/platform/processors
+  mkdir -p 03_SCRIPTS/platform/utils
   ```
 
-- [ ] Crear `03_CODIGO/platform/__init__.py`
+- [ ] Crear `03_SCRIPTS/platform/__init__.py`
   ```python
   __version__ = "0.1.0"
   ```
 
-- [ ] Crear `03_CODIGO/platform/__main__.py` (entry point)
+- [ ] Crear `03_SCRIPTS/platform/__main__.py` (entry point)
   ```python
   import sys
   from platform.cli import main
@@ -31,7 +31,7 @@
       sys.exit(main())
   ```
 
-- [ ] Crear `03_CODIGO/platform/cli.py` (Click CLI)
+- [ ] Crear `03_SCRIPTS/platform/cli.py` (Click CLI)
   ```python
   import click
   from pathlib import Path
@@ -69,7 +69,7 @@
       main()
   ```
 
-- [ ] Crear `03_CODIGO/platform/manifest.py` (YAML loader)
+- [ ] Crear `03_SCRIPTS/platform/manifest.py` (YAML loader)
   ```python
   import yaml
   from pathlib import Path
@@ -120,9 +120,9 @@
 
 ### DÍA 2: Procesadores Legacy (8h)
 
-- [ ] Crear `03_CODIGO/platform/processors/__init__.py`
+- [ ] Crear `03_SCRIPTS/platform/processors/__init__.py`
 
-- [ ] Crear `03_CODIGO/platform/processors/canvas.py`
+- [ ] Crear `03_SCRIPTS/platform/processors/canvas.py`
   ```python
   import subprocess
   from pathlib import Path
@@ -132,11 +132,11 @@
       
       # Map course_id to legacy script
       script_map = {
-          80014: "99_ARCHIVO/pipelines_legacy/procesar_80014.py",
-          80038: "99_ARCHIVO/pipelines_legacy/procesar_80038.py",
-          80714: "99_ARCHIVO/pipelines_legacy/procesar_curso_80714.py",
-          83703: "99_ARCHIVO/pipelines_legacy/procesar_liderazgo.py",
-          83706: "99_ARCHIVO/pipelines_legacy/procesar_prototipos.py",
+          80014: "10_ARCHIVO/pipelines_legacy/procesar_80014.py",
+          80038: "10_ARCHIVO/pipelines_legacy/procesar_80038.py",
+          80714: "10_ARCHIVO/pipelines_legacy/procesar_curso_80714.py",
+          83703: "10_ARCHIVO/pipelines_legacy/procesar_liderazgo.py",
+          83706: "10_ARCHIVO/pipelines_legacy/procesar_prototipos.py",
       }
       
       script = script_map.get(course_id)
@@ -188,7 +188,7 @@
   
   These scripts were used before platform/cli.py unification.
   
-  They are still functional and called by 03_CODIGO/platform/processors/canvas.py.
+  They are still functional and called by 03_SCRIPTS/platform/processors/canvas.py.
   
   If you need to modify a processor:
   1. Edit the script here
@@ -259,7 +259,7 @@
 
 - [ ] Commit y push
   ```bash
-  git add 03_CODIGO/platform/
+  git add 03_SCRIPTS/platform/
   git add 99_ARCHIVE/pipelines_legacy/
   git add 99_ARCHIVE/PROCESADO_legacy/
   git add README.md
@@ -270,7 +270,7 @@
   
   git commit -m "FASE-0: CLI unificada + reorganización legacy
   
-  - Create 03_CODIGO/platform/ with Click CLI
+  - Create 03_SCRIPTS/platform/ with Click CLI
   - Move 7 legacy scripts to 99_ARCHIVE/pipelines_legacy/
   - Move PROCESADO/ to 99_ARCHIVE/ (obsolete)
   - Rewrite README with honest capability matrix
@@ -303,7 +303,7 @@ ANTES (Caos):
 
 DESPUÉS (Coherencia):
   F:\MACI\
-  ├── 03_CODIGO/platform/         ✅ Nueva CLI
+  ├── 03_SCRIPTS/platform/         ✅ Nueva CLI
   │   ├── __main__.py
   │   ├── cli.py
   │   ├── manifest.py
@@ -397,7 +397,7 @@ git revert HEAD~5
 git reset --hard HEAD
 
 # O específicamente:
-git checkout HEAD -- 03_CODIGO/
+git checkout HEAD -- 03_SCRIPTS/
 git checkout HEAD -- 99_ARCHIVE/
 git checkout HEAD -- courses.yaml
 git checkout HEAD -- README.md

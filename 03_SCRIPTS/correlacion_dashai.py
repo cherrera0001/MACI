@@ -30,7 +30,7 @@ Este archivo solo replica el heatmap del explorador; no es la tubería de calida
 import json, sys
 import numpy as np, pandas as pd
 
-CSV = r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
+CSV = r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
 COLS_DASHAI = ["BuildingArea", "Distance", "Landsize", "Lattitude", "Longtitude", "Price", "Rooms", "YearBuilt"]
 FUERA_PEARSON = ["Bathroom", "Bedroom2", "Car", "Propertycount", "Postcode", "Suburb", "Type", "Method",
                  "Regionname", "CouncilArea", "Date", "Address", "SellerG"]
@@ -99,5 +99,5 @@ if __name__ == "__main__":
               "matriz_6dec": {a: {b: round(float(m.loc[a, b]), 6) for b in m.columns} for a in m.index},
               "ranking_abs_r_vs_Price": [{"variable": k, "r": r3(v)} for k, v in ranking.items()],
               "umbral_fuerte": UMBRAL_FUERTE, "pares_fuertes": fuertes, "verificado_contra_dashai": True}
-    json.dump(salida, open(r"F:\MACI\05_RESULTADOS\correlacion_dashai.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
-    print("\nGuardado: F:\\MACI\\05_RESULTADOS\\correlacion_dashai.json")
+    json.dump(salida, open(r"F:\MACI\09_RESULTADOS\correlacion_dashai.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+    print("\nGuardado: F:\\MACI\\09_RESULTADOS\\correlacion_dashai.json")

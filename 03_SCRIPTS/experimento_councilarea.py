@@ -19,8 +19,8 @@ FASES
           Exige --config A|B explicito: el test no se toca por accidente.
 
 USO
-  python 03_CODIGO/experimento_councilarea.py fase1
-  python 03_CODIGO/experimento_councilarea.py fase3 --config B
+  python 03_SCRIPTS/experimento_councilarea.py fase1
+  python 03_SCRIPTS/experimento_councilarea.py fase3 --config B
 
 Los resultados se guardan como experimento independiente con fecha. No se
 sobrescribe ningun resultado anterior.
@@ -43,14 +43,14 @@ from sklearn.preprocessing import OneHotEncoder
 
 warnings.filterwarnings("ignore")
 
-CSV = r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
-OUT = r"F:\MACI\05_RESULTADOS\experimento_councilarea_%s.json" % date.today().isoformat()
+CSV = r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
+OUT = r"F:\MACI\09_RESULTADOS\experimento_councilarea_%s.json" % date.today().isoformat()
 
 RS = 42
 SEEDS = [0, 1, 2, 3, 4]
 N_VALIDATION = 634          # el split existente: 5.702 train + 634 validation
 
-# Identicas a 03_CODIGO/modelamiento_temporal.py
+# Identicas a 03_SCRIPTS/modelamiento_temporal.py
 NUM = ["Rooms", "Distance", "Bedroom2", "Bathroom", "Car", "Landsize",
        "Lattitude", "Longtitude", "Propertycount"]
 CAT_A = ["Type", "Method", "Regionname"]
@@ -226,7 +226,7 @@ def fase3(df, config):
         "media": {m: float(np.mean([d[m] for d in por_semilla])) for m in ("MAE", "RMSE", "R2")},
         "std": {m: float(np.std([d[m] for d in por_semilla])) for m in ("MAE", "RMSE", "R2")},
         "benchmark_previo": {
-            "fuente": "05_RESULTADOS/resultados_temporal.json",
+            "fuente": "09_RESULTADOS/resultados_temporal.json",
             "modelo": "HistGradientBoosting | log",
             "MAE": 188217.69851223598, "R2": 0.757,
         },

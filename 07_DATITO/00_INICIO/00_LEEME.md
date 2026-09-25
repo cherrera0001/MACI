@@ -133,7 +133,7 @@ repaso del certamen y las dudas resueltas. Todo abre con doble clic, sin Interne
 - Caso estudio `cancer_mama/matriz_confusion_dinamica.html` — Matriz interactiva de 114 pacientes
 
 Cada visual cita la clase donde se enseñó con ruta completa y marca de tiempo.
-La barra superior de cada uno la genera `03_CODIGO/construir_navegacion.py`.
+La barra superior de cada uno la genera `03_SCRIPTS/construir_navegacion.py`.
 
 ### Material escrito
 
@@ -206,8 +206,8 @@ individual de mayor puntaje.
 
 | Prioridad | Fuente |
 |---|---|
-| 1 | Laboratorios del curso — `08_PRACTICA/`, 12 de los 21 conceptos |
-| 2 | Transcripciones de clase — `09_CLASES/` |
+| 1 | Laboratorios del curso — `06_LABORATORIOS/`, 12 de los 21 conceptos |
+| 2 | Transcripciones de clase — `05_CLASES/` |
 | 3 | Material FCD del repositorio |
 | 4 | Cuaderno de NotebookLM |
 | 5 | Proyectos propios: Melbourne, Galaxy Zoo |
@@ -219,7 +219,7 @@ Toda afirmación lleva etiqueta: `[FUENTE · NotebookLM: …]`, `[FUENTE · Repo
 Las transcripciones se citan con la ruta completa del `.md` y la marca de tiempo,
 nunca el `_plano.txt`. Si contradicen una lámina o un práctico, manda el material
 oficial. Y solo las clases del profesor titular entran al certamen: «Entran solo
-mis clases. No entran las clases de Alejandra» (`09_CLASES/transcripciones/03Clase_Recuperación_…_15_julio.md`, 1:18:16).
+mis clases. No entran las clases de Alejandra» (`05_CLASES/transcripciones/03Clase_Recuperación_…_15_julio.md`, 1:18:16).
 
 ### Material de terceros
 
@@ -234,19 +234,19 @@ fiables; las **justificaciones no están verificadas** — el documento se titul
 Tras cada sesión, Datito regenera el resumen que se inyecta la próxima vez:
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/datito_estado.py
 ```
 
 Transcribir una clase nueva e integrarla a los visuales:
 
 ```bash
-uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
-uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
-python 03_CODIGO/integrar_clase.py --sin-subir      # índice de menciones
-# agregar la clase y sus tramos a 09_CLASES/mapa_ensenanza.yaml
-python 03_CODIGO/construir_navegacion.py            # barras de navegación + index.html
-python 03_CODIGO/verificar_visuales.py              # sin red, enlaces, citas
-uv run --with playwright python 03_CODIGO/probar_visuales_offline.py   # prueba en Edge sin red
+uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --listar
+uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --todas
+python 03_SCRIPTS/integrar_clase.py --sin-subir      # índice de menciones
+# agregar la clase y sus tramos a 05_CLASES/mapa_ensenanza.yaml
+python 03_SCRIPTS/construir_navegacion.py            # barras de navegación + index.html
+python 03_SCRIPTS/verificar_visuales.py              # sin red, enlaces, citas
+uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py   # prueba en Edge sin red
 ```
 
 Reautenticar NotebookLM cuando caduque:
@@ -280,11 +280,11 @@ cd courses/tu-ramo-2026-2
 # 2. Edita datito.config.yaml, curriculum.yaml, clases.yaml
 
 # 3. Crea un alumno nuevo
-python 03_CODIGO/datito_init_learner.py --course tu-ramo-2026-2 --learner juan_perez
+python 03_SCRIPTS/datito_init_learner.py --course tu-ramo-2026-2 --learner juan_perez
 
 # 4. Regenera
-python 03_CODIGO/construir_navegacion.py
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/construir_navegacion.py
+python 03_SCRIPTS/datito_estado.py
 
 # 5. Abre Claude Code
 /datito

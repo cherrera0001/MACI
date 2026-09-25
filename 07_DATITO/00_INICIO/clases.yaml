@@ -1,6 +1,6 @@
 # El curso: unidades y clases en orden de estudio (spec.md G14).
 #
-# FUENTE UNICA del orden. 03_CODIGO/construir_navegacion.py lee este archivo y
+# FUENTE UNICA del orden. 03_SCRIPTS/construir_navegacion.py lee este archivo y
 # genera la portada (visual/index.html), la barra de cada clase (Anterior ·
 # Indice · Siguiente, ficha Bloom, activacion) y el cierre de cada clase.
 # Ningun HTML repite el orden a mano.
@@ -180,7 +180,7 @@ clases:
         - 'Interpreta θ₁ en unidades de y por unidad de x.'
         - 'Antes de predecir, revisa el rango de x observado.'
       pregunta_final: '¿Es ŷ = θ₀ + θ₁x + θ₂x² una regresión lineal?'
-      respuesta_final: 'Sí: es lineal en los parámetros, porque cada θ aparece una vez multiplicando un término; x² es solo una columna nueva. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:37:49]'
+      respuesta_final: 'Sí: es lineal en los parámetros, porque cada θ aparece una vez multiplicando un término; x² es solo una columna nueva. [FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:37:49]'
 
   - n: 6
     unidad: 2
@@ -240,7 +240,7 @@ clases:
         - 'Ajusta con train; elige con validación.'
         - 'Mide una sola vez en test y reporta.'
       pregunta_final: '¿Por qué hacen falta validación y test, si ambos son datos que el modelo no vio?'
-      respuesta_final: 'Porque al elegir con la validación, esa medida se vuelve optimista; el test, que no se usó para decidir, da la medida honesta. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50]'
+      respuesta_final: 'Porque al elegir con la validación, esa medida se vuelve optimista; el test, que no se usó para decidir, da la medida honesta. [FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50]'
 
   - n: 8
     unidad: 3
@@ -271,7 +271,7 @@ clases:
         - 'Compara por el promedio y por la dispersión del error.'
         - 'El test sigue aparte.'
       pregunta_final: 'En sklearn un modelo obtiene −0,8 y otro −1,2 (MSE negativo). ¿Cuál es mejor?'
-      respuesta_final: 'El de −0,8: más cercano a cero significa menor error. Lo explicó la ayudantía, que no entra al certamen. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51]'
+      respuesta_final: 'El de −0,8: más cercano a cero significa menor error. Lo explicó la ayudantía, que no entra al certamen. [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51]'
 
   - n: 9
     unidad: 3
@@ -300,7 +300,7 @@ clases:
         - 'Si está fuera: declara la extrapolación o consigue datos.'
         - 'Ante una caída: ¿decidiste con esos datos? ¿cambió la población?'
       pregunta_final: 'El 29,1 % del test de 2017 son suburbios que no existen en los datos de 2016. ¿Qué tipo de problema de generalización es?'
-      respuesta_final: 'Un cambio de distribución: el modelo predice casos con un valor (el suburbio) que nunca vio, y solo puede apoyarse en variables que sí vio, como ubicación y tipo. [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]'
+      respuesta_final: 'Un cambio de distribución: el modelo predice casos con un valor (el suburbio) que nunca vio, y solo puede apoyarse en variables que sí vio, como ubicación y tipo. [FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json]'
 
   - n: 10
     unidad: 3
@@ -362,7 +362,7 @@ clases:
         - '¿Tiene orden? ¿Hay una variable numérica de fondo?'
         - 'Elige la tarea según para qué usarás la predicción.'
       pregunta_final: 'Predecir la nota de 1 a 7 de un alumno: ¿regresión o clasificación?'
-      respuesta_final: 'Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]'
+      respuesta_final: 'Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]'
 
   - n: 12
     unidad: 4
@@ -392,7 +392,7 @@ clases:
         - 'Ubica los positivos reales y los positivos predichos.'
         - 'Obtén VP, FP, FN y VN, y verifica que los totales cierren.'
       pregunta_final: 'En el caso de los 100 pacientes, ¿cuántos falsos positivos hay y cuál es la precisión?'
-      respuesta_final: 'FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]'
+      respuesta_final: 'FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 05_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]'
 
   - n: 13
     unidad: 4
@@ -482,7 +482,7 @@ clases:
         - 'Pondera por el tamaño de cada hijo.'
         - 'Compara con el padre y elige el corte de mayor ganancia.'
       pregunta_final: '¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?'
-      respuesta_final: '1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]'
+      respuesta_final: '1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]'
 
   - n: 16
     unidad: 5
@@ -510,7 +510,7 @@ clases:
         - '¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.'
         - 'Diversidad: filas distintas (bootstrap) y atributos distintos.'
       pregunta_final: 'Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?'
-      respuesta_final: 'No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]'
+      respuesta_final: 'No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]'
 
   - n: 17
     unidad: 5
@@ -540,7 +540,7 @@ clases:
         - 'Backward: calcula los gradientes.'
         - 'Actualiza los pesos y repite.'
       pregunta_final: '¿El perceptrón es un modelo lineal?'
-      respuesta_final: 'No: g lo transforma en un modelo no lineal en x [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:11]. Aun así, con una sola neurona y g monótona, la frontera de decisión es recta [DATITO].'
+      respuesta_final: 'No: g lo transforma en un modelo no lineal en x [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:11]. Aun así, con una sola neurona y g monótona, la frontera de decisión es recta [DATITO].'
 
   - n: 18
     unidad: 5
@@ -570,7 +570,7 @@ clases:
         - '¿Solo genera texto? Es un LLM.'
         - '¿Actúa con herramientas y observa el resultado? Es un agente.'
       pregunta_final: 'Un modelo genera un token especial que llama a una calculadora y usa el resultado para seguir. ¿Es un LLM o un agente?'
-      respuesta_final: 'Un agente: actúa con una herramienta y el resultado vuelve y condiciona lo que genera después. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44]'
+      respuesta_final: 'Un agente: actúa con una herramienta y el resultado vuelve y condiciona lo que genera después. [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44]'
 
   - n: 19
     unidad: 6

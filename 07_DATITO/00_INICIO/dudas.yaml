@@ -2,7 +2,7 @@
 #
 # Fuente unica de toda respuesta, resolucion o correccion que Datito da en una
 # sesion. Nada de lo que se explica queda solo en la terminal: se escribe aqui y
-# 03_CODIGO/construir_navegacion.py lo renderiza en cada visual listado en
+# 03_SCRIPTS/construir_navegacion.py lo renderiza en cada visual listado en
 # `visuales` (bloque «Dudas resueltas con Datito», entre los marcadores
 # <!-- datito:dudas:inicio --> y <!-- datito:dudas:fin -->) y en el indice.
 #
@@ -24,7 +24,7 @@
 #   error_tipico  el error que el formato castiga
 #   fuentes       con etiqueta G4
 #
-# Solo Datito escribe aqui. Tras editar: python 03_CODIGO/construir_navegacion.py
+# Solo Datito escribe aqui. Tras editar: python 03_SCRIPTS/construir_navegacion.py
 
 dudas:
 
@@ -77,9 +77,9 @@ dudas:
       Poner la etiqueta «sobreajuste» sin mecanismo, o proponer otro modelo sin
       leer que la tabla ya contiene los resultados del propio proyecto.
     fuentes:
-      - '[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017'
-      - '[FUENTE · Repo: 04_DATOS/housing_dashai_2016_2017.csv + 05_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21'
-      - '[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor'
+      - '[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017'
+      - '[FUENTE · Repo: 02_DATOS/housing_dashai_2016_2017.csv + 09_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21'
+      - '[FUENTE · Repo: 05_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor'
       - '[INFERENCIA] la descomposición en dos mecanismos'
 
   - id: 2026-09-19-brecha-abc
@@ -179,7 +179,7 @@ dudas:
       Creer que un R² alto autoriza a predecir en cualquier parte; el R² se calculó
       solo donde había datos.
     fuentes:
-      - '[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes'
+      - '[FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes'
       - '[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html] los 20 árboles y la recta de mínimos cuadrados'
       - '[INFERENCIA] «extrapolación»: el profesor no usa esa palabra en las 14 transcripciones'
       - '[DATITO] el argumento físico del volumen'
@@ -214,7 +214,7 @@ dudas:
     error_tipico: 'Leer la pendiente como si fuera el valor de ŷ; interpretar θ₀ fuera del rango de los datos.'
     fuentes:
       - '[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html §7] la notación desarmada'
-      - '[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md] 82,13 y 0,2588 vienen de make_regression'
+      - '[FUENTE · Repo: 06_LABORATORIOS/_markdown/2026_P4_Regresión_res.md] 82,13 y 0,2588 vienen de make_regression'
       - '[INFERENCIA] la lectura de θ₀ negativo como señal de extrapolación'
 
   - id: 2026-09-21-agronomo-lluvia
@@ -241,4 +241,4 @@ dudas:
     error_tipico: 'Tratarlo como un problema nuevo en vez de reconocer la misma estructura (predicción fuera del rango).'
     fuentes:
       - '[DATITO] el caso y el argumento agronómico'
-      - '[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: datos que no ha visto antes'
+      - '[FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: datos que no ha visto antes'

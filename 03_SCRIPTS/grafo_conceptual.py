@@ -20,8 +20,8 @@ se aplican despues en todo lo demas -lo dice el profesor en clase-. Optimizar
 solo por puntaje enseña a rendir, no a entender.
 
 USO
-  python 03_CODIGO/grafo_conceptual.py                 # genera grafo.yaml
-  python 03_CODIGO/grafo_conceptual.py --situar roc_auc  # consulta un concepto
+  python 03_SCRIPTS/grafo_conceptual.py                 # genera grafo.yaml
+  python 03_SCRIPTS/grafo_conceptual.py --situar roc_auc  # consulta un concepto
 """
 import argparse
 import os
@@ -220,7 +220,7 @@ def main():
         "meta": {
             "descripcion": "Grafo de conceptos, generado desde curriculum.yaml. "
                            "No editar a mano.",
-            "generado_por": "03_CODIGO/grafo_conceptual.py",
+            "generado_por": "03_SCRIPTS/grafo_conceptual.py",
             "importancia_curricular": "numero de conceptos que quedan bloqueados "
                                       "si este no se comprende. Es independiente "
                                       "de cuanto se pregunte en un certamen.",

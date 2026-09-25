@@ -11,8 +11,8 @@
 | Fuente | Declara |
 |---|---|
 | README árbol | `01_DOCUMENTACION` con dominios 01…05; no menciona `06_CERTAMEN1` ni `11_PRESENTACIÓN` |
-| README | Entregables en `06_ENTREGABLES/`; scripts en `03_CODIGO/` |
-| README | `04_DATOS/` ≈ solo `housing_dashai_2016_2017.csv` |
+| README | Entregables en `06_ENTREGABLES/`; scripts en `03_SCRIPTS/` |
+| README | `02_DATOS/` ≈ solo `housing_dashai_2016_2017.csv` |
 | Índice | Certamen 2: LEEME → análisis → mapa → defensa → Word → fuentes (2 docx) |
 | Índice rutas Proyecto 3 | `..\INFORME_MODELO_FCD_P3.md` y `..\PITCH_…` **en la raíz** |
 | Índice | No lista Certamen 1 ni auditoría forense de fechas |
@@ -28,9 +28,9 @@
 | `01_CERTAMEN2/fuentes/` | Incluye docx + pdf guía + otros; índice dice “dos originales” |
 | `11_PRESENTACIÓN/` | Existe (markdown de clases/PPT); ausente del README |
 | `DOCUMENTACION/` (sin `01_`) | Carpeta legacy con solo `01_CERTAMEN2/` parcial; **no es canónica** |
-| `04_DATOS/` | También `GZ_mini_challenge_*.csv` + `00_LEEME.md` |
+| `02_DATOS/` | También `GZ_mini_challenge_*.csv` + `00_LEEME.md` |
 | `06_ENTREGABLES/INFORME_…` y `PITCH_…` | Existen aquí; **no** en la raíz |
-| `02_PROYECTO_FCD/Hito1/` | Canónico actual; `Fundamentos de ciencia de datos\Hito1\` **no existe** |
+| `08_PROYECTO_FCD/Hito1/` | Canónico actual; `Fundamentos de ciencia de datos\Hito1\` **no existe** |
 | `00_LEEME.md` por dominio | Presentes en certámenes, curso, Melbourne, Galaxy, histórico, datos, Datito, práctica, clases |
 
 ---

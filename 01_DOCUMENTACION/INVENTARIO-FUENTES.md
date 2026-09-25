@@ -84,10 +84,10 @@ F:\MACI/
 │   ├── progreso.yaml             [HASH: ?]
 │   ├── dudas.yaml                [HASH: ? - TAMBIÉN EN courses/?]
 │   └── ...
-├── 08_PRACTICA/                  ← Laboratorios
+├── 06_LABORATORIOS/                  ← Laboratorios
 │   ├── [P1-P5] (res).ipynb
 │   └── [P1-P5] (vacio).ipynb
-├── 09_CLASES/                    ← Transcripciones
+├── 05_CLASES/                    ← Transcripciones
 │   └── transcripciones/
 └── ... (otros legacy)
 ```
@@ -117,8 +117,8 @@ Carpeta / Archivo | Tipo | Asignatura | Notas
 
 | Proyecto | Ubicación | Cursos | Estado |
 |----------|-----------|--------|--------|
-| **Melbourne** | F:\MACI/02_PROYECTO_FCD/Hito1 + 05_RESULTADOS | FCD | ✅ Completo en F:\ |
-| **Galaxy Zoo** | F:\MACI/02_PROYECTO_FCD/Desafio | FCD | ✅ Completo en F:\ |
+| **Melbourne** | F:\MACI/08_PROYECTO_FCD/Hito1 + 09_RESULTADOS | FCD | ✅ Completo en F:\ |
+| **Galaxy Zoo** | F:\MACI/08_PROYECTO_FCD/Desafio | FCD | ✅ Completo en F:\ |
 | **ParkControl** | ? | Prototipado (?) | ❓ Ubicación desconocida |
 | **Smart Sense** | ? | Emprendimiento + Innovación | ❓ Ubicación desconocida |
 

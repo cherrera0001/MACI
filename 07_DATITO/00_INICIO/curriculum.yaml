@@ -66,16 +66,16 @@ meta:
 practicos:
   P1:
     nombre: Laboratorio Pandas
-    res: "08_PRACTICA/[P1]Laboratorio_Pandas_(res).ipynb"
-    vacio: "08_PRACTICA/2026_[P1]Laboratorio_Pandas_(vacio).ipynb"
+    res: "06_LABORATORIOS/[P1]Laboratorio_Pandas_(res).ipynb"
+    vacio: "06_LABORATORIOS/2026_[P1]Laboratorio_Pandas_(vacio).ipynb"
     contenido: >-
       Series y DataFrames, acceso y modificacion, cargar y guardar, merge,
       describe, filtrar, operaciones, ordenar, groupby. 10 ejercicios.
     conceptos: [datos_features_target, eda]
   P2:
     nombre: Calidad de Datos
-    res: "08_PRACTICA/2026_[P2]Calidad_de_Datos(res).ipynb"
-    vacio: "08_PRACTICA/2026_[P2]Calidad_de_Datos(vacio).ipynb"
+    res: "06_LABORATORIOS/2026_[P2]Calidad_de_Datos(res).ipynb"
+    vacio: "06_LABORATORIOS/2026_[P2]Calidad_de_Datos(vacio).ipynb"
     contenido: >-
       Duplicados de filas y de indices, valores fuera de rango, valores
       faltantes (reemplazar frente a eliminar), datos no utiles,
@@ -83,16 +83,16 @@ practicos:
     conceptos: [limpieza_preparacion]
   P3:
     nombre: Numpy y Analisis Descriptivo
-    res: "08_PRACTICA/2026_[P3]Numpy_+_Análisis_Descriptivo_(res).ipynb"
-    vacio: "08_PRACTICA/2026_[P3]Numpy_+_Análisis_Descriptivo_(vacio).ipynb"
+    res: "06_LABORATORIOS/2026_[P3]Numpy_+_Análisis_Descriptivo_(res).ipynb"
+    vacio: "06_LABORATORIOS/2026_[P3]Numpy_+_Análisis_Descriptivo_(vacio).ipynb"
     contenido: >-
       Arreglos Numpy y conversion desde DataFrame. Analisis descriptivo:
       centralidad, extension, describe. Visualizacion con Matplotlib.
     conceptos: [eda]
   P4:
     nombre: Regresion
-    res: "08_PRACTICA/2026_[P4]Regresión(res).ipynb"
-    vacio: "08_PRACTICA/2026_[P4]Regresión(vacio).ipynb"
+    res: "06_LABORATORIOS/2026_[P4]Regresión(res).ipynb"
+    vacio: "06_LABORATORIOS/2026_[P4]Regresión(vacio).ipynb"
     contenido: >-
       Regresion lineal y construccion manual de la funcion desde los
       coeficientes. Metricas de evaluacion. Dataset California Housing de
@@ -103,8 +103,8 @@ practicos:
       base teorica del fenomeno que ya se observo empiricamente en Melbourne.
   P5:
     nombre: Clasificacion
-    res: "08_PRACTICA/2026_[P5]Clasificación(res) (1).ipynb"
-    vacio: "08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb"
+    res: "06_LABORATORIOS/2026_[P5]Clasificación(res) (1).ipynb"
+    vacio: "06_LABORATORIOS/2026_[P5]Clasificación(vacio).ipynb"
     contenido: >-
       Codificacion de categoricas a mano, get_dummies y LabelEncoder. Concepto
       de clasificacion y significado de TP, TN, FP y FN. Modelos SVM con varios
@@ -115,7 +115,7 @@ practicos:
       pero no concepto a dominar.
 
 # Cifras reales del proyecto Melbourne, para usarlas como ejemplo concreto.
-# Verificadas en 05_RESULTADOS/resultados_temporal.json, clave "meta".
+# Verificadas en 09_RESULTADOS/resultados_temporal.json, clave "meta".
 hechos_del_proyecto:
   filas_train_2016: 6336
   filas_test_2017: 7244
@@ -160,8 +160,8 @@ conceptos:
     prerrequisitos: [fundamentos_ciencia_datos]
     por_que_importa: Sin separar feature de target no se puede razonar sobre fuga de informacion.
     material_local:
-      - 04_DATOS/housing_dashai_2016_2017.csv
-      - 05_RESULTADOS/resultados_temporal.json
+      - 02_DATOS/housing_dashai_2016_2017.csv
+      - 09_RESULTADOS/resultados_temporal.json
     pregunta_diagnostico: >-
       En tu dataset de Melbourne, Price es el target y Rooms es una feature.
       Por que Date quedo excluida de las features, si es una columna con
@@ -174,7 +174,7 @@ conceptos:
     por_que_importa: Es donde se detectan los problemas que despues arruinan el modelo.
     material_local:
       - 06_ENTREGABLES/visualizaciones/
-      - 03_CODIGO/housing_visualizations.py
+      - 03_SCRIPTS/housing_visualizations.py
     pregunta_diagnostico: >-
       La mediana de precio fue 900.000 en 2016 y 910.000 en 2017. Que te dice
       ese numero sobre la dificultad de predecir 2017 con un modelo entrenado
@@ -186,8 +186,8 @@ conceptos:
     prerrequisitos: [eda]
     por_que_importa: Decidir que columna se excluye es una decision de modelado, no de limpieza.
     material_local:
-      - 03_CODIGO/preparar_dashai.py
-      - 05_RESULTADOS/auditoria_dashai_vs_crudo.json
+      - 03_SCRIPTS/preparar_dashai.py
+      - 09_RESULTADOS/auditoria_dashai_vs_crudo.json
     pregunta_diagnostico: >-
       Excluiste BuildingArea y YearBuilt de tu modelo. Da una razon por la que
       excluir una columna con informacion util puede mejorar el resultado.
@@ -200,9 +200,9 @@ conceptos:
       El nucleo del proyecto. Tu split es temporal y no aleatorio, y esa
       eleccion decide todo lo demas.
     material_local:
-      - 05_RESULTADOS/dashai_split_indices.json
-      - 03_CODIGO/modelamiento_temporal.py
-      - 99_ARCHIVO/_obsoleto_split_aleatorio/
+      - 09_RESULTADOS/dashai_split_indices.json
+      - 03_SCRIPTS/modelamiento_temporal.py
+      - 10_ARCHIVO/_obsoleto_split_aleatorio/
     pregunta_diagnostico: >-
       Tienes dos versiones del mismo proyecto: una con split aleatorio que
       reportaba 81% y otra con split temporal 2016 a 2017. Cual mide mejor lo
@@ -214,8 +214,8 @@ conceptos:
     prerrequisitos: [train_validation_test]
     por_que_importa: Permite elegir modelo sin tocar el conjunto de test.
     material_local:
-      - 03_CODIGO/modelamiento_temporal.py
-      - 05_RESULTADOS/resultados_temporal.json
+      - 03_SCRIPTS/modelamiento_temporal.py
+      - 09_RESULTADOS/resultados_temporal.json
     pregunta_diagnostico: >-
       Hiciste validacion cruzada dentro de 2016 y recien despues miraste 2017.
       Que habria pasado si eliges el modelo mirando directamente el resultado
@@ -229,8 +229,8 @@ conceptos:
       El 29,1% de suburbios nuevos en el test es un caso real y medido de
       generalizacion dura.
     material_local:
-      - 05_RESULTADOS/resultados_temporal.json
-      - 05_RESULTADOS/comparacion_estadistica.json
+      - 09_RESULTADOS/resultados_temporal.json
+      - 09_RESULTADOS/comparacion_estadistica.json
     pregunta_diagnostico: >-
       El 29,1% de las propiedades de 2017 estan en suburbios que no aparecen en
       2016. Como puede tu modelo predecir el precio de una casa en un suburbio
@@ -244,8 +244,8 @@ conceptos:
       Tienes 6 modelos de complejidad creciente ya medidos: la curva es
       observable en tus propios numeros, no teorica.
     material_local:
-      - 05_RESULTADOS/resultados_temporal.json
-      - 99_ARCHIVO/_obsoleto_split_aleatorio/
+      - 09_RESULTADOS/resultados_temporal.json
+      - 10_ARCHIVO/_obsoleto_split_aleatorio/
     pregunta_diagnostico: >-
       Un arbol de decision sin limitar acierta casi perfecto en train y falla en
       test. Un baseline de mediana falla parecido en ambos. Cual sobreajusta,
@@ -262,8 +262,8 @@ conceptos:
     por_que_importa: Es tu proyecto. MAE 188.218 AUD y R2 0,757 son tus propias cifras.
     material_local:
       - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
-      - 05_RESULTADOS/predicciones_2017.csv
-      - 03_CODIGO/bootstrap_comparacion.py
+      - 09_RESULTADOS/predicciones_2017.csv
+      - 03_SCRIPTS/bootstrap_comparacion.py
     pregunta_diagnostico: >-
       Tu MAE en 2017 es 188.218 AUD sobre una mediana de 910.000. Es bueno o
       malo? Defiende la respuesta con un argumento que no sea "depende".
@@ -274,8 +274,8 @@ conceptos:
     prerrequisitos: [regresion]
     por_que_importa: "Cambia la naturaleza del error: ya no existe cerca, hay acierto o fallo."
     material_local:
-      - 02_PROYECTO_FCD/Desafio/REPORT.md
-      - 02_PROYECTO_FCD/Desafio/src/
+      - 08_PROYECTO_FCD/Desafio/REPORT.md
+      - 08_PROYECTO_FCD/Desafio/src/
     pregunta_diagnostico: >-
       En Galaxy Zoo clasificas 3 clases: ambigua, espiral y eliptica. Por que no
       puedes usar MAE aqui, si tambien podrias restar numeros de clase?
@@ -286,8 +286,8 @@ conceptos:
     prerrequisitos: [clasificacion]
     por_que_importa: Es la fuente de la que salen accuracy, precision, recall y F1.
     material_local:
-      - 02_PROYECTO_FCD/Desafio/REPORT.md
-      - 02_PROYECTO_FCD/Desafio/src/04_class0_analysis.py
+      - 08_PROYECTO_FCD/Desafio/REPORT.md
+      - 08_PROYECTO_FCD/Desafio/src/04_class0_analysis.py
       - 07_DATITO/casos_estudio/cancer_mama/matriz_confusion_interpretacion_RESUELTO.md
       - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
     casos_estudio:
@@ -304,8 +304,8 @@ conceptos:
     prerrequisitos: [matriz_confusion]
     por_que_importa: La metrica oficial de tu desafio es F1-macro y no accuracy. Esa eleccion tiene motivo.
     material_local:
-      - 02_PROYECTO_FCD/Desafio/REPORT.md
-      - 02_PROYECTO_FCD/Desafio/src/05_decision_rule.py
+      - 08_PROYECTO_FCD/Desafio/REPORT.md
+      - 08_PROYECTO_FCD/Desafio/src/05_decision_rule.py
       - 07_DATITO/casos_estudio/cancer_mama/matriz_confusion_interpretacion_RESUELTO.md
       - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
     casos_estudio:
@@ -325,7 +325,7 @@ conceptos:
       Vacio ya identificado por escrito: el expediente del Certamen 2 marca la
       pregunta 9 (cifras de AUC) como no evidenciada.
     material_local:
-      - 02_PROYECTO_FCD/Desafio/REPORT.md
+      - 08_PROYECTO_FCD/Desafio/REPORT.md
       - 01_DOCUMENTACION/01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md
       - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
       - 07_DATITO/casos_estudio/cancer_mama/Presentacion_Hito2_v2_2.pdf
@@ -343,7 +343,7 @@ conceptos:
     prerrequisitos: [overfitting_underfitting]
     por_que_importa: La pieza base de los tres modelos que siguen.
     material_local:
-      - 05_RESULTADOS/resultados_temporal.json
+      - 09_RESULTADOS/resultados_temporal.json
       - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
     casos_estudio:
       - cancer_mama: "Decision Tree entrenado con criterio Gini, profundidad máxima optimizada por validación cruzada 5-fold. Resultados en test: accuracy 0.939, recall 0.881, con 5 falsos negativos. Matriz de confusión e interpretación de por qué tiende a sobreajustar frente a Random Forest."
@@ -360,8 +360,8 @@ conceptos:
       Primer ensemble. Introduce la idea de que promediar modelos mediocres
       supera al mejor individual.
     material_local:
-      - 05_RESULTADOS/resultados_temporal.json
-      - 05_RESULTADOS/comparacion_estadistica.json
+      - 09_RESULTADOS/resultados_temporal.json
+      - 09_RESULTADOS/comparacion_estadistica.json
       - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
       - 07_DATITO/casos_estudio/cancer_mama/Presentacion_Hito2_v2_2.pdf
     casos_estudio:
@@ -378,7 +378,7 @@ conceptos:
     prerrequisitos: [random_forest]
     por_que_importa: Es tu modelo final. HistGradientBoosting gano la comparacion.
     material_local:
-      - 05_RESULTADOS/resultados_temporal.json
+      - 09_RESULTADOS/resultados_temporal.json
       - 06_ENTREGABLES/INFORME_MODELO_FCD_P3.md
     pregunta_diagnostico: >-
       Random Forest entrena sus arboles en paralelo e independientes. Gradient
@@ -391,8 +391,8 @@ conceptos:
     prerrequisitos: [gradient_boosting]
     por_que_importa: Generaliza el patron. Tu desafio incluye analisis de diversidad.
     material_local:
-      - 02_PROYECTO_FCD/Desafio/src/08_ensemble.py
-      - 02_PROYECTO_FCD/Desafio/src/06_hierarchical.py
+      - 08_PROYECTO_FCD/Desafio/src/08_ensemble.py
+      - 08_PROYECTO_FCD/Desafio/src/06_hierarchical.py
     pregunta_diagnostico: >-
       Combinas dos modelos que aciertan 80% cada uno. En que caso el ensemble
       supera el 80%, y en que caso no gana nada?

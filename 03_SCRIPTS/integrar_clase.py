@@ -10,7 +10,7 @@ cruzada" y obtener clase y marca de tiempo.
 EL FLUJO, EN ORDEN
   1. DETECTAR   transcripciones nuevas, no integradas todavia
   2. MAPEAR     que conceptos del curriculum aparecen, y en que minuto
-  3. INDEXAR    escribir 09_CLASES/indice_clases.yaml
+  3. INDEXAR    escribir 05_CLASES/indice_clases.yaml
   4. SUBIR      a NotebookLM por MCP, si la sesion esta viva
   5. REPORTAR   que quedo disponible para estudiar
 
@@ -18,17 +18,17 @@ Es idempotente: si una clase ya esta integrada, se omite. Y degrada: si
 NotebookLM no responde, los pasos 1 a 3 se completan igual y queda anotado.
 
 USO
-  python 03_CODIGO/integrar_clase.py             # todas las pendientes
-  python 03_CODIGO/integrar_clase.py --sin-subir # no toca NotebookLM
-  python 03_CODIGO/integrar_clase.py --estado    # solo muestra el indice
-  python 03_CODIGO/integrar_clase.py --sin-subir --remapear
+  python 03_SCRIPTS/integrar_clase.py             # todas las pendientes
+  python 03_SCRIPTS/integrar_clase.py --sin-subir # no toca NotebookLM
+  python 03_SCRIPTS/integrar_clase.py --estado    # solo muestra el indice
+  python 03_SCRIPTS/integrar_clase.py --sin-subir --remapear
                                                  # recalcula los conceptos de
                                                  # todas las clases ya indexadas
 
 LIMITE CONOCIDO
 "primera_marca" es la primera MENCION de un termino, no el tramo donde se
 ensena. Para ir al tramo real (con hablante y rango) esta
-09_CLASES/mapa_ensenanza.yaml, curado a mano desde las transcripciones.
+05_CLASES/mapa_ensenanza.yaml, curado a mano desde las transcripciones.
 """
 import argparse
 import glob
@@ -41,8 +41,8 @@ from datetime import date
 import yaml
 
 RAIZ = r"F:\MACI"
-TRANSCRIPCIONES = os.path.join(RAIZ, "09_CLASES", "transcripciones")
-INDICE = os.path.join(RAIZ, "09_CLASES", "indice_clases.yaml")
+TRANSCRIPCIONES = os.path.join(RAIZ, "05_CLASES", "transcripciones")
+INDICE = os.path.join(RAIZ, "05_CLASES", "indice_clases.yaml")
 NOTEBOOK = "97ce114e-2371-44eb-85b5-527cd28180cb"
 NLM = r"C:\Users\herre\.local\bin\notebooklm.exe"
 
@@ -116,7 +116,7 @@ def guardar_indice(ind):
     with open(INDICE, "w", encoding="utf-8", newline="\n") as f:
         f.write("# Indice de clases transcritas\n"
                 "#\n"
-                "# Generado por 03_CODIGO/integrar_clase.py. No editar a mano.\n"
+                "# Generado por 03_SCRIPTS/integrar_clase.py. No editar a mano.\n"
                 "#\n"
                 "# Para cada clase: que conceptos del curriculum aparecen y en que\n"
                 "# minuto se mencionan por primera vez. Permite ir directo al momento\n"
@@ -238,8 +238,8 @@ def main():
             if len(conceptos) > 6:
                 print(f"    … y {len(conceptos)-6} mas")
             ind["clases"][nombre] = {
-                "archivo": f"09_CLASES/transcripciones/{nombre}.md",
-                "plano": f"09_CLASES/transcripciones/{nombre}_plano.txt",
+                "archivo": f"05_CLASES/transcripciones/{nombre}.md",
+                "plano": f"05_CLASES/transcripciones/{nombre}_plano.txt",
                 "integrada": date.today().isoformat(),
                 "conceptos": conceptos,
                 "notebooklm": None,
@@ -264,7 +264,7 @@ def main():
     sin_subir = sum(1 for d in ind["clases"].values() if not d.get("notebooklm"))
     if sin_subir:
         print(f"{sin_subir} clase(s) sin subir a NotebookLM. Reintentar con:")
-        print("  python 03_CODIGO/integrar_clase.py")
+        print("  python 03_SCRIPTS/integrar_clase.py")
 
 
 if __name__ == "__main__":

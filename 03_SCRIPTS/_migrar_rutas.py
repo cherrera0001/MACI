@@ -13,32 +13,32 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # (patron, reemplazo). Orden significativo: primero rutas absolutas, luego relativas.
 REEMPLAZOS = [
     # --- carpeta del proyecto del curso ---
-    (r"F:\MACI\Fundamentos de ciencia de datos", r"F:\MACI\02_PROYECTO_FCD"),
-    ("Fundamentos de ciencia de datos/Hito1", "02_PROYECTO_FCD/Hito1"),
+    (r"F:\MACI\Fundamentos de ciencia de datos", r"F:\MACI\08_PROYECTO_FCD"),
+    ("Fundamentos de ciencia de datos/Hito1", "08_PROYECTO_FCD/Hito1"),
 
     # --- datos ---
-    (r"F:\MACI\housing_dashai_2016_2017.csv", r"F:\MACI\04_DATOS\housing_dashai_2016_2017.csv"),
+    (r"F:\MACI\housing_dashai_2016_2017.csv", r"F:\MACI\02_DATOS\housing_dashai_2016_2017.csv"),
 
     # --- resultados (rutas absolutas) ---
-    (r"F:\MACI\resultados_temporal.json", r"F:\MACI\05_RESULTADOS\resultados_temporal.json"),
-    (r"F:\MACI\comparacion_estadistica.json", r"F:\MACI\05_RESULTADOS\comparacion_estadistica.json"),
-    (r"F:\MACI\predicciones_2017.csv", r"F:\MACI\05_RESULTADOS\predicciones_2017.csv"),
-    (r"F:\MACI\auditoria_dashai_vs_crudo.json", r"F:\MACI\05_RESULTADOS\auditoria_dashai_vs_crudo.json"),
-    (r"F:\MACI\correlacion_dashai.json", r"F:\MACI\05_RESULTADOS\correlacion_dashai.json"),
-    (r"F:\MACI\dashai_resultados.json", r"F:\MACI\05_RESULTADOS\dashai_resultados.json"),
-    (r"F:\MACI\dashai_split_indices.json", r"F:\MACI\05_RESULTADOS\dashai_split_indices.json"),
-    (r"F:\MACI\dashai_state.json", r"F:\MACI\05_RESULTADOS\dashai_state.json"),
+    (r"F:\MACI\resultados_temporal.json", r"F:\MACI\09_RESULTADOS\resultados_temporal.json"),
+    (r"F:\MACI\comparacion_estadistica.json", r"F:\MACI\09_RESULTADOS\comparacion_estadistica.json"),
+    (r"F:\MACI\predicciones_2017.csv", r"F:\MACI\09_RESULTADOS\predicciones_2017.csv"),
+    (r"F:\MACI\auditoria_dashai_vs_crudo.json", r"F:\MACI\09_RESULTADOS\auditoria_dashai_vs_crudo.json"),
+    (r"F:\MACI\correlacion_dashai.json", r"F:\MACI\09_RESULTADOS\correlacion_dashai.json"),
+    (r"F:\MACI\dashai_resultados.json", r"F:\MACI\09_RESULTADOS\dashai_resultados.json"),
+    (r"F:\MACI\dashai_split_indices.json", r"F:\MACI\09_RESULTADOS\dashai_split_indices.json"),
+    (r"F:\MACI\dashai_state.json", r"F:\MACI\09_RESULTADOS\dashai_state.json"),
     # variantes con backslash escapado en literales de Python
-    (r"F:\\MACI\\correlacion_dashai.json", r"F:\\MACI\\05_RESULTADOS\\correlacion_dashai.json"),
-    (r"F:\\MACI\\resultados_temporal.json", r"F:\\MACI\\05_RESULTADOS\\resultados_temporal.json"),
+    (r"F:\\MACI\\correlacion_dashai.json", r"F:\\MACI\\09_RESULTADOS\\correlacion_dashai.json"),
+    (r"F:\\MACI\\resultados_temporal.json", r"F:\\MACI\\09_RESULTADOS\\resultados_temporal.json"),
     (r"F:\\MACI\\viz_", r"F:\\MACI\\06_ENTREGABLES\\visualizaciones\\viz_"),
 
     # --- resultados (nombres relativos, scripts con os.chdir a la raiz) ---
-    ('"resultados_temporal.json"', '"05_RESULTADOS/resultados_temporal.json"'),
-    ('"comparacion_estadistica.json"', '"05_RESULTADOS/comparacion_estadistica.json"'),
-    ('"dashai_resultados.json"', '"05_RESULTADOS/dashai_resultados.json"'),
-    ('"dashai_state.json"', '"05_RESULTADOS/dashai_state.json"'),
-    ('"correlacion_dashai.json"', '"05_RESULTADOS/correlacion_dashai.json"'),
+    ('"resultados_temporal.json"', '"09_RESULTADOS/resultados_temporal.json"'),
+    ('"comparacion_estadistica.json"', '"09_RESULTADOS/comparacion_estadistica.json"'),
+    ('"dashai_resultados.json"', '"09_RESULTADOS/dashai_resultados.json"'),
+    ('"dashai_state.json"', '"09_RESULTADOS/dashai_state.json"'),
+    ('"correlacion_dashai.json"', '"09_RESULTADOS/correlacion_dashai.json"'),
 
     # --- entregables ---
     ('"INFORME_MODELO_FCD_P3.md"', '"06_ENTREGABLES/INFORME_MODELO_FCD_P3.md"'),

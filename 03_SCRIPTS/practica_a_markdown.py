@@ -1,18 +1,18 @@
 """
-Convierte los notebooks de 08_PRACTICA a Markdown para subirlos a NotebookLM.
+Convierte los notebooks de 06_LABORATORIOS a Markdown para subirlos a NotebookLM.
 
 NotebookLM no acepta .ipynb como fuente; si acepta Markdown. Se conserva el
 texto explicativo y el codigo, y se descartan las salidas binarias (imagenes
 base64), que solo inflarian el archivo sin aportar al indice de busqueda.
 
-Salida: 08_PRACTICA/_markdown/<nombre>.md
+Salida: 06_LABORATORIOS/_markdown/<nombre>.md
 """
 import glob
 import json
 import os
 import re
 
-ORIGEN = r"F:\MACI\08_PRACTICA"
+ORIGEN = r"F:\MACI\06_LABORATORIOS"
 DESTINO = os.path.join(ORIGEN, "_markdown")
 LIMITE_SALIDA = 2000  # caracteres por salida de celda
 

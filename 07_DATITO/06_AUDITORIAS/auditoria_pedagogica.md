@@ -136,4 +136,4 @@ criterio explícito**: decidir, recomendar, o refutar una afirmación.
   lo verifica Datito.
 - Los artefactos de `visual/` con criterio de carga cognitiva y recuperación
   activa en detalle. Queda para una segunda pasada.
-- El material de `08_PRACTICA/`, que es del profesor y no de Datito.
+- El material de `06_LABORATORIOS/`, que es del profesor y no de Datito.

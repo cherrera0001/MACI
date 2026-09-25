@@ -1,6 +1,6 @@
 meta:
   descripcion: Grafo de conceptos, generado desde curriculum.yaml. No editar a mano.
-  generado_por: 03_CODIGO/grafo_conceptual.py
+  generado_por: 03_SCRIPTS/grafo_conceptual.py
   importancia_curricular: numero de conceptos que quedan bloqueados si este no se comprende.
     Es independiente de cuanto se pregunte en un certamen.
 cadenas:

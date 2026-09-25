@@ -9,9 +9,9 @@ Uso: python dashai_driver.py [A|B|C|all]
 import sys, json, time, os, requests
 
 BASE = "http://localhost:8000/api/v1"
-CSV = r"F:\MACI\04_DATOS\housing_dashai_2016_2017.csv"
-IDX = r"F:\MACI\05_RESULTADOS\dashai_split_indices.json"
-STATE = r"F:\MACI\05_RESULTADOS\dashai_state.json"
+CSV = r"F:\MACI\02_DATOS\housing_dashai_2016_2017.csv"
+IDX = r"F:\MACI\09_RESULTADOS\dashai_split_indices.json"
+STATE = r"F:\MACI\09_RESULTADOS\dashai_state.json"
 DS_NAME = "housing_hito1_feats_2016train_2017test"   # variables Hito 1: sin BuildingArea/YearBuilt/CouncilArea/Suburb
 SESSION_NAME = "FCD-P3 Hito1-feats 2016->2017 (split temporal manual)"
 TARGET = "Price"
@@ -147,7 +147,7 @@ def stage_C():
         tm, trm = run.get("test_metrics") or {}, run.get("train_metrics") or {}
         g = lambda d, k: (f"{d[k]:,.0f}" if isinstance(d.get(k), (int, float)) and k != "R2" else (f"{d[k]:.3f}" if k in d else "-"))
         print(f"{run_name:38s} {g(tm,'MAE'):>12s} {g(tm,'RMSE'):>12s} {g(tm,'R2'):>8s} {g(trm,'R2'):>9s} {g(trm,'MAE'):>12s}  status={run.get('status')}")
-    json.dump({k: v for k, v in runs.items()}, open(r"F:\MACI\05_RESULTADOS\dashai_resultados.json", "w"), indent=2)
+    json.dump({k: v for k, v in runs.items()}, open(r"F:\MACI\09_RESULTADOS\dashai_resultados.json", "w"), indent=2)
 
 def stage_R():
     """Re-encolar runs existentes (tras reinicio de DashAI): reset del run + nuevo ModelJob."""

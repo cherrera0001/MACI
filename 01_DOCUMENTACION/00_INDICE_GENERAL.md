@@ -49,7 +49,7 @@ Pesos Hito 2 (referencia): Modelamiento 15 %, Resultados 15 %, Presentación 20 
 
 Predicción de precio: entrenar 2016, evaluar 2017. Núcleo del trabajo propio del semestre.
 
-**Cifras reproducibles:** [`05_RESULTADOS/resultados_temporal.json`](../05_RESULTADOS/resultados_temporal.json) (el JSON manda si hay discrepancia narrativa).  
+**Cifras reproducibles:** [`09_RESULTADOS/resultados_temporal.json`](../09_RESULTADOS/resultados_temporal.json) (el JSON manda si hay discrepancia narrativa).  
 **Informe / pitch:** [`06_ENTREGABLES/INFORME_MODELO_FCD_P3.md`](../06_ENTREGABLES/INFORME_MODELO_FCD_P3.md) · [`06_ENTREGABLES/PITCH_HITO2_REVISION.md`](../06_ENTREGABLES/PITCH_HITO2_REVISION.md)
 
 ---
@@ -84,10 +84,10 @@ Registro de corrección (split aleatorio → temporal). No es basura.
 | Dominio | Puerta |
 |---|---|
 | Datito | [`07_DATITO/00_LEEME.md`](../07_DATITO/00_LEEME.md) |
-| Prácticos | [`08_PRACTICA/00_LEEME.md`](../08_PRACTICA/00_LEEME.md) |
-| Clases | [`09_CLASES/00_LEEME.md`](../09_CLASES/00_LEEME.md) |
+| Prácticos | [`06_LABORATORIOS/00_LEEME.md`](../06_LABORATORIOS/00_LEEME.md) |
+| Clases | [`05_CLASES/00_LEEME.md`](../05_CLASES/00_LEEME.md) |
 | Presentaciones (md) | [`11_PRESENTACIÓN/_markdown/`](../11_PRESENTACIÓN/_markdown/) |
-| Datos | [`04_DATOS/00_LEEME.md`](../04_DATOS/00_LEEME.md) |
+| Datos | [`02_DATOS/00_LEEME.md`](../02_DATOS/00_LEEME.md) |
 
 ---
 
@@ -111,7 +111,7 @@ Registro de corrección (split aleatorio → temporal). No es basura.
 **Reproducibilidad / cifras:**
 1. `05_HISTORICO/00_LEEME.md`
 2. Informe § fe de erratas
-3. `05_RESULTADOS/resultados_temporal.json` + scripts del README
+3. `09_RESULTADOS/resultados_temporal.json` + scripts del README
 
 **Estudiar con Datito:**
 1. `07_DATITO/00_LEEME.md`

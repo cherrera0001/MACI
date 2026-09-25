@@ -10,7 +10,7 @@ Esa frase gobierna todas las decisiones de diseño: obliga a una partición **te
 
 ## Hito 1 — Análisis exploratorio y modelamiento inicial
 
-Ubicación: [`../../02_PROYECTO_FCD/Hito1/`](../../02_PROYECTO_FCD/Hito1/)
+Ubicación: [`../../08_PROYECTO_FCD/Hito1/`](../../08_PROYECTO_FCD/Hito1/)
 
 | Archivo | Contenido |
 |---|---|
@@ -25,17 +25,17 @@ Ubicación: [`../../02_PROYECTO_FCD/Hito1/`](../../02_PROYECTO_FCD/Hito1/)
 
 ## Hito 2 — Modelamiento final, comparación estadística y réplica
 
-Capa ejecutable: scripts en `03_CODIGO/`, ejecutar **desde `F:\MACI`**. Orden:
+Capa ejecutable: scripts en `03_SCRIPTS/`, ejecutar **desde `F:\MACI`**. Orden:
 
 | # | Script | Salida | Qué hace |
 |---|---|---|---|
-| 1 | `03_CODIGO/modelamiento_temporal.py` | `05_RESULTADOS/resultados_temporal.json` | Seis modelos × dos targets (crudo y `log1p`) × cinco semillas. CV 5-fold dentro de 2016; test 2017 una sola vez |
-| 2 | `03_CODIGO/bootstrap_comparacion.py` | `05_RESULTADOS/comparacion_estadistica.json`, `predicciones_2017.csv` | Bootstrap pareado IC 95 % sobre 2017, segmentos, permutación |
-| 3 | `03_CODIGO/preparar_dashai.py` + `dashai_driver.py all` | `04_DATOS/housing_dashai_2016_2017.csv`, `05_RESULTADOS/dashai_*.json` | Réplica independiente en DashAI |
-| 4 | `03_CODIGO/generar_informe.py` | `06_ENTREGABLES/INFORME_MODELO_FCD_P3.md` | Informe final. **Ningún número escrito a mano** |
-| 5 | `03_CODIGO/generar_pitch_v2.py` | `06_ENTREGABLES/PITCH_HITO2_REVISION.md`, `Pitch_Hito2_v2.pptx` | Revisión lámina por lámina y presentación |
-| — | `03_CODIGO/housing_visualizations.py` | `06_ENTREGABLES/visualizaciones/viz_*.html` | Visualizaciones interactivas |
-| — | `auditoria_dashai_vs_crudo.py`, `correlacion_dashai.py` | `05_RESULTADOS/auditoria_*.json`, `correlacion_*.json` | Controles de consistencia |
+| 1 | `03_SCRIPTS/modelamiento_temporal.py` | `09_RESULTADOS/resultados_temporal.json` | Seis modelos × dos targets (crudo y `log1p`) × cinco semillas. CV 5-fold dentro de 2016; test 2017 una sola vez |
+| 2 | `03_SCRIPTS/bootstrap_comparacion.py` | `09_RESULTADOS/comparacion_estadistica.json`, `predicciones_2017.csv` | Bootstrap pareado IC 95 % sobre 2017, segmentos, permutación |
+| 3 | `03_SCRIPTS/preparar_dashai.py` + `dashai_driver.py all` | `02_DATOS/housing_dashai_2016_2017.csv`, `09_RESULTADOS/dashai_*.json` | Réplica independiente en DashAI |
+| 4 | `03_SCRIPTS/generar_informe.py` | `06_ENTREGABLES/INFORME_MODELO_FCD_P3.md` | Informe final. **Ningún número escrito a mano** |
+| 5 | `03_SCRIPTS/generar_pitch_v2.py` | `06_ENTREGABLES/PITCH_HITO2_REVISION.md`, `Pitch_Hito2_v2.pptx` | Revisión lámina por lámina y presentación |
+| — | `03_SCRIPTS/housing_visualizations.py` | `06_ENTREGABLES/visualizaciones/viz_*.html` | Visualizaciones interactivas |
+| — | `auditoria_dashai_vs_crudo.py`, `correlacion_dashai.py` | `09_RESULTADOS/auditoria_*.json`, `correlacion_*.json` | Controles de consistencia |
 
 ---
 

@@ -80,7 +80,7 @@ al syllabus algo que dijo el tutor.
 Dentro del cuaderno: asignatura > documentos UdeC > libros y papers >
 documentación técnica.
 
-Las transcripciones de clase (`09_CLASES/`) están en el nivel 1, subordinadas a
+Las transcripciones de clase (`05_CLASES/`) están en el nivel 1, subordinadas a
 láminas y prácticos: son automáticas. Se citan con ruta completa del `.md` y
 marca de tiempo, y se distingue quién habla. Solo las clases del profesor
 titular entran al certamen.
@@ -193,7 +193,7 @@ curso.
 **Fuente única del orden:** `07_DATITO/clases.yaml`. Define unidades, clases,
 qué visual (o sección) es cada clase, su ficha Bloom y su cierre. Los
 prerrequisitos y lo que cada clase habilita **no se escriben a mano**: se
-derivan de `curriculum.yaml` vía `grafo.yaml`. `03_CODIGO/construir_navegacion.py`
+derivan de `curriculum.yaml` vía `grafo.yaml`. `03_SCRIPTS/construir_navegacion.py`
 genera la portada, la barra de cada clase y los cierres; ningún HTML repite el
 orden a mano.
 
@@ -336,7 +336,7 @@ como evaluación temporal histórica.
 | G3 | Toda corrección cita ruta de archivo y muestra el registro completo |
 | G4 | Toda afirmación sustantiva lleva etiqueta |
 | **G8** | **Toda regla de conducta está en `SKILL.md`. `grep -c "regla\|prohibido\|obligatorio" datito.config.yaml` debe ser bajo: ahí van datos, no reglas** |
-| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió.** Los visuales abren sin red y sus citas de clase se pueden comprobar: `03_CODIGO/verificar_visuales.py`. Desde el 2026-09-21, cada bitácora declara «**Dudas registradas:**» con ids que existen en `dudas.yaml`, y cada duda está renderizada en sus visuales |
+| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió.** Los visuales abren sin red y sus citas de clase se pueden comprobar: `03_SCRIPTS/verificar_visuales.py`. Desde el 2026-09-21, cada bitácora declara «**Dudas registradas:**» con ids que existen en `dudas.yaml`, y cada duda está renderizada en sus visuales |
 | G10 | Todo dataset sintético está marcado en su propio archivo y en el generador |
 | **G14** | **Toda clase de `clases.yaml` con visual tiene su barra, su ficha, su cierre y al menos tres preguntas con respuesta oculta; la portada existe y la navegación no tiene enlaces rotos** (`verificar_contrato.py`) |
 | Memoria | `DOMINADO` solo con las cuatro evidencias registradas con fecha y detalle |

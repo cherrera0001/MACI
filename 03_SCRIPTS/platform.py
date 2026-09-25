@@ -10,8 +10,8 @@ Usage:
 import sys
 import os
 
-# Add 03_CODIGO to path so we can import maci_platform
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '03_CODIGO'))
+# Add 03_SCRIPTS to path so we can import maci_platform
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '03_SCRIPTS'))
 
 from maci_platform.cli import main
 

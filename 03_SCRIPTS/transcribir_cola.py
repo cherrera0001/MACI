@@ -8,7 +8,7 @@ extraido en Downloads. Extraer los 15 de golpe son 4,5 GB en disco y una lista
 que hay que ir pasando a mano.
 
 Este runner cierra ese hueco: mira que hay dentro de los ZIP, compara contra
-09_CLASES/transcripciones/, y procesa solo lo que falta. Para cada pendiente:
+05_CLASES/transcripciones/, y procesa solo lo que falta. Para cada pendiente:
 extrae -> transcribe -> borra el mp4. Nunca hay mas de un video extraido a la vez.
 
 ES REANUDABLE
@@ -22,9 +22,9 @@ despues el resto de menor a mayor tamaño, para que los resultados empiecen a
 aparecer pronto en vez de despues de la clase de 700 MB.
 
 USO
-  uv run --with faster-whisper python 03_CODIGO/transcribir_cola.py --listar
-  uv run --with faster-whisper python 03_CODIGO/transcribir_cola.py
-  uv run --with faster-whisper python 03_CODIGO/transcribir_cola.py --modelo medium
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_cola.py --listar
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_cola.py
+  uv run --with faster-whisper python 03_SCRIPTS/transcribir_cola.py --modelo medium
 """
 import argparse
 import os
@@ -166,7 +166,7 @@ def main():
     for f in fallidas:
         print(f"  fallo: {f}")
     print("\nAhora actualiza el indice:")
-    print("  python 03_CODIGO/integrar_clase.py --sin-subir")
+    print("  python 03_SCRIPTS/integrar_clase.py --sin-subir")
 
 
 if __name__ == "__main__":

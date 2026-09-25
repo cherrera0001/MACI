@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 # ============================================================================
 # 1. CARGAR DATOS
 # ============================================================================
-csv_path = r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
+csv_path = r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
 df = pd.read_csv(csv_path)
 
 # Limpiar datos básicos

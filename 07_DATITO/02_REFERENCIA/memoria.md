@@ -184,9 +184,9 @@ Sin ese registro, la próxima sesión vuelve a probar lo que ya falló.
 ### Y al terminar
 
 ```bash
-python 03_CODIGO/construir_navegacion.py   # las dudas de hoy, en los visuales
-python 03_CODIGO/datito_estado.py          # el resumen de la próxima sesión
-python 03_CODIGO/verificar_contrato.py     # que no quede nada solo en el chat
+python 03_SCRIPTS/construir_navegacion.py   # las dudas de hoy, en los visuales
+python 03_SCRIPTS/datito_estado.py          # el resumen de la próxima sesión
+python 03_SCRIPTS/verificar_contrato.py     # que no quede nada solo en el chat
 ```
 
 `datito_estado.py` regenera `estado.md`, que es lo que se inyecta la próxima

@@ -15,12 +15,12 @@ from pathlib import Path
 import pandas as pd
 
 CSV = Path(
-    r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección"
+    r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección"
     r"\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
 )
-ANCLAJE = Path(r"F:\MACI\02_PROYECTO_FCD\Hito1\anclaje.json")
+ANCLAJE = Path(r"F:\MACI\08_PROYECTO_FCD\Hito1\anclaje.json")
 SHA_ESPERADO = "3e449c3e95088da8a3a6b10331a5703f2c951d0740f317f97ed9baf0db1fd9f8"
-SALIDA = Path(r"F:\MACI\05_RESULTADOS\auditoria_dashai_vs_crudo.json")
+SALIDA = Path(r"F:\MACI\09_RESULTADOS\auditoria_dashai_vs_crudo.json")
 
 
 def sha256(ruta: Path) -> str:

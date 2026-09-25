@@ -11,8 +11,8 @@ REQUISITOS
   paquete playwright, que uv trae al vuelo:
 
 USO
-  uv run --with playwright python 03_CODIGO/probar_visuales_offline.py
-  uv run --with playwright python 03_CODIGO/probar_visuales_offline.py eda.html
+  uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py
+  uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py eda.html
 """
 import glob
 import os

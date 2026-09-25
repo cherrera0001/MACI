@@ -11,7 +11,7 @@ features, mismas semillas, mismos folds. Solo cambia el modelo evaluado.
 FASE 1 unicamente: solo 2016. No toca 2017.
 
 USO
-  python 03_CODIGO/experimento_councilarea_todos_modelos.py
+  python 03_SCRIPTS/experimento_councilarea_todos_modelos.py
 """
 import json
 import warnings
@@ -34,7 +34,7 @@ from experimento_councilarea import (CAT_A, CAT_B, CSV, NUM, N_VALIDATION, RS,
 
 warnings.filterwarnings("ignore")
 
-OUT = r"F:\MACI\05_RESULTADOS\experimento_councilarea_todos_modelos_%s.json" % date.today().isoformat()
+OUT = r"F:\MACI\09_RESULTADOS\experimento_councilarea_todos_modelos_%s.json" % date.today().isoformat()
 METRICAS = ("MAE", "RMSE", "R2")
 
 

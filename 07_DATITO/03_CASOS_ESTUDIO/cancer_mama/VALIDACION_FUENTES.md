@@ -39,7 +39,7 @@
 
 2. ⏳ **Descargar dataset correcto**
    - URL: https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+(diagnostic)
-   - Guardar en: `F:\MACI\04_DATOS\cancer_wisconsin_diagnostic\`
+   - Guardar en: `F:\MACI\02_DATOS\cancer_wisconsin_diagnostic\`
    - Validar checksum/formato
 
 3. ⏳ **Vincular con clases del profesor (HILT)**

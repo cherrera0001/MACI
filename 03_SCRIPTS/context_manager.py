@@ -132,7 +132,7 @@ class Context:
 
         # Validación 3: learner debe existir
         if not learner_root.exists():
-            self.error = f"Estudiante '{learner_id_full}' no existe en el curso '{self.course_id}'.\nCrea uno con: python 03_CODIGO/datito_init_learner.py --course {self.course_id} --learner {self.learner_id}"
+            self.error = f"Estudiante '{learner_id_full}' no existe en el curso '{self.course_id}'.\nCrea uno con: python 03_SCRIPTS/datito_init_learner.py --course {self.course_id} --learner {self.learner_id}"
             return
 
         # Validación 4: archivos críticos del curso
@@ -176,7 +176,7 @@ class Context:
             dudas=learner_root / "dudas.yaml",
             bitacora=learner_root / "bitacora",
             entregas=learner_root / "entregas",
-            mapa_ensenanza=self.raiz / "09_CLASES" / "mapa_ensenanza.yaml",
+            mapa_ensenanza=self.raiz / "05_CLASES" / "mapa_ensenanza.yaml",
         )
 
     def is_valid(self) -> bool:

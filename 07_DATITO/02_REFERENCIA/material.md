@@ -6,7 +6,7 @@ Cargar al elegir ejemplos o ejercicios.
 
 ## Los prácticos de la asignatura
 
-`08_PRACTICA/` — cinco laboratorios, cada uno en versión `(res)` resuelta y
+`06_LABORATORIOS/` — cinco laboratorios, cada uno en versión `(res)` resuelta y
 `(vacio)` sin resolver. Mapeo completo en `curriculum.yaml`, sección `practicos`.
 
 | | Tema | Cubre |
@@ -53,7 +53,7 @@ con ficha completa en
 
 ## Melbourne Housing — regresión
 
-`05_RESULTADOS/resultados_temporal.json`
+`09_RESULTADOS/resultados_temporal.json`
 
 - Train 6.336 propiedades de 2016 · test 7.244 de 2017
 - Final: HistGradientBoosting sobre `log1p(Price)` — MAE 188.218 AUD, R² 0,757
@@ -74,14 +74,14 @@ las predicciones se disparan.
 
 ### El error documentado
 
-`99_ARCHIVO/_obsoleto_split_aleatorio/` anunciaba *"81 % Precisión"* con split
+`10_ARCHIVO/_obsoleto_split_aleatorio/` anunciaba *"81 % Precisión"* con split
 aleatorio y fue invalidado por el split temporal. Un error real, suyo y
 documentado: el mejor material para enseñar fuga de información y por qué un
 número más alto puede ser un modelo peor.
 
 ### Experimento CouncilArea
 
-`05_RESULTADOS/experimento_councilarea_2026-09-18.json`. A vs B con una sola
+`09_RESULTADOS/experimento_councilarea_2026-09-18.json`. A vs B con una sola
 variable de diferencia. B mejora 599 AUD (0,38 %) y gana 20/25 comparaciones
 pareadas, **pero se conservó A**: `CouncilArea` tiene 0 % de nulos en 2016 y
 18,9 % en 2017, más 14 categorías nuevas — el 28,5 % de las filas de 2017 no
@@ -91,8 +91,8 @@ aportan nada por esa columna.
 
 ## Galaxy Zoo — clasificación
 
-`04_DATOS/GZ_mini_challenge_{train,test}.csv` · informe en
-`02_PROYECTO_FCD/Desafio/REPORT.md` · detalle en `04_DATOS/00_LEEME.md`
+`02_DATOS/GZ_mini_challenge_{train,test}.csv` · informe en
+`08_PROYECTO_FCD/Desafio/REPORT.md` · detalle en `02_DATOS/00_LEEME.md`
 
 Tres clases, métrica oficial **F1-macro**. Única fuente propia de matriz de
 confusión, precision/recall/F1, AUC y ensembles.

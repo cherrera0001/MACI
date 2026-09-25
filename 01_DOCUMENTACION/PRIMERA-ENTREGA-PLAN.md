@@ -13,7 +13,7 @@
 
 ## A. Context Manager (HECHO)
 
-**Archivo:** `03_CODIGO/context_manager.py`  
+**Archivo:** `03_SCRIPTS/context_manager.py`  
 **Estado:** ✅ IMPLEMENTADO
 
 **Lo que hace:**
@@ -34,7 +34,7 @@ if ctx.is_valid():
 
 **CLI:**
 ```bash
-python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner juan
+python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner juan
 # ✅ Contexto válido
 #    Curso: fcd-2026-2
 #    Estudiante: juan
@@ -70,7 +70,7 @@ No hereda `nombre`, `email`, `proyectos` del curso. Solo hereda `asignatura` y c
 
 **Validación:**
 ```bash
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner maria
 
 # Genera: learners/maria_fcd-2026-2/datito.config.yaml
 # Contiene:
@@ -82,7 +82,7 @@ python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
 
 ## C. Inicializador Corregido (PARCIAL)
 
-**Archivo:** `03_CODIGO/datito_init_learner.py`  
+**Archivo:** `03_SCRIPTS/datito_init_learner.py`  
 **Estado:** ⚠️ AJUSTADO (falta manejar asignatura de forma más flexible)
 
 **Lo que cambió:**
@@ -235,7 +235,7 @@ Las garantías G1–G14 son independientes del número de estudiantes/cursos.
 
 **Flujo:**
 ```
-$ python 03_CODIGO/setup_context.py
+$ python 03_SCRIPTS/setup_context.py
 
 ¿Cuál es tu nombre?
 > María García
@@ -256,7 +256,7 @@ $ python 03_CODIGO/setup_context.py
 Abre Claude Code y escribe: /datito
 ```
 
-**Archivo:** `03_CODIGO/setup_context.py` (nuevo)
+**Archivo:** `03_SCRIPTS/setup_context.py` (nuevo)
 
 ---
 
@@ -265,14 +265,14 @@ Abre Claude Code y escribe: /datito
 ### Test 1: Contexto Válido
 
 ```bash
-python 03_CODIGO/context_manager.py --course fcd-2026-2 --learner juan
+python 03_SCRIPTS/context_manager.py --course fcd-2026-2 --learner juan
 # ✅ Contexto válido
 ```
 
 ### Test 2: Contexto Inválido (No Falla Silenciosamente)
 
 ```bash
-python 03_CODIGO/context_manager.py --course inexistente --learner juan
+python 03_SCRIPTS/context_manager.py --course inexistente --learner juan
 # ❌ Contexto inválido:
 # Curso 'inexistente' no existe.
 # Cursos disponibles: fcd-2026-2, historia-2026-2
@@ -282,8 +282,8 @@ python 03_CODIGO/context_manager.py --course inexistente --learner juan
 
 ```bash
 # Crear dos alumnos
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner juan
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner maria
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner juan
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner maria
 
 # Verificar que tienen progreso separado
 cat learners/juan_fcd-2026-2/progreso.yaml | head -3
@@ -318,14 +318,14 @@ open courses/fcd-2026-2/visual/index.html
 ### Test 6: Compatibilidad Backward: Cristóbal Funciona Igual
 
 ```bash
-python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
+python 03_SCRIPTS/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
 # ✅ Estado regenerado correctamente
 ```
 
 ### Test 7: Interfaz CLI Básica
 
 ```bash
-python 03_CODIGO/setup_context.py
+python 03_SCRIPTS/setup_context.py
 # (menú interactivo, sin YAML)
 # ✅ Crea nuevo contexto
 ```
@@ -353,14 +353,14 @@ python 03_CODIGO/setup_context.py
 ## Cambios de Archivo Documentados
 
 ### Archivos Nuevos ✨
-- `03_CODIGO/context_manager.py` — ✅ Hecho
-- `03_CODIGO/setup_context.py` — 🚧 TODO
+- `03_SCRIPTS/context_manager.py` — ✅ Hecho
+- `03_SCRIPTS/setup_context.py` — 🚧 TODO
 - `01_DOCUMENTACION/DIAGNOSTICO-PLATAFORMA-ABIERTA.md` — ✅ Hecho
 
 ### Archivos Modificados ✏️
-- `03_CODIGO/datito_init_learner.py` — ✅ No hereda datos personales
-- `03_CODIGO/datito_estado.py` — 🚧 Pendiente usar context_manager
-- `03_CODIGO/construir_navegacion.py` — 🚧 Pendiente usar context_manager
+- `03_SCRIPTS/datito_init_learner.py` — ✅ No hereda datos personales
+- `03_SCRIPTS/datito_estado.py` — 🚧 Pendiente usar context_manager
+- `03_SCRIPTS/construir_navegacion.py` — 🚧 Pendiente usar context_manager
 
 ### Archivos Plantilla 📋
 - `courses/_template/` — Ya existe, validar que no herede datos

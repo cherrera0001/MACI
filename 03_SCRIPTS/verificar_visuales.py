@@ -6,7 +6,7 @@ QUE COMPRUEBA
   sin red        ningun src/href a http(s):// o //, ni @import/url() remoto, ni fetch()
   enlaces        todo href local existe; si lleva #ancla, el id existe en el destino
   scripts        cada <script> pasa `node --check` (si node esta instalado)
-  citas          toda ruta a 09_CLASES/transcripciones/ es un .md completo que
+  citas          toda ruta a 05_CLASES/transcripciones/ es un .md completo que
                  existe (nunca _plano.txt ni truncada con "…") y lleva cerca una
                  marca H:MM:SS que existe en esa transcripcion (+-20 s)
   fidelidad      en los bloques <div class="cita">, que las palabras citadas
@@ -14,14 +14,14 @@ QUE COMPRUEBA
   navegacion     cada visual tiene el bloque generado y al menos un enlace
                  entrante desde otro visual
   etiquetas      los visuales de concepto usan etiquetas G4
-  mapa           cada marca de 09_CLASES/mapa_ensenanza.yaml existe
+  mapa           cada marca de 05_CLASES/mapa_ensenanza.yaml existe
 
 Distingue FALLO (impide estudiar o citar) de AVISO (revisar a mano).
 
 USO
-  python 03_CODIGO/verificar_visuales.py
-  python 03_CODIGO/verificar_visuales.py --detalle     # lista cada aviso
-  python 03_CODIGO/verificar_visuales.py --estricto    # codigo 1 si hay fallos
+  python 03_SCRIPTS/verificar_visuales.py
+  python 03_SCRIPTS/verificar_visuales.py --detalle     # lista cada aviso
+  python 03_SCRIPTS/verificar_visuales.py --estricto    # codigo 1 si hay fallos
 """
 import argparse
 import glob
@@ -37,11 +37,11 @@ from urllib.parse import unquote
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VISUAL = os.path.join(RAIZ, "07_DATITO", "visual")
-TRANS_DIR = os.path.join(RAIZ, "09_CLASES", "transcripciones")
+TRANS_DIR = os.path.join(RAIZ, "05_CLASES", "transcripciones")
 
 MARCA_MD = re.compile(r"\*\*\[(\d+:\d{2}:\d{2})\]\*\*\s*(.*)")
 MARCA = re.compile(r"\b(\d:\d{2}:\d{2})\b")
-RUTA_T = re.compile(r"09_CLASES/transcripciones/([^\s<>\"'\]\)·,;]+)")
+RUTA_T = re.compile(r"05_CLASES/transcripciones/([^\s<>\"'\]\)·,;]+)")
 TOL = 20  # segundos de tolerancia para una marca
 
 _cache = {}
@@ -205,7 +205,7 @@ def revisar(detalle=False):
     # --- mapa de ensenanza
     try:
         import yaml
-        mapa = yaml.safe_load(open(os.path.join(RAIZ, "09_CLASES", "mapa_ensenanza.yaml"), encoding="utf-8"))
+        mapa = yaml.safe_load(open(os.path.join(RAIZ, "05_CLASES", "mapa_ensenanza.yaml"), encoding="utf-8"))
         for cid, tramos in (mapa.get("conceptos") or {}).items():
             for tr in tramos:
                 segs = transcripcion(tr["clase"] + ".md")
@@ -216,7 +216,7 @@ def revisar(detalle=False):
                     if not marca_existe(segs, tr[k]):
                         fallos.append(f"mapa_ensenanza: {cid}: {tr[k]} no existe en {tr['clase'][:30]}…")
     except FileNotFoundError:
-        avisos.append("no existe 09_CLASES/mapa_ensenanza.yaml")
+        avisos.append("no existe 05_CLASES/mapa_ensenanza.yaml")
 
     resumen = (f"{len(contenido)} visuales · {n_citas} citas a transcripciones · "
                f"{n_bloques} citas textuales comparadas · node {'si' if node else 'no'}")

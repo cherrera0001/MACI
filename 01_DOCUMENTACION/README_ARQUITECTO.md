@@ -23,7 +23,7 @@ MACI es **una instancia semestral (FCD-Cristóbal) + un prototipo pedagógico (D
 Abre:
   01_DOCUMENTACION/       ← Notas del semestre
   07_DATITO/              ← Tutor personal
-  08_PRACTICA/            ← Labs (P1-P5)
+  06_LABORATORIOS/            ← Labs (P1-P5)
   
 Ignora:
   courses/                ← No es para ti (es Canvas)
@@ -58,11 +58,11 @@ Estimado: 2-3 semanas de arquitectura después de ADR-003.
 ### Producto A: Instancia FCD-Cristóbal
 ```
 01_DOCUMENTACION/         ✅ Estable, no cambiar
-02_PROYECTO_FCD/          ✅ Completo (Melbourne + Galaxy Zoo)
-03_CODIGO/                ✅ Scripts de análisis funcionales
+08_PROYECTO_FCD/          ✅ Completo (Melbourne + Galaxy Zoo)
+03_SCRIPTS/                ✅ Scripts de análisis funcionales
 07_DATITO/                ⚠️  Prototipo pedagógico, funcional
-08_PRACTICA/              ✅ 5 laboratorios (P1-P5)
-09_CLASES/                ✅ 15 transcripciones
+06_LABORATORIOS/              ✅ 5 laboratorios (P1-P5)
+05_CLASES/                ✅ 15 transcripciones
 
 VEREDICTO: ESTABLE (no tocar)
 ```
@@ -152,12 +152,12 @@ Unificar entrada (CLI) sin migración destructiva. Estimado: **1 semana**.
 
 ### Plan
 ```
-1. Crear 03_CODIGO/platform/
+1. Crear 03_SCRIPTS/platform/
    ├── __main__.py          (Entry: python -m platform <cmd>)
    ├── cli.py               (Click CLI: process, status, report)
    └── courses.yaml         (Manifesto: fuente única de verdad)
 
-2. Mover 7 scripts a 99_ARCHIVO/pipelines_legacy/
+2. Mover 7 scripts a 10_ARCHIVO/pipelines_legacy/
    (Todavía existen, solo organizados)
 
 3. Actualizar README, INDEX_MAESTRO, ESTADO
@@ -172,7 +172,7 @@ Unificar entrada (CLI) sin migración destructiva. Estimado: **1 semana**.
 ✅ python -m platform process --course 80014  (sin errores)
 ✅ python -m platform report                  (matriz real)
 ✅ README explica qué abrir para qué          (<60 seg lectura)
-✅ 0 procesar_*.py en raíz                    (todos en 99_ARCHIVO/)
+✅ 0 procesar_*.py en raíz                    (todos en 10_ARCHIVO/)
 ✅ courses.yaml es fuente única               (capacidades reales)
 ✅ User sabe: "Esto NO es plataforma"         (expectativas claras)
 ```
@@ -192,14 +192,14 @@ Unificar entrada (CLI) sin migración destructiva. Estimado: **1 semana**.
 ```
 Protegido (no tocar):
   01_DOCUMENTACION/           (instancia FCD)
-  02_PROYECTO_FCD/            (semestral)
+  08_PROYECTO_FCD/            (semestral)
   07_DATITO/                  (core pedagógico)
   MACI_RESPALDOS/             (backup)
   .env, credenciales
 
 Permitido:
-  Crear 03_CODIGO/platform/
-  Reorganizar raíz (scripts a 99_ARCHIVO/)
+  Crear 03_SCRIPTS/platform/
+  Reorganizar raíz (scripts a 10_ARCHIVO/)
   Actualizar README/INDEX
   Honestidad en capacidades
 ```

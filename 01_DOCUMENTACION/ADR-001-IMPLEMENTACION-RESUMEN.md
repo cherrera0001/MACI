@@ -30,9 +30,9 @@ Refactorización de Datito de un sistema mono-alumno/mono-asignatura a una arqui
 
 | Script | Cambio |
 |--------|--------|
-| `03_CODIGO/datito_init_learner.py` | ✨ **NUEVO**: Crea alumno nuevo en 1 comando |
-| `03_CODIGO/datito_estado.py` | ✏️ **ACTUALIZADO**: Lee config, resuelve rutas dinámicamente |
-| `03_CODIGO/construir_navegacion.py` | ✏️ **ACTUALIZADO**: Lee config, resuelve rutas dinámicamente |
+| `03_SCRIPTS/datito_init_learner.py` | ✨ **NUEVO**: Crea alumno nuevo en 1 comando |
+| `03_SCRIPTS/datito_estado.py` | ✏️ **ACTUALIZADO**: Lee config, resuelve rutas dinámicamente |
+| `03_SCRIPTS/construir_navegacion.py` | ✏️ **ACTUALIZADO**: Lee config, resuelve rutas dinámicamente |
 
 ### 3. Estructura de Directorios
 
@@ -103,11 +103,11 @@ cd courses/tu-ramo-2026-2
 #    - clases.yaml: orden de clase (≥10)
 
 # 3. Crear alumno
-python 03_CODIGO/datito_init_learner.py --course tu-ramo-2026-2 --learner juan_perez
+python 03_SCRIPTS/datito_init_learner.py --course tu-ramo-2026-2 --learner juan_perez
 
 # 4. Regenerar
-python 03_CODIGO/construir_navegacion.py
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/construir_navegacion.py
+python 03_SCRIPTS/datito_estado.py
 
 # 5. Listo
 /datito
@@ -122,21 +122,21 @@ Ver detalles en `courses/_template/README.md` o `ADR-001-multi-course.md`.
 ### Prueba 1: Crear alumno ficticio (30 segundos)
 
 ```bash
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner test_alumno
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner test_alumno
 # Espera: "✨ Learner 'test_alumno_fcd-2026-2' creado correctamente."
 ```
 
 ### Prueba 2: Regenerar estado (10 segundos)
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/datito_estado.py
 # Espera: "estado.md generado: 30 lineas, 1.105 bytes"
 ```
 
 ### Prueba 3: Verificar contrato (5 segundos)
 
 ```bash
-python 03_CODIGO/verificar_contrato.py
+python 03_SCRIPTS/verificar_contrato.py
 # Espera: "12 ok · 0 fallos"
 ```
 
@@ -194,7 +194,7 @@ NO_ESTUDIADO 17 · EN_ESTUDIO 1 · ...
 **Nuevos:**
 - `01_DOCUMENTACION/ADR-001-multi-course.md` (250 líneas)
 - `01_DOCUMENTACION/CHECKLIST-ADR-001.md` (200 líneas)
-- `03_CODIGO/datito_init_learner.py` (250 líneas)
+- `03_SCRIPTS/datito_init_learner.py` (250 líneas)
 - `courses/_template/` (estructura + 8 archivos)
 - `courses/fcd-2026-2/` (copia de 07_DATITO sin dinámicos)
 - `learners/cristobal_herrera/` (estado + progreso + bitácora)
@@ -202,8 +202,8 @@ NO_ESTUDIADO 17 · EN_ESTUDIO 1 · ...
 **Modificados:**
 - `07_DATITO/datito.config.yaml` (+3 líneas: course_id, learner_id, comentario)
 - `07_DATITO/00_LEEME.md` (nueva sección: quickstart multi-curso)
-- `03_CODIGO/datito_estado.py` (+40 líneas: config + paths)
-- `03_CODIGO/construir_navegacion.py` (+40 líneas: config + paths)
+- `03_SCRIPTS/datito_estado.py` (+40 líneas: config + paths)
+- `03_SCRIPTS/construir_navegacion.py` (+40 líneas: config + paths)
 
 ---
 
@@ -221,7 +221,7 @@ DESPUÉS (multi-curso):
 F:\MACI\
 ├── courses\fcd-2026-2\         ← curriculum, clases, visual (estático)
 ├── learners\cristobal_herrera\ ← progreso, estado, dudas (dinámico)
-└── 03_CODIGO\datito_init_learner.py  ← 1 comando = nuevo alumno
+└── 03_SCRIPTS\datito_init_learner.py  ← 1 comando = nuevo alumno
 ```
 
 **Beneficio:** Otro docente puede usar Datito en 10 minutos. Mismo código base.
@@ -234,7 +234,7 @@ F:\MACI\
 
 Si quieres verificar que está listo:
 ```bash
-python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner cristobal_herrera_backup
+python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner cristobal_herrera_backup
 /datito-progreso
 # Debes ver el mismo estado que siempre.
 ```
@@ -256,7 +256,7 @@ ADR-001-multi-course.md
 ✅ **G9** — Exposición consultable en visual/  
 ✅ **G10–G14** — Arquitectura, contrato, curso como artefacto  
 
-**Verificar:** `python 03_CODIGO/verificar_contrato.py` → `12 ok · 0 fallos`
+**Verificar:** `python 03_SCRIPTS/verificar_contrato.py` → `12 ok · 0 fallos`
 
 ---
 

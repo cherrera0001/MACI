@@ -14,8 +14,8 @@ resolvieron con "lo hare mejor" reaparecieron al turno siguiente.
 Esto es esa comprobacion externa. No depende de que el agente recuerde.
 
 USO
-  python 03_CODIGO/verificar_contrato.py
-  python 03_CODIGO/verificar_contrato.py --estricto   # codigo 1 si algo falla
+  python 03_SCRIPTS/verificar_contrato.py
+  python 03_SCRIPTS/verificar_contrato.py --estricto   # codigo 1 si algo falla
 """
 import argparse
 import glob
@@ -206,9 +206,9 @@ def rutas_declaradas_existen():
 def g9_visuales_sin_red_y_citables():
     """Los visuales abren sin red, sus enlaces existen y sus citas de clase se
     pueden comprobar (ruta .md completa + marca que existe). Detalle en
-    03_CODIGO/verificar_visuales.py; la prueba en navegador real es
-    03_CODIGO/probar_visuales_offline.py."""
-    sys.path.insert(0, os.path.join(RAIZ, "03_CODIGO"))
+    03_SCRIPTS/verificar_visuales.py; la prueba en navegador real es
+    03_SCRIPTS/probar_visuales_offline.py."""
+    sys.path.insert(0, os.path.join(RAIZ, "03_SCRIPTS"))
     import verificar_visuales
     fallos, avisos, resumen = verificar_visuales.revisar()
     if fallos:

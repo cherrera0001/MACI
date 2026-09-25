@@ -2,7 +2,7 @@
 
 **Estado:** PROPUESTA (sin implementar)  
 **Decisión:** Arquitectura de 3 capas sin destruir lo existente  
-**Reversibilidad:** 100% (legacy en 99_ARCHIVO/)
+**Reversibilidad:** 100% (legacy en 10_ARCHIVO/)
 
 ---
 
@@ -25,7 +25,7 @@ Mañana: Una CLI, un README coherente, escalable a N cursos sin clonar.
 
 ### CAPA 1: Entry Point Unificado
 ```python
-# F:\MACI\03_CODIGO\platform\__main__.py
+# F:\MACI\03_SCRIPTS\platform\__main__.py
 
 from platform.cli import main
 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
 ### CAPA 2: Course Manifesto (Data-Driven)
 ```yaml
-# F:\MACI\03_CODIGO\platform\courses.yaml
+# F:\MACI\03_SCRIPTS\platform\courses.yaml
 
 courses:
   80014:
@@ -104,8 +104,8 @@ fcd-instance:           # NO es curso, es instancia
 ```
 F:\MACI/
 ├── 01_DOCUMENTACION/         [DATITO instance: FCD-Cristobal]
-├── 02_PROYECTO_FCD/          [Semestral Cristóbal]
-├── 03_CODIGO/
+├── 08_PROYECTO_FCD/          [Semestral Cristóbal]
+├── 03_SCRIPTS/
 │   └── platform/             [⭐ NUEVO: CLI + manifesto]
 │       ├── __main__.py
 │       ├── cli.py
@@ -114,12 +114,12 @@ F:\MACI/
 │           ├── canvas.py     [Orquesta procesar_*.py viejos]
 │           └── datito.py     [Orquesta Datito cuando agregue cursos]
 │
-├── 04_DATOS/
-├── 05_RESULTADOS/
+├── 02_DATOS/
+├── 09_RESULTADOS/
 ├── 06_ENTREGABLES/
 ├── 07_DATITO/                [Core pedagógico, no tocado]
-├── 08_PRACTICA/
-├── 09_CLASES/
+├── 06_LABORATORIOS/
+├── 05_CLASES/
 ├── 10_GRABACIÓN_CLASES/      [Videos, permanece]
 │   ├── 80038_Procesos_Innovacion/  [✅ procesado]
 │   ├── 80014_Emprendimiento/       [preparado para vídeos]
@@ -136,7 +136,7 @@ F:\MACI/
 ├── learners/                 [NUEVO: una carpeta por estudiante]
 │   └── .gitkeep (placeholder)
 │
-├── 99_ARCHIVO/               [Legacy movido, no borrado]
+├── 10_ARCHIVO/               [Legacy movido, no borrado]
 │   ├── pipelines_legacy/
 │   │   ├── procesar_80014.py    (moved from root)
 │   │   ├── procesar_80038.py    (moved from root)
@@ -160,10 +160,10 @@ F:\MACI/
 ```
 
 **Cambios:**
-- ➕ Agregado: 03_CODIGO/platform/
+- ➕ Agregado: 03_SCRIPTS/platform/
 - ➕ Agregado: learners/
-- 🚚 Movido: 7 scripts a 99_ARCHIVO/pipelines_legacy/
-- 🚚 Movido: PROCESADO/ a 99_ARCHIVO/
+- 🚚 Movido: 7 scripts a 10_ARCHIVO/pipelines_legacy/
+- 🚚 Movido: PROCESADO/ a 10_ARCHIVO/
 - ✏️ Actualizado: README, INDEX_MAESTRO
 - 🚫 No tocado: 01-07_*, courses/*, 10_GRABACIÓN_*, MACI_RESPALDOS/
 
@@ -197,7 +197,7 @@ python -m platform process --course 80014
 
 ## IMPLEMENTACIÓN FASE 0 (Mínima, ~4h)
 
-### 1. Crear 03_CODIGO/platform/
+### 1. Crear 03_SCRIPTS/platform/
 ```
 platform/
 ├── __init__.py
@@ -214,17 +214,17 @@ platform/
 
 ### 2. Mover scripts legacy
 ```bash
-mkdir -p 99_ARCHIVO/pipelines_legacy
-mv procesar_*.py 99_ARCHIVO/pipelines_legacy/
+mkdir -p 10_ARCHIVO/pipelines_legacy
+mv procesar_*.py 10_ARCHIVO/pipelines_legacy/
 mv actualizar_*.py actualizar_index_80014.py  # (etc)
-mv limpiar_*.py 99_ARCHIVO/pipelines_legacy/
-mv PROCESADO/ 99_ARCHIVO/
+mv limpiar_*.py 10_ARCHIVO/pipelines_legacy/
+mv PROCESADO/ 10_ARCHIVO/
 
-# Crear 99_ARCHIVO/pipelines_legacy/README.md:
-# "Scripts clonados pre-arquitectura. Orquestados por 03_CODIGO/platform/cli.py"
+# Crear 10_ARCHIVO/pipelines_legacy/README.md:
+# "Scripts clonados pre-arquitectura. Orquestados por 03_SCRIPTS/platform/cli.py"
 ```
 
-### 3. Reescribir 03_CODIGO/platform/__main__.py
+### 3. Reescribir 03_SCRIPTS/platform/__main__.py
 ```python
 import click
 from platform.cli import process_course, report_status
@@ -268,7 +268,7 @@ courses:
       exercises: true      # 6 EJERCICIO_SEMANA_*.md
       transcripts: false
       dashboard: false
-    processor_script: "99_ARCHIVO/pipelines_legacy/procesar_80014.py"
+    processor_script: "10_ARCHIVO/pipelines_legacy/procesar_80014.py"
     last_processed: "2026-09-22T21:16:00Z"
     
   80038:
@@ -282,7 +282,7 @@ courses:
       exercises: false
       transcripts: true
       dashboard: true
-    processor_script: "99_ARCHIVO/pipelines_legacy/procesar_80038.py"
+    processor_script: "10_ARCHIVO/pipelines_legacy/procesar_80038.py"
     last_processed: "2026-09-22T21:18:00Z"
 
   # (80714, 83703, 83706, 83707: state="empty", no processor_script yet)
@@ -360,7 +360,7 @@ Estimado: 1 semana
 ```
 Prohibido mover/renombrar:
   - 01_DOCUMENTACION/ (instancia FCD)
-  - 02_PROYECTO_FCD/ (semestral)
+  - 08_PROYECTO_FCD/ (semestral)
   - 07_DATITO/ (core pedagógico)
   - MACI_RESPALDOS/ (backup)
 
@@ -369,8 +369,8 @@ Prohibido editar:
   - .env (credenciales)
 
 Permitido crear:
-  - 03_CODIGO/platform/ (nueva)
-  - 99_ARCHIVO/pipelines_legacy/ (reorganización)
+  - 03_SCRIPTS/platform/ (nueva)
+  - 10_ARCHIVO/pipelines_legacy/ (reorganización)
   - learners/ (placeholder)
 ```
 
@@ -383,9 +383,9 @@ Si todo falla:
 # Restaurar:
 git checkout HEAD -- F:\MACI\README.md
 git checkout HEAD -- F:\MACI\INDEX_MAESTRO.md
-rm -rf 03_CODIGO/platform/
-mv 99_ARCHIVO/pipelines_legacy/* .
-mv 99_ARCHIVO/PROCESADO ./
+rm -rf 03_SCRIPTS/platform/
+mv 10_ARCHIVO/pipelines_legacy/* .
+mv 10_ARCHIVO/PROCESADO ./
 
 # Vuelves al estado anterior en 2 minutos
 ```
@@ -397,7 +397,7 @@ mv 99_ARCHIVO/PROCESADO ./
 ✅ `python -m platform process --course 80014` funciona sin errores  
 ✅ `python -m platform report` genera matriz sin mentiras  
 ✅ README explica qué abrir para qué en <60 segundos de lectura  
-✅ 0 scripts procesar_* en la raíz (todos en 99_ARCHIVO/pipelines_legacy/)  
+✅ 0 scripts procesar_* en la raíz (todos en 10_ARCHIVO/pipelines_legacy/)  
 ✅ courses.yaml es fuente única de verdad sobre capacidades  
 ✅ Un tercero entiende que esto NO ES plataforma aún, es contenido + protocolo
 

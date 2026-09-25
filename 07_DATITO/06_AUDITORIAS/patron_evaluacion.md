@@ -8,15 +8,15 @@ Reconstruido desde las evaluaciones **reales** del repositorio, no desde lo que
 completa en
 `01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md`.
 **Complementos:** guía de estudio del profesor, Trabajos 1 y 2, Desafío Galaxy
-Zoo, los 5 prácticos de `08_PRACTICA/` y las sesiones grabadas de ambos
-certámenes (`09_CLASES/transcripciones/05Certamen_…_24_Julio.md` y
+Zoo, los 5 prácticos de `06_LABORATORIOS/` y las sesiones grabadas de ambos
+certámenes (`05_CLASES/transcripciones/05Certamen_…_24_Julio.md` y
 `…/2026-08-28T22_09_14Z_….md`), donde el profesor aclara enunciados.
 
 **Qué entra.** El profesor lo dijo en clase: «Entran solo mis clases. No entran
 las clases de Alejandra. Las clases de Alejandra se evalúan a través de los
-proyectos» [FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:18:16].
+proyectos» [FUENTE · Repo: 05_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:18:16].
 Y cada certamen se arma desde «un pool de preguntas»: tu versión puede no ser
-la de un compañero [FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].
+la de un compañero [FUENTE · Repo: 05_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].
 
 ---
 
@@ -69,7 +69,7 @@ de clasificación. Juntos: **63 %**.
 
 > **Matiz de la sesión del certamen (2026-09-21).** Sobre la pregunta 10
 > («punto base») se oye «No tienen que responder nada… Da lo mismo» [FUENTE ·
-> Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:12–2:01:28].
+> Repo: 05_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:12–2:01:28].
 > Que lo diga el profesor y que P10 no tuviera contenido evaluable es
 > [INFERENCIA] por el contexto. Si fue así, el bloque «conducta metodológica»
 > pesa menos de lo que dice la tabla y los otros suben. Detalle en

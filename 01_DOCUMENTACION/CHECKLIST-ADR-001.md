@@ -33,7 +33,7 @@
 
 - [ ] `datito_init_learner.py` existe y es ejecutable:
   ```bash
-  python 03_CODIGO/datito_init_learner.py --course fcd-2026-2 --learner test_alumno
+  python 03_SCRIPTS/datito_init_learner.py --course fcd-2026-2 --learner test_alumno
   ```
   - [ ] Crea `learners/test_alumno_fcd-2026-2/` sin errores
   - [ ] Genera `progreso.yaml` con 21 conceptos en `NO_ESTUDIADO`
@@ -42,7 +42,7 @@
 
 - [ ] `datito_estado.py` regenera sin errores:
   ```bash
-  python 03_CODIGO/datito_estado.py
+  python 03_SCRIPTS/datito_estado.py
   ```
   - [ ] Lee `07_DATITO/datito.config.yaml`
   - [ ] Resuelve rutas: `courses/fcd-2026-2/`, `learners/cristobal_herrera/`
@@ -51,7 +51,7 @@
 
 - [ ] `construir_navegacion.py` inyecta sin errores:
   ```bash
-  python 03_CODIGO/construir_navegacion.py
+  python 03_SCRIPTS/construir_navegacion.py
   ```
   - [ ] Lee `07_DATITO/datito.config.yaml`
   - [ ] Resuelve rutas a `courses/fcd-2026-2/visual/`
@@ -75,7 +75,7 @@
 
 - [ ] `verificar_contrato.py` pasa 12 tests:
   ```bash
-  python 03_CODIGO/verificar_contrato.py
+  python 03_SCRIPTS/verificar_contrato.py
   ```
   - [ ] Output: `12 ok · 0 fallos`
   - [ ] No hay cambios en las garantías G1–G14
@@ -84,7 +84,7 @@
 
 - [ ] Crear learner ficticio para "Estadística 2026-2":
   ```bash
-  python 03_CODIGO/datito_init_learner.py --course estadistica-2026-2 --learner maria_garcia
+  python 03_SCRIPTS/datito_init_learner.py --course estadistica-2026-2 --learner maria_garcia
   ```
   - [ ] Falla de forma esperada: `curso 'estadistica-2026-2' no existe`
   - [ ] Mensaje sugiere: `cp -r courses/_template courses/estadistica-2026-2`
@@ -92,7 +92,7 @@
 - [ ] Clonar la plantilla y crear el curso:
   ```bash
   cp -r courses/_template courses/estadistica-2026-2
-  python 03_CODIGO/datito_init_learner.py --course estadistica-2026-2 --learner maria_garcia
+  python 03_SCRIPTS/datito_init_learner.py --course estadistica-2026-2 --learner maria_garcia
   ```
   - [ ] Crea `learners/maria_garcia_estadistica-2026-2/`
   - [ ] Sin errores
@@ -126,7 +126,7 @@
   git status
   ```
   - [ ] Modificados: `07_DATITO/datito.config.yaml`, `07_DATITO/00_LEEME.md`
-  - [ ] Nuevos: `01_DOCUMENTACION/ADR-001-multi-course.md`, `03_CODIGO/datito_init_learner.py`
+  - [ ] Nuevos: `01_DOCUMENTACION/ADR-001-multi-course.md`, `03_SCRIPTS/datito_init_learner.py`
   - [ ] Nuevos: `courses/` (fcd-2026-2, _template), `learners/cristobal_herrera/`
 
 - [ ] No hay archivos sensibles en staging:
@@ -166,7 +166,7 @@
 - Verificar: `learners/cristobal_herrera/` existe
 
 **Test de contrato falla:**
-- Ejecutar: `python 03_CODIGO/verificar_visuales.py` (ve si los HTML están bien)
+- Ejecutar: `python 03_SCRIPTS/verificar_visuales.py` (ve si los HTML están bien)
 - Verificar: `grafo.yaml` está actualizado
 - Verificar: `curriculum.yaml` tiene 21 conceptos
 

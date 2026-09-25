@@ -86,8 +86,8 @@ learners/cristobal_herrera/    ← dinámico: progreso, dudas, entregas
 | Conceptos | 21 | Definidos en `courses/fcd-2026-2/curriculum.yaml` |
 | Clases | 22 | En `clases.yaml`, con Bloom, cierre, preguntas |
 | Visuales | 21 | HTML autocontenidos en `visual/` |
-| Laboratorios | 5 | `08_PRACTICA/` — P1 a P5 (vacio + res) |
-| Transcripciones | 15 | `09_CLASES/` — todas con marcas de tiempo |
+| Laboratorios | 5 | `06_LABORATORIOS/` — P1 a P5 (vacio + res) |
+| Transcripciones | 15 | `05_CLASES/` — todas con marcas de tiempo |
 | Evaluaciones | 2 | Certamen 1 y 2, auditados |
 
 **Estado:** ✅ Completo y auditado como ejemplo de un curso real.
@@ -234,13 +234,13 @@ Listo. Abre Claude Code y escribe: /datito
 
 **Necesario:**
 ```bash
-$ python 03_CODIGO/datito_estado.py --course inexistente
+$ python 03_SCRIPTS/datito_estado.py --course inexistente
 ❌ Error: curso 'inexistente' no existe
    Cursos disponibles:
    - fcd-2026-2
    - estadistica-2026-2
 
-   Uso: python 03_CODIGO/datito_estado.py --course CURSO --learner ESTUDIANTE
+   Uso: python 03_SCRIPTS/datito_estado.py --course CURSO --learner ESTUDIANTE
 ```
 
 ---
@@ -260,9 +260,9 @@ $ python 03_CODIGO/datito_estado.py --course inexistente
 
 ### 6.2 Acción
 
-Crear `03_CODIGO/exportar_progreso.py`:
+Crear `03_SCRIPTS/exportar_progreso.py`:
 ```bash
-python 03_CODIGO/exportar_progreso.py --learner juan_perez --course fcd-2026-2 --output mi_progreso.zip
+python 03_SCRIPTS/exportar_progreso.py --learner juan_perez --course fcd-2026-2 --output mi_progreso.zip
 ```
 
 Genera:

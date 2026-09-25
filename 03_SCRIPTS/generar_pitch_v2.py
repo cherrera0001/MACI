@@ -14,10 +14,10 @@ from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 from pptx.enum.text import PP_ALIGN
 
 os.chdir(r"F:\MACI")
-A = json.load(open(r"02_PROYECTO_FCD/Hito1/anclaje.json", encoding="utf-8"))
-C = json.load(open("05_RESULTADOS/correlacion_dashai.json", encoding="utf-8"))
-D = json.load(open("05_RESULTADOS/dashai_resultados.json", encoding="utf-8"))
-ST = json.load(open("05_RESULTADOS/dashai_state.json", encoding="utf-8"))
+A = json.load(open(r"08_PROYECTO_FCD/Hito1/anclaje.json", encoding="utf-8"))
+C = json.load(open("09_RESULTADOS/correlacion_dashai.json", encoding="utf-8"))
+D = json.load(open("09_RESULTADOS/dashai_resultados.json", encoding="utf-8"))
+ST = json.load(open("09_RESULTADOS/dashai_state.json", encoding="utf-8"))
 
 f0 = lambda x: f"{x:,.0f}".replace(",", ".")
 pct = lambda x: f"{x:.1f} %".replace(".", ",")

@@ -46,14 +46,14 @@ proyectos:
   - id: melbourne
     nombre: Prediccion de precios de propiedades en Melbourne
     tipo: regresion
-    datos: 04_DATOS/housing_dashai_2016_2017.csv
-    resultados: 05_RESULTADOS/resultados_temporal.json
+    datos: 02_DATOS/housing_dashai_2016_2017.csv
+    resultados: 09_RESULTADOS/resultados_temporal.json
     ensena: [regresion, train_validation_test, validacion_cruzada, generalizacion, overfitting_underfitting, arboles_decision, random_forest, gradient_boosting]
   - id: galaxy_zoo
     nombre: Clasificacion de galaxias Galaxy Zoo
     tipo: clasificacion
-    datos: 02_PROYECTO_FCD/Desafio/
-    resultados: 02_PROYECTO_FCD/Desafio/REPORT.md
+    datos: 08_PROYECTO_FCD/Desafio/
+    resultados: 08_PROYECTO_FCD/Desafio/REPORT.md
     ensena: [clasificacion, matriz_confusion, metricas_clasificacion, roc_auc, ensembles]
 
 # Biblioteca externa. Opcional: si no esta disponible, Datito degrada y sigue
@@ -119,7 +119,7 @@ pedagogia:
 #    errores_conceptuales.yaml (observados: []) y bitacora/.
 # 4. Si hay evaluaciones anteriores, reconstruir patron_evaluacion.md desde
 #    ellas. Es lo que mas cambia entre profesores y lo que mas rinde.
-# 5. Ejecutar: python 03_CODIGO/datito_estado.py
+# 5. Ejecutar: python 03_SCRIPTS/datito_estado.py
 #
 # Las skills de .claude/skills/ no se modifican: leen de estos archivos.
 # --------------------------------------------------------------------------

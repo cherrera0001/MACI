@@ -10,8 +10,8 @@ Este resumen ronda las 30 lineas y no crece: solo lista lo que cambio de estado 
 los errores abiertos. El detalle sigue en los YAML, que la skill lee bajo demanda.
 
 USO
-  python 03_CODIGO/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
-  python 03_CODIGO/datito_estado.py  # usa contexto guardado o error
+  python 03_SCRIPTS/datito_estado.py --course fcd-2026-2 --learner cristobal_herrera
+  python 03_SCRIPTS/datito_estado.py  # usa contexto guardado o error
 
 MULTI-CURSO (Fase 1: Primera Entrega)
   Usa context_manager para resolver curso y estudiante de forma centralizada.
@@ -60,7 +60,7 @@ def main():
     L = []
     L.append("# Estado del alumno")
     L.append("")
-    L.append("> Generado por `03_CODIGO/datito_estado.py`. **No editar a mano.**")
+    L.append("> Generado por `03_SCRIPTS/datito_estado.py`. **No editar a mano.**")
     L.append("> El detalle completo esta en `progreso.yaml` y")
     L.append("> `errores_conceptuales.yaml`; leelos solo si necesitas el historial.")
     L.append("")

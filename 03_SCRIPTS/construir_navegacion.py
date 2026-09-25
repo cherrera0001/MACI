@@ -10,7 +10,7 @@ QUE HACE
        - sus dos prioridades, y la tension si existe (G12)
        - las preguntas de certamen que entrena
        - DONDE SE ENSENO en clase: clase, rango, hablante y ruta completa de la
-         transcripcion (09_CLASES/mapa_ensenanza.yaml)
+         transcripcion (05_CLASES/mapa_ensenanza.yaml)
   2. Renderiza las dudas resueltas de dudas.yaml en cada visual que
      listan, en orden cronologico y con la respuesta oculta, entre
          <!-- datito:dudas:inicio -->  ...  <!-- datito:dudas:fin -->
@@ -29,8 +29,8 @@ los 20 visuales se actualizan solas. El contenido pedagogico de cada HTML se
 sigue escribiendo a mano (o con /datito-visual), porque eso no es mecanizable.
 
 USO
-  python 03_CODIGO/construir_navegacion.py            # inyecta y genera
-  python 03_CODIGO/construir_navegacion.py --revisar  # solo dice que cambiaria
+  python 03_SCRIPTS/construir_navegacion.py            # inyecta y genera
+  python 03_SCRIPTS/construir_navegacion.py --revisar  # solo dice que cambiaria
 
 MULTI-CURSO (ADR-001)
   Lee datito.config.yaml para resolver las rutas de course_id y learner_id.
@@ -48,7 +48,7 @@ from urllib.parse import quote
 import yaml
 
 RAIZ = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TRANS = "09_CLASES/transcripciones"
+TRANS = "05_CLASES/transcripciones"
 
 INI, FIN = "<!-- datito:nav:inicio -->", "<!-- datito:nav:fin -->"
 DINI, DFIN = "<!-- datito:dudas:inicio -->", "<!-- datito:dudas:fin -->"
@@ -84,7 +84,7 @@ def resolver_rutas(config):
         "dudas": learner_root / "dudas.yaml",
         "grafo": course_root / "grafo.yaml",
         "clases": course_root / "clases.yaml",
-        "mapa_ensenanza": Path("09_CLASES") / "mapa_ensenanza.yaml",
+        "mapa_ensenanza": Path("05_CLASES") / "mapa_ensenanza.yaml",
     }
 
 
@@ -874,9 +874,9 @@ document.getElementById('avance').textContent=n;
 document.getElementById('barra').style.width=(total?Math.round(100*n/total):0)+'%';
 if(seguir)document.getElementById('seguir').setAttribute('href',seguir);}}catch(e){{}}}})();</script>
 
-<footer>Generado por <code>03_CODIGO/construir_navegacion.py</code> el {date.today().isoformat()} desde
+<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> el {date.today().isoformat()} desde
 <code>07_DATITO/clases.yaml</code>, <code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/patron_evaluacion.md</code>
-y <code>09_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
+y <code>05_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
 </main>
 </body>
 </html>
@@ -890,7 +890,7 @@ def main():
 
     grafo = cargar(str(RUTAS["grafo"].relative_to(RAIZ)))
     cur = cargar(str((RUTAS["course_root"] / "curriculum.yaml").relative_to(RAIZ)))
-    mapa = cargar("09_CLASES/mapa_ensenanza.yaml")
+    mapa = cargar("05_CLASES/mapa_ensenanza.yaml")
     nombres = {c["id"]: c["nombre"] for c in cur["conceptos"]}
 
     dudas = cargar_dudas()

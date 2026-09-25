@@ -25,7 +25,7 @@ from sklearn.model_selection import KFold, cross_val_score
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 warnings.filterwarnings("ignore")
 
-CSV = r"F:\MACI\02_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
+CSV = r"F:\MACI\08_PROYECTO_FCD\Hito1\Corrección\Trabajo N°1 _ FINAL\1° Trabajo _FUNDAMENTOS\housing_data.csv"
 RS = 42
 SEEDS = [0, 1, 2, 3, 4]
 
@@ -118,5 +118,5 @@ meta = dict(n_train_2016=int(len(train)), n_test_2017=int(len(test)),
             pct_test_suburbio_nuevo=float(mask_nuevo.mean() * 100),
             features_num=NUM, features_cat=CAT, excluidas=EXCLUIDAS, seeds=SEEDS,
             precio_mediana_2016=float(np.median(y_tr)), precio_mediana_2017=float(np.median(y_te)))
-json.dump(dict(meta=meta, resultados=resultados), open(r"F:\MACI\05_RESULTADOS\resultados_temporal.json", "w"), indent=2)
-print("\nGuardado: F:\\MACI\\05_RESULTADOS\\resultados_temporal.json")
+json.dump(dict(meta=meta, resultados=resultados), open(r"F:\MACI\09_RESULTADOS\resultados_temporal.json", "w"), indent=2)
+print("\nGuardado: F:\\MACI\\09_RESULTADOS\\resultados_temporal.json")
