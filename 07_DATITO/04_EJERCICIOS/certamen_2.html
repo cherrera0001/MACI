@@ -2,107 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Certamen 2 · auditado pregunta por pregunta · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:940px;margin:0 auto}
-  h1{font-size:1.75rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.8rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.7rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  td.num{text-align:right;font-variant-numeric:tabular-nums}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.9rem 1.1rem;margin:1.1rem 0}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
-  .preg{scroll-margin-top:1rem}
-
-  .preg{background:#fff;border:1px solid var(--linea);border-radius:10px;
-        padding:1.1rem 1.3rem;margin:1.3rem 0}
-  .cab{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.7rem}
-  .num{background:var(--azul);color:#fff;min-width:2rem;height:2rem;padding:0 .45rem;border-radius:1rem;
-       display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex:none}
-  .tema{font-weight:700;font-size:1.02rem}
-  .eti{font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:20px;white-space:nowrap}
-  .b-ev{background:#ede9fe;color:#5b21b6}
-  .b-an{background:#dbeafe;color:#1e40af}
-  .b-ap{background:#cffafe;color:#155e75}
-  .b-cr{background:#fce7f3;color:#9d174d}
-  .b-pts{background:#fef3c7;color:#92400e}
-  .b-ok{background:#d1fae5;color:#065f46}
-  .b-parcial{background:#fed7aa;color:#9a3412}
-  .b-nover{background:#fee2e2;color:#991b1b}
-  .b-ficha{background:#e5e7eb;color:#374151}
-
-  .enun{background:var(--fondo);border-left:3px solid var(--suave);padding:.8rem 1rem;
-        margin:.7rem 0;font-size:.95rem}
-  .enun .lit{display:block;font-size:.7rem;color:var(--suave);text-transform:uppercase;
-             letter-spacing:.05em;margin-bottom:.4rem;font-weight:700}
-  ol.alts{margin:.5rem 0 0 1.2rem;padding:0}
-  ol.alts li{margin-bottom:.3rem}
-
-  details{background:var(--fondo);border:1px solid var(--linea);border-radius:9px;
-          padding:.9rem 1.2rem;margin:.7rem 0}
-  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
-  summary::-webkit-details-marker{display:none}
-  summary:before{content:"\25B8  ";font-weight:700}
-  details[open] summary:before{content:"\25BE  "}
-  details[open] summary{margin-bottom:.7rem}
-
-  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-       color:var(--suave);margin:1.1rem 0 .25rem}
-
-  .vd{border-radius:8px;padding:.75rem 1rem;margin:.6rem 0;font-size:.93rem}
-  .vd-ok{background:#f0fdf4;border-left:3px solid var(--verde)}
-  .vd-parcial{background:#fffbeb;border-left:3px solid var(--ambar)}
-  .vd-mal{background:#fef2f2;border-left:3px solid var(--rojo)}
-  .vd .t{font-weight:700;display:block;margin-bottom:.25rem}
-
-  .tri{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.7rem;margin:.8rem 0}
-  .tri > div{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:.7rem .85rem;font-size:.89rem}
-  .tri .h{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
-          margin-bottom:.35rem;padding-bottom:.25rem;border-bottom:1px solid var(--linea)}
-  .tri .f .h{color:var(--morado)}
-  .tri .i .h{color:var(--azul)}
-  .tri .e .h{color:var(--verde)}
-
-  .oral{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:.9rem 1.15rem;margin:.9rem 0;font-size:.93rem}
-  .oral strong{color:#fbbf24}
-  .oral .q{display:block;margin-top:.45rem;padding-left:.85rem;border-left:2px solid #57534e;font-style:italic}
-
-  .amb{background:#f5f3ff;border-left:3px solid var(--morado);padding:.8rem 1rem;margin:.8rem 0;font-size:.92rem}
-  .fuente{font-size:.83rem;color:var(--suave);margin-top:.9rem;padding-top:.6rem;
-          border-top:1px dashed var(--linea)}
-  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.6rem .9rem;margin:.7rem 0;font-size:.92rem}
-  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:.9rem 1.15rem;margin:.9rem 0}
-  .repreg strong{color:#fbbf24}
-  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1rem 1.2rem;margin:.9rem 0}
-  .ecu .f{font-family:ui-monospace,monospace;font-size:1.05rem;text-align:center;
-          padding:.7rem;background:var(--fondo);border-radius:8px;margin-bottom:.7rem}
-  .simb{font-size:.88rem}
-  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
-  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
-  ol.pasos li{margin-bottom:.35rem}
-  .ok-alt{background:#f0fdf4}
-  .no-alt{background:#fef2f2}
-  .salto{margin-top:.9rem;padding-top:.7rem;border-top:1px dashed var(--linea);font-size:.88rem;color:var(--suave)}
-  .salto a{color:var(--azul)}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="21" id="clase-21">
@@ -1705,6 +1611,60 @@ las respuestas: la matriz 6/2/1/7 de la lámina 19, la matriz 3×3 de Galaxy Zoo
 repregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
 </body>
 </html>

@@ -2,73 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Triaje · ¿Qué tipo de problema tengo delante? · Datito</title>
-<style>
-  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
-        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;
-        --morado:#7c3aed}
-  *{box-sizing:border-box}
-  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
-       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
-  main{max-width:900px;margin:0 auto}
-  h1{font-size:1.7rem;margin:0 0 .3rem}
-  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;
-     border-top:1px solid var(--linea)}
-  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
-  .sub{color:var(--suave);margin:0 0 2rem}
-  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;
-        margin:1.1rem 0;font-style:italic}
-  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);
-           margin-top:.5rem}
-  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;
-         margin:1.1rem 0}
-  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;
-        margin:1.1rem 0;font-size:.94rem}
-  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;
-           margin:1.1rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
-  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;
-        vertical-align:top}
-  th{background:var(--fondo);font-weight:600}
-  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
-
-  /* Ciclo */
-  .ciclo{display:flex;flex-wrap:wrap;gap:.45rem;margin:1.2rem 0;align-items:stretch}
-  .etapa{flex:1 1 110px;background:#fff;border:2px solid var(--linea);
-         border-radius:9px;padding:.7rem .5rem;text-align:center;cursor:pointer;
-         transition:.14s}
-  .etapa:hover{border-color:var(--azul);transform:translateY(-2px)}
-  .etapa.on{border-color:var(--azul);background:#eff6ff}
-  .etapa .n{font-size:.68rem;color:var(--suave);font-weight:700}
-  .etapa .t{font-size:.86rem;font-weight:600;margin-top:.2rem;line-height:1.25}
-  #detalle{background:#fff;border:1px solid var(--linea);border-radius:9px;
-           padding:1.1rem 1.3rem;margin-top:.8rem;min-height:8rem}
-  #detalle h4{margin:0 0 .5rem;font-size:1.05rem}
-  #detalle .lbl{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;
-                color:var(--suave);font-weight:700;margin-top:.9rem}
-
-  /* Triaje */
-  .paso{background:#fff;border:1px solid var(--linea);border-radius:9px;
-        padding:1.1rem 1.3rem;margin:.8rem 0}
-  .paso .q{font-weight:700;margin-bottom:.7rem}
-  .op{display:block;width:100%;text-align:left;background:var(--fondo);
-      border:2px solid transparent;border-radius:7px;padding:.6rem .8rem;
-      margin:.3rem 0;cursor:pointer;font:inherit;font-size:.93rem}
-  .op:hover{border-color:var(--azul);background:#eff6ff}
-  #resultado{border-radius:9px;padding:1.2rem 1.4rem;margin-top:1rem;display:none}
-  #resultado.on{display:block}
-  #resultado h4{margin:0 0 .6rem;font-size:1.15rem}
-  button.re{background:#6b7280;color:#fff;border:0;border-radius:7px;
-            padding:.45rem .9rem;cursor:pointer;font-weight:600;font-size:.86rem}
-  button.re:hover{background:#4b5563}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);
-         color:var(--suave);font-size:.85rem}
-  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
-</style>
-</head>
-<body>
-<main>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
 <section class="leccion" data-clase="22" id="clase-22">
@@ -241,153 +181,60 @@ Los ejemplos de las tablas son ilustrativos [DATITO], salvo Melbourne y Galaxy Z
 proyectos reales.
 </footer>
 
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
 </main>
-
-<script>
-const $=id=>document.getElementById(id);
-
-/* ---------- Ciclo ---------- */
-const ETAPAS=[
- {n:'1',t:'Requerimiento',h:'Requerimiento o pregunta',
-  si:'Definir qué se quiere saber y por qué. Traducir una necesidad del negocio en una pregunta que los datos puedan responder.',
-  no:'Todavía no se toca ningún dato. Si ya estás mirando columnas, te saltaste esta etapa.',
-  senal:'«La empresa quiere estimar…», «se necesita predecir…»'},
- {n:'2',t:'Recolección',h:'Recolectar datos',
-  si:'Conseguir los datos: consultas, archivos, scraping, APIs. Decidir qué fuentes son legítimas y trazables.',
-  no:'No se corrige nada aquí. Los datos llegan como estén.',
-  senal:'«¿De dónde saco…?», «¿esta fuente sirve?»'},
- {n:'3',t:'Limpieza',h:'Limpiar los datos',
-  si:'Duplicados, valores fuera de rango, faltantes, tipos incorrectos, inconsistencias, códigos centinela como −999. Estructura: una fila = una observación, una columna = un tipo de cosa.',
-  no:'No se elige algoritmo ni se mide rendimiento. Aquí no hay modelo todavía.',
-  senal:'«N/A mezclado con números», «la columna mezcla días y camiones», «−999 significa mantención»'},
- {n:'4',t:'Exploración',h:'Explorar (EDA)',
-  si:'Mirar distribuciones, centralidad, dispersión, correlaciones, gráficos. Entender qué hay antes de modelar.',
-  no:'No se entrena nada. Un gráfico no es un modelo.',
-  senal:'«¿cómo se distribuye?», «¿hay relación entre…?», histogramas y boxplots'},
- {n:'5',t:'Modelamiento',h:'Modelar',
-  si:'Elegir tipo de problema, features y target, partir los datos, entrenar, ajustar complejidad, comparar modelos.',
-  no:'No se limpia aquí. Si aparece un dato sucio en esta etapa, se vuelve a la 3 — la flecha va en ambos sentidos.',
-  senal:'«¿qué algoritmo?», «¿qué tan complejo?», «¿sobreajusta?»'},
- {n:'6',t:'Comunicación',h:'Visualización y comunicación',
-  si:'Comunicar resultados, beneficios y alcances a quien decide, sin omitir los defectos del modelo (lámina 21 de FCD-02). Para eso: medir sobre datos no vistos, elegir la métrica correcta e interpretarla en el lenguaje del problema.',
-  no:'No se cambia el modelo mirando el test. Si lo haces, el test deja de ser test.',
-  senal:'«¿es bueno este MAE?», «¿cuál llevamos a producción?»'},
- {n:'7',t:'Puesta en marcha',h:'Puesta en marcha',
-  si:'El modelo entra en operación y se monitorea. Los datos reales cambian con el tiempo.',
-  no:'No termina aquí: vuelve al requerimiento.',
-  senal:'«¿sigue funcionando?», «los datos de este año son distintos»'}
-];
-
-const cont=$('ciclo');
-ETAPAS.forEach((e,i)=>{
-  const d=document.createElement('div');
-  d.className='etapa'; d.innerHTML=`<div class="n">${e.n}</div><div class="t">${e.t}</div>`;
-  d.onclick=()=>{
-    document.querySelectorAll('.etapa').forEach(x=>x.classList.remove('on'));
-    d.classList.add('on');
-    $('detalle').innerHTML=
-      `<h4>${e.h}</h4>
-       <div class="lbl">Qué se hace aquí</div><div>${e.si}</div>
-       <div class="lbl">Qué NO se hace aquí</div><div>${e.no}</div>
-       <div class="lbl">Cómo lo reconoces en un enunciado</div><div><em>${e.senal}</em></div>`;
-  };
-  cont.appendChild(d);
-});
-
-/* ---------- Triaje ---------- */
-const ARBOL={
- inicio:{q:'¿Qué te piden hacer con los datos?',o:[
-   ['Estimar o predecir algo',       'target'],
-   ['Agrupar cosas parecidas, sin categorías dadas de antemano','seg'],
-   ['Solo describir qué hay',        'eda'],
-   ['Arreglar la tabla antes de nada','limp']]},
- target:{q:'Eso que hay que predecir, ¿qué clase de valor es?',o:[
-   ['Un número donde los valores intermedios significan algo (precio, horas, kilos)','reg'],
-   ['Una categoría: pertenece a un grupo u otro','clas'],
-   ['Números que son etiquetas: clase 1, clase 2, clase 3','clas']]},
- clas:{q:'¿Cuántas categorías posibles hay?',o:[
-   ['Dos: sí o no',      'bin'],
-   ['Tres o más',        'multi']]},
- bin:{q:'¿Cómo están repartidas las clases?',o:[
-   ['Parecidas en cantidad',                 'bin_eq'],
-   ['Una es mucho más rara que la otra',     'bin_des'],
-   ['No lo sé todavía',                      'bin_ns']]}
-};
-
-const FIN={
- reg:{c:'#059669',t:'Regresión',
-   d:'El target es un número continuo. Los valores intermedios tienen sentido: entre 300 y 400 kg existe 350.',
-   m:'MAE, RMSE, R². <strong>No</strong> exactitud ni precision: en regresión no existe «acertar».',
-   ojo:'Antes de reportar R², recuerda que 0 significa «igual de bueno que predecir el promedio», y puede ser negativo.',
-   ver:[['clase6_regresion.html','la clase completa de regresión'],['regresion_y_costo.html','el laboratorio de la función de coste'],['overfitting_underfitting.html','cuándo el modelo es demasiado simple o demasiado complejo']]},
- bin_eq:{c:'#2563eb',t:'Clasificación binaria, clases equilibradas',
-   d:'Dos categorías repartidas de forma parecida.',
-   m:'Exactitud <strong>sí</strong> es informativa aquí. Acompáñala de la matriz de confusión.',
-   ojo:'Aun con clases equilibradas, decide si un falso positivo y un falso negativo cuestan lo mismo. Casi nunca cuestan igual.',
-   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['matriz_confusion.html','las cinco métricas y su denominador'],['metricas_clasificacion.html','precisión, sensibilidad, F1 y el umbral']]},
- bin_des:{c:'#d97706',t:'Clasificación binaria, clases desbalanceadas',
-   d:'Dos categorías, una mucho más rara. Fraude, enfermedades, fallas.',
-   m:'<strong>F1, precision y recall.</strong> La exactitud engaña: decir siempre «no» acierta casi siempre y no detecta a nadie.',
-   ojo:'Di explícitamente cuál es la clase positiva y por qué. Es lo primero que se evalúa.',
-   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['metricas_clasificacion.html','precisión, sensibilidad, F1 y el umbral'],['roc_auc.html','la curva ROC y el AUC, para comparar sin fijar umbral'],['matriz_confusion.html','mueve la prevalencia y mira qué le pasa a la precisión']]},
- bin_ns:{c:'#7c3aed',t:'Clasificación binaria — primero mira el reparto',
-   d:'No puedes elegir métrica sin saber cómo están repartidas las clases.',
-   m:'Cuenta cuántos hay de cada una. Recién entonces decides.',
-   ojo:'Esto no es un rodeo: elegir métrica sin mirar el balance es el error que el certamen castiga.',
-   ver:[['clasificacion.html','qué es clasificar y cómo se entrena'],['metricas_clasificacion.html','qué métrica elegir según el balance y el umbral'],['matriz_confusion.html','el efecto del desbalance sobre la exactitud']]},
- multi:{c:'#2563eb',t:'Clasificación multiclase',
-   d:'Tres o más categorías. Galaxy Zoo es exactamente esto: ambigua, espiral, elíptica.',
-   m:'<strong>F1-macro</strong> y matriz de confusión por clase. Macro promedia las clases, así que una clase rara pesa igual que una frecuente.',
-   ojo:'Si las clases se llaman 1, 2 y 3, siguen siendo categorías. No es regresión.',
-   ver:[['clasificacion.html','clasificación binaria y multiclase'],['matriz_confusion.html','la matriz por clase, con Galaxy Zoo como segundo caso'],['metricas_clasificacion.html','F1-macro y métricas por clase']]},
- seg:{c:'#7c3aed',t:'Segmentación (no supervisado)',
-   d:'<strong>No hay target.</strong> Nadie te dio las respuestas correctas: el algoritmo agrupa por parecido.',
-   m:'Silueta, inercia. <strong>No</strong> exactitud ni MAE: no hay contra qué compararse.',
-   ojo:'Si en el enunciado aparece «sabemos que estos son X», hay target y entonces NO es segmentación.',
-   nota:'Segmentación no tiene visual propio en esta carpeta. Está en el mapa metodológico del curso, lámina 24 de FCD-03.'},
- eda:{c:'#6b7280',t:'Análisis exploratorio',
-   d:'No hay que predecir nada: hay que entender qué hay.',
-   m:'Centralidad, dispersión, distribuciones, correlaciones, gráficos.',
-   ojo:'Correlación no es causalidad. Es de las cosas más preguntadas.',
-   ver:[['eda.html','análisis exploratorio: centralidad, dispersión, distribuciones y gráficos']]},
- limp:{c:'#dc2626',t:'Calidad y limpieza de datos',
-   d:'La tabla tiene problemas estructurales antes de poder hacer nada con ella.',
-   m:'No hay métrica: hay criterios. Una fila = una observación. Una columna = un tipo de cosa. Los centinelas a nulo.',
-   ojo:'Es la pregunta mejor pagada del Certamen 1: la 9B sola vale 2,0 puntos, la mitad de las ocho cerradas juntas (4,0), y es la pregunta individual de mayor puntaje.',
-   ver:[['limpieza_preparacion.html','calidad y limpieza, con la tabla de camiones manipulable'],['certamen_1.html#p9b','la 9B, con el formato exacto en que se pregunta']]}
-};
-
-let nodo='inicio';
-function pinta(){
-  const n=ARBOL[nodo];
-  $('resultado').classList.remove('on');
-  $('preg').style.display='block';
-  $('q').textContent=n.q;
-  $('ops').innerHTML='';
-  n.o.forEach(([texto,destino])=>{
-    const b=document.createElement('button');
-    b.className='op'; b.textContent=texto;
-    b.onclick=()=>{ if(ARBOL[destino]){nodo=destino;pinta();} else fin(destino); };
-    $('ops').appendChild(b);
-  });
-}
-function fin(k){
-  const f=FIN[k];
-  $('preg').style.display='none';
-  const r=$('resultado');
-  r.style.background=f.c+'14'; r.style.borderLeft='4px solid '+f.c;
-  r.innerHTML=`<h4 style="color:${f.c}">${f.t}</h4>
-    <p>${f.d}</p>
-    <p><strong>Se mide con:</strong> ${f.m}</p>
-    <p><strong>Ojo:</strong> ${f.ojo}</p>
-    ${f.nota ? `<p style="font-size:.9rem"><strong>Sin visual:</strong> ${f.nota}</p>` : ''}
-    ${f.ver ? `<p style="margin-bottom:0;padding-top:.6rem;border-top:1px dashed ${f.c}55">
-      <strong>Para estudiarlo:</strong> ` + f.ver.map(([h,t])=>`<a href="${h}" style="color:${f.c}"><code>${h}</code></a> — ${t}`).join('<br>') + `</p>` : ''}
-    ${['reg','bin_eq','bin_des','bin_ns','multi'].indexOf(k) < 0 ? '' : `<p style="margin-bottom:0;font-size:.88rem;color:#666">Y en cualquiera de estos casos, cómo validarlo: <a href="train_validation_test.html"><code>train_validation_test.html</code></a> y <a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a>; si el error de validación se aleja del de entrenamiento: <a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a>.</p>`}`;
-  r.classList.add('on');
-}
-$('reiniciar').onclick=()=>{nodo='inicio';pinta();};
-pinta();
-</script>
 </body>
 </html>

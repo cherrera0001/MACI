@@ -15,3 +15,4 @@ ts	family	hypothesis	target_file	metric	score	decision	lesson_id
 2026-09-25T22:03:24Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/09_regresion_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
 2026-09-25T22:03:24Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/14_arboles_decision_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
 2026-09-25T22:03:25Z	visual	migrate to template v1	07_DATITO/01_CONCEPTOS/visual/18_redes_neuronales_NEW.html	template_gates	1.0	keep	VIZ-KEEP-001
+2026-09-25T22:04:44Z	visual	migrate to template v1	07_DATITO/02_REFERENCIA/clase6_regresion.html	template_gates	1.0	keep	VIZ-KEEP-001
