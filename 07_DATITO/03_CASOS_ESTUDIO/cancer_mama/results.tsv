@@ -1,0 +1,2 @@
+iter	fecha	hipotesis	cambios	resultado	archivo	nota
+1	2026-09-25	Scatter plot + umbral	Plotly scatter, sliders vib/temp, matriz en vivo	MEJORA	simulador_prediccion_falla.html	CSS variables Datito funcionan; matriz requiere orden calc→display

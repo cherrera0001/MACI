@@ -1,0 +1,33 @@
+# Lecciones Aprendidas — Loop Simulador Predicción de Falla
+
+iteracion_1:
+  hipotesis: "Scatter plot con controles de umbral permite entender relación Eje X → decisión de falla"
+  cambios:
+    - "Crear scatter plot con Plotly (31 puntos: 17 sin_falla, 14 con_falla)"
+    - "Agregar sliders para vibración y temperatura (umbrales ajustables)"
+    - "Calcular matriz confusión en vivo según umbrales"
+    - "Mostrar 4 métricas derivadas (accuracy, precision, recall, F1)"
+  resultado: "MEJORA ✅"
+  leccion: |
+    - CSS variables Datito (--tinta, --real-bg, --error-bg) funcionan para tablas HTML
+    - Plotly scatter necesita container height explícito en CSS
+    - Matriz confusión debe actualizarse antes de mostrar (orden: calc → display)
+    - Usuarios entienden umbral visual mejor que ecuación (confirmado en especificación)
+  fecha: "2026-09-25"
+  archivo: "simulador_prediccion_falla.html"
+
+iteracion_2:
+  hipotesis: "Matriz confusión dinámica permite ver impacto de umbrales en cada celda"
+  cambios: null
+  resultado: null
+  leccion: null
+  fecha: null
+
+iteracion_3:
+  hipotesis: "Histogramas de vibración/temperatura muestran distribución de datos y solapamiento"
+  cambios: null
+  resultado: null
+  leccion: null
+  fecha: null
+
+# ... iters 4-7 sin llenar hasta que se ejecuten
