@@ -721,6 +721,46 @@
   </div>
 </details>
 
+<h3>Ejemplo crítico en salud: dos clases desbalanceadas</h3>
+
+<p>En diagnóstico médico, el desbalance es la regla. Un modelo que ve 50 casos de enfermedad y 350 de ausencia de enfermedad es típico. Mira qué pasa:</p>
+
+<table class="mini">
+  <thead><tr><th></th><th>precisión</th><th>recall</th><th>f1-score</th><th>support</th></tr></thead>
+  <tbody>
+    <tr><th>Clase 1 (rara)</th><td class="num">0,34</td><td class="num">0,96</td><td class="num">0,50</td><td>50</td></tr>
+    <tr><th>Clase 2 (común)</th><td class="num">0,99</td><td class="num">0,73</td><td class="num">0,84</td><td>350</td></tr>
+    <tr><th>macro avg</th><td class="num">0,67</td><td class="num">0,84</td><td class="num"><strong>0,67</strong></td><td>400</td></tr>
+    <tr><th>weighted avg</th><td class="num">0,91</td><td class="num">0,76</td><td class="num"><strong>0,80</strong></td><td>400</td></tr>
+  </tbody>
+</table>
+<p class="fuente">De acuerdo a las métricas derivadas de la matriz de confusión. [DATITO].</p>
+
+<p>La frase que alguien podría soltar: <strong>«El modelo tiene F1-score global del 80 %, lo cual puede considerarse apenas aceptable, especialmente en aplicaciones críticas como la salud.»</strong></p>
+
+<p>Pero eso oculta un problema grave. El 80 % es el <strong>weighted average</strong>: cada clase se pesa por su cantidad de muestras. Como hay 350 muestras de clase 2, ese promedio se la regala casi todo el peso. Miremos qué pasa con la clase rara:</p>
+
+<ul>
+  <li><strong>Clase 1 (enfermedad):</strong> precision 0,34, recall 0,96, <strong>F1 0,50</strong></li>
+  <li><strong>Macro F1:</strong> (0,50 + 0,84) / 2 = <strong>0,67</strong></li>
+</ul>
+
+<p>El macro promedia sin peso: da un tercio de importancia a clase 1 y un tercio a clase 2 (aquí vemos solo dos, pero el procedimiento es igual para N). El macro te dice: «Oye, en la clase rara el F1 es 0,50. En la común es 0,84. En promedio, 0,67.» Y eso es mucho más honesto.</p>
+
+<div class="peligro">
+  <strong>¿Cuál es el problema?</strong> Con precision 0,34 en la clase rara, <strong>solo un tercio de lo que el modelo marca como enfermo lo está realmente</strong>. Los otros dos tercios son pacientes sanos que reciben un tratamiento innecesario. Y con recall 0,96, casi todos los enfermos se detectan. Pero ese 0,96 entra en el promedio con su peso diminuto: 50 muestras frente a 350 de la clase 2. El weighted 0,80 no lo cuenta. [DATITO]
+</div>
+
+<p><strong>Contraste con Galaxy Zoo:</strong> allá los support eran 96, 227 y 677 — el desbalance es fuerte pero no tan extremo. Aquí son 50 y 350, un 7:1, y el weighted sube a 0,80 sin que la clase rara haya mejorado nada. Por eso Galaxy Zoo dice «usa F1-macro»: en salud, en detección de fraudes, en detección de anomalías, la clase rara es la que importa, y el macro la mira sin dejarla ser silenciada por el peso de la mayoritaria.</p>
+
+<details class="resp">
+  <summary>Pregunta de cierre: si solo ves F1 global = 80 %, ¿apruebas el modelo para detectar la clase 1 en salud?</summary>
+  <div class="cuerpo">
+    <p><strong>Respuesta:</strong> No. Mirarías en primer lugar el <strong>F1-macro = 0,67</strong> (no el weighted 0,80), y verías que la clase 1 tiene <strong>F1 = 0,50</strong> y <strong>precision = 0,34</strong>. Un tercio de precisión es inaceptable: dos de cada tres pacientes que marca como enfermo no lo están. Ese número se esconde si solo miras el global 80 %. El macro te obliga a verlo.</p>
+    <p><strong>Fuente:</strong> [DATITO].</p>
+  </div>
+</details>
+
 <div class="certamen">
   <span class="et">El salto que el certamen te puede pedir</span>
   Pasar de una matriz <strong>3×3</strong> a las cuatro casillas VP / FN / FP / VN. Se hace eligiendo una clase como positiva y metiendo <em>todas las demás</em> en «negativo». Haces eso tres veces, una por clase, y de ahí salen los tres F1 que luego promedias. Ese paso —declarar cuál es la positiva— es el mismo de siempre, y sin declararlo el resultado es irreproducible.

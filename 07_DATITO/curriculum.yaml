@@ -288,10 +288,15 @@ conceptos:
     material_local:
       - 02_PROYECTO_FCD/Desafio/REPORT.md
       - 02_PROYECTO_FCD/Desafio/src/04_class0_analysis.py
+      - 07_DATITO/casos_estudio/cancer_mama/matriz_confusion_interpretacion_RESUELTO.md
+      - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
+    casos_estudio:
+      - cancer_mama: "Diagnóstico de cáncer de mama: 114 pacientes, 72 benignos + 42 malignos. Matriz real de Random Forest con interpretación de TP, TN, FP, FN. Vinculación a tu pregunta de certamen sobre doctor y 1000 pacientes."
     pregunta_diagnostico: >-
       En tu matriz de Galaxy Zoo, que celda dice cuantas galaxias espirales
       fueron clasificadas como elipticas? Y por que ese error puede importar mas
-      que el inverso?
+      que el inverso? Ahora: en el caso del cáncer, ¿qué error es más grave:
+      los 3 falsos negativos o los 0 falsos positivos? ¿Por qué?
 
   - id: metricas_clasificacion
     nombre: Accuracy, precision, recall y F1
@@ -301,9 +306,15 @@ conceptos:
     material_local:
       - 02_PROYECTO_FCD/Desafio/REPORT.md
       - 02_PROYECTO_FCD/Desafio/src/05_decision_rule.py
+      - 07_DATITO/casos_estudio/cancer_mama/matriz_confusion_interpretacion_RESUELTO.md
+      - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
+    casos_estudio:
+      - cancer_mama: "Cálculo de accuracy (0.974), precision (1.000), recall (0.929), FPR (0.000) desde la matriz real de Random Forest. Comparación con SVM (0.965 acc, 0.905 recall) y Decision Tree (0.939 acc, 0.881 recall). Por qué balanced accuracy ganó sobre accuracy simple."
     pregunta_diagnostico: >-
       La metrica oficial de Galaxy Zoo es F1-macro y no accuracy. Que problema
-      concreto de ese dataset hace que accuracy sea enganosa?
+      concreto de ese dataset hace que accuracy sea enganosa? En cáncer de mama,
+      ¿por qué recall importa más que accuracy? ¿Es mejor detectar 39 de 42
+      malignos (recall 0.929) o tener 0 falsos positivos (precision 1.000)?
 
   - id: roc_auc
     nombre: ROC y AUC
@@ -316,9 +327,15 @@ conceptos:
     material_local:
       - 02_PROYECTO_FCD/Desafio/REPORT.md
       - 01_DOCUMENTACION/01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md
+      - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
+      - 07_DATITO/casos_estudio/cancer_mama/Presentacion_Hito2_v2_2.pdf
+    casos_estudio:
+      - cancer_mama: "Curvas ROC de tres modelos (SVM 0.991 AUC, Random Forest 0.995 AUC, Decision Tree 0.922 AUC) calculadas sobre el mismo test reservado de 114 pacientes. Visualización de TPR vs FPR y por qué ROC-AUC ordena observaciones mejor que accuracy en desbalance de clases."
     pregunta_diagnostico: >-
       Un modelo tiene AUC 0,90 y accuracy 0,60. Otro tiene AUC 0,70 y accuracy
       0,85. Es posible? Si lo es, que mide cada metrica que la otra no?
+      En cáncer de mama, Random Forest tiene AUC 0.995 vs Decision Tree 0.922.
+      ¿Qué explica esa diferencia si ambos alcanzan recall similar?
 
   - id: arboles_decision
     nombre: Arboles de decision
@@ -327,9 +344,13 @@ conceptos:
     por_que_importa: La pieza base de los tres modelos que siguen.
     material_local:
       - 05_RESULTADOS/resultados_temporal.json
+      - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
+    casos_estudio:
+      - cancer_mama: "Decision Tree entrenado con criterio Gini, profundidad máxima optimizada por validación cruzada 5-fold. Resultados en test: accuracy 0.939, recall 0.881, con 5 falsos negativos. Matriz de confusión e interpretación de por qué tiende a sobreajustar frente a Random Forest."
     pregunta_diagnostico: >-
       Un arbol parte los datos con preguntas del tipo "Rooms <= 3?". Como decide
-      cual pregunta hacer primero?
+      cual pregunta hacer primero? En cáncer de mama, ¿por qué Decision Tree
+      obtiene peor recall (0.881) y más falsos negativos (5) que Random Forest?
 
   - id: random_forest
     nombre: Random Forest
@@ -341,9 +362,15 @@ conceptos:
     material_local:
       - 05_RESULTADOS/resultados_temporal.json
       - 05_RESULTADOS/comparacion_estadistica.json
+      - 07_DATITO/casos_estudio/cancer_mama/preinforme_hito2_v02.pdf
+      - 07_DATITO/casos_estudio/cancer_mama/Presentacion_Hito2_v2_2.pdf
+    casos_estudio:
+      - cancer_mama: "Random Forest ganador del Hito 2: 100 árboles, profundidad máxima 5, criterio Gini. Resultados test: accuracy 0.974, recall 0.929, FPR 0.000, AUC 0.995. Comparación directa con SVM (0.965 acc, 0.905 recall) y Decision Tree (0.939 acc, 0.881 recall). Visualización de matrices de confusión de los tres modelos sobre el mismo test de 114 pacientes."
     pregunta_diagnostico: >-
       Si un arbol solo sobreajusta, por que 300 arboles sobreajustados
-      promediados sobreajustan menos?
+      promediados sobreajustan menos? En cáncer de mama, Random Forest (100 árboles)
+      logra recall 0.929 vs Decision Tree 0.881. ¿Qué hace Random Forest que no hace
+      un árbol individual? ¿Por qué el boostrap y los subconjuntos aleatorios ayudan?
 
   - id: gradient_boosting
     nombre: Gradient Boosting

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matriz de confusión — ingresa datos, calcula al instante</title>
+<style>
+  :root{
+    --tinta:#1c1f24;
+    --tinta2:#4a5058;
+    --papel:#fbfaf7;
+    --caja:#ffffff;
+    --linea:#ddd8cf;
+    --acierto:#2f6b46;
+    --acierto-bg:#e6f0ea;
+    --error:#9b3226;
+    --error-bg:#f6e6e3;
+    --real:#2b5d8c;
+    --real-bg:#e3ecf4;
+    --pred:#8a5a12;
+    --pred-bg:#f6eddc;
+    --total:#5a4a78;
+    --total-bg:#ece8f3;
+    --aviso:#7a5b00;
+    --aviso-bg:#fdf6e0;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--papel); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16.5px; line-height:1.62;
+  }
+  .hoja{max-width:860px; margin:0 auto; padding:34px 26px 90px}
+  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
+  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
+  h2{font-size:1.22rem; margin:52px 0 12px; padding-top:18px; border-top:1px solid var(--linea); letter-spacing:-.01em}
+  h3{font-size:1.02rem; margin:26px 0 8px; color:var(--tinta)}
+  p{margin:0 0 13px}
+  ul,ol{margin:0 0 13px; padding-left:22px}
+  li{margin:0 0 6px}
+  code,.mono{font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace; font-size:.93em}
+  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
+  .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
+  .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
+  .peligro{background:var(--error-bg); border-left:3px solid var(--error); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
+  .clave{background:var(--real-bg); border-left:3px solid var(--real); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
+  .mini{border-collapse:collapse; width:auto; margin:10px 0; font-size:.9rem}
+  .mini th,.mini td{border:1px solid var(--linea); padding:6px 12px; text-align:center}
+  .ok{color:var(--acierto); font-weight:700}
+  .mal{color:var(--error); font-weight:700}
+
+  .input-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px}
+  label{display:block; font-size:.9rem; font-weight:600; color:var(--tinta); margin-bottom:4px}
+  input[type="number"]{width:100%; padding:8px 10px; border:1px solid var(--linea); border-radius:6px; font-size:.95rem; font-family:inherit; background:var(--caja)}
+  input[type="number"]:focus{outline:none; border-color:var(--real); box-shadow:0 0 0 2px rgba(43,93,140,.12)}
+  .botones{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0}
+  .botones button{padding:10px 12px; border:1px solid var(--linea); background:var(--caja); border-radius:6px; font-size:.9rem; font-weight:600; cursor:pointer; color:var(--tinta); transition:all .16s}
+  .botones button:hover{border-color:var(--real); background:var(--real-bg)}
+  .botones button.primario{background:var(--real); color:white; border-color:var(--real)}
+  .botones button.primario:hover{background:#1e4d6d}
+
+  .matriz-tabla{width:100%; border-collapse:collapse; margin:16px 0}
+  .matriz-tabla th{background:var(--real-bg); border:1.6px solid var(--real); padding:8px 10px; text-align:center; font-weight:600; font-size:.9rem}
+  .matriz-tabla td{border:1.6px solid var(--linea); padding:10px; text-align:center; font-size:1rem; font-weight:500}
+  .tp,.tn{color:var(--acierto); background:#f0fdf4}
+  .fp,.fn{color:var(--error); background:var(--error-bg)}
+
+  .metricas-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:18px 0}
+  .metrica{background:var(--caja); border:1px solid var(--linea); border-radius:8px; padding:14px; text-align:center}
+  .metrica-label{font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px}
+  .metrica-valor{font-size:1.8rem; font-weight:700; color:var(--real); font-variant-numeric:tabular-nums}
+  .metrica-formula{font-size:.75rem; color:var(--tinta2); margin-top:6px; font-family:ui-monospace}
+
+  footer{max-width:808px; margin:0 auto 60px; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="hoja">
+  <h1>Matriz de confusión</h1>
+  <p class="sub">Ingresa TP, TN, FP, FN. Calcula todas las métricas automáticamente.</p>
+
+  <div class="caja">
+    <h3>Entrada de datos</h3>
+    <p style="font-size:.9rem; color:var(--tinta2)">Los cuatro números que definen el desempeño: verdaderos positivos, verdaderos negativos, falsos positivos, falsos negativos.</p>
+
+    <div class="input-row">
+      <div>
+        <label for="tp">TP (Verdadero Positivo)</label>
+        <input type="number" id="tp" value="39" min="0">
+      </div>
+      <div>
+        <label for="tn">TN (Verdadero Negativo)</label>
+        <input type="number" id="tn" value="72" min="0">
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div>
+        <label for="fp">FP (Falso Positivo)</label>
+        <input type="number" id="fp" value="0" min="0">
+      </div>
+      <div>
+        <label for="fn">FN (Falso Negativo)</label>
+        <input type="number" id="fn" value="3" min="0">
+      </div>
+    </div>
+
+    <div class="botones">
+      <button class="primario" onclick="calcular()">Calcular</button>
+      <button onclick="cargar_ejemplo('cancer')">Cáncer de Mama</button>
+    </div>
+  </div>
+
+  <h2>Resultados</h2>
+
+  <h3>Matriz de confusión</h3>
+  <table class="matriz-tabla">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Predicción: Positivo</th>
+        <th>Predicción: Negativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Verdad: Positivo</th>
+        <td class="tp"><span id="tp_display">39</span></td>
+        <td class="fn"><span id="fn_display">3</span></td>
+      </tr>
+      <tr>
+        <th>Verdad: Negativo</th>
+        <td class="fp"><span id="fp_display">0</span></td>
+        <td class="tn"><span id="tn_display">72</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="mini">
+    <tr><th>Total de observaciones</th><td><span id="total">114</span></td></tr>
+    <tr><th>Predicciones correctas (TP + TN)</th><td><span id="correctas">111</span></td></tr>
+    <tr><th>Predicciones incorrectas (FP + FN)</th><td><span id="incorrectas">3</span></td></tr>
+  </table>
+
+  <h3>Métricas principales</h3>
+  <div class="metricas-grid">
+    <div class="metrica">
+      <div class="metrica-label">Accuracy</div>
+      <div class="metrica-valor" id="accuracy">0.974</div>
+      <div class="metrica-formula">(TP+TN) / Total</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">Precision</div>
+      <div class="metrica-valor" id="precision">1.000</div>
+      <div class="metrica-formula">TP / (TP+FP)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">Recall</div>
+      <div class="metrica-valor" id="recall">0.929</div>
+      <div class="metrica-formula">TP / (TP+FN)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">Specificity</div>
+      <div class="metrica-valor" id="specificity">1.000</div>
+      <div class="metrica-formula">TN / (TN+FP)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">F1-Score</div>
+      <div class="metrica-valor" id="f1">0.963</div>
+      <div class="metrica-formula">2 × (P×R)/(P+R)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">FPR</div>
+      <div class="metrica-valor" id="fpr">0.000</div>
+      <div class="metrica-formula">FP / (FP+TN)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">FNR</div>
+      <div class="metrica-valor" id="fnr">0.071</div>
+      <div class="metrica-formula">FN / (FN+TP)</div>
+    </div>
+    <div class="metrica">
+      <div class="metrica-label">Balanced Accuracy</div>
+      <div class="metrica-valor" id="balanced_acc">0.964</div>
+      <div class="metrica-formula">(Recall+Spec)/2</div>
+    </div>
+  </div>
+
+  <div class="clave">
+    <strong>Interpretación:</strong> Estos ocho números derivados de TP, TN, FP, FN son todas las métricas que necesitas para evaluar un clasificador binario. Cada una divide por un universo distinto, por eso no coinciden.
+  </div>
+
+  <div class="peligro">
+    <strong>En salud y diagnóstico:</strong> No mires solo accuracy. Mira recall (¿cuántos enfermos detecta?) y precision (¿cuántos de los que marca como enfermos lo están realmente?). El trade-off entre ellos no lo decide el modelo: lo decides tú según el costo de cada error.
+  </div>
+
+  <p class="fuente">[DATITO] — Herramienta interactiva para experimentar con matrices de confusión. Basado en el caso del cáncer de mama (114 test, Random Forest).</p>
+
+</div>
+
+<script>
+  function calcular() {
+    const tp = parseInt(document.getElementById('tp').value) || 0;
+    const tn = parseInt(document.getElementById('tn').value) || 0;
+    const fp = parseInt(document.getElementById('fp').value) || 0;
+    const fn = parseInt(document.getElementById('fn').value) || 0;
+
+    document.getElementById('tp_display').textContent = tp;
+    document.getElementById('tn_display').textContent = tn;
+    document.getElementById('fp_display').textContent = fp;
+    document.getElementById('fn_display').textContent = fn;
+
+    const total = tp + tn + fp + fn;
+    const correctas = tp + tn;
+    const incorrectas = fp + fn;
+
+    document.getElementById('total').textContent = total;
+    document.getElementById('correctas').textContent = correctas;
+    document.getElementById('incorrectas').textContent = incorrectas;
+
+    const accuracy = total > 0 ? (correctas / total).toFixed(3) : '—';
+    const precision = (tp + fp) > 0 ? (tp / (tp + fp)).toFixed(3) : '—';
+    const recall = (tp + fn) > 0 ? (tp / (tp + fn)).toFixed(3) : '—';
+    const specificity = (tn + fp) > 0 ? (tn / (tn + fp)).toFixed(3) : '—';
+    const fpr = (fp + tn) > 0 ? (fp / (fp + tn)).toFixed(3) : '—';
+    const fnr = (fn + tp) > 0 ? (fn / (fn + tp)).toFixed(3) : '—';
+
+    let f1 = '—';
+    if (precision !== '—' && recall !== '—') {
+      const p = parseFloat(precision);
+      const r = parseFloat(recall);
+      if (p + r > 0) f1 = (2 * p * r / (p + r)).toFixed(3);
+    }
+
+    const balanced_acc = (recall !== '—' && specificity !== '—')
+      ? ((parseFloat(recall) + parseFloat(specificity)) / 2).toFixed(3)
+      : '—';
+
+    document.getElementById('accuracy').textContent = accuracy;
+    document.getElementById('precision').textContent = precision;
+    document.getElementById('recall').textContent = recall;
+    document.getElementById('specificity').textContent = specificity;
+    document.getElementById('f1').textContent = f1;
+    document.getElementById('fpr').textContent = fpr;
+    document.getElementById('fnr').textContent = fnr;
+    document.getElementById('balanced_acc').textContent = balanced_acc;
+  }
+
+  function cargar_ejemplo(tipo) {
+    if (tipo === 'cancer') {
+      document.getElementById('tp').value = '39';
+      document.getElementById('tn').value = '72';
+      document.getElementById('fp').value = '0';
+      document.getElementById('fn').value = '3';
+    }
+    calcular();
+  }
+
+  calcular();
+</script>
+</body>
+</html>
