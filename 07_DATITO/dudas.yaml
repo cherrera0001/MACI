@@ -1,0 +1,4 @@
+# dudas.yaml — Dudas resueltas durante sesiones
+# Formato para inyectar en visuales
+
+dudas: []  # Sin dudas logueadas aún (sesión actual)

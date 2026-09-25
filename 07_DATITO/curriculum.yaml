@@ -1,0 +1,53 @@
+# curriculum.yaml — Conceptos del currículo
+
+conceptos:
+  - id: fundamentos_ciencia_datos
+    nombre: "Fundamentos"
+  
+  - id: datos_features_target
+    nombre: "Datos, features y target"
+  
+  - id: eda
+    nombre: "EDA"
+  
+  - id: limpieza_preparacion
+    nombre: "Limpieza"
+  
+  - id: train_validation_test
+    nombre: "Train/test split"
+  
+  - id: validacion_cruzada
+    nombre: "Validación cruzada"
+  
+  - id: generalizacion
+    nombre: "Generalización"
+  
+  - id: overfitting_underfitting
+    nombre: "Overfitting"
+  
+  - id: regresion
+    nombre: "Regresión"
+  
+  - id: clasificacion
+    nombre: "Clasificación"
+  
+  - id: matriz_confusion
+    nombre: "Matriz de confusión"
+  
+  - id: metricas_clasificacion
+    nombre: "Métricas"
+  
+  - id: roc_auc
+    nombre: "ROC/AUC"
+  
+  - id: arboles_decision
+    nombre: "Árboles"
+  
+  - id: ensambles
+    nombre: "Ensambles"
+  
+  - id: redes_neuronales
+    nombre: "Redes neuronales"
+  
+  - id: deep_learning
+    nombre: "Deep learning"

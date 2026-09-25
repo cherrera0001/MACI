@@ -1,0 +1,88 @@
+# clases.yaml — Mapeo de clases y tópicos cubiertos
+# Formato simplificado para construir_navegacion.py
+
+clases:
+  1:
+    titulo: "Fundamentos en Ciencia de Datos"
+    fecha: "2026-06-19"
+    concepto: fundamentos_ciencia_datos
+
+  2:
+    titulo: "Datos, filas, columnas, features y target"
+    fecha: "2026-06-26"
+    concepto: datos_features_target
+
+  3:
+    titulo: "EDA"
+    fecha: "2026-07-03"
+    concepto: eda
+
+  4:
+    titulo: "Limpieza y preparación"
+    fecha: "2026-07-10"
+    concepto: limpieza_preparacion
+
+  5:
+    titulo: "Train, validation, test"
+    fecha: "2026-07-17"
+    concepto: train_validation_test
+
+  6:
+    titulo: "Validación cruzada"
+    fecha: "2026-07-24"
+    concepto: validacion_cruzada
+
+  7:
+    titulo: "Generalización"
+    fecha: "2026-07-31"
+    concepto: generalizacion
+
+  8:
+    titulo: "Overfitting y underfitting"
+    fecha: "2026-08-07"
+    concepto: overfitting_underfitting
+
+  9:
+    titulo: "Regresión"
+    fecha: "2026-08-14"
+    concepto: regresion
+
+  10:
+    titulo: "Clasificación"
+    fecha: "2026-08-21"
+    concepto: clasificacion
+
+  11:
+    titulo: "Matriz de confusión"
+    fecha: "2026-08-28"
+    concepto: matriz_confusion
+
+  12:
+    titulo: "Métricas de clasificación"
+    fecha: "2026-09-04"
+    concepto: metricas_clasificacion
+
+  13:
+    titulo: "ROC y AUC"
+    fecha: "2026-09-11"
+    concepto: roc_auc
+
+  14:
+    titulo: "Árboles de decisión"
+    fecha: "2026-09-18"
+    concepto: arboles_decision
+
+  15:
+    titulo: "Ensambles"
+    fecha: "2026-09-25"
+    concepto: ensambles
+
+  16:
+    titulo: "Redes neuronales"
+    fecha: "2026-10-02"
+    concepto: redes_neuronales
+
+  17:
+    titulo: "Deep learning"
+    fecha: "2026-10-09"
+    concepto: deep_learning
