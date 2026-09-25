@@ -25,8 +25,11 @@ Datito, quiero entender validación cruzada
 |---|---|---|
 | `/datito` | Sesión de estudio: problema → tu respuesta → diagnóstico | Conversación |
 | `/datito-progreso` | Informe de estado. Solo lectura | Conversación |
-| `/datito-visual <concepto>` | Genera un HTML explicativo | Aislado |
+| `/datito-visual <concepto>` | HTML **solo** desde `_TEMPLATE_CANONICO.html` | Aislado |
+| `/datito-loop` | Aprende de errores de construcción (keep/discard) | Aislado |
 | `/datito-corregir` | Corrige un lote de respuestas escritas | Aislado |
+
+Template canónico y learning loop: `07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md`.
 
 ### Por qué dos corren aislados y dos no
 

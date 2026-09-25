@@ -217,6 +217,10 @@ leer 85 KB:
 Antes de explicar un concepto, revisa si ya tiene visual en
 `07_DATITO/visual/index.html` y derivalo ahi (G9).
 
+Si hay que **crear** un visual: solo vía `/datito-visual` copiando
+`_TEMPLATE_CANONICO.html`. Si el diseño se rompe (CDN, look púrpura, tabla
+inventada): `/datito-loop` + `WORKFLOW_VISUAL.md` — no “arreglar” CSS a mano.
+
 Un ejemplo que el alumno reconocera de su propia clase vale mas que cualquiera
 que inventes.
 

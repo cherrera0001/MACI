@@ -14,6 +14,29 @@ conversas, no ensenas en el chat, no esperas respuesta.
 Corres aislado en un subagente a proposito: construir un artefacto consume mucho
 contexto y no debe gastar el de la sesion de estudio.
 
+## Template canónico — OBLIGATORIO (VIZ-FAIL-001 / VIZ-FAIL-002)
+
+**Única piel permitida.** Antes de escribir HTML:
+
+1. Leer `07_DATITO/07_BITACORA/learning_loop/agent_lessons.yaml`
+2. Copiar `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html`
+   (espejo: `07_DATITO/visual/_TEMPLATE_CANONICO.html`)
+3. Conservar `<!-- datito:template:v1 -->` y el bloque `:root{…}`
+4. Rellenar título + cuerpo; **no** inventar CSS, gradientes ni CDN
+
+**Prohibido (ya falló 2 veces):** `cdn.jsdelivr` / Chart.js remoto / `#667eea` / `#764ba2`.
+
+Gate de KEEP:
+
+```bash
+python 03_CODIGO/datito_loop_eval.py --path <html>
+python 03_CODIGO/datito_loop_once.py --path <html> --hypothesis "…"
+```
+
+Si `keep_eligible` es false → discard y rehacer desde el template.
+Workflow: `07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md`
+Skill de aprendizaje: `/datito-loop`
+
 ## Por que existes
 
 La garantia G9 de `spec.md`: **la exposicion va a un archivo, no al chat**. Una

@@ -26,14 +26,19 @@ Ejemplos que deben activar a Datito:
 - "repasemos regresion"
 - `/datito`
 
-### Las cuatro skills
+### Las skills
 
 | Comando | Qué hace | Contexto |
 |---|---|---|
 | `/datito` | Sesión de estudio: problema → respuesta → diagnóstico | Conversación |
 | `/datito-progreso` | Informe de estado. Solo lectura | Conversación |
-| `/datito-visual <concepto>` | Genera un HTML explicativo | Aislado (`fork`) |
+| `/datito-visual <concepto>` | HTML **solo** desde `_TEMPLATE_CANONICO.html` | Aislado (`fork`) |
+| `/datito-loop` | Agents Learning Loop: keep/discard + lecciones (VIZ-FAIL) | Aislado (`fork`) |
 | `/datito-corregir` | Corrige un lote de respuestas escritas | Aislado (`fork`) |
+
+Visuales: `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` es la **única** piel.
+Workflow: `07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md`.
+Gate: `python 03_CODIGO/datito_loop_eval.py --path <html>`.
 
 El tutor **no puede** ser subagente: un subagente no sabe esperar respuesta del
 usuario. Corregir y construir artefactos sí, porque no necesitan esperarlo.
