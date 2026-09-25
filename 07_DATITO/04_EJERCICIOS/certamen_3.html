@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certamen 3 FCD 2026 · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<!-- Inyectada por construir_navegacion.py -->
+<!-- datito:nav:fin -->
+
+<h1>Certamen 3: Clasificación, Regresión y IA</h1>
+<p class="sub">Examen FCD 2026 · 6 puntos · 3 preguntas</p>
+
+<div class="clave">
+<strong>Qué vas a poder hacer.</strong> Graficar curvas ROC, comparar modelos, interpretar métricas y explicar arquitecturas de agentes IA.
+</div>
+
+<h2>Pregunta 1: Curva ROC (2 puntos)</h2>
+
+<div class="panel">
+<strong>Qué pasó:</strong> Se proporcionan dos gráficos del Modelo 1 que muestran cómo varían VP, FN, FP, VN conforme cambia el parámetro de sensibilidad α de -2 a 4.
+</div>
+
+<h3>a) Dibujar ROC del Modelo 1</h3>
+<p>Usando los datos de los gráficos, calcula TPR y FPR para cada α, luego grafica la curva ROC.</p>
+
+<table>
+<tr><th>α</th><th>VP</th><th>FN</th><th>FP</th><th>VN</th><th>TPR</th><th>FPR</th></tr>
+<tr><td>-2</td><td>0</td><td>10</td><td>5</td><td>0</td><td>0.0</td><td>1.0</td></tr>
+<tr><td>1</td><td>8</td><td>2</td><td>2</td><td>3</td><td>0.8</td><td>0.4</td></tr>
+<tr><td>2</td><td>10</td><td>0</td><td>2</td><td>3</td><td>1.0</td><td>0.4</td></tr>
+</table>
+
+<svg width="400" height="400" style="border:1px solid #ddd; display:block; margin:1rem 0; background:#fff">
+  <line x1="50" y1="350" x2="350" y2="350" stroke="#999" stroke-width="2"/>
+  <line x1="50" y1="350" x2="50" y2="50" stroke="#999" stroke-width="2"/>
+  <line x1="50" y1="350" x2="350" y2="50" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+  <circle cx="350" cy="350" r="4" fill="#2563eb"/>
+  <circle cx="200" cy="150" r="4" fill="#2563eb"/>
+  <circle cx="200" cy="50" r="4" fill="#2563eb"/>
+  <circle cx="50" cy="350" r="4" fill="#2563eb"/>
+  <text x="375" y="355" font-size="12">FPR</text>
+  <text x="25" y="35" font-size="12">TPR</text>
+</svg>
+
+<ol class="pasos">
+<li>Calcula TPR = VP/(VP+FN) y FPR = FP/(FP+VN)</li>
+<li>Grafica puntos (FPR, TPR)</li>
+<li>Conecta en orden de α</li>
+</ol>
+
+<details class="resp">
+<summary>Respuesta: Curva ROC dibujada</summary>
+<p><strong>Respuesta:</strong> Gráfico con 7 puntos conectados, (0,0) a (1,1), principalmente arriba de diagonal.</p>
+<p><strong>Resolución:</strong> TPR crece de 0 a 1.0. FPR primero 1.0, baja a 0.4, sube a 1.0. Área bajo curva > 0.5.</p>
+<p><strong>Error típico:</strong> Graficar VP vs FN en lugar de TPR vs FPR; invertir ejes.</p>
+</details>
+
+<h3>b) ¿Qué modelo es mejor?</h3>
+<p>Comparar Modelo 1 (del gráfico anterior) con Modelo 2 (curva ROC dada).</p>
+
+<details class="resp">
+<summary>Respuesta: Modelo 2</summary>
+<p><strong>¿Por qué?</strong> Modelo 2 está arriba-izquierda (mayor AUC), mejor discriminación.</p>
+</details>
+
+<h3>c) Umbral para detectar 100% de enfermos</h3>
+<p>1.000 pacientes/mes, 200 enfermos reales. ¿Qué α para TPR=1.0?</p>
+
+<details class="resp">
+<summary>Respuesta: α = 2</summary>
+<p><strong>Justificación:</strong> TPR=1.0 para α ∈ {2,3,4}. α=2 tiene menor FP.</p>
+</details>
+
+<h3>d) Falsos positivos mensuales</h3>
+<p>Para α=2: FPR=0.4. ¿Cuántos falsos positivos entre 800 sanos?</p>
+
+<details class="resp">
+<summary>Respuesta: 320 pacientes</summary>
+<p><strong>Cálculo:</strong> 0.4 × 800 = 320.</p>
+</details>
+
+<h2>Pregunta 2: Regresión Polinomial (2 puntos)</h2>
+
+<div class="panel">
+<strong>Qué pasó:</strong> Se ajustan modelos de regresión polinomial (grados 1-10) con datos de consumo eléctrico. Se miden RMSE en entrenamiento y prueba para cada grado.
+</div>
+
+<h3>a) ¿Usar grado 10?</h3>
+<p>El analista propone grado 10 porque tiene RMSE entrenamiento = 6 (mínimo). Pero RMSE prueba = 79. ¿Es buena decisión?</p>
+
+<details class="resp">
+<summary>Respuesta: NO</summary>
+<p><strong>¿Por qué?</strong> Gap = 73 indica overfitting severo. Usar RMSE prueba, no entrenamiento.</p>
+</details>
+
+<h3>b) Grado óptimo para predicciones futuras</h3>
+<p>Grados 1-10: RMSE prueba = [62, 43, 30, 34, 79]. Elegir.</p>
+
+<details class="resp">
+<summary>Respuesta: Grado 3</summary>
+<p><strong>Justificación:</strong> RMSE prueba = 30 (menor). Gap = 3 (generaliza bien).</p>
+</details>
+
+<h3>c) Interpretar media, desv.std, RMSE (grado 3)</h3>
+<p>Media error = 3 kWh. Desv.std = 30 kWh. RMSE = 30 kWh.</p>
+
+<details class="resp">
+<summary>Respuesta: Interpretación contextualizada</summary>
+<p><strong>Media:</strong> Sesgo sistemático: modelo subestima 3 kWh.</p>
+<p><strong>Desv.std:</strong> Variabilidad: ±30 kWh alrededor de esa media.</p>
+<p><strong>RMSE:</strong> Error típico = 30 kWh (raíz de media de errores al cuadrado).</p>
+</details>
+
+<h2>Pregunta 3: IA, Datos y Agentes (2 puntos)</h2>
+
+<div class="panel">
+<strong>Qué pasó:</strong> Una empresa de mantenimiento industrial planea incorporar IA a sus procesos. Observan gráficos de adopción global, histogramas de datos de sensores con problemas de calibración, y requieren asistencia inteligente a técnicos.
+</div>
+
+<h3>a) Dos conclusiones sobre adopción IA</h3>
+<p>El gráfico McKinsey muestra: 20% de organizaciones usaban IA en 2017, creció a 88% en 2025. Pero en la barra de desglose 2025, solo 7% está "completamente desplegada". ¿Qué implica esta brecha?</p>
+
+<details class="resp">
+<summary>Respuesta: Brecha adopción-integración</summary>
+<p><strong>Conclusión 1:</strong> Adopción crece exponencialmente (68 puntos).</p>
+<p><strong>Conclusión 2:</strong> Solo 7% está integrada → 81% usa IA superficialmente.</p>
+</details>
+
+<h3>b) Problema de calidad: histograma bimodal</h3>
+<p>Dos proveedores de sensores, distribuciones separadas en ~60°C y ~140°C.</p>
+
+<details class="resp">
+<summary>Respuesta: Calibración diferente</summary>
+<p><strong>Causa:</strong> Offset sistemático (~80°C) entre proveedores.</p>
+<p><strong>Corrección:</strong> Estandarizar: restar media por proveedor.</p>
+</details>
+
+<h3>c) Dos limitaciones de LLM aislado</h3>
+
+<details class="resp">
+<summary>Respuesta: Alucinaciones + Sin datos reales</summary>
+<p><strong>Limitación 1:</strong> Inventa información (alucinaciones).</p>
+<p><strong>Limitación 2:</strong> No accede a sensores ni BD en tiempo real.</p>
+<p><strong>Solución:</strong> Agente basado en LLM (con herramientas externas).</p>
+</details>
+
+<h3>d) Por qué Agente > LLM + secuencia de acciones</h3>
+
+<ol class="pasos">
+<li>LLM recibe: "Revisa sensor y genera orden si anomalía"</li>
+<li>Llama: obtener_temperatura() → 165°C (dato real)</li>
+<li>Razona: 165°C > 160°C → anómalo</li>
+<li>Llama: buscar_manual() → instrucciones reales de BD</li>
+<li>Llama: crear_orden_inspección() → orden CREADA en sistema</li>
+</ol>
+
+<details class="resp">
+<summary>Respuesta: Agente accede a datos + ejecuta acciones</summary>
+<p><strong>¿Por qué Agente?</strong> LLM solo genera texto. Agente: razona + accede datos + ejecuta.</p>
+<p><strong>Roles:</strong> LLM=cerebro, Datos=ojos, Herramientas=brazos.</p>
+</details>
+
+<div class="peligro">
+<strong>Errores que castiga el examen.</strong>
+<ul>
+<li>Confundir VP con TPR; invertir ejes en ROC</li>
+<li>Elegir grado 10 por RMSE bajo en entrenamiento</li>
+<li>No escalar falsos positivos a población real</li>
+<li>Confundir LLM aislado con arquitectura de agentes</li>
+<li>Declarar "listo" sin tablas, pasos explícitos, details.resp</li>
+</ul>
+</div>
+
+<footer>
+Certamen 3 FCD 2026 — Template Canónico v1 · <a href="https://github.com/cherrera0001/MACI">MACI</a>
+</footer>
+
+</main>
+</body>
+</html>

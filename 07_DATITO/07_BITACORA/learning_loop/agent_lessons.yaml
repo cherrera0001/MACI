@@ -1,0 +1,53 @@
+# agent_lessons.yaml — memoria del Agents Learning Loop (Datito constructor)
+# Se LEE al inicio de cada /datito-visual y /datito-loop.
+# Se ESCRIBE solo tras keep|discard|crash con evidencia.
+
+version: 1
+updated: "2026-09-25"
+
+# --- Failure patterns (NO repetir) ---
+failure_patterns:
+
+  - id: VIZ-FAIL-001
+    date: "2026-09-25"
+    family: visual
+    summary: "Visual de certamen generado con diseño ajeno al template Datito"
+    evidence:
+      - "07_DATITO/visual/certamen3_p1a_roc_detallado.html usó Chart.js vía cdn.jsdelivr.net"
+      - "Gradiente púrpura #667eea → #764ba2 (look genérico AI), no tokens :root Datito"
+      - "Rompe skill datito-visual: sin conexión + paleta sobria"
+    root_cause: "Se inventó HTML desde cero en lugar de copiar el template canónico"
+    keep_rule: >
+      Todo HTML nuevo DEBE partir de
+      07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html
+      (marcador <!-- datito:template:v1 -->). Prohibido CDN y #667eea.
+    metric_gate: "datito_loop_eval.py score>=1.0 en anti_cdn y template_marker"
+
+  - id: VIZ-FAIL-002
+    date: "2026-09-25"
+    family: visual
+    summary: "Segunda rotura: profundidad/diseño inconsistente tras 'listo' prematuro"
+    evidence:
+      - "certamen3_examen_fcd2026.html: details cortos sin puente figura→tabla"
+      - "Tabla VP/FN/FP/VN inventada (FP=5 en α bajas) contradecía el PDF del examen"
+      - "Usuario: 'se pierde, no logras explicar cómo a partir de estas imágenes llegaste a la tabla'"
+    root_cause: >
+      Optimizar cobertura P1–P3 en un solo pass sin checklist de profundidad
+      ni lectura fiel de la figura del enunciado
+    keep_rule: >
+      Por subpregunta: Qué pasó (lectura de figura) + pasos + números del PDF
+      + details + resp + errores + checklist. No KEEP si la tabla no sale de la figura.
+    metric_gate: "bloques_profundidad == 6 por subpregunta; cifras contrastadas con PDF"
+
+# --- Keep rules (patrones que SÍ mejorarón) ---
+keep_patterns:
+
+  - id: VIZ-KEEP-001
+    date: "2026-09-25"
+    family: visual
+    summary: "Añadir explicación figura→tabla sin rediseñar layout"
+    evidence: "Usuario pidió no cambiar diseño; sí sumar explicación — funcionó"
+    keep_rule: "Preferir insertar bloques .clave/.nota/.pasos dentro del template; no rehacer CSS"
+
+# --- Inbox: hipótesis pendientes (las llenan errores del alumno o fallos de build) ---
+inbox: []
