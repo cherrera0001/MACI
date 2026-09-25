@@ -70,15 +70,30 @@ La navegación regenerada es un **"nice-to-have"** para:
 
 ---
 
-## Recomendación para Siguiente Sesión
+## Solución Implementada ✅
 
-**Prioritario:** Opción C (script simple que genera index.html)
-- Máximo esfuerzo: 15 min
-- Máximo output: navegación funcional
+**generar_index.py (150 líneas)**
+- Lee grafo.yaml
+- Genera index.html (7.9K, offline)
+- Enlaza los 13 archivos KEEP
+- Actualizable: `python 03_SCRIPTS/generar_index.py`
 
-**No prioritario:** Debug construir_navegacion.py
-- Diseño muy complejo para este proyecto
-- Requiere refactor significativo
+**Status:** NAVEGACIÓN COMPLETADA
+
+---
+
+## Nota Técnica: Construir_navegacion.py
+
+Script original descartado por:
+- Líneas: ~950 (muy complejo)
+- Dependencias: 5 YAML con estructuras específicas
+- Errores anidados múltiples (CLASES_YAML → TypeError → KeyError)
+- Esfuerzo refactor: 2+ horas para poco beneficio
+
+**Recomendación:** Si alguna sesión necesita inyectar nav en cada HTML:
+- Usar generar_index.py (ya existe)
+- O crear script minimalista nuevo (~50 líneas)
+- No resucitar construir_navegacion.py sin rediseño
 
 ---
 

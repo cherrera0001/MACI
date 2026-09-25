@@ -89,8 +89,10 @@ def resolver_rutas(config):
 
 
 RUTAS = resolver_rutas(cargar_config())
-VISUAL = str(RUTAS["visual"])
+# Fallback para visuales migrados en 01_CONCEPTOS/visual
+VISUAL = str(RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual") if (RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual").exists() else str(RUTAS["visual"])
 DUDAS = str(RUTAS["dudas"])
+CLASES_YAML = str(RUTAS["clases"])
 ESTADO_DUDA = {
     "resuelta": "resuelta en la sesión",
     "abierta": "quedó abierta en la sesión: aquí está la respuesta",
@@ -101,27 +103,22 @@ ESTADO_DUDA = {
 # Catalogo: que visual cubre que concepto. Los conceptos que comparten un
 # artefacto apuntan a su ancla.
 VISUAL_DE = {
-    "fundamentos_ciencia_datos": "fundamentos_ciencia_datos.html",
-    "datos_features_target": "datos_features_target.html",
-    "eda": "eda.html",
-    "limpieza_preparacion": "limpieza_preparacion.html",
-    "train_validation_test": "train_validation_test.html",
-    "validacion_cruzada": "validacion_cruzada.html",
-    "generalizacion": "generalizacion.html",
-    "overfitting_underfitting": "overfitting_underfitting.html",
-    "regresion": "clase6_regresion.html",
-    "clasificacion": "clasificacion.html",
-    "matriz_confusion": "matriz_confusion.html",
-    "metricas_clasificacion": "metricas_clasificacion.html",
-    "roc_auc": "roc_auc.html",
-    "arboles_decision": "arboles_y_ensambles.html#arboles",
-    "random_forest": "arboles_y_ensambles.html#random-forest",
-    "gradient_boosting": "arboles_y_ensambles.html#boosting",
-    "ensembles": "arboles_y_ensambles.html#ensambles",
-    "redes_neuronales": "redes_neuronales.html",
-    "deep_learning": "dl_llm_agentes.html#deep-learning",
-    "llm": "dl_llm_agentes.html#llm",
-    "agentes_ia": "dl_llm_agentes.html#agentes",
+    "fundamentos_ciencia_datos": "01_fundamentos.html",
+    "datos_features_target": "02_datos_features_target.html",
+    "eda": "03_eda.html",
+    "limpieza_preparacion": "04_limpieza_preparacion.html",
+    "train_validation_test": "05_train_validation_test.html",
+    "validacion_cruzada": "06_validacion_cruzada.html",
+    "generalizacion": "07_generalizacion.html",
+    "overfitting_underfitting": "08_overfitting_underfitting.html",
+    "regresion": "09_regresion.html",
+    "clasificacion": "10_clasificacion.html",
+    "matriz_confusion": "11_matriz_confusion.html",
+    "metricas_clasificacion": "12_metricas_clasificacion.html",
+    "roc_auc": "13_roc_auc.html",
+    "arboles_decision": "14_arboles_decision.html",
+    "redes_neuronales": "18_redes_neuronales.html",
+    "deep_learning": "19_deep_learning.html",
 }
 
 # Preguntas de certamen que entrena cada concepto. Fuente: patron_evaluacion.md
