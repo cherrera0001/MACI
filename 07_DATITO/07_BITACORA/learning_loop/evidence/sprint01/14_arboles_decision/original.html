@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="15" id="clase-15">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 15 de 22</b></div>
+<div class="barra"><span style="width:68.2%"></span></div>
+<div class="lt">Clase 15 · Árboles de decisión <span class="apagado">(este archivo contiene las clases 15 y 16)</span></div>
+<p><b>Objetivo.</b> Calcular la impureza de Gini de un corte y explicar cómo el árbol elige sus preguntas.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
+<div><span class="et">habilita</span><a href="#random-forest">Clase 16 · Random Forest y ensambles</a></div>
+<div><span class="et">tiempo estimado</span>~35 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Calcula el Gini ponderado de dos cortes y elige el mejor.</li>
+<li><b>Actividad final:</b> El ejercicio de Gini con los números del profesor.</li>
+<li><b>Criterio de dominio:</b> Obtiene 0,46875 para un nodo con 3/8 y 5/8, y elige el corte de mayor ganancia.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="15"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<section class="leccion" data-clase="16" id="clase-16">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 16 de 22</b></div>
+<div class="barra"><span style="width:72.7%"></span></div>
+<div class="lt">Clase 16 · Random Forest y ensambles <span class="apagado">(este archivo contiene las clases 15 y 16)</span></div>
+<p><b>Objetivo.</b> Explicar por qué combinar modelos mejora solo si sus errores no están correlacionados.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="#arboles">Clase 15 · Árboles de decisión</a></div>
+<div><span class="et">habilita</span><a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></div>
+<div><span class="et">tiempo estimado</span>~35 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Distingue número de modelos de diversidad, y explica el bootstrap de filas y los atributos al azar.</li>
+<li><b>Actividad final:</b> El simulador de votación con correlación entre errores.</li>
+<li><b>Criterio de dominio:</b> Argumenta con la correlación de los errores (C2 P1) y explica la importancia de variables por conteo.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="16"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="roc_auc.html">← Clase 14 · ROC-AUC y elección del umbral</a></span><a href="index.html">Índice del curso</a><span><a href="redes_neuronales.html">Clase 17 · Redes neuronales →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><a href="#arboles">Arboles de decision</a></span> · <span class="et">viene de</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a> · <span class="et">habilita</span><a href="#random-forest">Random Forest</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 7 · peso en certamen baja (P4 menciona ganancia de pureza)</div>
+<div class="fila"><span class="cpt"><a href="#random-forest">Random Forest</a></span> · <span class="et">viene de</span><a href="#arboles">Arboles de decision</a> · <span class="et">habilita</span><a href="#boosting">Gradient Boosting</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 6 · peso en certamen baja (no aparece directamente)</div>
+<div class="fila"><span class="cpt"><a href="#boosting">Gradient Boosting</a></span> · <span class="et">viene de</span><a href="#random-forest">Random Forest</a> · <span class="et">habilita</span><a href="#ensambles">Ensembles</a>, <a href="redes_neuronales.html">Redes neuronales</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 5 · peso en certamen baja (no aparece directamente)</div>
+<div class="fila"><span class="cpt"><a href="#ensambles">Ensembles</a></span> · <span class="et">viene de</span><a href="#boosting">Gradient Boosting</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen media (C2: P1) · <span class="et">certamen</span><a href="certamen_2.html#p1">C2 P1</a></div>
+<details><summary>Dónde se enseñó en clase (6 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 1:14:34–1:28:43 · profesor — pureza, Gini, entropia, ganancia, criterio de parada<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]</span></li><li><b>Ayudantía del 7-ago</b> · 1:27:08–1:30:15 · ayudantía — DecisionTreeClassifier y plot_tree <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:27:08]</span></li><li><b>Clase del 7-ago</b> · 1:28:43–1:36:40 · profesor — votacion, bootstrap, atributos al azar, importancia por conteo<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:43]</span></li><li><b>Ayudantía del 7-ago</b> · 1:30:23–1:35:12 · ayudantía — Random Forest en el P5 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:23]</span></li><li><b>Presentaciones del 14-ago</b> · 1:59:10–1:59:14 · profesor — comentario breve; no se enseno como tema<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:59:10]</span></li><li><b>Clase del 7-ago</b> · 1:29:42–1:30:40 · profesor — las decisiones no deben estar correlacionadas<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:29:42]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Árboles y ensambles</h1>
+<p class="sub">Un árbol que pregunta, muchos árboles que votan y árboles que se corrigen unos a otros.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 7-ago (láminas 25–39 de FCD-07)</p>
+
+<div class="grafo">
+  <span class="n"><a href="overfitting_underfitting.html">Overfitting y underfitting</a></span> →
+  <span class="n aqui">Árboles de decisión</span> →
+  <span class="n aqui">Random Forest</span> →
+  <span class="n aqui">Gradient Boosting</span> →
+  <span class="n aqui">Ensambles</span>
+  <span style="flex-basis:100%;height:0"></span>
+  <span class="n aqui">Gradient Boosting</span> →
+  <span class="n"><a href="redes_neuronales.html">Redes neuronales</a></span>
+  <span style="color:var(--suave)">(la otra rama que sale de aquí)</span>
+</div>
+<p style="font-size:.85rem;color:var(--suave);margin-top:-.3rem">Cadena «de un árbol a un
+ensamble» [FUENTE · Repo: 07_DATITO/grafo.yaml]. En esta página:
+<a href="#arboles">1 · árboles</a> · <a href="#random-forest">2 · Random Forest</a> ·
+<a href="#boosting">3 · boosting</a> · <a href="#ensambles">4 · ensambles</a> ·
+<a href="#cierre">5 · transferir, producir y el papel</a>.</p>
+
+<div class="tension">
+<strong>Dónde estás, y una asimetría que conviene saber.</strong> Estos cuatro conceptos
+vienen de <a href="overfitting_underfitting.html">overfitting y underfitting</a>: un árbol
+es la forma más directa de ver un modelo que memoriza. Los árboles de decisión tienen
+<strong>importancia curricular 7</strong> —si no se entienden, quedan bloqueados siete
+conceptos, incluidas las redes neuronales por la vía de gradient boosting—, pero pesan
+poco en los certámenes: aparecen como distractor («ganancia de pureza» en la P4 del
+Certamen 2). Los ensambles son al revés: <strong>no bloquean nada y valen una pregunta
+entera</strong> (la P1 del Certamen 2). [FUENTE · Repo: 07_DATITO/grafo.yaml]
+</div>
+
+<!-- ================================================================ -->
+<section id="arboles">
+<h2>1 · Árboles de decisión</h2>
+
+<h3>La situación: diecisiete figuras y un corte</h3>
+
+<p>El ejemplo es de tu profesor. En un plano con dos atributos, x₁ y x₂, hay figuras de
+dos clases, y él las cuenta en voz alta: <strong>nueve triángulos y ocho círculos</strong>
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:52–1:14:57].
+Elige un atributo, corta el plano en dos y cuenta cada lado: a la izquierda quedan
+1 triángulo y 6 círculos; a la derecha, 8 triángulos y 2 círculos
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:15:32–1:15:40].
+Después corta cada mitad por x₂, y así sigue. Eso es un árbol: una pregunta por nodo, y
+cada respuesta manda los datos hacia un lado.</p>
+
+<p>Cuando llega un objeto nuevo, el árbol mira en qué «caja» cae y responde con la
+proporción de esa caja. En su ejemplo, una caja con un círculo y un triángulo da 50 % de
+probabilidad de círculo
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:16:56–1:17:08].
+<strong>Una hoja no entrega una clase: entrega una proporción.</strong> La clase aparece
+después, cuando alguien fija un umbral — lo mismo que en <a href="roc_auc.html">roc_auc.html</a>.</p>
+
+<h3>La pregunta que hay que responder</h3>
+
+<p>Dibujar cajas es fácil. Lo difícil es decidir <strong>qué atributo cortar y en qué
+valor</strong>. La lámina 26 da el criterio: «escoger divisiones que hagan “puros” los
+subconjuntos» [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 26].
+En clase lo dijo así: cortar para que los subconjuntos queden lo más puros posible, ojalá
+solo círculos a un lado y solo triángulos al otro, o al menos con poca mezcla
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:17:54–1:18:10].
+Para comparar dos cortes hace falta <strong>un número que mida la mezcla</strong>.</p>
+
+<h3>Un número para la mezcla, primero con números chicos</h3>
+
+<p>La lámina 27 define la <strong>impureza de Gini</strong> como un juego: <em>sacas un
+objeto al azar del conjunto y predices que todo el conjunto es de la clase de ese objeto.
+¿Qué error esperas cometer?</em>
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 27]</p>
+
+<p>Calentamiento con un conjunto que no es el de la lámina [DATITO]: <strong>1 triángulo y
+3 círculos</strong>.</p>
+<ol class="pasos">
+  <li>Sacas un triángulo con probabilidad 1/4. Si pasa, dices «todo es triángulo» y fallas
+  en los 3 círculos: error 3/4.</li>
+  <li>Sacas un círculo con probabilidad 3/4. Dices «todo es círculo» y fallas en el
+  triángulo: error 1/4.</li>
+  <li>Error esperado = 1/4 · 3/4 + 3/4 · 1/4 = 3/16 + 3/16 = <strong>0,375</strong>.</li>
+</ol>
+<p>Si el conjunto fuera solo círculos, siempre sacarías un círculo y nunca fallarías:
+<strong>0</strong>. Si fuera mitad y mitad, 1/2 · 1/2 + 1/2 · 1/2 = <strong>0,5</strong>,
+el máximo con dos clases. <strong>Gini alto = mezclado. Gini 0 = puro.</strong></p>
+
+<div class="ej"><div class="tipo">Ejercicio 1 · cálculo a mano · los números del profesor</div>
+<p>Las láminas 27, 28 y 29 usan tres conjuntos de 8 figuras. Calcula el Gini de cada uno
+con el juego de arriba, sin mirar la lámina:</p>
+<p>(a) 3 triángulos y 5 círculos · (b) 1 triángulo y 7 círculos · (c) 0 triángulos y
+8 círculos. En (c) explica además <em>por qué</em> da lo que da: fue la pregunta que el
+profesor le hizo al curso.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) 0,46875; (b) 0,21875; (c) 0, porque en un conjunto puro
+nunca te equivocas al predecir todo con la clase del objeto que sacaste.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(a) P(△) = 3/8 y su error 5/8; P(○) = 5/8 y su error 3/8. Gini = 3/8 · 5/8 + 5/8 · 3/8 =
+  15/64 + 15/64 = 30/64 = <strong>0,46875</strong>.</li>
+  <li>(b) P(△) = 1/8 y su error 7/8; P(○) = 7/8 y su error 1/8. Gini = 7/64 + 7/64 = 14/64 =
+  <strong>0,21875</strong>.</li>
+  <li>(c) P(△) = 0 y P(○) = 1, pero el error de haber sacado un círculo es 0, porque no hay
+  ningún triángulo que clasificar mal: 0 · 1 + 1 · 0 = <strong>0</strong>. Así lo razonó el
+  profesor
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:23:36–1:23:50].</li>
+  <li>Lectura: (a) es el más mezclado, (b) está más cerca de puro, (c) es puro.</li>
+</ol>
+<p><strong>Error típico:</strong> sumar las probabilidades sin multiplicarlas por su error
+(siempre da 1), o leer el número al revés y creer que 0,47 es «más puro» que 0,22. Otro:
+quedarse con el redondeo que se dijo en clase, «0,46» y «0,21 o 0,22»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:22:57–1:23:05];
+los valores exactos son los de la lámina. En el papel, escribe la fracción antes del decimal.</p>
+<p><strong>De dónde sale:</strong> láminas 27, 28 y 29
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 27].</p>
+</details></div>
+
+<h3>Recién ahora, la notación</h3>
+
+<div class="ecu">
+  <div class="f">I<sub>G</sub> = Σ<sub>i=1..C</sub> (N<sub>i</sub>/N) · (1 − N<sub>i</sub>/N)</div>
+  <table class="simb">
+  <tr><td>C</td><td>número de clases (en el ejemplo, 2) <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>N</td><td>número de puntos en el nodo <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>N<sub>i</sub></td><td>puntos de la clase i en ese nodo <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>N<sub>i</sub>/N</td><td>probabilidad de sacar la clase i: el primer factor del juego</td></tr>
+  <tr><td>1 − N<sub>i</sub>/N</td><td>el error si sacaste la clase i: el segundo factor</td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.6rem 0 0">Fórmula de la lámina 29
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 29],
+  dicha en clase para C clases
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:22:31–1:22:53].
+  Con dos clases se reduce a <strong>2·p·(1 − p)</strong>, con p la proporción de una de
+  ellas [INFERENCIA]. Nada de esto lo aprende el modelo: es una regla para
+  <em>medir</em> nodos. Lo que decide la persona es <strong>qué medida usar</strong>.</p>
+</div>
+
+<p>Con una medida por nodo, un corte se juzga comparando al padre con sus hijos:</p>
+
+<div class="ecu">
+  <div class="f">ΔI = I(A) − [N(B)/N(A)]·I(B) − [N(C)/N(A)]·I(C)</div>
+  <table class="simb">
+  <tr><td>A</td><td>nodo padre, antes del corte <span class="rol r-dato">dato</span></td></tr>
+  <tr><td>B, C</td><td>los dos hijos que deja el corte</td></tr>
+  <tr><td>I( )</td><td>impureza de un nodo: Gini, entropía o error de clasificación <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>N(B)/N(A)</td><td>peso del hijo B: qué fracción de los puntos del padre se fue a B</td></tr>
+  <tr><td>ΔI</td><td>ganancia de pureza: cuánta mezcla eliminó el corte <span class="rol r-aprende">el algoritmo la calcula para cada corte candidato</span></td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.6rem 0 0">La lámina 31 dice «Comparar: impureza del
+  nodo padre · impureza de los nodos hijos»
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 31];
+  la fórmula escrita es la que transcribe el resumen híbrido de esa lámina
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md · lámina 18 del resumen, §7.7.6].
+  El peso lo explicó el profesor: si hay muchos objetos en un lado, esa impureza pesa más
+  que la del otro
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:27:26–1:27:37].</p>
+</div>
+
+<div class="ej"><div class="tipo">Camino inverso · te dan I<sub>G</sub> escrita en el papel</div>
+<p>Reconstruye el fenómeno desde la fórmula: (1) ¿cuánto vale en un nodo puro, y por qué?
+(2) ¿Cuándo es máxima con dos clases, y cuánto vale? (3) ¿Puede un corte dejar la impureza
+ponderada <em>peor</em> que la del padre?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (1) vale 0; (2) es máxima con mitad y mitad, y vale 0,5;
+(3) con Gini, no: la ganancia de un corte nunca es negativa.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(1) En cada término de la suma, o N<sub>i</sub>/N = 0 (la clase no está) o
+  1 − N<sub>i</sub>/N = 0 (es la única). Todos los términos son 0.</li>
+  <li>(2) Con dos clases, I<sub>G</sub> = 2·p·(1 − p): una parábola que vale 0 en p = 0 y en
+  p = 1 y tiene su máximo en p = 0,5, donde da 2 · 0,5 · 0,5 = 0,5.</li>
+  <li>(3) Las proporciones del padre son el promedio ponderado de las de sus hijos, y el Gini
+  es una curva «hacia abajo» (cóncava): el promedio ponderado de los Gini de los hijos nunca
+  supera al Gini del padre. Ejemplo: el corte C del plano de abajo casi no sirve, y aun así su
+  ganancia es positiva (≈ 0,035).</li>
+  <li>Consecuencia: si cortar nunca empeora la cuenta, el algoritmo necesita otra razón para
+  detenerse. Esa razón son los criterios de la lámina 33, más abajo.</li>
+</ol>
+<p><strong>Error típico:</strong> pensar que el árbol se detiene solo «cuando cortar ya no
+mejora». Con Gini siempre mejora o empata, así que sin frenos corta hasta dejar hojas puras.</p>
+<p><strong>De dónde sale:</strong> fórmula de la lámina 29
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 29];
+(2) [INFERENCIA]; (3) [DATITO].</p>
+</details></div>
+
+<h3>Tres medidas, y quién elige entre ellas</h3>
+
+<table>
+<tr><th>Medida (lámina 30)</th><th>Fórmula</th><th>Máximo con 2 clases</th><th>En palabras</th></tr>
+<tr><td>Gini</td><td>Σ p<sub>i</sub>(1 − p<sub>i</sub>)</td><td class="num">0,5</td><td>error esperado del juego de sacar un objeto</td></tr>
+<tr><td>Entropía</td><td>−Σ p<sub>i</sub> log₂ p<sub>i</sub></td><td class="num">1</td><td>información promedio del experimento de sacar un dato</td></tr>
+<tr><td>Error de clasificación</td><td>1 − máx p<sub>i</sub></td><td class="num">0,5</td><td>error si clasificas todo de una misma forma (la clase mayoritaria)</td></tr>
+</table>
+<p style="font-size:.9rem">Medidas de la lámina 30
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 30];
+máximos de Gini (0,5) y entropía (1) dichos en clase
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:24:41–1:24:56];
+el del error de clasificación sale de la fórmula [INFERENCIA]. Ojo: el resumen híbrido
+advierte que la lámina 30 imprime la entropía sin el signo menos; con el signo queda
+positiva y coincide con la curva de la lámina
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md · lámina 18 del resumen].</p>
+
+<p>¿Cuál conviene? Un compañero lo preguntó, y la respuesta vino como otra pregunta:
+¿cómo se llama algo que tienes que escoger antes de ajustar el modelo?</p>
+
+<div class="cita">«Es un hiperparámetro […]. Entonces, tú lo tienes que elegir a priori y
+generalmente […] lo elige usando validación cruzada. ⟨Acuérdense⟩ que si no saben la
+respuesta, digan validación cruzada. No, no siempre, la mayor parte de las veces la
+respuesta es validación cruzada.» <span class="f">Clase del 7-ago · 1:26:06–1:26:31 ·
+profesor, respondiendo a un compañero que preguntó qué medida de impureza conviene ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]
+· ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="clave"><strong>Traducido:</strong> la medida de impureza no se aprende de los
+datos ni tiene una ganadora universal. Es un <strong>hiperparámetro</strong>, igual que el
+grado del polinomio, y se elige con <a href="validacion_cruzada.html">validación cruzada</a>.
+Un compañero agregó que la entropía cuesta más de calcular por el logaritmo; el profesor no
+dio otro criterio
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:25:11–1:25:25].</div>
+
+<h3>Muévelo tú: tres cortes candidatos sobre los 17 puntos</h3>
+
+<p>El plano reproduce el ejemplo del profesor: 9 triángulos y 8 círculos. Los conteos son
+los suyos; las posiciones exactas son inventadas para que sus cortes funcionen [DATITO].
+Tres candidatos para el primer corte:</p>
+<ul>
+  <li><strong>A · x₁ ≤ 4</strong>: el primer corte del profesor, 1△ 6○ | 8△ 2○.</li>
+  <li><strong>B · x₁ ≤ 6,5</strong>: deja un lado casi puro, 5△ 1○.</li>
+  <li><strong>C · x₂ ≤ 8,3</strong>: deja un hijo 100 % puro.</li>
+</ul>
+
+<div class="pred" id="predCorte">
+  <div class="q">Antes de tocar el plano, predice: ¿qué corte tiene la mayor ganancia de pureza?</div>
+  <button data-v="A">A · el del profesor</button>
+  <button data-v="B">B · un lado casi puro</button>
+  <button data-v="C">C · un hijo 100 % puro</button>
+  <div class="espera">Anotado. Ahora usa el plano (cualquier botón o el deslizador): el
+  contraste aparece cuando lo muevas.</div>
+  <div class="veredicto"></div>
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> gana el corte A (x₁ ≤ 4, el del profesor), con ganancia
+≈ 0,209, contra ≈ 0,101 de B y ≈ 0,035 de C.</p>
+<p><strong>Cómo se resuelve</strong> (Gini):</p>
+<ol class="pasos">
+  <li>Padre, 9△ 8○: 2·(9/17)(8/17) = 144/289 ≈ 0,4983.</li>
+  <li>A: hijos 1△ 6○ (≈ 0,2449) y 8△ 2○ (0,3200). Ponderada 7/17 · 0,2449 + 10/17 · 0,3200
+  ≈ 0,2891. Ganancia ≈ 0,4983 − 0,2891 = <strong>0,2092</strong>.</li>
+  <li>B: hijos 4△ 7○ (≈ 0,4628) y 5△ 1○ (≈ 0,2778). Ponderada 11/17 · 0,4628 + 6/17 · 0,2778
+  ≈ 0,3975. Ganancia ≈ <strong>0,1008</strong>.</li>
+  <li>C: hijos 9△ 7○ (≈ 0,4922) y 1○ (0). Ponderada 16/17 · 0,4922 ≈ 0,4632. Ganancia ≈
+  <strong>0,0350</strong>.</li>
+</ol>
+<p><strong>Error típico:</strong> elegir C porque «deja un hijo puro», o B porque «deja un
+lado casi puro». Es mirar un solo hijo y olvidar la ponderación por tamaño: un hijo de
+1 punto pesa 1/17, y el otro hijo, que pesa 16/17, queda casi tan mezclado como el padre.</p>
+<p><strong>De dónde sale:</strong> los conteos del corte A son del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:15:32–1:15:40];
+la fórmula de ganancia, de la lámina 31
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 31];
+las posiciones y los cortes B y C son [DATITO].</p>
+</details>
+
+<div class="panel">
+  <canvas id="cvGini" width="860" height="400"></canvas>
+  <div class="ctrl"><span class="et">Cortes candidatos</span>
+    <button id="gA">A · x₁ ≤ 4</button>
+    <button id="gB">B · x₁ ≤ 6,5</button>
+    <button id="gC">C · x₂ ≤ 8,3</button>
+  </div>
+  <div class="ctrl"><span class="et">Tu corte</span>
+    <button class="alt" id="gX1">x₁</button><button class="alt" id="gX2">x₂</button>
+    <label for="gUm">umbral</label>
+    <input type="range" id="gUm" min="0" max="10" step="0.05" value="4">
+    <strong id="gLeyUmbral">x₁ ≤ 4,00</strong>
+  </div>
+  <div class="ctrl"><span class="et">Medida</span>
+    <button class="alt" id="mGini">Gini</button>
+    <button class="alt" id="mEnt">Entropía</button>
+    <button class="alt" id="mErr">Error de clasificación</button>
+  </div>
+  <div class="ctrl">
+    <button class="ok" id="gMejor">Buscar el mejor corte (lo que hace C4.5)</button>
+    <button class="alt" id="gProf">Ver el árbol completo del profesor</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="gPadre">—</div><div class="e">Impureza del padre</div></div>
+    <div><div class="n" id="gIzq">—</div><div class="e" id="gIzqE">lado ≤</div></div>
+    <div><div class="n" id="gDer">—</div><div class="e" id="gDerE">lado &gt;</div></div>
+    <div><div class="n" id="gPond">—</div><div class="e">Impureza ponderada</div></div>
+    <div><div class="n" id="gGan">—</div><div class="e">Ganancia de pureza</div></div>
+  </div>
+  <div class="arit" id="gArit"></div>
+  <p id="gMejorTxt" style="font-size:.88rem;color:var(--suave);margin:.6rem 0 0"></p>
+</div>
+
+<p style="font-size:.9rem;color:var(--suave)">Prueba también: cambia la medida y vuelve a
+buscar el mejor corte. En este plano gana el mismo corte con las tres medidas; con error de
+clasificación, tres cortes distintos empatan en el segundo lugar (ganancia 0,2353), porque
+esa medida solo mira la clase mayoritaria y es la más gruesa para distinguir cortes
+[DATITO · cifras de este plano ilustrativo]. El corte A es el que el profesor hizo en clase;
+su ganancia (≈ 0,2092) no la calculó él: la desarrolla el resumen híbrido
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md · lámina 18 del resumen]
+y la reproduce el plano.</p>
+
+<div class="ej"><div class="tipo">Ejercicio 2 · cálculo a mano · el árbol completo del profesor</div>
+<p>Después del primer corte, el profesor cortó cada mitad por x₂
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:15:40–1:16:05]:
+la izquierda (1△ 6○) quedó en <strong>1△ 1○</strong> arriba y <strong>5○</strong> abajo;
+la derecha (8△ 2○), en <strong>1○</strong> arriba y <strong>8△ 1○</strong> abajo. El botón
+«Ver el árbol completo del profesor» lo dibuja, pero no calcula estas ganancias.</p>
+<p>(a) Calcula con Gini la ganancia de cada uno de esos dos cortes (cada mitad es ahora el
+«padre»). ¿Cuál limpió más? (b) Escribe la probabilidad que entrega cada una de las cuatro
+hojas. (c) Un objeto nuevo cae en la hoja 8△ 1○ y tu regla es decir «triángulo» solo si
+P(△) ≥ 0,9. ¿Qué respondes?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) el corte de la izquierda gana ≈ 0,102 y el de la derecha
+≈ 0,142: limpió más el de la derecha; (b) las hojas entregan 50 % círculo, 100 % círculo,
+100 % círculo y 89 % triángulo; (c) respondes «círculo» (no triángulo), porque 0,89 no llega
+a 0,9.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>Izquierda. Padre 1△ 6○: 2·(1/7)(6/7) = 12/49 ≈ 0,2449. Hijos: 1△ 1○ → 0,5; 5○ → 0.
+  Ponderada: 2/7 · 0,5 + 5/7 · 0 ≈ 0,1429. Ganancia ≈ 0,2449 − 0,1429 = <strong>0,102</strong>.</li>
+  <li>Derecha. Padre 8△ 2○: 2·(8/10)(2/10) = 0,32. Hijos: 1○ → 0; 8△ 1○ → 2·(8/9)(1/9) =
+  16/81 ≈ 0,1975. Ponderada: 1/10 · 0 + 9/10 · 0,1975 ≈ 0,1778. Ganancia ≈ 0,32 − 0,1778 =
+  <strong>0,142</strong>.</li>
+  <li>Hojas: 1△ 1○ → 1/2 = 50 % círculo (el caso que comentó el profesor) · 5○ → 100 %
+  círculo · 1○ → 100 % círculo · 8△ 1○ → 8/9 ≈ 89 % triángulo.</li>
+  <li>Umbral: P(△) = 0,89 &lt; 0,9, así que la regla no dice «triángulo». La hoja es la
+  misma; cambió el umbral. La clase la decide quien fija el umbral, no el árbol.</li>
+</ol>
+<p><strong>Error típico:</strong> usar como «padre» el nodo raíz (9△ 8○) en vez de la mitad
+que se está cortando; o, en (c), responder «triángulo» porque es la clase mayoritaria de la
+hoja, sin aplicar el umbral.</p>
+<p><strong>De dónde sale:</strong> conteos del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:15:40–1:16:05];
+él no calculó estas ganancias en clase: la aritmética es de Datito [INFERENCIA].</p>
+</details></div>
+
+<h3>El algoritmo, y cuándo parar</h3>
+
+<p>La lámina 32 lo escribe como receta, el algoritmo <strong>C4.5</strong>: mientras no se
+cumpla algún criterio de convergencia, para cada atributo calcula la ganancia de dividir en
+ese atributo; quédate con el de mayor ganancia; crea un nodo que separe según él, y aplica
+lo mismo a cada subconjunto
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 32].
+El botón «Buscar el mejor corte» hace exactamente el primer paso.</p>
+
+<p>La lámina 33 lista cuándo parar: el nodo contiene una sola clase; contiene menos objetos
+que un valor deseado; se alcanzó una altura máxima; la pureza es suficiente; o se comienza a
+sobreajustar, lo que se detecta con validación cruzada
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 33].</p>
+
+<div class="cita">«cuando se alcanza una altura máxima, cuando la pureza es suficiente o
+cuando se comienza a sobreajustar. Y ahí uno puede estar ⟨a medida⟩ que empieza a dividir,
+[…] haciendo validación cruzada.» <span class="f">Clase del 7-ago · 1:28:17–1:28:28 ·
+profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]
+· ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="dist"><strong>Distinción de certamen · Certamen 2, P4.</strong> La ganancia de
+pureza es un criterio para <strong>construir</strong> el árbol (decidir dónde cortar),
+<strong>no</strong> una métrica para <strong>evaluar</strong> un clasificador terminado. En
+el certamen apareció como alternativa trampa en «¿cuáles se usan para evaluar un modelo de
+clasificación?». Ficha completa: <a href="certamen_2.html#p4">certamen_2.html#p4</a>.<br>
+<strong>Pregunta estilo certamen:</strong> ¿la ganancia de pureza se usa para evaluar un
+modelo de clasificación?</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> no. La ganancia de pureza sirve para construir el árbol; en
+la P4, las alternativas que sí evalúan un clasificador eran el área bajo la curva ROC, la
+tasa de falsos positivos y la exactitud.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>Pregúntate qué compara: la ganancia compara la impureza del nodo padre con la de sus
+  hijos (lámina 31).</li>
+  <li>Pregúntate cuándo se usa: dentro de C4.5, para elegir el atributo y el corte (lámina 32),
+  <em>mientras</em> el árbol se construye.</li>
+  <li>Una métrica de evaluación compara predicciones con etiquetas reales de datos que el
+  modelo no usó (exactitud, tasa de falsos positivos: lámina 18; ROC: láminas 22–24). La
+  ganancia no hace eso: queda fuera.</li>
+</ol>
+<p><strong>Error típico:</strong> marcarla porque «suena a calidad del modelo». Criterio para
+<em>construir</em> ≠ métrica para <em>juzgar</em>.</p>
+<p><strong>De dónde sale:</strong> análisis de la P4
+[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · P4] y láminas 18, 31 y 32
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 31].</p>
+</details>
+
+<h3>El árbol sin límite: una máquina de sobreajustar</h3>
+
+<p>[DATITO] Como con Gini cortar nunca empeora la cuenta, un árbol sin criterio de parada
+sigue cortando hasta que cada hoja queda pura; en el extremo, una hoja por dato. En
+entrenamiento acierta todo. En datos nuevos, cada hoja de un solo punto es una opinión
+basada en un único ejemplo, ruido incluido. Es el patrón «bueno dentro, malo fuera» de
+<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>. Los criterios de
+la lámina 33 —altura máxima, mínimo de objetos por nodo, validación cruzada— son
+precisamente los frenos.</p>
+
+<div class="ej"><div class="tipo">Ejercicio 3 · interpretación · el árbol de tu proyecto</div>
+<p>En Melbourne, tu árbol de decisión sobre log1p(Price) obtuvo R² <strong>0,7523</strong>
+en train 2016 y <strong>0,6123</strong> en test 2017
+[FUENTE · Repo: 07_DATITO/referencia/material.md]. Estaba configurado con
+<code>max_depth=8, min_samples_leaf=20</code>
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 58].</p>
+<p>(a) Calcula la brecha. (b) ¿Es el «árbol sin límite» de esta sección? ¿Qué número lo
+delata? (c) ¿Toda la brecha es sobreajuste? Nombra la otra causa que existe en tu
+proyecto.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> la brecha es 0,1400; no es un árbol sin límite (su R² de
+train, 0,75, lo delata); y no toda la brecha es sobreajuste, porque parte es el cambio entre
+2016 y 2017.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(a) Brecha = R² train − R² test = 0,7523 − 0,6123 = <strong>0,1400</strong>.</li>
+  <li>(b) Un árbol sin límite llega a un R² de train cercano a 1, porque sus hojas terminan
+  casi con una casa cada una [INFERENCIA]. El 0,7523 de train dice que los frenos
+  (profundidad 8, hojas de al menos 20 casas) le impidieron memorizar; tanto, que también es
+  el peor de tus cuatro modelos de árboles en test. Este árbol, además de la brecha, se queda
+  corto.</li>
+  <li>(c) Train es 2016 y test es 2017: parte de la caída viene del cambio entre años (el
+  29,1 % del test está en suburbios que no existen en el train). El sobreajuste en estricto se
+  mide train contra validación dentro del mismo período [INFERENCIA]. Ver
+  <a href="generalizacion.html">generalizacion.html</a>.</li>
+</ol>
+<p><strong>Error típico:</strong> diagnosticar «sobreajuste» solo porque test es menor que
+train, sin calcular la brecha ni mirar el nivel de train; y atribuir toda la caída de
+2016 a 2017 al sobreajuste. Los dos errores están registrados en tu historial.</p>
+<p><strong>De dónde sale:</strong> cifras de
+[FUENTE · Repo: 07_DATITO/referencia/material.md]; configuración de
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 58]; lectura [INFERENCIA].</p>
+</details></div>
+
+<p>Y el cierre del tema en clase, que explica por qué esta página no termina aquí:</p>
+
+<div class="cita">«[…] son muy malos modelos, son como de los peores modelos que uno podría
+tener en la vida. […] los árboles de decisión son la base de […] los modelos basados en
+bosques y dentro de eso está el random forest, el ⟨XGBoost⟩» <span class="f">Clase del
+7-ago · 1:28:36–1:28:59 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]
+· ⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR escribió «exigibus»</span></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="random-forest">
+<h2>2 · Random Forest</h2>
+
+<h3>La idea: la sabiduría de los grupos</h3>
+
+<p>La lámina 35 cita a James Surowiecki: «El conocimiento colectivo de un grupo diverso e
+independiente de personas generalmente excede el conocimiento de cualquier individuo y puede
+aprovecharse mediante la votación»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 35].
+En clase, el profesor le puso la condición en voz alta, y se corrigió a medio camino:</p>
+
+<div class="cita">«la decisión de un individuo es peor que la decisión de un grupo de
+individuos siempre y cuando las decisiones no estén correladas, […] perdón, siempre y cuando
+[…] si hay correlación, pero que esa correlación no sea muy alta.» <span class="f">Clase del
+7-ago · 1:29:42–1:30:04 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="clave"><strong>Fíjate en la corrección.</strong> Primero dijo «no
+correladas»; después, «si hay correlación, pero que esa correlación no sea muy alta». La
+versión corregida es la útil: nunca vas a tener árboles perfectamente independientes (todos
+aprenden de los mismos datos), y no hace falta. Hace falta que <strong>no se equivoquen
+todos en lo mismo</strong>.</div>
+
+<p>Y el ejemplo con el que lo aterrizó:</p>
+
+<div class="cita">«Y Daniel opina exactamente igual que Cristóbal, como que no me sirvió
+mucho ⟨haberle preguntado⟩ a Daniel, pero generalmente lo que ocurre es que Daniel va a
+opinar distinto y Daniel va a ver cosas que Cristóbal no va a ver» <span class="f">Clase del
+7-ago · 1:30:40–1:30:49 · profesor (los nombres son los del ejemplo que usó en clase) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]
+· ⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p>Dos opiniones idénticas valen una. Esa es la idea que evaluó la P1 del Certamen 2: la
+distinción está marcada en la <a href="#ensambles">sección 4</a>, con un simulador.</p>
+
+<h3>Cómo se consigue que los árboles no sean clones</h3>
+
+<p>Lámina 36: un árbol solitario no suele predecir muy bien, pero es muy rápido; la idea es
+usar muchos, asegurándose de que no aprendan todos exactamente lo mismo
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 36].
+La lámina 37 dice cómo
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 37]:</p>
+<ol class="pasos">
+  <li>Se entrenan <strong>n árboles</strong>.</li>
+  <li>Para cada árbol se seleccionan al azar <strong>N puntos con reemplazo</strong>
+  (<em>bootstrapping</em>): el árbol ve una muestra de filas del mismo tamaño que la
+  original, con algunas repetidas y otras ausentes.</li>
+  <li>Cada árbol se entrena usando <strong>m atributos seleccionados al azar</strong>.</li>
+  <li>Predicción: se <strong>promedia</strong> la predicción hecha por los árboles.</li>
+</ol>
+
+<table>
+<tr><th>Qué se sortea</th><th>Cómo</th><th>Qué consigue</th></tr>
+<tr><td>Filas</td><td>N puntos <strong>con reemplazo</strong> (bootstrap)</td><td>cada árbol ve datos algo distintos</td></tr>
+<tr><td>Atributos (columnas)</td><td>m atributos al azar</td><td>unos árboles se especializan en unos atributos y otros en otros</td></tr>
+</table>
+
+<p>El profesor lo cerró diciendo que igual queda solapamiento, «cierta correlación»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:31:37–1:31:41]:
+la versión corregida de la sabiduría de los grupos, puesta en práctica.</p>
+
+<div class="nota"><strong>Aviso: la ayudantía y el texto del P5 dicen otra cosa.</strong>
+Lo oficial es la lámina 37: <em>filas</em> con reemplazo y <em>atributos</em> al azar. La
+ayudantía del 7-ago, leyendo el P5, lo dijo así:
+<div class="cita">«yo voy a utilizar n árboles de decisión y por cada árbol voy a
+seleccionar m atributos de manera aleatoria con reemplazo y entrenamos usando los m
+atributos para dividir cada nodo» <span class="f">Ayudantía del 7-ago · 1:30:59–1:31:11 ·
+ayudantía ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+Ahí el «con reemplazo» cayó sobre los atributos y el bootstrap de filas desapareció. El mismo
+texto está en la sección «Random Forest» del P5
+[FUENTE · Repo: 08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb]. Sortear atributos con
+reemplazo no tiene mucho sentido: podrías elegir dos veces la misma columna [DATITO].
+<strong>Para el certamen, la versión de la lámina 37.</strong> Detalle aparte: la ayudantía
+dice «para dividir cada nodo» y la lámina «para cada árbol»; scikit-learn sortea los
+atributos en cada división [DATITO], y las dos variantes persiguen lo mismo: descorrelacionar
+los árboles. Recuerda también que lo dicho en ayudantía no es materia de certamen.</div>
+
+<h3>Cómo vota el bosque, y por qué entrega una probabilidad</h3>
+
+<div class="cita">«tengo cuatro árboles, le digo ¿qué opina usted? Yo digo que un perro. […]
+Yo creo que un gato. […] Yo creo que un perro. Entonces digo ¡ah! 75% probabilidad de que
+sea un perro.» <span class="f">Clase del 7-ago · 1:31:49–1:32:03 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Es la lámina 37 («promediar la predicción hecha por los árboles») llevada a
+clasificación: la probabilidad de una clase es la fracción de árboles que la votan. El P5 lo
+escribe f(x) = (1/N) Σ f<sub>i</sub>(x)
+[FUENTE · Repo: 08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb]. En regresión —tu
+Melbourne— se promedian los precios que predice cada árbol [INFERENCIA]. La lámina 38 lo
+llama «uno de los algoritmos más certeros que se conocen», y en clase agregó que en general
+uno comienza con un random forest
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:32:33–1:32:39].</p>
+
+<h3>Importancia de variables: contar</h3>
+
+<p>Lámina 38: el bosque permite estimar la importancia de las variables «contando cuántas
+veces cada variable fue escogida por cada árbol como relevante»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 38].
+Si ningún árbol eligió nunca una variable para dividir, esa variable es «cero relevante»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:33:09–1:33:15].
+Un compañero preguntó cómo se relaciona esto con elegir variables en el EDA, y el profesor
+improvisó un ejemplo: A escogida el 50 % de las veces, B el 20 %, C y D el 10 % cada una; A
+es muy relevante para clasificar
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:34:46–1:35:10].
+⚠ Esos porcentajes suman 90 %: era un ejemplo al vuelo, no un dato.</p>
+
+<div class="ej"><div class="tipo">Ejercicio 4 · cálculo a mano · un bosque de 4 árboles</div>
+<p>[DATITO · cifras ilustrativas] Un bosque de 4 árboles clasifica rodales de pino en
+«listo para cosecha» o «no listo». Variables disponibles: diámetro, altura, pendiente,
+especie y tipo de suelo. Cada árbol usó estas variables en sus divisiones:</p>
+<table>
+<tr><th>Árbol</th><th>Variables usadas para dividir</th><th>Voto para el rodal R</th></tr>
+<tr><td>1</td><td>diámetro, altura, diámetro</td><td>listo</td></tr>
+<tr><td>2</td><td>diámetro, pendiente</td><td>listo</td></tr>
+<tr><td>3</td><td>altura, diámetro, especie</td><td>no listo</td></tr>
+<tr><td>4</td><td>diámetro, altura, diámetro</td><td>listo</td></tr>
+</table>
+<p>(a) ¿Qué entrega el bosque para el rodal R? (b) Calcula la importancia de cada variable
+por conteo, como en la lámina 38. (c) El tipo de suelo no aparece en ningún árbol. ¿Significa
+que el suelo no influye en la cosecha?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) el bosque entrega 75 % de probabilidad de «listo»;
+(b) diámetro ≈ 55 %, altura ≈ 27 %, pendiente ≈ 9 %, especie ≈ 9 %, suelo 0 %; (c) no: solo
+significa que este bosque no usó el suelo para dividir.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(a) Votos: 3 de 4 dicen «listo» → 3/4 = <strong>75 %</strong>, igual que el perro del
+  profesor. Decir «listo» a secas ya supone un umbral (con 0,5, «listo»).</li>
+  <li>(b) Cuenta todas las divisiones: 3 + 2 + 3 + 3 = 11. Diámetro aparece 2 + 1 + 1 + 2 = 6
+  veces → 6/11 ≈ 55 %; altura 1 + 0 + 1 + 1 = 3 → 3/11 ≈ 27 %; pendiente 1/11 ≈ 9 %;
+  especie 1/11 ≈ 9 %; suelo 0/11 = 0 %. El orden es el mismo si cuentas en cuántos árboles
+  aparece cada variable (diámetro 4 de 4, altura 3 de 4) [INFERENCIA].</li>
+  <li>(c) Puede que el suelo esté relacionado con otra variable que los árboles prefirieron
+  (por ejemplo, la especie que se planta en cada suelo), o que su efecto sea menor que el de
+  las elegidas [DATITO]. La importancia describe al modelo, no al fenómeno: es la «intuición
+  de lo que los modelos están haciendo» de la que habló el profesor
+  [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:35:10].</li>
+</ol>
+<p><strong>Error típico:</strong> en (a), responder solo «listo» sin la probabilidad; en (c),
+leer «importancia 0» como «no influye en la realidad».</p>
+<p><strong>De dónde sale:</strong> votación
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 37],
+importancia por conteo (lámina 38) y la variable «cero relevante»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:33:09–1:33:15];
+cifras del bosque [DATITO].</p>
+<p style="font-size:.88rem;color:var(--suave)">En el P5, <code>feature_importances_</code>
+de scikit-learn no cuenta usos: suma cuánta impureza redujo cada variable [DATITO]. La idea
+es la misma; para el certamen, la versión de la lámina. La ayudantía del 7-ago resolvió el
+P5 en vivo (árbol con <code>plot_tree</code>, bosque e importancias): intenta
+<code>08_PRACTICA/2026_[P5]Clasificación(vacio).ipynb</code> antes de ver esa grabación
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:43–1:28:49].</p>
+</details></div>
+
+<div class="ej"><div class="tipo">Ejercicio 5 · producción · la pregunta de fondo del Random Forest</div>
+<p>Un árbol profundo sobreajusta. Tu Random Forest de Melbourne promedió
+<strong>300 árboles</strong> con hojas de mínimo 2 casas
+(<code>n_estimators=300, min_samples_leaf=2</code>)
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 59]: árboles muy profundos.
+Escribe, en 5 a 8 líneas, <strong>por qué el promedio de esos árboles puede sobreajustar
+menos que cualquiera de ellos</strong>, y <strong>bajo qué condición dejaría de ser
+cierto</strong>. Escríbelo antes de abrir la respuesta modelo, y llévalo a Datito.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> porque cada árbol profundo memoriza un ruido distinto (vio
+filas y atributos distintos), y al promediar 300 árboles ese ruido particular tiende a
+cancelarse mientras la señal que todos comparten se conserva; deja de ser cierto si los
+árboles se equivocan en lo mismo (correlación alta), y con 300 clones no mejora nada.</p>
+<p><strong>Respuesta modelo:</strong></p>
+<p style="font-style:italic">«Un árbol profundo sobreajusta porque, además de la relación
+real entre las variables y el precio, aprende los accidentes de su muestra: sus hojas de dos
+casas responden a esas dos casas en particular. Si entrenara 300 árboles iguales sobre los
+mismos datos, los 300 memorizarían los mismos accidentes y promediarlos no cambiaría nada.
+Pero en el Random Forest cada árbol ve otra muestra bootstrap de filas y otros atributos, así
+que los accidentes que memoriza cada uno son distintos: ante una casa nueva, unos se pasan y
+otros se quedan cortos. Al promediar, esas desviaciones particulares se compensan y queda lo
+que todos comparten, que es la señal. El sobreajuste de cada árbol es varianza, y el promedio
+de errores poco correlacionados tiene menos varianza que cada uno. Deja de funcionar si la
+correlación entre árboles es alta, como advirtió el profesor; con 300 clones, el promedio
+sobreajusta exactamente igual que un árbol, que es la P1 del Certamen 2.»</p>
+<p><strong>Cómo se construye:</strong></p>
+<ol class="pasos">
+  <li>Qué sobreajusta en un árbol: la parte de sus predicciones que depende de <em>su</em>
+  muestra (varianza), no la señal.</li>
+  <li>Qué introduce el bosque: filas con reemplazo y atributos al azar (lámina 37).</li>
+  <li>Qué hace el promedio: conserva lo común y compensa lo particular. En fórmula,
+  Var(promedio) = ρ·σ² + (1 − ρ)·σ²/n (sección 4) [DATITO].</li>
+  <li>La condición: correlación no muy alta (ρ chico).</li>
+  <li>El caso límite: ρ = 1 (clones), la P1.</li>
+  <li>El matiz de tu proyecto: «sobreajusta menos» se ve en el test (RF 0,7109 contra árbol
+  0,6123), no en la brecha, que en el RF es la mayor (0,2314) porque cada árbol memorizó 2016
+  y eso no se borra en train [INFERENCIA]. Además tu árbol individual estaba limitado
+  (profundidad 8), así que la comparación no es «árbol profundo contra bosque de árboles
+  profundos».</li>
+</ol>
+<p><strong>Error típico:</strong> responder «porque son más modelos» (número sin mecanismo),
+o «porque los errores se anulan» sin la condición de correlación; y creer que el bosque debe
+tener menor brecha.</p>
+<p><strong>De dónde sale:</strong> láminas 36–38
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 38];
+condición de correlación
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:29:42–1:30:04];
+cifras de [FUENTE · Repo: 07_DATITO/referencia/material.md]; fórmula de varianza [DATITO].</p>
+</details>
+<details class="crit"><summary>Criterios con que se corrige tu versión</summary>
+<ul>
+  <li>Dice qué es lo que un árbol profundo «aprende de más»: detalles de <em>su</em> muestra
+  (ruido), además de la señal.</li>
+  <li>Usa el diseño del bosque: cada árbol ve filas y atributos distintos, así que sus
+  detalles de más son distintos entre árboles.</li>
+  <li>Explica qué le pasa, al promediar, a lo que es común a todos los árboles y a lo que es
+  particular de cada uno.</li>
+  <li>Nombra la condición con las palabras del profesor (correlación no muy alta) y el caso
+  límite de la P1.</li>
+  <li>No confunde «sobreajusta menos» con «tiene menor brecha»: en tu tabla, el Random
+  Forest tiene la mayor brecha (ejercicio 6).</li>
+</ul>
+</details></div>
+
+<div class="ej"><div class="tipo">Ejercicio 6 · interpretación · tus cuatro modelos de árboles</div>
+<p>Tus modelos sobre log1p(Price), train 2016 y test 2017
+[FUENTE · Repo: 07_DATITO/referencia/material.md]:</p>
+<table>
+<tr><th>Modelo (log)</th><th>R² train</th><th>R² test</th><th>Brecha</th></tr>
+<tr><td>Árbol de decisión</td><td class="num">0,7523</td><td class="num">0,6123</td><td class="num">?</td></tr>
+<tr><td>Random Forest</td><td class="num">0,9423</td><td class="num">0,7109</td><td class="num">?</td></tr>
+<tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num">0,7466</td><td class="num">?</td></tr>
+<tr><td>HistGradientBoosting</td><td class="num">0,9274</td><td class="num">0,7571</td><td class="num">?</td></tr>
+</table>
+<p>(a) Calcula las cuatro brechas: es el paso que el procedimiento no permite saltarse.
+(b) Ordena los modelos por brecha y por R² test. ¿Coinciden los órdenes? (c) El Random
+Forest tiene la mayor brecha. ¿Es el que peor generaliza? ¿Es el mejor? (d) ¿Qué le
+responderías a alguien que propone «elegir el modelo con menor brecha»?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> las brechas son 0,1400 (árbol), 0,2314 (RF), 0,1392 (GB) y
+0,1703 (HGB); los órdenes por brecha y por test no coinciden; el RF no es el que peor
+generaliza (supera al árbol en test) ni el mejor (lo superan los dos boosting); y la brecha
+sirve para diagnosticar, no para elegir.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(a) Resta fila por fila: 0,7523 − 0,6123 = 0,1400 · 0,9423 − 0,7109 =
+  <strong>0,2314</strong> · 0,8858 − 0,7466 = 0,1392 · 0,9274 − 0,7571 = 0,1703.</li>
+  <li>(b) Por brecha, de menor a mayor: GB, árbol, HGB, RF. Por R² test, de mayor a menor:
+  HGB, GB, RF, árbol. No coinciden.</li>
+  <li>(c) En test, el RF (0,7109) supera al árbol por casi 0,10. Su brecha es grande porque su
+  R² de train es altísimo (0,9423): sus 300 árboles profundos memorizan 2016, y promediarlos
+  no borra esa memoria en train [INFERENCIA]. Los dos boosting lo superan en test.</li>
+  <li>(d) El árbol y GB tienen casi la misma brecha (0,1400 y 0,1392), y los separan 0,13 de
+  R² en test. Se elige por desempeño fuera de muestra —validación cruzada dentro de 2016— y
+  la brecha se usa para entender <em>por qué</em> un modelo rinde lo que rinde.</li>
+</ol>
+<p><strong>Error típico:</strong> «el de mayor brecha es el peor» o «el de menor brecha es el
+mejor». La brecha mide distancia entre train y test, no calidad.</p>
+<p><strong>De dónde sale:</strong> [FUENTE · Repo: 07_DATITO/referencia/material.md]; lectura
+[INFERENCIA].</p>
+<p>Y una advertencia sobre tu propio proyecto: esta brecha compara 2016 contra 2017, así que
+mezcla sobreajuste con cambio entre años. Comentando un proyecto 2016→2017 en la sesión del
+4-sep, el profesor explicó que es normal que el modelo rinda algo peor en 2017 porque los
+datos cambian entre un año y otro, y que el modelo queda un poco sobreajustado a 2016
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:58–2:09:21].
+Detalle en <a href="generalizacion.html">generalizacion.html</a>.</p>
+</details></div>
+
+<div class="nota"><strong>Un lapsus que no debes memorizar.</strong> Respondiendo cuándo
+conviene un random forest y cuándo deep learning, la transcripción registra que si no tienes
+suficientes datos para que el deep learning venza a un modelo clásico, «en general es mejor
+usar un modelo de deep learning»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:05–1:36:15].
+Lo oficial dice lo contrario: la lámina 8 de FCD-08 grafica desempeño contra cantidad de
+datos, con los algoritmos clásicos por encima cuando hay pocos datos
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8], y en
+la clase del 21-ago dijo que con pocos datos los algoritmos clásicos funcionan mejor que deep
+learning
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:45:25–1:45:29].
+El mismo pasaje del 7-ago sigue con que muchas veces un random forest supera a una red
+neuronal muy compleja. Quédate con: <strong>pocos datos → modelo clásico</strong>. Más en
+<a href="redes_neuronales.html">redes_neuronales.html</a>.</div>
+</section>
+
+<!-- ================================================================ -->
+<section id="boosting">
+<h2>3 · Gradient boosting: un recuadro, no una clase</h2>
+
+<div class="peligro"><strong>Estado de este tema en el curso.</strong> Gradient boosting
+<strong>no tiene lámina</strong>: el bloque de árboles de FCD-07 termina en Random Forest
+(láminas 34–38) y el resumen de la lámina 39 lista como modelos no lineales solo «árboles de
+decisión» y «random forest»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 39].
+En las 14 transcripciones disponibles al 2026-09-21 no se enseñó como tema: el profesor nombró
+XGBoost al pasar (la última cita de la sección 1), la ayudantía lo mencionó como otro modelo
+de tipo ensamble
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:31:47–1:31:52],
+y el resto son un comentario del profesor el 14-ago y presentaciones de compañeros (14-ago y
+4-sep). Lo que sigue es explicación de Datito para que entiendas <strong>tu propio modelo
+final</strong>; no lo presentes como materia de clase.</div>
+
+<p>Lo único que dijo el profesor sobre gradient boosting fue esto, comentando la presentación
+de un grupo:</p>
+
+<div class="cita">«gradient boosting generalmente se usa para clasificación en realidad
+gradient boosting es una técnica de optimización de modelos más que un modelo mismo
+⟨XGBoost⟩ y ⟨CatBoost⟩ son tipos de modelos que se usan con boosting» <span class="f">Sesión
+de presentaciones del 14-ago · 1:59:10–1:59:24 · profesor, comentando la presentación de un
+grupo de compañeros ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]
+· ⟨⟩ = corrección de transcripción [INFERENCIA]: el ASR escribió «y boost y cat boost»</span></div>
+
+<div class="nota"><strong>Dos cosas de esa frase.</strong> «Técnica de optimización más que
+un modelo» calza con el recuadro de abajo: boosting es una forma de <em>construir</em> un
+ensamble bajando el error paso a paso [INFERENCIA]. Pero «generalmente se usa para
+clasificación» choca con tu proyecto: tu modelo final es un
+<code>HistGradientBoostingRegressor</code>, de <strong>regresión</strong>
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 61]. En el mismo comentario el
+profesor recordó que el random forest tiene versión de regresión y de clasificación
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:59:00–1:59:08];
+con boosting pasa lo mismo, como muestra tu código. No hay lámina que zanje el punto: si te
+lo preguntan, di que existe para ambas tareas y muestra tu caso.</div>
+
+<div class="recuadro">
+<p style="margin-top:0"><strong>[DATITO] La idea en un párrafo.</strong> Random Forest
+entrena sus árboles <strong>en paralelo</strong>: cada uno, por su cuenta, intenta predecir
+el precio completo desde su muestra, y al final se promedian. Gradient boosting los entrena
+<strong>en secuencia</strong>: el primero predice algo simple; el segundo se entrena sobre
+<strong>lo que al primero le faltó</strong> (el residuo: real − predicho); el tercero, sobre
+lo que todavía falta después de los dos; y así. La predicción final es la <em>suma</em> de
+las correcciones, cada una multiplicada por una tasa de aprendizaje chica.</p>
+<table>
+<tr><th></th><th>Random Forest</th><th>Gradient boosting</th></tr>
+<tr><td>Orden</td><td>paralelo: ningún árbol mira a otro</td><td>secuencial: cada árbol depende de los anteriores</td></tr>
+<tr><td>Qué aprende cada árbol</td><td>el objetivo completo, desde su muestra</td><td>el residuo de lo acumulado</td></tr>
+<tr><td>Árboles típicos</td><td>profundos</td><td>chicos</td></tr>
+<tr><td>Cómo combina</td><td>promedio o votación</td><td>suma, ponderada por la tasa de aprendizaje</td></tr>
+</table>
+<p><strong>Un ejemplo de tres casas</strong> [DATITO · cifras ilustrativas, miles de AUD],
+con tasa de aprendizaje 0,5 y un árbol 2 tan chico que solo puede separar la casa c de las
+otras dos:</p>
+<table>
+<tr><th>Casa</th><th>Precio real</th><th>Árbol 1 (la media)</th><th>Residuo 1</th><th>Árbol 2 predice el residuo</th><th>Tras 2 árboles</th><th>Residuo 2</th></tr>
+<tr><td>a</td><td class="num">700</td><td class="num">1.000</td><td class="num">−300</td><td class="num">−200</td><td class="num">1.000 + 0,5·(−200) = 900</td><td class="num">−200</td></tr>
+<tr><td>b</td><td class="num">900</td><td class="num">1.000</td><td class="num">−100</td><td class="num">−200</td><td class="num">900</td><td class="num">0</td></tr>
+<tr><td>c</td><td class="num">1.400</td><td class="num">1.000</td><td class="num">+400</td><td class="num">+400</td><td class="num">1.000 + 0,5·400 = 1.200</td><td class="num">+200</td></tr>
+</table>
+<p style="margin-bottom:0">El árbol 3 recibiría −200, 0 y +200: cada árbol nuevo trabaja
+sobre lo que los anteriores <em>todavía</em> no explican. Con error cuadrático, el residuo es
+justamente la dirección en que baja el error; de ahí el «gradient» del nombre, y la misma
+idea de bajar por el gradiente reaparece en
+<a href="redes_neuronales.html">redes_neuronales.html</a> [DATITO].</p>
+</div>
+
+<h3>Tu modelo final, leído con el recuadro</h3>
+
+<p>Tu modelo final es un HistGradientBoosting sobre log1p(Price): <strong>MAE 188.218 AUD
+y R² 0,757</strong> en 2017 [FUENTE · Repo: 07_DATITO/referencia/material.md]. Su
+configuración y la del Gradient Boosting clásico
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · líneas 60–61]:</p>
+<ul>
+  <li><code>GradientBoostingRegressor(n_estimators=400, max_depth=4, learning_rate=0.05, subsample=0.8)</code></li>
+  <li><code>HistGradientBoostingRegressor(max_iter=500, learning_rate=0.05, max_leaf_nodes=31, l2_regularization=1.0)</code></li>
+</ul>
+<p>Léelo con el recuadro: árboles chicos (profundidad 4, o 31 hojas como máximo), muchos
+(400 a 500), y cada uno aporta solo el 5 % de su corrección [INFERENCIA]. Brechas: GB
+0,1392, la menor de tus cuatro modelos de árboles; HGB 0,1703, con el mejor R² en test
+(0,7571). Otra vez: la menor brecha no fue el mejor test.</p>
+
+<div class="ej"><div class="tipo">Ejercicio 7 · producción · el árbol número 2</div>
+<p>Sin mirar el recuadro, explica por escrito qué hace el árbol número 2 de tu
+HistGradientBoosting que no hace ningún árbol de tu Random Forest. Tu explicación tiene que
+usar la palabra «residuo», decir en qué escala está ese residuo en tu proyecto (el target es
+log1p(Price)) y explicar por qué se usa <code>learning_rate=0.05</code> en vez de 1.
+Escríbelo antes de abrir la respuesta modelo, y llévalo a Datito.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el árbol 2 del boosting se entrena para predecir el residuo
+que dejó el árbol 1 —lo que al modelo todavía le falta— y su predicción se suma, multiplicada
+por 0,05, a la anterior; ningún árbol del Random Forest hace eso, porque cada uno predice el
+objetivo completo por su cuenta y al final se promedian.</p>
+<p><strong>Respuesta modelo:</strong></p>
+<p style="font-style:italic">«En mi HistGradientBoosting, el primer árbol hace una
+predicción gruesa de log1p(Price). El árbol 2 no intenta predecir el precio: se entrena sobre
+el residuo, la diferencia entre el log1p del precio real de cada casa y lo que predijo el
+árbol 1. Como el objetivo está en logaritmo, ese residuo funciona como un error relativo: un
+residuo de +0,10 significa que el modelo se quedó corto en torno a un 10 %, sea la casa de
+500 mil o de 2 millones. La predicción nueva es la del árbol 1 más 0,05 veces la del árbol 2,
+y el árbol 3 se entrena sobre lo que todavía falta. En mi Random Forest, en cambio, los 300
+árboles se entrenan cada uno por su cuenta, en paralelo, sobre el objetivo completo, y se
+promedian: ninguno sabe en qué se equivocó otro. Uso learning_rate = 0,05 y no 1 porque con 1
+cada árbol corregiría todo su residuo de golpe, ruido de 2016 incluido; con pasos chicos cada
+árbol corrige solo un poco y los siguientes matizan sus errores. El costo es necesitar muchos
+árboles: por eso son 500.»</p>
+<p><strong>Cómo se construye:</strong></p>
+<ol class="pasos">
+  <li>Qué recibe el árbol 2: residuos (real − acumulado), no precios.</li>
+  <li>De quién depende: del árbol 1 (secuencial). En el bosque nadie depende de nadie.</li>
+  <li>Escala: log1p(real) − predicción en log ≈ error relativo [INFERENCIA].</li>
+  <li>Cómo se combina: suma, con cada corrección multiplicada por 0,05.</li>
+  <li>Por qué 0,05: pasos chicos persiguen menos el ruido; se paga con más árboles.</li>
+</ol>
+<p><strong>Error típico:</strong> decir que el boosting «promedia árboles» o que «cada árbol
+usa datos distintos» (eso es Random Forest); o hablar del residuo en AUD cuando el modelo
+trabaja en log.</p>
+<p><strong>De dónde sale:</strong> recuadro de arriba [DATITO]; configuración de
+[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 61]; escala logarítmica
+[INFERENCIA]. No es materia de clase: gradient boosting no tiene lámina.</p>
+</details>
+<details class="crit"><summary>Criterios con que se corrige tu versión</summary>
+<ul>
+  <li>Dice que el árbol 2 se entrena sobre lo que el modelo acumulado todavía no explica, no
+  sobre el precio.</li>
+  <li>Dice que depende del árbol 1 (secuencial), mientras que en el bosque ningún árbol
+  depende de otro.</li>
+  <li>Ubica el residuo en escala logarítmica: log1p del precio real menos la predicción en
+  log, más parecido a un error relativo que a uno en AUD [INFERENCIA].</li>
+  <li>Explica la tasa: cada árbol corrige una fracción, y muchos pasos chicos persiguen menos
+  el ruido que pocos pasos grandes; el precio es necesitar más árboles.</li>
+  <li>No dice que el boosting «promedia» árboles.</li>
+</ul>
+</details></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="ensambles">
+<h2>4 · Ensambles: cuándo más modelos ayudan</h2>
+
+<p>Random Forest y boosting son dos casos de una idea más general: <strong>combinar varios
+modelos en uno</strong>. Tres maneras de hacerlo [DATITO]:</p>
+
+<table>
+<tr><th>Tipo</th><th>De dónde sale la diversidad</th><th>Cómo combina</th><th>Dónde lo tienes</th></tr>
+<tr><td>Bosque (<em>bagging</em>)</td><td>mismo algoritmo, filas y atributos al azar</td><td>promedio o votación</td><td>Random Forest en Melbourne; ExtraTrees en Galaxy Zoo</td></tr>
+<tr><td>Boosting</td><td>cada modelo ataca lo que los anteriores fallan</td><td>suma ponderada</td><td>HistGradientBoosting en Melbourne; CatBoost en Galaxy Zoo</td></tr>
+<tr><td>Combinación de familias</td><td>algoritmos distintos</td><td>promedio de probabilidades o voto</td><td>P = α·P<sub>A</sub> + (1 − α)·P<sub>B</sub> en tu <code>08_ensemble.py</code></td></tr>
+</table>
+<p style="font-size:.9rem">La fórmula de la última fila está en
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/src/08_ensemble.py]. En los tres casos la pregunta
+es la del profesor con Cristóbal y Daniel: ¿se equivocan en casos distintos?</p>
+
+<div class="pred" id="predEns">
+  <div class="q">Antes de mover nada, predice. Tienes modelos que aciertan 65 % cada uno y
+  votan por mayoría. Si pasas de 1 a 51 modelos, la exactitud del voto…</div>
+  <button data-v="siempre">…sube siempre hacia 100 %</button>
+  <button data-v="depende">…depende de si se equivocan en los mismos casos</button>
+  <button data-v="nunca">…no cambia: 65 % es 65 %</button>
+  <div class="espera">Anotado. Ahora mueve cualquier control del simulador: el contraste
+  aparece al moverlo.</div>
+  <div class="veredicto"></div>
+</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> depende de si se equivocan en los mismos casos: con errores
+independientes (y cada modelo mejor que el azar) el voto sube hacia 100 %; con clones se
+queda en 65 %; y si cada modelo es peor que el azar, votar empeora.</p>
+<p><strong>Cómo se resuelve</strong> (con el modelo del simulador):</p>
+<ol class="pasos">
+  <li>ρ = 0: el voto acierta si aciertan al menos 6 de 11. Con p = 0,65, P(al menos 6 de 11)
+  ≈ 0,851; con 51 modelos, P(al menos 26 de 51) ≈ 0,986.</li>
+  <li>ρ = 1: en cada caso todos aciertan o todos fallan juntos, así que el voto acierta
+  exactamente p = 0,65, con 1 o con 51.</li>
+  <li>ρ = 0,5 y 51 modelos: 0,5 · 0,65 + 0,5 · 0,986 ≈ 0,818. Techo: con infinitos modelos,
+  0,5 · 0,65 + 0,5 · 1 = 0,825.</li>
+  <li>p = 0,45 y ρ = 0: con 11 modelos, ≈ 0,367; con 51, ≈ 0,236. La mayoría amplifica el
+  error.</li>
+</ol>
+<p><strong>Error típico:</strong> «más modelos siempre mejora» (confundir número con
+diversidad: la P1), o «65 % es 65 %» (ignorar que errores en casos distintos se
+compensan).</p>
+<p><strong>De dónde sale:</strong> modelo del simulador y sus cifras [DATITO]; condición de
+correlación del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:29:42–1:30:04].</p>
+</details>
+
+<div class="panel">
+  <canvas id="cvEns" width="860" height="360"></canvas>
+  <div class="ctrl"><label for="eN">N modelos</label>
+    <input type="range" id="eN" min="1" max="51" step="2" value="11"><strong id="eNv">11</strong>
+  </div>
+  <div class="ctrl"><label for="eP">p · exactitud de cada modelo</label>
+    <input type="range" id="eP" min="0.3" max="0.95" step="0.01" value="0.65"><strong id="ePv">0,65</strong>
+  </div>
+  <div class="ctrl"><label for="eR">ρ · correlación entre sus errores</label>
+    <input type="range" id="eR" min="0" max="1" step="0.05" value="0"><strong id="eRv">0,00</strong>
+  </div>
+  <div class="ctrl">
+    <button class="alt" id="eClones">Clones (ρ = 1)</button>
+    <button class="alt" id="eIndep">Independientes (ρ = 0)</button>
+    <button class="alt" id="eMoneda">Modelos peores que una moneda (p = 0,45)</button>
+    <button class="ok" id="eSorteo">Sortear otros 60 casos</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="eInd">—</div><div class="e">Cada modelo (p)</div></div>
+    <div><div class="n" id="eIndEmp">—</div><div class="e">Modelos, en estos 60 casos</div></div>
+    <div><div class="n" id="eTeo">—</div><div class="e">Voto, exactitud teórica</div></div>
+    <div><div class="n" id="eEmp">—</div><div class="e">Voto, aciertos en 60 casos</div></div>
+    <div><div class="n" id="eTodos">—</div><div class="e">Casos en que fallan todos</div></div>
+  </div>
+  <div class="lbl">Exactitud del voto según cuántos modelos votan</div>
+  <canvas id="cvCurva" width="860" height="260"></canvas>
+</div>
+
+<div class="ecu">
+  <div class="f">Exactitud(voto) = ρ · p + (1 − ρ) · P(más de N/2 aciertan)</div>
+  <table class="simb">
+  <tr><td>N</td><td>cuántos modelos votan; impar, para que no haya empates <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>p</td><td>exactitud de cada modelo por separado</td></tr>
+  <tr><td>ρ</td><td>correlación entre los aciertos de dos modelos: en una fracción ρ de los casos, todos «copian» el mismo resultado</td></tr>
+  <tr><td>P(más de N/2 aciertan)</td><td>probabilidad binomial de que la mayoría acierte si cada uno acierta por su cuenta: Σ<sub>k&gt;N/2</sub> C(N,k)·p<sup>k</sup>·(1 − p)<sup>N−k</sup></td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.6rem 0 0">Es el modelo del simulador [DATITO],
+  simplificado a propósito para que ρ se vea. No es la fórmula de ninguna librería: es una
+  forma honesta de mostrar el efecto.</p>
+</div>
+
+<div class="clave"><strong>Cuatro lecturas del simulador</strong> [DATITO].<br>
+· <strong>ρ = 1 (clones):</strong> la curva roja es plana en p. Da lo mismo votar con 1 o
+con 51.<br>
+· <strong>ρ = 0 y p &gt; 0,5:</strong> la curva verde sube hacia 100 %. Cada modelo agrega
+información nueva.<br>
+· <strong>ρ entre 0 y 1:</strong> sube, pero se aplana antes. Con infinitos modelos llega
+a ρ·p + (1 − ρ), nunca a 100 %: la parte de los errores que comparten no se cancela nunca.<br>
+· <strong>p &lt; 0,5:</strong> la mayoría de modelos malos es peor que uno solo. Votar
+amplifica lo que haya, bueno o malo.</div>
+
+<div class="dist"><strong>Distinción de certamen · Certamen 2, P1: número de modelos ≠
+diversidad de modelos.</strong> La P1 afirmaba que un modelo compuesto por varios árboles
+«exactamente iguales y que predicen exactamente lo mismo» suele predecir mejor que cada uno
+por separado. En el simulador, eso es ρ = 1: la curva roja. Es también Daniel opinando igual
+que Cristóbal. Ficha con el análisis: <a href="certamen_2.html#p1">certamen_2.html#p1</a>.<br>
+<strong>Pregunta estilo certamen (V/F, justifica si es falsa):</strong> «Utilizar un modelo
+compuesto por varios modelos exactamente iguales y que predicen exactamente lo mismo suele
+predecir mejor que cada modelo por separado.»</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> falso: un ensamble de modelos idénticos que predicen lo mismo
+equivale a un solo modelo, porque comete exactamente los mismos errores.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>Modelos idénticos producen predicciones idénticas.</li>
+  <li>Predicciones idénticas producen errores idénticos, en los mismos casos (ρ = 1).</li>
+  <li>Promediar o votar valores iguales devuelve ese mismo valor.</li>
+  <li>Luego el ensamble no mejora nada: la ventaja de un ensamble viene de que sus modelos se
+  equivoquen en casos distintos (lámina 36: «asegurarnos de que no aprendan todos exactamente
+  lo mismo»).</li>
+</ol>
+<p><strong>Error típico:</strong> responder «verdadero» porque «más modelos es mejor», o
+justificar el falso con «no aporta» sin nombrar el mecanismo (errores en los mismos
+casos).</p>
+<p><strong>De dónde sale:</strong> enunciado y derivación del expediente
+[FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md]; lámina 36
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 36]; el
+ejemplo del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40–1:30:49].</p>
+</details>
+
+<p>Para regresión o para promedios de probabilidades no hay votos, pero la idea es la misma
+con varianzas:</p>
+
+<div class="ecu">
+  <div class="f">Var(promedio de n) = ρ · σ² + (1 − ρ) · σ² / n</div>
+  <table class="simb">
+  <tr><td>σ²</td><td>varianza del error de un modelo por separado</td></tr>
+  <tr><td>n</td><td>modelos promediados <span class="rol r-decide">decisión</span></td></tr>
+  <tr><td>ρ</td><td>correlación entre los errores de dos modelos</td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.6rem 0 0">[DATITO] La versión general de la fórmula de
+  la ficha P1, que es el caso ρ = 0.</p>
+</div>
+
+<div class="ej"><div class="tipo">Camino inverso · te dan esta fórmula en el papel</div>
+<p>(1) ¿Qué pasa si n crece sin límite? (2) ¿Y si ρ = 1? (3) ¿Y si ρ = 0? (4) ¿Qué perilla
+de esta fórmula mueve Random Forest?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (1) queda ρ·σ², un piso que ningún número de modelos rompe;
+(2) Var = σ², como un solo modelo; (3) Var = σ²/n; (4) baja ρ.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(1) Con n → ∞, el término (1 − ρ)·σ²/n tiende a 0 y sobrevive ρ·σ².</li>
+  <li>(2) Con ρ = 1: 1·σ² + 0 = σ², con n = 1 o con n = 300. Clones.</li>
+  <li>(3) Con ρ = 0: 0 + σ²/n. Con 300 modelos, la varianza baja 300 veces.</li>
+  <li>(4) Random Forest sortea filas y atributos para bajar ρ, aunque cada árbol quede algo
+  peor (σ² algo mayor): el balance le conviene.</li>
+</ol>
+<p><strong>Error típico:</strong> usar σ²/n sin verificar independencia; la fórmula de la
+ficha P1 solo vale con ρ = 0.</p>
+<p><strong>De dónde sale:</strong> [DATITO]; es la generalización de la fórmula de
+<a href="certamen_2.html#p1">certamen_2.html#p1</a>.</p>
+</details></div>
+
+<div class="ej"><div class="tipo">Ejercicio 8 · cálculo a mano · tres modelos de 80 %</div>
+<p>[DATITO · cifras ilustrativas] Tres modelos, A, B y C, clasifican los mismos 10 casos y
+cada uno acierta 8 (80 %). La ✗ marca dónde falla cada uno. Combinas por mayoría (2 de 3).</p>
+<table class="casos">
+<tr><th>Escenario 1</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+<tr><td>A</td><td></td><td></td><td class="x">✗</td><td></td><td></td><td></td><td></td><td class="x">✗</td><td></td><td></td></tr>
+<tr><td>B</td><td></td><td></td><td class="x">✗</td><td></td><td></td><td></td><td></td><td class="x">✗</td><td></td><td></td></tr>
+<tr><td>C</td><td></td><td></td><td class="x">✗</td><td></td><td></td><td></td><td></td><td class="x">✗</td><td></td><td></td></tr>
+</table>
+<table class="casos">
+<tr><th>Escenario 2</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+<tr><td>A</td><td class="x">✗</td><td class="x">✗</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>B</td><td></td><td></td><td class="x">✗</td><td class="x">✗</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>C</td><td></td><td></td><td></td><td></td><td class="x">✗</td><td class="x">✗</td><td></td><td></td><td></td><td></td></tr>
+</table>
+<table class="casos">
+<tr><th>Escenario 3</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+<tr><td>A</td><td class="x">✗</td><td class="x">✗</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>B</td><td class="x">✗</td><td></td><td class="x">✗</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>C</td><td></td><td class="x">✗</td><td class="x">✗</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<p>(a) Calcula la exactitud del voto en cada escenario. (b) ¿Qué cantidad de la tabla decide
+el resultado, sin necesidad de mirar la exactitud de cada modelo?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el voto acierta 80 % en el escenario 1, 100 % en el 2 y 70 %
+en el 3; lo decide el número de casos donde fallan al menos dos modelos.</p>
+<p><strong>Cómo se resuelve:</strong> columna por columna, cuenta las ✗; si hay dos o más, el
+voto falla en ese caso.</p>
+<ol class="pasos">
+  <li>Escenario 1: los tres fallan en 3 y 8 → el voto falla en 2 casos → 8/10 =
+  <strong>80 %</strong>, lo mismo que cada uno (clones).</li>
+  <li>Escenario 2: ningún caso tiene dos ✗ → el voto no falla nunca → <strong>100 %</strong>.</li>
+  <li>Escenario 3: los casos 1, 2 y 3 tienen dos ✗ cada uno → el voto falla en 3 casos →
+  7/10 = <strong>70 %</strong>, <em>peor</em> que cualquiera de los modelos.</li>
+  <li>Los tres escenarios tienen modelos de 80 % y dan 80, 100 y 70 %: lo que cambia es
+  <em>dónde</em> caen los errores. La diversidad ayuda si los errores no se juntan de a dos;
+  si se juntan justo de a dos, el voto amplifica.</li>
+</ol>
+<p><strong>Error típico:</strong> suponer que tres modelos de 80 % votando dan siempre más de
+80 %, o calcular 89,6 % con la fórmula de independencia (0,8³ + 3·0,8²·0,2): ninguno de los
+tres escenarios tiene errores independientes.</p>
+<p><strong>De dónde sale:</strong> cifras ilustrativas [DATITO]; regla de mayoría como en la
+lámina 37 aplicada a clasificación [INFERENCIA].</p>
+</details></div>
+
+<div class="ej"><div class="tipo">Ejercicio 9 · producción · ahora con dos modelos</div>
+<p>Combinas dos modelos que aciertan 80 % cada uno. Construye con 10 casos, como las tablas
+de arriba, <strong>un escenario donde la combinación supere el 80 % y otro donde no gane
+nada</strong>. Antes resuelve un problema que con tres modelos no tenías: ¿qué hace la
+combinación cuando los dos discrepan? Declara la regla que usas. Escríbelo antes de abrir la
+respuesta modelo, y llévalo a Datito.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> dos modelos de 80 % combinados superan el 80 % solo si fallan
+en casos distintos <em>y</em> la regla de combinación, en cada desacuerdo, le cree al que
+acierta (por ejemplo, promediando probabilidades cuando el que acierta está más seguro); si
+fallan en los mismos casos, o si la regla no sabe a quién creerle, no ganan nada, y hasta
+pueden perder.</p>
+<p><strong>Respuesta modelo</strong> [DATITO · cifras ilustrativas]. Regla: promediar las
+probabilidades de la clase correcta y decidir con umbral 0,5.</p>
+<ol class="pasos">
+  <li><strong>Escenario que gana.</strong> A falla en los casos 1 y 2; B falla en 3 y 4. En
+  1 y 2, A se equivoca con poca seguridad (da 0,45 a la clase correcta) y B acierta seguro
+  (0,90): promedio 0,675 → acierta. En 3 y 4 pasa lo mismo al revés. En los otros 6 casos
+  aciertan los dos. Resultado: <strong>10 de 10 = 100 %</strong>.</li>
+  <li><strong>Escenario que no gana.</strong> A y B fallan los dos en los casos 1 y 2: no hay
+  a quién creerle, el promedio también falla. Resultado: <strong>8 de 10 = 80 %</strong>.</li>
+  <li><strong>Escenario que pierde.</strong> Fallan en casos distintos (A en 1 y 2, B en 3 y
+  4), pero el que se equivoca está muy seguro (da 0,10 a la clase correcta) y el que acierta,
+  dudoso (0,55): promedio 0,325 → falla. Resultado: <strong>6 de 10 = 60 %</strong>.</li>
+  <li>Con voto simple entre dos, cada desacuerdo es un empate: si lo resuelves al azar,
+  esperas 80 %, sin ganancia.</li>
+</ol>
+<p><strong>Error típico:</strong> afirmar «dos de 80 % dan 96 %» (1 − 0,2²). Esa cifra supone
+errores independientes <em>y</em> un árbitro perfecto que en cada desacuerdo elige al que
+acierta; ninguna de las dos cosas viene gratis.</p>
+<p><strong>De dónde sale:</strong> la regla de promediar probabilidades es la de tu
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/src/08_ensemble.py]; los escenarios son [DATITO].</p>
+</details>
+<details class="crit"><summary>Criterios con que se corrige tu versión</summary>
+<ul>
+  <li>Nota que con dos votos hay empates y declara una regla (por ejemplo, promediar
+  probabilidades, como hace <code>08_ensemble.py</code>).</li>
+  <li>El escenario ganador tiene los fallos en filas distintas <em>y</em> la regla elige al
+  que acierta en esas filas (por ejemplo, porque está más seguro).</li>
+  <li>El escenario sin ganancia tiene los fallos en las mismas filas, o una regla que no sabe
+  a quién creerle.</li>
+  <li>No afirma una cifra como «96 %» sin decir de dónde sale ni qué supone.</li>
+</ul>
+</details></div>
+
+<h3>Galaxy Zoo: lo que tu código hace, y lo que no hay</h3>
+
+<p>Tu <code>08_ensemble.py</code> hace dos cosas antes de combinar. Primero mide la
+<strong>diversidad de errores</strong> de cada par de modelos: la fracción de filas donde
+fallan los dos sobre las filas donde falla alguno (<code>jaccard_error</code>), con el
+comentario de que si dos modelos fuertes fallan en las mismas filas, promediarlos no puede
+aportar. Después busca el α de P = α·P<sub>A</sub> + (1 − α)·P<sub>B</sub> y solo adopta el
+ensamble si mejora al mejor modelo individual en más de 0,005; si no, imprime «NO ADOPTAR (no
+supera el ruido)» [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/src/08_ensemble.py].</p>
+
+<div class="peligro"><strong>No hay cifra del ensamble de Galaxy Zoo.</strong> El
+repositorio no tiene resultados escritos de ese script: en <code>analysis/</code> no existen
+<code>ensemble_diversity.csv</code> ni <code>ensemble_alpha.csv</code>, y las secciones 9 y
+11–13 del REPORT dicen «Pendiente»
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md]. No inventes esa cifra, ni en un
+certamen ni en una defensa: declara el vacío.</div>
+
+<div class="ej"><div class="tipo">Ejercicio 10 · interpretación · ¿combinar modelos en Galaxy Zoo?</div>
+<p>Con validación cruzada de 5 folds y F1-macro, el REPORT registra
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §5]:</p>
+<table>
+<tr><th>Modelo</th><th>F1-macro medio</th><th>Desviación entre folds</th></tr>
+<tr><td>CatBoost balanceado</td><td class="num">0,6129</td><td class="num">0,0223</td></tr>
+<tr><td>LinearSVC balanceado</td><td class="num">0,6105</td><td class="num">0,0380</td></tr>
+<tr><td>ExtraTrees balanceado</td><td class="num">0,5657</td><td class="num">0,0349</td></tr>
+</table>
+<p>(a) ¿Cuál es un bosque, cuál es boosting y cuál no es un ensamble? (b) Si fueras a
+combinar dos, ¿cuáles probarías y qué medirías <em>antes</em>? (c) Tu script adopta el
+ensamble si gana más de 0,005. Con estas desviaciones, ¿es un umbral exigente?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) ExtraTrees es un bosque, CatBoost es boosting y LinearSVC
+no es un ensamble; (b) probaría CatBoost con LinearSVC, midiendo antes en cuántas galaxias
+fallan los dos respecto de las que falla alguno; (c) no: 0,005 queda muy por debajo del ruido
+entre folds.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>(a) ExtraTrees es un bosque de árboles con cortes al azar; CatBoost es gradient boosting
+  sobre árboles; LinearSVC es un modelo lineal [DATITO]. Fíjate en que un ensamble
+  (ExtraTrees) quedó bajo un modelo lineal solo: ser ensamble no garantiza nada.</li>
+  <li>(b) CatBoost y LinearSVC rinden casi igual y son de familias muy distintas, así que es
+  <em>plausible</em> que fallen en galaxias distintas [INFERENCIA]. Plausible no basta: se
+  mide con las predicciones fuera de fold, que es lo que calcula tu script antes de combinar
+  (<code>jaccard_error</code>).</li>
+  <li>(c) El REPORT ya advierte que una diferencia de 0,0024 es «entre 9 y 16 veces menor que
+  la desviación entre folds» y que no respalda la conclusión
+  [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §5]. Una ganancia de 0,005 sigue muy por
+  debajo de desviaciones de 0,022 a 0,038 [INFERENCIA].</li>
+</ol>
+<p><strong>Error típico:</strong> suponer que combinar los dos mejores siempre mejora, o
+reportar una ganancia de 0,005 como mejora real sin compararla con la desviación entre
+folds.</p>
+<p><strong>De dónde sale:</strong> cifras de
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §5]; criterio de adopción de
+[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/src/08_ensemble.py].</p>
+</details></div>
+</section>
+
+<!-- ================================================================ -->
+<section id="cierre">
+<h2>5 · Transferir, producir y el papel</h2>
+
+<div class="ej"><div class="tipo">Ejercicio 11 · transferencia · salud</div>
+<p>[DATITO · cifras ilustrativas] Un consultorio quiere un árbol que sugiera derivar o no a
+cardiología. Tiene 20 pacientes: 12 «no derivar» y 8 «derivar». Dos cortes candidatos para
+la raíz:</p>
+<table>
+<tr><th>Corte</th><th>Lado ≤</th><th>Lado &gt;</th></tr>
+<tr><td>Presión sistólica ≤ 140</td><td>10 no · 2 sí</td><td>2 no · 6 sí</td></tr>
+<tr><td>Edad ≤ 60</td><td>7 no · 3 sí</td><td>5 no · 5 sí</td></tr>
+</table>
+<p>(a) ¿Qué corte elige C4.5 con Gini? Calcula las dos ganancias. (b) Llega un paciente con
+presión 150. ¿Qué entrega el árbol de un solo corte? ¿Quién decide si eso significa
+«derivar»?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) C4.5 elige la presión (ganancia ≈ 0,163 contra 0,02 de la
+edad); (b) el árbol entrega 75 % de probabilidad de «derivar», y si eso significa derivar lo
+decide quien fija el umbral según el costo de cada error, no el árbol.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>Padre (12 no, 8 sí): p = 8/20 = 0,4 → Gini = 2 · 0,6 · 0,4 = 0,48.</li>
+  <li>Presión: lado ≤ (10, 2) → 2·(10/12)(2/12) ≈ 0,2778; lado &gt; (2, 6) → 2·(2/8)(6/8) =
+  0,375. Ponderada 12/20 · 0,2778 + 8/20 · 0,375 ≈ 0,1667 + 0,15 = 0,3167. Ganancia
+  ≈ 0,48 − 0,3167 = <strong>0,163</strong>.</li>
+  <li>Edad: (7, 3) → 2 · 0,7 · 0,3 = 0,42; (5, 5) → 0,5. Ponderada 0,5 · 0,42 + 0,5 · 0,5 =
+  0,46. Ganancia <strong>0,02</strong>. Gana la presión.</li>
+  <li>Paciente con 150: cae en el lado &gt; 140, donde 6 de 8 fueron derivados → P(derivar) =
+  6/8 = 75 %. En salud, no derivar a un enfermo cuesta más que derivar a un sano, así que el
+  umbral suele ponerse bajo [DATITO]. Es el punto de operación de
+  <a href="roc_auc.html">roc_auc.html</a>.</li>
+</ol>
+<p><strong>Error típico:</strong> elegir la edad porque «divide más parejo» (10 y 10), o
+decir «el árbol dice derivar» sin dar la probabilidad ni quién fija el umbral.</p>
+<p><strong>De dónde sale:</strong> cifras ilustrativas [DATITO]; procedimiento de las
+láminas 29, 31 y 32
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 32].</p>
+</details></div>
+
+<div class="ej"><div class="tipo">Ejercicio 12 · transferencia · minería</div>
+<p>[DATITO · cifras ilustrativas] Una faena minera tiene tres alarmas automáticas que
+predicen la falla de una correa transportadora, y cada una acierta 85 de cada 100 casos. A y
+B son el mismo modelo de vibración, entrenado con los mismos datos y distinta semilla; C usa
+la temperatura del motor. En 100 casos históricos, A falló en 15, B en 15, y <strong>14 de
+esos fallos son los mismos casos</strong>; C falló en 15 casos donde A y B acertaron.</p>
+<p>(a) ¿Cuánto acierta el voto de las tres? (b) ¿Cómo lo mejorarías sin mejorar ninguna
+alarma por separado?</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> (a) el voto acierta 86 de 100, casi lo mismo que cada alarma
+sola; (b) reemplazando B por una alarma que se equivoque en otros casos.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>El voto de tres falla donde fallan al menos dos.</li>
+  <li>A y B fallan juntas en 14 casos: ahí C acierta, pero pierde 2 a 1 → 14 fallos del
+  voto.</li>
+  <li>A falla sola en 1 caso, B sola en 1 caso, C sola en 15: en ninguno de esos fallan dos →
+  el voto acierta.</li>
+  <li>Voto: 100 − 14 = <strong>86 de 100</strong>. C aporta diversidad real, pero A y B son
+  casi clones y la votan en contra.</li>
+  <li>(b) Con tres alarmas de 85 % que fallaran en casos disjuntos (45 casos distintos),
+  ningún caso tendría dos fallos y el voto acertaría los 100. La diversidad se diseña (otro
+  sensor, otras variables), igual que en Random Forest.</li>
+</ol>
+<p><strong>Error típico:</strong> calcular ≈ 94 % con la fórmula de independencia
+(0,85³ + 3 · 0,85² · 0,15 ≈ 0,939): A y B no son independientes. Es la P1 en terreno:
+número ≠ diversidad.</p>
+<p><strong>De dónde sale:</strong> cifras ilustrativas [DATITO]; condición de correlación del
+profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:29:42–1:30:04].</p>
+</details></div>
+
+<div class="repreg"><strong>Explícaselo a alguien.</strong><br><br>
+A una persona que no ha visto nada de esto —un compañero de otra carrera, alguien de tu
+casa— explícale en menos de dos minutos, usando solo los triángulos y círculos del
+profesor:<br>
+1. cómo un árbol elige su primer corte;<br>
+2. por qué cien árboles distintos se equivocan menos que uno;<br>
+3. por qué cien árboles copiados, no.<br><br>
+Grábalo o escríbelo antes de abrir la respuesta modelo, y llévalo a Datito.</div>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> un árbol elige el corte que más reduce la mezcla, ponderando
+cada lado por su tamaño; cien árboles distintos se equivocan menos porque cada uno se
+equivoca a su manera y al votar los errores se tapan; cien copias se equivocan en lo mismo, y
+votar es preguntarle cien veces al mismo.</p>
+<p><strong>Respuesta modelo:</strong></p>
+<p style="font-style:italic">«Imagina 17 figuras en una hoja: 9 triángulos y 8 círculos,
+desparramados. Quiero una regla para adivinar la figura de un punto nuevo sabiendo solo
+dónde está. Un árbol prueba rayas: una vertical aquí, otra allá, horizontales, y para cada
+raya mira qué tan revueltos quedan los dos lados. Lo revuelto se mide con un número, el
+Gini: 0 si un lado tiene una sola figura, 0,5 si está mitad y mitad. Elige la raya que más
+baja ese número, dándole más peso al lado que tiene más figuras, para no premiar una raya que
+solo aparta un punto. Después repite dentro de cada lado. Cuando cae un punto nuevo, el árbol
+no dice "es triángulo": dice "aquí 8 de 9 eran triángulos, 89 %". Un árbol solo se equivoca
+harto, porque sus rayas se acomodan a los puntos exactos que vio. Si hago cien árboles y a
+cada uno le muestro una muestra distinta de figuras y solo algunas de las coordenadas, cada
+uno se equivoca a su manera, y cuando votan, los errores de uno los tapan los otros. Pero si
+los cien son copias, se equivocan justo en lo mismo: votar es preguntarle cien veces al mismo,
+como preguntarle a Daniel algo en lo que opina exactamente igual que Cristóbal.»</p>
+<p><strong>Cómo se construye:</strong> (1) la situación con las figuras del profesor;
+(2) el número de mezcla y la ponderación por tamaño; (3) la hoja como proporción; (4) por qué
+un árbol solo falla (se acomoda a lo que vio); (5) la diversidad con su mecanismo; (6) el
+caso de las copias.</p>
+<p><strong>Error típico:</strong> explicar con jerga sin traducirla («bootstrap»,
+«hiperparámetro»), olvidar la ponderación por tamaño, o decir que cien árboles son mejores
+«porque son más».</p>
+<p><strong>De dónde sale:</strong> ejemplo y conteos del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:52–1:15:40];
+láminas 27–37
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 37];
+redacción [DATITO].</p>
+</details>
+<details class="crit"><summary>Criterios con que se corrige tu versión</summary>
+<ul>
+  <li>El corte se elige comparando cortes con un número de mezcla y la ganancia ponderada por
+  tamaño, no «a ojo».</li>
+  <li>Menciona que la hoja responde con una proporción.</li>
+  <li>Explica la diversidad con su mecanismo (filas y atributos al azar), no con «más es
+  mejor».</li>
+  <li>El punto 3 usa la idea de errores en los mismos casos, no solo «no aporta».</li>
+  <li>Traduce la jerga (bootstrap, hiperparámetro) o no la usa.</li>
+</ul>
+</details>
+
+<h3>Procedimiento para el papel</h3>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+GINI DE UN NODO
+ 1. CONTAR           Nᵢ por clase y el total N
+ 2. PROPORCIONES     pᵢ = Nᵢ/N  (verifica que sumen 1)
+ 3. GINI             Σ pᵢ(1 − pᵢ)      con 2 clases: 2·p·(1 − p)
+ 4. CHEQUEAR         puro → 0 · mitad y mitad (2 clases) → 0,5
+
+GANANCIA DE UN CORTE (C4.5)
+ 5. PADRE            Gini del nodo antes de cortar
+ 6. HIJOS            Gini de cada hijo
+ 7. PONDERAR         cada hijo × N(hijo)/N(padre)   ← el paso que más se olvida
+ 8. RESTAR           ganancia = padre − suma ponderada
+ 9. ELEGIR           gana el corte con MAYOR ganancia
+
+RANDOM FOREST
+10. PROBABILIDAD     votos de la clase / n árboles
+11. IMPORTANCIA      veces que se usó la variable / total de divisiones
+12. DIVERSIDAD       filas CON reemplazo + m atributos al azar
+
+VOTO DE UN ENSAMBLE
+13. POR CASO         ¿fallan más de la mitad? → falla el voto
+14. EXACTITUD        casos con mayoría correcta / total
+15. ANTES DE DECIR «MEJORA»: ¿fallan en los mismos casos?
+</pre>
+
+<div class="peligro"><strong>Errores que el formato castiga</strong>
+<ul style="margin:.4rem 0 0">
+  <li>Restar el promedio <em>simple</em> de los hijos en vez del ponderado por tamaño: premia
+  cortes que aíslan un punto (el corte C del plano).</li>
+  <li>Leer Gini al revés: alto es <strong>mezclado</strong>; 0 es puro.</li>
+  <li>Decir que la medida de impureza se aprende, o que una es siempre mejor: es un
+  hiperparámetro y se elige con validación cruzada.</li>
+  <li>Ofrecer la ganancia de pureza como métrica de evaluación (Certamen 2, P4).</li>
+  <li>Describir Random Forest sorteando solo filas, solo atributos, o «atributos con
+  reemplazo».</li>
+  <li>Confundir número de modelos con diversidad (Certamen 2, P1): los clones no suman.</li>
+  <li>Decir «el árbol predice perro» sin decir que la hoja entrega una proporción y la clase
+  sale de un umbral.</li>
+  <li>Elegir modelo por la brecha, o llamar sobreajuste a toda la caída de 2016 a 2017.</li>
+  <li>Presentar gradient boosting como materia de clase, o afirmar que es «solo para
+  clasificación» contra tu propio modelo de regresión.</li>
+  <li>Inventar una cifra del ensamble de Galaxy Zoo: no existe en el repositorio.</li>
+</ul></div>
+
+<div class="vecino"><strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+    de dónde viene esto: la brecha y el modelo que memoriza</li>
+<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — cómo se
+    eligen la medida de impureza, la profundidad y el número de árboles</li>
+<li><a href="clasificacion.html"><code>clasificacion.html</code></a> y
+    <a href="roc_auc.html"><code>roc_auc.html</code></a> — de la proporción de la hoja a la
+    clase, con umbral</li>
+<li><a href="certamen_2.html#p1"><code>certamen_2.html#p1</code></a> y
+    <a href="certamen_2.html#p4"><code>#p4</code></a> — las dos preguntas del Certamen 2 que
+    toca esta página</li>
+<li><a href="redes_neuronales.html"><code>redes_neuronales.html</code></a> — la otra rama que
+    sale de gradient boosting: bajar el error por el gradiente</li>
+</ul>
+</div>
+</section>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-15">
+<h2>Cierre de la Clase 15 · Árboles de decisión</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El árbol divide los datos buscando grupos más puros.</li><li>El Gini de un nodo es su error esperado; se pondera por el tamaño de cada hijo.</li><li>El árbol se detiene por pureza, o antes, para no sobreajustar.</li><li>La medida de impureza es un hiperparámetro: se elige con validación cruzada.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Ganancia de pureza (sirve para construir el árbol) ≠ métrica de evaluación (C2 P4).</li><li>Árbol sin límite ≠ buen modelo: sobreajusta.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Calcula la impureza de cada hijo.</li><li>Pondera por el tamaño de cada hijo.</li><li>Compara con el padre y elige el corte de mayor ganancia.</li></ol>
+<p><b>Viene de:</b> <a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · <b>Sigue:</b> <a href="arboles_y_ensambles.html#random-forest">Clase 16 · Random Forest y ensambles</a></p>
+<p><b>Vuelve a tu activación:</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="arboles_y_ensambles.html#random-forest">Continuar → Clase 16 · Random Forest y ensambles</a>
+</section>
+<section class="dcierre" id="cierre-clase-16">
+<h2>Cierre de la Clase 16 · Random Forest y ensambles</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Random Forest: muchos árboles con filas por bootstrap y atributos al azar, que votan.</li><li>La importancia de una variable se cuenta por cuántas veces los árboles la usan para separar.</li><li>Boosting corrige en secuencia los errores de los árboles anteriores (no se enseñó como tema en clase).</li><li>El modelo final de Melbourne fue un HistGradientBoosting.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Número de modelos ≠ diversidad (C2 P1).</li><li>En paralelo (Random Forest) ≠ en secuencia (boosting).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.</li><li>Diversidad: filas distintas (bootstrap) y atributos distintos.</li></ol>
+<p><b>Viene de:</b> <a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a> · <b>Sigue:</b> <a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></p>
+<p><b>Vuelve a tu activación:</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="redes_neuronales.html">Continuar → Clase 17 · Redes neuronales</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/arboles_y_ensambles.html</code> · funciona sin
+conexión · fuentes: láminas 25–39 de <code>FCD-2026-2_07_Clasificacion</code> y lámina 8 de
+<code>FCD-2026-2_08_DL_LLMs_Agents</code>; <code>Resumen_Clase7_Clasificacion</code> (híbrido:
+fórmulas de las láminas 30 y 31); transcripciones de <code>09_CLASES/transcripciones</code>
+(clase y ayudantía del 7-ago, sesión del 14-ago, clase del 21-ago y sesión del 4-sep), con
+marca de tiempo en cada cita; texto del P5; <code>03_CODIGO/modelamiento_temporal.py</code>;
+<code>07_DATITO/referencia/material.md</code>; <code>02_PROYECTO_FCD/Desafio/REPORT.md</code> y
+<code>src/08_ensemble.py</code>; <code>07_DATITO/grafo.yaml</code> y
+<code>patron_evaluacion.md</code>.<br>
+<strong>Datos reales:</strong> los conteos del ejemplo del profesor (9 triángulos, 8 círculos
+y sus cortes), los valores de Gini de las láminas 27–29, las cifras de Melbourne (R² de train y
+test de los cuatro modelos de árboles, MAE 188.218 AUD, R² 0,757), las de Galaxy Zoo (§5 del
+REPORT) y los hiperparámetros del código. <strong>Ilustrativos [DATITO]:</strong> las
+posiciones de los puntos del plano, el modelo del simulador de votación, la tabla de
+residuos de tres casas, el bosque de 4 árboles, los escenarios de tres modelos y los casos de
+salud y minería.
+</footer>
+
+<script>
+(function(){
+'use strict';
+const $ = id => document.getElementById(id);
+const coma = (v, d) => v.toFixed(d).replace('.', ',');
+const pct = v => Math.round(v * 100) + ' %';
+
+/* ===== Predicciones: se anota la elección y el contraste aparece al usar el control ===== */
+const PRED = {
+  predCorte: {
+    A: '<strong>Acertaste: gana A</strong> (ganancia ≈ 0,209 con Gini). No deja ningún lado puro, pero limpia los dos, y los dos pesan: 7 y 10 de los 17 puntos. B da ≈ 0,101 y C ≈ 0,035.',
+    B: '<strong>No: gana A.</strong> B deja un lado casi puro (5△ 1○), pero ese lado tiene solo 6 de los 17 puntos, y el otro queda muy mezclado (4△ 7○, Gini ≈ 0,463). La ganancia pondera por tamaño: B ≈ 0,101 contra A ≈ 0,209.',
+    C: '<strong>No: gana A.</strong> C deja un hijo 100 % puro… con 1 punto de 17: pesa 1/17. El otro hijo (9△ 7○) sigue casi tan mezclado como el padre. Ganancia ≈ 0,035, la peor de las tres. Un hijo puro no basta: importa <em>cuántos</em> puntos purifica el corte.'
+  },
+  predEns: {
+    siempre: '<strong>No siempre.</strong> Pon ρ = 1: con 1 o con 51 modelos, el voto acierta p. Y pon p = 0,45 con ρ = 0: sumar modelos <em>baja</em> la exactitud. Más modelos solo ayudan si cada uno es mejor que el azar y si no se equivocan en los mismos casos.',
+    depende: '<strong>Eso es.</strong> Con p = 0,65 y errores independientes (ρ = 0), 11 modelos votando llegan a ≈ 85 % y 51 a ≈ 99 %. Con ρ = 1 se quedan en 65 % por muchos que agregues. En el medio (ρ = 0,5) hay techo: con 51 modelos, ≈ 82 %. [DATITO · cifras del modelo del simulador]',
+    nunca: '<strong>No.</strong> Cuando los modelos se equivocan en casos distintos, el voto corrige: con p = 0,65 y ρ = 0, pasar de 1 a 51 modelos lleva la exactitud de 65 % a ≈ 99 %. Lo que sí es cierto es que los <em>clones</em> no mejoran nada (ρ = 1).'
+  }
+};
+const elegida = {};
+document.querySelectorAll('.pred').forEach(caja => {
+  if (!PRED[caja.id]) return;
+  caja.querySelectorAll('button[data-v]').forEach(b => {
+    b.addEventListener('click', () => {
+      caja.querySelectorAll('button[data-v]').forEach(x => x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      elegida[caja.id] = b.dataset.v;
+      const v = caja.querySelector('.veredicto');
+      v.classList.remove('on');
+      v.innerHTML = '';
+      caja.querySelector('.espera').style.display = 'block';
+    });
+  });
+});
+function contraste(id){
+  const e = elegida[id];
+  if (!e) return;
+  const caja = $(id), v = caja.querySelector('.veredicto');
+  if (v.classList.contains('on')) return;
+  v.innerHTML = PRED[id][e];
+  v.classList.add('on');
+  caja.querySelector('.espera').style.display = 'none';
+}
+
+/* ===== 1 · Calculadora de impureza sobre el ejemplo del profesor =====
+   Conteos del profesor (9 triángulos, 8 círculos); posiciones inventadas [DATITO]. */
+const PUNTOS = [
+  {x:1.0, y:1.5, c:'c'}, {x:2.2, y:3.0, c:'c'}, {x:3.0, y:1.0, c:'c'}, {x:1.5, y:4.5, c:'c'},
+  {x:3.3, y:4.0, c:'c'}, {x:1.2, y:8.0, c:'t'}, {x:2.8, y:7.2, c:'c'}, {x:7.5, y:8.6, c:'c'},
+  {x:6.0, y:6.2, c:'c'}, {x:4.8, y:2.0, c:'t'}, {x:5.5, y:4.5, c:'t'}, {x:6.2, y:1.2, c:'t'},
+  {x:6.8, y:3.3, c:'t'}, {x:7.5, y:5.5, c:'t'}, {x:8.2, y:2.4, c:'t'}, {x:8.8, y:4.2, c:'t'},
+  {x:9.3, y:1.6, c:'t'}
+];
+const NT = PUNTOS.filter(p => p.c === 't').length;
+const NC = PUNTOS.length - NT;
+const MEDIDAS = {gini: 'Gini', entropia: 'Entropía', error: 'Error de clasificación'};
+const HOJAS_PROF = [
+  {f: p => p.x <= 4 && p.y > 6,  cx: 2.0, cy: 9.3},
+  {f: p => p.x <= 4 && p.y <= 6, cx: 2.0, cy: 5.4},
+  {f: p => p.x > 4 && p.y > 7,   cx: 5.9, cy: 9.3},
+  {f: p => p.x > 4 && p.y <= 7,  cx: 8.6, cy: 6.5}
+];
+const g = {attr: 'x1', umbral: 4, medida: 'gini', prof: false};
+
+function impureza(nt, nc, m){
+  const n = nt + nc;
+  if (n === 0) return 0;
+  const pt = nt / n, pc = nc / n;
+  if (m === 'gini') return pt * (1 - pt) + pc * (1 - pc);
+  if (m === 'entropia'){
+    let h = 0;
+    [pt, pc].forEach(p => { if (p > 0) h -= p * Math.log2(p); });
+    return h;
+  }
+  return 1 - Math.max(pt, pc);
+}
+function valor(p, attr){ return attr === 'x1' ? p.x : p.y; }
+function evaluarCorte(attr, t, m){
+  const a = {t: 0, c: 0}, b = {t: 0, c: 0};
+  PUNTOS.forEach(p => { (valor(p, attr) <= t ? a : b)[p.c]++; });
+  const N = PUNTOS.length, na = a.t + a.c, nb = b.t + b.c;
+  const ip = impureza(NT, NC, m), ia = impureza(a.t, a.c, m), ib = impureza(b.t, b.c, m);
+  const pond = na / N * ia + nb / N * ib;
+  return {a: a, b: b, N: N, na: na, nb: nb, ip: ip, ia: ia, ib: ib, pond: pond, gan: ip - pond};
+}
+function hojaTxt(nombre, s){
+  const n = s.t + s.c;
+  if (!n) return 'Lado ' + nombre + ': vacío';
+  return 'Punto nuevo en el lado ' + nombre + ': P(○) = ' + s.c + '/' + n + ' = ' + pct(s.c / n) +
+         ' · P(△) = ' + s.t + '/' + n + ' = ' + pct(s.t / n);
+}
+function mejorCorte(m){
+  let mejor = null, revisados = 0;
+  ['x1', 'x2'].forEach(attr => {
+    const vals = Array.from(new Set(PUNTOS.map(p => valor(p, attr)))).sort((u, v) => u - v);
+    for (let i = 0; i < vals.length - 1; i++){
+      const t = Math.round((vals[i] + vals[i + 1]) / 2 * 100) / 100;
+      const r = evaluarCorte(attr, t, m);
+      revisados++;
+      if (!mejor || r.gan > mejor.gan + 1e-12) mejor = {attr: attr, t: t, gan: r.gan};
+    }
+  });
+  mejor.revisados = revisados;
+  return mejor;
+}
+
+function etiqueta(k, txt, x, y, alinear, W, ML, MR){
+  k.font = '600 12px system-ui';
+  const w = k.measureText(txt).width + 10;
+  let x0 = alinear === 'right' ? x - w : (alinear === 'center' ? x - w / 2 : x);
+  x0 = Math.max(ML + 2, Math.min(W - MR - w - 2, x0));
+  k.fillStyle = 'rgba(255,255,255,0.93)';
+  k.fillRect(x0, y - 13, w, 18);
+  k.strokeStyle = '#ddd6fe'; k.lineWidth = 1;
+  k.strokeRect(x0, y - 13, w, 18);
+  k.fillStyle = '#1a1a1a'; k.textAlign = 'left';
+  k.fillText(txt, x0 + 5, y);
+}
+function figura(k, x, y, c){
+  k.beginPath();
+  if (c === 'c'){
+    k.arc(x, y, 7, 0, 2 * Math.PI);
+    k.fillStyle = '#2563eb';
+  } else {
+    k.moveTo(x, y - 8); k.lineTo(x + 8, y + 6); k.lineTo(x - 8, y + 6); k.closePath();
+    k.fillStyle = '#d97706';
+  }
+  k.fill();
+}
+function dibujaGini(r){
+  const c = $('cvGini'), k = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 46, MR = 16, MT = 16, MB = 40;
+  const px = x => ML + x / 10 * (W - ML - MR);
+  const py = y => H - MB - y / 10 * (H - MT - MB);
+  const linea = (x1, y1, x2, y2) => { k.beginPath(); k.moveTo(x1, y1); k.lineTo(x2, y2); k.stroke(); };
+  k.clearRect(0, 0, W, H);
+
+  if (!g.prof){
+    const t = g.umbral;
+    k.fillStyle = 'rgba(37,99,235,0.07)';
+    if (g.attr === 'x1') k.fillRect(px(0), py(10), px(t) - px(0), py(0) - py(10));
+    else k.fillRect(px(0), py(t), px(10) - px(0), py(0) - py(t));
+    k.fillStyle = 'rgba(217,119,6,0.08)';
+    if (g.attr === 'x1') k.fillRect(px(t), py(10), px(10) - px(t), py(0) - py(10));
+    else k.fillRect(px(0), py(10), px(10) - px(0), py(t) - py(10));
+  }
+  k.strokeStyle = '#eeeeee'; k.lineWidth = 1;
+  for (let v = 0; v <= 10; v += 2){ linea(px(v), py(0), px(v), py(10)); linea(px(0), py(v), px(10), py(v)); }
+  k.strokeStyle = '#1a1a1a'; k.lineWidth = 1.5;
+  k.beginPath(); k.moveTo(px(0), py(10)); k.lineTo(px(0), py(0)); k.lineTo(px(10), py(0)); k.stroke();
+  k.fillStyle = '#666'; k.font = '11px system-ui'; k.textAlign = 'center';
+  for (let v = 0; v <= 10; v += 2) k.fillText(v, px(v), py(0) + 15);
+  k.textAlign = 'right';
+  for (let v = 0; v <= 10; v += 2) k.fillText(v, px(0) - 6, py(v) + 4);
+  k.textAlign = 'center';
+  k.fillText('x₁', (px(0) + px(10)) / 2, H - 8);
+  k.save(); k.translate(14, (py(0) + py(10)) / 2); k.rotate(-Math.PI / 2); k.fillText('x₂', 0, 0); k.restore();
+
+  k.setLineDash([7, 5]); k.strokeStyle = '#7c3aed'; k.lineWidth = 2.5;
+  if (g.prof){
+    linea(px(4), py(0), px(4), py(10));
+    linea(px(0), py(6), px(4), py(6));
+    linea(px(4), py(7), px(10), py(7));
+  } else if (g.attr === 'x1') linea(px(g.umbral), py(0), px(g.umbral), py(10));
+  else linea(px(0), py(g.umbral), px(10), py(g.umbral));
+  k.setLineDash([]);
+
+  PUNTOS.forEach(p => figura(k, px(p.x), py(p.y), p.c));
+
+  if (g.prof){
+    HOJAS_PROF.forEach(h => {
+      const s = {t: 0, c: 0};
+      PUNTOS.filter(h.f).forEach(p => s[p.c]++);
+      const n = s.t + s.c;
+      const txt = (s.c >= s.t ? pct(s.c / n) + ' ○' : pct(s.t / n) + ' △') + '  (' + s.t + '△ ' + s.c + '○)';
+      etiqueta(k, txt, px(h.cx), py(h.cy) + 5, 'center', W, ML, MR);
+    });
+  } else {
+    const ta = '≤ · ' + r.a.t + '△ ' + r.a.c + '○', tb = '> · ' + r.b.t + '△ ' + r.b.c + '○';
+    if (g.attr === 'x1'){
+      etiqueta(k, ta, px(g.umbral) - 8, py(9.6), 'right', W, ML, MR);
+      etiqueta(k, tb, px(g.umbral) + 8, py(9.6), 'left', W, ML, MR);
+    } else {
+      const yb = Math.min(py(0) - 6, py(g.umbral) + 20), ya = Math.max(MT + 14, py(g.umbral) - 8);
+      etiqueta(k, ta, px(9.9), yb, 'right', W, ML, MR);
+      etiqueta(k, tb, px(9.9), ya, 'right', W, ML, MR);
+    }
+  }
+}
+function selBotones(){
+  $('gX1').classList.toggle('sel', !g.prof && g.attr === 'x1');
+  $('gX2').classList.toggle('sel', !g.prof && g.attr === 'x2');
+  [['mGini', 'gini'], ['mEnt', 'entropia'], ['mErr', 'error']].forEach(par => {
+    $(par[0]).classList.toggle('sel', g.medida === par[1]);
+  });
+  $('gProf').textContent = g.prof ? 'Volver a un solo corte' : 'Ver el árbol completo del profesor';
+}
+function pintaGini(){
+  const r = evaluarCorte(g.attr, g.umbral, g.medida);
+  const eje = g.attr === 'x1' ? 'x₁' : 'x₂';
+  $('gLeyUmbral').textContent = eje + ' ≤ ' + coma(g.umbral, 2);
+  $('gPadre').textContent = coma(r.ip, 4);
+  $('gIzq').textContent = coma(r.ia, 4);
+  $('gIzqE').textContent = 'lado ≤ · ' + r.a.t + '△ ' + r.a.c + '○';
+  $('gDer').textContent = coma(r.ib, 4);
+  $('gDerE').textContent = 'lado > · ' + r.b.t + '△ ' + r.b.c + '○';
+  $('gPond').textContent = coma(r.pond, 4);
+  $('gGan').textContent = coma(r.gan, 4);
+  let txt = 'Medida: ' + MEDIDAS[g.medida] + ' · corte ' + eje + ' ≤ ' + coma(g.umbral, 2) + '
+' +
+    'Ponderada = ' + r.na + '/' + r.N + ' · ' + coma(r.ia, 4) + ' + ' + r.nb + '/' + r.N + ' · ' +
+    coma(r.ib, 4) + ' = ' + coma(r.pond, 4) + '
+' +
+    'Ganancia  = ' + coma(r.ip, 4) + ' − ' + coma(r.pond, 4) + ' = ' + coma(r.gan, 4) + '
+' +
+    hojaTxt('≤', r.a) + '
+' + hojaTxt('>', r.b);
+  if (g.prof){
+    txt += '
+
+Árbol completo del profesor: primer corte x₁ ≤ 4; después x₂ ≤ 6 a la izquierda y x₂ ≤ 7 a la derecha.' +
+           '
+Las etiquetas del plano muestran la probabilidad que entrega cada una de las 4 hojas.';
+  }
+  $('gArit').textContent = txt;
+  selBotones();
+  dibujaGini(r);
+}
+function accionGini(fn){
+  return function(){ fn(); pintaGini(); contraste('predCorte'); };
+}
+function fijarCorte(attr, t){ g.prof = false; g.attr = attr; g.umbral = t; $('gUm').value = t; }
+$('gA').onclick = accionGini(() => fijarCorte('x1', 4));
+$('gB').onclick = accionGini(() => fijarCorte('x1', 6.5));
+$('gC').onclick = accionGini(() => fijarCorte('x2', 8.3));
+$('gX1').onclick = accionGini(() => { g.prof = false; g.attr = 'x1'; });
+$('gX2').onclick = accionGini(() => { g.prof = false; g.attr = 'x2'; });
+$('gUm').oninput = accionGini(() => { g.prof = false; g.umbral = parseFloat($('gUm').value); });
+$('mGini').onclick = accionGini(() => { g.medida = 'gini'; });
+$('mEnt').onclick = accionGini(() => { g.medida = 'entropia'; });
+$('mErr').onclick = accionGini(() => { g.medida = 'error'; });
+$('gMejor').onclick = accionGini(() => {
+  const m = mejorCorte(g.medida);
+  fijarCorte(m.attr, m.t);
+  $('gMejorTxt').textContent = 'C4.5 revisó ' + m.revisados + ' cortes candidatos (puntos medios entre valores vecinos, en x₁ y en x₂) con ' +
+    MEDIDAS[g.medida] + '. Ganó ' + (m.attr === 'x1' ? 'x₁' : 'x₂') + ' ≤ ' + coma(m.t, 2) + ', con ganancia ' + coma(m.gan, 4) + '.';
+});
+$('gProf').onclick = accionGini(() => {
+  g.prof = !g.prof;
+  if (g.prof){ g.attr = 'x1'; g.umbral = 4; $('gUm').value = 4; }
+});
+
+/* ===== 4 · Simulador de votación con errores correlacionados [DATITO] =====
+   En cada caso, con probabilidad rho todos copian un mismo resultado; si no, cada uno
+   acierta por su cuenta con probabilidad p. Números aleatorios comunes: al mover un
+   control cambia el parámetro, no el sorteo. */
+const M = 60, NMAX = 51;
+let semE = 20260807;
+function rndE(){ semE = (semE * 1664525 + 1013904223) % 4294967296; return semE / 4294967296; }
+let U = null;
+function sortearCasos(){
+  U = {sel: [], val: [], ind: []};
+  for (let j = 0; j < M; j++){ U.sel.push(rndE()); U.val.push(rndE()); }
+  for (let i = 0; i < NMAX; i++){
+    const fila = [];
+    for (let j = 0; j < M; j++) fila.push(rndE());
+    U.ind.push(fila);
+  }
+}
+function colaBinomial(N, p){
+  const k0 = Math.floor(N / 2) + 1;
+  let s = 0, comb = 1;
+  for (let k = 0; k <= N; k++){
+    if (k > 0) comb = comb * (N - k + 1) / k;
+    if (k >= k0) s += comb * Math.pow(p, k) * Math.pow(1 - p, N - k);
+  }
+  return s;
+}
+function exactitudVoto(N, p, rho){ return rho * p + (1 - rho) * colaBinomial(N, p); }
+function simular(N, p, rho){
+  const mat = [], voto = [];
+  let ind = 0, okVoto = 0, todos = 0;
+  for (let i = 0; i < N; i++) mat.push([]);
+  for (let j = 0; j < M; j++){
+    const comun = U.sel[j] < rho, valComun = U.val[j] < p;
+    let ok = 0;
+    for (let i = 0; i < N; i++){
+      const a = comun ? valComun : U.ind[i][j] < p;
+      mat[i].push(a);
+      if (a) ok++;
+    }
+    ind += ok;
+    const v = ok > N / 2;
+    voto.push(v);
+    if (v) okVoto++;
+    if (ok === 0) todos++;
+  }
+  return {mat: mat, voto: voto, accInd: ind / (N * M), okVoto: okVoto, todos: todos};
+}
+const e = {N: 11, p: 0.65, rho: 0};
+
+function dibujaGrid(s){
+  const c = $('cvEns'), k = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 96, MR = 10, MT = 26, MB = 8;
+  k.clearRect(0, 0, W, H);
+  const cw = (W - ML - MR) / M;
+  const rh = Math.min(16, (H - MT - MB - 16) / (e.N + 1));
+  k.fillStyle = '#666'; k.font = '11px system-ui'; k.textAlign = 'left';
+  k.fillText('Cada columna es un caso; cada fila, un modelo. Verde = acierta, rojo = falla.', ML, 14);
+  for (let i = 0; i < e.N; i++){
+    for (let j = 0; j < M; j++){
+      k.fillStyle = s.mat[i][j] ? '#bbf7d0' : '#f87171';
+      k.fillRect(ML + j * cw + 0.5, MT + i * rh + 0.5, cw - 1, Math.max(1, rh - 1));
+    }
+  }
+  k.fillStyle = '#666'; k.textAlign = 'right';
+  if (rh >= 10){
+    for (let i = 0; i < e.N; i++) k.fillText('modelo ' + (i + 1), ML - 6, MT + i * rh + rh * 0.75);
+  } else {
+    k.fillText('modelos 1 a ' + e.N, ML - 6, MT + e.N * rh / 2 + 4);
+  }
+  const yv = MT + e.N * rh + Math.max(6, rh);
+  const hv = 16;
+  for (let j = 0; j < M; j++){
+    k.fillStyle = s.voto[j] ? '#059669' : '#dc2626';
+    k.fillRect(ML + j * cw + 0.5, yv, cw - 1, hv);
+  }
+  k.fillStyle = '#1a1a1a'; k.font = 'bold 11px system-ui';
+  k.fillText('voto', ML - 6, yv + 12);
+}
+function dibujaCurva(){
+  const c = $('cvCurva'), k = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 54, MR = 190, MT = 14, MB = 38;
+  const px = n => ML + (n - 1) / (NMAX - 1) * (W - ML - MR);
+  const py = a => H - MB - a * (H - MT - MB);
+  k.clearRect(0, 0, W, H);
+  k.font = '11px system-ui'; k.strokeStyle = '#eeeeee'; k.lineWidth = 1;
+  [0, 0.25, 0.5, 0.75, 1].forEach(a => {
+    k.beginPath(); k.moveTo(ML, py(a)); k.lineTo(W - MR, py(a)); k.stroke();
+    k.fillStyle = '#666'; k.textAlign = 'right';
+    k.fillText(Math.round(a * 100) + ' %', ML - 6, py(a) + 4);
+  });
+  k.textAlign = 'center';
+  [1, 11, 21, 31, 41, 51].forEach(n => k.fillText(n, px(n), H - MB + 15));
+  k.fillText('número de modelos que votan (N)', (ML + W - MR) / 2, H - 6);
+  k.strokeStyle = '#1a1a1a'; k.lineWidth = 1.5;
+  k.beginPath(); k.moveTo(ML, MT); k.lineTo(ML, H - MB); k.lineTo(W - MR, H - MB); k.stroke();
+  const curva = (rho, color, dash, ancho) => {
+    k.strokeStyle = color; k.lineWidth = ancho; k.setLineDash(dash); k.beginPath();
+    for (let n = 1; n <= NMAX; n += 2){
+      const y = py(exactitudVoto(n, e.p, rho));
+      if (n === 1) k.moveTo(px(n), y); else k.lineTo(px(n), y);
+    }
+    k.stroke(); k.setLineDash([]);
+  };
+  curva(0, '#059669', [6, 4], 2);
+  curva(1, '#dc2626', [6, 4], 2);
+  curva(e.rho, '#2563eb', [], 3);
+  k.fillStyle = '#2563eb';
+  k.beginPath(); k.arc(px(e.N), py(exactitudVoto(e.N, e.p, e.rho)), 6, 0, 2 * Math.PI); k.fill();
+  k.textAlign = 'left'; k.font = '12px system-ui';
+  k.fillStyle = '#2563eb'; k.fillText('━ ρ = ' + coma(e.rho, 2) + ' (actual)', W - MR + 14, MT + 16);
+  k.fillStyle = '#059669'; k.fillText('╌ ρ = 0 (independientes)', W - MR + 14, MT + 38);
+  k.fillStyle = '#dc2626'; k.fillText('╌ ρ = 1 (clones)', W - MR + 14, MT + 60);
+  k.fillStyle = '#666'; k.fillText('p = ' + coma(e.p, 2) + ' en las tres', W - MR + 14, MT + 86);
+}
+function pintaEns(){
+  $('eNv').textContent = e.N;
+  $('ePv').textContent = coma(e.p, 2);
+  $('eRv').textContent = coma(e.rho, 2);
+  const s = simular(e.N, e.p, e.rho);
+  $('eInd').textContent = pct(e.p);
+  $('eIndEmp').textContent = pct(s.accInd);
+  $('eTeo').textContent = coma(exactitudVoto(e.N, e.p, e.rho) * 100, 1) + ' %';
+  $('eEmp').textContent = s.okVoto + ' / ' + M;
+  $('eTodos').textContent = s.todos + ' / ' + M;
+  dibujaGrid(s);
+  dibujaCurva();
+}
+function accionEns(fn){
+  return function(){ fn(); pintaEns(); contraste('predEns'); };
+}
+$('eN').oninput = accionEns(() => { e.N = parseInt($('eN').value, 10); });
+$('eP').oninput = accionEns(() => { e.p = parseFloat($('eP').value); });
+$('eR').oninput = accionEns(() => { e.rho = parseFloat($('eR').value); });
+$('eClones').onclick = accionEns(() => { e.rho = 1; $('eR').value = 1; });
+$('eIndep').onclick = accionEns(() => { e.rho = 0; $('eR').value = 0; });
+$('eMoneda').onclick = accionEns(() => { e.p = 0.45; $('eP').value = 0.45; });
+$('eSorteo').onclick = accionEns(() => { sortearCasos(); });
+
+sortearCasos();
+pintaGini();
+pintaEns();
+})();
+</script>
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+</body>
+</html>

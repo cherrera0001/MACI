@@ -1,0 +1,65 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\13_roc_auc.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider sU no cambia texto o gráfico",
+    "1280px: El slider sSep no cambia texto o gráfico",
+    "1280px: El slider sF no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Curva ROC y AUC · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 24,
+        ".dist": 2,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 3
+      },
+      "failures": [
+        "El slider sU no cambia texto o gráfico",
+        "El slider sSep no cambia texto o gráfico",
+        "El slider sF no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "sU",
+          "before": "0.5",
+          "after": "1",
+          "resultChanged": false
+        },
+        {
+          "id": "sSep",
+          "before": "1.6",
+          "after": "3.6",
+          "resultChanged": false
+        },
+        {
+          "id": "sF",
+          "before": "0.1",
+          "after": "1",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Curva ROC y AUC · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 24,
+        ".dist": 2,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 3
+      },
+      "failures": []
+    }
+  ]
+}

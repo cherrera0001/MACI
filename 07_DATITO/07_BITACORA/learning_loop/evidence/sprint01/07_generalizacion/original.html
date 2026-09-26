@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="9" id="clase-9">
+<div class="leccion-top"><span class="uni">Unidad 3 · Medir si el modelo sirve</span><b>Clase 9 de 22</b></div>
+<div class="barra"><span style="width:40.9%"></span></div>
+<div class="lt">Clase 9 · Generalización, extrapolación y datos no vistos</div>
+<p><b>Objetivo.</b> Decidir si una predicción es confiable según los datos que el modelo vio, y explicar una caída de rendimiento.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="train_validation_test.html">Clase 7 · Train, validation y test</a></div>
+<div><span class="et">habilita</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
+<div><span class="et">tiempo estimado</span>~25 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Distingue interpolar de extrapolar y descompone una caída de validación a test en sus mecanismos.</li>
+<li><b>Actividad final:</b> Las dudas resueltas del árbol de 45 cm y del agrónomo, al final de esta clase.</li>
+<li><b>Criterio de dominio:</b> Declara la extrapolación y explica la caída con dos mecanismos: haber decidido con esos datos y el cambio de distribución.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tu recta tiene R² = 0,93 con árboles de 8 a 22 cm de radio. Te piden el peso de uno de 45 cm. ¿Lo entregas? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="9"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="validacion_cruzada.html">← Clase 8 · Validación cruzada y selección de modelos</a></span><a href="index.html">Índice del curso</a><span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Generalizacion</b></span> · <span class="et">viene de</span><a href="train_validation_test.html">Train / validation / test</a> · <span class="et">habilita</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 9 · peso en certamen media (transversal a P2, P3, P7) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p3">C2 P3</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
+<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:40:51–0:43:37 · profesor — grado alto, definicion, la maquina que falla<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:40:51]</span></li><li><b>Clase del 7-ago</b> · 0:44:25–0:45:22 · profesor — una frontera que no generaliza<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:44:25]</span></li><li><b>Presentaciones del 4-sep</b> · 2:06:29–2:09:21 · profesor — Melbourne 2016 a 2017: decisiones y cambio de datos<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:06:29]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Generalización</h1>
+<p class="sub">Por qué un modelo bueno aquí puede ser malo allá.<br>
+Fundamentos de Ciencia de Datos · UdeC</p>
+
+<div class="grafo">
+  <span class="n">Train / validation / test</span> →
+  <span class="n aqui">Generalización</span> →
+  <span class="n">Overfitting y underfitting</span> →
+  <span class="n">…y 8 conceptos más</span>
+</div>
+
+<div class="nota">
+<strong>Dónde estás.</strong> Viene de <em>train / validation / test</em> y
+habilita el sobreajuste, los árboles, los ensambles y todo el bloque de modelos.
+<strong>Nueve conceptos quedan bloqueados si este no se entiende.</strong><br><br>
+Su peso en la evaluación es medio —transversal a las preguntas 2, 3 y 7— pero
+su importancia curricular es de las más altas del programa. No es un concepto
+que se estudie para puntuar: es uno de los que sostienen el resto.
+</div>
+
+<h2>1 · Qué es, en una frase</h2>
+
+<p>El profesor lo definió con una pregunta y un ejemplo de mantenimiento:</p>
+
+<div class="cita">«¿Qué quiere decir generalizar? Que sea capaz de funcionar para datos que no ha visto antes. […] si yo tengo un modelo que me predice cuando va a fallar una máquina por decir algo. No quiero que me prediga cuando falló la máquina. Quiero que me prediga cuando va a fallar el futuro» <span class="f">Clase del 31-jul · 0:42:10–0:42:24 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<p>Y lo dijo también «entre comillas»: es «como que la máquina no se aprenda de
+memoria los datos»
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:54].
+El ejemplo de la máquina es la clave: predecir las fallas que ya ocurrieron no
+sirve de nada; el valor está en las que vienen.</p>
+
+<div class="clave">
+<strong>Generalizar es funcionar donde no aprendiste.</strong> [DATITO]<br><br>
+Todo lo demás —sobreajuste, validación cruzada, el conjunto de test— existe
+para una sola cosa: <em>estimar si el modelo va a generalizar, antes de
+apostar a que sí</em>.
+</div>
+
+<p>El problema es que generalizar no es una propiedad que se pueda observar
+directamente. Solo puedes <strong>estimarla</strong>, y toda estimación tiene un
+supuesto detrás.</p>
+
+<h2>2 · El supuesto que casi nadie declara</h2>
+
+<p>Cuando mides en un conjunto de test y dices «el modelo tiene MAE 188.218»,
+estás afirmando algo más de lo que parece:</p>
+
+<div class="nota">
+<strong>«Los datos donde voy a usar el modelo se parecen a los datos donde lo
+medí.»</strong><br><br>
+Si eso deja de ser cierto, tu número deja de significar lo que crees. Y casi
+nunca es del todo cierto.
+</div>
+
+<p>Hay tres formas de que se rompa, y conviene distinguirlas porque tienen
+remedios distintos:</p>
+
+<table>
+<tr><th>Qué cambió</th><th>Nombre</th><th>Ejemplo</th></tr>
+<tr><td>La <strong>distribución de las features</strong></td><td>Covariate shift</td><td>En 2017 aparecen casas en barrios que no existían en 2016</td></tr>
+<tr><td>La <strong>disponibilidad</strong> de una feature</td><td>Cambio de captura</td><td><code>CouncilArea</code> está completa en 2016 y falta el 18,9 % en 2017</td></tr>
+<tr><td>La <strong>relación</strong> entre features y target</td><td>Concept drift</td><td>Cambia la ley de arriendos y el precio por m² ya no se forma igual</td></tr>
+</table>
+
+<h2>3 · Predecir donde no hay datos: entre los puntos y fuera de ellos</h2>
+
+<h3>Entre los puntos: el ejemplo del profesor</h3>
+
+<p>La primera demostración del profesor no fue fuera del rango, sino
+<strong>dentro</strong>: un polinomio de grado 10 que pasa muy cerca de todos los
+datos, y una consulta en un punto cualquiera de la curva.</p>
+
+<div class="cita">«Imagínense que yo tengo este polinomio de grado 10 y lo ajusto a los datos y me queda esto y ahora yo pregunto por ejemplo este valor. Este valor de acá. […] pero es raro que ese sea el valor de ⟨y griega⟩ así como que no sigue la tendencia.» <span class="f">Clase del 31-jul · 0:41:34–0:41:56 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] · ⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «de griega»)</span></div>
+
+<p style="font-size:.9rem;color:var(--suave)">La transcripción no dice dónde
+señaló; que el valor raro esté <em>entre</em> los datos es la lectura habitual de
+ese dibujo y coincide con lo que un compañero describió minutos después: una curva
+de grado muy alto que pasa por todos los puntos y hace ondas entre ellos
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:47:23–0:47:38]
+[INFERENCIA].</p>
+
+<div class="pred" data-p="inter">
+  <div class="q">Antes de mover nada: abajo hay 8 árboles [DATITO] y un polinomio de
+  <strong>grado 7</strong> que pasa <strong>exactamente</strong> por los 8 (error de
+  entrenamiento cero). Consultas un radio de <strong>8,5 cm</strong>, entre el
+  árbol de 8 cm (72 kg) y el de 10 cm (88 kg). ¿Qué esperas?</div>
+  <button data-r="dentro">Entre 72 y 88 kg: dentro del rango siempre interpola bien</button>
+  <button data-r="raro">Puede salir un valor que no sigue la tendencia</button>
+  <button data-r="err">Un error: solo predice radios que midió</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>puede salir un valor que no sigue la
+tendencia</strong>: aquí, unos 50 kg, menos que el árbol de 8 cm.</p>
+<p><strong>Cómo se resuelve:</strong> 1) un polinomio de grado 7 tiene 8
+coeficientes, tantos como datos: puede pasar exacto por los 8; 2) para lograrlo se
+curva entre los puntos, sobre todo cerca de los bordes; 3) en 8,5 cm la curva baja
+hasta ~50 kg, aunque los vecinos pesan 72 y 88 kg; 4) con grado 1 la predicción
+queda en ~76 kg, entre los vecinos [DATITO: valores calculados con los datos
+ilustrativos de este lienzo].</p>
+<p><strong>Error típico:</strong> creer que dentro del rango observado el modelo
+siempre <em>interpola bien</em>. Eso vale para un modelo simple; uno que memorizó los
+datos puede fallar justo entre ellos. Tampoco da error: la fórmula está definida
+para cualquier radio.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> el ejemplo del grado 10
+del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:41:34–0:41:56];
+los números son [DATITO].</p>
+</details>
+
+<div class="panel">
+  <canvas id="lienzo2" width="840" height="340"></canvas>
+  <div class="ctrl">
+    <label for="gradoI">Grado del polinomio</label>
+    <input type="range" id="gradoI" min="1" max="7" step="1" value="1">
+    <output id="gOut">1</output>
+    <label for="radioI">Radio consultado</label>
+    <input type="range" id="radioI" min="8" max="22" step="0.5" value="15">
+    <output id="rOutI">15 cm</output>
+  </div>
+  <div class="met">
+    <div><div class="n" id="i-pred">–</div><div class="e">Peso predicho</div></div>
+    <div><div class="n" id="i-vec">–</div><div class="e">Vecinos medidos</div></div>
+    <div><div class="n" id="i-tend">–</div><div class="e">¿Sigue la tendencia?</div></div>
+    <div><div class="n" id="i-mse">–</div><div class="e">Error de entrenamiento (MSE)</div></div>
+  </div>
+  <p style="margin-top:.9rem">
+    <button id="iAlto">Grado 7 · radio 8,5</button>
+    <button id="iBajo">Grado 1 · radio 8,5</button>
+  </p>
+  <p style="font-size:.86rem;color:var(--suave);margin:.4rem 0 0">8 árboles, cifras
+  ilustrativas [DATITO]. «Sigue la tendencia» aquí significa: la predicción queda
+  entre los pesos de los dos árboles medidos que la rodean [DATITO].</p>
+</div>
+
+<div class="nota">
+<strong>Lo que acabas de ver.</strong> El grado 7 tiene error de entrenamiento
+<strong>cero</strong> y, aun así, dentro del rango observado predice que un árbol
+de 8,5 cm pesa menos que uno de 8 cm. Estar «dentro del rango» no protege: lo que
+protege es que el modelo no haya memorizado los datos. Es el caso de la
+<a href="certamen_2.html#p7">P7 del Certamen 2</a> (5 árboles, un polinomio que
+pasa por todos) y el tema de
+<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>.
+</div>
+
+<h3>Fuera de los puntos: extrapolar</h3>
+
+<p>Ahora el otro caso, con cifras ilustrativas [DATITO]: cortaste 20 árboles con
+radios entre 8 y 22 cm y ajustaste la recta. Te piden uno de 45 cm.</p>
+
+<div class="pred" data-p="extra">
+  <div class="q">Antes de mover nada: el modelo tiene <strong>R² ≈ 0,97</strong>
+  sobre esos 20 árboles. Si le pides el peso de uno de <strong>45 cm</strong>,
+  ¿qué hace?</div>
+  <button data-r="avisa">Avisa que no puede</button>
+  <button data-r="numero">Devuelve un número sin más</button>
+  <button data-r="error">Da error</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>devuelve un número sin más</strong>, sin
+ninguna advertencia. Y por eso esa predicción <strong>no se entrega como
+confiable; se declara la extrapolación o se consiguen datos en ese
+rango</strong>.</p>
+<p><strong>Cómo se resuelve:</strong> 1) la recta ŷ = θ₀ + θ₁·x está definida para
+cualquier x, así que para 45 cm entrega un valor (~430 kg) igual que para 18 cm;
+2) el R² ≈ 0,97 se midió con árboles de 8 a 22 cm: dice que la recta describe bien
+<em>ese</em> rango, nada sobre 45 cm; 3) fuera del rango no hay ningún dato que
+confirme que la relación siga siendo recta —y en árboles no lo es, porque el peso
+crece con el volumen, no en línea—; 4) por eso el número de 45 cm es una
+suposición, no una estimación respaldada: o se entrega diciendo explícitamente
+que es una extrapolación fuera del rango 8–22 cm, o se miden árboles de ese
+tamaño y se vuelve a ajustar.</p>
+<p><strong>Error típico:</strong> confiar en el R² alto como si valiera para
+cualquier radio, o esperar que el modelo <em>avise</em>. El modelo nunca avisa: la
+advertencia la pone quien lo usa.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> generalizar es funcionar
+con datos que el modelo no ha visto
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10];
+la regla de declarar el rango de validez y los números del lienzo son [DATITO].</p>
+</details>
+
+<div class="panel">
+  <canvas id="lienzo" width="840" height="400"></canvas>
+  <div class="ctrl">
+    <label for="radio">Radio a predecir</label>
+    <input type="range" id="radio" min="4" max="60" step="1" value="18">
+    <output id="rOut">18 cm</output>
+  </div>
+  <div class="met">
+    <div><div class="n" id="pred">–</div><div class="e">Peso predicho</div></div>
+    <div><div class="n" id="zona">–</div><div class="e">Zona</div></div>
+    <div><div class="n" id="conf">–</div><div class="e">Confianza</div></div>
+  </div>
+  <p style="margin-top:.9rem">
+    <button id="b18">Radio 18 · dentro</button>
+    <button id="b45">Radio 45 · fuera</button>
+  </p>
+</div>
+
+<div class="peligro">
+<strong>El modelo siempre te devuelve un número.</strong> No tiene forma de
+avisarte que está inventando. Dentro del rango observado interpola entre datos
+reales; fuera, solo prolonga una recta que nadie comprobó que siga siendo recta.<br><br>
+Un árbol de 45 cm probablemente no pesa el doble que uno de 22: los troncos
+crecen en volumen, no en línea.
+</div>
+
+<h2>4 · Tu propio proyecto lo midió</h2>
+
+<p><code>05_RESULTADOS/resultados_temporal.json</code></p>
+
+<table>
+<tr><th>Modelo (log)</th><th>R² train 2016</th><th>R² test 2017</th><th>Brecha</th></tr>
+<tr><td>Árbol de decisión</td><td class="num">0,7523</td><td class="num">0,6123</td><td class="num">0,1400</td></tr>
+<tr><td><strong>Random Forest</strong></td><td class="num">0,9423</td><td class="num">0,7109</td><td class="num"><strong>0,2314</strong></td></tr>
+<tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num">0,7466</td><td class="num">0,1392</td></tr>
+<tr><td>HistGradientBoosting</td><td class="num">0,9274</td><td class="num">0,7571</td><td class="num">0,1703</td></tr>
+</table>
+
+<p>Random Forest aprende 2016 casi perfecto —0,94— y generaliza peor que
+Gradient Boosting, que aprende menos —0,89— y llega más lejos. <strong>Aprender
+mejor los datos no es generalizar mejor.</strong></p>
+
+<h3>El dato que suele malinterpretarse</h3>
+
+<p>El <strong>29,1 %</strong> de las propiedades de 2017 están en suburbios que
+no existen en 2016. Es tentador concluir que ahí está toda la degradación. No lo
+está:</p>
+
+<table>
+<tr><th>Modelo (log)</th><th>MAE suburbio NUEVO</th><th>MAE suburbio CONOCIDO</th><th>Diferencia</th></tr>
+<tr><td>HistGradientBoosting</td><td class="num">193.462</td><td class="num">186.064</td><td class="num">7.398</td></tr>
+<tr><td>Gradient Boosting</td><td class="num">198.666</td><td class="num">189.884</td><td class="num">8.782</td></tr>
+<tr><td>Random Forest</td><td class="num">227.081</td><td class="num">198.531</td><td class="num">28.550</td></tr>
+</table>
+
+<div class="nota">
+La caída de CV a test en HistGradientBoosting es de <strong>28.441 AUD</strong>.
+La diferencia entre suburbios nuevos y conocidos es de solo <strong>7.398</strong>.<br><br>
+Los suburbios nuevos explican <strong>una fracción menor</strong>: la degradación
+afecta a todo 2017, no solo a las zonas nuevas. Es un año distinto, no solo un
+mapa distinto.
+</div>
+
+<div class="clave">
+Fíjate en Random Forest: su diferencia entre zonas nuevas y conocidas es
+<strong>28.550</strong>, casi cuatro veces la de HistGradientBoosting. El modelo
+que más memorizó la geografía de 2016 es el que peor se comporta donde esa
+geografía no existe.
+</div>
+
+<h3>Cómo lo llamó el profesor, y cómo nombrar el mecanismo</h3>
+
+<p>En las presentaciones del Hito 2, comentando el proyecto Melbourne, el profesor
+explicó por qué la barra de test 2017 sale más alta que la de validación cruzada
+en 2016:</p>
+
+<div class="cita">«Y al momento de hacer la evaluación cruzada podrían haber elegido hiperparámetro. Entonces ustedes validaron con un subconjunto de datos, pero también tomaron decisiones con ese subconjunto de datos. Y después, cuando pasaron el 2017, ese modelo funciona un poco peor.» <span class="f">Presentaciones Hito 2 del 4-sep · 2:08:44–2:08:58 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="cita">«Y es normal que funciona un poco peor porque los datos cambian un poco entre el 2016 y el 2017. Entonces el modelo está un poquito sobreajustado a los datos del 2016 y le cuesta un poco más predecir solo los datos del 2017, porque no lo ha visto antes.» <span class="f">Presentaciones Hito 2 del 4-sep · 2:08:58–2:09:21 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Su diagnóstico junta dos mecanismos que conviene poder separar al escribir
+[INFERENCIA]:</p>
+
+<table>
+<tr><th></th><th>Mecanismo</th><th>Qué lo produce</th><th>En Melbourne</th></tr>
+<tr><td><strong>(a)</strong></td><td><strong>Optimismo por haber decidido</strong> con esos datos: sobreajuste a la validación y al período</td><td>Lo que se elige mirando la validación queda algo favorecido por ella: «se podría sobreajustar el conjunto de ⟨validación⟩» <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50–0:49:59] · ⟨⟩ = corrección de transcripción [INFERENCIA]</span></td><td>Los modelos se compararon con K-Fold dentro de 2016 <span style="font-size:.78rem;color:var(--suave)">[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · l. 76–89]</span></td></tr>
+<tr><td><strong>(b)</strong></td><td><strong>Cambio de distribución</strong> entre períodos</td><td>2017 no es 2016: aparecen barrios nuevos, cambia la disponibilidad de variables, puede cambiar la relación con el precio (§2)</td><td>29,1 % del test en suburbios nuevos; <code>CouncilArea</code> sin información en el 28,5 % de 2017 (§5)</td></tr>
+</table>
+
+<div class="clave">
+<strong>No hay contradicción.</strong> «Un poquito sobreajustado a los datos del
+2016» es exactamente eso: el modelo quedó ajustado a particularidades de 2016
+—por (a) y porque (b) hizo que esas particularidades no se repitieran en 2017—.
+Lo que se castiga no es la palabra «sobreajuste»: es <strong>quedarse en la
+etiqueta</strong> sin decir con qué datos se decidió, qué cambió entre los
+períodos y cuánto explica cada cosa. [INFERENCIA]<br><br>
+Con los números del proyecto no se puede partir exactamente la caída de 28.441 AUD
+entre (a) y (b); lo que sí se sabe es que los suburbios nuevos explican una parte
+menor (7.398). Separarlas exigiría, por ejemplo, un trozo de 2016 que no se haya
+usado para ninguna decisión: si ahí también cae, es (a); lo que falte hasta 2017
+es (b). [INFERENCIA]
+</div>
+
+<p>Y conecta con una regla que el profesor dio en la Clase del 31-jul: el error de
+test «debiese caer dentro» de la distribución de los errores de validación
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:59:31];
+si no, algo raro pasa. Está en <a href="validacion_cruzada.html">validacion_cruzada.html</a>
+§5, con el dibujo interactivo. Aplícala tú: los errores por fold están en
+<code>05_RESULTADOS/resultados_temporal.json</code> (campo
+<code>cv2016_MAE_std</code>).</p>
+
+<h2>5 · La trampa: validar no siempre puede detectarlo</h2>
+
+<p>Caso real de este proyecto. Se quiso saber si añadir <code>CouncilArea</code>
+mejoraba el modelo. En validación cruzada dentro de 2016, mejoraba: ganaba 20 de
+25 comparaciones pareadas.</p>
+
+<p>Pero en 2017:</p>
+
+<table>
+<tr><th>Situación en 2017</th><th>Filas</th><th>%</th></tr>
+<tr><td>Valor conocido</td><td class="num">5.182</td><td class="num">71,5 %</td></tr>
+<tr><td>Valor faltante</td><td class="num">1.369</td><td class="num">18,9 %</td></tr>
+<tr><td>Categoría nunca vista en 2016</td><td class="num">693</td><td class="num">9,6 %</td></tr>
+<tr><td><strong>Sin información utilizable</strong></td><td class="num"><strong>2.062</strong></td><td class="num"><strong>28,5 %</strong></td></tr>
+</table>
+
+<p>En 2016 esa columna está <strong>completa</strong>: cero faltantes, 19
+categorías, todas conocidas. Así que la validación cruzada dentro de 2016 mide
+la feature <em>en el único escenario donde siempre está disponible</em>.</p>
+
+<div class="peligro">
+<strong>Ningún esquema de validación dentro de 2016 puede detectar un problema
+que solo existe en 2017.</strong><br><br>
+Y no es un defecto de la validación cruzada: está bien hecha. Es que mide un
+problema más fácil que el real.
+</div>
+
+<h2>6 · La brecha, desarmada</h2>
+
+<p>Todo lo anterior se resume en una resta. Vale la pena mirarla de cerca, porque
+cada término responde una pregunta distinta.</p>
+
+<div class="ecu">
+  <div class="formula">brecha = <span class="num">R²<sub>train</sub></span> − <span class="den">R²<sub>test</sub></span></div>
+  <table>
+  <tr><th>Término</th><th>Qué mide</th><th>Rol</th></tr>
+  <tr><td><strong>R²<sub>train</sub></strong></td><td>Qué tan bien le va donde <strong>aprendió</strong></td><td><span class="rol r-dato">no mide calidad</span></td></tr>
+  <tr><td><strong>R²<sub>test</sub></strong></td><td>Qué tan bien le va donde <strong>nunca estuvo</strong></td><td><span class="rol r-cuenta">esto sí mide</span></td></tr>
+  <tr><td><strong>la resta</strong></td><td>Cuánto de lo aprendido <strong>no se repite fuera</strong></td><td><span class="rol r-decide">es el diagnóstico</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem"><strong>Los dos números solos no
+  bastan.</strong> Un R² de train alto no es bueno ni malo: solo dice que el
+  modelo memorizó bien. Lo que informa es la <em>distancia</em> entre ambos, más
+  el nivel del segundo.</p>
+</div>
+
+<div class="ecu">
+  <div class="formula">R² = 1 − <span class="num">SS<sub>res</sub></span> / <span class="den">SS<sub>tot</sub></span></div>
+  <table>
+  <tr><th>Término</th><th>Qué es</th><th>Rol</th></tr>
+  <tr><td><strong>SS<sub>res</sub></strong></td><td>Suma de los errores de <strong>tu modelo</strong>, al cuadrado</td><td><span class="rol r-decide">lo mueve tu modelo</span></td></tr>
+  <tr><td><strong>SS<sub>tot</sub></strong></td><td>Suma de los errores de <strong>predecir siempre la media</strong></td><td><span class="rol r-dato">es un dato del conjunto</span></td></tr>
+  </table>
+  <p style="margin:.7rem 0 0;font-size:.93rem">Aquí está la clave de por qué el
+  R² de train y el de test <strong>no son comparables sin más</strong>:
+  <code>SS<sub>tot</sub></code> se calcula sobre el conjunto donde estás
+  midiendo. Si 2017 tiene precios más dispersos que 2016, el rival cambia, y dos
+  R² de conjuntos distintos miden contra varas distintas.</p>
+</div>
+
+<h2>7 · Camino inverso: te dan los números</h2>
+
+<p>En una prueba no te van a contar la historia: te van a dar dos números. Haz
+el recorrido al revés.</p>
+
+<div class="panel">
+  <div style="font-family:ui-monospace,monospace;font-size:1.2rem;text-align:center;
+              padding:1rem;background:var(--fondo);border-radius:8px">
+    Random Forest &nbsp;·&nbsp; R²<sub>train</sub> = 0,9423 &nbsp;·&nbsp; R²<sub>test</sub> = 0,7109
+  </div>
+
+  <p style="margin:1rem 0 .2rem"><strong>1 · ¿Qué dice el primer número por sí
+  solo?</strong></p>
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> casi nada sobre la calidad: solo que el modelo
+    reproduce bien los datos con los que aprendió.</p>
+    <p><strong>Cómo se resuelve:</strong> el 0,9423 es R² de entrenamiento: el
+    modelo explica el 94 % de la variación de los datos con los que aprendió. Un
+    modelo con suficiente capacidad puede llegar ahí memorizando, incluido el
+    ruido.</p>
+    <p><strong>Error típico:</strong> leerlo como «el modelo acierta el 94 %» o como
+    evidencia de que generaliza. El error de entrenamiento no es evidencia: es la
+    <a href="certamen_2.html#p7">P7 del Certamen 2</a>.</p>
+    <p style="margin-bottom:0"><strong>De dónde sale:</strong>
+    [FUENTE · Repo: 07_DATITO/referencia/material.md] para la cifra; la lectura es
+    [INFERENCIA].</p>
+  </details>
+
+  <p style="margin:1rem 0 .2rem"><strong>2 · ¿Y el segundo?</strong></p>
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> ese <strong>sí</strong> mide generalización:
+    0,7109 sobre datos que el modelo nunca vio (2017).</p>
+    <p><strong>Cómo se resuelve:</strong> identifica dónde se midió: en el test,
+    fuera del entrenamiento. Es lo único que se parece a lo que pasaría en
+    producción.</p>
+    <p><strong>Error típico:</strong> compararlo sin más con el 0,9423 como si
+    fueran la misma vara: el R² se calcula contra la dispersión del conjunto donde
+    se mide (§6).</p>
+    <p style="margin-bottom:0"><strong>De dónde sale:</strong>
+    [FUENTE · Repo: 07_DATITO/referencia/material.md]; la definición de
+    generalizar, Clase del 31-jul
+    [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10].</p>
+  </details>
+
+  <p style="margin:1rem 0 .2rem"><strong>3 · ¿Qué historia cuenta la
+  resta?</strong></p>
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la brecha es <strong>0,2314</strong>: casi un
+    cuarto de lo que el modelo «sabía» no se repitió fuera.</p>
+    <p><strong>Cómo se resuelve:</strong> 0,9423 − 0,7109 = 0,2314. Eso significa
+    que buena parte de lo que aprendió eran <strong>particularidades de 2016</strong>
+    — combinaciones concretas de barrio, tamaño y precio que no volvieron a darse en
+    2017. No es que el modelo esté roto: es que aprendió cosas que no eran
+    generalizables.</p>
+    <p><strong>Error típico:</strong> atribuir toda la brecha a una sola causa. Parte
+    es memorización de 2016 y parte es que 2017 es distinto (§4).</p>
+    <p style="margin-bottom:0"><strong>De dónde sale:</strong>
+    [FUENTE · Repo: 07_DATITO/referencia/material.md]; la interpretación es
+    [INFERENCIA].</p>
+  </details>
+
+  <p style="margin:1rem 0 .2rem"><strong>4 · ¿Cómo se compara con los
+  demás?</strong></p>
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> Gradient Boosting generaliza mejor que Random
+    Forest aunque aprende menos: para producción se elige Gradient Boosting.</p>
+    <table>
+    <tr><th>Modelo</th><th>train</th><th>test</th><th>brecha</th></tr>
+    <tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num"><strong>0,7466</strong></td><td class="num"><strong>0,1392</strong></td></tr>
+    <tr><td>Random Forest</td><td class="num"><strong>0,9423</strong></td><td class="num">0,7109</td><td class="num">0,2314</td></tr>
+    </table>
+    <p>Gradient Boosting aprende <strong>menos</strong> —0,886 frente a 0,942— y
+    generaliza <strong>mejor</strong> —0,747 frente a 0,711.</p>
+    <p><strong>Aprender mejor los datos no es generalizar mejor.</strong> Si
+    tuvieras que elegir uno para producción, el número que decide es el segundo, no
+    el primero.</p>
+    <p><strong>Error típico:</strong> elegir Random Forest por su 0,9423.</p>
+    <p style="margin-bottom:0"><strong>De dónde sale:</strong>
+    [FUENTE · Repo: 07_DATITO/referencia/material.md].</p>
+  </details>
+</div>
+
+<h3>Cálculo a mano</h3>
+<p>Dos modelos sobre los mismos árboles, cifras ilustrativas [DATITO]. El modelo A
+(grado 1) tiene MAE de entrenamiento 9 kg; el modelo B (grado 7) pasa por todos
+los puntos. Luego mides 3 árboles nuevos y anotas el error (real − predicho):</p>
+<table>
+<tr><th></th><th>árbol nuevo 1</th><th>árbol nuevo 2</th><th>árbol nuevo 3</th></tr>
+<tr><td>A · grado 1</td><td class="num">−8</td><td class="num">+14</td><td class="num">−11</td></tr>
+<tr><td>B · grado 7</td><td class="num">+12</td><td class="num">−44</td><td class="num">+37</td></tr>
+</table>
+<p>Calcula el MAE en los árboles nuevos de cada modelo, la brecha contra su MAE de
+entrenamiento, y di cuál generaliza.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> MAE nuevos A = 11 kg (brecha 2 kg) y B = 31 kg
+(brecha 31 kg): <strong>generaliza A</strong>, el de grado 1.</p>
+<p>A: (8 + 14 + 11) / 3 = 33 / 3 = <strong>11 kg</strong>; brecha 11 − 9 =
+<strong>2 kg</strong>.<br>
+B: (12 + 44 + 37) / 3 = 93 / 3 = <strong>31 kg</strong>; su MAE de entrenamiento es
+0, así que la brecha es <strong>31 kg</strong>.</p>
+<p>B «aprende» mejor (0 contra 9) y generaliza mucho peor (31 contra 11). Con
+tres árboles nuevos la conclusión es frágil, pero la dirección es clara.</p>
+<p><strong>Error típico:</strong> sumar los errores con signo: para B daría
+(12 − 44 + 37) / 3 ≈ 1,7 kg y parecería excelente. El MAE usa valores absolutos:
+los signos no se cancelan.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> las cifras son
+[DATITO]; que el error de entrenamiento no mide calidad es la
+<a href="certamen_2.html#p7">P7 del Certamen 2</a>.</p>
+</details>
+
+<h3>Transferencia: salud</h3>
+<p>Un hospital de Concepción entrenó un modelo de riesgo de reingreso con sus
+pacientes de 2019 a 2023 y midió muy buen desempeño en un test de 2023. Ahora lo
+quieren usar en un hospital de Chillán en 2026 [DATITO]. Di (1) qué puede haber
+cambiado, usando las tres categorías del §2, (2) si hay extrapolación y dónde, y
+(3) cómo validarías antes de usarlo.</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> pueden haber cambiado los pacientes, la forma de
+registrar y la relación entre variables y reingreso; el buen desempeño de
+Concepción no se traslada sin más, y hay que validarlo con datos de Chillán antes
+de usarlo.</p>
+<p>(1) Covariate shift: pacientes de otra edad, otra ruralidad, otras
+enfermedades frecuentes. Cambio de captura: otro sistema de fichas, variables que
+faltan o se registran distinto. Concept drift: cambios de protocolo o de
+tratamiento que alteran quién reingresa.</p>
+<p>(2) Hay extrapolación si en Chillán aparecen valores fuera del rango observado
+en Concepción (por ejemplo, edades o combinaciones de diagnósticos que no
+existían en el entrenamiento). Dentro del rango también puede fallar, como en el
+ejemplo del grado 7.</p>
+<p>(3) Validar como se va a usar: con datos de Chillán y posteriores al
+entrenamiento, aunque sean pocos, antes de confiar en el número de Concepción; y
+declarar el rango de validez. [DATITO]</p>
+<p><strong>Error típico:</strong> «funcionó muy bien en el test de 2023, así que
+funcionará en Chillán». El test de 2023 era del mismo hospital: no representa el
+uso nuevo.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> las tres categorías del
+§2 y el ejemplo de la máquina del profesor (predecir lo que viene, no lo que ya
+pasó)
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:16–0:42:24];
+el caso de salud es [DATITO].</p>
+</details>
+
+<div class="nota">
+<strong>Distinción de certamen.</strong> <strong>Error de entrenamiento ≠ calidad
+del modelo</strong> (<a href="certamen_2.html#p7">P7 del Certamen 2</a>) y
+<strong>sobreajuste ≠ subajuste ≠ error alto</strong>
+(<a href="certamen_2.html#p2">P2 del Certamen 2</a>: el sobreajuste es predecir
+bien en entrenamiento y no generalizar a datos que no se han visto). Las dos se
+resuelven con la definición del profesor: generalizar es funcionar con datos que
+el modelo no vio. Sobreajuste y subajuste con más detalle en
+<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>.
+</div>
+
+<h2>8 · Qué hacer al respecto</h2>
+
+<table>
+<tr><th>Estrategia</th><th>Qué consigue</th></tr>
+<tr><td><strong>Validar como vas a usar</strong></td><td>Si vas a predecir el futuro, valida contra el futuro: corte temporal, no aleatorio</td></tr>
+<tr><td><strong>Mirar la distribución del test, no su target</strong></td><td>Cuántos faltantes, cuántas categorías nuevas. Es información legítima: en producción también la tendrías</td></tr>
+<tr><td><strong>Preferir modelos con menor brecha</strong></td><td>Aunque su rendimiento interno sea menor. Gradient Boosting sobre Random Forest</td></tr>
+<tr><td><strong>Declarar el rango de validez</strong></td><td>«Este modelo se entrenó con radios de 8 a 22 cm» es parte del entregable, no una nota al pie</td></tr>
+<tr><td><strong>Monitorear después</strong></td><td>El ciclo vuelve al requerimiento. Un modelo en producción se degrada solo</td></tr>
+</table>
+
+<h2>9 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+ANTE UNA PREGUNTA DE GENERALIZACIÓN
+
+1. ¿DÓNDE SE MIDIÓ?        dentro o fuera del entrenamiento
+2. ¿LA BRECHA?             train vs test, no un número solo
+3. ¿QUÉ CAMBIÓ ENTRE AMBOS?  features · disponibilidad · la relación
+4. ¿LA VALIDACIÓN PODÍA VERLO?  si el problema solo existe fuera, no
+5. ¿SE PIDE PREDECIR FUERA DEL RANGO OBSERVADO?
+       sí → es extrapolación: se declara, no se entrega sin más
+6. NOMBRAR EL MECANISMO    no la etiqueta
+</pre>
+
+<h2>10 · Errores que el formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Por qué está mal</th></tr>
+<tr><td>«Generaliza bien porque el R² de entrenamiento es alto»</td><td>El entrenamiento no mide generalización. Nunca</td></tr>
+<tr><td>Nombrar la caída entre validación y test con una sola etiqueta —«sobreajuste» o «cambio de distribución»— sin el mecanismo</td><td>El profesor la llamó «un poquito sobreajustado a los datos del 2016» y dio las dos razones: se decidió con ese subconjunto y los datos cambian entre años (§4). Hay que decir con qué datos se decidió, qué cambió y cuánto explica cada cosa</td></tr>
+<tr><td>Entregar una extrapolación sin advertirla</td><td>El modelo devuelve un número aunque no tenga datos para respaldarlo</td></tr>
+<tr><td>Creer que dentro del rango observado el modelo es confiable</td><td>Un polinomio de grado alto puede dar un valor absurdo <em>entre</em> los datos (§3, el ejemplo del profesor)</td></tr>
+<tr><td>Atribuir toda la caída a una sola causa</td><td>Hay que comprobar la magnitud: 7.398 no explican 28.441</td></tr>
+<tr><td>Suponer que validar bien garantiza generalizar</td><td>La validación solo mide los escenarios que puede observar</td></tr>
+</table>
+
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero sostiene: <em>«el modelo tiene R² de 0,94, así que generaliza muy
+bien»</em>.<br><br>
+<strong>¿Tiene razón? Justifícalo con las dos cifras de Random Forest y di qué
+número habría que mirar en su lugar.</strong><br><br>
+Es el formato exacto de tu profesor: verdadero o falso, <em>con justificación</em>.
+Y poder explicárselo a otro es la prueba de que lo entiendes. Escríbelo y llévalo
+a Datito.
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> <strong>no tiene razón</strong>: 0,94 es el R² de
+entrenamiento, que no mide generalización; el número que importa es el de test,
+0,7109.</p>
+<p><strong>Respuesta modelo:</strong> «Falso. El 0,94 es el R² de Random Forest
+sobre los mismos datos de 2016 con los que aprendió: dice que los reproduce bien,
+no que funcione con datos nuevos. Generalizar es funcionar con datos que el modelo
+no ha visto, y eso lo mide el test: sobre 2017 el R² baja a 0,7109, una brecha de
+0,2314. Casi un cuarto de lo que parecía saber no se repitió fuera, en parte
+porque aprendió particularidades de 2016 y en parte porque 2017 trae barrios y
+condiciones nuevas. Para decir si generaliza hay que mirar el R² de test y su
+distancia al de entrenamiento; con esos números, Gradient Boosting, que aprende
+menos, generaliza mejor.»</p>
+<p><strong>Cómo se resuelve:</strong> 1) identifica dónde se midió el 0,94:
+entrenamiento; 2) busca la cifra fuera de muestra: 0,7109; 3) calcula la brecha;
+4) di qué número hay que mirar y por qué.</p>
+<p><strong>Criterios de corrección:</strong> dice falso; distingue entrenamiento de
+test; usa las dos cifras y la brecha; nombra el mecanismo si usa la palabra
+sobreajuste.</p>
+<p><strong>Error típico:</strong> responder «verdadero, porque 0,94 es un R²
+alto». Un R² alto de entrenamiento es compatible con un modelo que memorizó.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> cifras
+[FUENTE · Repo: 07_DATITO/referencia/material.md]; definición de generalizar
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10];
+distinción de la <a href="certamen_2.html#p7">P7 del Certamen 2</a>.</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+    de dónde viene esto. Si la partición está mal hecha, la brecha que mides aquí
+    no significa lo que crees.</li>
+<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — cómo
+    se estima la generalización antes del test, y dónde debería caer el error de
+    test.</li>
+<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+    el concepto que este habilita directamente.</li>
+<li><a href="certamen_2.html#p2"><code>certamen_2.html#p2</code></a>,
+    <a href="certamen_2.html#p3"><code>#p3</code></a> y
+    <a href="certamen_2.html#p7"><code>#p7</code></a> — dónde se pregunta: las
+    tres por el mismo concepto y en tres formatos distintos.</li>
+<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    si todavía no tienes claro qué tipo de problema estás resolviendo.</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-9">
+<h2>Cierre de la Clase 9 · Generalización, extrapolación y datos no vistos</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Generalizar es funcionar con datos que el modelo no ha visto.</li><li>Fuera del rango observado se extrapola: el número existe, la evidencia no.</li><li>Una caída de validación a test puede venir de haber decidido con esos datos o de que los datos cambiaron.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Interpolar ≠ extrapolar.</li><li>R² alto dentro del rango ≠ predicción confiable fuera de él.</li><li>Cambio de distribución ≠ sobreajuste, aunque se combinen.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Compara el caso a predecir con el rango de los datos.</li><li>Si está fuera: declara la extrapolación o consigue datos.</li><li>Ante una caída: ¿decidiste con esos datos? ¿cambió la población?</li></ol>
+<p><b>Viene de:</b> <a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a> · <b>Sigue:</b> <a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></p>
+<p><b>Vuelve a tu activación:</b> Tu recta tiene R² = 0,93 con árboles de 8 a 22 cm de radio. Te piden el peso de uno de 45 cm. ¿Lo entregas? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> El 29,1 % del test de 2017 son suburbios que no existen en los datos de 2016. ¿Qué tipo de problema de generalización es?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Un cambio de distribución: el modelo predice casos con un valor (el suburbio) que nunca vio, y solo puede apoyarse en variables que sí vio, como ubicación y tipo. [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="overfitting_underfitting.html">Continuar → Clase 10 · Overfitting y underfitting</a>
+</section>
+<!-- datito:cierre:fin -->
+<!-- datito:dudas:inicio -->
+<style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
+<section class="ddudas" id="dudas-resueltas">
+<h2>Dudas resueltas con Datito, en orden</h2>
+<p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
+<article class="duda" id="duda-2026-09-18-baseline-mejora"><div class="dm">18-sep · quedó abierta en la sesión: aquí está la respuesta · <b>Generalizacion</b>, <a href="train_validation_test.html">Train / validation / test</a> · también en <a href="train_validation_test.html#duda-2026-09-18-baseline-mejora">train_validation_test.html</a></div><p><b>Pregunta.</b> En Melbourne, el MAE de validación cruzada en 2016 y el de test en 2017 fueron: baseline (mediana) 449.160 → 431.649 (mejora 17.511); árbol de decisión 219.821 → 246.568 (empeora 26.747); HistGradientBoosting 159.777 → 188.218 (empeora 28.441). ¿Por qué el baseline mejora al pasar a 2017 mientras los modelos empeoran, y por qué el mejor modelo es el que más empeora?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> Intento 1: «entonces, podemos hablar de un sobreajuste». Intento 2: «el modelo fue entrenado con datos del 2016, pero un modelo que deberías validar, o que debería probar es gradient boosting, o random forest».</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> El baseline no aprendió nada de 2016 salvo un número (la mediana, 900.000), así que su error solo refleja qué tan dispersos están los precios del año que mide; los modelos aprendieron relaciones de 2016 que en 2017 valen menos, y además fueron elegidos mirando 2016, por eso el más ajustado a 2016 es el que más pierde.</p><ol><li>El baseline: predecir siempre 900.000 da MAE 449.122 sobre los precios de 2016 y 431.649 sobre los de 2017 (este último es exactamente su MAE de test). Los precios de 2017 están algo menos dispersos alrededor de 900.000. La «mejora» es una propiedad de los datos, no del modelo.</li><li>Los modelos: aprendieron cómo se relacionan ubicación, tipo y tamaño con el precio EN 2016. En 2017 el 29,1 % de las propiedades están en suburbios que no existían en 2016: parte de lo aprendido ya no aplica (cambio de distribución).</li><li>El mejor es el que más empeora (HGB +17,8 %, 159.777 → 188.218; árbol +12,2 %): es el que más estructura fina de 2016 capturó, y además fue ELEGIDO por tener el menor error en 2016, así que su número de validación es optimista.</li><li>Así lo dijo el profesor al comentar este mismo proyecto: los datos «cambian un poco entre el 2016 y el 2017» y «también tomaron decisiones con ese subconjunto de datos», y lo llamó «un poquito sobreajustado a los datos del 2016». Son dos mecanismos: optimismo por selección y cambio de distribución.</li><li>Por qué no basta decir «sobreajuste»: las dos columnas de la tabla son datos que el modelo no usó para entrenar. Sin nombrar el mecanismo, la etiqueta no explica por qué el baseline mejora.</li></ol><p><b>Error típico.</b> Poner la etiqueta «sobreajuste» sin mecanismo, o proponer otro modelo sin leer que la tabla ya contiene los resultados del propio proyecto.</p><p class="df">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017<br>[FUENTE · Repo: 04_DATOS/housing_dashai_2016_2017.csv + 05_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21<br>[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor<br>[INFERENCIA] la descomposición en dos mecanismos<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-18-train_validation_test.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-21-arbol-45cm"><div class="dm">21-sep · resuelta en la sesión · <a href="clase6_regresion.html">Regresion</a>, <b>Generalizacion</b> · también en <a href="clase6_regresion.html#duda-2026-09-21-arbol-45cm">clase6_regresion.html</a></div><p><b>Pregunta.</b> Cortaste 20 árboles y ajustaste la recta: R² = 0,93. Tu jefe te pide predecir el peso de un árbol de radio 45 cm. Los 20 árboles tenían radios entre 8 y 22 cm. ¿Le entregas la predicción? Justifica.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No como una predicción confiable: 45 cm está fuera del rango observado (8–22 cm), es una extrapolación; si se entrega, va con esa advertencia explícita, y lo correcto es medir árboles de ese tamaño.</p><ol><li>El rango de tus datos es 8–22 cm. 45 cm es más del doble del máximo: el modelo nunca vio un árbol así.</li><li>R² = 0,93 mide el ajuste a los 20 árboles con que ajustaste la recta, todos dentro de 8–22 cm. No dice nada fuera de ese rango.</li><li>El modelo igual devuelve un número. Con la recta de la página (θ₁ ≈ 9,72 kg por cm, θ₀ ≈ −6,9 kg): ŷ = −6,9 + 9,72·45 ≈ 430 kg. Tener un número no es tener evidencia.</li><li>El peso crece con el volumen (aprox. radio² × altura), más rápido que una recta: con árboles grandes la recta probablemente se queda corta.</li><li>Qué haces: entregas el número declarando la extrapolación y por qué no es confiable, o mides árboles grandes y vuelves a ajustar.</li><li>Frase para la prueba: «No la entrego como confiable: 45 cm está fuera del rango observado (8–22 cm), así que es extrapolación. El R² de 0,93 mide el ajuste solo dentro de ese rango.»</li></ol><p><b>Error típico.</b> Creer que un R² alto autoriza a predecir en cualquier parte; el R² se calculó solo donde había datos.</p><p class="df">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes<br>[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html] los 20 árboles y la recta de mínimos cuadrados<br>[INFERENCIA] «extrapolación»: el profesor no usa esa palabra en las 14 transcripciones<br>[DATITO] el argumento físico del volumen<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-21-agronomo-lluvia"><div class="dm">21-sep · práctica: intenta antes de abrir la respuesta · <b>Generalizacion</b>, <a href="clase6_regresion.html">Regresion</a></div><p><b>Pregunta.</b> (Transferencia) Un agrónomo ajustó una recta de rendimiento contra lluvia con datos entre 300 y 600 mm, y le piden predecir un año de 1.200 mm. ¿Qué le dices?</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> Que no la entregue como confiable: 1.200 mm está al doble del máximo observado, es una extrapolación; y en agronomía es esperable que el rendimiento deje de subir o caiga con exceso de agua, justo lo que una recta no puede mostrar.</p><ol><li>Reconoce el concepto sin que te lo nombren: es el mismo problema del árbol de 45 cm en otro dominio.</li><li>Rango observado 300–600 mm; 1.200 mm está fuera: extrapolación.</li><li>La recta sigue subiendo para siempre; el cultivo no: con exceso de agua hay anegamiento, enfermedades y lavado de nutrientes. Fuera del rango, la forma de la relación puede cambiar por completo.</li><li>Qué hacer: declarar la extrapolación, buscar datos de años muy lluviosos (o de otra zona con esa lluvia), o no entregar número.</li></ol><p><b>Error típico.</b> Tratarlo como un problema nuevo en vez de reconocer la misma estructura (predicción fuera del rango).</p><p class="df">[DATITO] el caso y el argumento agronómico<br>[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: datos que no ha visto antes<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
+</section>
+<!-- datito:dudas:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/generalizacion.html</code> ·
+funciona sin conexión · fuentes: transcripciones de la Clase del 31-jul y de las
+presentaciones del Hito 2 (4-sep), <code>05_RESULTADOS/resultados_temporal.json</code>,
+<code>07_DATITO/referencia/material.md</code> y
+<code>03_CODIGO/modelamiento_temporal.py</code>.<br>
+Datos reales: las citas (con marca de tiempo verificable) y las cifras de Melbourne
+de las tablas. Datos ilustrativos [DATITO]: los árboles de los dos lienzos y las
+cifras de los ejercicios de cálculo y transferencia.
+</footer>
+
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+</body>
+</html>

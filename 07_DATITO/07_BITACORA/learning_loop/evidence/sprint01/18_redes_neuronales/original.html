@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="17" id="clase-17">
+<div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 17 de 22</b></div>
+<div class="barra"><span style="width:77.3%"></span></div>
+<div class="lt">Clase 17 · Redes neuronales</div>
+<p><b>Objetivo.</b> Explicar un perceptrón y el ciclo de entrenamiento: forward, costo, backward y actualización.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="arboles_y_ensambles.html#random-forest">Clase 16 · Random Forest y ensambles</a></div>
+<div><span class="et">habilita</span><a href="dl_llm_agentes.html">Clase 18 · Deep learning, LLM y agentes</a></div>
+<div><span class="et">tiempo estimado</span>~45 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Comprender</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Escribe el ciclo de entrenamiento y hace un forward pass a mano.</li>
+<li><b>Actividad final:</b> Un paso de descenso de gradiente, a mano.</li>
+<li><b>Criterio de dominio:</b> Nombra el rol de g (la no linealidad), de η (la tasa de aprendizaje) y de la retropropagación.</li></ul></div>
+<div class="activ"><b>Activación.</b> Tu regresión lineal ya es casi una neurona. ¿Qué le falta? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="17"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="arboles_y_ensambles.html#random-forest">← Clase 16 · Random Forest y ensambles</a></span><a href="index.html">Índice del curso</a><span><a href="dl_llm_agentes.html">Clase 18 · Deep learning, LLM y agentes →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Redes neuronales</b></span> · <span class="et">viene de</span><a href="arboles_y_ensambles.html#boosting">Gradient Boosting</a> · <span class="et">habilita</span><a href="dl_llm_agentes.html#deep-learning">Deep learning</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 3 · peso en certamen baja (C2: P6) · <span class="et">certamen</span><a href="certamen_2.html#p6">C2 P6</a></div>
+<details><summary>Dónde se enseñó en clase (1 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 1:48:16–2:11:31 · profesor — neurona, perceptron, costo, gradiente, retropropagacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:48:16]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Redes neuronales</h1>
+<p class="sub">De la recta que ya sabes ajustar a un modelo que inventa sus propias variables.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 21 de agosto</p>
+
+<div class="grafo">
+  <a class="n" href="clase6_regresion.html">Regresión</a> →
+  <a class="n" href="arboles_y_ensambles.html#random-forest">Random Forest</a> →
+  <a class="n" href="arboles_y_ensambles.html#boosting">Gradient Boosting</a> →
+  <span class="n aqui">Redes neuronales</span> →
+  <a class="n" href="dl_llm_agentes.html#deep-learning">Deep learning</a> →
+  <a class="n" href="dl_llm_agentes.html#llm">LLM</a> →
+  <a class="n" href="dl_llm_agentes.html#agentes">Agentes</a>
+</div>
+
+<div class="tension">
+<strong>Dónde estás.</strong> Concepto 18 de 21. Es el último cambio de paradigma del curso:
+en los 17 anteriores <em>tú</em> elegías las variables y el modelo decidía cómo combinarlas.
+Desde aquí el modelo también elige las variables. Los tres conceptos que vienen después
+—deep learning, LLM y agentes— son consecuencias de este. Si este queda a medias, esos tres
+quedan a medias.
+<br><br>
+<strong>Y una continuidad que conviene ver antes que nada:</strong> una neurona no es un objeto
+nuevo. Es la recta <code>y = w₀ + w₁·x</code> que ya ajustaste en Melbourne
+(<a href="clase6_regresion.html">clase6_regresion.html</a>), con una cosa más pegada al final.
+El profesor construyó exactamente ese puente en clase, y de ahí arrancamos. Vienes de
+<a href="arboles_y_ensambles.html#boosting">gradient boosting</a>, el modelo que ganó en
+Melbourne; aquí cambia la familia, no el objetivo (minimizar un costo).
+</div>
+
+<h2>1 · La situación: un molino que falla por los dos extremos</h2>
+
+<p>Faena de cobre. Un molino SAG muele mineral y consume varios megawatts. Mantención quiere
+un modelo que avise cuando la operación entra en <strong>riesgo</strong>, usando dos señales
+que el molino ya entrega cada segundo:</p>
+
+<table>
+<tr><th>Variable</th><th>Qué es</th><th>Rango típico</th></tr>
+<tr><td><code>carga</code></td><td>Llenado del molino, en % del volumen</td><td class="num">15 – 95 %</td></tr>
+<tr><td><code>vibracion</code></td><td>Vibración RMS en el descanso</td><td class="num">0,6 – 8,4 mm/s</td></tr>
+</table>
+
+<p>Lo importante del caso es <em>cómo</em> falla:</p>
+
+<ul>
+<li><strong>Carga baja</strong> → el molino va casi vacío, las bolas de acero golpean directo
+el revestimiento. Riesgo.</li>
+<li><strong>Carga alta</strong> → sobrecarga, el motor se ahoga. Riesgo.</li>
+<li><strong>Vibración alta</strong> → algo está mal pase lo que pase. Riesgo.</li>
+</ul>
+
+<div class="clave">
+<strong>El detalle que decide todo lo que sigue:</strong> los modos de falla están en
+<em>extremos opuestos</em>. La operación sana es una <strong>franja central</strong>, y todo
+lo que la rodea es riesgo. Eso significa que la frontera entre «normal» y «riesgo»
+<strong>encierra</strong> una región. Una recta no encierra nada: la recta parte el plano en
+dos mitades infinitas.
+</div>
+
+<p class="fuente">[DATITO] Caso construido para este concepto. Los datos son sintéticos y
+deterministas: el mismo archivo genera siempre los mismos 123 puntos.</p>
+
+<h2>2 · El puente: tu recta ya es casi una neurona</h2>
+
+<div class="cita">«fíjense que este modelo que yo acabo de armar que el ⟨w₀⟩ más el ⟨w₁⟩ por x es un
+perceptron […] ahora es un modelo lineal lo único que le está faltando es la función no lineal
+para transformarse en un perceptron propiamente tal» <span class="f">Clase del 21-ago · 1:56:58–1:57:27 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA] (el ASR escribe «doble de 0» y «doble de 1»)</span></div>
+
+<p>Es literal: el profesor rehízo en clase el ejemplo de regresión de la
+<a href="clase6_regresion.html">Clase del 31-jul</a> para mostrar que esa recta es un perceptrón
+al que le falta la <code>g</code> [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43–1:57:04].
+Compara las dos cosas que ya sabes escribir:</p>
+
+<table>
+<tr><th></th><th>Regresión lineal (Clase del 31-jul)</th><th>Perceptrón (Clase del 21-ago)</th></tr>
+<tr><td><strong>Fórmula</strong></td>
+    <td><code>ŷ = w₀ + w₁x₁ + … + w<sub>n</sub>x<sub>n</sub></code></td>
+    <td><code>ŷ = g(w₀ + w₁x₁ + … + w<sub>n</sub>x<sub>n</sub>)</code></td></tr>
+<tr><td><strong>Qué aprende</strong></td><td>Los <code>w</code></td><td>Los <code>w</code></td></tr>
+<tr><td><strong>Cómo aprende</strong></td><td>Minimiza una función de costo</td><td>Minimiza una función de costo</td></tr>
+<tr><td><strong>Diferencia</strong></td><td colspan="2"><strong>Una sola: la <code>g</code>.</strong></td></tr>
+</table>
+
+<h3>La ecuación, desarmada</h3>
+
+<div class="ecu">
+  <div class="f">z = w₀·<strong>1</strong> + w₁x₁ + w₂x₂ + … + w<sub>n</sub>x<sub>n</sub><br>
+  ŷ = g(z)</div>
+  <table class="simb">
+  <tr><td>x₁…x<sub>n</sub></td><td>Las entradas. En el molino son dos; en una imagen, cada una
+    puede ser el valor de un píxel, que es como lo planteó el profesor
+    <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:53:42–1:53:46]</span>.</td><td><span class="rol r-dato">dato</span></td></tr>
+  <tr><td>1</td><td>La entrada constante que el profesor dibuja arriba de todo. Existe para que
+    <code>w₀</code> tenga de qué multiplicarse. Es el intercepto; en redes se llama
+    <strong>sesgo</strong> (<em>bias</em>).</td><td><span class="rol r-dato">dato</span></td></tr>
+  <tr><td>w₀…w<sub>n</sub></td><td>Los <strong>pesos</strong>. Es lo único que el
+    entrenamiento modifica.</td><td><span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td>z</td><td>La suma ponderada. Hasta aquí seguimos en el mundo de los modelos
+    lineales, como dijo el profesor al armarla
+    <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:01–1:55:03]</span>.</td><td>intermedio</td></tr>
+  <tr><td>g</td><td>La <strong>función de activación</strong>. No lineal, y con ella la
+    salida <code>ŷ</code> pasa a ser una función no lineal de las entradas (sección 3). Es lo
+    único estructuralmente nuevo de todo el concepto.</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td>ŷ</td><td>La salida de la neurona. Puede ser la predicción final, o la entrada de
+    la neurona siguiente.</td><td>resultado</td></tr>
+  </table>
+</div>
+
+<p><strong>Qué problema resuelve esta ecuación:</strong> convierte un vector de mediciones en
+un número, de forma que ese número pueda encadenarse con otros iguales. Sin la <code>g</code>
+la cadena colapsa, y en la sección 4 vas a verlo colapsar.</p>
+
+<h2>3 · Primer control: una neurona, a mano</h2>
+
+<p>Abajo tienes <em>una sola</em> neurona con dos entradas, y sus tres pesos en tus manos. Los
+puntos azules son operación normal; los rojos, riesgo. La recta es dónde <code>z = 0</code>:
+la neurona dice «normal» de un lado y «riesgo» del otro.</p>
+
+<p><strong>Tu objetivo: llegar al 78,0 % de aciertos.</strong> Ese es el techo: no existe ninguna
+recta que lo supere, y lo sé porque están todas probadas. Muévelos todo lo que quieras.</p>
+
+<div class="panel">
+  <canvas id="c1" width="820" height="420"></canvas>
+
+  <div class="ctrl">
+    <label>w₀</label><input type="range" id="s0" min="-6" max="6" step="0.1" value="0.5"><span class="v" id="v0">0,5</span>
+    <label>w₁</label><input type="range" id="s1" min="-6" max="6" step="0.1" value="-1.5"><span class="v" id="v1">-1,5</span>
+    <label>w₂</label><input type="range" id="s2" min="-6" max="6" step="0.1" value="-1.5"><span class="v" id="v2">-1,5</span>
+  </div>
+
+  <div class="lbl">Función de activación g <span style="text-transform:none;letter-spacing:0;font-weight:400">· [DATITO] los
+  nombres escalón, sigmoide, tanh y ReLU no aparecen en las 14 transcripciones disponibles al
+  2026-09-21 ni en el texto extraído de las láminas de FCD-08: en clase solo se dijo «función no
+  lineal <code>g</code>». Se muestran porque son las habituales.</span></div>
+  <div class="seg" id="segG">
+    <button data-g="escalon" class="on">escalón</button>
+    <button data-g="sigmoide">sigmoide</button>
+    <button data-g="tanh">tanh</button>
+    <button data-g="relu">ReLU</button>
+    <button data-g="lineal">identidad</button>
+  </div>
+
+  <div class="met">
+    <div><div class="n" id="m1acc">—</div><div class="e">aciertos</div></div>
+    <div><div class="n" id="m1z">—</div><div class="e">z del punto de prueba</div></div>
+    <div><div class="n" id="m1y">—</div><div class="e">g(z) del punto</div></div>
+    <div><div class="n" id="m1best">78,0 %</div><div class="e">el techo de cualquier recta</div></div>
+  </div>
+  <p style="font-size:.85rem;color:#666;margin:.8rem 0 0">
+  El punto de prueba es el aspa negra. <strong>Haz clic en el gráfico</strong> para moverla y
+  ver el cálculo con otros números.</p>
+  <div id="m1calc" style="font-family:ui-monospace,Consolas,monospace;font-size:.86rem;
+       background:#faf9f7;border-radius:8px;padding:.7rem .9rem;margin-top:.7rem"></div>
+</div>
+
+<div class="pred">
+  <div class="q">Antes de tocar el selector de <code>g</code>: si cambias de escalón a sigmoide
+  dejando los tres pesos idénticos, ¿cambia el porcentaje de aciertos?</div>
+  <button data-p="si">Sí, cambia</button>
+  <button data-p="no">No, queda igual</button>
+  <div class="veredicto" id="ver1"></div>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve (y por qué la recta no pasa del 78,0 %)</summary>
+<p><strong>Respuesta:</strong> no, el porcentaje de aciertos queda igual, porque con
+<code>g</code> monótona la frontera de una neurona sigue siendo la recta <code>z = 0</code>.</p>
+<p>El porcentaje <strong>no cambia</strong> al cambiar <code>g</code>, y eso no es un detalle
+de implementación: todas estas activaciones son <strong>monótonas crecientes</strong>, así que
+«<code>g(z)</code> por encima del umbral» ocurre exactamente cuando «<code>z</code> por encima
+de 0». La frontera de <em>una</em> neurona es la misma recta <code>z = 0</code> con cualquier
+<code>g</code>. Lo que <code>g</code> cambia es <em>el valor</em> que esta neurona le entrega a
+la siguiente — y por eso su efecto solo se vuelve visible cuando hay una neurona siguiente.</p>
+<p>Y el techo del 78,0 % no es falta de paciencia tuya. Con 123 puntos y la franja sana en el
+medio, la mejor recta posible deja fuera uno de los dos extremos. Da igual cómo la inclines:
+<strong>una recta no encierra una franja</strong>. Si quieres el atajo, prueba
+<code>w₀ = −0,2</code>, <code>w₁ = 0,8</code>, <code>w₂ = −1,4</code>: 96 aciertos de 123, y
+ninguna otra recta hace 97.</p>
+<p><strong>Error típico:</strong> contestar «sí, porque la sigmoide es no lineal». Es error
+porque confunde la forma de la <em>función</em> (sí cambia) con la <em>frontera de decisión</em>
+(no cambia si <code>g</code> es monótona): lo desarrolla el recuadro de abajo.</p>
+<p class="fuente">[DATITO] propiedad de las funciones monótonas y datos sintéticos del molino ·
+no linealidad del perceptrón: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:11–1:55:25]</p>
+</details>
+
+<div class="cita">«por una función no lineal que es este g y entonces este g transforma el perceptron en un
+modelo no lineal y entonces el y que es la salida va a ser una función no lineal del input»
+<span class="f">Clase del 21-ago · 1:55:11–1:55:25 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="dist">
+<strong>Distinción de certamen probable: qué es no lineal y qué sigue siendo recto.</strong>
+El apunte híbrido de la clase la marca como pregunta de examen probable
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md · páginas 10 y 36 del resumen]</span>.
+Son dos afirmaciones distintas y las dos son ciertas:
+<table style="margin-top:.6rem">
+<tr><th>Afirmación</th><th>Veredicto</th><th>Por qué</th></tr>
+<tr><td>«El perceptrón es un modelo no lineal»</td><td><strong>Verdadera</strong></td>
+<td>Lo dijo el profesor (cita de arriba): <code>ŷ = g(w₀ + w₁x₁ + … )</code> es una función no
+lineal de <code>x</code>. Una sigmoide de una suma no es una suma.</td></tr>
+<tr><td>«La frontera de decisión de <em>una</em> neurona con <code>g</code> monótona es una recta»</td><td><strong>Verdadera</strong> [DATITO]</td>
+<td>Si <code>g</code> es monótona, «<code>g(z)</code> sobre el umbral» ocurre exactamente
+cuando «<code>z</code> sobre un valor fijo», y <code>z = constante</code> es una recta (un
+hiperplano con más entradas). Por eso tu predicción de arriba: cambiar <code>g</code> no mueve
+los aciertos.</td></tr>
+</table>
+La confusión castigable es mezclarlas: decir que el perceptrón «es lineal» (falso: lo corrigió
+el profesor) o que una sola neurona con <code>tanh</code> ya separa la franja del molino
+(falso: su frontera sigue siendo recta). Lo que da <strong>fronteras curvas</strong> es
+<strong>apilar</strong> neuronas con <code>g</code> no lineal; lo vas a ver en la sección 7.
+</div>
+
+<h2>4 · La función de costo: cuatro puntos, como en la clase</h2>
+
+<p>Antes de apilar nada hay que resolver el problema de fondo: ¿cómo se encuentran los
+<code>w</code>? El profesor lo mostró con <strong>cuatro puntos genéricos</strong>
+<code>(x₁, y₁) … (x₄, y₄)</code> y una recta, sin valores numéricos
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:56:09–1:56:11 y 1:57:44–1:57:50]</span>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 14–15]</span>.
+Aquí les ponemos números: cuatro mediciones <strong>inventadas</strong> con esa misma
+estructura, en unidades del molino (alimentación contra potencia consumida). Cifras
+ilustrativas [DATITO].</p>
+
+<table>
+<tr><th>Medición</th><th class="num">x · alimentación (100 t/h)</th><th class="num">y · potencia (MW)</th></tr>
+<tr><td>1</td><td class="num">2</td><td class="num">5</td></tr>
+<tr><td>2</td><td class="num">4</td><td class="num">9</td></tr>
+<tr><td>3</td><td class="num">6</td><td class="num">12</td></tr>
+<tr><td>4</td><td class="num">8</td><td class="num">17</td></tr>
+</table>
+
+<p>Modelo: <code>ŷ = 1 + w·x</code>. El 1 MW es el consumo en vacío [DATITO], y lo dejamos
+fijo para que todo el problema quepa en una dimensión. El profesor hizo una simplificación
+parecida: dibujó el costo contra un solo <code>w</code> y aclaró que era para simplificar la
+explicación, porque el perceptrón real tiene <code>w₀</code> y <code>w₁</code>
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:02:59–2:03:11]</span>.</p>
+
+<p>La función de costo de la clase es el <strong>error cuadrático promediado</strong>: el
+error de cada punto al cuadrado y después el promedio de los cuatro
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:58:22–1:58:56]</span>
+<span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 16–17, «Función de Costo»; el texto extraído solo trae el título, la fórmula la transcribe el formulario de Resumen_Clase8_DL_LLMs_Agentes.md]</span>.</p>
+
+<div class="ecu">
+  <div class="f">J(w) = (1/n) · Σ<sub>i</sub> ( y<sub>i</sub> − ŷ(x<sub>i</sub>) )²</div>
+  <table class="simb">
+  <tr><td>y<sub>i</sub> − ŷ(x<sub>i</sub>)</td><td>El error de una medición: lo que pasó menos
+    lo que el modelo dijo.</td><td>—</td></tr>
+  <tr><td>( · )²</td><td>Al cuadrado, para que un error de −3 pese igual que uno de +3 y no se
+    cancelen entre sí.</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td>(1/n) Σ</td><td>Promediar los errores, que es el paso que el profesor hizo en la
+    pizarra. Promediar y no sumar hace que <code>J</code> no dependa de cuántos datos
+    tengas.</td><td>—</td></tr>
+  <tr><td>J</td><td>Un solo número que resume qué tan malo es el modelo completo. Es lo que
+    hay que minimizar.</td><td>resultado</td></tr>
+  </table>
+</div>
+
+<p>Con estos cuatro puntos, la cuenta cierra en números redondos:</p>
+
+<div class="ecu">
+  <div class="f">J(w) = 0,175 + 30 · (w − 1,95)²</div>
+</div>
+
+<p>Una parábola. Su mínimo está en <code>w* = 1,95</code> MW por cada 100 t/h, y ahí abajo
+todavía queda <code>J = 0,175</code> de error: <strong>el mínimo de la función de costo no es
+cero.</strong> Ningún modelo pasa exactamente por los cuatro puntos, y eso está bien.</p>
+
+<h2>5 · Segundo control: el descenso de gradiente</h2>
+
+<p>La imagen del profesor: partes de un valor cualquiera de <code>w</code>, sueltas una
+pelotita y la dejas ir en contra de la pendiente, paso a paso
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:00:35–2:01:09]</span>.
+El nombre formal es <strong>método del gradiente</strong> (en su versión estocástica, más
+abajo).</p>
+
+<div class="ecu">
+  <div class="f">w<sub>t+1</sub> = w<sub>t</sub> − η · ∂J/∂w |<sub>w<sub>t</sub></sub></div>
+  <table class="simb">
+  <tr><td>∂J/∂w</td><td>La derivada: el valor de la pendiente en el punto donde estás
+    <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:03:38–2:03:52]</span>.
+    Dice hacia dónde <em>sube</em> el costo.</td><td>se calcula</td></tr>
+  <tr><td>−</td><td>El signo menos. Por eso bajas en vez de subir. Sin él, el modelo
+    empeoraría a propósito.</td><td>—</td></tr>
+  <tr><td>η</td><td>La <strong>tasa de aprendizaje</strong> (eta): cuánto avanzas en cada
+    paso. Muy chica, avanza despacito; muy grande, empieza a saltar de un lado a otro
+    <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:04:22–2:04:34]</span>.</td><td><span class="rol r-decide">lo decides tú</span></td></tr>
+  <tr><td>w<sub>t</sub></td><td>Dónde estás en el paso <em>t</em>. Empieza en un valor
+    cualquiera.</td><td><span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  </table>
+  <p style="margin:.6rem 0 0;font-size:.9rem">Para nuestra parábola la derivada es exacta y la
+  puedes escribir a mano: <code>∂J/∂w = 60w − 117</code>.</p>
+</div>
+
+<div class="pred">
+  <div class="q">Con η = 0,010 el modelo converge. Si pones el <strong>doble</strong>,
+  η = 0,020, ¿en cuántos pasos llega?</div>
+  <button data-p="mitad">En la mitad de pasos</button>
+  <button data-p="menos">En menos, pero no la mitad</button>
+  <button data-p="mas">En más pasos</button>
+  <button data-p="nunca">No llega</button>
+  <div class="veredicto" id="ver2"></div>
+</div>
+
+<div class="panel">
+  <canvas id="c2" width="820" height="380"></canvas>
+  <div class="ctrl">
+    <label>η</label><input type="range" id="sEta" min="2" max="45" step="1" value="10"><span class="v" id="vEta">0,010</span>
+    <label>w inicial</label><input type="range" id="sW0" min="-20" max="60" step="1" value="0"><span class="v" id="vW0">0,00</span>
+  </div>
+  <div>
+    <button id="bPaso">Un paso</button>
+    <button id="bCorre" class="ok">Correr 30 pasos</button>
+    <button id="bReset" class="alt">Reiniciar</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="m2w">0,00</div><div class="e">w actual</div></div>
+    <div><div class="n" id="m2j">114,25</div><div class="e">J(w)</div></div>
+    <div><div class="n" id="m2t">0</div><div class="e">pasos dados</div></div>
+    <div><div class="n" id="m2est">—</div><div class="e">estado</div></div>
+  </div>
+  <div id="m2calc" style="font-family:ui-monospace,Consolas,monospace;font-size:.84rem;
+       background:#faf9f7;border-radius:8px;padding:.7rem .9rem;margin-top:.7rem"></div>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve (y el número exacto donde todo se rompe)</summary>
+<p><strong>Respuesta:</strong> en menos pasos, pero no en la mitad: con η = 0,020 el error se
+multiplica por −0,2 en cada paso (en vez de +0,4), así que converge antes pero rebotando de un
+lado al otro; partiendo de <code>w = 0</code>, para quedar a menos de 0,01 del óptimo necesita
+4 pasos en vez de 6.</p>
+<p>Sustituyendo la derivada en la regla de actualización:
+<code>w<sub>t+1</sub> = (1 − 60η)·w<sub>t</sub> + 117η</code>. El error respecto del óptimo se
+multiplica por <code>(1 − 60η)</code> en cada paso. De ahí sale todo:</p>
+<table>
+<tr><th class="num">η</th><th class="num">1 − 60η</th><th>Comportamiento</th></tr>
+<tr><td class="num">0,005</td><td class="num">+0,70</td><td>Baja derecho, lento</td></tr>
+<tr><td class="num">0,010</td><td class="num">+0,40</td><td>Baja derecho, rápido</td></tr>
+<tr><td class="num">0,0167</td><td class="num">0,00</td><td><strong>Llega en UN paso.</strong> El óptimo posible</td></tr>
+<tr><td class="num">0,020</td><td class="num">−0,20</td><td>Se pasa al otro lado y vuelve. Converge</td></tr>
+<tr><td class="num">0,030</td><td class="num">−0,80</td><td>Rebota mucho, converge apenas</td></tr>
+<tr><td class="num">0,0333</td><td class="num">−1,00</td><td><strong>El umbral.</strong> Oscila para siempre sin acercarse</td></tr>
+<tr><td class="num">0,040</td><td class="num">−1,40</td><td>Diverge. Cada paso empeora</td></tr>
+</table>
+<p><strong>Cuenta de pasos.</strong> El error inicial es 0 − 1,95 = −1,95 y en cada paso se
+multiplica por <code>(1 − 60η)</code>. Para quedar a menos de 0,01:</p>
+<ul>
+<li>η = 0,010: 1,95 · 0,4<sup>5</sup> ≈ 0,020 (todavía no) y 1,95 · 0,4<sup>6</sup> ≈ 0,008 → <strong>6 pasos</strong>.</li>
+<li>η = 0,020: 1,95 · 0,2<sup>3</sup> ≈ 0,016 (todavía no) y 1,95 · 0,2<sup>4</sup> ≈ 0,003 → <strong>4 pasos</strong>, con el signo alternando.</li>
+</ul>
+<p>Duplicar η de 0,010 a 0,020 hace que pase de bajar derecho a <em>cruzarse de lado</em> y
+llega antes, pero no en la mitad. Y de 0,0167 hacia arriba, subir η <strong>empeora</strong>.
+La relación no es «más η, más rápido»: hay un óptimo y después un acantilado en η = 1/30 ≈
+0,0333. El profesor lo dijo cualitativamente: con una tasa muy grande empieza a saltar de un
+lado a otro y no llega al óptimo
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:04:34 y 2:04:53–2:05:05]</span>.</p>
+<p><strong>Error típico:</strong> «el doble de η, la mitad de pasos». Es error porque la
+velocidad depende de <code>|1 − 60η|</code>, no de η en proporción: el mismo razonamiento
+llevaría a creer que η = 0,040 es todavía mejor, y diverge.</p>
+<p class="fuente">[DATITO] El umbral y los conteos son exactos para esta parábola. En una red
+real no se pueden calcular, y por eso η se busca probando.</p>
+</details>
+
+<div class="nota">
+<strong>Por qué «estocástico».</strong> El algoritmo se llama descenso de gradiente
+<em>estocástico</em>, y el profesor dio esta razón: «el algoritmo gradiente estocástico se le
+llama estocástico porque tú lo ajustas desde los datos y los datos son muestreados de manera
+estocástica de la naturaleza»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:07:11–2:07:21]</span>.
+<br><br>
+<span class="fuente">[INFERENCIA]</span> Lo que sigue no se dijo en clase: en la práctica
+el gradiente se suele calcular sobre un puñado de datos por vez (un <em>mini-lote</em>), no
+sobre los 123. La dirección sale ruidosa, pero cada paso cuesta mucho menos. Si te preguntan
+«por qué estocástico» en el certamen, responde primero con la razón del profesor.
+</div>
+
+<details class="resp">
+<summary>«¿Y si la pelotita cae en un mínimo local?» — respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> podría pasar, pero en redes con muchísimos parámetros es muy poco
+probable, porque un mínimo local tendría que ser mínimo en todas las dimensiones a la vez.</p>
+<p>Contexto: justo antes, el profesor había advertido que con una tasa de aprendizaje muy
+baja se puede terminar en un óptimo local y no en el global
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:05:08–2:05:22]</span>.
+Un compañero preguntó qué pasa entonces. Fíjate en la autocorrección: primero dice
+«globales» y se corrige a «locales».</p>
+<div class="cita" style="margin-top:0">«Podría ser, podría ser, pero es muy poco probable uno puede mostrar que hay muy pocos
+mínimos globales […] perdón, hay muy pocos mínimos locales en un espacio de alta
+dimensionalidad […] porque tiene que ser mínimo local en todas las dimensiones»
+<span class="f">Clase del 21-ago · 2:05:39–2:06:58 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+<p>Entre medio da el argumento: si un punto fuese mínimo en una dimensión y no en otra, la
+pelotita se va por la otra dimensión; con dos dimensiones todavía puede pasar, pero estos
+modelos tienen miles de millones de parámetros. El argumento es de probabilidad, no de
+garantía: quedar atrapado exige que <em>todas</em> las dimensiones a la vez suban.</p>
+<p><strong>Error típico:</strong> responder «nunca pasa» o, al revés, «siempre queda atrapada».
+Lo primero convierte una probabilidad en garantía; lo segundo ignora el argumento de la alta
+dimensión. Y cuidado con repetir la primera frase del profesor: él mismo corrigió «globales» por
+«locales».</p>
+<div class="nota" style="margin-bottom:0">⚠ En la grabación el profesor habla de «billones» de
+parámetros <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:06:46–2:06:48]</span>. Es un calco del inglés <em>billions</em>: se refiere a
+miles de millones (10⁹), no a billones en español (10¹²). La lámina 45 escribe «GPT-3 tiene
+175B de parámetros» <span class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 45]</span>.</div>
+</details>
+
+<h2>6 · Conectar muchas: forward, backward, retropropagación</h2>
+
+<p>Ahora sí se apilan. La salida de una neurona entra como entrada de la siguiente, y el
+recorrido tiene dos sentidos con nombre propio:</p>
+
+<div class="flujo">
+  <span class="b">carga, vibración</span> →
+  <span class="b">capa oculta</span> →
+  <span class="b">salida</span> →
+  <span class="b act">predicción: «normal»</span>
+</div>
+<p style="font-size:.9rem;margin:0"><strong>Forward pass.</strong> Los datos van de izquierda a
+derecha: se multiplican por los pesos, pasan hacia adelante y al final la red dice «perro».
+Esto es lo que ocurre cada vez que el modelo <em>predice</em> — lo que el profesor llamó
+<strong>inferencia</strong>
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:23–2:09:05]</span>.</p>
+
+<div class="flujo">
+  <span class="b">ajusto pesos</span> ←
+  <span class="b">ajusto pesos</span> ←
+  <span class="b act">error: era «riesgo»</span>
+</div>
+<p style="font-size:.9rem;margin:0"><strong>Backward pass.</strong> Si el modelo predijo «gato»
+y era un perro, se calcula la función de costo y desde ahí se va modificando la red hacia
+atrás, neurona por neurona
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:09:09–2:09:36]</span>.
+El profesor le puso nombre así: «el algoritmo que ajusta el modelo se llama el algoritmo de
+retro propagación del error porque tomo el error y lo voy propagando hacia atrás para ir
+mejorando la red»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:09:54–2:10:04]</span>.</p>
+
+<div class="clave">
+<strong>Un entrenamiento es este ciclo, repetido.</strong> forward → calcular J → backward
+(obtener los gradientes) → un paso de descenso. Y otra vez. Y otra vez. Minutos después, al
+volver al gráfico de la pelotita, el profesor separó las piezas: «tomo todos los datos hago
+forward y después hago un backward para calcular los gradientes y avanza»
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:06–2:11:14]</span>.
+Las dos formas de decirlo conviven; la sección 12 te dice cuál usar y cuál es el error de
+verdad.
+</div>
+
+<h3>El nombre de la familia</h3>
+<p>Redes en las que la información solo va hacia adelante: <strong><em>feedforward neural
+networks</em></strong>. Es la arquitectura básica, y la que tienes abajo.</p>
+
+<h2>7 · Tercer control: entrenar la red, con y sin g</h2>
+
+<p>La misma nube de puntos del molino. La misma recta imposible. Ahora con una capa oculta y el
+descenso de gradiente corriendo de verdad en tu navegador: 4.000 pasos, retropropagación
+incluida.</p>
+
+<div class="pred">
+  <div class="q">Si apilo tres capas de neuronas pero dejo <code>g</code> = identidad —o sea,
+  sin no linealidad en la capa oculta—, ¿qué frontera dibuja la red entrenada?</div>
+  <button data-p="curva">Una curva, por tener varias capas</button>
+  <button data-p="recta">Una recta, igual que una sola neurona</button>
+  <button data-p="ruido">Algo irregular, depende del azar inicial</button>
+  <div class="veredicto" id="ver3"></div>
+</div>
+
+<div class="panel">
+  <canvas id="c3" width="820" height="420"></canvas>
+
+  <div class="lbl">Activación de la capa oculta</div>
+  <div class="seg" id="segG3">
+    <button data-g="tanh" class="on">tanh (no lineal)</button>
+    <button data-g="lineal">identidad (lineal)</button>
+  </div>
+
+  <div class="ctrl">
+    <label>neuronas ocultas</label><input type="range" id="sH" min="1" max="8" step="1" value="4"><span class="v" id="vH">4</span>
+    <label>semilla inicial</label><input type="range" id="sSeed" min="1" max="6" step="1" value="1"><span class="v" id="vSeed">1</span>
+  </div>
+
+  <div>
+    <button id="bEntrena" class="ok">Entrenar 4.000 pasos</button>
+    <button id="bReset3" class="alt">Reiniciar pesos</button>
+  </div>
+
+  <div class="met">
+    <div><div class="n" id="m3acc">—</div><div class="e">aciertos</div></div>
+    <div><div class="n" id="m3j">—</div><div class="e">costo J</div></div>
+    <div><div class="n" id="m3ep">0</div><div class="e">pasos</div></div>
+    <div><div class="n" id="m3base">61,0 %</div><div class="e">responder siempre «riesgo»</div></div>
+  </div>
+</div>
+
+<div class="pred">
+  <div class="q">Segundo control, y vale la pena anticiparlo aparte: con <code>tanh</code>
+  activado, baja las neuronas ocultas de 4 a <strong>1</strong>. ¿Resuelve el problema, ya que
+  la no linealidad sigue ahí?</div>
+  <button data-p="si">Sí, la g es lo que importaba</button>
+  <button data-p="no">No, una sola no alcanza</button>
+  <div class="veredicto" id="ver4"></div>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve (las dos predicciones de esta sección)</summary>
+<p><strong>Respuesta 1:</strong> con <code>g</code> = identidad la red entrenada dibuja una
+<strong>recta</strong>, igual que una sola neurona, con cualquier número de capas y cualquier
+semilla (70,7 %).</p>
+<p><strong>Respuesta 2:</strong> no; con <code>tanh</code> y <strong>una</strong> sola neurona
+oculta llega a 73,2 %: la no linealidad está, pero falta capacidad para hacer los dos cortes que
+encierran la franja (con 2 neuronas sube a 96,7 %).</p>
+<p>Los números que deberías haber visto, y qué separa cada uno:</p>
+<table>
+<tr><th>Configuración</th><th class="num">Aciertos</th><th>Qué dibuja</th></tr>
+<tr><td>Responder siempre «riesgo»</td><td class="num">61,0 %</td><td>Nada. Es el piso</td></tr>
+<tr><td>Identidad · cualquier n.º de neuronas · <strong>cualquier semilla</strong></td><td class="num">70,7 %</td><td>Una recta</td></tr>
+<tr><td>tanh · 1 neurona · cualquier semilla</td><td class="num">73,2 %</td><td>Una curva suave, un solo corte</td></tr>
+<tr><td>tanh · 2 neuronas · cualquier semilla</td><td class="num">96,7 %</td><td>Dos cortes: ya encierra por dos lados</td></tr>
+<tr><td>tanh · 3 neuronas</td><td class="num">98,4 – 100 %</td><td>Casi cierra la franja. <strong>Aquí sí depende de la semilla</strong></td></tr>
+<tr><td>tanh · 4 neuronas o más</td><td class="num">100 %</td><td>La franja completa</td></tr>
+</table>
+<p>Ese «depende de la semilla» de la fila de 3 neuronas es la otra cara de la moneda: en
+cuanto hay no linealidad, la función de costo deja de tener un único mínimo y
+<strong>de dónde partas importa</strong>. Con identidad no importaba nunca.</p>
+<p><strong>Lo más revelador de la tabla está en la columna de la izquierda.</strong> Con
+identidad, <em>todas</em> las semillas y <em>todos</em> los anchos dan exactamente 70,7 %. No
+es coincidencia: componer funciones lineales da otra función lineal, así que la red de 8
+neuronas y la de 1 son <strong>el mismo modelo</strong>, y ese modelo tiene un solo óptimo.
+Arranque donde arranque, la pelotita cae al mismo lugar.</p>
+<p>El profesor lo dijo respondiendo a un compañero que sostenía que, al final, todo eran
+funciones lineales:</p>
+<div class="cita" style="margin-bottom:0">«no son funciones lineales son funciones no lineales pero el perceptron es no lineal […]
+si tú hicieras un perceptron lineal y tú conectas todos los perceptron lineales que quieras al
+final se transforma todo en un modelo lineal no más» <span class="f">Clase del 21-ago ·
+1:54:04–1:54:24 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+<p><strong>Errores típicos:</strong> (1) «más capas dan una curva aunque sean lineales»: falso,
+la composición de funciones lineales es lineal; (2) «basta con tener la <code>g</code>»:
+falso, una neurona hace un solo corte y la franja necesita al menos dos.</p>
+<p class="fuente">Porcentajes: [DATITO] datos sintéticos del molino, entrenamiento en este
+navegador · colapso de lo lineal: cita de arriba.</p>
+</details>
+
+<details class="resp">
+<summary>«Pero a mano llegué a 78,0 % con una recta, y la red lineal saca 70,7 %. ¿La red es peor?» — respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> no es peor, optimiza otra cosa: el descenso de gradiente minimiza
+la función de costo, no el porcentaje de aciertos, y la recta que minimiza el costo no tiene por
+qué ser la que más acierta.</p>
+<p>Es una distinción que conviene tener guardada:
+<strong>el modelo no minimiza los aciertos. Minimiza la función de costo.</strong></p>
+<table>
+<tr><th></th><th>Tú, a mano</th><th>El descenso de gradiente</th></tr>
+<tr><td><strong>Qué optimizas</strong></td><td>El % de aciertos, moviendo sliders hasta que sube</td><td>J, la entropía cruzada [DATITO]</td></tr>
+<tr><td><strong>Cómo trata un punto mal clasificado</strong></td><td>Todos pesan 1</td><td>Cuanto más seguro y más equivocado, más castigo</td></tr>
+<tr><td><strong>Resultado</strong></td><td>78,0 %</td><td>70,7 %, con J mínimo</td></tr>
+</table>
+<div class="nota"><strong>[DATITO] Qué costo usa este panel y cuál vio la clase.</strong> La red de
+este panel (salida sigmoide, clase 0/1) minimiza la <em>entropía cruzada</em>. En la Clase del
+21-ago el profesor mostró como función de costo el <strong>error cuadrático promediado</strong>
+(sección 4). En las 14 transcripciones disponibles al 2026-09-21, la entropía cruzada solo
+aparece en la Clase del 31-jul, adelantada como la función de costo que usa GPT al clasificar la
+siguiente palabra
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:09:37–0:09:45]</span>.
+En el certamen, si te piden «la función de costo de la clase», es la de la sección 4.</div>
+<p>La recta de 78,0 % acierta más, pero se equivoca con mucha confianza en unos pocos puntos
+extremos, y eso la penaliza en <code>J</code>. La recta de 70,7 % prefiere equivocarse «con
+dudas». <strong>Ambas son la respuesta correcta a preguntas distintas.</strong></p>
+<p>Esto no es una rareza del ejemplo: es la razón por la que un modelo puede entrenar bien y
+evaluar mal en la métrica que al cliente le importa. En Galaxy Zoo lo tienes en tus propios
+datos: la métrica oficial era <strong>F1-macro</strong>, y ningún clasificador la minimiza
+directamente. <span class="fuente">[FUENTE · Repo: 04_DATOS/00_LEEME.md]</span></p>
+<p>Y fíjate en lo que <em>no</em> cambia con esto: ni 78,0 % ni 70,7 % se acercan al 100 %.
+El techo de la recta es el techo de la recta, se mida como se mida.</p>
+<p><strong>Error típico:</strong> concluir que «el entrenamiento falló» porque la métrica final
+es menor que la que lograste a mano. Es error porque compara dos óptimos de objetivos
+distintos: costo contra aciertos.</p>
+<p class="fuente">[DATITO] datos sintéticos del molino · F1-macro de Galaxy Zoo:
+[FUENTE · Repo: 04_DATOS/00_LEEME.md]</p>
+</details>
+
+<div class="dist">
+<strong>Dos cosas que el certamen puede poner una al lado de la otra.</strong>
+<table style="margin-top:.6rem">
+<tr><th></th><th>No linealidad (la <code>g</code>)</th><th>Capacidad (n.º de neuronas)</th></tr>
+<tr><td><strong>Qué permite</strong></td><td>Que apilar sirva de algo</td><td>Cuántos cortes puede hacer la frontera</td></tr>
+<tr><td><strong>Si falta</strong></td><td>70,7 % entrenada, 78,0 % como techo teórico. Ni 8 neuronas lo arreglan</td><td>73,2 % con 1 neurona. La g está, pero no alcanza</td></tr>
+<tr><td><strong>Si sobra</strong></td><td>No aplica</td><td><strong>Sobreajuste.</strong> Más capacidad = más brecha train/test</td></tr>
+</table>
+No son la misma palanca, y una no sustituye a la otra.
+</div>
+
+<h2>8 · El camino inverso: te dan la ecuación</h2>
+
+<p>En una prueba no te van a pedir que entrenes nada. Te van a <em>entregar</em> una neurona
+escrita y te van a preguntar qué hace. Practícalo al revés. Esta neurona vigila un chancador:</p>
+
+<div class="ecu">
+  <div class="f">ŷ = g( 2,4 − 0,05·<em>temp</em> − 0,30·<em>amperaje</em> )<br>
+  <span style="font-size:.85rem">g = sigmoide · ŷ &gt; 0,5 significa «seguir operando»</span></div>
+</div>
+
+<p>Responde antes de abrir: ¿qué regla física codifica? ¿Qué pasa con <code>ŷ</code> si el
+amperaje sube? ¿Y si sube 1 °C la temperatura? ¿Cuál de las dos señales pesa más en la
+decisión, y por qué no basta con mirar el número del peso?</p>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> codifica «más caliente o más cargado es peor»; si sube el
+amperaje, <code>z</code> baja 0,30 por cada unidad y <code>ŷ</code> se acerca a «detener»; si
+sube 1 °C, <code>z</code> baja 0,05; y con estos datos <strong>no se puede decir</strong> cuál
+señal pesa más, porque los pesos solo se comparan si las entradas están en la misma escala.</p>
+<ol class="pasos">
+<li><strong>Los signos.</strong> Ambos pesos son negativos: subir cualquiera de las dos
+señales baja <code>z</code>, baja <code>ŷ</code>, y acerca la decisión a «detener». La neurona
+codifica «más caliente o más cargado = peor». Los signos te dan la <em>dirección</em> de cada
+variable sin hacer una sola cuenta.</li>
+<li><strong>El sesgo.</strong> El 2,4 es el punto de partida con todo en cero. Es el «beneficio
+de la duda» que la máquina tiene antes de que ninguna señal opine.</li>
+<li><strong>La frontera.</strong> Poner <code>ŷ = 0,5</code> es poner <code>z = 0</code>, o sea
+<code>0,05·temp + 0,30·amperaje = 2,4</code>. Es una recta, y sobre ella la máquina está
+justo en el límite.</li>
+<li><strong>La trampa de la comparación.</strong> 0,30 &gt; 0,05, pero eso <em>no</em>
+demuestra que el amperaje importe seis veces más: la temperatura se mide en decenas de grados
+y el amperaje quizá en unidades. Un peso solo es comparable con otro si las entradas están en
+la misma escala. Esa es la misma razón por la que las redes exigen normalizar, y es una
+comparación que el formato de certamen castiga.</li>
+<li><strong>El límite.</strong> Es <em>una</em> neurona: su frontera es una recta. Si el
+chancador también fallara por amperaje demasiado <em>bajo</em>, esta ecuación no podría
+representarlo. Harían falta al menos dos neuronas y una <code>g</code> no lineal.</li>
+</ol>
+<p><strong>Error típico:</strong> «el amperaje importa seis veces más porque 0,30 / 0,05 = 6».
+Es error porque ignora las unidades: con la temperatura en decenas de grados, 0,05 por grado
+puede mover <code>z</code> tanto o más que 0,30 por amperio.</p>
+<p class="fuente">[DATITO] ecuación y caso del chancador inventados para este ejercicio</p>
+</details>
+
+<h2>9 · Lo que cambia de verdad: el modelo elige las variables</h2>
+
+<p>En el aprendizaje clásico primero calculas características y después se las pasas a un
+modelo como un <em>support vector machine</em> o un <em>random forest</em>
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:50:14–1:50:38]</span>.
+Y el contraste:</p>
+<div class="cita">«deep learning tiene la gracia de que se puede conectar directamente a la fuente de datos
+y automáticamente hacer la extracción de características […] y a veces no son las
+características que uno mediría pero son características que te ayudan a resolver el
+problema» <span class="f">Clase del 21-ago · 1:50:41–1:50:57 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Esto no es una mejora de rendimiento: es un cambio en <strong>quién decide qué se mide</strong>.</p>
+
+<table>
+<tr><th></th><th>Flujo clásico (todo el curso hasta aquí)</th><th>Red profunda</th></tr>
+<tr><td><strong>Entrada</strong></td><td>Una tabla de variables que alguien eligió</td><td>La señal cruda: píxeles, audio, texto</td></tr>
+<tr><td><strong>Quién elige las variables</strong></td><td><strong>Tú</strong>, antes de entrenar</td><td><strong>El entrenamiento</strong>, como parte del ajuste</td></tr>
+<tr><td><strong>Dónde está el trabajo humano</strong></td><td>En pensar qué medir</td><td>En la arquitectura, los datos y el η</td></tr>
+<tr><td><strong>Se puede auditar</strong></td><td>Sí: cada columna tiene nombre</td><td>Con dificultad: las variables internas no tienen nombre</td></tr>
+</table>
+
+<h3>Está en tus propios datos, y probablemente no lo habías visto así</h3>
+
+<p>Mira las columnas del Galaxy Zoo con el que trabajaste:</p>
+
+<div style="font-family:ui-monospace,Consolas,monospace;font-size:.84rem;background:#fff;
+     border:1px solid var(--linea);border-radius:8px;padding:.8rem 1rem">
+psfMag_u · psfMag_g · psfMag_r · psfMag_i · psfMag_z · fiberMag_u · … · z · zErr · nChild
+</div>
+
+<p>Son <strong>86 features numéricas</strong> sobre <strong>1.000 filas</strong> de entrenamiento
+<span class="fuente">[FUENTE · Repo: 04_DATOS/00_LEEME.md]</span>. Magnitudes fotométricas,
+corrimiento al rojo, tamaños. Y ahora la observación que importa: <strong>esas 86 columnas no
+son la galaxia. Son mediciones que un astrónomo decidió sacarle a la imagen.</strong> Alguien
+miró una foto del cielo y resolvió que el brillo en cinco bandas era lo relevante.</p>
+
+<p>El desafío Galaxy Zoo original se corrió sobre las imágenes crudas y lo ganó una red
+convolucional, que nunca supo qué era una «magnitud <em>psfMag_u</em>» y aun así aprendió a
+distinguir espirales de elípticas <span class="fuente">[INFERENCIA]</span>. Tú recibiste el
+problema ya resuelto por la mitad: <strong>la extracción de características ya venía
+hecha.</strong> Eso es exactamente el flujo clásico de la tabla de arriba.</p>
+
+<div class="vecino">
+<strong>Y el otro lado.</strong> En Melbourne entrenaste con <strong>6.336</strong> propiedades
+de 2016 y evaluaste sobre <strong>7.244</strong> de 2017. Ganó HistGradientBoosting con
+R² de <strong>0,7571</strong> en test, y el Random Forest —el más flexible del lote— fue el que
+más brecha abrió: 0,9423 en train contra 0,7109 en test, <strong>0,2314</strong> de diferencia
+<span class="fuente">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json]</span>.
+<br><br>
+Fíjate en qué entraba a esos modelos: una tabla con columnas <em>ya elegidas por ti</em>, el
+flujo clásico de la tabla de arriba. <strong>Tu pregunta:</strong> en tus modelos de Melbourne
+tú elegiste las features; ¿qué haría distinto una red neuronal con ellas, y habría ganado ahí?
+Ojo: <strong>en el repositorio no se entrenó ninguna red sobre Melbourne</strong>
+<span class="fuente">[NO EVIDENCIADO]</span>, así que esa comparación no está medida.
+</div>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> una red no se limita a combinar las features que le das: aprende
+en sus capas ocultas variables intermedias propias a partir de ellas (o del dato crudo, si se lo
+das); en Melbourne, con una tabla ya elaborada y 6.336 filas, esa ventaja tiene poco dónde
+operar, y lo esperable es que el boosting gane, aunque no está medido.</p>
+<ol class="pasos">
+<li><strong>Qué hace distinto:</strong> en el flujo clásico tú decides qué se mide y el modelo
+solo pondera; en una red, cada neurona oculta es una variable nueva que el entrenamiento
+construye (cita de arriba).</li>
+<li><strong>Dónde rinde eso:</strong> con señal cruda (píxeles, texto) y muchos datos; con pocos
+datos, los clásicos rinden mejor (lámina 8).</li>
+<li><strong>Melbourne:</strong> columnas ya elegidas y 6.336 filas de entrenamiento. Lo esperable
+es que el boosting gane, y el profesor advierte que un random forest supera a una red compleja
+más seguido de lo que uno cree (desarrollo en
+<a href="dl_llm_agentes.html#deep-learning">dl_llm_agentes.html#deep-learning</a>).</li>
+<li><strong>Límite:</strong> es una expectativa fundada, no una medición.</li>
+</ol>
+<p><strong>Error típico:</strong> «la red usa las mismas features, así que da lo mismo». Es
+error porque la red no se queda con tus columnas: las recombina en variables internas; que eso
+sirva o no depende de los datos.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:50:41–1:50:57]
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · lámina 8]
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:36:29–1:36:34]
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] · aplicación a Melbourne [INFERENCIA]</p>
+</details>
+
+<h2>10 · La distinción que el certamen ya te cobró</h2>
+
+<p>En el Certamen 2, dos de las diez preguntas numeradas fueron de este bloque (P5 y P6). La
+P6 es la que toca redes directamente:</p>
+
+<div class="dist">
+<strong>P6 · Revoluciones de la IA</strong> (0,5 pts, respuesta múltiple). El enunciado dice
+que «la inteligencia artificial mediante el uso de <strong>redes neuronales</strong> ha
+experimentado avances significativos» y pregunta cuál(es) de estas tecnologías
+se considera(n) entre las revoluciones recientes más destacadas: procesamiento del lenguaje
+natural · computación en la nube · bases de datos relacionales · detección de objetos en
+imágenes <span class="fuente">[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · ficha P6, enunciado textual de Canvas]</span>.
+<br><br>
+Lo que decide es la <strong>cláusula</strong> «mediante el uso de redes neuronales»: de cada
+alternativa pregúntate si es un avance producido <em>con</em> redes, o algo que existía antes o
+que a lo más las hizo posibles. Una de las alternativas es verdadera como afirmación histórica
+y falsa como respuesta a <em>esta</em> pregunta. El análisis completo, con la respuesta y las
+láminas que la respaldan, está en <a href="certamen_2.html#p6">certamen_2.html#p6</a>; el
+ejercicio para clasificar ítems parecidos, en
+<a href="dl_llm_agentes.html#deep-learning">dl_llm_agentes.html#deep-learning</a>.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> son correctas la 1 (procesamiento del lenguaje natural) y la 4
+(detección de objetos en imágenes); la nube y las bases de datos relacionales no son
+revoluciones mediante redes neuronales.</p>
+<table>
+<tr><th>Alternativa</th><th>¿Avance mediante redes?</th><th>Respaldo</th></tr>
+<tr><td>Procesamiento del lenguaje natural</td><td><strong>Sí</strong></td><td>Láminas 33–34: GLUE y «Transformers in NLP»</td></tr>
+<tr><td>Computación en la nube</td><td><strong>No.</strong> A lo más, condición que permitió entrenarlas [INFERENCIA]</td><td>La lámina 65 atribuye el boom a redes, datos y GPU; la nube no sale de las redes</td></tr>
+<tr><td>Bases de datos relacionales</td><td><strong>No</strong></td><td>Anterior y ajena a las redes [INFERENCIA]</td></tr>
+<tr><td>Detección de objetos en imágenes</td><td><strong>Sí</strong></td><td>Láminas 6–7: ImageNet, 1,2 M imágenes de entrenamiento y 1000 categorías</td></tr>
+</table>
+<p><strong>Error típico:</strong> marcar la nube «porque sin ella no habría IA moderna». Es
+verdadera como historia y falsa como respuesta: el enunciado acota a avances «mediante el uso
+de redes neuronales».</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md · láminas 6–7, 33–34 y 65]
+[FUENTE · Repo: 07_DATITO/visual/certamen_2.html · ficha P6]</p>
+</details>
+
+<p>La ficha original de esa pregunta en tu expediente dice, sin adornos: <em>«No hay una sola
+red neuronal en todo el código del repositorio»</em>, y en su primera versión la marcaba
+INSUFICIENTE. La síntesis vigente del mismo documento, actualizada tras la guía de estudio,
+deja P5 y P6 en <strong>PARCIAL</strong>
+<span class="fuente">[FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md · §2 Síntesis cuantitativa, l. 139]</span>.
+Este artefacto no cambia eso —para eso hay que entrenar una red— pero cierra el lado
+conceptual.</p>
+
+<div class="repreg">
+<strong>La distinción hermana, P5:</strong> generar texto <strong>≠</strong> ejecutar acciones
+y observar su resultado. Un LLM es un componente; el agente es el bucle que lo rodea. Está
+desarrollada en <a href="dl_llm_agentes.html#agentes" style="color:#fbbf24">dl_llm_agentes.html#agentes</a>
+(y la ficha en <a href="certamen_2.html#p5" style="color:#fbbf24">certamen_2.html#p5</a>), pero
+conviene que la veas ya: es el mismo patrón de razonamiento, <em>quién hace qué</em>, aplicado
+tres conceptos más adelante.
+</div>
+
+<h2>11 · Procedimiento a mano, para una prueba escrita</h2>
+
+<p>Sin computador, con lápiz. Dos procedimientos cortos que cubren casi todo lo que se puede
+preguntar.</p>
+
+<h3>A · Un forward pass</h3>
+<ol class="pasos">
+<li>Escribe las entradas con el <strong>1</strong> adelante: <code>(1, x₁, x₂)</code>.</li>
+<li>Multiplica cada una por su peso y <strong>suma todo</strong>. Eso es <code>z</code>.</li>
+<li>Aplica <code>g</code> a <code>z</code>. Solo a <code>z</code>, no a cada término.</li>
+<li>Si hay más capas, ese resultado es <em>una entrada</em> de la capa siguiente. Vuelve al
+paso 1.</li>
+<li>Interpreta la salida en el lenguaje del problema: no «0,82», sino «82 % de probabilidad de
+operación normal».</li>
+</ol>
+
+<h3>B · Un paso de descenso de gradiente</h3>
+<ol class="pasos">
+<li>Escribe la función de costo con los números del enunciado.</li>
+<li>Deriva respecto del peso que te piden. Evalúala en el <code>w</code> actual.</li>
+<li>Aplica <code>w<sub>nuevo</sub> = w<sub>viejo</sub> − η · (derivada)</code>.
+<strong>Cuida el signo dos veces</strong>: el de la resta y el de la derivada.</li>
+<li>Verifica que <code>J</code> bajó. Si subió, o te equivocaste de signo o el η es demasiado
+grande — y ambas son respuestas válidas si el enunciado las pide.</li>
+</ol>
+
+<p><strong>Ejercicio:</strong> con <code>J(w) = 0,175 + 30(w − 1,95)²</code>, arrancando en
+<code>w = 0</code> con <code>η = 0,01</code>, haz a mano cuatro pasos de descenso de gradiente.
+¿Dónde quedas y cuánto vale <code>J</code>?</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> después de cuatro pasos <code>w ≈ 1,900</code> y
+<code>J ≈ 0,25</code>; se acerca a <code>w* = 1,95</code> y a <code>J = 0,175</code>, nunca a
+cero.</p>
+<p><code>J(w) = 0,175 + 30(w − 1,95)²</code> · <code>∂J/∂w = 60w − 117</code> · arrancas en
+<code>w = 0</code> con <code>η = 0,01</code>.</p>
+<table>
+<tr><th class="num">t</th><th class="num">w<sub>t</sub></th><th class="num">∂J/∂w</th><th class="num">η · ∂J/∂w</th><th class="num">w<sub>t+1</sub></th><th class="num">J(w<sub>t+1</sub>)</th></tr>
+<tr><td class="num">0</td><td class="num">0,000</td><td class="num">−117,00</td><td class="num">−1,170</td><td class="num">1,170</td><td class="num">18,43</td></tr>
+<tr><td class="num">1</td><td class="num">1,170</td><td class="num">−46,80</td><td class="num">−0,468</td><td class="num">1,638</td><td class="num">3,10</td></tr>
+<tr><td class="num">2</td><td class="num">1,638</td><td class="num">−18,72</td><td class="num">−0,187</td><td class="num">1,825</td><td class="num">0,64</td></tr>
+<tr><td class="num">3</td><td class="num">1,825</td><td class="num">−7,49</td><td class="num">−0,075</td><td class="num">1,900</td><td class="num">0,25</td></tr>
+</table>
+<p>La derivada es negativa, así que <code>−η·(negativo)</code> es positivo y <code>w</code>
+<em>sube</em> hacia 1,95. Fíjate en que los incrementos se achican solos: cerca del mínimo la
+pendiente es pequeña y el algoritmo frena sin que nadie se lo pida. Y <code>J</code> se acerca
+a 0,175, nunca a cero.</p>
+<p><strong>Error típico:</strong> escribir <code>w + η·∂J/∂w</code> (signo cambiado): con la
+derivada negativa, <code>w</code> bajaría a −1,17 y <code>J</code> subiría a 292,2. Si
+<code>J</code> sube en tu tabla, revisa el signo antes que nada.</p>
+<p class="fuente">[DATITO] parábola construida desde las cuatro mediciones ilustrativas de la
+sección 4 · regla de actualización: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:04:06–2:04:20]</p>
+</details>
+
+<h3>C · Transferencia: un invernadero</h3>
+<p>[DATITO] Invernadero de tomates con dos sensores: temperatura y humedad relativa. El cultivo
+está sano en una franja de temperatura (ni helada ni golpe de calor) y con la humedad bajo un
+umbral (sobre él aparecen hongos). Responde antes de abrir: ¿basta una neurona con sigmoide
+para marcar «sano / en riesgo»? ¿Cuántas neuronas ocultas pedirías como mínimo, y qué
+<code>g</code>? ¿Qué pasa si pones esas neuronas con <code>g</code> = identidad?</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> una neurona no basta; hacen falta del orden de tres neuronas
+ocultas con <code>g</code> no lineal (una por cada lado de la zona sana), y con
+<code>g</code> = identidad ninguna cantidad sirve, porque todo colapsa a una recta.</p>
+<ol class="pasos">
+<li><strong>Una neurona no basta.</strong> Su salida es no lineal, pero su frontera de
+decisión es una recta, y la zona sana está cerrada por <em>tres</em> lados: frío, calor y
+humedad alta.</li>
+<li><strong>Mínimo, del orden de tres neuronas ocultas con <code>g</code> no lineal</strong>:
+un corte por cada lado de la zona. Es el mismo patrón del molino, donde dos cortes ya subían a
+96,7 % y cuatro cerraban la franja.</li>
+<li><strong>Con identidad no sirve ninguna cantidad</strong>: la composición colapsa a un
+modelo lineal y vuelves a una sola recta.</li>
+<li>Lo que <em>no</em> puedes decir sin validar: que tres sean suficientes con datos reales.
+Eso lo decide el error en validación, no el dibujo.</li>
+</ol>
+<p><strong>Error típico:</strong> «con sigmoide ya es no lineal, basta una». Es error porque
+confunde la no linealidad de la función con la forma de la frontera, y además ignora la
+capacidad: cada neurona aporta un corte.</p>
+<p class="fuente">[DATITO] caso del invernadero; patrón de cortes tomado del panel de la sección 7</p>
+</details>
+
+<h3>D · Producción: explícaselo a alguien</h3>
+<p>Explícale a un compañero, en cinco líneas y sin usar la palabra «neurona», por qué el
+perceptrón es un modelo no lineal y aun así una sola unidad no puede aislar la franja sana del
+molino. Escríbelo antes de abrir la respuesta y llévalo a Datito.</p>
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> la unidad es no lineal porque aplica una función curva
+<code>g</code> a una suma ponderada, pero su frontera de decisión sigue siendo recta, y una recta
+no puede encerrar una franja central.</p>
+<p><strong>Respuesta modelo (cinco líneas):</strong></p>
+<blockquote style="margin:.4rem 0 .8rem;padding-left:.8rem;border-left:3px solid #bbf7d0">
+«La unidad suma las entradas con pesos y a esa suma le aplica una curva, como una sigmoide; por
+eso su salida no es una línea recta de las entradas. Pero decide “normal” o “riesgo” según si esa
+suma pasa un umbral, y todos los puntos donde la suma vale exactamente el umbral forman una recta.
+En el molino la zona sana es una franja rodeada de riesgo por dos lados, y una recta solo parte
+el plano en dos. Para encerrar la franja hay que combinar varias unidades, cada una con su recta,
+y juntar sus salidas con otra curva; sin la curva, combinarlas daría otra recta.»
+</blockquote>
+<p><strong>Criterios con que Datito lo revisa:</strong> separa la función (no lineal por la
+<code>g</code>) de la frontera (recta si <code>g</code> es monótona); dice qué agrega apilar;
+dice por qué sin <code>g</code> apilar no sirve; distingue no linealidad de capacidad.</p>
+<p><strong>Error típico:</strong> escribir «no puede porque es lineal». Es error: el profesor
+corrigió justamente eso; la unidad es no lineal y el límite está en su frontera.</p>
+<p class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:54:04–1:55:25] · frontera recta con g monótona [DATITO]</p>
+</details>
+
+<h2>12 · Errores que este formato castiga</h2>
+
+<ul>
+<li><strong>Decir que el perceptrón es lineal.</strong> Falso: <code>ŷ = g(z)</code> con
+<code>g</code> no lineal es una función no lineal de las entradas, y el profesor lo corrigió
+en clase (sección 3). <strong>Y el error opuesto:</strong> creer que por eso una sola neurona
+ya separa clases que una recta no separa. Con <code>g</code> monótona su <em>frontera de
+decisión</em> sigue siendo recta [DATITO]; las fronteras curvas aparecen al apilar neuronas con
+<code>g</code> no lineal, porque sin <code>g</code> la composición colapsa a un modelo
+lineal.</li>
+<li><strong>Tratar η como «velocidad».</strong> Pasado el óptimo, subirlo empeora; pasado el
+umbral, diverge. En el ejemplo de arriba ese umbral es exacto: η = 1/30.</li>
+<li><strong>Retropropagación: las dos formulaciones de la clase valen.</strong> El profesor la
+presentó como «el algoritmo que ajusta el modelo» (propaga el error hacia atrás para mejorar la
+red, 2:09:54–2:10:04) y después precisó el reparto: el backward calcula los gradientes y el
+descenso de gradiente da el paso (2:10:58–2:11:14)
+<span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:09:54–2:11:14]</span>.
+Si escribes, usa la segunda porque es más precisa, pero no marques la primera como falsa. Lo
+que sí es error: presentar la retropropagación como una <em>alternativa</em> al descenso de
+gradiente, o como algo que funciona sin función de costo.</li>
+<li><strong>Decir «más capas = mejor».</strong> Más capacidad es más sobreajuste, y tienes el
+número propio: Random Forest, 0,2314 de brecha en Melbourne.</li>
+<li><strong>Contar como «avance mediante redes» lo que no salió de ellas.</strong> La lámina 65
+atribuye el boom a tres factores (redes, muchos datos, GPU); pero una pregunta que dice
+«mediante el uso de redes neuronales» pide áreas donde las redes produjeron el salto (visión,
+lenguaje), no la infraestructura que las hizo posibles. Es la
+<a href="certamen_2.html#p6">P6</a>.</li>
+<li><strong>Comparar dos pesos sin mirar la escala de sus entradas.</strong> 0,30 contra 0,05
+no dice nada si una variable va en decenas y la otra en unidades.</li>
+<li><strong>Esperar que J llegue a cero.</strong> El mínimo de la función de costo casi nunca
+es cero, y si lo es con datos reales, sospecha de sobreajuste.</li>
+<li><strong>Confundir la función de costo con la métrica.</strong> El entrenamiento minimiza
+<code>J</code>; tú juzgas con exactitud, F1 o MAE. No son lo mismo, y el modelo que minimiza
+<code>J</code> puede no ser el que maximiza tu métrica. Lo tienes en el panel de arriba:
+78,0 % a mano contra 70,7 % entrenada, sobre la misma familia de rectas.</li>
+</ul>
+
+<h2>13 · Qué tendría que verte hacer para darlo por comprendido</h2>
+
+<table>
+<tr><th>Evidencia</th><th>Qué tendrías que producir</th></tr>
+<tr><td><strong>EXPLICAR</strong></td><td>Decir con tus palabras, sin la palabra «neurona»,
+por qué apilar modelos lineales no sirve — y por qué eso no se arregla poniendo más.</td></tr>
+<tr><td><strong>APLICAR</strong></td><td>Hacer a mano un forward pass de dos entradas y un
+paso de descenso de gradiente, con los signos correctos, sin mirar esta página.</td></tr>
+<tr><td><strong>TRANSFERIR</strong></td><td>Tomar un problema nuevo —uno de esos donde la
+respuesta sana está en el medio y el riesgo en los dos extremos— y decidir, argumentando,
+si conviene una red o un boosting. Y saber cuándo la respuesta es «boosting», como en
+Melbourne.</td></tr>
+</table>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-17">
+<h2>Cierre de la Clase 17 · Redes neuronales</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un perceptrón es una regresión más una función g no lineal.</li><li>Entrenar es minimizar el costo con el gradiente.</li><li>Con η grande el descenso salta; con η chico avanza despacio.</li><li>La retropropagación calcula los gradientes capa por capa.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>ŷ no lineal en x ≠ frontera de una sola neurona, que sigue siendo recta.</li><li>Forward ≠ backward.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Forward: calcula ŷ.</li><li>Calcula el costo.</li><li>Backward: calcula los gradientes.</li><li>Actualiza los pesos y repite.</li></ol>
+<p><b>Viene de:</b> <a href="arboles_y_ensambles.html#random-forest">Clase 16 · Random Forest y ensambles</a> · <b>Sigue:</b> <a href="dl_llm_agentes.html">Clase 18 · Deep learning, LLM y agentes</a></p>
+<p><b>Vuelve a tu activación:</b> Tu regresión lineal ya es casi una neurona. ¿Qué le falta? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿El perceptrón es un modelo lineal?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: g lo transforma en un modelo no lineal en x [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:11]. Aun así, con una sola neurona y g monótona, la frontera de decisión es recta [DATITO].</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="dl_llm_agentes.html">Continuar → Clase 18 · Deep learning, LLM y agentes</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/redes_neuronales.html</code> · funciona sin conexión ·
+fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md</code> (manda sobre
+la transcripción) · transcripción de la Clase del 21-ago
+(<code>09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md</code>, desde 1:35:51)
+y de la Clase del 31-jul (<code>06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md</code>) ·
+Certamen 2 (<code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>,
+<code>certamen_2.html</code>) · datos propios (<code>04_DATOS/00_LEEME.md</code>,
+<code>05_RESULTADOS/resultados_temporal.json</code>).<br>
+Datos reales: cifras de Melbourne (6.336 / 7.244 filas, R² y brechas) y de Galaxy Zoo (86
+features, 1.000 filas). Ilustrativos [DATITO]: el caso del molino SAG (123 puntos sintéticos
+deterministas), las cuatro mediciones de la sección 4 y el chancador de la sección 8; los
+porcentajes de aciertos del panel salen de esos datos sintéticos.
+</footer>
+
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+</body>
+</html>

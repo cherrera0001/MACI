@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="14" id="clase-14">
+<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 14 de 22</b></div>
+<div class="barra"><span style="width:63.6%"></span></div>
+<div class="lt">Clase 14 · ROC-AUC y elección del umbral</div>
+<p><b>Objetivo.</b> Elegir un punto de operación y comparar modelos por sus curvas ROC.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~40 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Construye una curva ROC con cuatro puntos y decide si hay dominancia o cruce.</li>
+<li><b>Actividad final:</b> La lámina 23, a mano.</li>
+<li><b>Criterio de dominio:</b> Compara curvas y no puntos, y justifica el umbral por el costo de cada error.</li></ul></div>
+<div class="activ"><b>Activación.</b> El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="14"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="metricas_clasificacion.html">← Clase 13 · Precisión, sensibilidad, exactitud y F1</a></span><a href="index.html">Índice del curso</a><span><a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>ROC y AUC</b></span> · <span class="et">viene de</span><a href="metricas_clasificacion.html">Accuracy, precision, recall y F1</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen media (C2: P9) · <span class="et">certamen</span><a href="certamen_2.html#p9">C2 P9</a></div>
+<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 1:04:17–1:13:50 · profesor — probabilidad, umbral, punto de operacion, curva ROC<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:04:17]</span></li><li><b>Sesión de certamen del 28-ago</b> · 1:19:26–1:20:34 · profesor — aclaracion durante el Certamen 2<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:26]</span></li><li><b>Presentaciones del 4-sep</b> · 1:35:16–1:45:35 · profesor — de un punto de la ROC a conteos de pacientes<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:35:16]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Curva ROC y AUC</h1>
+<p class="sub">Un modelo no es un punto: es una curva. El umbral elige el punto; el modelo dibuja la curva.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 7-ago (láminas FCD-07, 22 a 24)</p>
+
+<div class="grafo">
+  <a class="n" href="matriz_confusion.html">Matriz de confusión</a> →
+  <a class="n" href="metricas_clasificacion.html">Accuracy, precisión, recall y F1</a> →
+  <span class="n aqui">ROC y AUC</span>
+  <span style="color:var(--suave)">· hoja del grafo: no habilita otros conceptos</span>
+</div>
+
+<div class="tension">
+<strong>Dónde estás.</strong> Este concepto viene de las métricas de clasificación
+—sin el umbral y sin los denominadores de TVP y TFP no se entiende— y
+<strong>no habilita ningún otro</strong> del currículum
+[FUENTE · Repo: 07_DATITO/curriculum.yaml · roc_auc].<br><br>
+<strong>Y aun así rinde puntos directos.</strong> La ficha P9 del Certamen 2
+(1,0 punto) es exactamente esto: calcular TPR y FPR de dos modelos a varios
+umbrales y decidir cuál es mejor. El expediente registra la evidencia de esa
+pregunta como <strong>INSUFICIENTE</strong>
+[FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md · P9].
+Por eso el currículum lo marca como prioritario.
+</div>
+
+<!-- ======================================================= 1 -->
+<h2 id="situacion">1 · La situación, antes de cualquier fórmula</h2>
+
+<p>En la clase del 7-ago el profesor parte de un clasificador de perros y gatos
+que no entrega una etiqueta, sino una <strong>probabilidad</strong>. Si dice «90 %
+perro, 10 % gato», dices perro sin pensarlo. Si dice «50 y 50», necesitas una
+regla. Esa regla es el <strong>umbral</strong>, y no está escrita en piedra:</p>
+
+<div class="cita">«[…] en mi cabeza generalmente un 50 por ciento pero no tiene porque ser un 50 por ciento podría ser un 55 o un 60 y lo que ocurre es que este umbral me ayuda a mover el modelo […]» <span class="f">Clase del 7-ago · 1:06:01–1:06:19 · profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Fíjate en la última parte: <strong>el umbral mueve el modelo</strong>. El mismo
+modelo, entrenado una sola vez, se comporta distinto según dónde pongas la raya.
+Eso deja dos preguntas separadas, que conviene no mezclar nunca:</p>
+
+<table>
+<tr><th>Pregunta</th><th>Qué la responde</th></tr>
+<tr><td>¿Qué tan bien <em>separa</em> este modelo a los positivos de los negativos, antes de decidir dónde cortar?</td><td>La <strong>curva ROC</strong> entera (y su área, el <strong>AUC</strong>)</td></tr>
+<tr><td>¿Dónde corto yo, dado lo que me cuesta cada error?</td><td>El <strong>punto de operación</strong>: un punto de esa curva</td></tr>
+</table>
+
+<h3>Números pequeños</h3>
+
+<p>Cinco perros y cinco gatos; el modelo le da a cada uno su «probabilidad de
+perro» [DATITO] (cifras ilustrativas). Perro = positivo, así que P = 5 y N = 5.</p>
+
+<table style="max-width:560px">
+<tr><th>Perros (positivos reales)</th><td class="num">0,95 · 0,85 · 0,70 · 0,55 · 0,40</td></tr>
+<tr><th>Gatos (negativos reales)</th><td class="num">0,60 · 0,45 · 0,30 · 0,20 · 0,10</td></tr>
+</table>
+
+<p>Corta en tres lugares y cuenta:</p>
+
+<table>
+<tr><th>Umbral</th><th>Declaro «perro» a…</th><th>VP</th><th>FP</th><th>VP / P</th><th>FP / N</th></tr>
+<tr><td class="num">0,65</td><td>0,95 · 0,85 · 0,70</td><td class="num">3</td><td class="num">0</td><td class="num">0,6</td><td class="num">0,0</td></tr>
+<tr><td class="num">0,50</td><td>… + 0,60 (gato) · 0,55</td><td class="num">4</td><td class="num">1</td><td class="num">0,8</td><td class="num">0,2</td></tr>
+<tr><td class="num">0,35</td><td>… + 0,45 (gato) · 0,40</td><td class="num">5</td><td class="num">2</td><td class="num">1,0</td><td class="num">0,4</td></tr>
+</table>
+
+<p>Tres umbrales, tres pares. Si pones FP/N en el eje horizontal y VP/P en el
+vertical, y recorres <em>todos</em> los umbrales posibles, el rastro que queda es
+la <strong>curva ROC</strong> (<em>Receiver Operating Characteristic</em>). Recién
+ahora, la notación de la lámina 22:</p>
+
+<div class="ecu">
+  <div class="f">TVP = VP / P &nbsp;&nbsp;·&nbsp;&nbsp; TFP = FP / N</div>
+  <table class="simb">
+  <tr><td>VP</td><td>Positivos reales que quedaron del lado «positivo» del umbral <span class="rol r-cuenta">se cuenta</span> <strong>cambia con el umbral</strong></td></tr>
+  <tr><td>P</td><td>Todos los positivos reales, VP + FN <span class="rol r-dato">dato del mundo</span> no cambia con el umbral</td></tr>
+  <tr><td>FP</td><td>Negativos reales que quedaron del lado «positivo» <span class="rol r-cuenta">se cuenta</span> <strong>cambia con el umbral</strong></td></tr>
+  <tr><td>N</td><td>Todos los negativos reales, FP + VN <span class="rol r-dato">dato del mundo</span> no cambia con el umbral</td></tr>
+  <tr><td>puntaje</td><td>La probabilidad que el modelo le asigna a cada caso <span class="rol r-aprende">lo aprende el modelo</span></td></tr>
+  <tr><td>umbral</td><td>Dónde cortas <span class="rol r-decide">lo decides tú</span></td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.7rem 0 0">TVP es la tasa de verdaderos positivos
+  (en inglés TPR; es el mismo <em>recall</em> o sensibilidad). TFP es la tasa de
+  falsos positivos (FPR). <strong>Dos denominadores distintos</strong>: TVP mira
+  solo la fila de los positivos reales; TFP, solo la de los negativos reales.
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 22]</p>
+</div>
+
+<!-- ======================================================= 2 -->
+<h2 id="simulador">2 · Mueve el umbral y mira el punto recorrer la curva</h2>
+
+<p>Abajo hay 200 casos inventados [DATITO] (cifras ilustrativas): <strong>50
+positivos reales</strong> (círculos, arriba de la línea gris) y <strong>150
+negativos reales</strong> (triángulos, abajo). Cada caso está ubicado según el
+puntaje que le dio el modelo.</p>
+
+<p><strong>Convención de esta página</strong> (la misma de
+<a href="metricas_clasificacion.html">metricas_clasificacion.html</a>): se declara
+positivo todo caso con <strong>puntaje ≥ umbral</strong>. Relleno = declarado
+positivo; solo contorno = declarado negativo.</p>
+
+<div class="pred" id="predU">
+  <div class="q">Antes de tocar el umbral, predice: si <strong>subes</strong> el umbral, ¿TVP (TPR) y TFP (FPR)…</div>
+  <button data-v="suben">…suben las dos?</button>
+  <button data-v="bajan">…bajan las dos?</button>
+  <button data-v="opuestos">…van en sentidos opuestos?</button>
+  <button data-v="nada">…no se mueven?</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">Si subes el umbral, TVP y TFP bajan las dos (o se quedan quietas si
+ningún caso cruza la raya); nunca van en sentidos opuestos.</p>
+<ol class="pasos">
+  <li>Con la convención «positivo si puntaje ≥ umbral», subir el umbral solo puede
+  <em>sacar</em> casos de la zona positiva; ningún caso entra.</li>
+  <li>Entonces VP no sube (algún positivo puede salir) y FP no sube (algún negativo
+  puede salir).</li>
+  <li>P y N son datos del mundo: no cambian con el umbral.</li>
+  <li>TVP = VP/P y TFP = FP/N tienen numeradores que bajan o se quedan, y
+  denominadores fijos: bajan o se quedan las dos.</li>
+</ol>
+<p class="err"><strong>Error típico:</strong> elegir «sentidos opuestos» porque se
+habla de un <em>trade-off</em>. El compromiso es entre detectar más (TVP alto) y
+alarmar menos (TFP bajo); como las dos tasas se mueven juntas, mejorar una empeora
+la otra, pero numéricamente van en la misma dirección.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 22] para las
+fórmulas; [INFERENCIA] el razonamiento por monotonía; compruébalo en el simulador.</p>
+</details>
+
+<div class="panel">
+  <canvas id="cDist" width="860" height="300" aria-label="Puntajes de 50 positivos y 150 negativos, con una línea de umbral móvil"></canvas>
+  <p class="leyenda"><b class="p">● positivos reales (50)</b> arriba ·
+  <b class="n">▲ negativos reales (150)</b> abajo · relleno = declarado positivo ·
+  la franja azul es la zona «declaro positivo».</p>
+
+  <div class="ctl">
+    <label for="sU">Umbral de decisión <span class="v" id="vU">0,50</span></label>
+    <input type="range" id="sU" min="0" max="1" step="0.01" value="0.5">
+  </div>
+  <div>
+    <button class="alt" id="bU0">Umbral 0 (todo positivo)</button>
+    <button class="alt" id="bU5">Umbral 0,5</button>
+    <button class="alt" id="bU1">Umbral 1 (todo negativo)</button>
+  </div>
+
+  <div class="duo">
+    <div>
+      <canvas id="cRoc" class="cuad" width="460" height="440" aria-label="Curva ROC con el punto de operación actual"></canvas>
+      <label style="font-size:.85rem;display:block;margin-top:.4rem"><input type="checkbox" id="chkArea"> sombrear el área bajo la curva (AUC, sección 5)</label>
+    </div>
+    <div>
+      <div class="lbl">La matriz a este umbral</div>
+      <div class="met">
+        <div><div class="n ac" id="mVP">—</div><div class="e">VP</div></div>
+        <div><div class="n er" id="mFN">—</div><div class="e">FN</div></div>
+        <div><div class="n er" id="mFP">—</div><div class="e">FP</div></div>
+        <div><div class="n ac" id="mVN">—</div><div class="e">VN</div></div>
+      </div>
+      <div class="lbl">Las tasas</div>
+      <div class="met">
+        <div><div class="n" id="mTPR">—</div><div class="e">TVP (TPR)</div><div class="d" id="dTPR"></div></div>
+        <div><div class="n" id="mFPR">—</div><div class="e">TFP (FPR)</div><div class="d" id="dFPR"></div></div>
+        <div><div class="n" id="mPre">—</div><div class="e">Precisión</div><div class="d" id="dPre"></div></div>
+        <div><div class="n" id="mAcc">—</div><div class="e">Exactitud</div><div class="d" id="dAcc"></div></div>
+        <div><div class="n" id="mAUC">—</div><div class="e">AUC</div><div class="d">no depende del umbral</div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="lectura" id="lectura"></p>
+
+  <div class="pred" id="predS">
+    <div class="q">Segunda predicción: si <strong>separas más</strong> las dos nubes de puntajes, ¿qué le pasa a la curva?</div>
+    <button data-v="esquina">Se acerca a la esquina (0, 1)</button>
+    <button data-v="diagonal">Se acerca a la diagonal</button>
+    <button data-v="igual">La curva no cambia; solo se mueve el punto</button>
+    <div class="veredicto"></div>
+  </div>
+
+  <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p class="r1">Si separas más las nubes, la curva se acerca a la esquina (0, 1) y el
+  AUC sube; si las juntas hasta superponerlas, la curva cae sobre la diagonal y el AUC
+  se acerca a 0,5.</p>
+  <ol class="pasos">
+    <li>Separar las nubes es cambiar el <em>modelo</em>: ahora los positivos reciben
+    puntajes más altos que los negativos.</li>
+    <li>Entonces existe un umbral que deja casi todos los círculos a la derecha y casi
+    todos los triángulos a la izquierda: TVP cerca de 1 con TFP cerca de 0.</li>
+    <li>Ese punto está pegado a la esquina (0, 1), y la curva pasa por él.</li>
+    <li>Con las nubes superpuestas, cualquier umbral deja pasar la misma fracción de
+    positivos que de negativos: TVP ≈ TFP, que es la diagonal.</li>
+  </ol>
+  <p class="err"><strong>Error típico:</strong> «la curva no cambia; solo se mueve el
+  punto». Eso es lo que hace el <em>umbral</em>. La separación no es un umbral: es la
+  calidad del modelo, y cambia la curva entera.</p>
+  <p class="fuente">[DATITO] explicación con el simulador; la diagonal como referencia
+  está en [FUENTE · Repo: 11_PRESENTACIÓN/FCD-2026-2_07_Clasificacion.pdf · lámina 24].</p>
+  </details>
+
+  <div class="ctl">
+    <label for="sSep">Separación entre positivos y negativos (qué tan bueno es el modelo) <span class="v" id="vSep">1,6</span></label>
+    <input type="range" id="sSep" min="0" max="3.6" step="0.1" value="1.6">
+  </div>
+  <button class="alt" id="bSep0">Separación 0: el puntaje no distingue nada</button>
+</div>
+
+<div class="dist">
+<strong>Lo que acabas de ver, en una línea:</strong> el <strong>umbral</strong> mueve
+el <strong>punto</strong> a lo largo de la curva; la <strong>calidad del modelo</strong>
+(qué tan separados quedan los puntajes) mueve la <strong>curva</strong>. Con umbral
+0 declaras todo positivo y caes en (1, 1); con umbral 1 no declaras nada y caes en
+(0, 0). Toda curva ROC pasa por esas dos esquinas.
+</div>
+
+<div class="nota">
+<strong>Cuidado con el verbo «subir».</strong> Al pasar del panel con TVP 0,8 al de
+TVP 1,0, el profesor dice que el umbral lo «vuelvo a subir»
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:08:23].
+Con la convención de esta página, llegar a TVP 1 exige <em>bajar</em> el umbral; lo
+que él sube es la posición de la línea verde en el dibujo [INFERENCIA]. En el papel
+no discutas el verbo: <strong>declara la convención</strong> y di hacia dónde se
+mueve el punto: hacia (1, 1) es más permisivo, hacia (0, 0) más exigente.
+</div>
+
+<p>Elegir dónde quedarse tiene nombre propio:</p>
+
+<div class="cita">«[…] tiene que definir de alguna forma lo que se llama el punto de operación del modelo cuál es el umbral que tú vas a usar al momento de poner esto en producción […]» <span class="f">Clase del 7-ago · 1:08:42–1:08:46 · profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>El punto de operación <strong>no se deduce de la curva</strong>: se decide
+mirando lo que cuesta cada error en el problema. La curva te muestra el menú; el
+negocio elige el plato.</p>
+
+<!-- ======================================================= 3 -->
+<h2 id="lamina23">3 · La lámina 23, a mano</h2>
+
+<p>La lámina 22 muestra el <strong>mismo conjunto de datos cuatro veces</strong>
+—10 círculos y 5 triángulos— con la línea verde de clasificación en cuatro
+posiciones, y pide calcular TVP y TFP de cada una; la lámina 23 da los resultados
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 23].
+Los cuatro pares oficiales, escritos como (TFP, TVP):</p>
+
+<table style="max-width:520px">
+<tr><th>Panel</th><th>TFP</th><th>TVP</th></tr>
+<tr><td>1 · el más exigente</td><td class="num">0,0</td><td class="num">0,3</td></tr>
+<tr><td>2</td><td class="num">0,0</td><td class="num">0,6</td></tr>
+<tr><td>3</td><td class="num">0,2</td><td class="num">0,8</td></tr>
+<tr><td>4 · el más permisivo</td><td class="num">0,6</td><td class="num">1,0</td></tr>
+</table>
+
+<p><strong>Convención</strong> (la misma que fija
+<a href="certamen_2.html#p9">certamen_2.html</a> para la figura del certamen):
+círculo = positivo; el lado inferior izquierdo de la línea = predicción positiva.
+Entonces P = 10 y N = 5. Contando sobre las cuatro imágenes de la lámina 22,
+extraídas del PDF [FUENTE · Repo: 11_PRESENTACIÓN/FCD-2026-2_07_Clasificacion.pdf · lámina 22]
+(conteo propio [INFERENCIA]; reproduce exactamente los cuatro pares oficiales):</p>
+
+<table style="max-width:620px">
+<tr><th>Panel</th><th>Círculos del lado positivo (VP)</th><th>Triángulos del lado positivo (FP)</th></tr>
+<tr><td>1</td><td class="num">3</td><td class="num">0</td></tr>
+<tr><td>2</td><td class="num">6</td><td class="num">0</td></tr>
+<tr><td>3</td><td class="num">8</td><td class="num">1</td></tr>
+<tr><td>4</td><td class="num">10</td><td class="num">3</td></tr>
+</table>
+
+<div class="clave">
+<strong>Ejercicio de cálculo (papel y lápiz).</strong>
+<ol class="pasos">
+  <li>Con esos conteos, calcula TVP = VP/P y TFP = FP/N de cada panel, y completa FN y VN.</li>
+  <li>Dibuja un cuadrado con TFP en el eje horizontal y TVP en el vertical, ambos de 0 a 1. Marca los cuatro puntos.</li>
+  <li>Agrega (0, 0) y (1, 1) y une todo en orden de TFP creciente. Eso es la curva ROC del modelo.</li>
+  <li>¿Qué panel elegirías si un falso positivo fuera carísimo? ¿Y si lo carísimo fuera el falso negativo?</li>
+</ol>
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">Los cuatro paneles dan (TFP, TVP) = (0; 0,3), (0; 0,6), (0,2; 0,8) y
+(0,6; 1,0); con FP carísimo eliges el panel 2 y con FN carísimo el panel 4.</p>
+<table>
+<tr><th>Panel</th><th>VP</th><th>FN</th><th>FP</th><th>VN</th><th>TVP = VP/10</th><th>TFP = FP/5</th></tr>
+<tr><td>1</td><td class="num">3</td><td class="num">7</td><td class="num">0</td><td class="num">5</td><td class="num">0,3</td><td class="num">0,0</td></tr>
+<tr><td>2</td><td class="num">6</td><td class="num">4</td><td class="num">0</td><td class="num">5</td><td class="num">0,6</td><td class="num">0,0</td></tr>
+<tr><td>3</td><td class="num">8</td><td class="num">2</td><td class="num">1</td><td class="num">4</td><td class="num">0,8</td><td class="num">0,2</td></tr>
+<tr><td>4</td><td class="num">10</td><td class="num">0</td><td class="num">3</td><td class="num">2</td><td class="num">1,0</td><td class="num">0,6</td></tr>
+</table>
+<p>Coincide con la lámina 23. Verificación de marginales: en cada fila VP + FN = 10
+y FP + VN = 5. La curva es (0; 0) → (0; 0,3) → (0; 0,6) → (0,2; 0,8) → (0,6; 1,0) → (1; 1):</p>
+<canvas id="cLam" class="cuad" width="460" height="440" aria-label="Curva ROC construida con los cuatro puntos de la lámina 23"></canvas>
+<p><strong>Punto 4.</strong> Si el falso positivo es carísimo, el panel 2: tiene
+TFP 0 y, entre los que no alarman en falso, el mayor TVP (0,6). El panel 1 no tiene
+ninguna ventaja sobre el 2: mismo TFP, menos TVP. Si lo carísimo es el falso
+negativo, el panel 4: TVP 1,0 al precio de TFP 0,6 — el caso del examen de VIH de
+la sección 4.</p>
+<p class="err"><strong>Error típico:</strong> dividir FP por P (3/10 = 0,3 en el panel
+4) o por el total (3/15 = 0,2). El TFP divide por los <em>negativos reales</em>:
+3/5 = 0,6. Y olvidar (0, 0) y (1, 1), que no son paneles pero sí son puntos de toda
+curva ROC (umbral que no declara nada y umbral que declara todo).</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 23]
+para los pares; conteos VP/FP sobre la figura de la lámina 22 [INFERENCIA].</p>
+</details>
+
+<!-- ======================================================= 4 -->
+<h2 id="p9">4 · La distinción del certamen: punto de operación ≠ modelo</h2>
+
+<div class="dist">
+<strong>Distinción de certamen (P9).</strong> Comparar un <strong>punto de
+operación</strong> ≠ comparar un <strong>modelo</strong>. Un modelo es la curva
+entera; cada umbral es un punto de ella. «En el umbral tal, el Modelo 1 acierta
+más» no demuestra que el Modelo 1 sea mejor. Ficha completa en
+<a href="certamen_2.html#p9">certamen_2.html#p9</a> (en Canvas figura como
+«Pregunta 8»). [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, P9]
+</div>
+
+<p>El enunciado real del certamen:</p>
+
+<div class="clave">
+<em>«Calcule la razón de verdaderos positivos (TPR) y razón de falsos positivos
+(FPR) para los siguientes dos modelos utilizando los distintos umbrales de
+discriminación mostrados a continuación (línea verde para clasificar entre círculos
+y triángulos) […] ¿Qué modelo considera mejor y por qué?»</em>
+<p class="fuente">[FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/fuentes/Historial de exámenes para Cristobal Ramon Herrera Jara_ Certamen 2.html]</p>
+</div>
+
+<p>En ese enunciado, «modelo» es la curva (Modelo 1 y Modelo 2) y «umbral» es cada
+punto. Pero en clase la palabra se usó de otra manera, y conviene saberlo antes de
+la prueba:</p>
+
+<div class="cita">«[…] entonces acá yo diría cuál de los dos modelos está mejor bueno claramente el de la derecha porque la tasa de verdadero positivo es más alta que el de la izquierda y la tasa de falsos positivos se mantuvo igual» <span class="f">Clase del 7-ago · 1:07:16–1:07:45 · profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="peligro">
+<strong>Advertencia.</strong> Ahí el profesor compara el panel 1 (0; 0,3) con el
+panel 2 (0; 0,6) de la lámina 23 y los llama «dos modelos», pero son <strong>dos
+umbrales de un mismo modelo</strong>. La lámina 22 usa el mismo vocabulario:
+«Considere los modelos a continuación, donde el modelo puede variar de acuerdo a
+un hiperparámetro, por ejemplo, un umbral de clasificación»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 22].<br><br>
+Su conclusión es correcta <em>como elección de punto de operación</em>: mismo TFP,
+más TVP, el panel 2 es mejor punto. Lo que la P9 castiga es trasladar eso a dos
+modelos distintos: tomar <em>un</em> punto del Modelo 1 y <em>un</em> punto del
+Modelo 2 y declarar un ganador. <strong>En tu respuesta escrita, reserva «modelo»
+para la curva y di «umbral» o «punto de operación» para cada panel.</strong>
+</div>
+
+<p>La misma confusión apareció durante el certamen, y la respuesta del profesor
+separa las dos cosas:</p>
+
+<div class="cita">«el mejor modelo, o sea el mejor umbral por modelo […] Básicamente tiene un parámetro de sensibilidad tiene dos modelos y tiene un parámetro de sensibilidad que te mueve el umbral.» <span class="f">Sesión del Certamen 2, 28-ago · 1:19:59–1:20:34 · pregunta un compañero; responde el profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Dos modelos; un parámetro que mueve el umbral dentro de cada uno. Y cuando en
+clase sí compara dos modelos distintos, compara <strong>curvas</strong>:</p>
+
+<div class="cita">«[…] yo podría usar otro modelo que esta curva ⟨ROC⟩ se ve ir algo como así qué modelo preferiría el naranjo o el rojo el rojo cierto porque está más cerca del uno […]» ⟨⟩ = corrección de transcripción [INFERENCIA] <span class="f">Clase del 7-ago · 1:10:33–1:10:53 · profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<h3>Dominancia o cruce: los dos casos posibles</h3>
+
+<table>
+<tr><th>Caso</th><th>Cómo se ve</th><th>Qué concluyes</th></tr>
+<tr><td><strong>Una curva domina</strong></td><td>A igual TFP, una tiene TVP mayor o igual <em>en todo el rango</em>: queda siempre por encima, más cerca de la esquina (0, 1)</td><td>Es mejor sin ambigüedad. No importa dónde vayas a operar ni cuánto cueste cada error</td></tr>
+<tr><td><strong>Las curvas se cruzan</strong></td><td>En un tramo de TFP gana una; en otro, la otra</td><td>No hay ganador absoluto. <strong>Depende del punto de operación</strong>, o sea, de cuánto cuesta cada error en el problema</td></tr>
+</table>
+
+<p>Y el costo de cada error lo trae el problema, no la curva. El ejemplo que
+propuso un compañero en clase, y que el profesor validó:</p>
+
+<div class="cita">«imagínate que tiene algún examen de alguna enfermedad muy grave como puede ser el VIH entonces tú lo que dice es no me quiero perder ninguno […] prefiero que alguien diagnosticar equivocadamente para que alguien se vaya a hacer un segundo examen» <span class="f">Clase del 7-ago · 1:13:01–1:13:18 · profesor, respondiendo a un compañero · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Un examen de tamizaje opera arriba en la curva (TVP alto, aunque suba el TFP)
+porque el falso positivo se corrige con un segundo examen y el falso negativo no.
+Si dos modelos se cruzan, <em>esa</em> es la información que decide entre ellos.</p>
+
+<h3>Ejercicio estilo certamen</h3>
+
+<div class="clave">
+<strong>(a)</strong> El Modelo X tiene los puntos de la lámina 23: (0; 0,3), (0; 0,6),
+(0,2; 0,8), (0,6; 1,0). El Modelo Y [DATITO] (cifras ilustrativas, no son las del
+certamen): (0; 0,2), (0,2; 0,5), (0,4; 0,8), (0,8; 1,0). ¿Cuál es mejor y por qué?<br><br>
+<strong>(b)</strong> [DATITO] Modelo A: (0; 0,5), (0,1; 0,6), (0,3; 0,7), (0,6; 0,8).
+Modelo B: (0; 0,1), (0,1; 0,3), (0,3; 0,75), (0,6; 0,95). Agrega (0, 0) y (1, 1) a
+ambos. ¿Cuál es mejor? Si solo toleras 10 % de falsas alarmas, ¿cuál eliges? ¿Y si
+toleras 50 %?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve · (a)</summary>
+<p class="r1">(a) El Modelo X es mejor, porque su curva domina a la de Y: a igual TFP
+nunca tiene menos TVP.</p>
+<p>Compara a igual TFP (misma vertical), interpolando en línea recta entre puntos:</p>
+<table style="max-width:560px">
+<tr><th>TFP</th><th>TVP de X</th><th>TVP de Y</th></tr>
+<tr><td class="num">0,0</td><td class="num">0,6</td><td class="num">0,2</td></tr>
+<tr><td class="num">0,2</td><td class="num">0,8</td><td class="num">0,5</td></tr>
+<tr><td class="num">0,4</td><td class="num">0,9</td><td class="num">0,8</td></tr>
+<tr><td class="num">0,6</td><td class="num">1,0</td><td class="num">0,9</td></tr>
+<tr><td class="num">0,8</td><td class="num">1,0</td><td class="num">1,0</td></tr>
+</table>
+<p>X nunca queda por debajo de Y: <strong>X domina</strong>. Es mejor sea cual sea el
+punto de operación, y la respuesta no necesita ningún AUC. (Si te lo piden: X da
+0,900 e Y 0,760 por trapecios; el número confirma, no decide.)</p>
+<p class="err"><strong>Error típico:</strong> comparar solo el «tercer punto» de cada
+uno —X (0,2; 0,8) contra Y (0,4; 0,8)— y decir «empatan en TVP». Están en TFP
+distintos: hay que comparar en la misma vertical.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 23]
+para X; Y es [DATITO]; método de comparación en [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7].</p>
+</details>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve · (b)</summary>
+<p class="r1">(b) Ninguno es mejor en absoluto: las curvas se cruzan y tienen el mismo
+AUC (0,770); con 10 % de falsas alarmas tolerables eliges A, con 50 % eliges B.</p>
+<p>A TFP 0,1: A tiene 0,6 y B 0,3 → gana A. A TFP 0,3: A tiene 0,7 y B 0,75 → gana
+B. A TFP 0,5: A ≈ 0,77 y B ≈ 0,88 → gana B. Se cruzan cerca de TFP ≈ 0,27 (TVP ≈ 0,69).</p>
+<p>Áreas por trapecios, (ancho) × (promedio de alturas):</p>
+<ul>
+<li>A: 0,1·0,55 + 0,2·0,65 + 0,3·0,75 + 0,4·0,90 = 0,055 + 0,130 + 0,225 + 0,360 = <strong>0,770</strong></li>
+<li>B: 0,1·0,20 + 0,2·0,525 + 0,3·0,85 + 0,4·0,975 = 0,020 + 0,105 + 0,255 + 0,390 = <strong>0,770</strong></li>
+</ul>
+<p><strong>Mismo AUC, curvas distintas.</strong> No hay ganador absoluto: con 10 % de
+falsas alarmas tolerables eliges A (detecta el doble); con 50 % eliges B. La
+respuesta de certamen es: «se cruzan; depende del punto de operación; declaro qué
+error cuesta más y elijo».</p>
+<p class="err"><strong>Error típico:</strong> decidir por el AUC («el de mayor AUC es
+mejor») o por un solo punto («A tiene TVP 0,5 con TFP 0, así que A es mejor»). Aquí
+el AUC empata y cada punto solo habla de su tramo.</p>
+<p class="fuente">[DATITO] cifras ilustrativas; criterio de cruce en
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7].</p>
+</details>
+
+<p>Compruébalo moviendo el máximo de falsas alarmas que toleras:</p>
+
+<div class="panel">
+  <canvas id="cCruce" class="cuad" width="460" height="440" aria-label="Dos curvas ROC que se cruzan"></canvas>
+  <div class="ctl">
+    <label for="sF">TFP que toleras (punto de operación) <span class="v" id="vF">0,10</span></label>
+    <input type="range" id="sF" min="0" max="1" step="0.01" value="0.1">
+  </div>
+  <p class="lectura" id="gan"></p>
+</div>
+
+<!-- ======================================================= 5 -->
+<h2 id="auc">5 · El AUC: el área bajo la curva</h2>
+
+<div class="nota">
+<strong>Qué dice el material oficial, y qué no.</strong> La lámina 24 trae unos
+ejes ROC vacíos con una recta diagonal de (0, 0) a (1, 1)
+[FUENTE · Repo: 11_PRESENTACIÓN/FCD-2026-2_07_Clasificacion.pdf · lámina 24]
+(figura verificada sobre la imagen extraída del PDF); el resumen híbrido anota que
+el profesor no la comenta
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md · l.699].
+El texto de las láminas FCD-07 no nombra el AUC. Y <strong>en las 14
+transcripciones disponibles al 2026-09-21 el profesor no define el AUC</strong>:
+«área bajo la curva» solo aparece en presentaciones de grupos de compañeros el 4-sep
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 0:46:59],
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:25:15],
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:43:15].
+Aun así el Certamen 2 lo usa: la P4 lista «Área bajo la curva ROC» entre las
+medidas para evaluar un clasificador (<a href="certamen_2.html#p4">certamen_2.html#p4</a>).
+Por eso lo que sigue sobre el AUC va rotulado [DATITO]: es la definición estándar,
+apoyada en los ejes de la lámina 24.
+</div>
+
+<p>[DATITO] El <strong>AUC</strong> (<em>area under the curve</em>) es el área bajo
+la curva ROC. Resume la curva entera en un número entre 0 y 1:</p>
+
+<table>
+<tr><th>AUC</th><th>Cómo se ve la curva</th><th>Qué significa</th></tr>
+<tr><td class="num">1,0</td><td>Pasa por la esquina (0, 1)</td><td>Existe un umbral que separa perfecto: todos los positivos por encima de todos los negativos</td></tr>
+<tr><td class="num">0,5</td><td>Sobre la diagonal de la lámina 24</td><td>Azar: el puntaje no distingue. Declarar positivo al azar con probabilidad p cae en (p, p)</td></tr>
+<tr><td class="num">&lt; 0,5</td><td>Bajo la diagonal</td><td>Peor que el azar: invirtiendo la regla sale uno mejor</td></tr>
+</table>
+
+<div class="ecu">
+  <div class="f">AUC ≈ Σ (TFP<sub>i+1</sub> − TFP<sub>i</sub>) · (TVP<sub>i</sub> + TVP<sub>i+1</sub>) / 2</div>
+  <table class="simb">
+  <tr><td>TFP<sub>i+1</sub> − TFP<sub>i</sub></td><td>El ancho de cada tramo, de un punto al siguiente <span class="rol r-cuenta">se lee de la curva</span></td></tr>
+  <tr><td>(TVP<sub>i</sub> + TVP<sub>i+1</sub>)/2</td><td>La altura media del tramo: por eso es un trapecio</td></tr>
+  <tr><td>Σ</td><td>Suma sobre todos los tramos, desde (0, 0) hasta (1, 1)</td></tr>
+  </table>
+  <p style="font-size:.9rem;margin:.7rem 0 0">[DATITO] Un tramo vertical (mismo TFP)
+  tiene ancho cero y no aporta área. Olvidar agregar (0, 0) y (1, 1) es el error de
+  cálculo más común.</p>
+</div>
+
+<div class="clave">
+<strong>Ejercicio de cálculo.</strong> Calcula por trapecios el AUC de la curva de la
+lámina 23: (0; 0), (0; 0,3), (0; 0,6), (0,2; 0,8), (0,6; 1,0), (1; 1).
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">El AUC de la curva de la lámina 23 es 0,900.</p>
+<table style="max-width:560px">
+<tr><th>Tramo de TFP</th><th>Ancho</th><th>Altura media</th><th>Área</th></tr>
+<tr><td>0 → 0 (vertical)</td><td class="num">0</td><td class="num">—</td><td class="num">0</td></tr>
+<tr><td>0 → 0,2</td><td class="num">0,2</td><td class="num">(0,6 + 0,8)/2 = 0,70</td><td class="num">0,140</td></tr>
+<tr><td>0,2 → 0,6</td><td class="num">0,4</td><td class="num">(0,8 + 1,0)/2 = 0,90</td><td class="num">0,360</td></tr>
+<tr><td>0,6 → 1,0</td><td class="num">0,4</td><td class="num">1,00</td><td class="num">0,400</td></tr>
+<tr><td colspan="3"><strong>AUC</strong></td><td class="num"><strong>0,900</strong></td></tr>
+</table>
+<canvas id="cTrap" class="cuad" width="460" height="440" aria-label="Los tres trapecios bajo la curva de la lámina 23"></canvas>
+<p>Coincide con el 0,900 de <a href="certamen_2.html#p9">certamen_2.html#p9</a>. Esa
+misma ficha documenta que las cifras «AUC ≈ 0,78 y ≈ 0,68» de la respuesta
+reconstruida no se derivan de estos puntos. Y la tabla «bajo / medio / alto» con
+pares como 0,95/0,34 de
+<code>01_DOCUMENTACION/01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md</code> tampoco sale de
+la lámina 23 [FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/03_DEFENSA_ORAL_CERTAMEN.md].
+Si citas un AUC en un oral, que sea este y di de dónde sale.</p>
+<p class="err"><strong>Error típico:</strong> partir en (0; 0,3) sin agregar (0, 0) y
+(1, 1), lo que deja fuera el último trapecio (0,400) y da 0,500; o asignarle área al
+tramo vertical en TFP = 0.</p>
+<p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 23]
+para los puntos; método de trapecios [DATITO].</p>
+</details>
+
+<h3>El camino inverso: qué significa el área</h3>
+
+<p>[DATITO] El AUC tiene una lectura que no parece un área: es la
+<strong>probabilidad de que un positivo tomado al azar reciba mayor puntaje que un
+negativo tomado al azar</strong>. Mide si el modelo <em>ordena</em> bien, no si
+corta bien.</p>
+
+<div class="clave">
+<strong>Ejercicio de interpretación.</strong> Vuelve a los 5 perros y 5 gatos de la
+sección 1. (a) De los 25 pares perro–gato posibles, ¿en cuántos el perro tiene mayor
+puntaje? (b) Dibuja la ROC completa —un escalón por caso, de mayor a menor puntaje—
+y calcula su área. (c) Compara los dos números y di en una frase qué mide el AUC.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">En 22 de los 25 pares el perro tiene mayor puntaje (0,88), y el área bajo
+la ROC también da 0,88: el AUC es la fracción de pares positivo–negativo que el
+modelo ordena bien.</p>
+<p>(a) El perro de 0,95 le gana a los 5 gatos; el de 0,85, a 5; el de 0,70, a 5; el
+de 0,55, a 4 (pierde con el gato de 0,60); el de 0,40, a 3. Total 22 de 25 =
+<strong>0,88</strong>.</p>
+<p>(b) Ordenados de mayor a menor: P P P N P N P N N N. Cada P sube 0,2; cada N
+avanza 0,2 a la derecha. Puntos: (0; 0) → (0; 0,6) → (0,2; 0,6) → (0,2; 0,8) →
+(0,4; 0,8) → (0,4; 1) → (1; 1). Área: 0,2·0,6 + 0,2·0,8 + 0,6·1 =
+0,12 + 0,16 + 0,60 = <strong>0,88</strong>.</p>
+<p>(c) Son el mismo número. El AUC dice qué fracción de los pares
+positivo–negativo el modelo deja en el orden correcto. No dice nada de dónde
+cortar.</p>
+<p class="err"><strong>Error típico:</strong> leer AUC 0,88 como «acierta el 88 % de
+los casos». Eso sería una exactitud, y la exactitud depende del umbral: con umbral
+0,50 este mismo modelo acierta 8 de 10 (80 %), no 88 %.</p>
+<p class="fuente">[DATITO] cifras ilustrativas de la sección 1; la equivalencia
+área = pares bien ordenados es la definición estándar [DATITO].</p>
+</details>
+
+<h3>Lo que el AUC no dice</h3>
+
+<ul>
+  <li><strong>No fija el umbral.</strong> Un AUC de 0,90 no te dice en qué punto
+  operar ni qué TVP vas a tener. Eso sigue siendo una decisión de costos.</li>
+  <li><strong>Dos curvas que se cruzan pueden tener el mismo AUC.</strong> A y B de
+  la sección 4 dan 0,770 las dos, y en la zona de pocas falsas alarmas A detecta el
+  doble.</li>
+  <li><strong>No mira la prevalencia ni los costos.</strong> TVP y TFP se calculan
+  dentro de cada clase real; la precisión que vas a ver en producción, no (sección 6).</li>
+  <li><strong>No es una exactitud.</strong> La exactitud se calcula a <em>un</em>
+  umbral; el AUC, sobre todos. Pueden contar historias distintas.</li>
+</ul>
+
+<div class="clave">
+<strong>Ejercicio de interpretación, ligado a tu pregunta diagnóstica.</strong> ¿Puede
+un modelo tener AUC alto y, al mismo tiempo, exactitud baja? Si crees que sí,
+constrúyelo con 4 casos (2 positivos, 2 negativos) y puntajes inventados; si crees
+que no, demuéstralo. Después di qué mide cada número que el otro no mide.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">Sí, es posible: el AUC mide si el modelo ordena bien a los positivos
+por encima de los negativos en todos los umbrales, y la exactitud mide cuántos casos
+acierta en un solo umbral; un buen orden con el corte mal puesto da AUC alto y
+exactitud baja.</p>
+<ol class="pasos">
+  <li>Ejemplo [DATITO]: positivos con puntajes 0,40 y 0,35; negativos con 0,30 y 0,20.</li>
+  <li>AUC por pares: los 4 pares positivo–negativo quedan bien ordenados (0,40 &gt;
+  0,30; 0,40 &gt; 0,20; 0,35 &gt; 0,30; 0,35 &gt; 0,20) → AUC = 4/4 = <strong>1,0</strong>.</li>
+  <li>Exactitud con umbral 0,5 (positivo si puntaje ≥ 0,5): nadie llega a 0,5, así
+  que todos quedan como negativos. VP = 0, FN = 2, FP = 0, VN = 2 → exactitud =
+  2/4 = <strong>50 %</strong>.</li>
+  <li>Sin tocar el modelo, bajando el umbral a 0,32: VP = 2, VN = 2 → exactitud
+  100 %. El orden ya era perfecto; lo malo era el corte.</li>
+  <li>Qué mide cada uno que el otro no: el AUC ignora el umbral y la proporción de
+  clases; la exactitud depende de los dos y no mira el orden.</li>
+</ol>
+<p class="err"><strong>Error típico:</strong> tratar el AUC como «otra exactitud» y
+creer que un AUC alto obliga a una exactitud alta. Es el error registrado como
+<code>auc_confundido_con_accuracy</code>.</p>
+<p><strong>Criterios para revisar tu versión:</strong> distingue ordenar de cortar;
+calcula el AUC contando pares; fija el umbral y la convención antes de contar la
+exactitud; dice qué cambiar para mejorar la exactitud sin reentrenar. Puedes probarlo
+en el <a href="#simulador">simulador de la sección 2</a>: separación 3,6 y umbral 0
+dan AUC cercano a 1 con exactitud 25 %. Llévale tu respuesta a Datito.</p>
+<p class="fuente">[DATITO] ejemplo ilustrativo;
+[FUENTE · Repo: 07_DATITO/errores_conceptuales.yaml · auc_confundido_con_accuracy].</p>
+</details>
+
+<!-- ======================================================= 6 -->
+<h2 id="prevalencia">6 · FPR ≠ 1 − precisión, y del punto de la ROC a personas reales</h2>
+
+<p>Mismo numerador, otro universo. TFP divide FP por los <strong>negativos
+reales</strong> (FP + VN); la precisión divide VP por los <strong>declarados
+positivos</strong> (VP + FP). El detalle, con el caso del Certamen 2, está en
+<a href="metricas_clasificacion.html#fpr">metricas_clasificacion.html</a> y en la
+ficha <a href="certamen_2.html#p8">certamen_2.html#p8</a>.</p>
+
+<p>La consecuencia para la ROC: <strong>la curva no muestra la precisión</strong>.
+TVP y TFP se calculan dentro de cada clase real, así que no cambian si la
+enfermedad se vuelve más rara. La precisión mezcla las dos clases, y sí cambia.
+Para pasar de un punto de la curva a personas reales necesitas P y N. El profesor
+hizo justo ese paso el 4-sep:</p>
+
+<div class="cita">«digamos que esa flechita esté una tasa de verdaderos positivos de 1 y una tasa de falso positivos de 0,2 […] entonces de los 100 pacientes 36 el modelo le va a decir que tiene cáncer aun cuando en realidad sólo 20 tiene cáncer» <span class="f">Clase del 4-sep · 1:35:29–1:45:18 · profesor · [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="ecu">
+  <div class="f">VP = TVP · P = 1 · 20 = 20 &nbsp;·&nbsp; FP = TFP · N = 0,2 · 80 = 16</div>
+  <p style="margin:0">Declarados positivos: 20 + 16 = <strong>36</strong>, como dice el
+  profesor (la aritmética lo confirma). Precisión = 20/36 = <strong>55,6 %</strong>;
+  1 − precisión = 44,4 %, <strong>no</strong> el 20 % del TFP. El ejercicio completo,
+  con la matriz y las preguntas que hizo en clase, está en
+  <a href="matriz_confusion.html">matriz_confusion.html</a>.</p>
+</div>
+
+<div class="clave">
+<strong>Ejercicio de cálculo.</strong> El mismo modelo, operando en el mismo punto
+(TFP 0,2; TVP 1), se aplica ahora a 1.000 personas de las cuales 10 tienen la
+enfermedad [DATITO]. ¿Cuántas alarmas da? ¿Qué precisión tiene? ¿Se movió el punto
+en la ROC?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">Da 208 alarmas con precisión de 4,8 %, y el punto en la ROC no se
+movió: sigue en (0,2; 1).</p>
+<p>P = 10 y N = 990. VP = 1 · 10 = 10; FP = 0,2 · 990 = 198. Alarmas = 208.
+Precisión = 10/208 = <strong>4,8 %</strong>: de cada 100 alarmas, 95 son falsas.</p>
+<p>El punto en la ROC <strong>no se movió</strong>: sigue siendo (0,2; 1). Lo que
+cambió es el mundo (la prevalencia), y la precisión lo siente; TVP y TFP, no. Por
+eso una ROC buena no garantiza pocas falsas alarmas en un problema raro.</p>
+<p class="err"><strong>Error típico:</strong> calcular FP = 0,2 · 1.000 (sobre el
+total) en vez de 0,2 · 990 (sobre los negativos reales), o suponer que la precisión
+es 1 − TFP = 80 %.</p>
+<p class="fuente">[DATITO] cifras ilustrativas; el mismo paso de la ROC a conteos lo
+hizo el profesor con 20/80
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:34].</p>
+</details>
+
+<!-- ======================================================= 7 -->
+<h2 id="transferencia">7 · Aplicar y transferir</h2>
+
+<h3>Otro dominio: fallas en camiones de extracción [DATITO]</h3>
+
+<p>Una faena minera tiene un modelo que avisa cuándo un camión de extracción va a
+fallar. Cifras ilustrativas: en un periodo hay 1.050 revisiones, de las cuales
+<strong>50</strong> terminan en falla real (P = 50, N = 1.000). La curva ROC del
+modelo ofrece, entre otros, estos dos puntos de operación:</p>
+
+<table style="max-width:560px">
+<tr><th>Punto</th><th>TFP</th><th>TVP</th></tr>
+<tr><td>Exigente</td><td class="num">0,05</td><td class="num">0,70</td></tr>
+<tr><td>Permisivo</td><td class="num">0,20</td><td class="num">0,94</td></tr>
+</table>
+
+<div class="clave">
+<strong>Ejercicio de transferencia.</strong> Una falla no detectada cuesta 20
+(millones de pesos: camión detenido y reparación mayor); una alarma falsa cuesta 1
+(inspección y dos horas de detención). (a) Calcula FN y FP de cada punto y su costo
+total. ¿Cuál eliges? (b) Repite si la alarma falsa costara 3. (c) ¿Cambió el AUC
+del modelo entre (a) y (b)?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">(a) El punto permisivo (costo 260 contra 350); (b) con alarma falsa a 3
+conviene el exigente (450 contra 660); (c) el AUC no cambia: solo cambia qué punto
+de la misma curva conviene.</p>
+<p><strong>(a)</strong> Exigente: VP = 0,70 · 50 = 35 → FN = 15; FP = 0,05 · 1.000 = 50.
+Costo = 15 · 20 + 50 · 1 = 300 + 50 = <strong>350</strong>. Permisivo: VP = 47 → FN = 3;
+FP = 200. Costo = 60 + 200 = <strong>260</strong>. Eliges el permisivo.</p>
+<p><strong>(b)</strong> Exigente: 300 + 150 = <strong>450</strong>. Permisivo: 60 + 600 =
+<strong>660</strong>. Ahora eliges el exigente.</p>
+<p><strong>(c)</strong> No. El modelo y su curva son los mismos; solo cambió cuál
+punto conviene. Eso es el punto de operación: una decisión de costos sobre una
+curva fija.</p>
+<p class="err"><strong>Error típico:</strong> elegir siempre el punto de mayor TVP
+«porque detecta más fallas», o siempre el de menor TFP, sin hacer la cuenta con los
+costos y con P y N. Sin costos no hay punto de operación defendible.</p>
+<p class="fuente">[DATITO] cifras ilustrativas; la idea de «hacer los números» para
+fijar el punto de operación es del profesor
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:21–1:11:32].</p>
+</details>
+
+<h3>Tus datos: Galaxy Zoo</h3>
+
+<p><strong>Qué hay y qué no hay en tu repositorio.</strong> <code>REPORT.md</code>
+<strong>no trae la curva ROC ni el AUC del modelo CatBoost</strong>: esos números no
+existen y no hay que inventarlos. Sí trae dos cosas verificables que son de este
+tema [FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §8.3 y §10]:</p>
+
+<table>
+<tr><th>Variante de la regla de decisión (§10)</th><th>Pesos</th><th>Predichas clase 0</th><th>Recall clase 0</th><th>Precisión clase 0</th></tr>
+<tr><td>A · argmax</td><td>[1; 1; 1]</td><td class="num">82</td><td class="num">0,2604</td><td class="num">0,3049</td></tr>
+<tr><td>B · pesos declarados</td><td>[1,7; 0,9; 0,9]</td><td class="num">157</td><td class="num">0,4688</td><td class="num">0,2866</td></tr>
+</table>
+
+<p>Y de §8.3: el techo de AUC de una sola variable es <strong>0,754 para 0-vs-resto</strong>
+y <strong>0,9041 para 1-vs-2</strong>. La clase 0 tiene 96 de las 1.000 galaxias.</p>
+
+<div class="clave">
+<strong>Ejercicio de aplicación.</strong> Toma clase 0 = positiva (P = 96, N = 904).
+(a) Calcula (TFP, TVP) de A y de B. (b) ¿Son dos modelos? (c) ¿Cuál es mejor?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">A está en (0,063; 0,260) y B en (0,124; 0,469); no son dos modelos sino
+dos puntos de operación del mismo CatBoost, y ninguno domina al otro.</p>
+<p><strong>(a)</strong> A: VP = 0,2604 · 96 = 25; FP = 82 − 25 = 57; TFP = 57/904 =
+<strong>0,063</strong>, TVP = <strong>0,260</strong>. B: VP = 0,4688 · 96 = 45; FP = 157 − 45
+= 112; TFP = 112/904 = <strong>0,124</strong>, TVP = <strong>0,469</strong>. Control: 45/157
+= 0,2866, la precisión del informe.</p>
+<p><strong>(b)</strong> No. Son las mismas probabilidades del mismo CatBoost con dos
+reglas de corte: <strong>dos puntos de operación de una misma curva</strong>. Con
+pesos [1,9; 1; 1] (equivalentes a los de B), se declara clase 0 cuando
+P0 ≥ máx(P1, P2)/1,9: es un umbral sobre P0/máx(P1, P2) que baja de 1 a ≈ 0,53
+[INFERENCIA].</p>
+<p><strong>(c)</strong> Ninguno domina: B detecta más clase 0 a cambio de más
+falsas alarmas. Y hay un dato más fuerte en §10.1: elegido honestamente (pesos
+ajustados solo con los folds de entrenamiento), el F1-macro de la regla con pesos es
+0,6001, <strong>peor</strong> que el 0,6163 del argmax. El 0,6339 reportado tenía un
+sesgo optimista de +0,0338 por elegir el punto de operación sobre los mismos datos
+con que se evaluó.</p>
+<p class="err"><strong>Error típico:</strong> tratar A y B como «dos modelos» y
+declarar mejor a B porque su recall es mayor, sin mirar que su TFP casi se duplica
+(57 → 112 falsas clase 0). Es el error de la P9, en tus propios datos.</p>
+<p class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §10 y §10.1] para las
+cifras; TFP y TVP calculados aquí; la lectura como umbral [INFERENCIA].</p>
+</details>
+
+<p>Eso último es exactamente lo que el profesor le pidió a todos los grupos:</p>
+
+<div class="cita">«y esa es una decisión que hay que considerar como un hiperparámetro entonces se toma sobre un conjunto de ⟨validación⟩ […] lo que uno tiene que seleccionar un punto de operación y eso se selecciona con la curva ⟨ROC⟩» ⟨⟩ = corrección de transcripción [INFERENCIA] <span class="f">Clase del 14-ago · 1:24:44–1:25:03 · profesor, comentando la presentación de un grupo · [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="clave">
+<strong>Ejercicio de interpretación.</strong> Traduce a una frase para tu equipo:
+«techo de AUC marginal univariada: 0,754 para 0-vs-resto, frente a 0,9041 para
+1-vs-2». ¿Qué te dice sobre la clase 0? ¿Qué <em>no</em> te dice?
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">Ninguna variable sola separa bien la clase 0 (la mejor ordena bien cerca
+del 75 % de los pares, contra 90 % para espiral frente a elíptica); no dice nada del
+F1 de la clase 0 ni de cómo rinde el modelo completo.</p>
+<p>[INFERENCIA] Si usas una sola variable como puntaje, la mejor de todas ordena
+correctamente un par (galaxia clase 0, galaxia de otra clase) cerca del 75 % de las
+veces; para separar espirales de elípticas, cerca del 90 %. Ninguna variable
+individual separa bien la clase 0: calza con que sea una frontera («no hubo
+consenso»), no un grupo propio.</p>
+<p>Lo que no dice: el F1 de la clase 0, en qué umbral operar, ni qué lograría el
+modelo completo combinando variables. Es un AUC de variables, no del modelo.</p>
+<p class="err"><strong>Error típico:</strong> citar 0,754 como «el AUC de mi modelo».
+<code>REPORT.md</code> no trae el AUC del modelo; este número es de variables sueltas.</p>
+<p class="fuente">[FUENTE · Repo: 02_PROYECTO_FCD/Desafio/REPORT.md · §8.3 y §14]; lectura
+como probabilidad de ordenar bien un par [DATITO].</p>
+</details>
+
+<p class="fuente">¿Y Melbourne? Es regresión: predice un precio, no hay umbral ni
+ROC que trazar [INFERENCIA]. Solo aparecería si convirtieras el problema en
+clasificación, por ejemplo «¿supera la mediana de 910.000 AUD?».</p>
+
+<!-- ======================================================= 8 -->
+<h2 id="papel">8 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. DECLARAR      clase positiva y qué lado de la línea es «positivo»
+2. CONTAR P y N  son fijos: no cambian entre umbrales
+3. POR UMBRAL    VP y FP → TVP = VP/P · TFP = FP/N   (dos denominadores)
+4. GRAFICAR      (TFP, TVP) de cada umbral + (0,0) + (1,1), en orden
+5. UN MODELO = UNA CURVA     nunca un punto suelto contra otro
+6. COMPARAR      a igual TFP, ¿cuál tiene más TVP? (o umbral a umbral:
+                 ¿uno tiene mayor TVP y menor TFP en todos?)
+7. DOMINA        → mejor sin ambigüedad
+   SE CRUZAN     → depende del punto de operación: di en qué tramo
+                   gana cada uno y qué error cuesta más
+8. AUC           solo como resumen; por trapecios si lo piden
+9. INTERPRETAR   «de cada 10 positivos detecto __; de cada 10
+                 negativos alarmo __»
+</pre>
+<p class="fuente">[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7 «Comparación con ROC»], ampliado con los pasos de cálculo [DATITO].</p>
+
+<div class="peligro">
+<strong>Errores que el formato castiga.</strong>
+<ul style="margin:.4rem 0 0;padding-left:1.2rem">
+  <li><strong>Comparar dos modelos en un solo umbral</strong> —o un punto del Modelo 1
+  contra un punto del Modelo 2— y declarar un ganador.</li>
+  <li><strong>Llamar «modelo» a cada umbral</strong> en la respuesta escrita. En el
+  certamen, modelo = curva.</li>
+  <li><strong>Creer que FPR = 1 − precisión.</strong> Mismo numerador, denominadores
+  de universos distintos.</li>
+  <li><strong>Creer que el AUC fija el umbral</strong>, o que AUC alto garantiza
+  exactitud alta.</li>
+  <li><strong>Dividir el TFP por P</strong> o por el total: su denominador son los
+  negativos reales.</li>
+  <li><strong>Olvidar (0, 0) y (1, 1)</strong> al calcular el AUC, o sumarle área a
+  un tramo vertical.</li>
+  <li><strong>Decir «subo el umbral» sin declarar la convención</strong>.</li>
+  <li><strong>Elegir el punto de operación mirando el test.</strong> Es un
+  hiperparámetro: se elige en validación.</li>
+</ul>
+</div>
+
+<!-- ======================================================= 9 -->
+<div class="repreg">
+<strong>Antes de cerrar: explícaselo a alguien.</strong><br><br>
+Un compañero de tu grupo escribe en el informe: <em>«el Modelo 2 es mejor porque en
+su tercer umbral tiene TPR 0,9 y el Modelo 1, en su tercer umbral, solo 0,8»</em>.<br><br>
+<strong>En cinco líneas, explícale qué le falta a ese argumento, qué tendría que
+mirar, y en qué caso podría tener razón.</strong> Escríbelo tú, sin mirar esta página,
+y llévaselo a Datito.
+</div>
+
+<details class="resp">
+<summary>Respuesta correcta y cómo se resuelve</summary>
+<p class="r1">El argumento no alcanza: compara un solo punto de cada modelo y sin su
+TFP; hay que comparar las curvas completas, y el compañero solo tendría razón si la
+curva del Modelo 2 quedara por encima en todo el rango o si su aplicación opera
+justo en el tramo donde el Modelo 2 gana.</p>
+<p><strong>Respuesta modelo (cinco líneas):</strong></p>
+<p style="font-style:italic">«Un TPR de 0,9 contra 0,8 no compara nada si no sé a
+qué TFP ocurre cada uno: el Modelo 2 podría estar alarmando el doble. Además, un
+modelo no es un umbral, es una curva: el "tercer umbral" de uno no tiene por qué
+corresponder al del otro. Lo que hay que hacer es poner las dos curvas ROC en el
+mismo gráfico y comparar a igual TFP. Si la curva del Modelo 2 queda por encima en
+todo el rango, lo domina y tienes razón sin importar dónde operemos. Si se cruzan,
+depende del punto de operación: tenemos que decir cuánto nos cuesta cada error y
+elegir el modelo que gana en ese tramo.»</p>
+<ol class="pasos">
+  <li>Nota que falta el <strong>TFP</strong> de ambos puntos: un TVP solo no compara nada.</li>
+  <li>Dice que <strong>un modelo es una curva</strong> y que se compara la curva, no un umbral.</li>
+  <li>Distingue <strong>dominancia</strong> (gana en todo el rango) de <strong>cruce</strong> (depende del punto de operación).</li>
+  <li>Si hay cruce, pide el <strong>costo de cada error</strong> para decidir.</li>
+  <li>No usa el AUC como único argumento.</li>
+</ol>
+<p class="err"><strong>Error típico:</strong> «corregirlo» diciendo «mejor comparemos
+el AUC». Con curvas que se cruzan el AUC puede empatar (A y B de la sección 4) y aun
+así uno de los dos es claramente mejor en tu punto de operación.</p>
+<p class="fuente">[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1 P9 y §7];
+redacción de la respuesta modelo [DATITO].</p>
+</details>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="certamen_2.html#p9"><code>certamen_2.html#p9</code></a> — la pregunta
+    real, con la figura verificada y la respuesta defendible en oral</li>
+<li><a href="certamen_2.html#p8"><code>certamen_2.html#p8</code></a> — la matriz de
+    confusión del certamen y la trampa FPR ≠ 1 − precisión</li>
+<li><a href="metricas_clasificacion.html"><code>metricas_clasificacion.html</code></a> —
+    de dónde viene esto: el umbral y los denominadores</li>
+<li><a href="matriz_confusion.html"><code>matriz_confusion.html</code></a> — el
+    ejercicio 20/80 del profesor, completo</li>
+<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — por
+    qué el punto de operación se elige en validación y no en test</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-14">
+<h2>Cierre de la Clase 14 · ROC-AUC y elección del umbral</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El modelo entrega un puntaje; el umbral lo decides tú.</li><li>Cada umbral es un punto; el modelo es la curva completa.</li><li>El AUC resume toda la curva, pero no fija el umbral.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Punto de operación ≠ modelo (C2 P9).</li><li>AUC alto ≠ exactitud alta.</li><li>Subir el umbral baja TPR y FPR a la vez: no van en sentidos opuestos.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Un modelo es una curva, no un punto.</li><li>Compara umbral a umbral: ¿uno tiene mayor TPR y menor FPR en todos?</li><li>Si domina en todos, es mejor sin ambigüedad.</li><li>Si se cruzan, depende del punto de operación.</li></ol>
+<p><b>Viene de:</b> <a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · <b>Sigue:</b> <a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a></p>
+<p><b>Vuelve a tu activación:</b> El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Dos curvas ROC se cruzan. ¿Puedes decir cuál modelo es mejor sin más información?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: depende del punto de operación, es decir, del costo relativo de falsos positivos y negativos. Solo una curva que domina en todos los umbrales es mejor sin ambigüedad. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="arboles_y_ensambles.html#arboles">Continuar → Clase 15 · Árboles de decisión</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/roc_auc.html</code> · funciona sin
+conexión · fuentes: láminas <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md</code>
+(22–24) y su PDF, <code>Resumen_Clase7_Clasificacion.md</code>, transcripciones de las
+clases del 7-ago, 14-ago, 28-ago y 4-sep, <code>07_DATITO/patron_evaluacion.md</code>,
+<code>01_DOCUMENTACION/01_CERTAMEN2/</code> y <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>.<br>
+<strong>Datos reales:</strong> los cuatro pares de la lámina 23 y el conteo 10/5 de su
+figura; el 20/80 del 4-sep; las cifras de Galaxy Zoo (§8.3 y §10 de REPORT.md).
+<strong>Datos ilustrativos [DATITO]:</strong> los 200 puntajes del simulador, los 5
+perros y 5 gatos, los modelos Y, A y B, y el caso minero.
+</footer>
+
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+</body>
+</html>

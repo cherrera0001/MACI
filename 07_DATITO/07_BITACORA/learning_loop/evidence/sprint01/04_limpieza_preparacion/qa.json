@@ -1,0 +1,74 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": null,
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(219, 234, 254)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "mimp",
+      "before": "0",
+      "after": "20"
+    },
+    {
+      "button": "Baja",
+      "clicked": true
+    },
+    {
+      "button": "Casi no se mueve",
+      "clicked": true
+    },
+    {
+      "button": "Sube mucho",
+      "clicked": true
+    },
+    {
+      "button": "Volver al crudo",
+      "clicked": true
+    },
+    {
+      "button": "Menos todavía, o cero",
+      "clicked": true
+    },
+    {
+      "button": "Sigue en cero: metí valores normales",
+      "clicked": true
+    },
+    {
+      "button": "Sube",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

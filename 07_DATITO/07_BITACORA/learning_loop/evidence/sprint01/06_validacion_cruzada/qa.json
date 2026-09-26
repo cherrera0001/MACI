@@ -1,0 +1,105 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": null,
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(209, 250, 229)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "button": "Siempre el mismo",
+      "clicked": true
+    },
+    {
+      "button": "Dos o tres distintos",
+      "clicked": true
+    },
+    {
+      "button": "Cuatro o más distintos",
+      "clicked": true
+    },
+    {
+      "button": "Sortear otra partición",
+      "clicked": true
+    },
+    {
+      "button": "Sortear 10 veces",
+      "clicked": true
+    },
+    {
+      "button": "Reiniciar",
+      "clicked": true
+    },
+    {
+      "button": "Correr K-Fold (k = 4)",
+      "clicked": true
+    },
+    {
+      "button": "Exactamente en la media de validación",
+      "clicked": true
+    },
+    {
+      "button": "Dentro de la nube de errores de validación",
+      "clicked": true
+    },
+    {
+      "button": "Por debajo de todos: el modelo final ya está listo",
+      "clicked": true
+    },
+    {
+      "button": "Remuestrear (nueva nube)",
+      "clicked": true
+    },
+    {
+      "button": "Evaluar el test · representativo",
+      "clicked": true
+    },
+    {
+      "button": "Evaluar el test · no representativo",
+      "clicked": true
+    },
+    {
+      "button": "−120: más negativo, mejor",
+      "clicked": true
+    },
+    {
+      "button": "−45: más cercano a cero, mejor",
+      "clicked": true
+    },
+    {
+      "button": "Da lo mismo: es el mismo error con otro signo",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

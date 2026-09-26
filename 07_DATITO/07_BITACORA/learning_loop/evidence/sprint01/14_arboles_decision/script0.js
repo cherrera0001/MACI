@@ -1,0 +1,1 @@
+(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();

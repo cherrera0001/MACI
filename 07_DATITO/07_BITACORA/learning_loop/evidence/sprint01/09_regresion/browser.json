@@ -1,0 +1,57 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\09_regresion.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider m no cambia texto o gráfico",
+    "1280px: El slider b no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Regresión, función de costo y R² · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 0,
+        ".dist": 0,
+        ".vecino": 1,
+        ".pred": 1,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 1
+      },
+      "failures": [
+        "El slider m no cambia texto o gráfico",
+        "El slider b no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "m",
+          "before": "1.2",
+          "after": "6",
+          "resultChanged": false
+        },
+        {
+          "id": "b",
+          "before": "20",
+          "after": "100",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Regresión, función de costo y R² · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 0,
+        ".dist": 0,
+        ".vecino": 1,
+        ".pred": 1,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 1
+      },
+      "failures": []
+    }
+  ]
+}

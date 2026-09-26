@@ -1,0 +1,51 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\10_clasificacion.html",
+  "ok": true,
+  "failures": [],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Clasificación · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 12,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 2,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 0
+      },
+      "failures": [],
+      "ranges": [
+        {
+          "id": "sAng",
+          "before": "35",
+          "after": "89",
+          "resultChanged": true
+        },
+        {
+          "id": "sB",
+          "before": "0.55",
+          "after": "1.6",
+          "resultChanged": true
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Clasificación · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 12,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 2,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 0
+      },
+      "failures": []
+    }
+  ]
+}

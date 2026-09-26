@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="10" id="clase-10">
+<div class="leccion-top"><span class="uni">Unidad 3 · Medir si el modelo sirve</span><b>Clase 10 de 22</b></div>
+<div class="barra"><span style="width:45.5%"></span></div>
+<div class="lt">Clase 10 · Overfitting y underfitting</div>
+<p><b>Objetivo.</b> Diagnosticar sobreajuste y subajuste calculando la brecha, y proponer remedios del curso.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
+<div><span class="et">habilita</span><a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a></div>
+<div><span class="et">tiempo estimado</span>~35 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Clasifica tres modelos con la brecha, nombra el mecanismo y propone un remedio coherente.</li>
+<li><b>Actividad final:</b> La tabla A/B/C en el formato del profesor, y la versión con MAE.</li>
+<li><b>Criterio de dominio:</b> Calcula la brecha antes de etiquetar y lee bien una métrica de error, donde menos es mejor.</li></ul></div>
+<div class="activ"><b>Activación.</b> El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="10"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="generalizacion.html">← Clase 9 · Generalización, extrapolación y datos no vistos</a></span><a href="index.html">Índice del curso</a><span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Overfitting y underfitting</b></span> · <span class="et">viene de</span><a href="generalizacion.html">Generalizacion</a>, <a href="validacion_cruzada.html">Validacion cruzada</a> · <span class="et">habilita</span><a href="arboles_y_ensambles.html#arboles">Arboles de decision</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 8 · peso en certamen alta (C2: P2, P3, P7 — 3 preguntas) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p3">C2 P3</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
+<details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:36:16–0:43:37 · profesor — complejidad = numero de parametros; el balance<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 31-jul</b> · 0:47:10–0:50:35 · profesor — error 0 con grado alto; sobreajustar la validacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:47:10]</span></li><li><b>Clase del 7-ago</b> · 1:03:03–1:03:51 · profesor — sobreajuste en clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:03:03]</span></li><li><b>Clase del 7-ago</b> · 1:28:08–1:28:43 · profesor — arboles: parar antes de sobreajustar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:08]</span></li><li><b>Ayudantía del 31-jul</b> · 1:15:44–1:23:15 · ayudantía — grados 4, 7, 10 y 13 del P4 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:15:44]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+
+<h1>Sobreajuste y subajuste</h1>
+<p class="sub">Overfitting y underfitting: cuándo un modelo memorizó y cuándo no alcanzó a aprender.<br>
+Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul (regresión) y Clase del 7-ago (clasificación)</p>
+
+<div class="grafo">
+  <span class="n">Generalización</span> +
+  <span class="n">Validación cruzada</span> →
+  <span class="n aqui">Overfitting y underfitting</span> →
+  <span class="n">Árboles de decisión</span> →
+  <span class="n">…y 7 conceptos más por cadena</span>
+</div>
+
+<div class="tension">
+<strong>Dónde estás, y por qué este va primero.</strong>
+Viene de <a href="generalizacion.html">generalización</a> y de
+<a href="validacion_cruzada.html">validación cruzada</a>, y habilita los árboles de
+decisión (y por cadena random forest, boosting, ensambles, redes, LLM y agentes).<br><br>
+Es el concepto con <strong>más peso del Certamen 2</strong>: la P2 (V/F de
+sobreajuste), la P3 (afirmaciones sobre sobreajuste) y la P7 (regresión polinomial)
+suman <strong>2,0 de los 7 puntos</strong>
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §5].<br><br>
+Y tienes un error abierto que conviene nombrar desde ya: ante la tabla
+<code>A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39</code> asignaste los diagnósticos a las
+filas equivocadas <strong>sin calcular las brechas</strong>
+[FUENTE · Repo: 07_DATITO/errores_conceptuales.yaml · diagnostica_sin_calcular_la_brecha].
+No es un problema de concepto: es un paso del procedimiento que te saltaste. Aquí se
+entrena ese paso.
+</div>
+
+<h2>1 · La situación: el árbol que no quieres cortar</h2>
+
+<p>El ejemplo es de tu profesor. Quiere saber cuánto pesa un árbol <em>sin
+cortarlo</em>, midiendo solo el radio del tronco. Tiene árboles ya cortados, ajusta
+una recta… y luego se pregunta por qué no una parábola, y por qué no una cúbica. Cada
+vez el error sobre esos datos baja. Y ahí dice:</p>
+
+<div class="cita">«por qué entonces no un modelo cúbico. […] estamos complejizando el
+modelo. La complejidad del modelo tiene relación con el número de parámetros que
+tiene el modelo. Un modelo con menos parámetros es más simple.»
+<span class="f">Clase del 31-jul · 0:37:06–0:37:35 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<p>En la lámina que acompaña ese tramo se ven los mismos datos con tres polinomios:
+<strong>grado 1</strong>, una recta que deja muchos puntos lejos; <strong>grado 2</strong>,
+una parábola que sigue la forma; <strong>grado 10</strong>, una curva con oscilaciones
+violentas que pasa muy cerca de casi todos los puntos
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 11, §6.5.4 (describe la slide 22 oficial)].
+Luego pregunta cuál es mejor, y resuelve:</p>
+
+<div class="cita">«a medida que se complejiza el modelo tiende a sobreajustarse más. […] el
+modelo muy simple no va a ser capaz de predecir bien, […] hay un balance entre tener
+un modelo muy complejo y un modelo muy simple.»
+<span class="f">Clase del 31-jul · 0:43:01–0:43:28 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md]</span></div>
+
+<div class="clave">
+<strong>La pregunta que este concepto responde:</strong> <em>¿este modelo aprendió la
+tendencia, o memorizó estos datos en particular?</em><br><br>
+<strong>Sobreajuste</strong> = el modelo le va muy bien con los datos con que aprendió
+y mal con datos que no vio: memorizó, incluido el ruido.<br>
+<strong>Subajuste</strong> = el modelo es tan simple que le va mal <em>en los dos</em>:
+no alcanza ni a describir los datos que ya tenía.<br>
+Entre ambos hay un <strong>balance</strong>, y la complejidad se mide en número de
+parámetros.
+</div>
+
+<h2>2 · Pruébalo: la curva de complejidad</h2>
+
+<p>Abajo hay pinos inventados: la altura de cada uno según su edad. <strong>Son cifras
+ilustrativas [DATITO]</strong>, generadas con semilla fija para que siempre salgan
+iguales. 13 pinos sirven para <strong>entrenar</strong> (ajustar los θ) y otros 12,
+que el modelo nunca ve al ajustar, sirven para <strong>validar</strong>. El
+deslizador cambia el grado del polinomio: más grado, más parámetros, más
+complejidad.</p>
+
+<div class="pred" data-p="curva">
+  <div class="q">Antes de mover el deslizador, predice: al subir el grado de 1 a 12,
+  ¿qué le pasa al error de entrenamiento? ¿y al de validación?</div>
+  <button data-r="ambos">Los dos bajan siempre</button>
+  <button data-r="u">Entrenamiento baja siempre; validación baja y después sube</button>
+  <button data-r="ambosu">Los dos bajan y después los dos suben</button>
+  <button data-r="cruz">Entrenamiento sube; validación baja</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> el error de entrenamiento baja (o se queda igual) en cada
+grado hasta llegar a 0 en el grado 12; el de validación baja hasta un mínimo (grado 4 en
+estos datos) y después sube, primero de a poco y al final se dispara.</p>
+<p><strong>Cómo se resuelve:</strong></p>
+<ol class="pasos">
+  <li>Un polinomio de grado p puede imitar al de grado p − 1 poniendo su θ nuevo en cero.
+  Mínimos cuadrados nunca elige algo peor que eso, así que <strong>el error de
+  entrenamiento no puede subir</strong> al agregar grado [INFERENCIA]</li>
+  <li>Con 13 pinos, el grado 12 tiene 13 parámetros: pasa exacto por los 13 → ECM de
+  entrenamiento 0</li>
+  <li>La validación mide pinos que el modelo no vio. Al principio más grado captura la
+  forma (baja); pasado el mínimo, captura el ruido de esos 13 pinos (sube)</li>
+  <li>Lo lees en la tabla del simulador: grado 1 → 5,62 / 7,14 · grado 4 → 1,90 /
+  <strong>1,64</strong> · grado 12 → 0,00 / 84,47 (entrenamiento / validación, m²)</li>
+</ol>
+<p><strong>Error típico:</strong> creer que los dos bajan siempre y elegir el grado
+mirando el entrenamiento. Con ese criterio siempre ganaría el grado más alto, que es
+justo el que peor generaliza.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> simulador con cifras
+ilustrativas [DATITO]; el balance entre modelo complejo y simple es la cita del
+profesor en §1; elegir el orden del polinomio en validación
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 8].</p>
+</details>
+
+<div class="panel">
+  <canvas id="c-ajuste" width="860" height="340"></canvas>
+  <div class="ctrl">
+    <label for="grado">Grado del polinomio</label>
+    <input type="range" id="grado" min="1" max="12" step="1" value="1">
+    <output id="grado-out">1</output>
+  </div>
+  <div style="margin-top:.6rem">
+    <button id="b-g1" class="alt">Grado 1</button>
+    <button id="b-mejor" class="ok">El mejor en validación</button>
+    <button id="b-g12" class="alt">Grado 12</button>
+    <button id="b-filas">Más filas: pasar de 13 a 39 pinos de entrenamiento</button>
+  </div>
+  <div class="met">
+    <div><div class="n" id="m-par">–</div><div class="e">Parámetros (p + 1)</div></div>
+    <div><div class="n" id="m-tr">–</div><div class="e">ECM entrenamiento [m²]</div></div>
+    <div><div class="n" id="m-va">–</div><div class="e">ECM validación [m²]</div></div>
+    <div><div class="n" id="m-br">–</div><div class="e">Brecha (val − entr.)</div></div>
+    <div><div class="n" id="m-lec" style="font-size:1rem">–</div><div class="e">Lectura</div></div>
+  </div>
+  <div class="lbl">Curva de complejidad: los dos errores para los 12 grados</div>
+  <canvas id="c-curva" width="860" height="300"></canvas>
+  <p style="font-size:.86rem;color:var(--suave);margin:.7rem 0 0">
+    La «lectura» es una regla didáctica de este visual [DATITO]: subajuste si los dos
+    errores superan el doble del mejor error de validación; sobreajuste si la brecha
+    supera ese mejor error. En el certamen no hay umbral fijo: se argumenta con la
+    brecha y el nivel.
+  </p>
+  <details>
+    <summary>Ver la tabla completa de errores</summary>
+    <div id="tabla"></div>
+  </details>
+</div>
+
+<div class="clave">
+<strong>Lo que acabas de ver, en tres líneas.</strong><br>
+1 · El error de <strong>entrenamiento nunca sube</strong> al agregar grado: cada
+polinomio contiene al anterior, así que siempre puede ajustar igual o mejor
+[INFERENCIA]. Con 13 pinos, el grado 12 tiene 13 parámetros y pasa exacto por todos:
+error 0.<br>
+2 · El de <strong>validación dibuja una U</strong>: baja mientras el modelo aprende la
+forma, y sube cuando empieza a perseguir el ruido.<br>
+3 · Por eso el grado <strong>no se elige mirando el entrenamiento</strong>: se elige
+en validación. La lámina lo dice con este mismo ejemplo: el conjunto de validación
+«se utiliza para ajustar hiperparámetros (por ej, el orden del polinomio)»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 8].
+</div>
+
+<div class="nota">
+<strong>Aprieta «Más filas» con el grado en 12.</strong> Con 39 pinos el mismo grado
+12 ya no puede pasar por todos: tiene 13 parámetros para 39 datos, y la brecha casi
+desaparece. <strong>Esa es la P3.</strong> Y fíjate en lo que es subir el grado:
+<code>PolynomialFeatures</code> del P4 fabrica <code>x²</code>, <code>x³</code>, … como
+<strong>columnas nuevas</strong>, y cada columna trae su θ («Si tenemos k variables
+explícitas, necesitamos k + 1 parámetros»)
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.42 y l.830].
+Subir el grado <em>es</em> agregar columnas. Más filas bajan el sobreajuste; más
+columnas lo suben.
+</div>
+
+<h2>3 · El criterio es la brecha, no un número</h2>
+
+<p>Un número solo no diagnostica nada. <strong>0,98 de R² en entrenamiento</strong>
+puede ser memoria; <strong>0,41</strong> puede ser un problema difícil. Lo que
+diagnostica es la <em>distancia</em> entre dentro y fuera, y después el
+<em>nivel</em>.</p>
+
+<div class="ecu">
+  <div class="f">brecha = E<sub>valid</sub> − E<sub>entren</sub> &nbsp;&nbsp;·&nbsp;&nbsp; brecha = R²<sub>entren</sub> − R²<sub>valid</sub></div>
+  <table class="simb">
+  <tr><td>E<sub>entren</sub></td><td>Error medido sobre los datos con que se ajustaron los θ. <strong>No mide calidad</strong>: mide cuánto memorizó <span class="rol r-dato">dato del ajuste</span></td></tr>
+  <tr><td>E<sub>valid</sub></td><td>Error sobre datos que el modelo no vio al ajustar. <strong>Esto sí estima generalización</strong> <span class="rol r-aprende">el que importa</span></td></tr>
+  <tr><td>brecha</td><td>Cuánto empeora al salir del entrenamiento. Con errores (ECM, MAE: más bajo es mejor) se resta al revés que con puntajes (R², exactitud: más alto es mejor) <span class="rol r-decide">el diagnóstico</span></td></tr>
+  <tr><td>nivel</td><td>Qué tan buenos son los dos números. <strong>Separa subajuste de ajuste razonable</strong>, que tienen ambos brecha chica</td></tr>
+  </table>
+</div>
+
+<h3>El procedimiento, en cinco pasos</h3>
+<ol class="pasos">
+  <li><strong>Localiza el par</strong>: rendimiento <em>dentro</em> y <em>fuera</em> del entrenamiento</li>
+  <li><strong>Calcula la brecha</strong>, fila por fila. Por escrito</li>
+  <li><strong>Clasifica</strong>: bueno dentro y malo fuera → sobreajuste · malo en ambos → subajuste · parecidos y aceptables → ajuste razonable</li>
+  <li><strong>Nombra el mecanismo</strong>, no la etiqueta: «memorizó el ruido de 13 pinos», no «sobreajuste»</li>
+  <li><strong>Propón el remedio según la causa</strong>: simplificar, más filas, elegir con validación (cruzada). Ver §8</li>
+</ol>
+<p style="font-size:.86rem;color:var(--suave)">[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7 «Diagnóstico de sobreajuste / subajuste»].
+Ese paso 5 incluye además «regularizar»; en §8 verás por qué aquí no se trata como materia del profesor.</p>
+
+<h3>Ejercicio de cálculo · la tabla que ya intentaste</h3>
+
+<table>
+<tr><th>Modelo</th><th>R² entrenamiento</th><th>R² validación</th><th>Brecha</th><th>Diagnóstico</th></tr>
+<tr><td>A</td><td class="num">0,62</td><td class="num">0,59</td><td class="num">?</td><td>?</td></tr>
+<tr><td>B</td><td class="num">0,98</td><td class="num">0,54</td><td class="num">?</td><td>?</td></tr>
+<tr><td>C</td><td class="num">0,41</td><td class="num">0,39</td><td class="num">?</td><td>?</td></tr>
+</table>
+<p style="font-size:.86rem;color:var(--suave);margin-top:-.4rem">Cifras ilustrativas [DATITO], las mismas del ejercicio del 19-sep.</p>
+
+<p><strong>Primero calcula las tres brechas en papel.</strong> Después responde en el
+formato del profesor: <em>«B aprende mucho mejor los datos, así que conviene descartar
+A.» Verdadero o falso; en caso de ser falso, justifique.</em></p>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> B está sobreajustado, C está subajustado y A es el
+  ajuste razonable; la afirmación es <strong>falsa</strong>, porque fuera del
+  entrenamiento A (0,59) le gana a B (0,54).</p>
+  <p><strong>Cómo se resuelve:</strong> R² es un puntaje (más alto es mejor), así que
+  brecha = entrenamiento − validación.</p>
+  <table>
+  <tr><th>Modelo</th><th>Brecha</th><th>Nivel</th><th>Diagnóstico</th></tr>
+  <tr><td>A</td><td class="num">0,62 − 0,59 = <strong>0,03</strong></td><td>aceptable en ambos</td><td>Ajuste razonable</td></tr>
+  <tr><td>B</td><td class="num">0,98 − 0,54 = <strong>0,44</strong></td><td>excelente dentro, el peor fuera</td><td><strong>Sobreajuste</strong></td></tr>
+  <tr><td>C</td><td class="num">0,41 − 0,39 = <strong>0,02</strong></td><td>malo en ambos</td><td><strong>Subajuste</strong></td></tr>
+  </table>
+  <p>Respuesta en formato del profesor: <em>«Falso. B tiene el mejor R² de
+  entrenamiento porque memorizó: su brecha es 0,44. Sobre datos que no vio obtiene 0,54,
+  menos que el 0,59 de A. Aprender mejor los datos de entrenamiento no es ser mejor
+  modelo; se elige por el rendimiento fuera del entrenamiento.»</em></p>
+  <p>Fíjate en A y C: casi la misma brecha. Lo que los separa es el
+  <strong>nivel</strong>. Por eso la brecha va primero, pero no sola.</p>
+  <p><strong>Error típico:</strong> el tuyo del 19-sep, asignar los diagnósticos sin
+  hacer las tres restas (terminaste llamando sobreajuste a A y subajuste a B). El otro:
+  quedarse con B por su 0,98.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> cifras ilustrativas
+  [DATITO]; procedimiento [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7]; tu
+  respuesta anterior [FUENTE · Repo: 07_DATITO/errores_conceptuales.yaml ·
+  diagnostica_sin_calcular_la_brecha].</p>
+</details>
+
+<h2>4 · «El error me da 0»: lo que se dijo en clase</h2>
+
+<p>Mientras el curso discutía para qué sirven validación y test, un compañero
+argumentó así:</p>
+
+<div class="cita">«si tengo todos los puntos en el entrenamiento y tengo un polinomio de
+grado muy alto, el error me ⟨da⟩ 0. Y no tengo cómo compararlo, porque no tengo otros
+puntos aparte.»
+<span class="f">Clase del 31-jul · 0:48:00–0:48:11 · un compañero ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="pred" data-p="cero">
+  <div class="q">Predice: un modelo tiene error de entrenamiento exactamente 0. ¿Qué
+  prueba ese 0?</div>
+  <button data-r="mejor">Que es el mejor modelo posible</button>
+  <button data-r="sobre">Que está sobreajustado, seguro</button>
+  <button data-r="nada">Nada por sí solo: hace falta un error fuera del entrenamiento</button>
+  <div class="veredicto"></div>
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> un error de entrenamiento 0 no prueba nada por sí solo:
+ni que el modelo sea bueno ni que esté sobreajustado. Hay que medir el error en datos
+que no vio y calcular la brecha.</p>
+<ol class="pasos">
+  <li>Cuenta parámetros contra datos: con n puntos, un polinomio de grado n − 1 tiene n
+  parámetros y pasa exacto por todos. El 0 está garantizado, sea cual sea la forma
+  real</li>
+  <li>Como está garantizado, el 0 <strong>no distingue</strong> un modelo que aprendió
+  de uno que memorizó</li>
+  <li>Lo que distingue es la validación: en el simulador, el grado 12 da 0 en
+  entrenamiento y 84,47 en validación → sobreajuste. En el P4 un grado que también da 0
+  gana en validación (la paradoja de abajo)</li>
+</ol>
+<p><strong>Error típico:</strong> tomar el 0 como prueba de calidad (lo que castiga la
+P7) o, al revés, como prueba automática de sobreajuste. Es una señal de alarma que
+obliga a mirar la validación, no un veredicto.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> distinción P7
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1]; simulador [DATITO]; cuenta de
+parámetros contra datos [INFERENCIA].</p>
+</details>
+
+<div class="dist"><strong>Distinción de certamen · P7:</strong> error de entrenamiento
+<strong>≠</strong> calidad del modelo. En la P7, 5 árboles y una curva que pasa exacta
+por los 5: el error cuadrático medio de entrenamiento es 0 y eso no demuestra nada.
+<a href="certamen_2.html#p7">Ver la ficha P7</a>.</div>
+
+<details>
+  <summary>La paradoja de la ayudantía: el grado que pasa perfecto… y gana</summary>
+  <div class="spoiler"><strong>Aviso:</strong> contiene el resultado del P4; intenta
+  antes <code>08_PRACTICA/2026_[P4]Regresión(vacio).ipynb</code>. Esto es
+  <strong>ayudantía</strong>, no clase del profesor: sirve para entender, no es materia
+  de certamen por sí misma.</div>
+
+  <div class="cita">«el polinomio de grado 7 pasa perfectamente por todos los puntos […]
+  pero qué me pasa que el de grado 10 hace locuras entre los puntos en cambio el de
+  grado 7 sigue el comportamiento que yo esperaría»
+  <span class="f">Ayudantía del 31-jul · 1:20:34–1:21:00 · la ayudantía ·
+  [FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md]</span></div>
+
+  <p>En el P4 hay <strong>8 puntos</strong> de entrenamiento
+  (<code>x = [1, 3, 6, 10, 20, 22, 26, 28]</code>). Un polinomio de grado 7 tiene 8
+  parámetros: los interpola exacto, error de entrenamiento 0. Según la P7, eso
+  «debería» ser sobreajuste. Y sin embargo, en validación el ECM queda:
+  grado 4 → 1,660 · <strong>grado 7 → 0,601</strong> · grado 10 → 477,9 ·
+  grado 13 → 25.882
+  [FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.884–887; el
+  <code>score</code> es el ECM con signo negativo].</p>
+
+  <p><strong>Cómo se resuelve la paradoja:</strong></p>
+  <ol class="pasos">
+    <li>El 0 de entrenamiento <strong>no distingue</strong> al grado 7 del grado 10:
+    los dos pasan por los puntos. La validación sí los distingue. Esa es exactamente la
+    P7: el entrenamiento no es evidencia, <em>ni a favor ni en contra</em></li>
+    <li>«Gana» es relativo a la grilla: solo se probaron 4, 7, 10 y 13. Un grado 2 o 3
+    nunca fue candidato [INFERENCIA]</li>
+    <li>Con 6 puntos de validación, el ganador puede tener algo de suerte: justo lo
+    que resuelve la <a href="validacion_cruzada.html">validación cruzada</a> [INFERENCIA]</li>
+  </ol>
+</details>
+
+<h2>5 · Segundo nivel: también se puede sobreajustar la validación</h2>
+
+<p>Si eliges el grado mirando la validación, la validación deja de ser neutral. Tu
+profesor lo dice con el mismo polinomio:</p>
+
+<div class="cita">«el problema que tenemos ahí es que se podría sobreajustar el conjunto
+de ⟨validación⟩. ¿Me entienden? Porque yo estoy tomando una decisión sobre el modelo,
+utilizando el conjunto de ⟨validación⟩.»
+<span class="f">Clase del 31-jul · 0:49:50–0:50:05 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<div class="clave">
+<strong>Dos niveles, dos defensas:</strong><br>
+· Los <strong>θ</strong> se sobreajustan al <strong>entrenamiento</strong> → lo detecta la validación.<br>
+· Las <strong>decisiones</strong> (el grado, el modelo) se sobreajustan a la
+<strong>validación</strong> → por eso existe el <strong>test</strong>, que se guarda
+«en el bolsillo» y se usa una sola vez al final.<br>
+Y para no depender de una sola partición afortunada: rotarla con
+<a href="validacion_cruzada.html">validación cruzada</a>. El esquema completo de tres
+conjuntos está en <a href="train_validation_test.html">train_validation_test.html</a>.
+</div>
+
+<h2>6 · Aplica e interpreta: tu proyecto de Melbourne</h2>
+
+<p>Modelos sobre <code>log1p(Price)</code>, entrenados con 6.336 propiedades de 2016 y
+evaluados con 7.244 de 2017
+[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json, vía 07_DATITO/referencia/material.md].
+Aquí el «fuera» es el test 2017.</p>
+
+<table>
+<tr><th>Modelo (log)</th><th>R² train 2016</th><th>R² test 2017</th><th>Brecha</th></tr>
+<tr><td>Árbol de decisión</td><td class="num">0,7523</td><td class="num">0,6123</td><td class="num">0,1400</td></tr>
+<tr><td>Random Forest</td><td class="num">0,9423</td><td class="num">0,7109</td><td class="num">0,2314</td></tr>
+<tr><td>Gradient Boosting</td><td class="num">0,8858</td><td class="num">0,7466</td><td class="num">0,1392</td></tr>
+<tr><td>HistGradientBoosting</td><td class="num">0,9274</td><td class="num">0,7571</td><td class="num">0,1703</td></tr>
+</table>
+
+<p><strong>Ejercicio de interpretación.</strong> (a) ¿Cuál sobreajusta más? (b) ¿El
+modelo con mejor R² de entrenamiento es el mejor en 2017? (c) Traduce la brecha de
+Random Forest a una frase que entienda alguien que no sabe qué es R². (d) Gradient
+Boosting tiene casi la misma brecha que el árbol. ¿Significa que son igual de buenos?</p>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> Random Forest es el que más sobreajusta (brecha
+  0,2314) y, pese a tener el mejor R² de entrenamiento, no es el mejor en 2017: el
+  mejor en test es HistGradientBoosting (0,7571).</p>
+  <p>(a) Se ordenan las brechas: 0,2314 (RF) &gt; 0,1703 (HGB) &gt; 0,1400 (árbol)
+  &gt; 0,1392 (GB). <strong>Random Forest</strong> explica el 94 % de la variación de
+  2016 y solo el 71 % de la de 2017.</p>
+  <p>(b) <strong>No.</strong> Ordenados por entrenamiento: RF 0,9423 &gt; HGB 0,9274
+  &gt; GB 0,8858 &gt; árbol 0,7523. Ordenados por test: HGB 0,7571 &gt; GB 0,7466 &gt;
+  RF 0,7109 &gt; árbol 0,6123. RF baja del primer al tercer lugar. Gradient Boosting
+  aprende <em>menos</em> que RF (0,8858) y generaliza <em>mejor</em> (0,7466): el patrón
+  de B frente a A, con tus números.</p>
+  <p>(c) Respuesta modelo: «Casi un cuarto de lo que el modelo parecía saber sobre los
+  precios de 2016 no se repitió en 2017: eran particularidades de ese año, no reglas del
+  mercado.»</p>
+  <p>(d) <strong>No.</strong> Misma brecha (0,14), distinto <strong>nivel</strong>:
+  0,6123 frente a 0,7466 en test. Es la lección de A y C: la brecha va primero, pero no
+  decide sola.</p>
+  <p><strong>Error típico:</strong> elegir Random Forest por su 0,94, o declarar
+  equivalentes al árbol y a Gradient Boosting porque sus brechas se parecen.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong>
+  [FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] vía
+  [FUENTE · Repo: 07_DATITO/referencia/material.md]; la frase de (c) es [DATITO].</p>
+</details>
+
+<h3>Lo que dijo el profesor de tu presentación</h3>
+
+<p>En la presentación del Hito 2 el profesor miró otra caída: la del error de
+validación cruzada en 2016 al error de test en 2017. Y la explicó así:</p>
+
+<div class="cita">«ustedes validaron con un subconjunto de datos, pero también tomaron
+decisiones con ese subconjunto de datos. […] los datos cambian un poco entre el 2016 y
+el 2017. Entonces el modelo está un poquito sobreajustado a los datos del 2016»
+<span class="f">Sesión del 4-sep (presentaciones Hito 2) · 2:08:49–2:09:16 · profesor, comentando la presentación de tu grupo ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<div class="nota">
+<strong>Léelo con cuidado.</strong> Aquí «sobreajustado» no es la brecha
+entrenamiento → validación de §3: validación cruzada 2016 y test 2017 son
+<em>ambos</em> datos no vistos. El profesor nombra dos mecanismos en la misma frase:
+<strong>(1)</strong> las decisiones se tomaron mirando 2016 (el segundo nivel de §5) y
+<strong>(2)</strong> los datos cambiaron entre años. Esa descomposición, con cifras,
+está en <a href="generalizacion.html">generalizacion.html</a>.<br><br>
+Es la lección de tu error ya resuelto <code>sobreajuste_como_etiqueta_de_toda_degradacion</code>:
+si usas la palabra, <strong>di el mecanismo</strong>, como lo hizo él.
+</div>
+
+<div class="peligro">
+<strong>Trampa con tus propios números.</strong> Ridge sobre log da R² de test
+<strong>−17,0</strong> [FUENTE · Repo: 07_DATITO/referencia/material.md]. ¿Sobreajuste
+monstruoso? El material lo explica por otra vía: al deshacer <code>expm1</code> sobre
+valores extremos, las predicciones se disparan. Es una recta que extrapola, no un
+modelo que memorizó [INFERENCIA]. <strong>La brecha es necesaria, no
+suficiente</strong>: el paso 4 (nombrar el mecanismo) es el que evita el error.
+</div>
+
+<h2>7 · No es solo regresión: clasificación y árboles</h2>
+
+<p>En el bloque de clasificación aparece la lámina «Modelos más complejos» y, repetida
+tal cual desde el bloque de regresión, la de «¿Cómo evaluar si estoy sobreajustado?
+VALIDACIÓN CRUZADA!»
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 8, 20 y 21].
+El profesor muestra una frontera que se tuerce para no dejar ningún punto mal
+clasificado:</p>
+
+<div class="cita">«tenemos dos triángulos que están en la zona de los círculos y un
+círculo que está en la zona de los triángulos […] yo iría a hacer algo como así […]
+pero hay un problema acá […] no generaliza no generaliza exacto»
+<span class="f">Clase del 7-ago · 0:44:32–0:45:09 · profesor (el primer «no generaliza» parece venir de un compañero [INFERENCIA]) ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
+
+<p>Es el mismo fenómeno: una frontera que envuelve cada punto es el polinomio de
+grado 12 en dos dimensiones. Por eso la opción 5 de la P3 es verdadera: el sobreajuste
+«puede ocurrir tanto en problemas de clasificación como de regresión»
+(<a href="certamen_2.html#p3">ficha P3</a>).</p>
+
+<p>Y en los <strong>árboles de decisión</strong> aparece como regla de parada. La
+lámina de convergencia lista: el nodo tiene una sola clase, tiene menos objetos que un
+mínimo, se alcanzó una altura máxima, la pureza es suficiente, o
+<strong>«Se comienza a sobreajustar (validación cruzada)»</strong>
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 33]. En
+clase:</p>
+
+<div class="cita">«el algoritmo para cuando el ⟨nodo⟩ contiene solamente una clase, […]
+cuando se alcanza una altura máxima, cuando la pureza es suficiente o cuando se comienza
+a sobreajustar.»
+<span class="f">Clase del 7-ago · 1:28:08–1:28:22 · profesor ·
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md] ·
+⟨⟩ = corrección de transcripción [INFERENCIA]</span></div>
+
+<p>Un árbol que se deja crecer hasta que cada hoja tiene un solo objeto es el
+equivalente del grado 12: error de entrenamiento 0. Sigue en
+<a href="arboles_y_ensambles.html#arboles">arboles_y_ensambles.html</a>.</p>
+
+<h2>8 · Remedios: los que dio el curso</h2>
+
+<table>
+<tr><th>Remedio</th><th>Mecanismo</th><th>Dónde está en el curso</th></tr>
+<tr><td><strong>Bajar el grado / simplificar</strong></td><td>Menos parámetros → menos capacidad de memorizar ruido</td><td>«La complejidad del modelo tiene relación con el número de parámetros» (§1); P7</td></tr>
+<tr><td><strong>Elegir la complejidad en validación</strong> (mejor: validación cruzada)</td><td>No reduce el sobreajuste: lo <strong>detecta</strong> antes de decidir y permite elegir el grado con datos no vistos</td><td>Lámina 8: validación para «el orden del polinomio»; lámina 21; P3 opción 3</td></tr>
+<tr><td><strong>Más filas</strong> (más observaciones)</td><td>Más evidencia por parámetro: el ruido deja de ser ajustable. Lo viste con el botón de §2</td><td>P3: la opción 1 («aumentando el número de atributos») es la <em>falsa</em>, porque son columnas, no filas</td></tr>
+<tr><td><strong>Detener el árbol</strong></td><td>Altura máxima, mínimo de objetos por nodo, o parar cuando la validación empeora</td><td>Lámina 33</td></tr>
+<tr><td><strong>Conocimiento del dominio</strong></td><td>Descarta curvas imposibles: un volumen no es negativo y crece con el diámetro</td><td>Argumento de la P7 (<a href="certamen_2.html#p7">ficha P7</a>) [INFERENCIA]</td></tr>
+</table>
+
+<div class="nota">
+<strong>Para el subajuste el remedio va al revés:</strong> más complejidad (subir el
+grado, un modelo más flexible). Más filas <em>no</em> lo cura: si el modelo no tiene
+capacidad para la forma, más datos solo confirman que no la alcanza. En §2: con 39
+pinos el grado 1 sigue malo en ambos conjuntos [DATITO].
+</div>
+
+<div class="peligro">
+<strong>¿Y la regularización?</strong> En las 14 transcripciones disponibles al
+2026-09-21, la palabra aparece <strong>una sola vez</strong>, y la dice un compañero en
+su presentación (el hiperparámetro C de una SVM)
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 0:51:47].
+No aparece en ninguna clase del profesor, ni en el P4, ni en las láminas de
+<code>11_PRESENTACIÓN/_markdown/</code>.<br><br>
+La distinción «bajar el grado <em>elimina</em> términos; regularizar (Ridge, Lasso) los
+<em>amortigua</em> encogiendo sus coeficientes» viene de tu propia reconstrucción del
+certamen, no del profesor
+[FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/01_ANALISIS_RECONSTRUCCION_CERTAMEN.md · l.456 y l.497].
+Es una <strong>[INFERENCIA] útil</strong> si te la preguntan en un oral. En el papel,
+si la usas, que sea <em>después</em> de los remedios del curso y sin presentarla como
+materia de clase.
+</div>
+
+<h2>9 · Palabras que se cruzan: «sesgo y varianza»</h2>
+
+<p>La sección del P4 donde se comparan los grados 4, 7, 10 y 13 se titula
+<strong>«Sesgo y Varianza»</strong>, pero su contenido es exactamente este concepto:
+«Mientras escogemos el grado del polinomio nos vamos a encontrar con los problemas de
+<em>underfitting</em> y <em>overfitting</em>»
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.738–740]. En la
+ayudantía del 7-ago se nombran «los conceptos de sesgo y varianza» sin desarrollarlos
+[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:08:17–0:08:26].</p>
+
+<div class="nota">
+<strong>Qué hacer con eso:</strong> en el curso, «sesgo y varianza» funciona como
+<em>nombre</em> del problema subajuste/sobreajuste. En las 14 transcripciones
+disponibles al 2026-09-21 no se desarrolla una descomposición formal del error en sesgo
+y varianza: no la escribas en el certamen como si fuera materia.<br><br>
+Y ojo con un tercer sentido: en la ayudantía del 31-jul, «me puedo sesgar por el
+conjunto de validación» significa elegir un modelo que calza con esa partición por azar
+[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:25:47].
+Eso es el segundo nivel de §5, no el sesgo de un modelo simple.
+</div>
+
+<h2>10 · Las tres distinciones que el certamen pone a prueba</h2>
+
+<div class="dist"><strong>P2 · Sobreajuste ≠ subajuste ≠ error alto.</strong>
+Sobreajuste exige las <em>dos</em> mitades: bien en entrenamiento <em>y</em> mal fuera.
+Error alto en ambos es subajuste. «Error alto» sin decir dónde no es diagnóstico.
+<a href="certamen_2.html#p2">Ver la ficha P2</a>.</div>
+
+<div class="dist"><strong>P3 · Más filas ≠ más columnas.</strong>
+Más observaciones reducen el sobreajuste; más atributos (o más grado, que es lo mismo:
+más columnas <code>x²</code>, <code>x³</code>…) lo aumentan.
+<a href="certamen_2.html#p3">Ver la ficha P3</a>.</div>
+
+<div class="dist"><strong>P7 · Error de entrenamiento ≠ calidad del modelo.</strong>
+Un error de entrenamiento 0 con tantos parámetros como datos no prueba nada. Lo que
+juzga es la validación, y en la P7 también la física (volumen negativo).
+<a href="certamen_2.html#p7">Ver la ficha P7</a>.</div>
+
+<h2>11 · Ejercicios</h2>
+
+<h3>Verdadero o falso, en caso de ser falso justifique</h3>
+
+<p class="vf">1 · «Si un modelo tiene error de entrenamiento igual a cero, está bien ajustado.»</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> Falso: un error de entrenamiento 0 no dice si el modelo
+generaliza.</p>
+<p><strong>Resolución:</strong> con tantos parámetros como datos, cualquier polinomio
+pasa por todos los puntos, tenga o no la forma correcta, así que el 0 está garantizado.
+Para saber si está bien ajustado hay que mirar el error en validación y la brecha. En el
+simulador, el grado 12 tiene 0 en entrenamiento y 84,47 en validación.</p>
+<p><strong>Error típico:</strong> leer «ajusta perfecto» como «es el mejor modelo». Es
+exactamente la trampa de la P7.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong>
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, P7]; simulador [DATITO].</p>
+</details>
+
+<p class="vf">2 · «Un modelo con error alto en entrenamiento y en validación está sobreajustado.»</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> Falso: eso es subajuste.</p>
+<p><strong>Resolución:</strong> el sobreajuste exige las dos mitades: error
+<em>bajo</em> en entrenamiento y alto fuera (brecha grande). Si el error es alto en
+ambos, la brecha es chica y el nivel es malo: el modelo es demasiado simple para
+describir incluso los datos con que aprendió. En el simulador es el grado 1: 5,62 y
+7,14.</p>
+<p><strong>Error típico:</strong> usar «sobreajuste» como sinónimo de «error alto». El
+remedio sería el opuesto: al subajuste se le sube la complejidad.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong>
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, P2]; el balance simple/complejo es
+la cita del profesor en §1.</p>
+</details>
+
+<p class="vf">3 · «El sobreajuste se puede evitar aumentando el número de atributos de cada objeto.»</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> Falso: más atributos lo empeoran; lo que ayuda es tener
+más observaciones.</p>
+<p><strong>Resolución:</strong> cada atributo es una columna nueva y trae su propio θ
+(con k variables hay k + 1 parámetros). Más parámetros es más complejidad, y más
+complejidad es más sobreajuste. Más <em>filas</em>, en cambio, dan más evidencia por
+parámetro: en el simulador, pasar de 13 a 39 pinos baja la validación del grado 12 de
+84,47 a 1,33.</p>
+<p><strong>Error típico:</strong> leer «atributos» como «más datos» y marcarla
+verdadera. Es la opción 1 de la P3, la única falsa.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong>
+[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md · l.42];
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, P3]; simulador [DATITO].</p>
+</details>
+
+<p class="vf">4 · «Como el conjunto de validación no se usa para ajustar los θ, es imposible sobreajustarlo.»</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> Falso: la validación también se puede sobreajustar,
+porque con ella se toman decisiones.</p>
+<p><strong>Resolución:</strong> es cierto que los θ se ajustan solo con el
+entrenamiento. Pero el grado del polinomio (o el modelo) se <em>elige</em> mirando la
+validación. Si por azar un grado calza con esa partición, la elección queda ajustada a
+ella. Por eso la métrica final se mide en el test, que no participó en ninguna
+decisión.</p>
+<p><strong>Error típico:</strong> pensar que «no ajustar θ» equivale a «no influir en
+el modelo». Elegir también es aprender de esos datos.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong> la cita del profesor en §5
+(clase del 31-jul); [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 8].</p>
+</details>
+
+<p class="vf">5 · «El sobreajuste puede ocurrir tanto en clasificación como en regresión.»</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+<p><strong>Respuesta:</strong> Verdadero.</p>
+<p><strong>Resolución:</strong> en regresión es el polinomio de grado alto que pasa
+por todos los puntos; en clasificación es la frontera que se tuerce para envolver cada
+punto de entrenamiento, o el árbol que crece hasta tener una hoja por objeto. En los
+tres casos: bien dentro, mal fuera. La lámina de «¿Cómo evaluar si estoy
+sobreajustado?» se repite en el bloque de clasificación.</p>
+<p><strong>Error típico:</strong> asociar el sobreajuste solo a la regresión polinomial
+porque ahí se introdujo.</p>
+<p style="margin-bottom:0"><strong>De dónde sale:</strong>
+[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 8, 21 y 33];
+P3, opción 5 (<a href="certamen_2.html#p3">ficha P3</a>).</p>
+</details>
+
+<h3>Transferencia · otro dominio [DATITO]</h3>
+
+<p>Una empresa de buses interurbanos predice el <strong>retraso de cada viaje</strong>,
+en minutos. Tres analistas entregan esto (cifras ilustrativas [DATITO]; la métrica es
+MAE, <strong>más bajo es mejor</strong>):</p>
+
+<table>
+<tr><th>Analista</th><th>Modelo</th><th>MAE entrenamiento</th><th>MAE validación</th></tr>
+<tr><td>1</td><td>Árbol sin límite de altura</td><td class="num">0,0 min</td><td class="num">11,4 min</td></tr>
+<tr><td>2</td><td>Árbol con altura máxima 4</td><td class="num">5,1 min</td><td class="num">5,8 min</td></tr>
+<tr><td>3</td><td>Siempre predice el retraso promedio</td><td class="num">9,7 min</td><td class="num">9,9 min</td></tr>
+</table>
+
+<p>(a) Calcula la brecha de cada uno (ojo con el sentido de la resta) y diagnostica.
+(b) ¿Cuál llevas a producción y por qué? (c) El analista 1 propone agregar 30 columnas
+de clima por hora «para que el modelo tenga más información». ¿Qué esperas que pase? (d)
+Da dos remedios del curso para el analista 1, con su mecanismo.</p>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> el analista 1 sobreajusta, el 3 subajusta y el 2 tiene
+  un ajuste razonable; a producción va el <strong>2</strong>, porque tiene el menor
+  error sobre viajes que no vio (5,8 min) con una brecha chica.</p>
+  <p>(a) MAE es un error (más bajo es mejor), así que brecha = validación −
+  entrenamiento. 1: 11,4 − 0,0 = <strong>11,4 min</strong> → sobreajuste (memorizó cada
+  viaje). 2: 5,8 − 5,1 = <strong>0,7 min</strong> y nivel bajo → ajuste razonable. 3:
+  9,9 − 9,7 = <strong>0,2 min</strong>, pero malo en ambos → subajuste.</p>
+  <p>(b) Se compara la columna de validación: 5,8 &lt; 9,9 &lt; 11,4. Gana el 2, y su
+  brecha de 0,7 min dice que ese 5,8 es estable. El 0,0 del analista 1 no sirve para
+  decidir.</p>
+  <p>(c) Más columnas = más parámetros = más oportunidades de calzar con el ruido: la
+  brecha tiende a <strong>crecer</strong>, no a bajar. Solo ayudarían si traen señal
+  real, y eso lo diría la validación, no el entrenamiento (P3).</p>
+  <p>(d) Detener el árbol (altura máxima o mínimo de objetos por hoja: menos capacidad
+  de memorizar), eligiendo esa altura en validación cruzada (lo detecta antes de
+  decidir). Y más filas, o sea más viajes: más evidencia por parámetro.</p>
+  <p><strong>Error típico:</strong> restar al revés con MAE (0,0 − 11,4 = −11,4) y
+  concluir «brecha negativa, no hay sobreajuste»; o elegir al analista 1 por su 0,0.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> caso y cifras
+  ilustrativas [DATITO]; reglas de parada del árbol
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 33];
+  filas frente a columnas [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1, P3].</p>
+</details>
+
+<div class="repreg">
+<strong>Producción: explícaselo a alguien.</strong><br><br>
+Un compañero te dice: <em>«mi polinomio de grado 12 tiene error cero en entrenamiento,
+así que es el mejor modelo que probé»</em>.<br><br>
+<strong>En cinco líneas o menos:</strong> dile por qué ese cero no prueba lo que cree,
+qué número tendría que mirar, cómo elegiría el grado, y qué haría si el mejor grado
+sigue sobreajustando. Escríbelo sin mirar esta página y <strong>llévalo a
+Datito</strong> para que lo revise.
+</div>
+
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> el compañero está equivocado: el cero de entrenamiento
+  no prueba que su modelo sea el mejor, y tiene que decidir por el error de validación.</p>
+  <p><strong>Respuesta modelo (cinco líneas):</strong></p>
+  <p style="font-style:italic">«Ese cero no prueba nada: con 13 datos, un polinomio de
+  grado 12 tiene 13 parámetros y pasa exacto por todos los puntos, incluido el ruido,
+  sea cual sea la forma real. Lo que hay que mirar es el error en datos que el modelo no
+  vio y la brecha con el de entrenamiento: aquí es 0 contra 84,5, o sea sobreajuste. El
+  grado es un hiperparámetro: me quedo con el que minimiza el error de validación,
+  idealmente con validación cruzada, y el test lo uso una sola vez al final. Si el mejor
+  grado igual sobreajusta, bajo la complejidad o consigo más filas; agregar columnas lo
+  empeoraría.»</p>
+  <p><strong>Criterios con que se corrige:</strong></p>
+  <ul style="margin:.3rem 0 .6rem;padding-left:1.2rem">
+    <li>Nombra el mecanismo: con tantos parámetros como puntos, la curva pasa por todos, incluido el ruido</li>
+    <li>Dice qué mirar: el error en datos no vistos (validación) y la <strong>brecha</strong>, no un número suelto</li>
+    <li>El grado se elige en validación (idealmente cruzada), y el test se usa al final</li>
+    <li>Remedios del curso con su mecanismo: bajar el grado, más filas. Si menciona regularizar, lo presenta como algo que no vino de clase</li>
+    <li>No confunde subajuste con sobreajuste ni «error alto» con cualquiera de los dos</li>
+  </ul>
+  <p><strong>Error típico:</strong> responder «está sobreajustado» sin decir por qué ni
+  con qué número, o proponer regularización como si fuera materia del profesor.</p>
+  <p style="margin-bottom:0"><strong>De dónde sale:</strong> cifras del simulador
+  [DATITO]; validación para el orden del polinomio
+  [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 8];
+  procedimiento [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §7].</p>
+</details>
+
+<h2>12 · Procedimiento para el papel</h2>
+
+<pre style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:1rem;font-size:.87rem;overflow-x:auto">
+1. MÉTRICA              ¿error (más bajo mejor) o puntaje (más alto mejor)?
+2. EL PAR               dentro (entrenamiento) y fuera (validación / test)
+3. BRECHA               calcularla por escrito, fila por fila
+4. CLASIFICAR           brecha grande                  → sobreajuste
+                        brecha chica + malo en ambos   → subajuste
+                        brecha chica + aceptable       → ajuste razonable
+5. MECANISMO            «memorizó el ruido de n datos con p+1 parámetros»
+6. REMEDIO SEGÚN CAUSA  sobre: bajar grado · más filas · elegir en validación
+                               cruzada · detener el árbol · dominio
+                        sub:   más complejidad (más filas no lo cura)
+7. ¿PRODUCCIÓN?         se decide por el error fuera, nunca por el de dentro
+</pre>
+
+<h2>13 · Errores que el formato castiga</h2>
+
+<table>
+<tr><th>Error</th><th>Por qué está mal</th></tr>
+<tr><td><strong>Llamar sobreajuste a toda degradación sin calcular la brecha</strong></td><td>Sin la resta no hay diagnóstico. Y una caída entre dos conjuntos no vistos (CV → test) tiene otros mecanismos: selección y cambio de distribución</td></tr>
+<tr><td>Diagnosticar con un solo número</td><td>0,98 puede ser memoria; 0,41 puede ser un problema difícil. Hace falta el par</td></tr>
+<tr><td>Restar de memoria sin mirar la métrica</td><td>Con MAE o ECM la brecha es validación − entrenamiento; con R², al revés</td></tr>
+<tr><td>Tratar el error de entrenamiento como evidencia de calidad</td><td>Es la P7: el 0 de entrenamiento no distingue al grado 7 del grado 10</td></tr>
+<tr><td>Confundir más filas con más columnas</td><td>Es la P3: efectos opuestos</td></tr>
+<tr><td>Llamar sobreajuste a un modelo malo en ambos conjuntos</td><td>Es la P2: eso es subajuste</td></tr>
+<tr><td>Presentar regularización o «sesgo-varianza» como materia del profesor</td><td>No aparecen desarrolladas en sus clases (§8 y §9). Si las usas, etiquétalas</td></tr>
+</table>
+
+<div class="vecino">
+<strong>A dónde seguir.</strong>
+<ul style="margin:.5rem 0 0;padding-left:1.2rem">
+<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — la caída de Melbourne descompuesta: optimismo por selección y cambio de distribución</li>
+<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — la lotería de una sola partición y K-Fold</li>
+<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> — los tres conjuntos y por qué el test va al final</li>
+<li><a href="clase6_regresion.html"><code>clase6_regresion.html</code></a> — la regresión polinomial, donde el profesor introduce el sobreajuste</li>
+<li><a href="arboles_y_ensambles.html#arboles"><code>arboles_y_ensambles.html</code></a> — lo que este concepto habilita</li>
+<li><a href="certamen_2.html#p2"><code>certamen_2.html</code></a> — las fichas P2, P3 y P7 completas</li>
+</ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-10">
+<h2>Cierre de la Clase 10 · Overfitting y underfitting</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Brecha grande entre entrenamiento y prueba: sobreajuste. Malo en ambos: subajuste.</li><li>La complejidad (número de parámetros) mueve el balance entre ambos.</li><li>Un error de entrenamiento igual a cero no prueba calidad.</li><li>También se puede sobreajustar la validación: por eso existe el test.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Sobreajuste ≠ subajuste ≠ error alto (C2 P2).</li><li>Más filas (reduce el sobreajuste) ≠ más columnas (lo aumenta) (C2 P3).</li><li>Error de entrenamiento ≠ calidad del modelo (C2 P7).</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Localiza el par de números: dentro y fuera del entrenamiento.</li><li>Calcula la brecha.</li><li>Clasifica: brecha grande → sobreajuste; malo en ambos → subajuste.</li><li>Nombra el mecanismo, no solo la etiqueta.</li><li>Remedio según la causa: simplificar, más filas, elegir con validación cruzada.</li></ol>
+<p><b>Viene de:</b> <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a> · <b>Sigue:</b> <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></p>
+<p><b>Vuelve a tu activación:</b> El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> Con MAE (menos es mejor): P 0,15 / 0,92 y Q 0,71 / 0,78. ¿Cuál sobreajusta?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>P: error muy bajo en entrenamiento y alto en prueba, con brecha 0,77. [FUENTE · Repo: 07_DATITO/dudas.yaml · 2026-09-19-mae-pqr]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="clasificacion.html">Continuar → Clase 11 · Clasificación: cuando la etiqueta no es un número</a>
+</section>
+<!-- datito:cierre:fin -->
+<!-- datito:dudas:inicio -->
+<style>.ddudas{margin:2.4rem 0 1rem;padding-top:1.2rem;border-top:2px solid #059669}.ddudas h2{border:0;margin-top:0}.ddudas .duda{background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.8rem 1.1rem;margin:1rem 0}.ddudas .dm{font-size:.78rem;color:#666}.ddudas .dr{background:#fffbeb;border-left:3px solid #d97706;padding:.5rem .8rem;font-size:.92rem}.ddudas details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 .2rem}.ddudas details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.ddudas .df{font-size:.78rem;color:#666;word-break:break-word}</style>
+<section class="ddudas" id="dudas-resueltas">
+<h2>Dudas resueltas con Datito, en orden</h2>
+<p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
+<article class="duda" id="duda-2026-09-19-brecha-abc"><div class="dm">19-sep · resuelta en la sesión · <b>Overfitting y underfitting</b></div><p><b>Pregunta.</b> Tres modelos con R² de entrenamiento / prueba: A 0,62 / 0,59 · B 0,98 / 0,54 · C 0,41 / 0,39. a) ¿Cuál sobreajusta, cuál subajusta y cuál está bien? b) Un compañero dice que B es el mejor porque aprendió mejor los datos. ¿Tiene razón? c) ¿Qué harías para mejorar B?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> a) Primer intento: «A sobreajusta, B subajusta, C está bien». Segundo intento, tras calcular las brechas: B sobreajusta, C subajusta «porque ambos valores son bajos», A está bien. b) «Mi compañero no tiene razón, B memoriza pero generaliza peor que el modelo A». c) Regularizar y podar el árbol.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> B sobreajusta (brecha 0,44), C subajusta (bajo en ambos, brecha 0,02), A está bien (bueno en ambos, brecha 0,03); el compañero se equivoca porque lo que importa es la prueba (A 0,59 &gt; B 0,54).</p><ol><li>Paso 1, la brecha de cada uno: A 0,62−0,59 = 0,03 · B 0,98−0,54 = 0,44 · C 0,41−0,39 = 0,02.</li><li>Paso 2, la brecha grande aísla el sobreajuste: B.</li><li>Paso 3, entre los de brecha chica, el nivel separa: C es bajo en ambos → subajuste; A es aceptable en ambos → ajuste razonable.</li><li>b) No: B memoriza el entrenamiento, pero en datos nuevos rinde menos que A. Ancla la respuesta con la cifra: 0,54 &lt; 0,59.</li><li>c) Remedios del curso: simplificar (menos grado, podar o limitar el árbol), más filas, y elegir la complejidad con validación cruzada. «Podar» supone que B es un árbol, y el enunciado no lo dice: declara el supuesto (P11). «Regularizar» no aparece en las clases del profesor ni en el P4: úsalo solo como [INFERENCIA].</li></ol><p><b>Error típico.</b> Clasificar mirando un solo número por modelo en vez de calcular la brecha primero; y dar remedios que suponen un tipo de modelo no declarado.</p><p class="df">[FUENTE · Repo: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md] problema y respuestas<br>[FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7] procedimiento de diagnóstico<br>[FUENTE · Repo: 07_DATITO/errores_conceptuales.yaml] error diagnostica_sin_calcular_la_brecha<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-19-mae-pqr"><div class="dm">19-sep · resuelta en la sesión · <b>Overfitting y underfitting</b></div><p><b>Pregunta.</b> Tres modelos de tiempo de entrega, métrica MAE (menos es mejor), entrenamiento / prueba: P 0,15 / 0,92 · Q 0,71 / 0,78 · R 1,84 / 1,90. a) ¿Cuál sobreajusta, cuál subajusta y cuál está bien?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> a) «P sobreajusta, Q está bien, R subajusta», sin ayuda.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> P sobreajusta (error muy bajo en entrenamiento y alto en prueba), R subajusta (error alto en ambos), Q está bien.</p><ol><li>Antes de restar, lee qué significa el número: con MAE, MENOS es mejor (al revés que R²).</li><li>Brechas: P 0,92−0,15 = 0,77 · Q 0,78−0,71 = 0,07 · R 1,90−1,84 = 0,06.</li><li>P tiene la brecha grande: sobreajuste. Entre Q y R, R tiene error alto en ambos: subajuste. Q: bajo y parecido en ambos.</li></ol><p><b>Error típico.</b> Aplicar de memoria la regla de R² («más alto es mejor») a una métrica de error e invertir el diagnóstico.</p><p class="df">[FUENTE · Repo: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md] problema y respuesta<br>[FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7] procedimiento de diagnóstico<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md</code></p></details></article>
+</section>
+<!-- datito:dudas:fin -->
+<footer>
+Generado por Datito · <code>07_DATITO/visual/overfitting_underfitting.html</code> · funciona sin conexión ·
+fuentes: transcripciones de las clases del 31-jul y 7-ago, ayudantía del 31-jul y sesión del
+4-sep (<code>09_CLASES/transcripciones/</code>), láminas <code>FCD-2026-2_07_Clasificacion</code>
+y <code>Resumen_Clase6_Regresion</code>, P4 resuelto, <code>patron_evaluacion.md</code>,
+<code>referencia/material.md</code>.<br>
+Datos reales: la tabla y el R² de Ridge de Melbourne (<code>05_RESULTADOS/resultados_temporal.json</code>)
+y los errores del P4. Ilustrativos [DATITO]: los pinos del simulador (semilla fija), la tabla
+A/B/C y el caso de los buses.
+</footer>
+
+<!-- datito:nav:fin -->
+
+<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
+<p class="sub">Una línea de contexto · curso · fuente</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
+</div>
+
+<h2>1 · Qué te dan / qué pasó</h2>
+<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
+
+<h2>2 · Cómo se resuelve</h2>
+<ol class="pasos">
+  <li>Paso 1…</li>
+  <li>Paso 2…</li>
+</ol>
+
+<div class="ecu">
+  <div class="f">fórmula = aquí</div>
+  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
+</div>
+
+<details>
+  <summary>Detalle / por qué este paso</summary>
+  <p>Explicación extendida sin cambiar el layout.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> …</p>
+  <p><strong>Resolución:</strong> …</p>
+  <p><strong>Error típico:</strong> …</p>
+  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
+</details>
+
+<div class="peligro">
+  <strong>Errores que el examen castiga.</strong>
+  <ul>
+    <li>…</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de entregar.</strong>
+  <ul>
+    <li>□ …</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+</body>
+</html>

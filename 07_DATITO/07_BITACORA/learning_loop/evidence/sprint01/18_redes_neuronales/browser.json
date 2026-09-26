@@ -1,0 +1,97 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\18_redes_neuronales.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider s0 no cambia texto o gráfico",
+    "1280px: El slider s1 no cambia texto o gráfico",
+    "1280px: El slider s2 no cambia texto o gráfico",
+    "1280px: El slider sEta no cambia texto o gráfico",
+    "1280px: El slider sW0 no cambia texto o gráfico",
+    "1280px: El slider sH no cambia texto o gráfico",
+    "1280px: El slider sSeed no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Redes neuronales · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 47,
+        ".dist": 3,
+        ".vecino": 1,
+        ".pred": 4,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 3,
+        ".formula, .ec, .ecu .f": 5
+      },
+      "failures": [
+        "El slider s0 no cambia texto o gráfico",
+        "El slider s1 no cambia texto o gráfico",
+        "El slider s2 no cambia texto o gráfico",
+        "El slider sEta no cambia texto o gráfico",
+        "El slider sW0 no cambia texto o gráfico",
+        "El slider sH no cambia texto o gráfico",
+        "El slider sSeed no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "s0",
+          "before": "0.5",
+          "after": "6",
+          "resultChanged": false
+        },
+        {
+          "id": "s1",
+          "before": "-1.5",
+          "after": "6",
+          "resultChanged": false
+        },
+        {
+          "id": "s2",
+          "before": "-1.5",
+          "after": "6",
+          "resultChanged": false
+        },
+        {
+          "id": "sEta",
+          "before": "10",
+          "after": "45",
+          "resultChanged": false
+        },
+        {
+          "id": "sW0",
+          "before": "0",
+          "after": "60",
+          "resultChanged": false
+        },
+        {
+          "id": "sH",
+          "before": "4",
+          "after": "8",
+          "resultChanged": false
+        },
+        {
+          "id": "sSeed",
+          "before": "1",
+          "after": "6",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Redes neuronales · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 47,
+        ".dist": 3,
+        ".vecino": 1,
+        ".pred": 4,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 3,
+        ".formula, .ec, .ecu .f": 5
+      },
+      "failures": []
+    }
+  ]
+}

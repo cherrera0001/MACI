@@ -1,0 +1,172 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "12.16px",
+      "border": "0px"
+    },
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(219, 234, 254)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "s0",
+      "before": "0.5",
+      "after": "6"
+    },
+    {
+      "range": "s1",
+      "before": "-1.5",
+      "after": "6"
+    },
+    {
+      "range": "s2",
+      "before": "-1.5",
+      "after": "6"
+    },
+    {
+      "range": "sEta",
+      "before": "10",
+      "after": "45"
+    },
+    {
+      "range": "sW0",
+      "before": "0",
+      "after": "60"
+    },
+    {
+      "range": "sH",
+      "before": "4",
+      "after": "8"
+    },
+    {
+      "range": "sSeed",
+      "before": "1",
+      "after": "6"
+    },
+    {
+      "button": "escalón",
+      "clicked": true
+    },
+    {
+      "button": "sigmoide",
+      "clicked": true
+    },
+    {
+      "button": "tanh",
+      "clicked": true
+    },
+    {
+      "button": "ReLU",
+      "clicked": true
+    },
+    {
+      "button": "identidad",
+      "clicked": true
+    },
+    {
+      "button": "Sí, cambia",
+      "clicked": true
+    },
+    {
+      "button": "No, queda igual",
+      "clicked": true
+    },
+    {
+      "button": "En la mitad de pasos",
+      "clicked": true
+    },
+    {
+      "button": "En menos, pero no la mitad",
+      "clicked": true
+    },
+    {
+      "button": "En más pasos",
+      "clicked": true
+    },
+    {
+      "button": "No llega",
+      "clicked": true
+    },
+    {
+      "button": "Un paso",
+      "clicked": true
+    },
+    {
+      "button": "Correr 30 pasos",
+      "clicked": true
+    },
+    {
+      "button": "Reiniciar",
+      "clicked": true
+    },
+    {
+      "button": "Una curva, por tener varias capas",
+      "clicked": true
+    },
+    {
+      "button": "Una recta, igual que una sola neurona",
+      "clicked": true
+    },
+    {
+      "button": "Algo irregular, depende del azar inicial",
+      "clicked": true
+    },
+    {
+      "button": "tanh (no lineal)",
+      "clicked": true
+    },
+    {
+      "button": "identidad (lineal)",
+      "clicked": true
+    },
+    {
+      "button": "Entrenar 4.000 pasos",
+      "clicked": true
+    },
+    {
+      "button": "Reiniciar pesos",
+      "clicked": true
+    },
+    {
+      "button": "Sí, la g es lo que importaba",
+      "clicked": true
+    },
+    {
+      "button": "No, una sola no alcanza",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

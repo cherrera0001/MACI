@@ -1,0 +1,104 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "12.16px",
+      "border": "0px"
+    },
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(209, 250, 229)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "sU",
+      "before": "0.5",
+      "after": "1"
+    },
+    {
+      "range": "sSep",
+      "before": "1.6",
+      "after": "3.6"
+    },
+    {
+      "range": "sF",
+      "before": "0.1",
+      "after": "1"
+    },
+    {
+      "button": "…suben las dos?",
+      "clicked": true
+    },
+    {
+      "button": "…bajan las dos?",
+      "clicked": true
+    },
+    {
+      "button": "…van en sentidos opuestos?",
+      "clicked": true
+    },
+    {
+      "button": "…no se mueven?",
+      "clicked": true
+    },
+    {
+      "button": "Umbral 0 (todo positivo)",
+      "clicked": true
+    },
+    {
+      "button": "Umbral 0,5",
+      "clicked": true
+    },
+    {
+      "button": "Umbral 1 (todo negativo)",
+      "clicked": true
+    },
+    {
+      "button": "Se acerca a la esquina (0, 1)",
+      "clicked": true
+    },
+    {
+      "button": "Se acerca a la diagonal",
+      "clicked": true
+    },
+    {
+      "button": "La curva no cambia; solo se mueve el punto",
+      "clicked": true
+    },
+    {
+      "button": "Separación 0: el puntaje no distingue nada",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

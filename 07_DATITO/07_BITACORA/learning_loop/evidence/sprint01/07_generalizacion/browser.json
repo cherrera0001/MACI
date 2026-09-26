@@ -1,0 +1,65 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\07_generalizacion.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider gradoI no cambia texto o gráfico",
+    "1280px: El slider radioI no cambia texto o gráfico",
+    "1280px: El slider radio no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Generalización · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 4,
+        ".dist": 0,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 2
+      },
+      "failures": [
+        "El slider gradoI no cambia texto o gráfico",
+        "El slider radioI no cambia texto o gráfico",
+        "El slider radio no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "gradoI",
+          "before": "1",
+          "after": "7",
+          "resultChanged": false
+        },
+        {
+          "id": "radioI",
+          "before": "15",
+          "after": "22",
+          "resultChanged": false
+        },
+        {
+          "id": "radio",
+          "before": "18",
+          "after": "60",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Generalización · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 4,
+        ".dist": 0,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 2
+      },
+      "failures": []
+    }
+  ]
+}

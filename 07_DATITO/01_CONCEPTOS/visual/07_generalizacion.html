@@ -8,34 +8,96 @@
   ------------------------------------------------------------------
   Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
   1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
-  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
+  4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
+  5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
+  6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
+  7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
+-->
+<title>Generalización · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="9" id="clase-9">
-<div class="leccion-top"><span class="uni">Unidad 3 · Medir si el modelo sirve</span><b>Clase 9 de 22</b></div>
-<div class="barra"><span style="width:40.9%"></span></div>
-<div class="lt">Clase 9 · Generalización, extrapolación y datos no vistos</div>
-<p><b>Objetivo.</b> Decidir si una predicción es confiable según los datos que el modelo vio, y explicar una caída de rendimiento.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="train_validation_test.html">Clase 7 · Train, validation y test</a></div>
-<div><span class="et">habilita</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
-<div><span class="et">tiempo estimado</span>~25 min</div></div>
-<div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
-<li><b>Evidencia de aprendizaje:</b> Distingue interpolar de extrapolar y descompone una caída de validación a test en sus mecanismos.</li>
-<li><b>Actividad final:</b> Las dudas resueltas del árbol de 45 cm y del agrónomo, al final de esta clase.</li>
-<li><b>Criterio de dominio:</b> Declara la extrapolación y explica la caída con dos mecanismos: haber decidido con esos datos y el cambio de distribución.</li></ul></div>
-<div class="activ"><b>Activación.</b> Tu recta tiene R² = 0,93 con árboles de 8 a 22 cm de radio. Te piden el peso de uno de 45 cm. ¿Lo entregas? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
-<label class="hecha"><input type="checkbox" data-clase-hecha="9"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
-</section>
-<nav class="pasos"><span><a href="validacion_cruzada.html">← Clase 8 · Validación cruzada y selección de modelos</a></span><a href="index.html">Índice del curso</a><span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting →</a></span></nav>
-<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
-<nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Generalizacion</b></span> · <span class="et">viene de</span><a href="train_validation_test.html">Train / validation / test</a> · <span class="et">habilita</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 9 · peso en certamen media (transversal a P2, P3, P7) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p3">C2 P3</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
-<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:40:51–0:43:37 · profesor — grado alto, definicion, la maquina que falla<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:40:51]</span></li><li><b>Clase del 7-ago</b> · 0:44:25–0:45:22 · profesor — una frontera que no generaliza<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:44:25]</span></li><li><b>Presentaciones del 4-sep</b> · 2:06:29–2:09:21 · profesor — Melbourne 2016 a 2017: decisiones y cambio de datos<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:06:29]</span></li></ul></details>
-</nav>
+<!-- La barra la inyecta 03_CODIGO/construir_navegacion.py. No la escribas a mano. -->
 <!-- datito:nav:fin -->
-
 
 <h1>Generalización</h1>
 <p class="sub">Por qué un modelo bueno aquí puede ser malo allá.<br>
@@ -681,60 +743,6 @@ de las tablas. Datos ilustrativos [DATITO]: los árboles de los dos lienzos y la
 cifras de los ejercicios de cálculo y transferencia.
 </footer>
 
-<!-- datito:nav:fin -->
-
-<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
-<p class="sub">Una línea de contexto · curso · fuente</p>
-
-<div class="clave">
-  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
-</div>
-
-<h2>1 · Qué te dan / qué pasó</h2>
-<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
-
-<h2>2 · Cómo se resuelve</h2>
-<ol class="pasos">
-  <li>Paso 1…</li>
-  <li>Paso 2…</li>
-</ol>
-
-<div class="ecu">
-  <div class="f">fórmula = aquí</div>
-  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
-</div>
-
-<details>
-  <summary>Detalle / por qué este paso</summary>
-  <p>Explicación extendida sin cambiar el layout.</p>
-</details>
-
-<details class="resp">
-  <summary>Respuesta correcta y cómo se resuelve</summary>
-  <p><strong>Respuesta:</strong> …</p>
-  <p><strong>Resolución:</strong> …</p>
-  <p><strong>Error típico:</strong> …</p>
-  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
-</details>
-
-<div class="peligro">
-  <strong>Errores que el examen castiga.</strong>
-  <ul>
-    <li>…</li>
-  </ul>
-</div>
-
-<div class="nota">
-  <strong>Checklist antes de entregar.</strong>
-  <ul>
-    <li>□ …</li>
-  </ul>
-</div>
-
-<footer>
-  Generado con template canónico Datito v1 · sin conexión ·
-  <code><!-- datito:template:v1 --></code>
-</footer>
 </main>
 </body>
 </html>

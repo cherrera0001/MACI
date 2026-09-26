@@ -1,0 +1,63 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\12_metricas_clasificacion.html",
+  "ok": true,
+  "failures": [],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Accuracy, precisión, recall y F1 · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 22,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 2,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 0
+      },
+      "failures": [],
+      "ranges": [
+        {
+          "id": "sUmbral",
+          "before": "0.5",
+          "after": "1",
+          "resultChanged": true
+        },
+        {
+          "id": "sPrev",
+          "before": "1",
+          "after": "3",
+          "resultChanged": true
+        },
+        {
+          "id": "sTpr",
+          "before": "100",
+          "after": "0",
+          "resultChanged": true
+        },
+        {
+          "id": "sFpr",
+          "before": "224",
+          "after": "1000",
+          "resultChanged": true
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Accuracy, precisión, recall y F1 · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 22,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 2,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 0,
+        ".formula, .ec, .ecu .f": 0
+      },
+      "failures": []
+    }
+  ]
+}

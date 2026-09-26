@@ -1,0 +1,38 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\06_validacion_cruzada.html",
+  "ok": true,
+  "failures": [],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Validación cruzada · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 8,
+        ".dist": 2,
+        ".vecino": 1,
+        ".pred": 3,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 3,
+        ".formula, .ec, .ecu .f": 2
+      },
+      "failures": [],
+      "ranges": []
+    },
+    {
+      "width": 390,
+      "title": "Validación cruzada · Datito",
+      "selectors": {
+        ".repreg": 1,
+        ".fuente, .cita .f": 8,
+        ".dist": 2,
+        ".vecino": 1,
+        ".pred": 3,
+        ".rol": 5,
+        ".met:not(.lect .met):not(.metgrid .met)": 3,
+        ".formula, .ec, .ecu .f": 2
+      },
+      "failures": []
+    }
+  ]
+}

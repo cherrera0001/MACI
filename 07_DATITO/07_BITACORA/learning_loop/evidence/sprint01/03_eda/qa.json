@@ -1,0 +1,74 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": null,
+    "fuente": null,
+    "dist": null,
+    "vecino": null,
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": null,
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "sk",
+      "before": "0",
+      "after": "150"
+    },
+    {
+      "button": "Conjunto 1",
+      "clicked": true
+    },
+    {
+      "button": "Conjunto 2",
+      "clicked": true
+    },
+    {
+      "button": "Conjunto 3",
+      "clicked": true
+    },
+    {
+      "button": "Conjunto 4",
+      "clicked": true
+    },
+    {
+      "button": "Ver los cuatro",
+      "clicked": true
+    },
+    {
+      "button": "Los 0 son consumo real",
+      "clicked": true
+    },
+    {
+      "button": "Los 0 son reportes que faltan",
+      "clicked": true
+    },
+    {
+      "button": "Reflejar (espejo)",
+      "clicked": true
+    },
+    {
+      "button": "Volver al inicio",
+      "clicked": true
+    },
+    {
+      "button": "Price (crudo)",
+      "clicked": true
+    },
+    {
+      "button": "log1p(Price)",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

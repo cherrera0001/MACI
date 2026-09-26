@@ -1,79 +1,62 @@
 <!DOCTYPE html>
-<html lang="es-CL">
+<html lang="es">
 <head>
 <meta charset="utf-8">
+<!-- datito:template:v1 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulador de Predicción de Falla — Vibración vs Temperatura</title>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
   :root{
-    --tinta:#1c1f24;
-    --tinta2:#4a5058;
-    --papel:#fbfaf7;
-    --caja:#ffffff;
-    --linea:#ddd8cf;
-    --acierto:#2f6b46;
-    --acierto-bg:#e6f0ea;
-    --error:#9b3226;
-    --error-bg:#f6e6e3;
-    --real:#2b5d8c;
-    --real-bg:#e3ecf4;
-    --pred:#8a5a12;
-    --pred-bg:#f6eddc;
+    --tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+    --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed
   }
   *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--papel); color:var(--tinta);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:16.5px; line-height:1.62;
-  }
-  .hoja{max-width:960px; margin:0 auto; padding:34px 26px 90px}
-  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
-  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
-  h2{font-size:1.22rem; margin:52px 0 12px; padding-top:18px; border-top:1px solid var(--linea); letter-spacing:-.01em}
-  p{margin:0 0 13px}
-  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
   @media(max-width:800px){.grid-2{grid-template-columns:1fr}}
 
   .control-row{margin-bottom:20px}
-  label{display:block; font-weight:600; font-size:.9rem; margin-bottom:8px; color:var(--tinta)}
-  input[type="range"]{width:100%; height:6px; border-radius:3px; background:var(--linea); outline:none; -webkit-appearance:none}
-  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:var(--real); cursor:pointer}
-  input[type="range"]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; background:var(--real); cursor:pointer; border:none}
+  label{display:block;font-weight:600;font-size:.9rem;margin-bottom:8px;color:var(--tinta)}
+  input[type="range"]{width:100%;height:6px;border-radius:3px;background:var(--linea);outline:none;-webkit-appearance:none}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--azul);cursor:pointer}
+  input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--azul);cursor:pointer;border:none}
 
-  .valor-display{display:inline-block; background:var(--real-bg); color:var(--real); padding:4px 10px; border-radius:4px; font-weight:700; font-family:monospace; margin-left:10px}
+  .valor-display{display:inline-block;background:#eff6ff;color:var(--azul);padding:4px 10px;border-radius:4px;font-weight:700;font-family:monospace;margin-left:10px}
 
-  button{
-    background:var(--real); color:white; border:none; padding:12px 24px;
-    border-radius:6px; font-size:.95rem; font-weight:600; cursor:pointer;
-    transition:background .16s; width:100%; margin-top:10px;
-  }
-  button:hover{background:#1e4d6d}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
 
-  .grafico{width:100%; height:400px; margin:20px 0}
-  .metricas-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:18px 0}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea);margin:20px 0}
+  .metricas-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0}
   @media(max-width:600px){.metricas-grid{grid-template-columns:1fr}}
 
-  .metrica{
-    background:var(--caja); border:1px solid var(--linea); border-radius:8px;
-    padding:12px; text-align:center;
-  }
-  .metrica-label{font-size:.73rem; color:var(--tinta2); text-transform:uppercase; letter-spacing:.06em; font-weight:700; margin-bottom:6px}
-  .metrica-valor{font-size:1.6rem; font-weight:700; color:var(--real); font-variant-numeric:tabular-nums}
+  .metrica{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:12px;text-align:center}
+  .metrica-label{font-size:.73rem;color:var(--suave);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:6px}
+  .metrica-valor{font-size:1.6rem;font-weight:700;color:var(--azul);font-variant-numeric:tabular-nums}
 
-  .peligro{background:var(--error-bg); border-left:3px solid var(--error); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
-  .clave{background:var(--real-bg); border-left:3px solid var(--real); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
 
-  footer{max-width:960px; margin:0 auto; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem; text-align:center}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
 </style>
 </head>
 <body>
-<div class="hoja">
+<main>
   <h1>Simulador de Predicción de Falla</h1>
   <p class="sub">Vibración vs Temperatura — Aprende a establecer umbrales y evaluar modelos</p>
 
-  <div class="caja">
+  <div class="panel">
     <h2>Controles de Umbral</h2>
     <div class="control-row">
       <label>Umbral de Vibración (0-10): <span class="valor-display" id="umbral-vib">5.0</span></label>
@@ -87,8 +70,8 @@
   </div>
 
   <h2>Scatter Plot: Vibración vs Temperatura</h2>
-  <p style="font-size:.9rem; color:var(--tinta2)">Rojo = FALLA real | Verde = SIN FALLA real | Línea azul = Tu umbral</p>
-  <div id="scatter" class="grafico"></div>
+  <p style="font-size:.9rem; color:var(--suave)">Verde = SIN FALLA | Rojo = FALLA real | Línea azul = Tu umbral de vibración</p>
+  <canvas id="plot-canvas" width="800" height="400"></canvas>
 
   <div class="grid-2">
     <div>
@@ -152,10 +135,9 @@
   </div>
 
   <footer>
-    [FUENTE · Clase 7 — Clasificación, FCD-2026-2_07_Clasificacion.pdf]<br>
-    Simulador interactivo para aprender predicción de falla · Iteración 2: Matriz confusión dinámica (colores por intensidad)
+    Simulador interactivo para aprender predicción de falla · Canvas local (sin CDN)
   </footer>
-</div>
+</main>
 
 <script>
   // Dataset: vibración, temperatura, falla (1=SÍ, 0=NO)
@@ -224,49 +206,102 @@
   }
 
   function dibujar_scatter(vib_umbral, temp_umbral) {
-    const sin_falla = data.filter(d => d[2] === 0);
-    const con_falla = data.filter(d => d[2] === 1);
+    const canvas = document.getElementById('plot-canvas');
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
 
-    const trace1 = {
-      x: sin_falla.map(d => d[0]),
-      y: sin_falla.map(d => d[1]),
-      mode: 'markers',
-      name: 'Sin falla',
-      marker: {size: 8, color: 'rgba(47, 107, 70, 0.7)'},
-      type: 'scatter'
-    };
+    const w = rect.width, h = rect.height;
+    const margin = {left: 60, right: 40, top: 20, bottom: 50};
+    const plotW = w - margin.left - margin.right;
+    const plotH = h - margin.top - margin.bottom;
 
-    const trace2 = {
-      x: con_falla.map(d => d[0]),
-      y: con_falla.map(d => d[1]),
-      mode: 'markers',
-      name: 'Falla real',
-      marker: {size: 8, color: 'rgba(155, 50, 38, 0.7)'},
-      type: 'scatter'
-    };
+    // Limpiar canvas
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, w, h);
 
-    // Línea de decisión
-    const trace_line = {
-      x: [vib_umbral, vib_umbral],
-      y: [20, 80],
-      mode: 'lines',
-      name: 'Tu umbral',
-      line: {color: 'rgba(43, 93, 140, 0.8)', width: 2, dash: 'dash'},
-      type: 'scatter'
-    };
+    // Convertir coordenadas
+    const toX = (vib) => margin.left + (vib / 10) * plotW;
+    const toY = (temp) => margin.top + plotH - ((temp - 20) / 65) * plotH;
 
-    const layout = {
-      title: '',
-      xaxis: {title: 'Vibración', range: [0, 10]},
-      yaxis: {title: 'Temperatura (°C)', range: [20, 85]},
-      hovermode: 'closest',
-      margin: {l: 60, r: 60, t: 40, b: 60},
-      plot_bgcolor: 'rgba(251, 250, 247, 1)',
-      paper_bgcolor: 'white',
-      height: 400
-    };
+    // Ejes
+    ctx.strokeStyle = '#d8d8d8';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left, margin.top + plotH);
+    ctx.lineTo(margin.left + plotW, margin.top + plotH);
+    ctx.stroke();
 
-    Plotly.newPlot('scatter', [trace1, trace2, trace_line], layout, {responsive: true});
+    // Etiqueta X
+    ctx.fillStyle = '#666';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Vibración', margin.left + plotW/2, h - 10);
+
+    // Etiqueta Y
+    ctx.save();
+    ctx.translate(15, margin.top + plotH/2);
+    ctx.rotate(-Math.PI/2);
+    ctx.textAlign = 'center';
+    ctx.fillText('Temperatura (°C)', 0, 0);
+    ctx.restore();
+
+    // Grid suave
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 10; i++) {
+      const x = toX(i);
+      ctx.beginPath();
+      ctx.moveTo(x, margin.top);
+      ctx.lineTo(x, margin.top + plotH);
+      ctx.stroke();
+    }
+    for (let i = 20; i <= 85; i += 10) {
+      const y = toY(i);
+      ctx.beginPath();
+      ctx.moveTo(margin.left, y);
+      ctx.lineTo(margin.left + plotW, y);
+      ctx.stroke();
+    }
+
+    // Puntos sin falla (verde)
+    ctx.fillStyle = 'rgba(5, 150, 105, 0.7)';
+    data.forEach(([vib, temp, falla]) => {
+      if (falla === 0) {
+        const x = toX(vib);
+        const y = toY(temp);
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    });
+
+    // Puntos con falla (rojo)
+    ctx.fillStyle = 'rgba(220, 38, 38, 0.7)';
+    data.forEach(([vib, temp, falla]) => {
+      if (falla === 1) {
+        const x = toX(vib);
+        const y = toY(temp);
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    });
+
+    // Línea de decisión (umbral de vibración)
+    const umbralX = toX(vib_umbral);
+    ctx.strokeStyle = 'rgba(37, 99, 235, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(umbralX, margin.top);
+    ctx.lineTo(umbralX, margin.top + plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
   }
 
   // Inicializar

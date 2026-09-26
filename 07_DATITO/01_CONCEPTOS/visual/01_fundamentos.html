@@ -8,34 +8,113 @@
   ------------------------------------------------------------------
   Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
   1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
-  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
-<!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="1" id="clase-1">
-<div class="leccion-top"><span class="uni">Unidad 1 · Del problema a los datos</span><b>Clase 1 de 22</b></div>
-<div class="barra"><span style="width:4.5%"></span></div>
-<div class="lt">Clase 1 · ¿Qué problema resuelve la ciencia de datos?</div>
-<p><b>Objetivo.</b> Explicar qué problema resuelve la ciencia de datos, ubicar una organización en la escala data-driven y decidir cuándo no hace falta un modelo.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span>ninguna: es el punto de partida</div>
-<div><span class="et">habilita</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
-<div><span class="et">tiempo estimado</span>~45 min</div></div>
-<div class="ficha"><b>Ficha Bloom · Comprender</b><ul>
-<li><b>Evidencia de aprendizaje:</b> Explica con sus palabras la definición (interdisciplinario, conocimiento, datos) y ubica tres organizaciones en la escala de cinco etapas.</li>
-<li><b>Actividad final:</b> Reconstruir la ruta de retroceso del ciclo que contó el profesor: de puesta en marcha a exploración.</li>
-<li><b>Criterio de dominio:</b> Ubica bien los tres casos y justifica con el criterio de la escala (¿los datos guían decisiones?), no con «usan muchos datos».</li></ul></div>
-<div class="activ"><b>Activación.</b> Una minera guarda cada día millones de registros de sus camiones. ¿Eso la convierte en una organización data-driven? Responde antes de leer. <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
-<label class="hecha"><input type="checkbox" data-clase-hecha="1"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
-</section>
-<nav class="pasos"><span><span class="apagado">Inicio del curso</span></span><a href="index.html">Índice del curso</a><span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target →</a></span></nav>
-<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
-<nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Fundamentos de Ciencia de Datos</b></span> · <span class="et">viene de</span>— · <span class="et">habilita</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 20 · peso en certamen media (C1: P1 a P4) · <span class="et">certamen</span><a href="certamen_1.html#p1">C1 P1</a> · <a href="certamen_1.html#p2">C1 P2</a> · <a href="certamen_1.html#p3">C1 P3</a> · <a href="certamen_1.html#p4">C1 P4</a> · <a href="certamen_1.html#p7">C1 P7</a> · <a href="certamen_1.html#p8">C1 P8</a> · <a href="certamen_2.html#p10">C2 P10</a> · <a href="certamen_2.html#p11">C2 P11</a></div>
-<details><summary>Dónde se enseñó en clase (8 tramos)</summary><ul><li><b>Clase del 19-jun</b> · 0:28:57–0:48:15 · profesor — la IA alrededor, los datos como recurso, el caso Uber<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:28:57]</span></li><li><b>Clase del 19-jun</b> · 0:48:22–0:57:14 · profesor — definicion; Big Data: tres V, infraestructura y veracidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 0:48:22]</span></li><li><b>Clase del 19-jun</b> · 1:30:12–1:53:20 · segundo docente — organizacion data-driven; escala de cinco etapas (1:44:31-1:47:47)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:30:12]</span></li><li><b>Clase del 19-jun</b> · 1:58:46–2:30:54 · segundo docente — la rueda del proceso, etapa por etapa con Uber<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 1:58:46]</span></li><li><b>Clase del 26-jun</b> · 1:48:43–1:54:31 · segundo docente — repaso de la escala y de la rueda<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 1:48:43]</span></li><li><b>Clase del 26-jun</b> · 2:06:20–2:19:25 · segundo docente — roles, perfiles T/Pi/Gamma, el lider<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md · 2:06:20]</span></li><li><b>Clase del 15-jul</b> · 0:00:19–0:06:41 · profesor — repaso del ciclo; retroceso de produccion a exploracion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:00:19]</span></li><li><b>Sesión de certamen del 24-jul</b> · 0:21:58–0:22:23 · profesor — aclaracion en el certamen: dominios, no fuentes<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:21:58]</span></li></ul></details>
-</nav>
-<!-- datito:nav:fin -->
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
+  4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
+  5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
+  6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
+  7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
+-->
+<title>Fundamentos de Ciencia de Datos · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
 
+  /* widget de este archivo */
+    .bd-fila{display:grid;grid-template-columns:5.5rem 1fr 4.5rem;gap:.7rem;align-items:center;margin:.55rem 0}
+    .bd-fila .nom{font-weight:600;font-size:.86rem}
+    .bd-pista{position:relative;height:26px;background:#f1f0ee;border-radius:5px;overflow:hidden}
+    .bd-barra{height:100%;border-radius:5px;transition:width .12s linear}
+    .bd-ok{background:#a7f3d0}
+    .bd-mal{background:#fca5a5}
+    .bd-techo{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--tinta);z-index:2}
+    .bd-val{font-size:.8rem;font-variant-numeric:tabular-nums;text-align:right;color:var(--suave)}
+    .bd-veredicto{margin-top:1rem;padding:.8rem 1rem;border-radius:8px;font-weight:600}
+    .bd-si{background:#fef2f2;border-left:3px solid var(--rojo)}
+    .bd-no{background:#f0fdf4;border-left:3px solid var(--verde)}
+    .seg{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0}
+    .seg button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600}
+    .seg button.on{background:var(--azul);border-color:var(--azul);color:#fff}
+    .caja-postura{background:var(--fondo);border-radius:8px;padding:.9rem 1.1rem;font-size:.93rem;min-height:9rem}
+    .caja-postura b{display:block;margin-top:.6rem}</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<!-- La barra la inyecta 03_CODIGO/construir_navegacion.py. No la escribas a mano. -->
+<!-- datito:nav:fin -->
 
 <h1>Fundamentos de Ciencia de Datos</h1>
 <p class="sub">Qué es esto, antes de que exista un modelo.<br>
@@ -1133,82 +1212,9 @@ mecanismo.</li>
 <a class="continuar" href="datos_features_target.html">Continuar → Clase 2 · Datos, filas, columnas, features y target</a>
 </section>
 <!-- datito:cierre:fin -->
-<footer>
-Generado por Datito · <code>07_DATITO/visual/fundamentos_ciencia_datos.html</code> ·
-funciona sin conexión · fuentes:<br>
-[FUENTE · Repo] <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_02_CienciaDeDatos.md</code> — láminas 5–8 (data-driven, escala de cinco etapas, cultura de datos) y 16–22 (la rueda).<br>
-[FUENTE · Repo] <code>11_PRESENTACIÓN/_markdown/FCD-2026-2_03_CienciaDeDatosEnLaPráctica.md</code> — láminas 5, 7–12, 20–21 y 23–25 (interdisciplina, habilidades, reclutamiento, mapa metodológico).<br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md</code> · 0:47:43–0:57:14 y 1:28:56–2:28:28 — profesor titular hasta ~1:17 (definición, valor, Big Data); segundo docente desde ~1:28 (data-driven, escala, rueda, 80 %, 9 años).<br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio.md</code> · 1:48:43–2:52:00 — segundo docente: repaso de la escala, el 90 %, habilidades T/Π/Γ, el líder, «un modelo es una función matemática».<br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md</code> · 0:03:27–0:06:30 — profesor: el retroceso desde producción y el 80 %.<br>
-[FUENTE · Repo] <code>09_CLASES/transcripciones/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md</code> · 0:22:23–0:22:38 — aclaración de «dominios» durante el Certamen 1.<br>
-[FUENTE · Repo] <code>01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md</code> — estructura y temas del Certamen 1.<br>
-[FUENTE · Repo] <code>07_DATITO/patron_evaluacion.md</code> — formatos y errores que castiga.<br>
-[FUENTE · Repo] <code>05_RESULTADOS/resultados_temporal.json</code> — MAE 188.218, R² 0,757, baseline 431.649, brecha 0,17.<br>
-[INFERENCIA] la ausencia de <em>data-informed</em> en las 14 transcripciones disponibles al 2026-09-21 y en las láminas FCD, el procedimiento «¿hace falta un modelo?» y la etapa en que quedó el proyecto Melbourne.<br>
-[DATITO] el simulador de Big Data, el comparador de posturas (vocabulario externo), los casos forestal, de transporte, minero y de salud, y el gráfico de ruido.<br>
-<br>
-<strong>Datos reales:</strong> las cifras de Melbourne (del JSON citado) y las de
-las láminas. <strong>Ilustrativos:</strong> los datos del gráfico de ruido
-(simulados con la escala de Melbourne, no sus filas) y los números de los casos
-inventados. Las citas de clase provienen de transcripción automática y van
-literales; las correcciones van entre ⟨⟩.
-</footer>
 
-<!-- datito:nav:fin -->
 
-<h1>Fundamentos de Ciencia de Datos</h1>
-<p class="sub">Aprende qué es, cómo funciona, cuándo usar</p>
 
-<div class="clave">
-  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
-</div>
-
-<h2>1 · Qué te dan / qué pasó</h2>
-<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
-
-<h2>2 · Cómo se resuelve</h2>
-<ol class="pasos">
-  <li>Paso 1…</li>
-  <li>Paso 2…</li>
-</ol>
-
-<div class="ecu">
-  <div class="f">fórmula = aquí</div>
-  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
-</div>
-
-<details>
-  <summary>Detalle / por qué este paso</summary>
-  <p>Explicación extendida sin cambiar el layout.</p>
-</details>
-
-<details class="resp">
-  <summary>Respuesta correcta y cómo se resuelve</summary>
-  <p><strong>Respuesta:</strong> …</p>
-  <p><strong>Resolución:</strong> …</p>
-  <p><strong>Error típico:</strong> …</p>
-  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
-</details>
-
-<div class="peligro">
-  <strong>Errores que el examen castiga.</strong>
-  <ul>
-    <li>…</li>
-  </ul>
-</div>
-
-<div class="nota">
-  <strong>Checklist antes de entregar.</strong>
-  <ul>
-    <li>□ …</li>
-  </ul>
-</div>
-
-<footer>
-  Generado con template canónico Datito v1 · sin conexión ·
-  <code><!-- datito:template:v1 --></code>
-</footer>
 </main>
 </body>
 </html>

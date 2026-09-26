@@ -1,0 +1,49 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\04_limpieza_preparacion.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider mimp no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Limpieza y preparación de datos · Datito",
+      "selectors": {
+        ".repreg": 3,
+        ".fuente, .cita .f": 10,
+        ".dist": 3,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 5
+      },
+      "failures": [
+        "El slider mimp no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "mimp",
+          "before": "0",
+          "after": "20",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Limpieza y preparación de datos · Datito",
+      "selectors": {
+        ".repreg": 3,
+        ".fuente, .cita .f": 10,
+        ".dist": 3,
+        ".vecino": 1,
+        ".pred": 2,
+        ".rol": 7,
+        ".met:not(.lect .met):not(.metgrid .met)": 2,
+        ".formula, .ec, .ecu .f": 5
+      },
+      "failures": []
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": null,
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(219, 234, 254)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "grado",
+      "before": "1",
+      "after": "12"
+    },
+    {
+      "button": "Los dos bajan siempre",
+      "clicked": true
+    },
+    {
+      "button": "Entrenamiento baja siempre; validación baja y después sube",
+      "clicked": true
+    },
+    {
+      "button": "Los dos bajan y después los dos suben",
+      "clicked": true
+    },
+    {
+      "button": "Entrenamiento sube; validación baja",
+      "clicked": true
+    },
+    {
+      "button": "Grado 1",
+      "clicked": true
+    },
+    {
+      "button": "El mejor en validación",
+      "clicked": true
+    },
+    {
+      "button": "Grado 12",
+      "clicked": true
+    },
+    {
+      "button": "Más filas: pasar de 13 a 39 pinos de entrenamiento",
+      "clicked": true
+    },
+    {
+      "button": "Que es el mejor modelo posible",
+      "clicked": true
+    },
+    {
+      "button": "Que está sobreajustado, seguro",
+      "clicked": true
+    },
+    {
+      "button": "Nada por sí solo: hace falta un error fuera del entrenamient",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

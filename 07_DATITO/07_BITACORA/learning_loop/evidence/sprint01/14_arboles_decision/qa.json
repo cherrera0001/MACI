@@ -1,0 +1,141 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": null,
+    "dist": {
+      "background": "rgb(238, 242, 255)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(219, 234, 254)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "gUm",
+      "before": "4",
+      "after": "10"
+    },
+    {
+      "range": "eN",
+      "before": "11",
+      "after": "51"
+    },
+    {
+      "range": "eP",
+      "before": "0.65",
+      "after": "0.95"
+    },
+    {
+      "range": "eR",
+      "before": "0",
+      "after": "1"
+    },
+    {
+      "button": "A · el del profesor",
+      "clicked": true
+    },
+    {
+      "button": "B · un lado casi puro",
+      "clicked": true
+    },
+    {
+      "button": "C · un hijo 100 % puro",
+      "clicked": true
+    },
+    {
+      "button": "A · x₁ ≤ 4",
+      "clicked": true
+    },
+    {
+      "button": "B · x₁ ≤ 6,5",
+      "clicked": true
+    },
+    {
+      "button": "C · x₂ ≤ 8,3",
+      "clicked": true
+    },
+    {
+      "button": "x₁",
+      "clicked": true
+    },
+    {
+      "button": "x₂",
+      "clicked": true
+    },
+    {
+      "button": "Gini",
+      "clicked": true
+    },
+    {
+      "button": "Entropía",
+      "clicked": true
+    },
+    {
+      "button": "Error de clasificación",
+      "clicked": true
+    },
+    {
+      "button": "Buscar el mejor corte (lo que hace C4.5)",
+      "clicked": true
+    },
+    {
+      "button": "Volver a un solo corte",
+      "clicked": true
+    },
+    {
+      "button": "…sube siempre hacia 100 %",
+      "clicked": true
+    },
+    {
+      "button": "…depende de si se equivocan en los mismos casos",
+      "clicked": true
+    },
+    {
+      "button": "…no cambia: 65 % es 65 %",
+      "clicked": true
+    },
+    {
+      "button": "Clones (ρ = 1)",
+      "clicked": true
+    },
+    {
+      "button": "Independientes (ρ = 0)",
+      "clicked": true
+    },
+    {
+      "button": "Modelos peores que una moneda (p = 0,45)",
+      "clicked": true
+    },
+    {
+      "button": "Sortear otros 60 casos",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

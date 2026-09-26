@@ -1,0 +1,92 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": {
+      "background": "rgb(26, 26, 26)",
+      "font": "16px",
+      "border": "0px"
+    },
+    "fuente": null,
+    "dist": null,
+    "vecino": {
+      "background": "rgb(239, 246, 255)",
+      "font": "14.72px",
+      "border": "3px"
+    },
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": {
+      "background": "rgb(219, 234, 254)",
+      "font": "10.88px",
+      "border": "0px"
+    },
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "gradoI",
+      "before": "1",
+      "after": "7"
+    },
+    {
+      "range": "radioI",
+      "before": "15",
+      "after": "22"
+    },
+    {
+      "range": "radio",
+      "before": "18",
+      "after": "60"
+    },
+    {
+      "button": "Entre 72 y 88 kg: dentro del rango siempre interpola bien",
+      "clicked": true
+    },
+    {
+      "button": "Puede salir un valor que no sigue la tendencia",
+      "clicked": true
+    },
+    {
+      "button": "Un error: solo predice radios que midió",
+      "clicked": true
+    },
+    {
+      "button": "Grado 7 · radio 8,5",
+      "clicked": true
+    },
+    {
+      "button": "Grado 1 · radio 8,5",
+      "clicked": true
+    },
+    {
+      "button": "Avisa que no puede",
+      "clicked": true
+    },
+    {
+      "button": "Devuelve un número sin más",
+      "clicked": true
+    },
+    {
+      "button": "Da error",
+      "clicked": true
+    },
+    {
+      "button": "Radio 18 · dentro",
+      "clicked": true
+    },
+    {
+      "button": "Radio 45 · fuera",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

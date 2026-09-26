@@ -1,0 +1,103 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": null,
+    "fuente": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "12.16px",
+      "border": "0px"
+    },
+    "dist": null,
+    "vecino": null,
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": null,
+    "met": {
+      "background": "rgb(255, 255, 255)",
+      "font": "16px",
+      "border": "1px"
+    }
+  },
+  "controls": [
+    {
+      "range": "sAng",
+      "before": "35",
+      "after": "89"
+    },
+    {
+      "range": "sB",
+      "before": "0.55",
+      "after": "1.6"
+    },
+    {
+      "button": "Ninguna de las dos",
+      "clicked": true
+    },
+    {
+      "button": "Solo la exactitud",
+      "clicked": true
+    },
+    {
+      "button": "Solo el MAE",
+      "clicked": true
+    },
+    {
+      "button": "Las dos",
+      "clicked": true
+    },
+    {
+      "button": "ambigua=0 · espiral=1 · elíptica=2",
+      "clicked": true
+    },
+    {
+      "button": "ambigua=0 · elíptica=1 · espiral=2",
+      "clicked": true
+    },
+    {
+      "button": "espiral=0 · ambigua=1 · elíptica=2",
+      "clicked": true
+    },
+    {
+      "button": "espiral=0 · elíptica=1 · ambigua=2",
+      "clicked": true
+    },
+    {
+      "button": "elíptica=0 · ambigua=1 · espiral=2",
+      "clicked": true
+    },
+    {
+      "button": "elíptica=0 · espiral=1 · ambigua=2",
+      "clicked": true
+    },
+    {
+      "button": "Suave: va bajando de a fracciones",
+      "clicked": true
+    },
+    {
+      "button": "A saltos: 3 → 3 → 3 → 2, de golpe",
+      "clicked": true
+    },
+    {
+      "button": "No sé — quiero mirar primero",
+      "clicked": true
+    },
+    {
+      "button": "Ajustar el modelo",
+      "clicked": true
+    },
+    {
+      "button": "Volver al inicio",
+      "clicked": true
+    },
+    {
+      "button": "Quitar el animal nuevo",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}

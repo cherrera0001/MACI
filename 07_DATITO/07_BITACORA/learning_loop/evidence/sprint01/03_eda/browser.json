@@ -1,0 +1,49 @@
+{
+  "path": "07_DATITO\\01_CONCEPTOS\\visual\\03_eda.html",
+  "ok": false,
+  "failures": [
+    "1280px: El slider sk no cambia texto o gráfico"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "title": "Análisis exploratorio de datos · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 8,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 12,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 4,
+        ".formula, .ec, .ecu .f": 1
+      },
+      "failures": [
+        "El slider sk no cambia texto o gráfico"
+      ],
+      "ranges": [
+        {
+          "id": "sk",
+          "before": "0",
+          "after": "150",
+          "resultChanged": false
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "title": "Análisis exploratorio de datos · Datito",
+      "selectors": {
+        ".repreg": 0,
+        ".fuente, .cita .f": 8,
+        ".dist": 0,
+        ".vecino": 0,
+        ".pred": 12,
+        ".rol": 0,
+        ".met:not(.lect .met):not(.metgrid .met)": 4,
+        ".formula, .ec, .ecu .f": 1
+      },
+      "failures": []
+    }
+  ]
+}

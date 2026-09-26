@@ -1,0 +1,97 @@
+{
+  "errors": [],
+  "h1": 1,
+  "styles": {
+    "repreg": null,
+    "fuente": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "12.16px",
+      "border": "0px"
+    },
+    "dist": null,
+    "vecino": null,
+    "pred": {
+      "background": "rgb(255, 251, 235)",
+      "font": "16px",
+      "border": "1px"
+    },
+    "rol": null,
+    "met": {
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "16px",
+      "border": "0px"
+    }
+  },
+  "controls": [
+    {
+      "range": "sUmbral",
+      "before": "0.5",
+      "after": "1"
+    },
+    {
+      "range": "sPrev",
+      "before": "1",
+      "after": "3"
+    },
+    {
+      "range": "sTpr",
+      "before": "100",
+      "after": "100"
+    },
+    {
+      "range": "sFpr",
+      "before": "224",
+      "after": "1000"
+    },
+    {
+      "button": "Exactitud",
+      "clicked": true
+    },
+    {
+      "button": "Precisión",
+      "clicked": true
+    },
+    {
+      "button": "Recall (TPR)",
+      "clicked": true
+    },
+    {
+      "button": "FPR",
+      "clicked": true
+    },
+    {
+      "button": "F1",
+      "clicked": true
+    },
+    {
+      "button": "Suben las dos",
+      "clicked": true
+    },
+    {
+      "button": "Sube recall, baja precisión",
+      "clicked": true
+    },
+    {
+      "button": "Baja recall, sube precisión",
+      "clicked": true
+    },
+    {
+      "button": "Ninguna cambia",
+      "clicked": true
+    },
+    {
+      "button": "Sigue igual: el modelo es el mismo",
+      "clicked": true
+    },
+    {
+      "button": "Se desploma",
+      "clicked": true
+    },
+    {
+      "button": "Mejora",
+      "clicked": true
+    }
+  ],
+  "desktopOverflow": false,
+  "mobileOverflow": false
+}
