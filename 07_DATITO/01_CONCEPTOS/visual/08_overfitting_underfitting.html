@@ -326,6 +326,7 @@ function drawTrainTestLoss() {
   const w = canvas.width - 2 * padding;
   const h = canvas.height - 2 * padding;
   const maxLoss = Math.max(...trainLoss, ...testLoss);
+  const selectedGrade = parseInt(document.getElementById('grado')?.value || '1');
 
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -359,6 +360,18 @@ function drawTrainTestLoss() {
     else ctx.lineTo(x, y);
   }
   ctx.stroke();
+
+  // Highlight selected grade with vertical line
+  const selectedIdx = selectedGrade - 1;
+  const xSelected = padding + (selectedIdx / (degrees.length - 1)) * w;
+  ctx.strokeStyle = '#7c3aed';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(xSelected, padding);
+  ctx.lineTo(xSelected, canvas.height - padding);
+  ctx.stroke();
+  ctx.setLineDash([]);
 
   ctx.font = '11px "Segoe UI"';
   ctx.fillStyle = '#2563eb';
