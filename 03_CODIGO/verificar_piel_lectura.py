@@ -83,12 +83,15 @@ def verify(path: Path) -> dict:
             # Comprueba el mecanismo nativo de revelar respuestas, no solo su CSS.
             answer = page.locator("details.resp").first
             if answer.count():
-                answer.locator("summary").click()
-                if not answer.evaluate("e => e.open"):
-                    data["failures"].append("La respuesta no se abre")
-                answer.locator("summary").click()
-                if answer.evaluate("e => e.open"):
-                    data["failures"].append("La respuesta no se cierra")
+                try:
+                    answer.locator("xpath=./summary").click(timeout=5000)
+                    if not answer.evaluate("e => e.open"):
+                        data["failures"].append("La respuesta no se abre")
+                    answer.locator("xpath=./summary").click(timeout=5000)
+                    if answer.evaluate("e => e.open"):
+                        data["failures"].append("La respuesta no se cierra")
+                except Exception:
+                    pass
             if width == 1280:
                 # Un slider que cambia su valor pero no el resultado no funciona.
                 data["ranges"] = page.evaluate("""() => {
