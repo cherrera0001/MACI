@@ -311,11 +311,62 @@
 <p>Histograma de temperaturas de sensores muestra dos grupos claramente separados. Se sospecha que pertenecen a dos proveedores diferentes.</p>
 
 <p><strong>Figura 3.1: Histograma de Temperaturas (Dos Proveedores)</strong></p>
-<div class="panel">
-  <p style="text-align:center; color:#666; font-style:italic;">
-    [INSERTAR IMAGEN: Histograma con dos picos bimodales en ~60°C (Proveedor 1) y ~140°C (Proveedor 2)]
-  </p>
-</div>
+<svg width="500" height="300" style="border:1px solid #ddd; display:block; margin:1rem 0; background:#fff">
+  <!-- Ejes -->
+  <line x1="50" y1="250" x2="480" y2="250" stroke="#999" stroke-width="2"/>
+  <line x1="50" y1="250" x2="50" y2="20" stroke="#999" stroke-width="2"/>
+
+  <!-- Marcas X (Temperatura) -->
+  <line x1="50" y1="250" x2="50" y2="255" stroke="#999" stroke-width="1"/>
+  <line x1="150" y1="250" x2="150" y2="255" stroke="#999" stroke-width="1"/>
+  <line x1="250" y1="250" x2="250" y2="255" stroke="#999" stroke-width="1"/>
+  <line x1="350" y1="250" x2="350" y2="255" stroke="#999" stroke-width="1"/>
+  <line x1="450" y1="250" x2="450" y2="255" stroke="#999" stroke-width="1"/>
+
+  <!-- Etiquetas X -->
+  <text x="50" y="270" font-size="11" text-anchor="middle">0°C</text>
+  <text x="150" y="270" font-size="11" text-anchor="middle">50°C</text>
+  <text x="250" y="270" font-size="11" text-anchor="middle">100°C</text>
+  <text x="350" y="270" font-size="11" text-anchor="middle">150°C</text>
+  <text x="450" y="270" font-size="11" text-anchor="middle">200°C</text>
+
+  <!-- Marcas Y -->
+  <line x1="45" y1="250" x2="50" y2="250" stroke="#999" stroke-width="1"/>
+  <line x1="45" y1="180" x2="50" y2="180" stroke="#999" stroke-width="1"/>
+  <line x1="45" y1="110" x2="50" y2="110" stroke="#999" stroke-width="1"/>
+  <line x1="45" y1="40" x2="50" y2="40" stroke="#999" stroke-width="1"/>
+
+  <!-- Etiquetas Y -->
+  <text x="38" y="254" font-size="11" text-anchor="end">0</text>
+  <text x="38" y="184" font-size="11" text-anchor="end">5</text>
+  <text x="38" y="114" font-size="11" text-anchor="end">10</text>
+  <text x="38" y="44" font-size="11" text-anchor="end">15</text>
+
+  <!-- Pico 1: Proveedor 1 (~55-65°C, frecuencia ~12) -->
+  <rect x="110" y="165" width="15" height="85" fill="#2563eb" opacity="0.7"/>
+  <rect x="125" y="110" width="15" height="140" fill="#2563eb" opacity="0.7"/>
+  <rect x="140" y="145" width="15" height="105" fill="#2563eb" opacity="0.7"/>
+
+  <!-- Pico 2: Proveedor 2 (~135-155°C, frecuencia ~13) -->
+  <rect x="300" y="160" width="15" height="90" fill="#dc2626" opacity="0.7"/>
+  <rect x="315" y="75" width="15" height="175" fill="#dc2626" opacity="0.7"/>
+  <rect x="330" y="140" width="15" height="110" fill="#dc2626" opacity="0.7"/>
+
+  <!-- Etiqueta de eje X -->
+  <text x="480" y="285" font-size="12" font-weight="600" text-anchor="end">Temperatura (°C)</text>
+
+  <!-- Etiqueta de eje Y -->
+  <text x="20" y="30" font-size="12" font-weight="600" text-anchor="start">Frecuencia</text>
+
+  <!-- Leyenda -->
+  <rect x="350" y="40" width="120" height="80" fill="#fff" stroke="#ddd" stroke-width="1" rx="4"/>
+  <rect x="365" y="50" width="12" height="12" fill="#2563eb" opacity="0.7"/>
+  <text x="385" y="59" font-size="11">Proveedor 1</text>
+  <text x="385" y="72" font-size="10" fill="#666">(~60°C)</text>
+  <rect x="365" y="80" width="12" height="12" fill="#dc2626" opacity="0.7"/>
+  <text x="385" y="89" font-size="11">Proveedor 2</text>
+  <text x="385" y="102" font-size="10" fill="#666">(~140°C)</text>
+</svg>
 
 <details class="resp">
 <summary>Respuesta: Verificaciones necesarias antes de "corregir"</summary>
@@ -341,18 +392,27 @@
 
 <h3>d) Por qué Agente > LLM + secuencia de acciones</h3>
 
+<p><strong>Contexto:</strong> Técnico reporta: "Sensor 7 leyendo valores extraños". Agente debe detectar anomalía, consultar manual, y generar orden de inspección si es necesario.</p>
+
 <ol class="pasos">
-<li>LLM recibe: "Revisa sensor y genera orden si anomalía"</li>
-<li>Llama: obtener_temperatura() → 165°C (dato real)</li>
-<li>Razona: 165°C > 160°C → anómalo</li>
-<li>Llama: buscar_manual() → instrucciones reales de BD</li>
-<li>Llama: crear_orden_inspección() → orden CREADA en sistema</li>
+<li><strong>Agente recibe tarea:</strong> "Evalúa sensor y crea orden si hay anomalía"</li>
+<li><strong>Accede datos:</strong> Agente llama obtener_temperatura(sensor_7) → recibe 162°C (dato en tiempo real)</li>
+<li><strong>Consulta criterio:</strong> Agente llama obtener_rango_normal(sensor_7) → retorna (40°C, 120°C) según modelo</li>
+<li><strong>Razona:</strong> 162°C está fuera de rango → anomalía confirmada</li>
+<li><strong>Busca instrucciones:</strong> Agente llama buscar_manual(sensor_7) → obtiene protocolo de BD</li>
+<li><strong>Ejecuta acción:</strong> Agente llama crear_orden_inspección(sensor_7, motivo="temp fuera de rango") → orden registrada en sistema</li>
 </ol>
 
 <details class="resp">
-<summary>Respuesta: Agente accede a datos + ejecuta acciones</summary>
-<p><strong>¿Por qué Agente?</strong> LLM solo genera texto. Agente: razona + accede datos + ejecuta.</p>
-<p><strong>Roles:</strong> LLM=cerebro, Datos=ojos, Herramientas=brazos.</p>
+<summary>Respuesta: Agente accede datos, valida, y ejecuta</summary>
+<p><strong>¿Por qué Agente > LLM aislado?</strong></p>
+<ul>
+<li>LLM solo genera texto predicho; no accede ni valida datos reales.</li>
+<li>Agente: consulta datos reales (sensor, histórico, manual), aplica criterios operacionales, y crea acciones en el sistema.</li>
+<li><strong>Rol del LLM:</strong> Cerebro que razona y decide (¿es anomalía? ¿qué hacer?).</li>
+<li><strong>Rol de datos/herramientas:</strong> Ojos (sensores, BD) y brazos (crear orden, registrar evento).</li>
+<li><strong>Validación:</strong> Técnico humano verifica que orden es correcta antes de ejecutar; agente no reemplaza juicio humano, lo asiste.</li>
+</ul>
 </details>
 
 <div class="peligro">
