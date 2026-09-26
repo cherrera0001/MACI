@@ -1275,6 +1275,209 @@ if (document.getElementById('sVol')) {
   updateBigDataViz(); // Inicializar
 }
 
+// Función para dibujar gráfica de epsilon
+function drawEpsilonChart() {
+  const canvas = document.getElementById('cv');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width;
+  const h = canvas.height;
+  const eps = parseFloat(document.getElementById('sEps').value) / 260 * 100; // Normalizar a 0-100
+
+  // Márgenes
+  const margin = { top: 40, right: 40, bottom: 60, left: 70 };
+  const plotW = w - margin.left - margin.right;
+  const plotH = h - margin.top - margin.bottom;
+
+  // Limpiar canvas
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+
+  // Colores
+  const colorF = '#1a1a1a';      // Negro: f(X)
+  const colorPoints = '#888';    // Gris: puntos de datos
+  const colorModel = '#2563eb';  // Azul: f̂(X)
+  const colorGrid = '#e5e7eb';
+
+  // Generar datos sintéticos
+  const nPoints = 25;
+  const xData = [];
+  const yTrue = [];
+  const yObserved = [];
+
+  for (let i = 0; i < nPoints; i++) {
+    const x = i / (nPoints - 1);
+    const xVal = x * 100; // Escala 0-100
+    const fX = 50 + 30 * Math.sin(x * Math.PI) + 10 * x; // Función de verdad
+    const noise = (Math.random() - 0.5) * eps * 2;
+
+    xData.push(x);
+    yTrue.push(fX);
+    yObserved.push(fX + noise);
+  }
+
+  // Función para convertir datos a coordenadas de canvas
+  const xToCanvas = (x) => margin.left + x * plotW;
+  const yToCanvas = (y) => margin.top + plotH - (y / 100) * plotH;
+
+  // Dibujar grid vertical
+  ctx.strokeStyle = colorGrid;
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 5; i++) {
+    const x = xToCanvas((i / 5) * 100);
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + plotH);
+    ctx.stroke();
+  }
+
+  // Dibujar grid horizontal
+  for (let i = 0; i <= 5; i++) {
+    const y = margin.top + (i / 5) * plotH;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + plotW, y);
+    ctx.stroke();
+  }
+
+  // Dibujar puntos de datos (f(X) + ε)
+  ctx.fillStyle = colorPoints;
+  ctx.globalAlpha = 0.6;
+  for (let i = 0; i < yObserved.length; i++) {
+    const x = xToCanvas(xData[i] * 100);
+    const y = yToCanvas(yObserved[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // Dibujar f(X) - línea negra sólida
+  ctx.strokeStyle = colorF;
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let i = 0; i < yTrue.length; i++) {
+    const x = xToCanvas(xData[i] * 100);
+    const y = yToCanvas(yTrue[i]);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Dibujar f̂(X) - línea azul punteada (estimación del modelo)
+  ctx.strokeStyle = colorModel;
+  ctx.lineWidth = 2;
+  ctx.setLineDash([8, 5]);
+  ctx.beginPath();
+  for (let i = 0; i < yObserved.length; i++) {
+    const x = xToCanvas(xData[i] * 100);
+    // Suavizar usando promedio móvil simple
+    let smoothY = yObserved[i];
+    if (i > 0 && i < yObserved.length - 1) {
+      smoothY = (yObserved[i - 1] + yObserved[i] + yObserved[i + 1]) / 3;
+    }
+    const y = yToCanvas(smoothY);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Dibujar banda de incertidumbre (epsilon)
+  ctx.fillStyle = '#3b82f6';
+  ctx.globalAlpha = 0.1;
+  ctx.beginPath();
+  // Línea superior (f + ε)
+  for (let i = 0; i < yTrue.length; i++) {
+    const x = xToCanvas(xData[i] * 100);
+    const y = yToCanvas(Math.min(100, yTrue[i] + eps / 2));
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  // Línea inferior (f - ε)
+  for (let i = yTrue.length - 1; i >= 0; i--) {
+    const x = xToCanvas(xData[i] * 100);
+    const y = yToCanvas(Math.max(0, yTrue[i] - eps / 2));
+    ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // Dibujar ejes
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 1.5;
+  // Eje X
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top + plotH);
+  ctx.lineTo(margin.left + plotW, margin.top + plotH);
+  ctx.stroke();
+  // Eje Y
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + plotH);
+  ctx.stroke();
+
+  // Etiquetas de ejes
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Datos (X)', margin.left + plotW / 2, margin.top + plotH + 40);
+
+  ctx.save();
+  ctx.translate(20, margin.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.fillText('Precio (Y, miles AUD)', 0, 0);
+  ctx.restore();
+
+  // Leyenda
+  const legendX = margin.left + 20;
+  const legendY = margin.top + 10;
+  const legendItemHeight = 18;
+
+  // f(X) - negra
+  ctx.strokeStyle = colorF;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(legendX, legendY);
+  ctx.lineTo(legendX + 20, legendY);
+  ctx.stroke();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 11px sans-serif';
+  ctx.fillText('f(X)', legendX + 28, legendY);
+
+  // f̂(X) - azul punteada
+  ctx.strokeStyle = colorModel;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(legendX, legendY + legendItemHeight);
+  ctx.lineTo(legendX + 20, legendY + legendItemHeight);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillText('f̂(X) (modelo)', legendX + 28, legendY + legendItemHeight);
+
+  // Datos - puntos
+  ctx.fillStyle = colorPoints;
+  ctx.beginPath();
+  ctx.arc(legendX + 10, legendY + legendItemHeight * 2, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillText('f(X) + ε (datos observados)', legendX + 28, legendY + legendItemHeight * 2);
+}
+
+// Inicializar canvas al cargar
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('cv')) {
+    drawEpsilonChart();
+  }
+});
+
 // Manejador para epsilon
 document.getElementById('sEps').addEventListener('input', function() {
   document.getElementById('oEps').textContent = Math.round(this.value);
