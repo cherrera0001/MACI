@@ -51,3 +51,7 @@ auth.json
 
 # Presentaciones originales: se versiona el texto extraido, no los PDF de 20 MB
 11_PRESENTACIÓN/*.pdf
+
+# Archivos grandes de examen (PDFs)
+*.pdf
+08_PROYECTO_FCD/Certamen3/
