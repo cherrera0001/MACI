@@ -1,178 +1,98 @@
-<!DOCTYPE html>
-<html lang="es-CL">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Accuracy, precisión, recall y F1 — elegir el denominador</title>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
+  4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
+  5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
+  6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
+  7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
+-->
+<title>Accuracy, precisión, recall y F1 · Datito</title>
 <style>
-  :root{
-    --tinta:#1c1f24;
-    --tinta2:#4a5058;
-    --papel:#fbfaf7;
-    --caja:#ffffff;
-    --linea:#ddd8cf;
-    --acierto:#2f6b46;
-    --acierto-bg:#e6f0ea;
-    --error:#9b3226;
-    --error-bg:#f6e6e3;
-    --real:#2b5d8c;     /* eje: lo que ERA */
-    --real-bg:#e3ecf4;
-    --pred:#8a5a12;     /* eje: lo que DIJE */
-    --pred-bg:#f6eddc;
-    --total:#5a4a78;
-    --total-bg:#ece8f3;
-    --aviso:#7a5b00;
-    --aviso-bg:#fdf6e0;
-  }
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
   *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--papel); color:var(--tinta);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:16.5px; line-height:1.62;
-  }
-  .hoja{max-width:860px; margin:0 auto; padding:34px 26px 90px}
-  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
-  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
-  .ruta{color:var(--tinta2); font-size:.86rem; margin:14px 0 0; font-variant-numeric:tabular-nums}
-  h2{
-    font-size:1.22rem; margin:52px 0 12px; padding-top:18px;
-    border-top:1px solid var(--linea); letter-spacing:-.01em;
-  }
-  h3{font-size:1.02rem; margin:26px 0 8px; color:var(--tinta)}
-  p{margin:0 0 13px}
-  ul,ol{margin:0 0 13px; padding-left:22px}
-  li{margin:0 0 6px}
-  code,.mono{font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace; font-size:.93em}
-  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
-  .caja.tenue{background:#f5f3ee}
-  .aviso{background:var(--aviso-bg); border:1px solid #e8d9a8; border-left:4px solid #c9a227; border-radius:6px; padding:14px 17px; margin:20px 0}
-  .aviso .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--aviso); font-weight:700; display:block; margin-bottom:5px}
-  .certamen{background:#efe9f5; border:1px solid #d5c9e4; border-left:4px solid var(--total); border-radius:6px; padding:14px 17px; margin:20px 0}
-  .certamen .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--total); font-weight:700; display:block; margin-bottom:5px}
-  .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
-  .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
-  .cita{border-left:3px solid var(--acierto); background:#f0f6f2; padding:12px 16px; margin:18px 0; font-style:italic; border-radius:0 6px 6px 0}
-  .cita .f{display:block; font-style:normal; font-size:.8rem; color:var(--tinta2); margin-top:7px}
-  .nota{background:var(--aviso-bg); border-left:3px solid #c9a227; padding:12px 16px; margin:18px 0; font-size:.94rem; border-radius:0 6px 6px 0}
-  .nota table{margin:10px 0 4px}
-  details.resp{background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:.6rem 1rem; margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer; font-weight:700; color:#065f46}
-  .preg{font-weight:600; margin:18px 0 6px}
-  .peligro{background:var(--error-bg); border-left:3px solid var(--error); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
-  .clave{background:var(--real-bg); border-left:3px solid var(--real); padding:12px 16px; margin:18px 0; border-radius:0 6px 6px 0}
-  .mini{border-collapse:collapse; width:auto; margin:10px 0; font-size:.9rem}
-  .mini th,.mini td{border:1px solid var(--linea); padding:6px 12px; text-align:center}
-  a{color:var(--real)}
-  footer{max-width:808px; margin:0 auto 60px; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem}
-  @media(max-width:860px){ footer{margin:0 16px 50px} }
-
-  /* ---- ecuaciones ---- */
-  .eq{
-    background:#f3f1ec; border:1px solid var(--linea); border-radius:7px;
-    padding:15px 18px; margin:14px 0; text-align:center;
-    font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
-    font-size:1.02rem; overflow-x:auto;
-  }
-  .frac{display:inline-block; vertical-align:middle; text-align:center; margin:0 3px}
-  .frac .num{display:block; padding:0 8px 2px; border-bottom:1.6px solid var(--tinta)}
-  .frac .den{display:block; padding:3px 8px 0}
-  .den-real{color:var(--real); font-weight:700}
-  .den-pred{color:var(--pred); font-weight:700}
-  .den-total{color:var(--total); font-weight:700}
-  .ok{color:var(--acierto); font-weight:700}
-  .mal{color:var(--error); font-weight:700}
-
-  /* ---- matriz interactiva ---- */
-  .mwrap{display:grid; grid-template-columns:118px 1fr 1fr; gap:6px; margin:18px 0 6px; font-size:.93rem}
-  .mcell{
-    border:1.6px solid var(--linea); border-radius:7px; padding:11px 10px; text-align:center;
-    background:#fff; transition:background .16s, border-color .16s, box-shadow .16s;
-  }
-  .mcell .nom{font-size:.73rem; letter-spacing:.06em; text-transform:uppercase; color:var(--tinta2); display:block}
-  .mcell .val{font-size:1.5rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.18}
-  .mcell .glosa{font-size:.76rem; color:var(--tinta2); display:block; line-height:1.34; margin-top:3px}
-  .mcell.vp,.mcell.vn{border-color:#bcd6c6}
-  .mcell.vp .val,.mcell.vn .val{color:var(--acierto)}
-  .mcell.fp,.mcell.fn{border-color:#e3c3bc}
-  .mcell.fp .val,.mcell.fn .val{color:var(--error)}
-  .mcell.lit{box-shadow:0 0 0 3px rgba(0,0,0,.055)}
-  .mcell.lit-real{background:var(--real-bg); border-color:var(--real)}
-  .mcell.lit-pred{background:var(--pred-bg); border-color:var(--pred)}
-  .mcell.lit-total{background:var(--total-bg); border-color:var(--total)}
-  .mrot{display:flex; align-items:center; justify-content:flex-end; padding-right:9px; text-align:right; font-size:.83rem; color:var(--tinta2); line-height:1.3}
-  .mhead{text-align:center; font-size:.79rem; letter-spacing:.05em; text-transform:uppercase; color:var(--pred); font-weight:700; padding-bottom:2px}
-  .mtitulo-real{font-size:.79rem; letter-spacing:.05em; text-transform:uppercase; color:var(--real); font-weight:700}
-
-  .btnfila{display:flex; flex-wrap:wrap; gap:7px; margin:16px 0 4px}
-  .bmet{
-    font:inherit; font-size:.88rem; padding:7px 13px; border-radius:20px; cursor:pointer;
-    border:1.5px solid var(--linea); background:#fff; color:var(--tinta2); transition:all .15s;
-  }
-  .bmet:hover{border-color:#bbb4a8; color:var(--tinta)}
-  .bmet[aria-pressed="true"]{background:var(--tinta); color:#fff; border-color:var(--tinta)}
-  .explica{
-    min-height:70px; background:#f5f3ee; border:1px solid var(--linea);
-    border-radius:7px; padding:14px 16px; margin:12px 0 0; font-size:.94rem;
-  }
-  .explica .kicker{font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:var(--tinta2); display:block; margin-bottom:4px}
-
-  /* ---- controles ---- */
-  .panel{background:var(--caja); border:1px solid var(--linea); border-radius:10px; padding:20px 22px; margin:22px 0}
-  .ctl{margin:16px 0 4px}
-  .ctl label{display:block; font-size:.88rem; font-weight:600; margin-bottom:5px}
-  .ctl label .v{float:right; font-variant-numeric:tabular-nums; color:var(--tinta2); font-weight:400}
-  input[type=range]{width:100%; margin:0; accent-color:var(--tinta)}
-  select{font:inherit; font-size:.92rem; padding:5px 8px; border:1px solid var(--linea); border-radius:6px; background:#fff}
-  canvas{display:block; width:100%; height:auto; border:1px solid var(--linea); border-radius:7px; background:#fff}
-
-  .pred{background:var(--aviso-bg); border:1px solid #e8d9a8; border-radius:7px; padding:13px 16px; margin:14px 0}
-  .pred .q{font-size:.92rem; font-weight:600; margin:0 0 9px}
-  .pred .ops{display:flex; flex-wrap:wrap; gap:7px}
-  .bpred{font:inherit; font-size:.86rem; padding:6px 12px; border-radius:6px; cursor:pointer; border:1.5px solid #ddd0a4; background:#fff; color:var(--tinta)}
-  .bpred[aria-pressed="true"]{background:var(--aviso); color:#fff; border-color:var(--aviso)}
-  .contraste{font-size:.9rem; margin:11px 0 0; padding-top:10px; border-top:1px dashed #ddd0a4; display:none}
-  .contraste.on{display:block}
-
-  .metgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr)); gap:9px; margin:18px 0 0}
-  .met{border:1px solid var(--linea); border-radius:7px; padding:10px 11px; background:#fff}
-  .met .n{font-size:.74rem; letter-spacing:.05em; text-transform:uppercase; color:var(--tinta2); display:block}
-  .met .c{font-size:1.32rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.25}
-  .met .d{font-size:.75rem; color:var(--tinta2); display:block; font-family:ui-monospace,Consolas,monospace}
-  .met.destaca{background:var(--aviso-bg); border-color:#e8d9a8}
-
-  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:.91rem}
-  th,td{border:1px solid var(--linea); padding:8px 10px; text-align:left; vertical-align:top}
-  th{background:#f3f1ec; font-weight:600; font-size:.85rem}
-  td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
-
-  details{border:1px solid var(--linea); border-radius:7px; padding:11px 15px; margin:14px 0; background:#fff}
-  details[open]{background:#f8f7f3}
-  summary{cursor:pointer; font-weight:600; font-size:.93rem}
-  summary::marker{color:var(--tinta2)}
-  details .cuerpo{margin-top:12px; padding-top:11px; border-top:1px solid var(--linea)}
-
-  .grafo{display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.87rem; margin:14px 0}
-  .nodo{border:1px solid var(--linea); border-radius:16px; padding:5px 13px; background:#fff; color:var(--tinta2)}
-  .nodo.aqui{background:var(--tinta); color:#fff; border-color:var(--tinta); font-weight:600}
-  .flecha{color:var(--tinta2)}
-  .pasos{counter-reset:p; list-style:none; padding-left:0}
-  .pasos li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:11px}
-  .pasos li::before{
-    content:counter(p); position:absolute; left:0; top:1px; width:23px; height:23px;
-    border-radius:50%; background:var(--tinta); color:#fff; font-size:.79rem; font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-  }
-  @media(max-width:620px){
-    .mwrap{grid-template-columns:78px 1fr 1fr; font-size:.86rem}
-    .mcell .val{font-size:1.25rem}
-    .hoja{padding:24px 16px 70px}
-  }
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
 </style>
 </head>
 <body>
-<!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="13" id="clase-13">
+<main>
 <div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 13 de 22</b></div>
 <div class="barra"><span style="width:59.1%"></span></div>
 <div class="lt">Clase 13 · Precisión, sensibilidad, exactitud y F1</div>
@@ -957,411 +877,6 @@
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>FPR = 2/9 ≈ 0,22 y 1 − precisión = 1 − 6/8 = 0,25: dividen por universos distintos. [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
 <a class="continuar" href="roc_auc.html">Continuar → Clase 14 · ROC-AUC y elección del umbral</a>
-</section>
-<!-- datito:cierre:fin -->
-<footer>
-Generado por Datito · <code>07_DATITO/visual/metricas_clasificacion.html</code> · funciona sin conexión ·
-fuentes: lámina FCD-2026-2_07_Clasificacion (láminas 17–19), transcripciones de la Clase del 7-ago, la ayudantía del 7-ago, la sesión del Certamen 2 (28-ago) y la Clase del 4-sep (09_CLASES/transcripciones/), P5 (08_PRACTICA/_markdown/), 02_PROYECTO_FCD/Desafio/REPORT.md, 07_DATITO/referencia/material.md, 01_DOCUMENTACION/01_CERTAMEN2/.<br>
-<strong>Datos reales:</strong> la matriz de la lámina 19 (VP 6 · FP 2 · FN 1 · VN 7); las cifras de Galaxy Zoo (reparto 96/227/677, F1 por clase, F1-macro 0,6163; el F1-weighted se calculó aquí). <strong>Ilustrativos [DATITO]:</strong> los 200 casos del slider de umbral (simulados con semilla fija), el panel de prevalencia sobre 10.000 revisiones, las filas «tramposas» de la tabla de F1, y los ejercicios de deserción y de huertos.
-</footer>
-
-<script>
-(function(){
-  "use strict";
-
-  var fmtPct = function(x, d){
-    if (x === null || isNaN(x)) return "—";
-    return (x*100).toFixed(d === undefined ? 1 : d).replace(".", ",") + " %";
-  };
-  var fmtNum = function(n){
-    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
-  /* ============================================================
-     A · MATRIZ ESTÁTICA: encender el denominador de cada métrica
-     ============================================================ */
-  var CELDAS = {vp:"c-vp", fn:"c-fn", fp:"c-fp", vn:"c-vn"};
-  var DEF = {
-    exactitud: {
-      den: ["vp","fn","fp","vn"], tono:"lit-total",
-      t:"Exactitud · denominador = el TOTAL",
-      h:"Se encendieron las cuatro casillas, porque la exactitud pregunta por todo lo revisado. "
-       + "(6 + 7) / 16 = 81,25 %. Es la única de las cinco que no cambia si inviertes cuál clase es la positiva — "
-       + "y también la única que un problema desbalanceado te puede regalar."
-    },
-    precision: {
-      den: ["vp","fp"], tono:"lit-pred",
-      t:"Precisión · denominador = la COLUMNA de lo que predije positivo",
-      h:"Solo la columna izquierda: VP + FP = 8. De todo lo que el modelo marcó como círculo, "
-       + "6 lo eran. 6/8 = 75,0 %. Fíjate en que VN ni siquiera participa: da lo mismo cuántos aciertos "
-       + "tuviste callando."
-    },
-    recall: {
-      den: ["vp","fn"], tono:"lit-real",
-      t:"Recall / TPR · denominador = la FILA de los positivos reales",
-      h:"Solo la fila de arriba: VP + FN = 7. De los 7 círculos que realmente había, recuperaste 6. "
-       + "6/7 ≈ 85,7 %. Mismo numerador que la precisión, otro universo: por eso pueden ser distintos."
-    },
-    fpr: {
-      den: ["fp","vn"], tono:"lit-real",
-      t:"FPR · denominador = la FILA de los negativos reales",
-      h:"Solo la fila de abajo: FP + VN = 9. De los 9 triángulos, marcaste 2 como círculo. "
-       + "2/9 ≈ 22,2 %. Compáralo con 1 − precisión = 2/8 = 25,0 %: mismo numerador, denominador distinto, "
-       + "número distinto. Cerca no es igual: aquí muere la trampa."
-    },
-    f1: {
-      den: ["vp","fp","fn"], tono:"lit-pred",
-      t:"F1 · usa tres casillas y deja VN afuera",
-      h:"2·VP / (2·VP + FP + FN) = 12/15 = 80,0 %. Se encendieron VP, FP y FN. "
-       + "VN quedó apagada a propósito: por eso F1 no se puede inflar con la clase mayoritaria, y por eso "
-       + "sobrevive al desbalance donde la exactitud se rinde."
-    }
-  };
-
-  var expl = document.getElementById("explica");
-  var botonesM = [].slice.call(document.querySelectorAll(".bmet"));
-
-  function apagarCeldas(){
-    for (var k in CELDAS){
-      var el = document.getElementById(CELDAS[k]);
-      el.className = el.className.replace(/\s*lit(-\w+)?/g, "");
-    }
-  }
-
-  botonesM.forEach(function(b){
-    b.addEventListener("click", function(){
-      var m = b.getAttribute("data-m");
-      var yaEstaba = b.getAttribute("aria-pressed") === "true";
-      botonesM.forEach(function(o){ o.setAttribute("aria-pressed","false"); });
-      apagarCeldas();
-      if (yaEstaba){
-        expl.innerHTML = '<span class="kicker">Elige una métrica arriba</span>'
-          + 'Ninguna seleccionada. Las cuatro casillas son las mismas para todas: lo que cambia es cuáles entran en el denominador.';
-        return;
-      }
-      b.setAttribute("aria-pressed","true");
-      var d = DEF[m];
-      d.den.forEach(function(c){
-        var el = document.getElementById(CELDAS[c]);
-        el.className += " lit " + d.tono;
-      });
-      expl.innerHTML = '<span class="kicker">' + d.t + '</span>' + d.h;
-    });
-  });
-
-  /* ============================================================
-     B · UMBRAL SOBRE 200 CASOS
-     ============================================================ */
-  var N_POS = 60, N_NEG = 140;
-
-  function lcg(seed){
-    var s = seed >>> 0;
-    return function(){
-      s = (1664525 * s + 1013904223) >>> 0;
-      return s / 4294967296;
-    };
-  }
-  var rnd = lcg(20260921);
-  function gauss(){
-    var u = 0, v = 0;
-    while (u === 0) u = rnd();
-    while (v === 0) v = rnd();
-    return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
-  }
-  function clamp01(x){ return x < 0.01 ? 0.01 : (x > 0.99 ? 0.99 : x); }
-
-  var casos = [];
-  var i;
-  for (i = 0; i < N_POS; i++) casos.push({pos:true,  s:clamp01(0.66 + 0.155*gauss()), y:rnd()});
-  for (i = 0; i < N_NEG; i++) casos.push({pos:false, s:clamp01(0.36 + 0.155*gauss()), y:rnd()});
-
-  var cv   = document.getElementById("lienzo");
-  var ctx  = cv.getContext("2d");
-  var W = cv.width, H = cv.height;
-  var MI = 38, MD = 18, MT = 26, MB = 34;
-
-  function xDe(s){ return MI + s * (W - MI - MD); }
-
-  function triangulo(g, x, y, r){
-    g.beginPath();
-    g.moveTo(x, y - r);
-    g.lineTo(x + r*0.92, y + r*0.72);
-    g.lineTo(x - r*0.92, y + r*0.72);
-    g.closePath();
-  }
-
-  function dibujar(u){
-    ctx.clearRect(0,0,W,H);
-
-    var x0 = xDe(0), x1 = xDe(1), xu = xDe(u);
-    var yTop = MT, yBot = H - MB;
-
-    /* zonas */
-    ctx.fillStyle = "#faf7f0";
-    ctx.fillRect(xu, yTop, x1 - xu, yBot - yTop);
-    ctx.fillStyle = "#f7f7f8";
-    ctx.fillRect(x0, yTop, xu - x0, yBot - yTop);
-
-    /* marco */
-    ctx.strokeStyle = "#ddd8cf"; ctx.lineWidth = 1;
-    ctx.strokeRect(x0, yTop, x1 - x0, yBot - yTop);
-
-    /* puntos */
-    for (var k = 0; k < casos.length; k++){
-      var c = casos[k];
-      var px = xDe(c.s);
-      var py = yTop + 12 + c.y * (yBot - yTop - 24);
-      var predPos = c.s >= u;
-      var correcto = (predPos === c.pos);
-      ctx.lineWidth = 1.4;
-      if (correcto){
-        ctx.fillStyle   = "rgba(47,107,70,.34)";
-        ctx.strokeStyle = "rgba(47,107,70,.85)";
-      } else {
-        ctx.fillStyle   = "rgba(155,50,38,.40)";
-        ctx.strokeStyle = "rgba(155,50,38,.95)";
-      }
-      if (c.pos){
-        ctx.beginPath(); ctx.arc(px, py, 4.4, 0, 2*Math.PI);
-      } else {
-        triangulo(ctx, px, py, 4.8);
-      }
-      ctx.fill(); ctx.stroke();
-    }
-
-    /* línea de umbral */
-    ctx.strokeStyle = "#1c1f24"; ctx.lineWidth = 2.2;
-    ctx.beginPath(); ctx.moveTo(xu, yTop - 8); ctx.lineTo(xu, yBot + 6); ctx.stroke();
-
-    /* etiquetas */
-    ctx.fillStyle = "#4a5058";
-    ctx.font = "11px -apple-system,Segoe UI,Roboto,sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("← digo: está bien", (x0 + xu)/2, yTop - 11);
-    ctx.fillText("digo: va a fallar →", (xu + x1)/2, yTop - 11);
-    ctx.textAlign = "left";
-    ctx.fillText("prob. baja", x0, yBot + 20);
-    ctx.textAlign = "right";
-    ctx.fillText("prob. alta", x1, yBot + 20);
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#1c1f24";
-    ctx.font = "600 11px -apple-system,Segoe UI,Roboto,sans-serif";
-    ctx.fillText("umbral " + u.toFixed(2).replace(".",","), xu, yBot + 20);
-
-    /* leyenda */
-    ctx.textAlign = "left";
-    ctx.font = "11px -apple-system,Segoe UI,Roboto,sans-serif";
-    ctx.fillStyle = "#4a5058";
-    ctx.beginPath(); ctx.arc(MI + 6, 12, 4.2, 0, 2*Math.PI);
-    ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fill();
-    ctx.strokeStyle = "#4a5058"; ctx.lineWidth = 1.3; ctx.stroke();
-    ctx.fillStyle = "#4a5058";
-    ctx.fillText("círculo = iba a fallar", MI + 16, 16);
-    triangulo(ctx, MI + 158, 12, 4.6);
-    ctx.fillStyle = "rgba(0,0,0,.18)"; ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#4a5058";
-    ctx.fillText("triángulo = estaba bien", MI + 168, 16);
-  }
-
-  var sU = document.getElementById("sUmbral");
-  var movido = 0, predA = null;
-  var uInicial = parseFloat(sU.value);
-
-  function pintarA(){
-    var u = parseFloat(sU.value);
-    document.getElementById("vUmbral").textContent = u.toFixed(2).replace(".", ",");
-    dibujar(u);
-
-    var VP=0, FN=0, FP=0, VN=0;
-    for (var k=0;k<casos.length;k++){
-      var c = casos[k], p = c.s >= u;
-      if (c.pos){ p ? VP++ : FN++; } else { p ? FP++ : VN++; }
-    }
-    document.getElementById("aVP").textContent = VP;
-    document.getElementById("aFN").textContent = FN;
-    document.getElementById("aFP").textContent = FP;
-    document.getElementById("aVN").textContent = VN;
-
-    var tot  = VP+FN+FP+VN;
-    var acc  = (VP+VN)/tot;
-    var pre  = (VP+FP) ? VP/(VP+FP) : null;
-    var rec  = (VP+FN) ? VP/(VP+FN) : null;
-    var fpr  = (FP+VN) ? FP/(FP+VN) : null;
-    var f1   = (2*VP+FP+FN) ? (2*VP)/(2*VP+FP+FN) : null;
-
-    document.getElementById("aAcc").textContent = fmtPct(acc);
-    document.getElementById("aPre").textContent = pre===null ? "indef." : fmtPct(pre);
-    document.getElementById("aRec").textContent = fmtPct(rec);
-    document.getElementById("aFpr").textContent = fmtPct(fpr);
-    document.getElementById("aF1").textContent  = f1===null ? "indef." : fmtPct(f1);
-
-    document.getElementById("adAcc").textContent = "("+VP+"+"+VN+")/"+tot;
-    document.getElementById("adPre").textContent = (VP+FP) ? VP+"/"+(VP+FP) : "0/0";
-    document.getElementById("adRec").textContent = VP+"/"+(VP+FN);
-    document.getElementById("adFpr").textContent = FP+"/"+(FP+VN);
-    document.getElementById("adF1").textContent  = (2*VP)+"/"+(2*VP+FP+FN);
-
-    /* contraste con la predicción, solo si ya predijo y ya movió */
-    if (predA && Math.abs(u - uInicial) > 0.12){
-      var box = document.getElementById("contrasteA");
-      var bajo = u < uInicial;
-      var real = bajo
-        ? "Bajaste el umbral y el <strong>recall subió</strong> mientras la <strong>precisión bajó</strong>: "
-          + "al declarar positivos más casos atrapas más círculos reales, pero también te llevas más triángulos."
-        : "Subiste el umbral, así que estás viendo el movimiento inverso al de la pregunta: "
-          + "la <strong>precisión subió</strong> y el <strong>recall bajó</strong>. Arrástralo hacia la izquierda, "
-          + "por debajo de 0,38, para ver el caso que predijiste.";
-      var veredicto;
-      if (predA === "rec"){
-        veredicto = bajo
-          ? "<strong>Le achuntaste.</strong> "
-          : "<strong>Tu predicción era la correcta</strong> para el movimiento que te pedí. ";
-      } else if (predA === "ambas"){
-        veredicto = "<strong>No.</strong> Es tentador, pero no pueden subir las dos: cada caso nuevo que declaras positivo "
-          + "entra en el numerador del recall solo si era positivo, y entra en el denominador de la precisión siempre. ";
-      } else if (predA === "pre"){
-        veredicto = "<strong>Está al revés.</strong> Esa es la dirección contraria: subir el umbral es lo que sube la precisión y baja el recall. ";
-      } else {
-        veredicto = "<strong>Sí cambian, y mucho.</strong> Ese es justamente el punto: no son propiedades fijas del modelo. ";
-      }
-      box.innerHTML = veredicto + real
-        + "<br><br>La pregunta que queda: <em>¿qué término de cada fórmula produjo ese movimiento?</em> "
-        + "Mira los denominadores debajo de cada número mientras mueves el slider.";
-      box.className = "contraste on";
-    }
-  }
-
-  [].slice.call(document.querySelectorAll('.bpred[data-p]')).forEach(function(b){
-    b.addEventListener("click", function(){
-      [].slice.call(document.querySelectorAll('.bpred[data-p]')).forEach(function(o){
-        o.setAttribute("aria-pressed","false");
-      });
-      b.setAttribute("aria-pressed","true");
-      predA = b.getAttribute("data-p");
-      pintarA();
-    });
-  });
-
-  sU.addEventListener("input", function(){ movido++; pintarA(); });
-  pintarA();
-
-  /* ============================================================
-     C · PREVALENCIA: el caso de la máquina del profesor
-     ============================================================ */
-  var PREVS = [
-    {lab:"1 de cada 2 (balanceado)", p:1/2},
-    {lab:"1 de cada 100",            p:1/100},
-    {lab:"1 de cada 1.000",          p:1/1000},
-    {lab:"1 de cada 10.000",         p:1/10000}
-  ];
-  /* el slider recorre 0..3; ordenamos de más común a más raro */
-  var ORDEN = [0, 1, 2, 3];
-
-  var sP = document.getElementById("sPrev"),
-      sT = document.getElementById("sTpr"),
-      sF = document.getElementById("sFpr");
-  var predB = null;
-
-  function pintarB(){
-    var idx  = ORDEN[parseInt(sP.value, 10)];
-    var prev = PREVS[idx].p;
-    var tpr  = parseInt(sT.value, 10) / 100;
-    /* escala cuadrática: 0 → 0 %, 224 → 1 %, 1000 → 20 %.
-       Hace falta resolución fina cerca de cero para que el caso raro sea alcanzable. */
-    var t    = parseInt(sF.value, 10) / 1000;
-    var fpr  = t * t * 0.2;
-
-    document.getElementById("vPrev").textContent = PREVS[idx].lab;
-    document.getElementById("vTpr").textContent  = (parseInt(sT.value,10)) + " %";
-    document.getElementById("vFpr").textContent  =
-      (fpr*100).toFixed(fpr < 0.005 ? 3 : 2).replace(".",",") + " %";
-
-    var N = 10000;
-    var P = Math.round(N * prev);
-    if (P < 1) P = 1;
-    var Ng = N - P;
-
-    var VP = Math.round(tpr * P);
-    var FN = P - VP;
-    var FP = Math.round(fpr * Ng);
-    var VN = Ng - FP;
-
-    document.getElementById("bVP").textContent = fmtNum(VP);
-    document.getElementById("bFN").textContent = fmtNum(FN);
-    document.getElementById("bFP").textContent = fmtNum(FP);
-    document.getElementById("bVN").textContent = fmtNum(VN);
-
-    var acc = (VP+VN)/N;
-    var pre = (VP+FP) ? VP/(VP+FP) : null;
-    var rec = P ? VP/P : null;
-    var fprReal = Ng ? FP/Ng : null;
-
-    document.getElementById("bAcc").textContent = fmtPct(acc);
-    document.getElementById("bPre").textContent = pre===null ? "indef." : fmtPct(pre);
-    document.getElementById("bRec").textContent = fmtPct(rec);
-    document.getElementById("bFprOut").textContent = fmtPct(fprReal, 2);
-    document.getElementById("bUnoMenos").textContent = pre===null ? "indef." : fmtPct(1-pre);
-    document.getElementById("bdPre").textContent = (VP+FP) ? fmtNum(VP)+"/"+fmtNum(VP+FP) : "0/0";
-
-    var msg;
-    if (pre === null){
-      msg = "El modelo no avisa nunca, así que no hay nada en el denominador de la precisión. "
-          + "Sube el TPR para que empiece a decir que sí.";
-    } else {
-      msg = "Con " + PREVS[idx].lab.toLowerCase() + ", cada vez que el modelo grita «va a fallar», "
-          + "acierta el <strong>" + fmtPct(pre) + "</strong> de las veces. "
-          + "Detiene la línea <strong>" + fmtNum(VP+FP) + "</strong> veces y solo <strong>"
-          + fmtNum(VP) + "</strong> eran fallas de verdad.";
-      if (acc > 0.9 && pre < 0.35){
-        msg += "<br><br><strong>Mira la contradicción:</strong> exactitud " + fmtPct(acc)
-             + " y precisión " + fmtPct(pre) + ", con el mismo modelo y la misma tabla. "
-             + "Si reportas solo la exactitud, nadie se entera de que el sistema es inutilizable en planta.";
-      }
-      if (fprReal !== null && Math.abs((1-pre) - fprReal) > 0.05){
-        msg += "<br><br><strong>FPR = " + fmtPct(fprReal,2) + " pero 1 − precisión = " + fmtPct(1-pre) + ".</strong> "
-             + "Si fueran la misma cantidad, estos dos números no podrían separarse. Se separan.";
-      }
-    }
-    document.getElementById("lectura").innerHTML = msg;
-
-    if (predB && parseInt(sP.value,10) !== 1){
-      var box = document.getElementById("contrasteB");
-      var v;
-      if (predB === "baja"){
-        v = "<strong>Correcto.</strong> ";
-      } else if (predB === "igual"){
-        v = "<strong>No.</strong> Y es el error más natural de todos, porque suena lógico: el modelo no cambió. ";
-      } else {
-        v = "<strong>Al revés.</strong> ";
-      }
-      box.innerHTML = v
-        + "TPR y FPR sí son propiedades del modelo y no se mueven. Pero la <strong>precisión no lo es</strong>: "
-        + "su denominador mezcla VP (que sale de los positivos, cada vez menos) con FP (que sale de los negativos, "
-        + "cada vez más). Cuando la clase positiva se hace rara, los falsos positivos —sacados de una población enorme— "
-        + "ahogan a los verdaderos positivos, que salen de una población diminuta."
-        + "<br><br>Por eso <em>la precisión depende del mundo, no solo del modelo</em>. Es la razón de que un modelo "
-        + "se «rompa» al pasarlo de un laboratorio balanceado a producción sin haber cambiado nada.";
-      box.className = "contraste on";
-    }
-  }
-
-  [].slice.call(document.querySelectorAll('.bpred[data-q]')).forEach(function(b){
-    b.addEventListener("click", function(){
-      [].slice.call(document.querySelectorAll('.bpred[data-q]')).forEach(function(o){
-        o.setAttribute("aria-pressed","false");
-      });
-      b.setAttribute("aria-pressed","true");
-      predB = b.getAttribute("data-q");
-      pintarB();
-    });
-  });
-
-  sP.addEventListener("input", pintarB);
-  sT.addEventListener("input", pintarB);
-  sF.addEventListener("input", pintarB);
-  pintarB();
-
-})();
-</script>
+</main>
 </body>
 </html>

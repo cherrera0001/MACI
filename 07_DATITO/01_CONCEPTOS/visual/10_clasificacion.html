@@ -1,154 +1,98 @@
-<!DOCTYPE html>
-<html lang="es-CL">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clasificación — cuando la etiqueta no es un número</title>
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
+  4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
+  5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
+  6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
+  7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
+-->
+<title>Clasificación · Datito</title>
 <style>
-  :root{
-    --tinta:#1c1f24;
-    --tinta2:#4a5058;
-    --papel:#fbfaf7;
-    --caja:#ffffff;
-    --linea:#ddd8cf;
-    --perro:#8a5a12;
-    --perro-bg:#f6eddc;
-    --gato:#2b5d8c;
-    --gato-bg:#e3ecf4;
-    --acierto:#2f6b46;
-    --error:#9b3226;
-    --error-bg:#f6e6e3;
-    --total:#5a4a78;
-    --total-bg:#ece8f3;
-    --aviso:#7a5b00;
-    --aviso-bg:#fdf6e0;
-  }
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
   *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--papel); color:var(--tinta);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:16.5px; line-height:1.62;
-  }
-  .hoja{max-width:860px; margin:0 auto; padding:34px 26px 90px}
-  h1{font-size:1.85rem; line-height:1.25; margin:0 0 6px; letter-spacing:-.015em}
-  .sub{color:var(--tinta2); font-size:1.02rem; margin:0 0 4px}
-  .ruta{color:var(--tinta2); font-size:.86rem; margin:14px 0 0; font-variant-numeric:tabular-nums}
-  h2{font-size:1.22rem; margin:52px 0 12px; padding-top:18px; border-top:1px solid var(--linea); letter-spacing:-.01em}
-  h3{font-size:1.02rem; margin:26px 0 8px}
-  p{margin:0 0 13px}
-  ul,ol{margin:0 0 13px; padding-left:22px}
-  li{margin:0 0 6px}
-  code,.mono{font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace; font-size:.93em}
-  .caja{background:var(--caja); border:1px solid var(--linea); border-radius:9px; padding:18px 20px; margin:20px 0}
-  .caja.tenue{background:#f5f3ee}
-  .aviso{background:var(--aviso-bg); border:1px solid #e8d9a8; border-left:4px solid #c9a227; border-radius:6px; padding:14px 17px; margin:20px 0}
-  .aviso .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--aviso); font-weight:700; display:block; margin-bottom:5px}
-  .certamen{background:#efe9f5; border:1px solid #d5c9e4; border-left:4px solid var(--total); border-radius:6px; padding:14px 17px; margin:20px 0}
-  .certamen .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--total); font-weight:700; display:block; margin-bottom:5px}
-  .prof{background:#f2f5f2; border:1px solid #cfdbd2; border-left:4px solid var(--acierto); border-radius:6px; padding:14px 17px; margin:20px 0}
-  .prof .et{font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--acierto); font-weight:700; display:block; margin-bottom:5px}
-  .prof q{font-style:italic}
-  .fuente{font-size:.83rem; color:var(--tinta2); margin:8px 0 0}
-  .fuente code{background:#efece6; padding:1px 4px; border-radius:3px}
-  .cita{border-left:3px solid var(--acierto); background:#f0f6f2; padding:12px 16px; margin:18px 0; font-style:italic; border-radius:0 6px 6px 0}
-  .cita .f{display:block; font-style:normal; font-size:.8rem; color:var(--tinta2); margin-top:7px}
-  .nota{background:var(--aviso-bg); border-left:3px solid #c9a227; padding:12px 16px; margin:18px 0; font-size:.94rem; border-radius:0 6px 6px 0}
-  details.resp{background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:.6rem 1rem; margin:.6rem 0 1rem}
-  details.resp summary{cursor:pointer; font-weight:700; color:#065f46}
-  .preg{font-weight:600; margin:18px 0 6px}
-  a{color:var(--gato)}
-  footer{max-width:808px; margin:0 auto 60px; padding:14px 0 0; border-top:1px solid var(--linea); color:var(--tinta2); font-size:.85rem}
-  @media(max-width:860px){ footer{margin:0 16px 50px} }
-
-  .eq{
-    background:#f3f1ec; border:1px solid var(--linea); border-radius:7px;
-    padding:15px 18px; margin:14px 0; text-align:center;
-    font-family:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
-    font-size:1.04rem; overflow-x:auto;
-  }
-  .eq .nota{display:block; font-family:inherit; font-size:.8rem; color:var(--tinta2); margin-top:8px; background:none; border:0; padding:0; border-radius:0}
-  .frac{display:inline-block; vertical-align:middle; text-align:center; margin:0 3px}
-  .frac .num{display:block; padding:0 8px 2px; border-bottom:1.6px solid var(--tinta)}
-  .frac .den{display:block; padding:3px 8px 0}
-  .cperro{color:var(--perro); font-weight:700}
-  .cgato{color:var(--gato); font-weight:700}
-  .cmal{color:var(--error); font-weight:700}
-  .cok{color:var(--acierto); font-weight:700}
-
-  .panel{background:var(--caja); border:1px solid var(--linea); border-radius:10px; padding:20px 22px; margin:22px 0}
-  .ctl{margin:16px 0 4px}
-  .ctl label{display:block; font-size:.88rem; font-weight:600; margin-bottom:5px}
-  .ctl label .v{float:right; font-variant-numeric:tabular-nums; color:var(--tinta2); font-weight:400}
-  input[type=range]{width:100%; margin:0; accent-color:var(--tinta)}
-  canvas{display:block; width:100%; height:auto; border:1px solid var(--linea); border-radius:7px; background:#fff; cursor:crosshair}
-  .btn{font:inherit; font-size:.88rem; padding:7px 14px; border-radius:7px; cursor:pointer;
-       border:1.5px solid var(--tinta); background:var(--tinta); color:#fff}
-  .btn.sec{background:#fff; color:var(--tinta2); border-color:var(--linea)}
-  .btn.sec:hover{border-color:#bbb4a8; color:var(--tinta)}
-  .btnfila{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 4px}
-
-  .lect{display:grid; grid-template-columns:repeat(auto-fit,minmax(132px,1fr)); gap:9px; margin:16px 0 0}
-  .met{border:1px solid var(--linea); border-radius:7px; padding:10px 11px; background:#fff}
-  .met .n{font-size:.73rem; letter-spacing:.05em; text-transform:uppercase; color:var(--tinta2); display:block}
-  .met .c{font-size:1.34rem; font-weight:700; font-variant-numeric:tabular-nums; display:block; line-height:1.25}
-  .met .d{font-size:.75rem; color:var(--tinta2); display:block; line-height:1.35}
-  .met.destaca{background:var(--aviso-bg); border-color:#e8d9a8}
-  .met.mala{background:var(--error-bg); border-color:#e3c3bc}
-  .met.mala .c{color:var(--error)}
-
-  .pred{background:var(--aviso-bg); border:1px solid #e8d9a8; border-radius:7px; padding:13px 16px; margin:16px 0}
-  .pred .q{font-size:.92rem; font-weight:600; margin:0 0 9px}
-  .pred .ops{display:flex; flex-wrap:wrap; gap:7px}
-  .bpred{font:inherit; font-size:.86rem; padding:6px 12px; border-radius:6px; cursor:pointer; border:1.5px solid #ddd0a4; background:#fff; color:var(--tinta)}
-  .bpred[aria-pressed="true"]{background:var(--aviso); color:#fff; border-color:var(--aviso)}
-  .contraste{font-size:.91rem; margin:11px 0 0; padding-top:10px; border-top:1px dashed #ddd0a4; display:none}
-  .contraste.on{display:block}
-
-  .bmet{font:inherit; font-size:.85rem; padding:6px 12px; border-radius:20px; cursor:pointer;
-        border:1.5px solid var(--linea); background:#fff; color:var(--tinta2); transition:all .15s}
-  .bmet:hover{border-color:#bbb4a8; color:var(--tinta)}
-  .bmet[aria-pressed="true"]{background:var(--tinta); color:#fff; border-color:var(--tinta)}
-
-  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:.91rem}
-  th,td{border:1px solid var(--linea); padding:8px 10px; text-align:left; vertical-align:top}
-  th{background:#f3f1ec; font-weight:600; font-size:.85rem}
-  td.num{font-variant-numeric:tabular-nums; white-space:nowrap; text-align:right}
-  td.mid{text-align:center}
-  tr.res td{background:var(--aviso-bg); font-weight:600}
-
-  details{border:1px solid var(--linea); border-radius:7px; padding:11px 15px; margin:14px 0; background:#fff}
-  details[open]{background:#f8f7f3}
-  summary{cursor:pointer; font-weight:600; font-size:.93rem}
-  summary::marker{color:var(--tinta2)}
-  details .cuerpo{margin-top:12px; padding-top:11px; border-top:1px solid var(--linea)}
-
-  .grafo{display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.87rem; margin:14px 0}
-  .nodo{border:1px solid var(--linea); border-radius:16px; padding:5px 13px; background:#fff; color:var(--tinta2)}
-  .nodo.aqui{background:var(--tinta); color:#fff; border-color:var(--tinta); font-weight:600}
-  .flecha{color:var(--tinta2)}
-
-  .pasos{counter-reset:p; list-style:none; padding-left:0}
-  .pasos li{counter-increment:p; position:relative; padding-left:34px; margin-bottom:11px}
-  .pasos li::before{
-    content:counter(p); position:absolute; left:0; top:1px; width:23px; height:23px;
-    border-radius:50%; background:var(--tinta); color:#fff; font-size:.79rem; font-weight:700;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .dos{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0}
-  .lado{border:1px solid var(--linea); border-radius:8px; padding:14px 16px; background:#fff}
-  .lado h4{margin:0 0 7px; font-size:.95rem}
-  .lado.r{border-top:3px solid var(--gato)}
-  .lado.c{border-top:3px solid var(--perro)}
-  @media(max-width:620px){
-    .dos{grid-template-columns:1fr}
-    .hoja{padding:24px 16px 70px}
-  }
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
 </style>
 </head>
 <body>
-<!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="11" id="clase-11">
+<main>
 <div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 11 de 22</b></div>
 <div class="barra"><span style="width:50.0%"></span></div>
 <div class="lt">Clase 11 · Clasificación: cuando la etiqueta no es un número</div>
@@ -782,510 +726,6 @@
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
 <a class="continuar" href="matriz_confusion.html">Continuar → Clase 12 · Matriz de confusión</a>
-</section>
-<!-- datito:cierre:fin -->
-<footer>
-Generado por Datito · <code>07_DATITO/visual/clasificacion.html</code> · funciona sin conexión ·
-fuentes: transcripción de la Clase del 7-ago (<code>09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md</code>), lámina FCD-2026-2_07_Clasificacion (lámina 38), P5 (<code>08_PRACTICA/_markdown/</code>), <code>02_PROYECTO_FCD/Desafio/REPORT.md</code>, <code>07_DATITO/patron_evaluacion.md</code>.<br>
-<strong>Datos reales:</strong> la matriz 3×3 de Galaxy Zoo (OOF CatBoost: 25/36/35 · 18/176/33 · 39/65/573) y los MAE que salen de ella. <strong>Ilustrativos [DATITO]:</strong> los 28 perros y gatos del plano (inventados sobre el ejemplo del profesor), la ecuación 0,82·x₁ + 0,57·x₂ − 0,55, el caso CONAF y su matriz, y los vecinos del ejercicio de KNN.
-</footer>
-
-<script>
-(function(){
-  "use strict";
-
-  /* ===================================================================
-     A · Galaxy Zoo: el MAE que se mueve solo
-     Matriz OOF CatBoost real, 02_PROYECTO_FCD/Desafio/REPORT.md
-     filas = real, columnas = predicho, orden natural [ambigua, espiral, eliptica]
-     =================================================================== */
-
-  var M = [[25,36,35],[18,176,33],[39,65,573]];
-  var NOM = ["ambigua","espiral","elíptica"];
-  var N = 1000;
-
-  // Seis ordenes: cada uno lista las clases (indices naturales) en el orden
-  // en que reciben los codigos 0, 1, 2.
-  var ORDENES = [
-    [0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]
-  ];
-  var ordenActivo = 0;
-
-  function codigosDe(orden){
-    // codigo[claseNatural] = posicion en el orden
-    var c = [0,0,0];
-    for(var k=0;k<3;k++){ c[orden[k]] = k; }
-    return c;
-  }
-
-  function maeDe(orden){
-    var c = codigosDe(orden), suma = 0;
-    for(var i=0;i<3;i++){
-      for(var j=0;j<3;j++){
-        suma += M[i][j] * Math.abs(c[j] - c[i]);
-      }
-    }
-    return suma / N;
-  }
-
-  var elPerm  = document.getElementById("permBtns");
-  var elCuerpo= document.getElementById("cuerpoGZ");
-  var elMae   = document.getElementById("gzMae");
-  var elMaeD  = document.getElementById("gzMaeDet");
-  var elMedio = document.getElementById("gzMedio");
-  var hs      = [document.getElementById("hc0"),document.getElementById("hc1"),document.getElementById("hc2")];
-
-  function fmt(x,d){
-    return x.toFixed(d).replace(".",",");
-  }
-
-  ORDENES.forEach(function(orden, idx){
-    var b = document.createElement("button");
-    b.className = "bmet";
-    b.type = "button";
-    b.setAttribute("aria-pressed", idx===0 ? "true":"false");
-    b.textContent = orden.map(function(ci,k){ return NOM[ci]+"="+k; }).join(" · ");
-    b.addEventListener("click", function(){
-      ordenActivo = idx;
-      Array.prototype.forEach.call(elPerm.children, function(x,i){
-        x.setAttribute("aria-pressed", i===idx ? "true":"false");
-      });
-      pintaGZ();
-      maeMovido = true;
-      revisaContrasteMae();
-    });
-    elPerm.appendChild(b);
-  });
-
-  function pintaGZ(){
-    var orden = ORDENES[ordenActivo];
-    var c = codigosDe(orden);
-
-    for(var k=0;k<3;k++){
-      hs[k].textContent = NOM[orden[k]] + " (" + k + ")";
-    }
-
-    var html = "";
-    for(var k2=0;k2<3;k2++){
-      var i = orden[k2];
-      html += "<tr><th>" + NOM[i] + " (" + k2 + ")</th>";
-      for(var k3=0;k3<3;k3++){
-        var j = orden[k3];
-        var d = Math.abs(c[j]-c[i]);
-        var estilo = "", extra = "";
-        if(i===j){
-          estilo = ' style="background:#e9f0eb;color:#2f6b46;font-weight:700"';
-          extra  = '<br><span style="font-size:.76rem;font-weight:400">acierto · |dif| 0</span>';
-        } else {
-          extra = '<br><span style="font-size:.76rem;color:#4a5058">|dif| = ' + d + '</span>';
-          if(d===2){ estilo = ' style="background:#f6e6e3"'; }
-        }
-        html += '<td class="mid"' + estilo + '>' + M[i][j] + extra + '</td>';
-      }
-      html += "</tr>";
-    }
-    elCuerpo.innerHTML = html;
-
-    var mae = maeDe(orden);
-    elMae.textContent = fmt(mae,3);
-    elMedio.textContent = NOM[orden[1]];
-
-    // que par quedo en los extremos
-    var ext = NOM[orden[0]] + " ↔ " + NOM[orden[2]];
-    elMaeD.textContent = "par a distancia 2: " + ext;
-  }
-
-  /* prediccion 1 */
-  var maeRespondio = null, maeMovido = false;
-  var contMae = document.getElementById("contMae");
-  Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(b){
-    b.addEventListener("click", function(){
-      maeRespondio = b.getAttribute("data-p");
-      Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(o){
-        o.setAttribute("aria-pressed", o===b ? "true":"false");
-      });
-      revisaContrasteMae();
-    });
-  });
-
-  function revisaContrasteMae(){
-    if(maeRespondio === null || !maeMovido) return;
-    var t;
-    if(maeRespondio === "mae"){
-      t = "<strong>Correcto.</strong> La exactitud no se movió de 0,774 y el MAE sí. ";
-    } else if(maeRespondio === "ninguna"){
-      t = "<strong>Se movió una.</strong> La exactitud efectivamente quedó clavada en 0,774 — esa parte la tenías. Pero el MAE recorre 0,280 · 0,300 · 0,324. ";
-    } else if(maeRespondio === "exac"){
-      t = "<strong>Al revés.</strong> La exactitud es la que <em>no</em> se mueve: cuenta aciertos, y un acierto sigue siendo un acierto llames como llames a las clases. El que se mueve es el MAE. ";
-    } else if(maeRespondio === "ambas"){
-      t = "<strong>Solo una.</strong> La exactitud no puede moverse: cuenta aciertos, y renombrar las clases no convierte un acierto en un fallo. El MAE sí se mueve. ";
-    } else { return; }
-    t += "Ahora la pregunta que importa: <strong>¿por qué</strong> el MAE es sensible a algo que la exactitud ignora? Pista: mira qué operación hace cada una. Una resta códigos; la otra solo compara si son iguales.";
-    contMae.innerHTML = t;
-    contMae.classList.add("on");
-  }
-
-  pintaGZ();
-
-
-  /* ===================================================================
-     B · Perro / gato: la frontera de decision
-     Ejemplo del profesor, clase 2026-08-07
-     =================================================================== */
-
-  var SMIN=10, SMAX=75, EMIN=3, EMAX=17;
-
-  var DATOS = [
-    /* perros: y = +1 */
-    {s:58,e:13.0,y:1},{s:62,e:11.5,y:1},{s:48,e:14.0,y:1},{s:67,e:9.5,y:1},
-    {s:55,e:10.5,y:1},{s:70,e:12.0,y:1},{s:52,e:12.5,y:1},{s:45,e:11.0,y:1},
-    {s:63,e:14.5,y:1},{s:41,e:13.5,y:1},{s:66,e:8.0,y:1},{s:50,e:9.5,y:1},
-    {s:60,e:15.0,y:1},{s:44,e:10.5,y:1},
-    {s:20,e:7.0,y:1,nom:"chihuahua"},
-    /* gatos: y = -1 */
-    {s:25,e:6.0,y:-1},{s:28,e:7.5,y:-1},{s:23,e:5.0,y:-1},{s:30,e:6.5,y:-1},
-    {s:26,e:8.0,y:-1},{s:33,e:7.0,y:-1},{s:22,e:7.0,y:-1},{s:29,e:5.5,y:-1},
-    {s:35,e:8.5,y:-1},{s:24,e:9.0,y:-1},{s:31,e:9.5,y:-1},{s:27,e:4.5,y:-1},
-    {s:42,e:7.5,y:-1,nom:"maine coon"}
-  ];
-
-  DATOS.forEach(function(p){
-    p.nx = (p.s - SMIN) / (SMAX - SMIN);
-    p.ny = (p.e - EMIN) / (EMAX - EMIN);
-  });
-
-  var ANG_INI = 35, B_INI = 0.55;
-  var ang = ANG_INI, bb = B_INI;
-  var nuevo = null;
-
-  var cv  = document.getElementById("lienzo");
-  var ctx = cv.getContext("2d");
-  var W = cv.width, H = cv.height;
-  var PX = 112, PY = 46, PW = 1000, PH = H - PY - 92;
-
-  var COL = {
-    perro:"#8a5a12", perroBg:"rgba(246,237,220,.85)",
-    gato:"#2b5d8c",  gatoBg:"rgba(227,236,244,.85)",
-    tinta:"#1c1f24", tinta2:"#4a5058", linea:"#ddd8cf", error:"#9b3226"
-  };
-
-  function wv(a){ var r = a*Math.PI/180; return {x:Math.cos(r), y:Math.sin(r)}; }
-  function score(p, w, b){ return w.x*p.nx + w.y*p.ny - b; }
-  function px(nx){ return PX + nx*PW; }
-  function py(ny){ return PY + PH - ny*PH; }
-
-  function evalua(a, b){
-    var w = wv(a), err = 0, dmin = Infinity, idxMin = [];
-    for(var i=0;i<DATOS.length;i++){
-      var s = score(DATOS[i], w, b);
-      var pred = s > 0 ? 1 : -1;
-      if(pred !== DATOS[i].y) err++;
-      var d = Math.abs(s);
-      if(d < dmin - 1e-12){ dmin = d; idxMin = [i]; }
-      else if(Math.abs(d - dmin) < 1e-12){ idxMin.push(i); }
-    }
-    return {err:err, dmin:dmin, idxMin:idxMin, w:w, b:b};
-  }
-
-  function dibuja(){
-    var R = evalua(ang, bb), w = R.w;
-
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle = "#fff"; ctx.fillRect(0,0,W,H);
-
-    /* --- regiones de decision --- */
-    ctx.save();
-    ctx.beginPath(); ctx.rect(PX,PY,PW,PH); ctx.clip();
-
-    var p0 = {x: bb*w.x, y: bb*w.y};      // punto de la recta mas cercano al origen
-    var d  = {x: -w.y,  y: w.x};          // direccion de la recta
-    var T = 12, B = 12;
-
-    function lado(signo, color){
-      ctx.beginPath();
-      var a1 = {x:p0.x - T*d.x,               y:p0.y - T*d.y};
-      var a2 = {x:p0.x + T*d.x,               y:p0.y + T*d.y};
-      var a3 = {x:a2.x + signo*B*w.x,         y:a2.y + signo*B*w.y};
-      var a4 = {x:a1.x + signo*B*w.x,         y:a1.y + signo*B*w.y};
-      ctx.moveTo(px(a1.x), py(a1.y));
-      ctx.lineTo(px(a2.x), py(a2.y));
-      ctx.lineTo(px(a3.x), py(a3.y));
-      ctx.lineTo(px(a4.x), py(a4.y));
-      ctx.closePath();
-      ctx.fillStyle = color; ctx.fill();
-    }
-    lado(+1, COL.perroBg);
-    lado(-1, COL.gatoBg);
-
-    /* franja del margen, solo si separa limpio */
-    if(R.err === 0 && R.dmin > 0){
-      ctx.setLineDash([9,8]); ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(28,31,36,.38)";
-      [+1,-1].forEach(function(sg){
-        var q = {x:p0.x + sg*R.dmin*w.x, y:p0.y + sg*R.dmin*w.y};
-        ctx.beginPath();
-        ctx.moveTo(px(q.x - T*d.x), py(q.y - T*d.y));
-        ctx.lineTo(px(q.x + T*d.x), py(q.y + T*d.y));
-        ctx.stroke();
-      });
-      ctx.setLineDash([]);
-    }
-
-    /* la frontera */
-    ctx.lineWidth = 4; ctx.strokeStyle = COL.tinta;
-    ctx.beginPath();
-    ctx.moveTo(px(p0.x - T*d.x), py(p0.y - T*d.y));
-    ctx.lineTo(px(p0.x + T*d.x), py(p0.y + T*d.y));
-    ctx.stroke();
-    ctx.restore();
-
-    /* --- marco y ejes --- */
-    ctx.strokeStyle = COL.linea; ctx.lineWidth = 2;
-    ctx.strokeRect(PX, PY, PW, PH);
-
-    ctx.fillStyle = COL.tinta2;
-    ctx.font = "22px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.textAlign = "center";
-    for(var t=10;t<=75;t+=10){
-      var X = px((t-SMIN)/(SMAX-SMIN));
-      ctx.beginPath(); ctx.moveTo(X, PY+PH); ctx.lineTo(X, PY+PH+8); ctx.stroke();
-      ctx.fillText(String(t), X, PY+PH+34);
-    }
-    ctx.textAlign = "right";
-    for(var u=4;u<=16;u+=4){
-      var Y = py((u-EMIN)/(EMAX-EMIN));
-      ctx.beginPath(); ctx.moveTo(PX-8, Y); ctx.lineTo(PX, Y); ctx.stroke();
-      ctx.fillText(String(u), PX-16, Y+8);
-    }
-    ctx.textAlign = "center";
-    ctx.fillStyle = COL.tinta;
-    ctx.font = "600 24px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillText("x₁ · tamaño del animal (cm)", PX + PW/2, PY + PH + 70);
-    ctx.save();
-    ctx.translate(30, PY + PH/2); ctx.rotate(-Math.PI/2);
-    ctx.fillText("x₂ · tamaño de la oreja (cm)", 0, 0);
-    ctx.restore();
-
-    /* --- puntos --- */
-    DATOS.forEach(function(p, i){
-      var s = score(p, w, bb);
-      var pred = s > 0 ? 1 : -1;
-      var mal  = pred !== p.y;
-      var X = px(p.nx), Y = py(p.ny);
-      var col = p.y === 1 ? COL.perro : COL.gato;
-      var esSV = R.idxMin.indexOf(i) >= 0;
-
-      if(esSV){
-        ctx.beginPath(); ctx.arc(X, Y, 21, 0, 6.2832);
-        ctx.strokeStyle = "rgba(28,31,36,.30)"; ctx.lineWidth = 3; ctx.stroke();
-      }
-      ctx.beginPath(); ctx.arc(X, Y, 12, 0, 6.2832);
-      ctx.fillStyle = mal ? "#fff" : col;
-      ctx.fill();
-      ctx.lineWidth = 4; ctx.strokeStyle = col; ctx.stroke();
-
-      if(mal){
-        ctx.strokeStyle = COL.error; ctx.lineWidth = 4.5;
-        ctx.beginPath();
-        ctx.moveTo(X-8,Y-8); ctx.lineTo(X+8,Y+8);
-        ctx.moveTo(X+8,Y-8); ctx.lineTo(X-8,Y+8);
-        ctx.stroke();
-      }
-      if(p.nom){
-        ctx.fillStyle = COL.tinta2;
-        ctx.font = "italic 20px -apple-system, Segoe UI, Roboto, sans-serif";
-        ctx.textAlign = "left";
-        ctx.fillText(p.nom, X + 20, Y + 7);
-        ctx.textAlign = "center";
-      }
-    });
-
-    /* animal nuevo */
-    if(nuevo){
-      var sN = score(nuevo, w, bb);
-      var XN = px(nuevo.nx), YN = py(nuevo.ny);
-      ctx.strokeStyle = COL.tinta; ctx.lineWidth = 4;
-      ctx.strokeRect(XN-12, YN-12, 24, 24);
-      ctx.fillStyle = "#fff"; ctx.fillRect(XN-9, YN-9, 18, 18);
-      ctx.fillStyle = COL.tinta;
-      ctx.font = "600 20px -apple-system, Segoe UI, Roboto, sans-serif";
-      ctx.textAlign = "left";
-      ctx.fillText("?", XN + 20, YN + 7);
-      ctx.textAlign = "center";
-    }
-
-    /* --- leyenda --- */
-    var LX = PX + PW + 32, LY = PY + 14;
-    ctx.textAlign = "left";
-    ctx.font = "600 21px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillStyle = COL.tinta2;
-    ctx.fillText("CLASE REAL", LX, LY);
-
-    ctx.beginPath(); ctx.arc(LX+13, LY+36, 12, 0, 6.2832);
-    ctx.fillStyle = COL.perro; ctx.fill();
-    ctx.font = "21px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillStyle = COL.tinta; ctx.fillText("perro  (+1)", LX+36, LY+43);
-
-    ctx.beginPath(); ctx.arc(LX+13, LY+76, 12, 0, 6.2832);
-    ctx.fillStyle = COL.gato; ctx.fill();
-    ctx.fillStyle = COL.tinta; ctx.fillText("gato  (−1)", LX+36, LY+83);
-
-    ctx.font = "600 21px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillStyle = COL.tinta2;
-    ctx.fillText("EL MODELO DICE", LX, LY+132);
-    ctx.fillStyle = COL.perroBg; ctx.fillRect(LX, LY+150, 26, 26);
-    ctx.strokeStyle = COL.linea; ctx.lineWidth = 2; ctx.strokeRect(LX, LY+150, 26, 26);
-    ctx.font = "21px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillStyle = COL.tinta; ctx.fillText("perro  (s > 0)", LX+36, LY+170);
-    ctx.fillStyle = COL.gatoBg; ctx.fillRect(LX, LY+190, 26, 26);
-    ctx.strokeStyle = COL.linea; ctx.strokeRect(LX, LY+190, 26, 26);
-    ctx.fillStyle = COL.tinta; ctx.fillText("gato  (s < 0)", LX+36, LY+210);
-
-    ctx.strokeStyle = COL.error; ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(LX+4, LY+252); ctx.lineTo(LX+22, LY+270);
-    ctx.moveTo(LX+22, LY+252); ctx.lineTo(LX+4, LY+270);
-    ctx.stroke();
-    ctx.fillStyle = COL.tinta; ctx.fillText("error", LX+36, LY+270);
-
-    ctx.beginPath(); ctx.arc(LX+13, LY+305, 16, 0, 6.2832);
-    ctx.strokeStyle = "rgba(28,31,36,.30)"; ctx.lineWidth = 3; ctx.stroke();
-    ctx.fillStyle = COL.tinta2;
-    ctx.font = "19px -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.fillText("más cercano", LX+36, LY+300);
-    ctx.fillText("a la recta", LX+36, LY+322);
-
-    /* --- ecuacion viva --- */
-    ctx.textAlign = "left";
-    ctx.font = "600 23px ui-monospace, Consolas, monospace";
-    ctx.fillStyle = COL.tinta;
-    ctx.fillText(
-      "s(x) = " + w.x.toFixed(2).replace(".",",") + "·x₁ " +
-      (w.y >= 0 ? "+ " : "− ") + Math.abs(w.y).toFixed(2).replace(".",",") + "·x₂ " +
-      (bb >= 0 ? "− " : "+ ") + Math.abs(bb).toFixed(2).replace(".",","),
-      PX, PY - 16
-    );
-    ctx.textAlign = "center";
-
-    /* --- lecturas --- */
-    document.getElementById("vErr").textContent = R.err;
-    document.getElementById("vAcc").textContent = fmt(1 - R.err/DATOS.length, 3);
-    document.getElementById("vMar").textContent = fmt(R.dmin, 3);
-    document.getElementById("mErr").className = "met " + (R.err === 0 ? "destaca" : (R.err >= 5 ? "mala" : ""));
-    document.getElementById("dMar").textContent =
-      R.err === 0 ? "con 0 errores, esto ES el margen" : "distancia a la recta";
-
-    if(nuevo){
-      var sN2 = score(nuevo, w, bb);
-      document.getElementById("cajaNuevo").innerHTML =
-        "<strong>Animal nuevo:</strong> tamaño " + fmt(nuevo.s,1) + " cm, oreja " + fmt(nuevo.e,1) + " cm. " +
-        "&nbsp;→&nbsp; <span class='mono'>s = " + fmt(sN2,3) + "</span> &nbsp;→&nbsp; el modelo dice <strong class='" +
-        (sN2 > 0 ? "cperro'>perro" : "cgato'>gato") + "</strong>. " +
-        (Math.abs(sN2) < 0.06
-          ? "Está pegado a la frontera y aun así responde sin titubear: <strong>el signo no guarda cuán cerca estuvo</strong>."
-          : "Mueve la recta y míralo cambiar de clase sin que el animal se haya movido un milímetro.");
-    }
-  }
-
-  /* --- controles --- */
-  var sAng = document.getElementById("sAng"), sB = document.getElementById("sB");
-  var movimientos = 0;
-
-  function onMove(){
-    ang = parseFloat(sAng.value);
-    bb  = parseFloat(sB.value);
-    document.getElementById("vAng").textContent = sAng.value;
-    document.getElementById("vB").textContent   = fmt(bb,2);
-    movimientos++;
-    dibuja();
-    revisaContrasteSalto();
-  }
-  sAng.addEventListener("input", onMove);
-  sB.addEventListener("input", onMove);
-
-  document.getElementById("btnReset").addEventListener("click", function(){
-    sAng.value = ANG_INI; sB.value = B_INI; onMove();
-  });
-  document.getElementById("btnLimpia").addEventListener("click", function(){
-    nuevo = null;
-    document.getElementById("cajaNuevo").innerHTML =
-      "<strong>Haz clic en el gráfico</strong> para poner un animal del que no sabes nada, como hizo el profesor con el mouse en clase. El modelo lo va a clasificar igual, sin dudar.";
-    dibuja();
-  });
-
-  document.getElementById("btnAjusta").addEventListener("click", function(){
-    // Se busca sobre la MISMA rejilla que los deslizadores pueden representar
-    // -grados enteros, b de centésima en centésima-, para que lo que se informa
-    // aquí coincida exacto con lo que queda en los controles y en las lecturas.
-    var mejor = null, probadas = 0;
-    for(var ai = -89; ai <= 89; ai++){
-      for(var bi = -120; bi <= 160; bi++){
-        var b = bi / 100;
-        var R = evalua(ai, b);
-        probadas++;
-        if(mejor === null || R.err < mejor.err ||
-           (R.err === mejor.err && R.dmin > mejor.dmin + 1e-9)){
-          mejor = {err:R.err, dmin:R.dmin, a:ai, b:b};
-        }
-      }
-    }
-    sAng.value = mejor.a;
-    sB.value   = mejor.b;
-    onMove();
-    document.getElementById("cajaNuevo").innerHTML =
-      "<strong>Búsqueda a la bruta:</strong> se probaron " + probadas.toLocaleString("es-CL") +
-      " rectas. El mínimo de errores alcanzable con <em>una sola recta</em> sobre estos datos es <strong>" +
-      mejor.err + "</strong> — y ese error es el chihuahua, que no tiene arreglo. Entre todas las rectas que consiguen ese mínimo se eligió la que deja más espacio libre a cada lado (" +
-      fmt(mejor.dmin,3) + "). Ese segundo criterio — <em>a igualdad de errores, el margen más ancho</em> — es exactamente lo que resuelve el <strong>support vector machine</strong>, solo que con optimización en vez de fuerza bruta.";
-  });
-
-  /* clic: animal nuevo */
-  cv.addEventListener("click", function(ev){
-    var r = cv.getBoundingClientRect();
-    var cx = (ev.clientX - r.left) * (W / r.width);
-    var cy = (ev.clientY - r.top)  * (H / r.height);
-    var nx = (cx - PX) / PW;
-    var ny = (PY + PH - cy) / PH;
-    if(nx < 0 || nx > 1 || ny < 0 || ny > 1) return;
-    nuevo = {
-      nx:nx, ny:ny,
-      s: SMIN + nx*(SMAX-SMIN),
-      e: EMIN + ny*(EMAX-EMIN)
-    };
-    dibuja();
-  });
-
-  /* prediccion 2 */
-  var saltoRespondio = null;
-  var contSalto = document.getElementById("contSalto");
-  Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(b){
-    b.addEventListener("click", function(){
-      saltoRespondio = b.getAttribute("data-p");
-      Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(o){
-        o.setAttribute("aria-pressed", o===b ? "true":"false");
-      });
-      revisaContrasteSalto();
-    });
-  });
-
-  function revisaContrasteSalto(){
-    if(saltoRespondio === null || movimientos < 3) return;
-    var t;
-    if(saltoRespondio === "salto"){
-      t = "<strong>Eso pasó.</strong> El contador se queda quieto varios grados y después baja de golpe. ";
-    } else if(saltoRespondio === "suave"){
-      t = "<strong>No.</strong> El contador no se mueve mientras ningún punto cruza la recta, y después baja un entero de una vez. Nunca vas a ver 2,4 errores. ";
-    } else {
-      t = "<strong>Mira el contador mientras giras.</strong> Se queda quieto varios grados y después baja un entero de golpe. ";
-    }
-    t += "La razón es que la recta solo cambia algo <em>cuando un punto le cruza por encima</em>, y eso ocurre de a un punto a la vez. " +
-         "<strong>Y de ahí sale la consecuencia grande:</strong> una función que salta no tiene derivada, así que el modelo no puede preguntarle «¿hacia dónde me muevo para mejorar?». " +
-         "Por eso ningún clasificador minimiza esto directamente — el §6 explica qué minimizan en su lugar.";
-    contSalto.innerHTML = t;
-    contSalto.classList.add("on");
-  }
-
-  dibuja();
-})();
-</script>
+</main>
 </body>
 </html>
