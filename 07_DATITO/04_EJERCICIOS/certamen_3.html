@@ -318,17 +318,7 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p class="enun">La empresa quiere que el sistema reciba: «Revisa las mediciones actuales del sensor de temperatura y, si detectas un valor anómalo, consulta el manual del equipo y genera una orden de inspección.» Explique por qué esto le queda mejor a un agente basado en un LLM que a un LLM aislado. Describa una secuencia posible, con el papel del modelo, de los datos del entorno y de las herramientas.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
-<div class="clave">
-<strong>Arquitectura del agente:</strong><br>
-<span style="font-weight: 700; color: #059669;">Percibir</span> → <span style="font-weight: 700; color: #059669;">Razonar</span> → <span style="font-weight: 700; color: #059669;">Actuar</span>
-<ol style="margin: 0.6rem 0 0 1.3rem; padding: 0;">
-<li><strong>Percibir:</strong> El modelo recibe datos del entorno (temperatura del sensor, manualidad, disponibilidad de herramientas).</li>
-<li><strong>Razonar:</strong> Aplica el criterio correspondiente (¿excede el rango normal? ¿requiere consultar el manual o crear una orden?).</li>
-<li><strong>Actuar:</strong> Ejecuta herramientas (leer medición, buscar manual, registrar orden) solo si la condición se cumple.</li>
-</ol>
-En este problema: el agente percibe temperatura → razona si está fuera de rango → actúa creando orden de inspección si corresponde.
-</div>
-<p><strong>Respuesta.</strong> La instrucción exige leer mediciones actuales, aplicar un criterio y, si corresponde, dejar una orden en un sistema. Un LLM aislado solo puede redactar la orden. Un agente implementa el ciclo Percibir-Razonar-Actuar, paso a paso.</p>
+<p><strong>Respuesta.</strong> La instrucción exige leer mediciones actuales, aplicar un criterio y, si corresponde, dejar una orden en un sistema. Un LLM aislado solo puede redactar la orden. Un agente puede intentar cumplirla, paso a paso.</p>
 <ol class="pasos">
 <li>El modelo recibe la instrucción y elige la primera herramienta: leer las mediciones autorizadas de ese sensor.</li>
 <li>El entorno devuelve los valores. El modelo no se los inventa.</li>

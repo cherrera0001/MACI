@@ -226,6 +226,11 @@ ahí mismo consta que derivarla no se pide en certamen: basta entender qué sign
   Eso es «minimizar el riesgo»</span></p>
 </div>
 
+<div class="panel">
+  <h3 style="margin-top:0">Residuales vs Predichos</h3>
+  <canvas id="residuos" width="820" height="380"></canvas>
+</div>
+
 <h2>1 · Qué es cada cosa en el gráfico</h2>
 
 <table>
@@ -499,13 +504,180 @@ pregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
 <!-- datito:nav:fin -->
 </main>
 <script>
-document.getElementById('m').addEventListener('input', () => {
-  resultChanged = true;
-  updateGrafico();
-});
-document.getElementById('b').addEventListener('input', () => {
-  resultChanged = true;
-  updateGrafico();
+document.addEventListener('DOMContentLoaded', function() {
+  // Datos de los 8 viajes (carga en t, litros consumidos)
+  const data = [
+    {x: 12, y: 48},
+    {x: 18, y: 61},
+    {x: 20, y: 65},
+    {x: 26, y: 79},
+    {x: 28, y: 72},
+    {x: 35, y: 105},
+    {x: 40, y: 130},
+    {x: 45, y: 141}
+  ];
+
+  const canvas1 = document.getElementById('lienzo');
+  const canvas2 = document.getElementById('residuos');
+
+  function drawCharts() {
+    const m = parseFloat(document.getElementById('m').value);
+    const b = parseFloat(document.getElementById('b').value);
+
+    // ============ CANVAS 1: Scatter + Regression Line ============
+    const ctx1 = canvas1.getContext('2d');
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+
+    const padding = 60;
+    const plotWidth = canvas1.width - 2 * padding;
+    const plotHeight = canvas1.height - 2 * padding;
+    const minX = 0, maxX = 50;
+    const minY = 0, maxY = 160;
+
+    function pixel1(x, y) {
+      return {
+        px: padding + (x - minX) / (maxX - minX) * plotWidth,
+        py: canvas1.height - padding - (y - minY) / (maxY - minY) * plotHeight
+      };
+    }
+
+    // Ejes
+    ctx1.strokeStyle = '#d8d8d8';
+    ctx1.lineWidth = 1;
+    ctx1.beginPath();
+    ctx1.moveTo(padding, canvas1.height - padding);
+    ctx1.lineTo(canvas1.width - padding, canvas1.height - padding);
+    ctx1.stroke();
+    ctx1.beginPath();
+    ctx1.moveTo(padding, padding);
+    ctx1.lineTo(padding, canvas1.height - padding);
+    ctx1.stroke();
+
+    // Puntos de datos
+    ctx1.fillStyle = '#2563eb';
+    data.forEach(d => {
+      const {px, py} = pixel1(d.x, d.y);
+      ctx1.beginPath();
+      ctx1.arc(px, py, 5, 0, 2 * Math.PI);
+      ctx1.fill();
+    });
+
+    // Línea de regresión
+    ctx1.strokeStyle = '#1a1a1a';
+    ctx1.lineWidth = 2;
+    ctx1.beginPath();
+    const p1 = pixel1(minX, b + m * minX);
+    ctx1.moveTo(p1.px, p1.py);
+    const p2 = pixel1(maxX, b + m * maxX);
+    ctx1.lineTo(p2.px, p2.py);
+    ctx1.stroke();
+
+    // Líneas de residuos (vertical lines from data to regression line)
+    ctx1.strokeStyle = '#dc2626';
+    ctx1.lineWidth = 1;
+    data.forEach(d => {
+      const pred = b + m * d.x;
+      const {px: px1, py: py1} = pixel1(d.x, d.y);
+      const {px: px2, py: py2} = pixel1(d.x, pred);
+      ctx1.beginPath();
+      ctx1.moveTo(px1, py1);
+      ctx1.lineTo(px2, py2);
+      ctx1.stroke();
+    });
+
+    // ============ CANVAS 2: Residuals vs Predicted ============
+    const ctx2 = canvas2.getContext('2d');
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+    const residuals = data.map(d => ({
+      predicted: b + m * d.x,
+      residual: d.y - (b + m * d.x)
+    }));
+
+    const minPred = Math.min(...residuals.map(r => r.predicted));
+    const maxPred = Math.max(...residuals.map(r => r.predicted));
+    const minResid = Math.min(...residuals.map(r => r.residual));
+    const maxResid = Math.max(...residuals.map(r => r.residual));
+
+    function pixel2(pred, resid) {
+      return {
+        px: padding + (pred - minPred) / (maxPred - minPred) * plotWidth,
+        py: canvas2.height - padding - (resid - minResid) / (maxResid - minResid) * plotHeight
+      };
+    }
+
+    // Ejes
+    ctx2.strokeStyle = '#d8d8d8';
+    ctx2.lineWidth = 1;
+    ctx2.beginPath();
+    ctx2.moveTo(padding, canvas2.height - padding);
+    ctx2.lineTo(canvas2.width - padding, canvas2.height - padding);
+    ctx2.stroke();
+    ctx2.beginPath();
+    ctx2.moveTo(padding, padding);
+    ctx2.lineTo(padding, canvas2.height - padding);
+    ctx2.stroke();
+
+    // Línea en residuo = 0
+    const p1_r = pixel2(minPred, 0);
+    const p2_r = pixel2(maxPred, 0);
+    ctx2.strokeStyle = '#666';
+    ctx2.lineWidth = 2;
+    ctx2.setLineDash([5, 5]);
+    ctx2.beginPath();
+    ctx2.moveTo(p1_r.px, p1_r.py);
+    ctx2.lineTo(p2_r.px, p2_r.py);
+    ctx2.stroke();
+    ctx2.setLineDash([]);
+
+    // Puntos de residuales
+    ctx2.fillStyle = '#2563eb';
+    residuals.forEach(r => {
+      const {px, py} = pixel2(r.predicted, r.residual);
+      ctx2.beginPath();
+      ctx2.arc(px, py, 5, 0, 2 * Math.PI);
+      ctx2.fill();
+    });
+
+    // ============ Calcular métricas ============
+    const mse = residuals.reduce((sum, r) => sum + r.residual * r.residual, 0) / data.length;
+    const meanY = data.reduce((sum, d) => sum + d.y, 0) / data.length;
+    const ssTotal = data.reduce((sum, d) => sum + (d.y - meanY) * (d.y - meanY), 0);
+    const ssRes = residuals.reduce((sum, r) => sum + r.residual * r.residual, 0);
+    const r2 = 1 - (ssRes / ssTotal);
+    const pred34 = b + m * 34;
+
+    // Actualizar elementos
+    document.getElementById('mse').textContent = mse.toFixed(2);
+    document.getElementById('r2').textContent = r2.toFixed(3);
+    document.getElementById('pred').textContent = pred34.toFixed(1);
+    document.getElementById('mOut').textContent = m.toFixed(2);
+    document.getElementById('bOut').textContent = b.toFixed(1);
+  }
+
+  // Event listeners
+  document.getElementById('m').addEventListener('input', drawCharts);
+  document.getElementById('b').addEventListener('input', drawCharts);
+
+  // Botón "Buscar la mejor recta" (mínimos cuadrados ordinarios)
+  document.getElementById('mejor').addEventListener('click', function() {
+    const n = data.length;
+    const sumX = data.reduce((s, d) => s + d.x, 0);
+    const sumY = data.reduce((s, d) => s + d.y, 0);
+    const sumXY = data.reduce((s, d) => s + d.x * d.y, 0);
+    const sumX2 = data.reduce((s, d) => s + d.x * d.x, 0);
+
+    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const b = (sumY - m * sumX) / n;
+
+    document.getElementById('m').value = (m).toFixed(2);
+    document.getElementById('b').value = (b).toFixed(1);
+
+    drawCharts();
+  });
+
+  // Dibujo inicial
+  drawCharts();
 });
 </script>
 </body>

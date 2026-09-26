@@ -1360,6 +1360,310 @@ cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
 </footer>
 </main>
 <script>
+// ============================================================================
+// FUNCIONES DE DIBUJO PARA CANVAS
+// ============================================================================
+
+// 1. Cuarteto de Anscombe - Scatter plot
+function drawAnscombeChart(canvasId) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#d8d8d8';
+  ctx.lineWidth = 1;
+
+  // Datos del cuarteto de Anscombe (11 puntos cada conjunto)
+  var data = [
+    [{x:10,y:8.04},{x:8,y:6.95},{x:13,y:7.58},{x:9,y:8.81},{x:11,y:8.33},{x:14,y:9.96},{x:6,y:7.24},{x:4,y:4.26},{x:12,y:10.84},{x:7,y:4.82},{x:5,y:5.68}],
+    [{x:10,y:9.14},{x:8,y:8.14},{x:13,y:8.74},{x:9,y:8.77},{x:11,y:9.26},{x:14,y:8.1},{x:6,y:6.13},{x:4,y:3.1},{x:12,y:9.13},{x:7,y:7.26},{x:5,y:4.74}],
+    [{x:10,y:7.46},{x:8,y:6.77},{x:13,y:12.74},{x:9,y:7.11},{x:11,y:7.81},{x:14,y:8.84},{x:6,y:6.08},{x:4,y:5.39},{x:12,y:8.15},{x:7,y:6.42},{x:5,y:5.73}],
+    [{x:8,y:6.58},{x:8,y:5.76},{x:8,y:7.71},{x:8,y:8.84},{x:8,y:8.47},{x:8,y:7.04},{x:8,y:5.25},{x:19,y:12.5},{x:8,y:5.56},{x:8,y:7.91},{x:8,y:6.89}]
+  ];
+
+  // 4 grillas de scatter plots
+  var colWidth = w / 2, colHeight = h / 2;
+  for (var set = 0; set < 4; set++) {
+    var points = data[set];
+    var offsetX = (set % 2) * colWidth;
+    var offsetY = Math.floor(set / 2) * colHeight;
+
+    // Marco
+    ctx.strokeStyle = '#d8d8d8';
+    ctx.strokeRect(offsetX, offsetY, colWidth, colHeight);
+
+    // Eje X
+    ctx.strokeStyle = '#666';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(offsetX + 40, offsetY + colHeight - 30);
+    ctx.lineTo(offsetX + colWidth - 10, offsetY + colHeight - 30);
+    ctx.stroke();
+
+    // Eje Y
+    ctx.beginPath();
+    ctx.moveTo(offsetX + 40, offsetY + 10);
+    ctx.lineTo(offsetX + 40, offsetY + colHeight - 30);
+    ctx.stroke();
+
+    // Puntos
+    ctx.fillStyle = '#2563eb';
+    var scaleX = (colWidth - 60) / 14;
+    var scaleY = (colHeight - 50) / 14;
+    for (var i = 0; i < points.length; i++) {
+      var px = offsetX + 40 + points[i].x * scaleX;
+      var py = offsetY + colHeight - 30 - points[i].y * scaleY;
+      ctx.beginPath();
+      ctx.arc(px, py, 4, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+}
+
+// 2. Histograma de consumo de camiones
+function drawTruckChart(canvasId, realZeros) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+
+  // Datos: 10 en cero, 15 entre 2100 y 2700
+  var bins = [];
+  if (realZeros) {
+    bins = [10, 0, 0, 0, 0, 0, 0, 0, 15]; // 10 en 0, 15 en rango 2100-2700
+  } else {
+    bins = [0, 0, 0, 0, 0, 0, 0, 0, 25]; // todos 25 entre 2100-2700
+  }
+
+  var binLabels = ['0', '300', '600', '900', '1200', '1500', '1800', '2100', '2400'];
+  var maxVal = Math.max.apply(null, bins);
+
+  ctx.font = '12px Arial';
+  ctx.fillStyle = '#1a1a1a';
+  ctx.textAlign = 'center';
+
+  var barWidth = (w - 80) / bins.length;
+  var chartHeight = h - 80;
+  var barSpacing = barWidth * 0.8;
+
+  for (var i = 0; i < bins.length; i++) {
+    var barH = (bins[i] / maxVal) * chartHeight;
+    var x = 40 + i * barWidth + (barWidth - barSpacing) / 2;
+    var y = h - 40 - barH;
+
+    ctx.fillStyle = '#2563eb';
+    ctx.fillRect(x, y, barSpacing, barH);
+
+    ctx.fillStyle = '#666';
+    ctx.fillText(binLabels[i], x + barSpacing / 2, h - 20);
+  }
+
+  // Línea de media
+  ctx.strokeStyle = '#dc2626';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 5]);
+  var mediaX = 40 + (realZeros ? 7 : 8) * barWidth + barSpacing / 2;
+  ctx.beginPath();
+  ctx.moveTo(mediaX, 20);
+  ctx.lineTo(mediaX, h - 40);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Eje Y
+  ctx.strokeStyle = '#666';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(40, 20);
+  ctx.lineTo(40, h - 40);
+  ctx.stroke();
+}
+
+// 3. Distribución de vibración con curva normal
+function drawVibrationChart(canvasId, skew) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+
+  // Datos base simétricos alrededor de 41
+  var mean = 41, stdDev = 2.24;
+  var data = [];
+  for (var i = 0; i < 240; i++) {
+    var val = mean + (Math.random() + Math.random() - 1) * stdDev * 3;
+    if (skew > 0) {
+      val += (Math.random() * skew / 50); // Estirar cola derecha
+    }
+    data.push(Math.max(30, Math.min(70, val)));
+  }
+
+  // Histograma
+  var bins = new Array(10).fill(0);
+  for (var i = 0; i < data.length; i++) {
+    var binIdx = Math.floor((data[i] - 30) / 4);
+    if (binIdx >= 0 && binIdx < 10) bins[binIdx]++;
+  }
+
+  var maxBin = Math.max.apply(null, bins);
+  var chartX = 60, chartY = 30, chartW = w - 100, chartH = h - 80;
+
+  // Dibujar barras
+  ctx.fillStyle = '#dbeafe';
+  ctx.strokeStyle = '#2563eb';
+  ctx.lineWidth = 1;
+  for (var i = 0; i < bins.length; i++) {
+    var barH = (bins[i] / maxBin) * chartH;
+    var x = chartX + i * (chartW / 10);
+    var y = chartY + chartH - barH;
+    ctx.fillRect(x, y, chartW / 10 - 2, barH);
+    ctx.strokeRect(x, y, chartW / 10 - 2, barH);
+  }
+
+  // Curva normal aproximada
+  ctx.strokeStyle = '#7c3aed';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (var x = 0; x < chartW; x += 2) {
+    var val = 30 + (x / chartW) * 40;
+    var normalDensity = Math.exp(-Math.pow((val - mean) / stdDev, 2) / 2) / (stdDev * Math.sqrt(2 * Math.PI));
+    var yPos = chartY + chartH - (normalDensity * chartH * 15);
+    if (x === 0) ctx.moveTo(chartX + x, yPos);
+    else ctx.lineTo(chartX + x, yPos);
+  }
+  ctx.stroke();
+
+  // Ejes
+  ctx.strokeStyle = '#666';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(chartX, chartY);
+  ctx.lineTo(chartX, chartY + chartH);
+  ctx.lineTo(chartX + chartW, chartY + chartH);
+  ctx.stroke();
+
+  ctx.fillStyle = '#666';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('30', chartX - 10, chartY + chartH + 15);
+  ctx.fillText('70', chartX + chartW + 10, chartY + chartH + 15);
+}
+
+// 4. Distribución de precios Melbourne
+function drawMelbourneChart(canvasId, logScale) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+
+  // Generar datos con asimetría (como Price real de Melbourne)
+  var data = [];
+  // 61.5% bajo la media (crudo)
+  for (var i = 0; i < 152; i++) {
+    data.push(Math.random() * 500000 + 131000);
+  }
+  // 38.5% arriba
+  for (var i = 0; i < 96; i++) {
+    data.push(Math.random() * 2000000 + 910000);
+  }
+
+  // Si log, transformar
+  if (logScale) {
+    data = data.map(function(v) { return Math.log1p(v); });
+  }
+
+  // Crear histograma
+  var minVal = Math.min.apply(null, data);
+  var maxVal = Math.max.apply(null, data);
+  var bins = new Array(12).fill(0);
+
+  for (var i = 0; i < data.length; i++) {
+    var binIdx = Math.floor(((data[i] - minVal) / (maxVal - minVal)) * 11.99);
+    if (binIdx >= 0 && binIdx < 12) bins[binIdx]++;
+  }
+
+  var maxBin = Math.max.apply(null, bins);
+  var chartX = 60, chartY = 30, chartW = w - 100, chartH = h - 80;
+
+  // Dibujar barras
+  ctx.fillStyle = logScale ? '#d1fae5' : '#fef3c7';
+  ctx.strokeStyle = logScale ? '#059669' : '#d97706';
+  ctx.lineWidth = 1;
+
+  for (var i = 0; i < bins.length; i++) {
+    var barH = (bins[i] / maxBin) * chartH;
+    var x = chartX + i * (chartW / 12);
+    var y = chartY + chartH - barH;
+    ctx.fillRect(x, y, chartW / 12 - 2, barH);
+    ctx.strokeRect(x, y, chartW / 12 - 2, barH);
+  }
+
+  // Ejes
+  ctx.strokeStyle = '#666';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(chartX, chartY);
+  ctx.lineTo(chartX, chartY + chartH);
+  ctx.lineTo(chartX + chartW, chartY + chartH);
+  ctx.stroke();
+
+  ctx.fillStyle = '#666';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  var label = logScale ? 'log(Price)' : 'Price (AUD)';
+  ctx.fillText(label, w / 2, h - 10);
+}
+
+// Inicializar canvas en DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Dibujar canvas iniciales
+  drawAnscombeChart('cAns');
+  drawTruckChart('cCam', true);
+  drawVibrationChart('cVib', 0);
+  drawMelbourneChart('cMel', false);
+
+  // Eventos para botones (botones básicos sin handlers específicos todavía)
+  var anButtons = document.querySelectorAll('#an1, #an2, #an3, #an4');
+  anButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      drawAnscombeChart('cAns');
+    });
+  });
+
+  var camButtons = document.querySelectorAll('#bCamReal, #bCamFalta');
+  camButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var realZeros = btn.id === 'bCamReal';
+      drawTruckChart('cCam', realZeros);
+    });
+  });
+
+  var vibButtons = document.querySelectorAll('#bEsp, #bReset');
+  vibButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      drawVibrationChart('cVib', btn.id === 'bReset' ? 0 : 75);
+    });
+  });
+
+  var melButtons = document.querySelectorAll('#bCrudo, #bLog');
+  melButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var logScale = btn.id === 'bLog';
+      drawMelbourneChart('cMel', logScale);
+    });
+  });
+});
+
 // Slider sk: Estirar la cola derecha
 (function(){
   var sk = document.getElementById('sk');
@@ -1368,6 +1672,7 @@ cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
   sk.addEventListener('input', function(){
     var val = parseInt(sk.value);
     oSk.textContent = val === 0 ? 'simétrica' : 'cola derecha: ' + val;
+    drawVibrationChart('cVib', val);
   });
 })();
 </script>

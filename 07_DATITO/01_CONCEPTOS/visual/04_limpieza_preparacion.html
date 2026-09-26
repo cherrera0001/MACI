@@ -743,6 +743,29 @@ marca, se verifica y se decide con una razón del dominio; no se saca por su
 distancia a la media.
 </div>
 
+<h3>Visualización: antes y después de limpieza</h3>
+
+<p>Este gráfico muestra el consumo en la tabla cruda, separado por tipo de valor:</p>
+
+<div class="panel">
+  <canvas id="beforeAfterChart" width="860" height="280"></canvas>
+  <p style="font-size:.88rem;color:var(--suave);margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--linea)">
+  <strong>Lectura.</strong> Izquierda: tabla cruda (12 filas). Centro: tras tratar centinelas. Derecha: tras excluir el atípico verificado.
+  Fíjate en la mediana (línea): nunca se mueve.
+  </p>
+</div>
+
+<h3>Matriz de valores faltantes y códigos</h3>
+
+<p>En datos reales, los patrones de ausencia cuentan una historia. Este heatmap muestra qué camión, en qué día, tiene dato, faltante o código:</p>
+
+<div class="panel">
+  <canvas id="missingMatrix" width="860" height="240"></canvas>
+  <p style="font-size:.88rem;color:var(--suave);margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--linea)">
+  <strong>Lectura.</strong> Verde: consumo registrado. Rojo: código centinela (−999). Naranja: cero legítimo. Gris: posición de día (no es observación). El patrón de rojos revela que la indisponibilidad no es aleatoria: dos días seguidos, solo un camión.
+  </p>
+</div>
+
 <h2>7 · La trampa que te espera después: imputar</h2>
 
 <p>Ya sabes qué hacer con los <code>−999</code>: convertirlos en nulos. Pero
@@ -1193,6 +1216,211 @@ fechas de junio y el caso de buses.
   }
 
   mimp.addEventListener('input', actualizarPanelImp);
+})();
+
+// Canvas 1: Gráfica antes/después limpieza (barras comparativas)
+(function(){
+  var canvas = document.getElementById('beforeAfterChart');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var dpi = window.devicePixelRatio || 1;
+  if(dpi > 1){
+    canvas.width = w * dpi; canvas.height = h * dpi;
+    ctx.scale(dpi, dpi);
+  }
+
+  var padding = {t: 40, r: 40, b: 50, l: 60};
+  var plotW = w - padding.l - padding.r;
+  var plotH = h - padding.t - padding.b;
+
+  // Datos: [crudo, centinelas_out, atípico_out]
+  var stats = [
+    {media: 208.50, mediana: 200, desc: 'Crudo\n(n=12)'},
+    {media: 450.00, mediana: 200, desc: 'Sin −999\n(n=10)'},
+    {media: 177.78, mediana: 200, desc: 'Sin −999\ny 2900\n(n=9)'}
+  ];
+
+  ctx.fillStyle = '#faf9f7';
+  ctx.fillRect(0, 0, w, h);
+
+  // Ejes
+  ctx.strokeStyle = '#d8d8d8';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padding.l, padding.t);
+  ctx.lineTo(padding.l, h - padding.b);
+  ctx.lineTo(w - padding.r, h - padding.b);
+  ctx.stroke();
+
+  // Escala Y (0 a 500)
+  var yMax = 500, yStep = 100;
+  ctx.fillStyle = '#666';
+  ctx.font = '12px system-ui';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for(var y = 0; y <= yMax; y += yStep){
+    var py = h - padding.b - (y / yMax) * plotH;
+    ctx.fillText(y, padding.l - 10, py);
+    ctx.strokeStyle = '#e8e8e8';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padding.l, py);
+    ctx.lineTo(w - padding.r, py);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = 'bold 13px system-ui';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Litros', padding.l - 35, padding.t - 30);
+
+  // Barras
+  var barW = plotW / (stats.length * 3.5);
+  for(var i = 0; i < stats.length; i++){
+    var x = padding.l + (i + 0.5) * (plotW / stats.length) - barW / 2;
+
+    // Media (azul)
+    var h_media = (stats[i].media / yMax) * plotH;
+    ctx.fillStyle = '#2563eb';
+    ctx.fillRect(x, h - padding.b - h_media, barW * 0.45, h_media);
+
+    // Mediana (verde, al lado)
+    var h_med = (stats[i].mediana / yMax) * plotH;
+    ctx.fillStyle = '#059669';
+    ctx.fillRect(x + barW * 0.5, h - padding.b - h_med, barW * 0.45, h_med);
+
+    // Etiqueta X
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = '11px system-ui';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(stats[i].desc, x + barW / 2, h - padding.b + 15);
+  }
+
+  // Leyenda
+  ctx.font = '11px system-ui';
+  ctx.fillStyle = '#2563eb';
+  ctx.fillRect(w - padding.r - 160, padding.t + 10, 12, 12);
+  ctx.fillStyle = '#1a1a1a';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('media', w - padding.r - 140, padding.t + 16);
+
+  ctx.fillStyle = '#059669';
+  ctx.fillRect(w - padding.r - 160, padding.t + 30, 12, 12);
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillText('mediana', w - padding.r - 140, padding.t + 36);
+})();
+
+// Canvas 2: Matriz de valores faltantes (heatmap)
+(function(){
+  var canvas = document.getElementById('missingMatrix');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var dpi = window.devicePixelRatio || 1;
+  if(dpi > 1){
+    canvas.width = w * dpi; canvas.height = h * dpi;
+    ctx.scale(dpi, dpi);
+  }
+
+  var padding = {t: 40, r: 40, b: 50, l: 80};
+
+  // Datos tabla 9B: días y camiones
+  var dias = ['Lunes', 'Martes', 'Miércoles'];
+  var camiones = [1, 2, 3, 4];
+
+  // Estados: 0=día, 1=data, 2=centinela, 3=cero, 4=especial
+  var datos = [
+    [0, 1, 1, 1, 1],           // Lunes
+    [1, 1, 3, 2, 1],           // Martes (C2 enfermo=0, C3 mant=−999)
+    [1, 1, 1, 2, 1]            // Miércoles (C3 mant=−999)
+  ];
+
+  // Colores: gris (día), verde (dato), rojo (centinela), naranja (cero)
+  var colors = {0: '#e5e7eb', 1: '#86efac', 2: '#ef4444', 3: '#fb923c', 4: '#94a3b8'};
+  var cellSize = 35;
+  var cellGap = 2;
+
+  ctx.fillStyle = '#faf9f7';
+  ctx.fillRect(0, 0, w, h);
+
+  // Etiquetas Y (días)
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = '11px system-ui';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for(var d = 0; d < dias.length; d++){
+    var y = padding.t + 20 + d * (cellSize + cellGap) + cellSize / 2;
+    ctx.fillText(dias[d], padding.l - 10, y);
+  }
+
+  // Etiquetas X (camiones)
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  for(var c = 0; c < camiones.length; c++){
+    var x = padding.l + 20 + c * (cellSize + cellGap) + cellSize / 2;
+    ctx.fillText('C' + camiones[c], x, padding.t - 15);
+  }
+
+  // Celdas
+  for(var d = 0; d < datos.length; d++){
+    for(var c = 0; c < camiones.length; c++){
+      var tipo = datos[d][c];
+      var x = padding.l + 20 + c * (cellSize + cellGap);
+      var y = padding.t + 20 + d * (cellSize + cellGap);
+
+      ctx.fillStyle = colors[tipo];
+      ctx.fillRect(x, y, cellSize, cellSize);
+
+      ctx.strokeStyle = '#bfdbfe';
+      ctx.lineWidth = 0.5;
+      ctx.strokeRect(x, y, cellSize, cellSize);
+
+      // Símbolos
+      if(tipo === 2){
+        ctx.fillStyle = '#7f1d1d';
+        ctx.font = '12px system-ui';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('−999', x + cellSize / 2, y + cellSize / 2);
+      }else if(tipo === 3){
+        ctx.fillStyle = '#92400e';
+        ctx.font = 'bold 14px system-ui';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('0', x + cellSize / 2, y + cellSize / 2);
+      }else if(tipo === 1){
+        ctx.fillStyle = '#166534';
+        ctx.font = '10px system-ui';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✓', x + cellSize / 2, y + cellSize / 2);
+      }
+    }
+  }
+
+  // Leyenda
+  var legendY = padding.t + 20 + 3 * (cellSize + cellGap) + 15;
+  var legendItems = [
+    {color: '#86efac', label: 'Consumo registrado'},
+    {color: '#ef4444', label: 'Código centinela (−999)'},
+    {color: '#fb923c', label: 'Cero legítimo'},
+    {color: '#e5e7eb', label: 'Separador de día'}
+  ];
+
+  ctx.font = '10px system-ui';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  for(var i = 0; i < legendItems.length; i++){
+    var lx = padding.l + 20 + i * 180;
+    ctx.fillStyle = legendItems[i].color;
+    ctx.fillRect(lx, legendY, 12, 12);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillText(legendItems[i].label, lx + 18, legendY + 6);
+  }
 })();
 </script>
 </body>
