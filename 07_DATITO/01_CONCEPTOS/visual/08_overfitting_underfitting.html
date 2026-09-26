@@ -478,10 +478,14 @@ function drawOverfitting() {
   ctx.fillText('Curva compleja (sobreajuste)', padding + 10, padding - 5);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function updateGrafico() {
   drawTrainTestLoss();
   drawUnderfitting();
   drawOverfitting();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateGrafico();
 });
 </script>
 
