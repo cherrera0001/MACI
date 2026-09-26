@@ -68,11 +68,12 @@
          background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
   .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
   .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .ctrl{max-width:100%;overflow-x:auto}
   .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
   .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
   .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
           padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
-  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea);max-width:100%;overflow:hidden}
   button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
          font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
   button:hover{background:#1d4ed8}
@@ -108,7 +109,17 @@
     .seg button{background:#fff;border:1.5px solid var(--linea);color:var(--tinta);font-weight:600}
     .seg button.on{background:var(--azul);border-color:var(--azul);color:#fff}
     .caja-postura{background:var(--fondo);border-radius:8px;padding:.9rem 1.1rem;font-size:.93rem;min-height:9rem}
-    .caja-postura b{display:block;margin-top:.6rem}</style>
+    .caja-postura b{display:block;margin-top:.6rem}
+  @media (max-width:500px) {
+    html,body{overflow-x:hidden}
+    body{padding:1rem 0.5rem}
+    main{max-width:100%}
+    *{word-break:break-word}
+    code{overflow-wrap:break-word}
+    table{font-size:0.75rem}
+    th,td{padding:0.25rem 0.3rem}
+    .ecu .formula{font-size:0.9rem;padding:0.6rem}
+  }</style>
 </head>
 <body>
 <main>
@@ -1216,5 +1227,60 @@ mecanismo.</li>
 
 
 </main>
+<script>
+// Manejador del simulador Big Data (secciones 5)
+function updateBigDataViz() {
+  const sVol = document.getElementById('sVol');
+  const sVel = document.getElementById('sVel');
+  const sVar = document.getElementById('sVar');
+  const sCap = document.getElementById('sCap');
+
+  const vVol = parseFloat(sVol.value);
+  const vVel = parseFloat(sVel.value);
+  const vVar = parseFloat(sVar.value);
+  const vCap = parseFloat(sCap.value);
+
+  // Actualizar barras visuales
+  document.getElementById('bVol').style.width = vVol + '%';
+  document.getElementById('bVel').style.width = vVel + '%';
+  document.getElementById('bVar').style.width = vVar + '%';
+
+  // Actualizar etiquetas
+  document.getElementById('lVol').textContent = Math.round(vVol);
+  document.getElementById('lVel').textContent = Math.round(vVel);
+  document.getElementById('lVar').textContent = Math.round(vVar);
+  document.getElementById('oCap').textContent = Math.round(vCap);
+  document.getElementById('oVol').textContent = Math.round(vVol);
+  document.getElementById('oEps').textContent = Math.round(parseFloat(document.getElementById('sEps').value));
+
+  // Veredicto: es big data si al menos una dimensión supera la capacidad
+  const isBigData = vVol > vCap || vVel > vCap || vVar > vCap;
+  const vdBD = document.getElementById('vdBD');
+  if (isBigData) {
+    vdBD.innerHTML = '<strong style="color:var(--rojo)">⚠ Sí es un problema de Big Data.</strong> Al menos una dimensión superó la infraestructura.';
+    vdBD.style.background = '#fef2f2';
+    vdBD.style.borderLeft = '3px solid var(--rojo)';
+  } else {
+    vdBD.innerHTML = '<strong style="color:var(--verde)">✓ No es Big Data.</strong> Tu infraestructura aguanta todas las dimensiones.';
+    vdBD.style.background = '#f0fdf4';
+    vdBD.style.borderLeft = '3px solid var(--verde)';
+  }
+}
+
+// Agregar listeners a todos los sliders de Big Data
+if (document.getElementById('sVol')) {
+  ['sVol', 'sVel', 'sVar', 'sCap'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateBigDataViz);
+  });
+  updateBigDataViz(); // Inicializar
+}
+
+// Manejador para epsilon
+document.getElementById('sEps').addEventListener('input', function() {
+  document.getElementById('oEps').textContent = Math.round(this.value);
+  // Redraw canvas si existe
+  if (window.drawEpsilonChart) drawEpsilonChart();
+});
+</script>
 </body>
 </html>

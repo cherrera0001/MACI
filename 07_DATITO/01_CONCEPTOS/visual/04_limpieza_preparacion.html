@@ -1140,5 +1140,60 @@ bandas de 2 y 3 desviaciones); las cifras de Melbourne (13.580 filas,
 fechas de junio y el caso de buses.
 </footer>
 </main>
+<script>
+(function(){
+  var mimp = document.getElementById('mimp');
+  var oMimp = document.getElementById('o_mimp');
+  var iQ1 = document.getElementById('i_q1');
+  var iQ3 = document.getElementById('i_q3');
+  var iIqr = document.getElementById('i_iqr');
+  var iOut = document.getElementById('i_out');
+  var iLectura = document.getElementById('i_lectura');
+  var lienzo = document.getElementById('lienzo');
+
+  if(!mimp || !oMimp) return;
+
+  var datos = [120, 130, 145, 160, 175, 177, 180, 190, 200, 220, 240, 250, 260, 280, 300, 320, 330, 340, 350, 360, 370];
+
+  function actualizarPanelImp(){
+    var m = parseInt(mimp.value);
+    oMimp.textContent = m + ' de 20';
+
+    var valoresActuales = datos.slice();
+    for(var i = 0; i < m; i++) valoresActuales.push(210);
+    valoresActuales.sort(function(a,b){return a-b;});
+
+    var n = valoresActuales.length;
+    var q1pos = Math.floor(n * 0.25);
+    var q3pos = Math.floor(n * 0.75);
+
+    var q1 = valoresActuales[q1pos];
+    var q3 = valoresActuales[q3pos];
+    var ric = q3 - q1;
+    var vMin = q1 - 1.5 * ric;
+    var vMax = q3 + 1.5 * ric;
+
+    var atipicos = 0;
+    for(var i = 0; i < valoresActuales.length; i++){
+      if(valoresActuales[i] < vMin || valoresActuales[i] > vMax) atipicos++;
+    }
+
+    iQ1.textContent = q1.toFixed(2);
+    iQ3.textContent = q3.toFixed(2);
+    iIqr.textContent = ric.toFixed(2);
+    iOut.textContent = atipicos;
+
+    if(m === 0){
+      iLectura.textContent = 'Sin relleno (20 valores): Q1 = 177,50, Q3 = 263,75, RIC = 86,25. Valla = [48,1 ; 393,1]. Todos los valores caen dentro: 0 atípicos.';
+    }else if(m === 20){
+      iLectura.textContent = 'Con 20 rellenos en 210 (40 valores): Q1 = Q3 = 210, RIC = 0. Valla = [210 ; 210]. Todo valor distinto de 210 queda fuera: ' + atipicos + ' atípicos.';
+    }else{
+      iLectura.textContent = 'Con ' + m + ' huecos rellenados: Q1 = ' + q1.toFixed(2) + ', Q3 = ' + q3.toFixed(2) + ', RIC = ' + ric.toFixed(2) + '. Atípicos detectados: ' + atipicos + '.';
+    }
+  }
+
+  mimp.addEventListener('input', actualizarPanelImp);
+})();
+</script>
 </body>
 </html>

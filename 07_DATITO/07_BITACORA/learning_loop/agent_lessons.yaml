@@ -5,6 +5,8 @@
 version: 1
 updated: "2026-09-26"
 
+# --- Sprint 03 Failures (VIZ-FAIL-005, 006, 007) ---
+
 # --- Failure patterns (NO repetir) ---
 failure_patterns:
 
@@ -116,5 +118,56 @@ keep_patterns:
       verificar_piel_lectura.py además del gate existente. Si una clase no existe
       en el cuerpo, verificar su equivalente real sin inventar contenido.
     metric_gate: "datito_loop_eval.py y verificar_piel_lectura.py, más inspección visual y controles"
+
+  - id: VIZ-FAIL-005
+    date: "2026-09-26"
+    family: visual
+    summary: "Byte 0x01 reemplazó </style> causando que h1 quede dentro de style abierto"
+    evidence:
+      - "05_train_validation_test.html, 07_generalizacion.html, 11_matriz_confusion.html, 19_deep_learning.html: h1 no renderizaba"
+      - "verificar_piel_lectura.py reportaba 'Un solo h1' como error (count === 1 fallaba, era 0)"
+      - "Causa: byte 0x01 en posición de </style> dejaba el estilo abierto, h1 dentro de style, nunca en DOM"
+    root_cause: "File encoding corruption: 0x01 byte replaced closing tag during migration"
+    keep_rule: >
+      Error 'Un solo h1' NO significa 'múltiples h1', significa count ≠ 1.
+      Puede ser 0 (h1 dentro de <style> abierto) o 2+ (duplicados).
+      Reparación: solo reemplazar 0x01 → </style>. Prohibido borrar h1.
+      Prohibido envolver tablas en .table-wrapper como primer paso de diagnosis.
+      JSON del validador es fuente de verdad (ok, failures), no agent summary.
+    metric_gate: "Byte integrity check en migraciones; verificar_piel_lectura.py ok=true"
+
+  - id: VIZ-FAIL-006
+    date: "2026-09-26"
+    family: visual
+    summary: "Comentario de reglas nunca se cierra, deja title/root/main/h1 fuera"
+    evidence:
+      - "triaje_de_problemas.html, certamen_1.html, certamen_2.html, clase6_regresion.html"
+      - "<!-- datito:template:v1 --> abre; reglas en comentario; cierre en <!-- datito:nav:inicio -->"
+      - "Resultado: title, :root, h1, main quedan comentados. Bloque fake template queda al final"
+    root_cause: "Comment nesting error: rules block opener never closed before nav marker"
+    keep_rule: >
+      Cerrar comentario de reglas ANTES de <title>.
+      Pegar :root y todos los estilos del template canónico (líneas 19-94).
+      Abrir </head><body><main> ANTES de <!-- datito:nav:inicio -->.
+      Cortar bloque fake (segundo h1 'TÍTULO DEL CONCEPTO...') al final.
+      Si falta script del concepto, copiar UNA VEZ desde 10_ARCHIVO (sin :root).
+      Si ok≠true tras editar, no revertir HEAD cerrado; pegar failures y dejar archivo.
+    metric_gate: "verificar_piel_lectura.py: un :root, un h1, uno </html>, zero TÍTULO DEL CONCEPTO"
+
+  - id: VIZ-FAIL-007
+    date: "2026-09-26"
+    family: deployment
+    summary: "Ruta /(.*) status:404 en vercel.json causa 404 falso en archivos existentes"
+    evidence:
+      - "vercel.json routes: [{src:'/(.*)', status:404, dest:'/index.html'}]"
+      - "Efecto: https://maci-rose.vercel.app/ y cualquier .html devuelven 404 aunque existan"
+      - "Sitio estático NO necesita catch-all 404. Vercel sirve archivos directamente."
+    root_cause: "Cargo-cult SPA configuration (Next.js style routing) aplicado a static site"
+    keep_rule: >
+      Static sites NO llevan rutas con status:404.
+      Solo definir rutas si hay reescrituras o redirects especiales (e.g., trailing slash).
+      Prohibido catch-all (.*) con status 404.
+      Usar: {src:'^/$', dest:'/index.html'} SOLO si hay un root redirect necesario.
+    metric_gate: "GET https://maci-rose.vercel.app/ → 200; GET /.../archivo.html → 200 (no 404)"
 
 inbox: []

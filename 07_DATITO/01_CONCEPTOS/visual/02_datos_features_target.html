@@ -79,6 +79,7 @@
   button.alt{background:#6b7280}
   ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
   ol.pasos li{margin-bottom:.4rem}
+  pre{max-width:100%;overflow-x:auto}
   details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
   summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
   summary::-webkit-details-marker{display:none}
@@ -1281,5 +1282,111 @@ literalmente el método de tu profesor.</p>
 <!-- datito:cierre:fin -->
 
 </main>
+<script>
+const rho = 0.76;
+function actualizarGrafico(n, p) {
+  const canvas = document.getElementById('cv');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+
+  ctx.fillStyle = '#faf9f7';
+  ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#d8d8d8';
+  ctx.lineWidth = 1;
+
+  const margen = 40;
+  const plotW = w - 2 * margen;
+  const plotH = h - 2 * margen;
+
+  ctx.strokeStyle = '#d8d8d8';
+  ctx.strokeRect(margen, margen, plotW, plotH);
+
+  ctx.strokeStyle = '#2563eb';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let pp = 1; pp <= 400; pp++) {
+    const r2train = 1 - (1 - rho) * (1 - pp / n);
+    const x = margen + (pp / 400) * plotW;
+    const y = h - margen - r2train * plotH;
+    if (pp === 1) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle = '#dc2626';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let pp = 1; pp <= 400; pp++) {
+    const r2test = pp < n - pp ? rho - (1 - rho) * pp / (n - pp) : 0;
+    const x = margen + (pp / 400) * plotW;
+    const y = h - margen - r2test * plotH;
+    if (pp === 1) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  const r2train = 1 - (1 - rho) * (1 - p / n);
+  const r2test = p < n - p ? rho - (1 - rho) * p / (n - p) : 0;
+  const brecha = Math.abs(r2train - r2test);
+
+  document.getElementById('mTr').textContent = r2train.toFixed(4);
+  document.getElementById('mTe').textContent = r2test.toFixed(4);
+  document.getElementById('mBr').textContent = brecha.toFixed(4);
+  document.getElementById('mRaz').textContent = (n / p).toFixed(0);
+}
+
+['sn', 'sp'].forEach(id => {
+  const slider = document.getElementById(id);
+  if (slider) {
+    slider.addEventListener('input', function() {
+      const n = parseInt(document.getElementById('sn').value) || 6336;
+      const p = parseInt(document.getElementById('sp').value) || 23;
+      document.getElementById('vn').textContent = n;
+      document.getElementById('vp').textContent = p;
+      actualizarGrafico(n, p);
+    });
+  }
+});
+
+const bMel = document.getElementById('bMel');
+if (bMel) bMel.addEventListener('click', () => {
+  document.getElementById('sn').value = 6336;
+  document.getElementById('sp').value = 23;
+  document.getElementById('vn').textContent = 6336;
+  document.getElementById('vp').textContent = 23;
+  actualizarGrafico(6336, 23);
+});
+
+const bSub = document.getElementById('bSub');
+if (bSub) bSub.addEventListener('click', () => {
+  document.getElementById('sn').value = 6336;
+  document.getElementById('sp').value = 334;
+  document.getElementById('vn').textContent = 6336;
+  document.getElementById('vp').textContent = 334;
+  actualizarGrafico(6336, 334);
+});
+
+const bPoco = document.getElementById('bPoco');
+if (bPoco) bPoco.addEventListener('click', () => {
+  document.getElementById('sn').value = 120;
+  document.getElementById('sp').value = 23;
+  document.getElementById('vn').textContent = 120;
+  document.getElementById('vp').textContent = 23;
+  actualizarGrafico(120, 23);
+});
+
+function ajustarCanvas() {
+  const canvas = document.getElementById('cv');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = Math.max(rect.width - 24, 200);
+  canvas.height = 330;
+  const n = parseInt(document.getElementById('sn').value) || 6336;
+  const p = parseInt(document.getElementById('sp').value) || 23;
+  actualizarGrafico(n, p);
+}
+
+ajustarCanvas();
+window.addEventListener('resize', ajustarCanvas);
+</script>
 </body>
 </html>

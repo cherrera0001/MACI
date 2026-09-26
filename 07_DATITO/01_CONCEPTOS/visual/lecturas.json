@@ -1,0 +1,119 @@
+{
+  "curso": "Fundamentos de Ciencia de Datos",
+  "semestre": "T2-2026",
+  "universidad": "Universidad de Concepción",
+  "total_clases": 22,
+  "lecturas_disponibles": 22,
+  "lecturas": [
+    {
+      "clase": 1,
+      "titulo": "Clase 1 · ¿Qué problema resuelve la ciencia de datos?",
+      "href": "01_fundamentos.html"
+    },
+    {
+      "clase": 2,
+      "titulo": "Clase 2 · Datos, filas, columnas, features y target",
+      "href": "02_datos_features_target.html"
+    },
+    {
+      "clase": 3,
+      "titulo": "Clase 3 · EDA: conocer los datos antes de modelar",
+      "href": "03_eda.html"
+    },
+    {
+      "clase": 4,
+      "titulo": "Clase 4 · Calidad, limpieza y preparación de datos",
+      "href": "04_limpieza_preparacion.html"
+    },
+    {
+      "clase": 5,
+      "titulo": "Clase 5 · Regresión: predecir una cantidad",
+      "href": "../../02_REFERENCIA/clase6_regresion.html"
+    },
+    {
+      "clase": 6,
+      "titulo": "Clase 6 · Función de costo, error y R²",
+      "href": "09_regresion.html"
+    },
+    {
+      "clase": 7,
+      "titulo": "Clase 7 · Train, validation y test",
+      "href": "05_train_validation_test.html"
+    },
+    {
+      "clase": 8,
+      "titulo": "Clase 8 · Validación cruzada y selección de modelos",
+      "href": "06_validacion_cruzada.html"
+    },
+    {
+      "clase": 9,
+      "titulo": "Clase 9 · Generalización, extrapolación y datos no vistos",
+      "href": "07_generalizacion.html"
+    },
+    {
+      "clase": 10,
+      "titulo": "Clase 10 · Overfitting y underfitting",
+      "href": "08_overfitting_underfitting.html"
+    },
+    {
+      "clase": 11,
+      "titulo": "Clase 11 · Clasificación: cuando la etiqueta no es un número",
+      "href": "10_clasificacion.html"
+    },
+    {
+      "clase": 12,
+      "titulo": "Clase 12 · Matriz de confusión",
+      "href": "11_matriz_confusion.html"
+    },
+    {
+      "clase": 13,
+      "titulo": "Clase 13 · Precisión, sensibilidad, exactitud y F1",
+      "href": "12_metricas_clasificacion.html"
+    },
+    {
+      "clase": 14,
+      "titulo": "Clase 14 · ROC-AUC y elección del umbral",
+      "href": "13_roc_auc.html"
+    },
+    {
+      "clase": 15,
+      "titulo": "Clase 15 · Árboles de decisión",
+      "href": "14_arboles_decision.html#arboles"
+    },
+    {
+      "clase": 16,
+      "titulo": "Clase 16 · Random Forest y ensambles",
+      "href": "14_arboles_decision.html#random-forest"
+    },
+    {
+      "clase": 17,
+      "titulo": "Clase 17 · Redes neuronales",
+      "href": "18_redes_neuronales.html"
+    },
+    {
+      "clase": 18,
+      "titulo": "Clase 18 · Deep learning, LLM y agentes",
+      "href": "19_deep_learning.html"
+    },
+    {
+      "clase": 19,
+      "titulo": "Clase 19 · Repaso integrado: el proyecto Melbourne",
+      "href": null
+    },
+    {
+      "clase": 20,
+      "titulo": "Clase 20 · Distinciones del Certamen 1",
+      "href": "../../04_EJERCICIOS/certamen_1.html"
+    },
+    {
+      "clase": 21,
+      "titulo": "Clase 21 · Distinciones del Certamen 2",
+      "href": "../../04_EJERCICIOS/certamen_2.html"
+    },
+    {
+      "clase": 22,
+      "titulo": "Clase 22 · Transferencia: ¿qué problema tengo delante?",
+      "href": "../../04_EJERCICIOS/triaje_de_problemas.html"
+    }
+  ]
+}

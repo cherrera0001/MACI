@@ -1359,5 +1359,17 @@ varianza, los nueve turnos del boxplot, los 25 camiones, el riego del Maule y lo
 cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
 </footer>
 </main>
+<script>
+// Slider sk: Estirar la cola derecha
+(function(){
+  var sk = document.getElementById('sk');
+  var oSk = document.getElementById('oSk');
+  if(!sk || !oSk) return;
+  sk.addEventListener('input', function(){
+    var val = parseInt(sk.value);
+    oSk.textContent = val === 0 ? 'simétrica' : 'cola derecha: ' + val;
+  });
+})();
+</script>
 </body>
 </html>
