@@ -170,4 +170,57 @@ keep_patterns:
       Usar: {src:'^/$', dest:'/index.html'} SOLO si hay un root redirect necesario.
     metric_gate: "GET https://maci-rose.vercel.app/ → 200; GET /.../archivo.html → 200 (no 404)"
 
+  - id: VIZ-FAIL-008
+    date: "2026-09-26"
+    family: visual
+    summary: "Estructura rota + scripts incompletos: agentes arreglan piel pero falta código de dibujo"
+    evidence:
+      - "08_overfitting_underfitting.html, 09_regresion.html: estructura cerrada ✓, pero función updateGrafico() missing"
+      - "Agente add listener → listener está ahí pero updateGrafico() no existe (90% del script falta)"
+      - "Validador: ok=false (3 errores cada uno): 2x sliders rotos + 1x mobile overflow"
+    root_cause: >
+      Archivos migrados sin scripts completos. La estructura piel se puede arreglar, pero
+      los dibujos (canvas, SVG, cálculos) requieren ~300+ líneas de JS no presentes.
+    keep_rule: >
+      Antes de añadir listeners, verificar que la función destino existe.
+      Si el archivo está >50% incompleto (falta función principal), marcar BLOQUEADO
+      y no intentar Wave 2. Buscar script en archivo de referencia (10_ARCHIVO) o escalate.
+    metric_gate: "verificador_visual.py: buscar 'undefined function' o que listeners llamen a función que NO existe"
+
+  - id: VIZ-FAIL-009
+    date: "2026-09-26"
+    family: visual
+    summary: "Regresión por listeners sin función: Wave 1 fija estructura, Wave 2 listener suma errores"
+    evidence:
+      - "#08: Wave 1 removió bloque fake → ok pasó; Wave 2 added listener → ok volvió a FAIL (3 errores)"
+      - "#09: Wave 1 removió fake → ok pasó; Wave 2 added 2 listeners → ok FAIL (3 errores)"
+      - "Causa: listeners llamando updateGrafico() que no existe → console error → validador marca como JS broken"
+    root_cause: >
+      Sequential waves assumed independencia: Wave 1 arregla piel, Wave 2 arregla listeners.
+      Pero si la función no existe, Wave 2 introduce regresión (listener que llama nada).
+    keep_rule: >
+      En Wave 2, si vas a añadir listeners, PRIMERO verificar que la función destino existe
+      buscando su definición en el archivo ANTES de editar. Si no existe, reportar BLOQUEADO
+      y pedir script completo, no continuar con ediciones.
+    metric_gate: "verificador_visual.py detecta JS error cuando listener llama función undefined"
+
+  - id: VIZ-FAIL-010
+    date: "2026-09-26"
+    family: visual
+    summary: "Certificaciones (examen) requieren gráficos precisos contra PDF, no placeholders temporales"
+    evidence:
+      - "certamen_3.html tenía SVG mínimo con 3 puntos ROC en lugar de 7"
+      - "Tabla confusión: 3 filas en lugar de 7; datos inconsistentes con PDF"
+      - "Histograma: placeholder texto en lugar de SVG bimodal"
+    root_cause: >
+      Ediciones previas no verificadas contra PDF original. Placeholders temporales
+      nunca fueron reemplazados. SVG construido sin validar puntos contra tabla.
+    keep_rule: >
+      Antes de marcar [FIXED] en archivo de examen:
+      1. Cada número en tabla → verificar contra PDF
+      2. Cada eje/punto en SVG → calcular/transcribir de datos verificados
+      3. Cada imagen → reconstruir desde PDF o detallar "aproximado"
+      4. Re-validar archivo completo en navegador (no solo validador JSON)
+    metric_gate: "verificador_visual.py + lectura manual en navegador a 1280px y 390px"
+
 inbox: []
