@@ -62,3 +62,4 @@ auth.json
 # Scripts temporales de reparación (uso local, no reproducible)
 repair_loop.md
 repair_piel.py
+03_CODIGO/reporte_validacion.json
