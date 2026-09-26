@@ -97,6 +97,7 @@
 <p class="sub">Complejos, interpretables, sesgo-varianza</p>
 
 <section id="arboles">
+  <ol>
   <li>Sacas un triángulo con probabilidad 1/4. Si pasa, dices «todo es triángulo» y fallas
   en los 3 círculos: error 3/4.</li>
   <li>Sacas un círculo con probabilidad 3/4. Dices «todo es círculo» y fallas en el
@@ -1387,7 +1388,8 @@ VOTO DE UN ENSAMBLE
 <h2>Cierre de la Clase 15 · Árboles de decisión</h2>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El árbol divide los datos buscando grupos más puros.</li><li>El Gini de un nodo es su error esperado; se pondera por el tamaño de cada hijo.</li><li>El árbol se detiene por pureza, o antes, para no sobreajustar.</li><li>La medida de impureza es un hiperparámetro: se elige con validación cruzada.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Ganancia de pureza (sirve para construir el árbol) ≠ métrica de evaluación (C2 P4).</li><li>Árbol sin límite ≠ buen modelo: sobreajusta.</li></ul></div></div>
-<h3>Procedimiento para el papel</h3><ol><li>Calcula la impureza de cada hijo.</li><li>Pondera por el tamaño de cada hijo.</li><li>Compara con el padre y elige el corte de mayor ganancia.</li></ol>
+<h3>Procedimiento para el papel</h3>
+<p>1. Calcula la impureza de cada hijo. 2. Pondera por el tamaño de cada hijo. 3. Compara con el padre y elige el corte de mayor ganancia.</p>
 <p><b>Viene de:</b> <a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · <b>Sigue:</b> <a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a></p>
 <p><b>Vuelve a tu activación:</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> ¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?
@@ -1399,7 +1401,8 @@ VOTO DE UN ENSAMBLE
 <h2>Cierre de la Clase 16 · Random Forest y ensambles</h2>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Random Forest: muchos árboles con filas por bootstrap y atributos al azar, que votan.</li><li>La importancia de una variable se cuenta por cuántas veces los árboles la usan para separar.</li><li>Boosting corrige en secuencia los errores de los árboles anteriores (no se enseñó como tema en clase).</li><li>El modelo final de Melbourne fue un HistGradientBoosting.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Número de modelos ≠ diversidad (C2 P1).</li><li>En paralelo (Random Forest) ≠ en secuencia (boosting).</li></ul></div></div>
-<h3>Procedimiento para el papel</h3><ol><li>¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.</li><li>Diversidad: filas distintas (bootstrap) y atributos distintos.</li></ol>
+<h3>Procedimiento para el papel</h3>
+<p>1. ¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda. 2. Diversidad: filas distintas (bootstrap) y atributos distintos.</p>
 <p><b>Viene de:</b> <a href="14_arboles_decision.html#arboles">Clase 15 · Árboles de decisión</a> · <b>Sigue:</b> <a href="18_redes_neuronales.html">Clase 17 · Redes neuronales</a></p>
 <p><b>Vuelve a tu activación:</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?

@@ -111,7 +111,9 @@
 <label class="hecha"><input type="checkbox" data-clase-hecha="10"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
 <nav class="pasos"><span><a href="07_generalizacion.html">← Clase 9 · Generalización, extrapolación y datos no vistos</a></span><a href="index.html">Índice del curso</a><span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número →</a></span></nav>
-<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();
+document.getElementById('grado').addEventListener('input',function(){document.getElementById('grado-out').value=this.value;if(typeof updateGrafico==='function'){updateGrafico();}});
+</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Overfitting y underfitting</b></span> · <span class="et">viene de</span><a href="07_generalizacion.html">Generalizacion</a>, <a href="06_validacion_cruzada.html">Validacion cruzada</a> · <span class="et">habilita</span><a href="14_arboles_decision.html#arboles">Arboles de decision</a></div>
@@ -885,61 +887,6 @@ y <code>Resumen_Clase6_Regresion</code>, P4 resuelto, <code>patron_evaluacion.md
 Datos reales: la tabla y el R² de Ridge de Melbourne (<code>05_RESULTADOS/resultados_temporal.json</code>)
 y los errores del P4. Ilustrativos [DATITO]: los pinos del simulador (semilla fija), la tabla
 A/B/C y el caso de los buses.
-</footer>
-
-<!-- datito:nav:fin -->
-
-<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
-<p class="sub">Una línea de contexto · curso · fuente</p>
-
-<div class="clave">
-  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
-</div>
-
-<h2>1 · Qué te dan / qué pasó</h2>
-<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
-
-<h2>2 · Cómo se resuelve</h2>
-<ol class="pasos">
-  <li>Paso 1…</li>
-  <li>Paso 2…</li>
-</ol>
-
-<div class="ecu">
-  <div class="f">fórmula = aquí</div>
-  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
-</div>
-
-<details>
-  <summary>Detalle / por qué este paso</summary>
-  <p>Explicación extendida sin cambiar el layout.</p>
-</details>
-
-<details class="resp">
-  <summary>Respuesta correcta y cómo se resuelve</summary>
-  <p><strong>Respuesta:</strong> …</p>
-  <p><strong>Resolución:</strong> …</p>
-  <p><strong>Error típico:</strong> …</p>
-  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
-</details>
-
-<div class="peligro">
-  <strong>Errores que el examen castiga.</strong>
-  <ul>
-    <li>…</li>
-  </ul>
-</div>
-
-<div class="nota">
-  <strong>Checklist antes de entregar.</strong>
-  <ul>
-    <li>□ …</li>
-  </ul>
-</div>
-
-<footer>
-  Generado con template canónico Datito v1 · sin conexión ·
-  <code><!-- datito:template:v1 --></code>
 </footer>
 </main>
 </body>

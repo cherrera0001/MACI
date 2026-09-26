@@ -497,59 +497,16 @@ pregunta trae su respuesta correcta en un bloque verde plegado: intenta primero.
 </footer>
 
 <!-- datito:nav:fin -->
-
-<h1>TÍTULO DEL CONCEPTO O PREGUNTA</h1>
-<p class="sub">Una línea de contexto · curso · fuente</p>
-
-<div class="clave">
-  <strong>Qué vas a poder hacer.</strong> Reemplaza: una frase con el objetivo observable.
-</div>
-
-<h2>1 · Qué te dan / qué pasó</h2>
-<p>Describe los datos, figuras o enunciado. Si hay figura: cómo se lee (ejes, series, invariantes).</p>
-
-<h2>2 · Cómo se resuelve</h2>
-<ol class="pasos">
-  <li>Paso 1…</li>
-  <li>Paso 2…</li>
-</ol>
-
-<div class="ecu">
-  <div class="f">fórmula = aquí</div>
-  <p>Qué resuelve · cada símbolo · qué es dato · qué decide la persona.</p>
-</div>
-
-<details>
-  <summary>Detalle / por qué este paso</summary>
-  <p>Explicación extendida sin cambiar el layout.</p>
-</details>
-
-<details class="resp">
-  <summary>Respuesta correcta y cómo se resuelve</summary>
-  <p><strong>Respuesta:</strong> …</p>
-  <p><strong>Resolución:</strong> …</p>
-  <p><strong>Error típico:</strong> …</p>
-  <p class="f">[DATITO] o [FUENTE · Repo: ruta · marca]</p>
-</details>
-
-<div class="peligro">
-  <strong>Errores que el examen castiga.</strong>
-  <ul>
-    <li>…</li>
-  </ul>
-</div>
-
-<div class="nota">
-  <strong>Checklist antes de entregar.</strong>
-  <ul>
-    <li>□ …</li>
-  </ul>
-</div>
-
-<footer>
-  Generado con template canónico Datito v1 · sin conexión ·
-  <code><!-- datito:template:v1 --></code>
-</footer>
 </main>
+<script>
+document.getElementById('m').addEventListener('input', () => {
+  resultChanged = true;
+  updateGrafico();
+});
+document.getElementById('b').addEventListener('input', () => {
+  resultChanged = true;
+  updateGrafico();
+});
+</script>
 </body>
 </html>
