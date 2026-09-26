@@ -77,23 +77,100 @@
 <h3>a) Dibujar ROC del Modelo 1</h3>
 <p>Usando los datos de los gráficos, calcula TPR y FPR para cada α, luego grafica la curva ROC.</p>
 
+<h3>Tabla 1.1: Matriz de Confusión del Modelo 1 (7 umbrales α)</h3>
 <table>
 <tr><th>α</th><th>VP</th><th>FN</th><th>FP</th><th>VN</th><th>TPR</th><th>FPR</th></tr>
-<tr><td>-2</td><td>0</td><td>10</td><td>5</td><td>0</td><td>0.0</td><td>1.0</td></tr>
-<tr><td>1</td><td>8</td><td>2</td><td>2</td><td>3</td><td>0.8</td><td>0.4</td></tr>
-<tr><td>2</td><td>10</td><td>0</td><td>2</td><td>3</td><td>1.0</td><td>0.4</td></tr>
+<tr><td>-2</td><td>0</td><td>10</td><td>0</td><td>5</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>-1</td><td>2</td><td>8</td><td>0</td><td>5</td><td>0.2</td><td>0.0</td></tr>
+<tr><td>0</td><td>4</td><td>6</td><td>0</td><td>5</td><td>0.4</td><td>0.0</td></tr>
+<tr><td>1</td><td>6</td><td>4</td><td>1</td><td>4</td><td>0.6</td><td>0.2</td></tr>
+<tr><td>2</td><td>8</td><td>2</td><td>2</td><td>3</td><td>0.8</td><td>0.4</td></tr>
+<tr><td>3</td><td>10</td><td>0</td><td>3</td><td>2</td><td>1.0</td><td>0.6</td></tr>
+<tr><td>4</td><td>10</td><td>0</td><td>5</td><td>0</td><td>1.0</td><td>1.0</td></tr>
 </table>
 
-<svg width="400" height="400" style="border:1px solid #ddd; display:block; margin:1rem 0; background:#fff">
-  <line x1="50" y1="350" x2="350" y2="350" stroke="#999" stroke-width="2"/>
-  <line x1="50" y1="350" x2="50" y2="50" stroke="#999" stroke-width="2"/>
-  <line x1="50" y1="350" x2="350" y2="50" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
-  <circle cx="350" cy="350" r="4" fill="#2563eb"/>
-  <circle cx="200" cy="150" r="4" fill="#2563eb"/>
-  <circle cx="200" cy="50" r="4" fill="#2563eb"/>
-  <circle cx="50" cy="350" r="4" fill="#2563eb"/>
-  <text x="375" y="355" font-size="12">FPR</text>
-  <text x="25" y="35" font-size="12">TPR</text>
+<p><strong>Interpretación:</strong> Conforme α crece, el modelo es más agresivo en clasificar como "positivo", aumentando VP, FP y reduciendo FN, VN.</p>
+
+<h3>Tabla 1.2: Puntos de la Curva ROC (calculados)</h3>
+<table>
+<tr><th>α</th><th>FPR</th><th>TPR</th></tr>
+<tr><td>-2</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>-1</td><td>0.0</td><td>0.2</td></tr>
+<tr><td>0</td><td>0.0</td><td>0.4</td></tr>
+<tr><td>1</td><td>0.2</td><td>0.6</td></tr>
+<tr><td>2</td><td>0.4</td><td>0.8</td></tr>
+<tr><td>3</td><td>0.6</td><td>1.0</td></tr>
+<tr><td>4</td><td>1.0</td><td>1.0</td></tr>
+</table>
+
+<h3>Gráfico 1.1: Curva ROC del Modelo 1</h3>
+<svg width="500" height="420" style="border:1px solid #ddd; display:block; margin:1rem 0; background:#fff">
+  <!-- Ejes -->
+  <line x1="60" y1="360" x2="460" y2="360" stroke="#999" stroke-width="2"/>
+  <line x1="60" y1="360" x2="60" y2="40" stroke="#999" stroke-width="2"/>
+
+  <!-- Diagonal punteada (clasificación aleatoria) -->
+  <line x1="60" y1="360" x2="460" y2="40" stroke="#ccc" stroke-width="2" stroke-dasharray="5,5"/>
+
+  <!-- Marcas de escala en X (FPR) -->
+  <line x1="60" y1="360" x2="60" y2="365" stroke="#999" stroke-width="1"/>
+  <line x1="160" y1="360" x2="160" y2="365" stroke="#999" stroke-width="1"/>
+  <line x1="260" y1="360" x2="260" y2="365" stroke="#999" stroke-width="1"/>
+  <line x1="360" y1="360" x2="360" y2="365" stroke="#999" stroke-width="1"/>
+  <line x1="460" y1="360" x2="460" y2="365" stroke="#999" stroke-width="1"/>
+
+  <!-- Marcas de escala en Y (TPR) -->
+  <line x1="55" y1="360" x2="60" y2="360" stroke="#999" stroke-width="1"/>
+  <line x1="55" y1="280" x2="60" y2="280" stroke="#999" stroke-width="1"/>
+  <line x1="55" y1="200" x2="60" y2="200" stroke="#999" stroke-width="1"/>
+  <line x1="55" y1="120" x2="60" y2="120" stroke="#999" stroke-width="1"/>
+  <line x1="55" y1="40" x2="60" y2="40" stroke="#999" stroke-width="1"/>
+
+  <!-- Etiquetas de escala X -->
+  <text x="58" y="378" font-size="12" text-anchor="end">0.0</text>
+  <text x="158" y="378" font-size="12" text-anchor="middle">0.2</text>
+  <text x="258" y="378" font-size="12" text-anchor="middle">0.4</text>
+  <text x="358" y="378" font-size="12" text-anchor="middle">0.6</text>
+  <text x="458" y="378" font-size="12" text-anchor="start">1.0</text>
+
+  <!-- Etiquetas de escala Y -->
+  <text x="45" y="363" font-size="12" text-anchor="end">0.0</text>
+  <text x="45" y="283" font-size="12" text-anchor="end">0.2</text>
+  <text x="45" y="203" font-size="12" text-anchor="end">0.4</text>
+  <text x="45" y="123" font-size="12" text-anchor="end">0.6</text>
+  <text x="45" y="43" font-size="12" text-anchor="end">1.0</text>
+
+  <!-- Curva ROC: 7 puntos conectados -->
+  <!-- α=-2: FPR=0.0, TPR=0.0 -->
+  <circle cx="60" cy="360" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=-1: FPR=0.0, TPR=0.2 -->
+  <circle cx="60" cy="280" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=0: FPR=0.0, TPR=0.4 -->
+  <circle cx="60" cy="200" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=1: FPR=0.2, TPR=0.6 -->
+  <circle cx="160" cy="120" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=2: FPR=0.4, TPR=0.8 -->
+  <circle cx="260" cy="40" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=3: FPR=0.6, TPR=1.0 -->
+  <circle cx="360" cy="40" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+  <!-- α=4: FPR=1.0, TPR=1.0 -->
+  <circle cx="460" cy="40" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+
+  <!-- Líneas conectando puntos en orden de α -->
+  <polyline points="60,360 60,280 60,200 160,120 260,40 360,40 460,40"
+            stroke="#2563eb" stroke-width="2.5" fill="none"/>
+
+  <!-- Etiquetas de ejes -->
+  <text x="460" y="395" font-size="14" font-weight="600" text-anchor="end">FPR (Tasa Falsos Positivos)</text>
+  <text x="20" y="50" font-size="14" font-weight="600" text-anchor="start">TPR (Tasa Verdaderos Positivos)</text>
+
+  <!-- Leyenda -->
+  <rect x="280" y="55" width="170" height="60" fill="#fff" stroke="#ddd" stroke-width="1" rx="4"/>
+  <circle cx="295" cy="75" r="4" fill="#2563eb"/>
+  <text x="310" y="79" font-size="12">Modelo 1</text>
+  <text x="295" y="95" font-size="11" fill="#666">AUC: ~0.73</text>
+  <line x1="295" y1="105" x2="320" y2="105" stroke="#ccc" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="330" y="109" font-size="11" fill="#666">Clasificador Aleatorio</text>
 </svg>
 
 <ol class="pasos">
@@ -139,6 +216,18 @@
 <strong>Qué pasó:</strong> Se ajustan modelos de regresión polinomial (grados 1-10) con datos de consumo eléctrico. Se miden RMSE en entrenamiento y prueba para cada grado.
 </div>
 
+<h3>Tabla 2.1: Métricas de Regresión por Grado Polinomial</h3>
+<table>
+<tr><th>Grado</th><th>RMSE Entrenamiento</th><th>RMSE Prueba</th><th>Media Error (kWh)</th><th>Desv.Std (kWh)</th><th>Gap RMSE</th></tr>
+<tr><td>1</td><td class="num">58</td><td class="num">62</td><td class="num">20</td><td class="num">59</td><td class="num">4</td></tr>
+<tr><td>2</td><td class="num">39</td><td class="num">43</td><td class="num">8</td><td class="num">42</td><td class="num">4</td></tr>
+<tr><td>3</td><td class="num">27</td><td class="num">30</td><td class="num">3</td><td class="num">30</td><td class="num">3</td></tr>
+<tr><td>5</td><td class="num">18</td><td class="num">34</td><td class="num">2</td><td class="num">34</td><td class="num">16</td></tr>
+<tr><td>10</td><td class="num">6</td><td class="num">79</td><td class="num">−5</td><td class="num">79</td><td class="num">73</td></tr>
+</table>
+
+<p class="nota"><strong>Nota:</strong> Gap RMSE = |RMSE Prueba − RMSE Entrenamiento|. Un gap grande indica overfitting. RMSE Prueba mide capacidad de generalización.</p>
+
 <h3>a) ¿Usar grado 10?</h3>
 <p>El analista propone grado 10 porque tiene RMSE entrenamiento = 6 (mínimo). Pero RMSE prueba = 79. ¿Es buena decisión?</p>
 
@@ -148,21 +237,58 @@
 </details>
 
 <h3>b) Grado óptimo para predicciones futuras</h3>
-<p>Grados 1-10: RMSE prueba = [62, 43, 30, 34, 79]. Elegir.</p>
+<p>Usando la Tabla 2.1, ¿qué grado (1, 2, 3, 5 o 10) elegirías para hacer predicciones en datos nuevos? Justifica.</p>
 
 <details class="resp">
 <summary>Respuesta: Grado 3</summary>
-<p><strong>Justificación:</strong> RMSE prueba = 30 (menor). Gap = 3 (generaliza bien).</p>
+<p><strong>Justificación:</strong></p>
+<ul>
+<li><strong>RMSE Prueba más bajo:</strong> Grado 3 = 30 kWh (mejor desempeño en generalización).</li>
+<li><strong>Gap menor:</strong> Brecha = 3 (entrenamiento 27 vs prueba 30), indica poco overfitting.</li>
+<li><strong>Comparación:</strong>
+  <ul>
+  <li>Grado 1: RMSE prueba = 62 (peor)</li>
+  <li>Grado 2: RMSE prueba = 43 (mejor que 1, pero peor que 3)</li>
+  <li>Grado 5: RMSE prueba = 34 (más alto que 3); gap = 16 (empieza overfitting)</li>
+  <li>Grado 10: RMSE prueba = 79 (terrible); gap = 73 (overfitting severo)</li>
+  </ul>
+</li>
+</ul>
+<p><strong>Conclusión:</strong> Grado 3 es el punto de equilibrio entre precisión y generalización.</p>
 </details>
 
-<h3>c) Interpretar media, desv.std, RMSE (grado 3)</h3>
-<p>Media error = 3 kWh. Desv.std = 30 kWh. RMSE = 30 kWh.</p>
+<h3>c) Interpretar media error, desv.std y RMSE (grado 3)</h3>
+<p>Para el grado 3 (mejor modelo): Media error = 3 kWh, Desv.std = 30 kWh, RMSE = 30 kWh. Explica qué mide cada métrica.</p>
 
 <details class="resp">
 <summary>Respuesta: Interpretación contextualizada</summary>
-<p><strong>Media:</strong> Sesgo sistemático: modelo subestima 3 kWh.</p>
-<p><strong>Desv.std:</strong> Variabilidad: ±30 kWh alrededor de esa media.</p>
-<p><strong>RMSE:</strong> Error típico = 30 kWh (raíz de media de errores al cuadrado).</p>
+
+<p><strong>1. Media Error = 3 kWh</strong></p>
+<ul>
+<li><strong>Qué es:</strong> Promedio de (predicción − valor real). Error con signo.</li>
+<li><strong>Interpretación:</strong> El modelo tiende a <strong>subestimar</strong> (predice 3 kWh menos de promedio).</li>
+<li><strong>Implicación:</strong> Sesgo sistemático pequeño pero tolerable.</li>
+<li><strong>Contexto:</strong> Si Media Error fuese negativa (ej. −5 como en grado 10), el modelo <strong>sobrestimaría</strong>.</li>
+</ul>
+
+<p><strong>2. Desv.std = 30 kWh</strong></p>
+<ul>
+<li><strong>Qué es:</strong> Variabilidad de errores alrededor de la media (raíz de varianza).</li>
+<li><strong>Interpretación:</strong> Los errores oscilan típicamente ±30 kWh respecto a esos 3 kWh de media.</li>
+<li><strong>En la práctica:</strong> Si media = 3 y std = 30, un 68% de predicciones cae en rango [3−30, 3+30] = [−27, 33] kWh.</li>
+<li><strong>Comparación con Media:</strong> Std >> Media → hay errores grandes (no todos iguales a 3).</li>
+</ul>
+
+<p><strong>3. RMSE = 30 kWh</strong></p>
+<ul>
+<li><strong>Qué es:</strong> Raíz de media de errores <strong>al cuadrado</strong>. RMSE = √(Σ(y_pred − y_real)² / n).</li>
+<li><strong>¿Por qué al cuadrado?</strong> Penaliza más los errores grandes (−60 u 80 cuentan mucho).</li>
+<li><strong>Interpretación:</strong> El error típico es ~30 kWh (métrica de precisión general).</li>
+<li><strong>¿Por qué RMSE ≈ Std aquí?</strong> Porque media error es pequeño (3), casi desaparece en RMSE.</li>
+<li><strong>Regla general:</strong> RMSE ≈ √(media² + std²) = √(9 + 900) ≈ 30.</li>
+</ul>
+
+<p><strong>Resumen práctico:</strong> El modelo grado 3 comete errores de ~±30 kWh, con sesgo de subestimar ~3 kWh. Es razonablemente preciso para una aplicación de consumo eléctrico.</p>
 </details>
 
 <h2>Pregunta 3: IA, Datos y Agentes (2 puntos)</h2>
@@ -172,30 +298,45 @@
 </div>
 
 <h3>a) Dos conclusiones sobre adopción IA</h3>
-<p>El gráfico McKinsey muestra: 20% de organizaciones usaban IA en 2017, creció a 88% en 2025. Pero en la barra de desglose 2025, solo 7% está "completamente desplegada". ¿Qué implica esta brecha?</p>
+<p>El gráfico McKinsey muestra: 20% de organizaciones usaban IA en 2017, creció a 88% en 2025. Pero en la barra de desglose 2025, solo 7% está "completamente desplegada", 31% "escalando", 30% "en pilotos", 32% "experimentando". ¿Qué implica esta brecha?</p>
 
 <details class="resp">
 <summary>Respuesta: Brecha adopción-integración</summary>
-<p><strong>Conclusión 1:</strong> Adopción crece exponencialmente (68 puntos).</p>
-<p><strong>Conclusión 2:</strong> Solo 7% está integrada → 81% usa IA superficialmente.</p>
+<p><strong>Conclusión 1:</strong> Adopción crece exponencialmente (68 puntos en 8 años: 20% → 88%). Indica que IA es prioridad estratégica global.</p>
+<p><strong>Conclusión 2:</strong> Distribución en 2025 es: 7% completamente, 31% escalando, 30% pilotos, 32% experimentando. Esto muestra que 93% aún NO está completamente integrada. La mayoría está en etapas tempranas/intermedias de maduración, no en despliegue productivo a escala.</p>
+<p><strong>Implicación para la empresa:</strong> Aunque 88% "usa" IA, el riesgo es que muchas adopciones sean piloto o experimental sin retorno comprobado ni proceso consolidado.</p>
 </details>
 
 <h3>b) Problema de calidad: histograma bimodal</h3>
-<p>Dos proveedores de sensores, distribuciones separadas en ~60°C y ~140°C.</p>
+<p>Histograma de temperaturas de sensores muestra dos grupos claramente separados. Se sospecha que pertenecen a dos proveedores diferentes.</p>
+
+<p><strong>Figura 3.1: Histograma de Temperaturas (Dos Proveedores)</strong></p>
+<div class="panel">
+  <p style="text-align:center; color:#666; font-style:italic;">
+    [INSERTAR IMAGEN: Histograma con dos picos bimodales en ~60°C (Proveedor 1) y ~140°C (Proveedor 2)]
+  </p>
+</div>
 
 <details class="resp">
-<summary>Respuesta: Calibración diferente</summary>
-<p><strong>Causa:</strong> Offset sistemático (~80°C) entre proveedores.</p>
-<p><strong>Corrección:</strong> Estandarizar: restar media por proveedor.</p>
+<summary>Respuesta: Verificaciones necesarias antes de "corregir"</summary>
+<p><strong>Hipótesis:</strong> Diferencia de escala, calibración, configuración o población entre proveedores.</p>
+<p><strong>NO es corrección automática restando media.</strong> Antes de cualquier ajuste, verificar:</p>
+<ol>
+<li><strong>Metadatos:</strong> ¿Qué proveedor tiene cada sensor? ¿Modelos diferentes?</li>
+<li><strong>Calibración histórica:</strong> ¿Cuándo fue la última calibración? ¿Diferentes protocolos?</li>
+<li><strong>Equipamiento:</strong> ¿Sensores configurados a diferentes escalas (°C vs °F)?</li>
+<li><strong>Contexto físico:</strong> ¿Ubicaciones distintas? ¿Rangos operacionales diferentes?</li>
+</ol>
+<p><strong>Solo después</strong> de entender la causa raíz, decidir: ¿aplicar factor de corrección, marcar sensor defectuoso, o usar proveedores por separado?</p>
 </details>
 
-<h3>c) Dos limitaciones de LLM aislado</h3>
+<h3>c) Dos limitaciones de LLM aislado en asistencia a técnicos</h3>
 
 <details class="resp">
-<summary>Respuesta: Alucinaciones + Sin datos reales</summary>
-<p><strong>Limitación 1:</strong> Inventa información (alucinaciones).</p>
-<p><strong>Limitación 2:</strong> No accede a sensores ni BD en tiempo real.</p>
-<p><strong>Solución:</strong> Agente basado en LLM (con herramientas externas).</p>
+<summary>Respuesta: Limitaciones del modelo vs limitaciones de acceso</summary>
+<p><strong>Limitación 1 (del modelo):</strong> Alucinaciones en procedimientos técnicos. Un LLM puede generar números de parte incorrectos, pasos de reparación inexactos, o protocolos de seguridad inventados. En mantenimiento industrial esto es crítico: una instrucción falsa puede dañar equipo o lastimar a técnicos. Contexto: LLM genera texto probabilístico, no recupera datos verificados.</p>
+<p><strong>Limitación 2 (de acceso a datos):</strong> Sin conexión a datos operativos en tiempo real. El LLM solo ve datos del entrenamiento; no puede acceder a historiales de reparaciones de la BD, a lecturas de sensores actuales, a manuales específicos de modelos, o a disponibilidad de repuestos. Contexto: LLM es pasivo; requiere herramientas externas para leer sensores y bases de datos vivas.</p>
+<p><strong>¿Qué arquitectura es pertinente?</strong> LLM + agente con herramientas: el agente puede consultar BD antes de responder, validar números de parte, acceder a manuales, verificar disponibilidad de repuestos, e incluso realizar acciones (crear orden de trabajo, registrar reparación).</p>
 </details>
 
 <h3>d) Por qué Agente > LLM + secuencia de acciones</h3>
