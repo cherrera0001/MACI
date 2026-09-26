@@ -89,7 +89,7 @@
   .flujo .b{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:.3rem .55rem}
   .flujo .b.act{background:#fef3c7;border-color:var(--ambar);font-weight:700}
   .dos{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-  @media(max-width:640px){.dos{grid-template-columns:1fr}}
+  }
   .traza{font-family:ui-monospace,Consolas,monospace;font-size:.8rem;background:var(--fondo);
          border:1px solid var(--linea);border-radius:8px;padding:.6rem .8rem;min-height:9rem;white-space:pre-wrap}
   .traza .r{font-weight:700}
@@ -109,13 +109,30 @@
   label.chk{display:inline-flex;align-items:center;gap:.35rem;font-size:.88rem;margin-right:1rem;cursor:pointer}
   input[type=text]{font:inherit;font-size:.9rem;padding:.35rem .5rem;border:1px solid var(--linea);border-radius:6px;width:10rem}
   .indice{font-size:.92rem}
-  @media(max-width:600px){body{padding:0.75rem 0.4rem}main{margin:0;padding:0}table,canvas{max-width:100%;overflow-x:auto}div{max-width:100%}}
+  }
+
+  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
+  table{font-size:0.75rem;display:block;overflow-x:auto}
+  canvas{max-width:100%!important}
+  div{max-width:100%!important}
+  .panel{padding:0.5rem!important}
+  .ecu{padding:0.5rem!important}
+}
 </style>
 </head>
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}  @media(max-width:600px){body{padding:0.75rem 0.4rem}main{margin:0;padding:0}table,canvas{max-width:100%;overflow-x:auto}div{max-width:100%}}
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}  }
+@media(max-width:640px){
+  body{padding:0.4rem!important;margin:0!important}
+  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
+  table{font-size:0.75rem;display:block;overflow-x:auto}
+  canvas{max-width:100%!important}
+  div{max-width:100%!important}
+  .panel{padding:0.5rem!important}
+  .ecu{padding:0.5rem!important}
+}
 </style>
 <section class="leccion" data-clase="18" id="clase-18">
 <div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 18 de 22</b></div>
@@ -1254,7 +1271,8 @@ la P5, y es falsa.</li>
 </div>
 
 <!-- datito:cierre:inicio -->
-<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}  @media(max-width:600px){body{padding:0.75rem 0.4rem}main{margin:0;padding:0}table,canvas{max-width:100%;overflow-x:auto}div{max-width:100%}}
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}  }
+@media(max-width:650px){body{margin:0;padding:0.3rem}main{max-width:100vw!important;margin:0!important;padding:0.3rem!important;overflow-x:hidden!important}table,canvas,div{max-width:100%!important;overflow-x:auto!important}.panel{padding:0.3rem!important}.ecu{padding:0.3rem!important}}
 </style>
 <section class="dcierre" id="cierre-clase-18">
 <h2>Cierre de la Clase 18 · Deep learning, LLM y agentes</h2>
