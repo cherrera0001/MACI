@@ -1,0 +1,205 @@
+{
+  "timestamp": "F:\\MACI",
+  "total": 16,
+  "ok": 3,
+  "fail": 13,
+  "by_category": {
+    "js": 5,
+    "css": 8,
+    "estructura": 1
+  },
+  "details": {
+    "01_fundamentos": {
+      "name": "01_fundamentos",
+      "ok": false,
+      "failures_count": 6,
+      "categories": {
+        "estructura": 0,
+        "js": 5,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "1280px: El slider sVol no cambia texto o gráfico",
+        "1280px: El slider sVel no cambia texto o gráfico"
+      ]
+    },
+    "02_datos_features_target": {
+      "name": "02_datos_features_target",
+      "ok": false,
+      "failures_count": 3,
+      "categories": {
+        "estructura": 0,
+        "js": 2,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "1280px: El slider sn no cambia texto o gráfico",
+        "1280px: El slider sp no cambia texto o gráfico"
+      ]
+    },
+    "03_eda": {
+      "name": "03_eda",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 1,
+        "css": 0,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "1280px: El slider sk no cambia texto o gráfico"
+      ]
+    },
+    "04_limpieza_preparacion": {
+      "name": "04_limpieza_preparacion",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 1,
+        "css": 0,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "1280px: El slider mimp no cambia texto o gráfico"
+      ]
+    },
+    "05_train_validation_test": {
+      "name": "05_train_validation_test",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "390px: Sin desbordamiento horizontal de página"
+      ]
+    },
+    "06_validacion_cruzada": {
+      "name": "06_validacion_cruzada",
+      "ok": true,
+      "failures_count": 0,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 0,
+        "placeholders": 0
+      },
+      "top_failures": []
+    },
+    "07_generalizacion": {
+      "name": "07_generalizacion",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "390px: Sin desbordamiento horizontal de página"
+      ]
+    },
+    "08_overfitting_underfitting": {
+      "name": "08_overfitting_underfitting",
+      "error": "the JSON object must be str, bytes or bytearray, not NoneType"
+    },
+    "09_regresion": {
+      "name": "09_regresion",
+      "error": "the JSON object must be str, bytes or bytearray, not NoneType"
+    },
+    "10_clasificacion": {
+      "name": "10_clasificacion",
+      "ok": false,
+      "failures_count": 3,
+      "categories": {
+        "estructura": 0,
+        "js": 2,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "1280px: El slider sAng no cambia texto o gráfico",
+        "1280px: El slider sB no cambia texto o gráfico"
+      ]
+    },
+    "11_matriz_confusion": {
+      "name": "11_matriz_confusion",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "390px: Sin desbordamiento horizontal de página"
+      ]
+    },
+    "12_metricas_clasificacion": {
+      "name": "12_metricas_clasificacion",
+      "ok": true,
+      "failures_count": 0,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 0,
+        "placeholders": 0
+      },
+      "top_failures": []
+    },
+    "13_roc_auc": {
+      "name": "13_roc_auc",
+      "ok": true,
+      "failures_count": 0,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 0,
+        "placeholders": 0
+      },
+      "top_failures": []
+    },
+    "14_arboles_decision": {
+      "name": "14_arboles_decision",
+      "error": "the JSON object must be str, bytes or bytearray, not NoneType"
+    },
+    "18_redes_neuronales": {
+      "name": "18_redes_neuronales",
+      "ok": false,
+      "failures_count": 2,
+      "categories": {
+        "estructura": 1,
+        "js": 0,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "Head/title/body incompletos o ocultos dentro de un comentario",
+        "390px: Sin desbordamiento horizontal de página"
+      ]
+    },
+    "19_deep_learning": {
+      "name": "19_deep_learning",
+      "ok": false,
+      "failures_count": 1,
+      "categories": {
+        "estructura": 0,
+        "js": 0,
+        "css": 1,
+        "placeholders": 0
+      },
+      "top_failures": [
+        "390px: Sin desbordamiento horizontal de página"
+      ]
+    }
+  }
+}
