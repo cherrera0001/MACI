@@ -92,6 +92,7 @@
 </style>
 </head>
 <body>
+<section id="arboles">
   <li>Sacas un triángulo con probabilidad 1/4. Si pasa, dices «todo es triángulo» y fallas
   en los 3 círculos: error 3/4.</li>
   <li>Sacas un círculo con probabilidad 3/4. Dices «todo es círculo» y fallas en el
@@ -230,7 +231,7 @@ profesor, respondiendo a un compañero que preguntó qué medida de impureza con
 
 <div class="clave"><strong>Traducido:</strong> la medida de impureza no se aprende de los
 datos ni tiene una ganadora universal. Es un <strong>hiperparámetro</strong>, igual que el
-grado del polinomio, y se elige con <a href="validacion_cruzada.html">validación cruzada</a>.
+grado del polinomio, y se elige con <a href="06_validacion_cruzada.html">validación cruzada</a>.
 Un compañero agregó que la entropía cuesta más de calcular por el logaritmo; el profesor no
 dio otro criterio
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:25:11–1:25:25].</div>
@@ -380,7 +381,7 @@ profesor ·
 pureza es un criterio para <strong>construir</strong> el árbol (decidir dónde cortar),
 <strong>no</strong> una métrica para <strong>evaluar</strong> un clasificador terminado. En
 el certamen apareció como alternativa trampa en «¿cuáles se usan para evaluar un modelo de
-clasificación?». Ficha completa: <a href="certamen_2.html#p4">certamen_2.html#p4</a>.<br>
+clasificación?». Ficha completa: <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>.<br>
 <strong>Pregunta estilo certamen:</strong> ¿la ganancia de pureza se usa para evaluar un
 modelo de clasificación?</div>
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
@@ -410,7 +411,7 @@ tasa de falsos positivos y la exactitud.</p>
 sigue cortando hasta que cada hoja queda pura; en el extremo, una hoja por dato. En
 entrenamiento acierta todo. En datos nuevos, cada hoja de un solo punto es una opinión
 basada en un único ejemplo, ruido incluido. Es el patrón «bueno dentro, malo fuera» de
-<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>. Los criterios de
+<a href="08_overfitting_underfitting.html">overfitting_underfitting.html</a>. Los criterios de
 la lámina 33 —altura máxima, mínimo de objetos por nodo, validación cruzada— son
 precisamente los frenos.</p>
 
@@ -438,7 +439,7 @@ train, 0,75, lo delata); y no toda la brecha es sobreajuste, porque parte es el 
   <li>(c) Train es 2016 y test es 2017: parte de la caída viene del cambio entre años (el
   29,1 % del test está en suburbios que no existen en el train). El sobreajuste en estricto se
   mide train contra validación dentro del mismo período [INFERENCIA]. Ver
-  <a href="generalizacion.html">generalizacion.html</a>.</li>
+  <a href="07_generalizacion.html">generalizacion.html</a>.</li>
 </ol>
 <p><strong>Error típico:</strong> diagnosticar «sobreajuste» solo porque test es menor que
 train, sin calcular la brecha ni mirar el nivel de train; y atribuir toda la caída de
@@ -718,7 +719,7 @@ mezcla sobreajuste con cambio entre años. Comentando un proyecto 2016→2017 en
 4-sep, el profesor explicó que es normal que el modelo rinda algo peor en 2017 porque los
 datos cambian entre un año y otro, y que el modelo queda un poco sobreajustado a 2016
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:58–2:09:21].
-Detalle en <a href="generalizacion.html">generalizacion.html</a>.</p>
+Detalle en <a href="07_generalizacion.html">generalizacion.html</a>.</p>
 </details></div>
 
 <div class="nota"><strong>Un lapsus que no debes memorizar.</strong> Respondiendo cuándo
@@ -734,7 +735,7 @@ learning
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:45:25–1:45:29].
 El mismo pasaje del 7-ago sigue con que muchas veces un random forest supera a una red
 neuronal muy compleja. Quédate con: <strong>pocos datos → modelo clásico</strong>. Más en
-<a href="redes_neuronales.html">redes_neuronales.html</a>.</div>
+<a href="18_redes_neuronales.html">redes_neuronales.html</a>.</div>
 </section>
 
 <!-- ================================================================ -->
@@ -804,7 +805,7 @@ otras dos:</p>
 sobre lo que los anteriores <em>todavía</em> no explican. Con error cuadrático, el residuo es
 justamente la dirección en que baja el error; de ahí el «gradient» del nombre, y la misma
 idea de bajar por el gradiente reaparece en
-<a href="redes_neuronales.html">redes_neuronales.html</a> [DATITO].</p>
+<a href="18_redes_neuronales.html">redes_neuronales.html</a> [DATITO].</p>
 </div>
 
 <h3>Tu modelo final, leído con el recuadro</h3>
@@ -981,7 +982,7 @@ amplifica lo que haya, bueno o malo.</div>
 diversidad de modelos.</strong> La P1 afirmaba que un modelo compuesto por varios árboles
 «exactamente iguales y que predicen exactamente lo mismo» suele predecir mejor que cada uno
 por separado. En el simulador, eso es ρ = 1: la curva roja. Es también Daniel opinando igual
-que Cristóbal. Ficha con el análisis: <a href="certamen_2.html#p1">certamen_2.html#p1</a>.<br>
+que Cristóbal. Ficha con el análisis: <a href="../../04_EJERCICIOS/certamen_2.html#p1">certamen_2.html#p1</a>.<br>
 <strong>Pregunta estilo certamen (V/F, justifica si es falsa):</strong> «Utilizar un modelo
 compuesto por varios modelos exactamente iguales y que predicen exactamente lo mismo suele
 predecir mejor que cada modelo por separado.»</div>
@@ -1038,7 +1039,7 @@ de esta fórmula mueve Random Forest?</p>
 <p><strong>Error típico:</strong> usar σ²/n sin verificar independencia; la fórmula de la
 ficha P1 solo vale con ρ = 0.</p>
 <p><strong>De dónde sale:</strong> [DATITO]; es la generalización de la fórmula de
-<a href="certamen_2.html#p1">certamen_2.html#p1</a>.</p>
+<a href="../../04_EJERCICIOS/certamen_2.html#p1">certamen_2.html#p1</a>.</p>
 </details></div>
 
 <div class="ej"><div class="tipo">Ejercicio 8 · cálculo a mano · tres modelos de 80 %</div>
@@ -1219,7 +1220,7 @@ decide quien fija el umbral según el costo de cada error, no el árbol.</p>
   <li>Paciente con 150: cae en el lado &gt; 140, donde 6 de 8 fueron derivados → P(derivar) =
   6/8 = 75 %. En salud, no derivar a un enfermo cuesta más que derivar a un sano, así que el
   umbral suele ponerse bajo [DATITO]. Es el punto de operación de
-  <a href="roc_auc.html">roc_auc.html</a>.</li>
+  <a href="13_roc_auc.html">roc_auc.html</a>.</li>
 </ol>
 <p><strong>Error típico:</strong> elegir la edad porque «divide más parejo» (10 y 10), o
 decir «el árbol dice derivar» sin dar la probabilidad ni quién fija el umbral.</p>
@@ -1360,17 +1361,17 @@ VOTO DE UN ENSAMBLE
 
 <div class="vecino"><strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+<li><a href="08_overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
     de dónde viene esto: la brecha y el modelo que memoriza</li>
-<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — cómo se
+<li><a href="06_validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — cómo se
     eligen la medida de impureza, la profundidad y el número de árboles</li>
-<li><a href="clasificacion.html"><code>clasificacion.html</code></a> y
-    <a href="roc_auc.html"><code>roc_auc.html</code></a> — de la proporción de la hoja a la
+<li><a href="10_clasificacion.html"><code>clasificacion.html</code></a> y
+    <a href="13_roc_auc.html"><code>roc_auc.html</code></a> — de la proporción de la hoja a la
     clase, con umbral</li>
-<li><a href="certamen_2.html#p1"><code>certamen_2.html#p1</code></a> y
-    <a href="certamen_2.html#p4"><code>#p4</code></a> — las dos preguntas del Certamen 2 que
+<li><a href="../../04_EJERCICIOS/certamen_2.html#p1"><code>certamen_2.html#p1</code></a> y
+    <a href="../../04_EJERCICIOS/certamen_2.html#p4"><code>#p4</code></a> — las dos preguntas del Certamen 2 que
     toca esta página</li>
-<li><a href="redes_neuronales.html"><code>redes_neuronales.html</code></a> — la otra rama que
+<li><a href="18_redes_neuronales.html"><code>redes_neuronales.html</code></a> — la otra rama que
     sale de gradient boosting: bajar el error por el gradiente</li>
 </ul>
 </div>
@@ -1383,24 +1384,24 @@ VOTO DE UN ENSAMBLE
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El árbol divide los datos buscando grupos más puros.</li><li>El Gini de un nodo es su error esperado; se pondera por el tamaño de cada hijo.</li><li>El árbol se detiene por pureza, o antes, para no sobreajustar.</li><li>La medida de impureza es un hiperparámetro: se elige con validación cruzada.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Ganancia de pureza (sirve para construir el árbol) ≠ métrica de evaluación (C2 P4).</li><li>Árbol sin límite ≠ buen modelo: sobreajusta.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Calcula la impureza de cada hijo.</li><li>Pondera por el tamaño de cada hijo.</li><li>Compara con el padre y elige el corte de mayor ganancia.</li></ol>
-<p><b>Viene de:</b> <a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · <b>Sigue:</b> <a href="arboles_y_ensambles.html#random-forest">Clase 16 · Random Forest y ensambles</a></p>
+<p><b>Viene de:</b> <a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · <b>Sigue:</b> <a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a></p>
 <p><b>Vuelve a tu activación:</b> Tienes 9 triángulos y 8 círculos. ¿Qué corte los separa mejor, y cómo lo mides? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> ¿Cuál es el Gini de un nodo con 1 de 8 de una clase y 7 de 8 de la otra?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>1/8 · 7/8 + 7/8 · 1/8 = 14/64 = 0,21875. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:14:34]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="arboles_y_ensambles.html#random-forest">Continuar → Clase 16 · Random Forest y ensambles</a>
+<a class="continuar" href="14_arboles_decision.html#random-forest">Continuar → Clase 16 · Random Forest y ensambles</a>
 </section>
 <section class="dcierre" id="cierre-clase-16">
 <h2>Cierre de la Clase 16 · Random Forest y ensambles</h2>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Random Forest: muchos árboles con filas por bootstrap y atributos al azar, que votan.</li><li>La importancia de una variable se cuenta por cuántas veces los árboles la usan para separar.</li><li>Boosting corrige en secuencia los errores de los árboles anteriores (no se enseñó como tema en clase).</li><li>El modelo final de Melbourne fue un HistGradientBoosting.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Número de modelos ≠ diversidad (C2 P1).</li><li>En paralelo (Random Forest) ≠ en secuencia (boosting).</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>¿Los modelos se equivocan en casos distintos? Si no, sumar modelos no ayuda.</li><li>Diversidad: filas distintas (bootstrap) y atributos distintos.</li></ol>
-<p><b>Viene de:</b> <a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a> · <b>Sigue:</b> <a href="redes_neuronales.html">Clase 17 · Redes neuronales</a></p>
+<p><b>Viene de:</b> <a href="14_arboles_decision.html#arboles">Clase 15 · Árboles de decisión</a> · <b>Sigue:</b> <a href="18_redes_neuronales.html">Clase 17 · Redes neuronales</a></p>
 <p><b>Vuelve a tu activación:</b> Tienes 10 modelos que se equivocan exactamente en los mismos casos. ¿Mejora la decisión si los haces votar? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Daniel opina exactamente igual que Cristóbal. ¿Sumar a Daniel mejora la decisión del grupo?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: su opinión está perfectamente correlacionada con la de Cristóbal y no aporta información nueva. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:30:40]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="redes_neuronales.html">Continuar → Clase 17 · Redes neuronales</a>
+<a class="continuar" href="18_redes_neuronales.html">Continuar → Clase 17 · Redes neuronales</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>

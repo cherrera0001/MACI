@@ -97,8 +97,8 @@
 <div class="barra"><span style="width:50.0%"></span></div>
 <div class="lt">Clase 11 · Clasificación: cuando la etiqueta no es un número</div>
 <p><b>Objetivo.</b> Distinguir un problema de clasificación de uno de regresión, y explicar qué cambia en el error.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
-<div><span class="et">habilita</span><a href="matriz_confusion.html">Clase 12 · Matriz de confusión</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
+<div><span class="et">habilita</span><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a></div>
 <div><span class="et">tiempo estimado</span>~40 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Decide el tipo de problema por el target y justifica por qué el MAE no aplica a clases.</li>
@@ -107,12 +107,12 @@
 <div class="activ"><b>Activación.</b> «Frío, templado, caliente»: ¿es un problema de clasificación o de regresión? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="11"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="overfitting_underfitting.html">← Clase 10 · Overfitting y underfitting</a></span><a href="index.html">Índice del curso</a><span><a href="matriz_confusion.html">Clase 12 · Matriz de confusión →</a></span></nav>
+<nav class="pasos"><span><a href="08_overfitting_underfitting.html">← Clase 10 · Overfitting y underfitting</a></span><a href="index.html">Índice del curso</a><span><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Clasificacion</b></span> · <span class="et">viene de</span><a href="clase6_regresion.html">Regresion</a> · <span class="et">habilita</span><a href="matriz_confusion.html">Matriz de confusion</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 3 · peso en certamen media (C1: P6; base de C2) · <span class="et">certamen</span><a href="certamen_1.html#p6">C1 P6</a> · <a href="certamen_2.html#p4">C2 P4</a></div>
+<div class="fila"><span class="cpt"><b>Clasificacion</b></span> · <span class="et">viene de</span><a href="../../02_REFERENCIA/clase6_regresion.html">Regresion</a> · <span class="et">habilita</span><a href="11_matriz_confusion.html">Matriz de confusion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 3 · peso en certamen media (C1: P6; base de C2) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p6">C1 P6</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a></div>
 <details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:00:09–0:09:22 · profesor — regresion frente a clasificacion; perro o gato<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:09]</span></li><li><b>Clase del 7-ago</b> · 0:09:22–0:16:16 · profesor — categorica frente a numerica; el orden<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:09:22]</span></li><li><b>Clase del 7-ago</b> · 0:19:23–0:25:05 · profesor — clasificar por cercania (KNN) y la probabilidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:19:23]</span></li><li><b>Clase del 7-ago</b> · 0:25:11–0:44:15 · profesor — SVM y el margen<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:25:11]</span></li><li><b>Ayudantía del 7-ago</b> · 0:33:57–0:47:26 · ayudantía — get_dummies y LabelEncoder <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:33:57]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -130,7 +130,7 @@
   <span class="nodo">precisión · recall · F1</span><span class="flecha">→</span>
   <span class="nodo">ROC y AUC</span>
 </div>
-<p class="fuente">Estructura de <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>. Este documento se detiene justo antes de la matriz de confusión: ese concepto ya lo tienes en <a href="matriz_confusion.html">matriz_confusion.html</a>, las métricas en <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> y el umbral recorrido entero en <a href="roc_auc.html">roc_auc.html</a>. Aquí no se repiten.</p>
+<p class="fuente">Estructura de <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>. Este documento se detiene justo antes de la matriz de confusión: ese concepto ya lo tienes en <a href="11_matriz_confusion.html">matriz_confusion.html</a>, las métricas en <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a> y el umbral recorrido entero en <a href="13_roc_auc.html">roc_auc.html</a>. Aquí no se repiten.</p>
 
 
 <h2>1 · La situación, antes de cualquier fórmula</h2>
@@ -268,7 +268,7 @@
   <strong>Categoría que discretiza un número</strong> (adulto joven / mayor · frío / mediano / caliente): hereda el orden de la edad o la temperatura. También del profesor.<br>
   <strong>Numérica</strong>: orden y punto medio con sentido; se puede restar. Por eso el MAE la necesita.<br>
   [DATITO] En vocabulario estándar, las dos primeras se llaman <em>nominal</em> y <em>ordinal</em>, y la ordinal tiene orden pero no distancia: no puedes afirmar que frío→templado sea igual a templado→caliente.<br>
-  Aplicado: el Certamen 1 preguntó qué modelo predice una salida «bueno / regular / malo», y la respuesta es <strong>clasificación multiclase</strong>, aunque esas categorías tengan orden: <a href="certamen_1.html#p6">certamen_1.html#p6</a>. En el Certamen 2 la distinción vecina es qué cantidad describe un clasificador: <a href="certamen_2.html#p4">certamen_2.html#p4</a>.
+  Aplicado: el Certamen 1 preguntó qué modelo predice una salida «bueno / regular / malo», y la respuesta es <strong>clasificación multiclase</strong>, aunque esas categorías tengan orden: <a href="../../04_EJERCICIOS/certamen_1.html#p6">certamen_1.html#p6</a>. En el Certamen 2 la distinción vecina es qué cantidad describe un clasificador: <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>.
 </div>
 
 <p class="preg">V/F con justificación: «Como "bueno / regular / malo" tiene orden, predecirlo es un problema de regresión».</p>
@@ -461,7 +461,7 @@
 <div class="cita">«los tres más cercanos de un círculo y dos triángulos […] hay una probabilidad de dos de tres o sea un 66 coma 6 periódico por ciento de probabilidad de que sea un triángulo» <span class="f">Clase del 7-ago · 0:24:42–0:24:56 · profesor ·
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
 
-<p>Fíjate en lo que acaba de aparecer: el modelo no solo dice «triángulo», dice <strong>«triángulo con probabilidad 2/3»</strong>. Si decides «triángulo» cuando esa probabilidad pasa de 0,5, elegiste un <strong>umbral</strong>. Moverlo cambia qué casos se declaran positivos, y recorrer todos los umbrales es la curva ROC: <a href="roc_auc.html">roc_auc.html</a>. El Random Forest hace algo parecido: si 3 de 4 árboles dicen perro, 75 % de probabilidad de perro [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:31:53–1:32:09].</p>
+<p>Fíjate en lo que acaba de aparecer: el modelo no solo dice «triángulo», dice <strong>«triángulo con probabilidad 2/3»</strong>. Si decides «triángulo» cuando esa probabilidad pasa de 0,5, elegiste un <strong>umbral</strong>. Moverlo cambia qué casos se declaran positivos, y recorrer todos los umbrales es la curva ROC: <a href="13_roc_auc.html">roc_auc.html</a>. El Random Forest hace algo parecido: si 3 de 4 árboles dicen perro, 75 % de probabilidad de perro [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:31:53–1:32:09].</p>
 
 <p class="preg">Con K = 5, los vecinos de un punto nuevo son 3 círculos y 2 triángulos. ¿Qué responde el modelo, con qué probabilidad, y qué pasa si exiges al menos 0,7 para decir «círculo»?</p>
 
@@ -471,7 +471,7 @@
     <p><strong>Respuesta:</strong> responde <strong>círculo con probabilidad 3/5 = 0,6</strong>; con un umbral de 0,7, en cambio, el punto quedaría como triángulo.</p>
     <p><strong>Cómo se resuelve:</strong> probabilidad de círculo = votos de círculo / K = 3/5 = 0,60. Con la regla por defecto (gana la mayoría, o sea umbral 0,5): 0,60 ≥ 0,5 → círculo. Con umbral 0,7: 0,60 &lt; 0,7 → no alcanza, se declara triángulo.</p>
     <p><strong>Error típico:</strong> creer que la clase que entrega el modelo es fija. Depende del umbral que tú eliges sobre la probabilidad; el modelo solo entrega el 0,6.</p>
-    <p style="margin-bottom:0"><strong>Fuente:</strong> mecanismo del KNN y la probabilidad por votos: cita de arriba; números [DATITO]; el umbral como decisión tuya: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> mecanismo del KNN y la probabilidad por votos: cita de arriba; números [DATITO]; el umbral como decisión tuya: <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
   </div>
 </details>
 
@@ -560,7 +560,7 @@
     <p>Ahora sustituyes:</p>
     <p class="mono">s = 0,82 · 0,431 + 0,57 · 0,643 − 0,55<br>
        s = 0,353 + 0,366 − 0,55 = <strong>+0,170</strong></p>
-    <p>El signo es positivo → perro. Y fíjate: 0,170 es un número chico. El modelo dice «perro» con la misma cara con la que lo diría si el puntaje fuera 0,9 — <strong>el signo no guarda memoria de cuán cerca estuvo</strong>. Ese descarte de información es lo que la curva ROC recupera cuando dejas de mirar el signo y miras el puntaje: <a href="roc_auc.html">roc_auc.html</a>.</p>
+    <p>El signo es positivo → perro. Y fíjate: 0,170 es un número chico. El modelo dice «perro» con la misma cara con la que lo diría si el puntaje fuera 0,9 — <strong>el signo no guarda memoria de cuán cerca estuvo</strong>. Ese descarte de información es lo que la curva ROC recupera cuando dejas de mirar el signo y miras el puntaje: <a href="13_roc_auc.html">roc_auc.html</a>.</p>
     <p><strong>Error típico:</strong> sustituir 38 y 12 directamente, sin normalizar: s = 0,82·38 + 0,57·12 − 0,55 = 37,5, un número sin sentido en esta escala (aquí da el mismo signo por casualidad).</p>
     <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] (cifras ilustrativas).</p>
   </div>
@@ -575,14 +575,14 @@
     <p><strong>Cómo se resuelve:</strong> necesitas <code>s &lt; 0</code>, o sea <code>0,353 + 0,366 − b &lt; 0</code>, o sea <code>b &gt; 0,719</code>. Con <code>b = 0,75</code> el puntaje pasa a −0,031 y el modelo dice gato.</p>
     <p><strong>La relación que hay que nombrar:</strong> mover <code>b</code> dejando <strong>w</strong> fijo <em>desplaza</em> la recta en paralelo, sin girarla. Cambiar <strong>w</strong> la <em>gira</em>. Compruébalo con los dos deslizadores de arriba: uno inclina, el otro traslada. Y el corolario: subir <code>b</code> hace al modelo más exigente para declarar «perro» — declarará menos perros, se le escaparán perros de verdad, pero casi todos los que declare lo serán. Ese es el umbral que recorre la curva ROC.</p>
     <p><strong>Error típico:</strong> responder «b &lt; 0,719» por invertir la desigualdad al despejar un término con signo menos.</p>
-    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] (cifras ilustrativas); el umbral como decisión: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+    <p style="margin-bottom:0"><strong>Fuente:</strong> [DATITO] (cifras ilustrativas); el umbral como decisión: <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
   </div>
 </details>
 
 
 <h2>8 · Qué cantidad describe qué objeto</h2>
 
-<p>Esto es una pregunta del Certamen 2 con nombre y apellido (ficha P4: <a href="certamen_2.html#p4">certamen_2.html#p4</a>). No pide calcular: pide <strong>clasificar la cantidad</strong>.</p>
+<p>Esto es una pregunta del Certamen 2 con nombre y apellido (ficha P4: <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>). No pide calcular: pide <strong>clasificar la cantidad</strong>.</p>
 
 <table>
   <thead><tr><th>Cantidad</th><th>¿Qué objeto describe?</th><th>¿Existe si no hay clases?</th></tr></thead>
@@ -600,7 +600,7 @@
   Una cantidad que describe un <strong>clasificador</strong> no existe fuera de un problema de clasificación: sin clases no hay «falso positivo».<br>
   Una cantidad que describe una <strong>variable</strong> —la varianza— existe con o sin clases, con o sin modelo, con o sin nada. Le basta una columna de números.<br>
   Por eso, ante «¿cuál de estas <em>no</em> es una métrica de evaluación de un clasificador?», la varianza se cae sola.
-  <p class="fuente" style="margin-top:9px">Ficha P4 en <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code> · <a href="certamen_2.html#p4">certamen_2.html#p4</a>.</p>
+  <p class="fuente" style="margin-top:9px">Ficha P4 en <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>.</p>
 </div>
 
 <p class="preg">¿Cuál de estas <em>no</em> describe a un clasificador: precisión, FPR, varianza, AUC?</p>
@@ -622,7 +622,7 @@
 <div class="cita">«tengo que contar cuántas veces cada variable fue cogida por cada uno de los árboles como relevante al momento de separar» <span class="f">Clase del 7-ago · 1:32:59–1:33:04 · profesor ·
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
 
-<p>Es lo mismo que dice la lámina 38: se estima la importancia «contando cuántas veces cada variable fue escogida por cada árbol como relevante» [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 38]. La importancia por <em>reducción de impureza</em> (la que entrega scikit-learn) es otra forma de medirla: viene de tu trabajo en los proyectos, no de la clase [INFERENCIA]. Más en <a href="arboles_y_ensambles.html#random-forest">arboles_y_ensambles.html#random-forest</a>.</p>
+<p>Es lo mismo que dice la lámina 38: se estima la importancia «contando cuántas veces cada variable fue escogida por cada árbol como relevante» [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 38]. La importancia por <em>reducción de impureza</em> (la que entrega scikit-learn) es otra forma de medirla: viene de tu trabajo en los proyectos, no de la clase [INFERENCIA]. Más en <a href="14_arboles_decision.html#random-forest">arboles_y_ensambles.html#random-forest</a>.</p>
 
 
 <h2>9 · Procedimiento para el papel</h2>
@@ -631,7 +631,7 @@
 
 <ol class="pasos">
   <li><strong>Escribe cuál es el target.</strong> Literalmente, la columna. No «predecir ventas»: <em>la columna <code>monto_venta</code></em>.</li>
-  <li><strong>Pregúntale al target si tiene orden.</strong> ¿Puedes decir que un valor va antes que otro, y que entre dos hay un valor intermedio con sentido? Si sí → regresión. Si no → clasificación. Si son categorías con orden (bueno/regular/malo, frío/templado/caliente) → sigue siendo clasificación: el modelo elige una etiqueta (Certamen 1, <a href="certamen_1.html#p6">P6</a>); si te piden tratarlo de otra forma, declara el supuesto [DATITO].</li>
+  <li><strong>Pregúntale al target si tiene orden.</strong> ¿Puedes decir que un valor va antes que otro, y que entre dos hay un valor intermedio con sentido? Si sí → regresión. Si no → clasificación. Si son categorías con orden (bueno/regular/malo, frío/templado/caliente) → sigue siendo clasificación: el modelo elige una etiqueta (Certamen 1, <a href="../../04_EJERCICIOS/certamen_1.html#p6">P6</a>); si te piden tratarlo de otra forma, declara el supuesto [DATITO].</li>
   <li><strong>No mires las features para decidir esto.</strong> Features categóricas se codifican con one-hot y no cambian la tarea. Melbourne tiene tres y sigue siendo regresión.</li>
   <li><strong>Declara la clase positiva antes de calcular nada.</strong> En binaria, escribe «positivo = X» en el margen de la hoja. Sin eso, precisión y recall no significan nada, y todas las preguntas siguientes se construyen sobre esa elección.</li>
 </ol>
@@ -709,7 +709,7 @@
   </div>
 </details>
 
-<p style="margin-top:34px"><strong>Lo que sigue:</strong> una vez que aceptas que el error es un conteo y no una distancia, la pregunta obvia es <em>qué clase de errores</em> estás cometiendo. Ahí entra la matriz de confusión — <a href="matriz_confusion.html">matriz_confusion.html</a> —, después las métricas que salen de ella — <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> — y el umbral recorrido entero — <a href="roc_auc.html">roc_auc.html</a>.</p>
+<p style="margin-top:34px"><strong>Lo que sigue:</strong> una vez que aceptas que el error es un conteo y no una distancia, la pregunta obvia es <em>qué clase de errores</em> estás cometiendo. Ahí entra la matriz de confusión — <a href="11_matriz_confusion.html">matriz_confusion.html</a> —, después las métricas que salen de ella — <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a> — y el umbral recorrido entero — <a href="13_roc_auc.html">roc_auc.html</a>.</p>
 
 </div>
 
@@ -720,12 +720,12 @@
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Clasificar es predecir una categoría.</li><li>Una variable categórica no tiene orden entre sus valores.</li><li>El modelo puede entregar una probabilidad, no solo una clase.</li><li>Un modelo 100 % perfecto es sospechoso.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Categórica ≠ cualitativa.</li><li>Categoría ≠ discretización de un número.</li><li>Lo que define la tarea es el target, no las features.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Mira el target: ¿número o categoría?</li><li>¿Tiene orden? ¿Hay una variable numérica de fondo?</li><li>Elige la tarea según para qué usarás la predicción.</li></ol>
-<p><b>Viene de:</b> <a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · <b>Sigue:</b> <a href="matriz_confusion.html">Clase 12 · Matriz de confusión</a></p>
+<p><b>Viene de:</b> <a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · <b>Sigue:</b> <a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a></p>
 <p><b>Vuelve a tu activación:</b> «Frío, templado, caliente»: ¿es un problema de clasificación o de regresión? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Predecir la nota de 1 a 7 de un alumno: ¿regresión o clasificación?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="matriz_confusion.html">Continuar → Clase 12 · Matriz de confusión</a>
+<a class="continuar" href="11_matriz_confusion.html">Continuar → Clase 12 · Matriz de confusión</a>
 </main>
 </body>
 </html>

@@ -100,8 +100,8 @@
 <div class="barra"><span style="width:27.3%"></span></div>
 <div class="lt">Clase 6 · Función de costo, error y R²</div>
 <p><b>Objetivo.</b> Calcular el error de una recta, explicar por qué se eleva al cuadrado y leer el R² contra la media.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a>, <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
-<div><span class="et">habilita</span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a>, <a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
+<div><span class="et">habilita</span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
 <div><span class="et">tiempo estimado</span>~15 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Calcula MSE o MAE a mano con pocos puntos e interpreta el R² como comparación con predecir la media.</li>
@@ -110,12 +110,12 @@
 <div class="activ"><b>Activación.</b> Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="6"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="clase6_regresion.html">← Clase 5 · Regresión: predecir una cantidad</a></span><a href="index.html">Índice del curso</a><span><a href="train_validation_test.html">Clase 7 · Train, validation y test →</a></span></nav>
+<nav class="pasos"><span><a href="../../02_REFERENCIA/clase6_regresion.html">← Clase 5 · Regresión: predecir una cantidad</a></span><a href="index.html">Índice del curso</a><span><a href="05_train_validation_test.html">Clase 7 · Train, validation y test →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="clasificacion.html">Clasificacion</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="10_clasificacion.html">Clasificacion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -137,7 +137,7 @@ Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul (regresión)</p>
 <strong>Esto es el laboratorio.</strong> Aquí solo se experimenta con la función
 de coste: mover la recta y ver el error. Si lo que buscas es la <em>clase
 completa</em> &mdash;qué es regresión, de dónde sale la notación, qué significa
-cada símbolo&mdash; abre <a href="clase6_regresion.html"><code>clase6_regresion.html</code></a>.
+cada símbolo&mdash; abre <a href="../../02_REFERENCIA/clase6_regresion.html"><code>clase6_regresion.html</code></a>.
 </div>
 
 <h2>El problema, sin matemáticas</h2>
@@ -478,12 +478,12 @@ datos sintéticos de esta página [DATITO]. Escríbelo primero y llévaselo a Da
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>La función de costo resume en un número qué tan lejos está la recta de los datos.</li><li>Elevar al cuadrado elimina el signo y castiga más los errores grandes.</li><li>Entrenar es elegir los θ que minimizan el costo.</li><li>R² compara con predecir siempre la media: 0 es igual que la media; negativo, peor.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>MAE (en unidades de y) ≠ MSE (en unidades al cuadrado).</li><li>R² alto en entrenamiento ≠ buen modelo fuera de la muestra.</li><li>«R² está entre 0 y 1» es falso: puede ser negativo.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Calcula cada residuo y − ŷ.</li><li>Eleva al cuadrado (MSE) o toma el valor absoluto (MAE) y promedia.</li><li>R² = 1 − SSres/SStot: compara con la media.</li></ol>
-<p><b>Viene de:</b> <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · <b>Sigue:</b> <a href="train_validation_test.html">Clase 7 · Train, validation y test</a></p>
+<p><b>Viene de:</b> <a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · <b>Sigue:</b> <a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a></p>
 <p><b>Vuelve a tu activación:</b> Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Un modelo tiene R² = −0,08 en test. ¿Qué significa?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Que predice peor que usar siempre la media de y: su suma de errores al cuadrado supera la de la media. [DATITO]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="train_validation_test.html">Continuar → Clase 7 · Train, validation y test</a>
+<a class="continuar" href="05_train_validation_test.html">Continuar → Clase 7 · Train, validation y test</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>

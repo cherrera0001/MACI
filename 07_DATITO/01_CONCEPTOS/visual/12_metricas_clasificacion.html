@@ -98,8 +98,8 @@
 <div class="barra"><span style="width:59.1%"></span></div>
 <div class="lt">Clase 13 · Precisión, sensibilidad, exactitud y F1</div>
 <p><b>Objetivo.</b> Calcular exactitud, precisión, sensibilidad, FPR y F1 eligiendo el denominador correcto, e interpretarlas.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="matriz_confusion.html">Clase 12 · Matriz de confusión</a></div>
-<div><span class="et">habilita</span><a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a></div>
+<div><span class="et">habilita</span><a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a></div>
 <div><span class="et">tiempo estimado</span>~45 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Calcula las cinco métricas desde la lámina 19 e interpreta cada una en palabras del problema.</li>
@@ -108,12 +108,12 @@
 <div class="activ"><b>Activación.</b> Una alarma de fallas tiene recall 100 % y precisión 70 %. ¿Qué significa eso para el operador de la máquina? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="13"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="matriz_confusion.html">← Clase 12 · Matriz de confusión</a></span><a href="index.html">Índice del curso</a><span><a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral →</a></span></nav>
+<nav class="pasos"><span><a href="11_matriz_confusion.html">← Clase 12 · Matriz de confusión</a></span><a href="index.html">Índice del curso</a><span><a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Accuracy, precision, recall y F1</b></span> · <span class="et">viene de</span><a href="matriz_confusion.html">Matriz de confusion</a> · <span class="et">habilita</span><a href="roc_auc.html">ROC y AUC</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen alta (C2: P4 y P8) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_2.html#p4">C2 P4</a> · <a href="certamen_2.html#p8">C2 P8</a></div>
+<div class="fila"><span class="cpt"><b>Accuracy, precision, recall y F1</b></span> · <span class="et">viene de</span><a href="11_matriz_confusion.html">Matriz de confusion</a> · <span class="et">habilita</span><a href="13_roc_auc.html">ROC y AUC</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen alta (C2: P4 y P8) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p8">C2 P8</a></div>
 <details><summary>Dónde se enseñó en clase (4 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:48:00–0:58:35 · profesor — exactitud, recall y precision; la maquina 7 de 10<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:48:00]</span></li><li><b>Presentaciones del 4-sep</b> · 1:12:28–1:16:17 · profesor — el pescado: que decision tomar con las metricas<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:12:28]</span></li><li><b>Ayudantía del 7-ago</b> · 0:48:02–1:00:23 · ayudantía — F1 como media armonica; exactitud balanceada <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:48:02]</span></li><li><b>Ayudantía del 7-ago</b> · 1:10:37–1:14:57 · ayudantía — classification_report: macro y weighted <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:10:37]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -130,7 +130,7 @@
   <span class="nodo aqui">accuracy · precisión · recall · F1</span><span class="flecha">→</span>
   <span class="nodo">ROC y AUC</span>
 </div>
-<p class="fuente">Estructura tomada de <code>07_DATITO/curriculum.yaml</code> (campo <code>prerrequisitos</code>). La matriz de confusión se construye paso a paso en <a href="matriz_confusion.html">matriz_confusion.html</a>: aquí se usa. Lo que viene después —recorrer todos los umbrales— está en <a href="roc_auc.html">roc_auc.html</a>.</p>
+<p class="fuente">Estructura tomada de <code>07_DATITO/curriculum.yaml</code> (campo <code>prerrequisitos</code>). La matriz de confusión se construye paso a paso en <a href="11_matriz_confusion.html">matriz_confusion.html</a>: aquí se usa. Lo que viene después —recorrer todos los umbrales— está en <a href="13_roc_auc.html">roc_auc.html</a>.</p>
 <p class="fuente">Notación: <strong>VP / FP / FN / VN</strong>, como en las láminas (en inglés y en scikit-learn: TP / FP / FN / TN). [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 17]</p>
 
 
@@ -155,7 +155,7 @@
 
 <h2 id="denominadores">2 · Cuatro casillas, cuatro denominadores</h2>
 
-<p class="fuente">Las cuatro casillas se construyen paso a paso en <a href="matriz_confusion.html#casillas">matriz_confusion.html#casillas</a>; aquí nos enfocamos en denominadores, umbral y F1.</p>
+<p class="fuente">Las cuatro casillas se construyen paso a paso en <a href="11_matriz_confusion.html#casillas">matriz_confusion.html#casillas</a>; aquí nos enfocamos en denominadores, umbral y F1.</p>
 
 <p>Convención, y hay que escribirla siempre antes de calcular: <strong>positivo = círculo</strong> (en la historia de la máquina: círculo = iba a fallar). Los conteos son los de la <strong>matriz oficial de la lámina 19</strong>, la que el profesor armó en clase con 16 objetos.</p>
 
@@ -197,23 +197,23 @@
     <tr><th>Predicho: círculo</th><td>6 (VP)</td><td>2 (FP)</td></tr>
     <tr><th>Predicho: triángulo</th><td>1 (FN)</td><td>7 (VN)</td></tr>
   </table>
-  Los números son los mismos; cambia dónde está cada uno. <strong>Lee los rótulos antes de sumar una fila.</strong> El detalle está en <a href="matriz_confusion.html#lamina19">matriz_confusion.html#lamina19</a>.
+  Los números son los mismos; cambia dónde está cada uno. <strong>Lee los rótulos antes de sumar una fila.</strong> El detalle está en <a href="11_matriz_confusion.html#lamina19">matriz_confusion.html#lamina19</a>.
   <span style="display:block;font-size:.8rem;color:var(--tinta2);margin-top:6px">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19] · orientación confirmada en la tabla de la lámina 19 de <code>11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md</code></span>
 </div>
 
 <div class="nota">
-  <strong>Corrección de este visual (21-sep).</strong> Antes este ejemplo usaba VP 12 · FN 3 · FP 4 · VN 31 presentados como «los del Certamen 2». <strong>No lo son:</strong> la figura del enunciado no está en el repositorio y esos conteos no son derivables de ningún archivo [FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md · ficha P8]. Se reemplazaron por la matriz oficial de la lámina 19. Del Certamen 2 queda el <em>procedimiento</em>, no los números: <a href="certamen_2.html#p8">certamen_2.html#p8</a>.
+  <strong>Corrección de este visual (21-sep).</strong> Antes este ejemplo usaba VP 12 · FN 3 · FP 4 · VN 31 presentados como «los del Certamen 2». <strong>No lo son:</strong> la figura del enunciado no está en el repositorio y esos conteos no son derivables de ningún archivo [FUENTE · Repo: 01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md · ficha P8]. Se reemplazaron por la matriz oficial de la lámina 19. Del Certamen 2 queda el <em>procedimiento</em>, no los números: <a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a>.
 </div>
 
 <div class="certamen">
   <span class="et">La distinción que decide el certamen · ficha P8</span>
-  Precisión divide por <strong>lo que predijiste</strong>. Recall divide por <strong>lo que realmente era</strong>. Exactitud divide por <strong>el total</strong>. FPR divide por <strong>los negativos reales</strong>. La pregunta de cálculo desde la matriz (P8 en <code>07_DATITO/patron_evaluacion.md</code>) no premia recitar las definiciones: premia elegir bien el denominador cuando los cuatro números están a la vista y todos «calzan». Ver <a href="certamen_2.html#p8">certamen_2.html#p8</a>.
+  Precisión divide por <strong>lo que predijiste</strong>. Recall divide por <strong>lo que realmente era</strong>. Exactitud divide por <strong>el total</strong>. FPR divide por <strong>los negativos reales</strong>. La pregunta de cálculo desde la matriz (P8 en <code>07_DATITO/patron_evaluacion.md</code>) no premia recitar las definiciones: premia elegir bien el denominador cuando los cuatro números están a la vista y todos «calzan». Ver <a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a>.
 </div>
 
 
 <h2>3 · Las fórmulas, desarmadas</h2>
 
-<p class="fuente">Las fórmulas símbolo por símbolo están en <a href="matriz_confusion.html#formulas">matriz_confusion.html#formulas</a>; aquí nos enfocamos en denominadores, umbral y F1. Definiciones oficiales: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
+<p class="fuente">Las fórmulas símbolo por símbolo están en <a href="11_matriz_confusion.html#formulas">matriz_confusion.html#formulas</a>; aquí nos enfocamos en denominadores, umbral y F1. Definiciones oficiales: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].</p>
 
 <p>Cada fila responde a una pregunta distinta en castellano. Si sabes decir la pregunta, la fórmula se reconstruye sola.</p>
 
@@ -352,13 +352,13 @@
   En la sesión del Certamen 2 (28-ago), respondiendo una consulta sobre la pregunta de TPR y FPR con varios umbrales:
   <div class="cita">«Básicamente tiene un parámetro de sensibilidad tiene dos modelos y tiene un parámetro de sensibilidad que te mueve el umbral.» <span class="f">Sesión del Certamen 2, 28-ago · 1:20:27–1:20:34 · profesor (hablante identificado por contexto: responde a quien lo llamó «Profesor») [INFERENCIA] ·
   [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md]</span></div>
-  El «parámetro de sensibilidad» de un enunciado <strong>es este slider</strong>. Con la convención de arriba: si mueves la línea a la derecha (subes el umbral), bajan TPR y FPR a la vez; a la izquierda, suben las dos a la vez. Recorrer todos los umbrales y dibujar cada par (FPR, TPR) es la curva ROC: <a href="roc_auc.html">roc_auc.html</a> · <a href="certamen_2.html#p9">certamen_2.html#p9</a>.
+  El «parámetro de sensibilidad» de un enunciado <strong>es este slider</strong>. Con la convención de arriba: si mueves la línea a la derecha (subes el umbral), bajan TPR y FPR a la vez; a la izquierda, suben las dos a la vez. Recorrer todos los umbrales y dibujar cada par (FPR, TPR) es la curva ROC: <a href="13_roc_auc.html">roc_auc.html</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p9">certamen_2.html#p9</a>.
 </div>
 
 
 <h2 id="maquina">5 · El caso del profesor: la falla que pasa 1 de cada 1.000</h2>
 
-<p class="fuente">El efecto de la prevalencia también se ve con mamografías en <a href="matriz_confusion.html#problema">matriz_confusion.html#problema</a>; aquí nos enfocamos en el denominador de la precisión.</p>
+<p class="fuente">El efecto de la prevalencia también se ve con mamografías en <a href="11_matriz_confusion.html#problema">matriz_confusion.html#problema</a>; aquí nos enfocamos en el denominador de la precisión.</p>
 
 <p>Este es el ejemplo que puso en clase, con una máquina que tiene un modelo de detección de anomalías:</p>
 
@@ -462,7 +462,7 @@
 
 <h2 id="fpr">6 · FPR no es 1 − precisión</h2>
 
-<p class="fuente">El recorrido «te dan la fórmula, reconstruye el universo» está en <a href="matriz_confusion.html#camino-inverso">matriz_confusion.html#camino-inverso</a>; aquí nos enfocamos en los denominadores.</p>
+<p class="fuente">El recorrido «te dan la fórmula, reconstruye el universo» está en <a href="11_matriz_confusion.html#camino-inverso">matriz_confusion.html#camino-inverso</a>; aquí nos enfocamos en los denominadores.</p>
 
 <p>Este es <strong>el</strong> error que el expediente del Certamen 2 marca por escrito para la pregunta de cálculo desde la matriz (ficha P8 de <code>07_DATITO/patron_evaluacion.md</code>). Y es tentador, porque las dos suenan a «la proporción de veces que me equivoqué al decir que sí».</p>
 
@@ -491,7 +491,7 @@
 </details>
 
 <div class="certamen">
-  <span class="et">Cómo se ve esto en la prueba · <a href="certamen_2.html#p8">certamen_2.html#p8</a></span>
+  <span class="et">Cómo se ve esto en la prueba · <a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a></span>
   Te dan una figura con círculos y triángulos separados por una línea, y te piden la matriz de confusión más exactitud, precisión, TPR y FPR. <strong>Lo primero es declarar la convención</strong> —qué símbolo es el positivo, de qué lado está la predicción positiva— porque sin eso la respuesta es irreproducible. La exactitud es simétrica y no cambia si inviertes las clases; precisión, TPR y FPR sí cambian.
 </div>
 
@@ -568,7 +568,7 @@
 
 <h2 id="galaxy">9 · Tus propios datos: por qué Galaxy Zoo se evalúa con F1-macro</h2>
 
-<p class="fuente">La matriz 3×3 real y las métricas por clase se construyen paso a paso en <a href="matriz_confusion.html#galaxias">matriz_confusion.html#galaxias</a>; aquí nos enfocamos en cómo se promedian.</p>
+<p class="fuente">La matriz 3×3 real y las métricas por clase se construyen paso a paso en <a href="11_matriz_confusion.html#galaxias">matriz_confusion.html#galaxias</a>; aquí nos enfocamos en cómo se promedian.</p>
 
 <p>El desafío tiene tres clases y la métrica oficial es <strong>F1-macro</strong>, no exactitud. Esa elección tiene motivo, y el motivo está en el reparto:</p>
 
@@ -837,7 +837,7 @@
     <p><strong>Depende de la convención, y ese es el punto.</strong> Con la de este visual (positivo = puntaje ≥ umbral = a la derecha de la línea): mover la línea a la derecha <strong>baja las dos</strong> (o las deja igual), porque declaras menos positivos: se te escapan círculos (baja TPR) y dejas de marcar triángulos (baja FPR).</p>
     <p>En el expediente la respuesta es «suben las dos» porque allí el lado <em>izquierdo</em> es el positivo: mover la línea a la derecha agranda la zona positiva. Las dos respuestas son correctas <strong>con su convención escrita</strong>; sin escribirla, ninguna se puede corregir. Lo que no cambia con la convención: TPR y FPR nunca se mueven en sentidos opuestos.</p>
     <p><strong>Error típico:</strong> responder «sube una y baja la otra», o responder sin haber escrito de qué lado está el positivo.</p>
-    <p style="margin-bottom:0">Ese compromiso, recorrido para todos los umbrales posibles, <strong>es la curva ROC</strong>: <a href="roc_auc.html">roc_auc.html</a>.</p>
+    <p style="margin-bottom:0">Ese compromiso, recorrido para todos los umbrales posibles, <strong>es la curva ROC</strong>: <a href="13_roc_auc.html">roc_auc.html</a>.</p>
   </div>
 </details>
 
@@ -859,9 +859,9 @@
 
 <h2>Lo que sigue</h2>
 
-<p>Ya moviste el umbral y viste que TPR y FPR se mueven juntos. Si en vez de mirar un umbral a la vez dibujas <strong>todos</strong> los puntos (FPR, TPR) que ese slider puede generar, tienes la curva ROC. Y el área bajo ella —el AUC— resume al modelo <em>sin comprometerse con ningún umbral</em>. Sigue en <a href="roc_auc.html">roc_auc.html</a>.</p>
+<p>Ya moviste el umbral y viste que TPR y FPR se mueven juntos. Si en vez de mirar un umbral a la vez dibujas <strong>todos</strong> los puntos (FPR, TPR) que ese slider puede generar, tienes la curva ROC. Y el área bajo ella —el AUC— resume al modelo <em>sin comprometerse con ningún umbral</em>. Sigue en <a href="13_roc_auc.html">roc_auc.html</a>.</p>
 
-<p>Eso resuelve una pregunta que aquí quedó abierta: cómo comparar dos modelos cuando cada uno se puede operar a cualquier umbral. La distinción de ese concepto es <strong>comparar un punto de operación ≠ comparar un modelo</strong>, y es la pregunta 9 del Certamen 2 — la que el expediente marca como no evidenciada: <a href="certamen_2.html#p9">certamen_2.html#p9</a>. La que separa «métrica de un clasificador» de «estadístico de una variable» es la P4: <a href="certamen_2.html#p4">certamen_2.html#p4</a>.</p>
+<p>Eso resuelve una pregunta que aquí quedó abierta: cómo comparar dos modelos cuando cada uno se puede operar a cualquier umbral. La distinción de ese concepto es <strong>comparar un punto de operación ≠ comparar un modelo</strong>, y es la pregunta 9 del Certamen 2 — la que el expediente marca como no evidenciada: <a href="../../04_EJERCICIOS/certamen_2.html#p9">certamen_2.html#p9</a>. La que separa «métrica de un clasificador» de «estadístico de una variable» es la P4: <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>.</p>
 
 </div>
 
@@ -872,12 +872,12 @@
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Cada métrica divide por un universo distinto.</li><li>La exactitud engaña cuando las clases están desbalanceadas.</li><li>F1 es la media armónica de precisión y sensibilidad.</li><li>El promedio macro trata igual a todas las clases.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Precisión (÷ predichos positivos) ≠ sensibilidad (÷ positivos reales) ≠ exactitud (÷ total) (C2 P8).</li><li>FPR ≠ 1 − precisión (C2 P8).</li><li>Macro ≠ weighted.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Declara la clase positiva y arma la matriz.</li><li>Identifica qué métrica te piden.</li><li>Escribe la fórmula antes de sustituir.</li><li>Calcula e interpreta en palabras del problema.</li></ol>
-<p><b>Viene de:</b> <a href="matriz_confusion.html">Clase 12 · Matriz de confusión</a> · <b>Sigue:</b> <a href="roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a></p>
+<p><b>Viene de:</b> <a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a> · <b>Sigue:</b> <a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a></p>
 <p><b>Vuelve a tu activación:</b> Una alarma de fallas tiene recall 100 % y precisión 70 %. ¿Qué significa eso para el operador de la máquina? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Con la lámina 19 (VP 6, FP 2, FN 1, VN 7), calcula FPR y 1 − precisión.
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>FPR = 2/9 ≈ 0,22 y 1 − precisión = 1 − 6/8 = 0,25: dividen por universos distintos. [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="roc_auc.html">Continuar → Clase 14 · ROC-AUC y elección del umbral</a>
+<a class="continuar" href="13_roc_auc.html">Continuar → Clase 14 · ROC-AUC y elección del umbral</a>
 </main>
 <script>
 (function(){

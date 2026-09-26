@@ -100,8 +100,8 @@
 <div class="barra"><span style="width:45.5%"></span></div>
 <div class="lt">Clase 10 · Overfitting y underfitting</div>
 <p><b>Objetivo.</b> Diagnosticar sobreajuste y subajuste calculando la brecha, y proponer remedios del curso.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
-<div><span class="et">habilita</span><a href="arboles_y_ensambles.html#arboles">Clase 15 · Árboles de decisión</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
+<div><span class="et">habilita</span><a href="14_arboles_decision.html#arboles">Clase 15 · Árboles de decisión</a></div>
 <div><span class="et">tiempo estimado</span>~35 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Clasifica tres modelos con la brecha, nombra el mecanismo y propone un remedio coherente.</li>
@@ -110,12 +110,12 @@
 <div class="activ"><b>Activación.</b> El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="10"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="generalizacion.html">← Clase 9 · Generalización, extrapolación y datos no vistos</a></span><a href="index.html">Índice del curso</a><span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número →</a></span></nav>
+<nav class="pasos"><span><a href="07_generalizacion.html">← Clase 9 · Generalización, extrapolación y datos no vistos</a></span><a href="index.html">Índice del curso</a><span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Overfitting y underfitting</b></span> · <span class="et">viene de</span><a href="generalizacion.html">Generalizacion</a>, <a href="validacion_cruzada.html">Validacion cruzada</a> · <span class="et">habilita</span><a href="arboles_y_ensambles.html#arboles">Arboles de decision</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 8 · peso en certamen alta (C2: P2, P3, P7 — 3 preguntas) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p3">C2 P3</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="cpt"><b>Overfitting y underfitting</b></span> · <span class="et">viene de</span><a href="07_generalizacion.html">Generalizacion</a>, <a href="06_validacion_cruzada.html">Validacion cruzada</a> · <span class="et">habilita</span><a href="14_arboles_decision.html#arboles">Arboles de decision</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 8 · peso en certamen alta (C2: P2, P3, P7 — 3 preguntas) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p2">C2 P2</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p3">C2 P3</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
 <details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:36:16–0:43:37 · profesor — complejidad = numero de parametros; el balance<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 31-jul</b> · 0:47:10–0:50:35 · profesor — error 0 con grado alto; sobreajustar la validacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:47:10]</span></li><li><b>Clase del 7-ago</b> · 1:03:03–1:03:51 · profesor — sobreajuste en clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:03:03]</span></li><li><b>Clase del 7-ago</b> · 1:28:08–1:28:43 · profesor — arboles: parar antes de sobreajustar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:08]</span></li><li><b>Ayudantía del 31-jul</b> · 1:15:44–1:23:15 · ayudantía — grados 4, 7, 10 y 13 del P4 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:15:44]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -135,8 +135,8 @@ Fundamentos de Ciencia de Datos · UdeC · Clase del 31-jul (regresión) y Clase
 
 <div class="tension">
 <strong>Dónde estás, y por qué este va primero.</strong>
-Viene de <a href="generalizacion.html">generalización</a> y de
-<a href="validacion_cruzada.html">validación cruzada</a>, y habilita los árboles de
+Viene de <a href="07_generalizacion.html">generalización</a> y de
+<a href="06_validacion_cruzada.html">validación cruzada</a>, y habilita los árboles de
 decisión (y por cadena random forest, boosting, ensambles, redes, LLM y agentes).<br><br>
 Es el concepto con <strong>más peso del Certamen 2</strong>: la P2 (V/F de
 sobreajuste), la P3 (afirmaciones sobre sobreajuste) y la P7 (regresión polinomial)
@@ -406,7 +406,7 @@ parámetros contra datos [INFERENCIA].</p>
 <div class="dist"><strong>Distinción de certamen · P7:</strong> error de entrenamiento
 <strong>≠</strong> calidad del modelo. En la P7, 5 árboles y una curva que pasa exacta
 por los 5: el error cuadrático medio de entrenamiento es 0 y eso no demuestra nada.
-<a href="certamen_2.html#p7">Ver la ficha P7</a>.</div>
+<a href="../../04_EJERCICIOS/certamen_2.html#p7">Ver la ficha P7</a>.</div>
 
 <details>
   <summary>La paradoja de la ayudantía: el grado que pasa perfecto… y gana</summary>
@@ -438,7 +438,7 @@ por los 5: el error cuadrático medio de entrenamiento es 0 y eso no demuestra n
     <li>«Gana» es relativo a la grilla: solo se probaron 4, 7, 10 y 13. Un grado 2 o 3
     nunca fue candidato [INFERENCIA]</li>
     <li>Con 6 puntos de validación, el ganador puede tener algo de suerte: justo lo
-    que resuelve la <a href="validacion_cruzada.html">validación cruzada</a> [INFERENCIA]</li>
+    que resuelve la <a href="06_validacion_cruzada.html">validación cruzada</a> [INFERENCIA]</li>
   </ol>
 </details>
 
@@ -461,8 +461,8 @@ utilizando el conjunto de ⟨validación⟩.»
 <strong>validación</strong> → por eso existe el <strong>test</strong>, que se guarda
 «en el bolsillo» y se usa una sola vez al final.<br>
 Y para no depender de una sola partición afortunada: rotarla con
-<a href="validacion_cruzada.html">validación cruzada</a>. El esquema completo de tres
-conjuntos está en <a href="train_validation_test.html">train_validation_test.html</a>.
+<a href="06_validacion_cruzada.html">validación cruzada</a>. El esquema completo de tres
+conjuntos está en <a href="05_train_validation_test.html">train_validation_test.html</a>.
 </div>
 
 <h2>6 · Aplica e interpreta: tu proyecto de Melbourne</h2>
@@ -527,7 +527,7 @@ entrenamiento → validación de §3: validación cruzada 2016 y test 2017 son
 <em>ambos</em> datos no vistos. El profesor nombra dos mecanismos en la misma frase:
 <strong>(1)</strong> las decisiones se tomaron mirando 2016 (el segundo nivel de §5) y
 <strong>(2)</strong> los datos cambiaron entre años. Esa descomposición, con cifras,
-está en <a href="generalizacion.html">generalizacion.html</a>.<br><br>
+está en <a href="07_generalizacion.html">generalizacion.html</a>.<br><br>
 Es la lección de tu error ya resuelto <code>sobreajuste_como_etiqueta_de_toda_degradacion</code>:
 si usas la palabra, <strong>di el mecanismo</strong>, como lo hizo él.
 </div>
@@ -559,7 +559,7 @@ pero hay un problema acá […] no generaliza no generaliza exacto»
 <p>Es el mismo fenómeno: una frontera que envuelve cada punto es el polinomio de
 grado 12 en dos dimensiones. Por eso la opción 5 de la P3 es verdadera: el sobreajuste
 «puede ocurrir tanto en problemas de clasificación como de regresión»
-(<a href="certamen_2.html#p3">ficha P3</a>).</p>
+(<a href="../../04_EJERCICIOS/certamen_2.html#p3">ficha P3</a>).</p>
 
 <p>Y en los <strong>árboles de decisión</strong> aparece como regla de parada. La
 lámina de convergencia lista: el nodo tiene una sola clase, tiene menos objetos que un
@@ -577,7 +577,7 @@ a sobreajustar.»
 
 <p>Un árbol que se deja crecer hasta que cada hoja tiene un solo objeto es el
 equivalente del grado 12: error de entrenamiento 0. Sigue en
-<a href="arboles_y_ensambles.html#arboles">arboles_y_ensambles.html</a>.</p>
+<a href="14_arboles_decision.html#arboles">arboles_y_ensambles.html</a>.</p>
 
 <h2>8 · Remedios: los que dio el curso</h2>
 
@@ -587,7 +587,7 @@ equivalente del grado 12: error de entrenamiento 0. Sigue en
 <tr><td><strong>Elegir la complejidad en validación</strong> (mejor: validación cruzada)</td><td>No reduce el sobreajuste: lo <strong>detecta</strong> antes de decidir y permite elegir el grado con datos no vistos</td><td>Lámina 8: validación para «el orden del polinomio»; lámina 21; P3 opción 3</td></tr>
 <tr><td><strong>Más filas</strong> (más observaciones)</td><td>Más evidencia por parámetro: el ruido deja de ser ajustable. Lo viste con el botón de §2</td><td>P3: la opción 1 («aumentando el número de atributos») es la <em>falsa</em>, porque son columnas, no filas</td></tr>
 <tr><td><strong>Detener el árbol</strong></td><td>Altura máxima, mínimo de objetos por nodo, o parar cuando la validación empeora</td><td>Lámina 33</td></tr>
-<tr><td><strong>Conocimiento del dominio</strong></td><td>Descarta curvas imposibles: un volumen no es negativo y crece con el diámetro</td><td>Argumento de la P7 (<a href="certamen_2.html#p7">ficha P7</a>) [INFERENCIA]</td></tr>
+<tr><td><strong>Conocimiento del dominio</strong></td><td>Descarta curvas imposibles: un volumen no es negativo y crece con el diámetro</td><td>Argumento de la P7 (<a href="../../04_EJERCICIOS/certamen_2.html#p7">ficha P7</a>) [INFERENCIA]</td></tr>
 </table>
 
 <div class="nota">
@@ -639,17 +639,17 @@ Eso es el segundo nivel de §5, no el sesgo de un modelo simple.
 <div class="dist"><strong>P2 · Sobreajuste ≠ subajuste ≠ error alto.</strong>
 Sobreajuste exige las <em>dos</em> mitades: bien en entrenamiento <em>y</em> mal fuera.
 Error alto en ambos es subajuste. «Error alto» sin decir dónde no es diagnóstico.
-<a href="certamen_2.html#p2">Ver la ficha P2</a>.</div>
+<a href="../../04_EJERCICIOS/certamen_2.html#p2">Ver la ficha P2</a>.</div>
 
 <div class="dist"><strong>P3 · Más filas ≠ más columnas.</strong>
 Más observaciones reducen el sobreajuste; más atributos (o más grado, que es lo mismo:
 más columnas <code>x²</code>, <code>x³</code>…) lo aumentan.
-<a href="certamen_2.html#p3">Ver la ficha P3</a>.</div>
+<a href="../../04_EJERCICIOS/certamen_2.html#p3">Ver la ficha P3</a>.</div>
 
 <div class="dist"><strong>P7 · Error de entrenamiento ≠ calidad del modelo.</strong>
 Un error de entrenamiento 0 con tantos parámetros como datos no prueba nada. Lo que
 juzga es la validación, y en la P7 también la física (volumen negativo).
-<a href="certamen_2.html#p7">Ver la ficha P7</a>.</div>
+<a href="../../04_EJERCICIOS/certamen_2.html#p7">Ver la ficha P7</a>.</div>
 
 <h2>11 · Ejercicios</h2>
 
@@ -727,7 +727,7 @@ sobreajustado?» se repite en el bloque de clasificación.</p>
 porque ahí se introdujo.</p>
 <p style="margin-bottom:0"><strong>De dónde sale:</strong>
 [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 8, 21 y 33];
-P3, opción 5 (<a href="certamen_2.html#p3">ficha P3</a>).</p>
+P3, opción 5 (<a href="../../04_EJERCICIOS/certamen_2.html#p3">ficha P3</a>).</p>
 </details>
 
 <h3>Transferencia · otro dominio [DATITO]</h3>
@@ -843,12 +843,12 @@ Datito</strong> para que lo revise.
 <div class="vecino">
 <strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — la caída de Melbourne descompuesta: optimismo por selección y cambio de distribución</li>
-<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — la lotería de una sola partición y K-Fold</li>
-<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> — los tres conjuntos y por qué el test va al final</li>
-<li><a href="clase6_regresion.html"><code>clase6_regresion.html</code></a> — la regresión polinomial, donde el profesor introduce el sobreajuste</li>
-<li><a href="arboles_y_ensambles.html#arboles"><code>arboles_y_ensambles.html</code></a> — lo que este concepto habilita</li>
-<li><a href="certamen_2.html#p2"><code>certamen_2.html</code></a> — las fichas P2, P3 y P7 completas</li>
+<li><a href="07_generalizacion.html"><code>generalizacion.html</code></a> — la caída de Melbourne descompuesta: optimismo por selección y cambio de distribución</li>
+<li><a href="06_validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — la lotería de una sola partición y K-Fold</li>
+<li><a href="05_train_validation_test.html"><code>train_validation_test.html</code></a> — los tres conjuntos y por qué el test va al final</li>
+<li><a href="../../02_REFERENCIA/clase6_regresion.html"><code>clase6_regresion.html</code></a> — la regresión polinomial, donde el profesor introduce el sobreajuste</li>
+<li><a href="14_arboles_decision.html#arboles"><code>arboles_y_ensambles.html</code></a> — lo que este concepto habilita</li>
+<li><a href="../../04_EJERCICIOS/certamen_2.html#p2"><code>certamen_2.html</code></a> — las fichas P2, P3 y P7 completas</li>
 </ul>
 </div>
 
@@ -859,12 +859,12 @@ Datito</strong> para que lo revise.
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Brecha grande entre entrenamiento y prueba: sobreajuste. Malo en ambos: subajuste.</li><li>La complejidad (número de parámetros) mueve el balance entre ambos.</li><li>Un error de entrenamiento igual a cero no prueba calidad.</li><li>También se puede sobreajustar la validación: por eso existe el test.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Sobreajuste ≠ subajuste ≠ error alto (C2 P2).</li><li>Más filas (reduce el sobreajuste) ≠ más columnas (lo aumenta) (C2 P3).</li><li>Error de entrenamiento ≠ calidad del modelo (C2 P7).</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Localiza el par de números: dentro y fuera del entrenamiento.</li><li>Calcula la brecha.</li><li>Clasifica: brecha grande → sobreajuste; malo en ambos → subajuste.</li><li>Nombra el mecanismo, no solo la etiqueta.</li><li>Remedio según la causa: simplificar, más filas, elegir con validación cruzada.</li></ol>
-<p><b>Viene de:</b> <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a> · <b>Sigue:</b> <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></p>
+<p><b>Viene de:</b> <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a> · <b>Sigue:</b> <a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></p>
 <p><b>Vuelve a tu activación:</b> El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Con MAE (menos es mejor): P 0,15 / 0,92 y Q 0,71 / 0,78. ¿Cuál sobreajusta?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>P: error muy bajo en entrenamiento y alto en prueba, con brecha 0,77. [FUENTE · Repo: 07_DATITO/dudas.yaml · 2026-09-19-mae-pqr]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="clasificacion.html">Continuar → Clase 11 · Clasificación: cuando la etiqueta no es un número</a>
+<a class="continuar" href="10_clasificacion.html">Continuar → Clase 11 · Clasificación: cuando la etiqueta no es un número</a>
 </section>
 <!-- datito:cierre:fin -->
 <!-- datito:dudas:inicio -->

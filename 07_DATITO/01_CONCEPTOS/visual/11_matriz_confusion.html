@@ -124,8 +124,8 @@
 <div class="barra"><span style="width:54.5%"></span></div>
 <div class="lt">Clase 12 · Matriz de confusión</div>
 <p><b>Objetivo.</b> Construir y leer una matriz de confusión, y pasar de tasas a conteos en una población.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
-<div><span class="et">habilita</span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div><span class="et">habilita</span><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
 <div><span class="et">tiempo estimado</span>~30 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Construye la matriz desde un enunciado y verifica que los totales cierren.</li>
@@ -134,12 +134,12 @@
 <div class="activ"><b>Activación.</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="12"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="clasificacion.html">← Clase 11 · Clasificación: cuando la etiqueta no es un número</a></span><a href="index.html">Índice del curso</a><span><a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1 →</a></span></nav>
+<nav class="pasos"><span><a href="10_clasificacion.html">← Clase 11 · Clasificación: cuando la etiqueta no es un número</a></span><a href="index.html">Índice del curso</a><span><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1 →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Matriz de confusion</b></span> · <span class="et">viene de</span><a href="clasificacion.html">Clasificacion</a> · <span class="et">habilita</span><a href="metricas_clasificacion.html">Accuracy, precision, recall y F1</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen alta (C2: P8, con calculo manual) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_2.html#p8">C2 P8</a></div>
+<div class="fila"><span class="cpt"><b>Matriz de confusion</b></span> · <span class="et">viene de</span><a href="10_clasificacion.html">Clasificacion</a> · <span class="et">habilita</span><a href="12_metricas_clasificacion.html">Accuracy, precision, recall y F1</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen alta (C2: P8, con calculo manual) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p8">C2 P8</a></div>
 <details><summary>Dónde se enseñó en clase (4 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:44:25–0:47:52 · profesor — la convencion del positivo; contar VP, FP, FN, VN<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:44:25]</span></li><li><b>Clase del 7-ago</b> · 1:00:54–1:02:54 · profesor — construir la matriz; el caso multiclase<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:54]</span></li><li><b>Presentaciones del 4-sep</b> · 1:28:40–1:48:16 · profesor — ejercicio de 100 pacientes con 20 enfermos («lo mas importante del curso»)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:40]</span></li><li><b>Ayudantía del 7-ago</b> · 1:00:34–1:10:12 · ayudantía — el ejemplo Guitarra y el caso de 3 clases <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:34]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -161,9 +161,9 @@ habilita las métricas y la curva ROC. Si no queda claro aquí, esos dos se
 estudian a ciegas.<br><br>
 <strong>Tensión declarada:</strong> pesa mucho en la evaluación —la ficha P8 del
 Certamen 2 (cálculo de métricas desde la matriz, en <code>07_DATITO/patron_evaluacion.md</code>)
-pide calcularlo a mano: <a href="certamen_2.html#p8">certamen_2.html#p8</a>— y desbloquea solo dos
-conceptos: <a href="metricas_clasificacion.html">metricas_clasificacion.html</a> y
-<a href="roc_auc.html">roc_auc.html</a>. Rinde puntos; no es de los que sostienen el programa.<br><br>
+pide calcularlo a mano: <a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a>— y desbloquea solo dos
+conceptos: <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a> y
+<a href="13_roc_auc.html">roc_auc.html</a>. Rinde puntos; no es de los que sostienen el programa.<br><br>
 <strong>Notación:</strong> VP / FP / FN / VN, como en las láminas (en inglés y en scikit-learn: TP / FP / FN / TN)
 [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 17].
 </div>
@@ -330,7 +330,7 @@ lo dijo al armarla: da lo mismo cuál etiqueta va en cada eje
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:01:15–1:01:27]
 — y justamente por eso nunca puedes suponer la orientación [INFERENCIA].
 Las métricas de esta matriz, calculadas paso a paso, están en
-<a href="metricas_clasificacion.html#papel">metricas_clasificacion.html#papel</a>.
+<a href="12_metricas_clasificacion.html#papel">metricas_clasificacion.html#papel</a>.
 <span style="display:block;font-size:.8rem;color:var(--suave);margin-top:.4rem">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19] ·
 orientación confirmada en la tabla de la lámina 19 de <code>11_PRESENTACIÓN/_markdown/Resumen_Clase7_Clasificacion.md</code></span>
 </div>
@@ -340,7 +340,7 @@ orientación confirmada en la tabla de la lámina 19 de <code>11_PRESENTACIÓN/_
 <p>Las cinco métricas usan casi los mismos números. <strong>Lo único que las
 separa es entre qué dividen</strong>, y eso equivale a qué pregunta responden.
 Definiciones oficiales: [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 18].
-El trabajo con el umbral y con F1 sigue en <a href="metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
+El trabajo con el umbral y con F1 sigue en <a href="12_metricas_clasificacion.html">metricas_clasificacion.html</a>.</p>
 
 <div class="ecu">
   <div class="formula">Precisión = <span class="num">VP</span> / (<span class="den">VP + FP</span>)</div>
@@ -424,7 +424,7 @@ papel. Haz el recorrido al revés.</p>
     <tr><td>Precisión</td><td><code>VP + FP</code> — lo marcado positivo</td><td>Del modelo</td></tr>
     </table>
     <p><strong>Cómo se comprueba:</strong> lámina 19 → precisión = 6/8 = 75 %, así que 1 − precisión = 2/8 = 25 %; pero FPR = 2/9 ≈ 22,2 %. Mismo numerador (FP = 2), denominadores distintos (8 contra 9). Mueve cualquier slider de arriba y verás que <code>FPR + Precisión ≠ 1</code> casi siempre.</p>
-    <p><strong>Error típico:</strong> restar de 1 porque «las dos hablan de falsas alarmas». Es la trampa exacta de la ficha P8 del Certamen 2 (<a href="certamen_2.html#p8">certamen_2.html#p8</a>).</p>
+    <p><strong>Error típico:</strong> restar de 1 porque «las dos hablan de falsas alarmas». Es la trampa exacta de la ficha P8 del Certamen 2 (<a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a>).</p>
     <p style="margin-bottom:0"><strong>Fuente:</strong> [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · láminas 18–19]; distinción P8: [FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1].</p>
   </details>
 
@@ -599,8 +599,8 @@ arma una matriz <em>nueva</em>, la de los 100 pacientes.</p>
 
 <p>La Parte B es un <strong>punto de operación</strong> de la curva ROC: otro punto
 de la misma curva daría otra matriz. Eso se trabaja en
-<a href="roc_auc.html">roc_auc.html</a> y es la distinción de la ficha P9
-(<a href="certamen_2.html#p9">certamen_2.html#p9</a>).</p>
+<a href="13_roc_auc.html">roc_auc.html</a> y es la distinción de la ficha P9
+(<a href="../../04_EJERCICIOS/certamen_2.html#p9">certamen_2.html#p9</a>).</p>
 
 <h3>Variante de nivel 2 · minería (cifras ilustrativas [DATITO])</h3>
 
@@ -795,7 +795,7 @@ sin que te des cuenta: la lámina 19 pone filas = predicho.
 <div class="clave" style="border-left-color:var(--morado);background:#f5f3ff">
 <strong>Distinción de certamen · ficha P8:</strong> precisión (÷ predichos positivos)
 ≠ sensibilidad (÷ positivos reales) ≠ exactitud (÷ total), y <strong>FPR ≠ 1 − precisión</strong>
-[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1]. Ver <a href="certamen_2.html#p8">certamen_2.html#p8</a>.
+[FUENTE · Repo: 07_DATITO/patron_evaluacion.md · §1]. Ver <a href="../../04_EJERCICIOS/certamen_2.html#p8">certamen_2.html#p8</a>.
 </div>
 
 <div class="repreg">
@@ -826,18 +826,18 @@ verdadero o falso <em>con justificación</em> es el que usan los certámenes
 <div class="vecino">
 <strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="metricas_clasificacion.html"><code>metricas_clasificacion.html</code></a> —
+<li><a href="12_metricas_clasificacion.html"><code>metricas_clasificacion.html</code></a> —
     los denominadores de cada métrica, el umbral que las mueve y F1 (macro y weighted).</li>
-<li><a href="roc_auc.html"><code>roc_auc.html</code></a> — la Parte B del ejercicio del
+<li><a href="13_roc_auc.html"><code>roc_auc.html</code></a> — la Parte B del ejercicio del
     profesor es un punto de una curva ROC; ahí se recorren todos.</li>
 <li>Dónde se pregunta, según las fichas de <code>07_DATITO/patron_evaluacion.md</code>:
-    <a href="certamen_2.html#p4">P4</a> (qué cantidad describe un clasificador),
-    <a href="certamen_2.html#p8">P8</a> (cálculo de métricas desde la matriz) y
-    <a href="certamen_2.html#p9">P9</a> (punto de operación ≠ modelo). Tres fichas salen de este artefacto.</li>
-<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+    <a href="../../04_EJERCICIOS/certamen_2.html#p4">P4</a> (qué cantidad describe un clasificador),
+    <a href="../../04_EJERCICIOS/certamen_2.html#p8">P8</a> (cálculo de métricas desde la matriz) y
+    <a href="../../04_EJERCICIOS/certamen_2.html#p9">P9</a> (punto de operación ≠ modelo). Tres fichas salen de este artefacto.</li>
+<li><a href="../../04_EJERCICIOS/triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
     antes de elegir métrica hay que saber si las clases están equilibradas. El
     árbol te lleva justo a esa bifurcación.</li>
-<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+<li><a href="05_train_validation_test.html"><code>train_validation_test.html</code></a> —
     sobre qué conjunto se calcula la matriz. Calcularla sobre entrenamiento no
     mide nada.</li>
 </ul>
@@ -850,12 +850,12 @@ verdadero o falso <em>con justificación</em> es el que usan los certámenes
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Cuatro casillas: VP, FP, FN, VN.</li><li>Qué clase es la positiva es una convención que se declara.</li><li>La matriz solo describe el conjunto de test, no la realidad.</li><li>Una tasa multiplicada por la población da un conteo.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Filas = real ≠ filas = predicho: lee los rótulos (la lámina 19 pone lo predicho en las filas).</li><li>Falso positivo ≠ falso negativo.</li><li>Test ≠ realidad.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Declara la clase positiva.</li><li>Ubica los positivos reales y los positivos predichos.</li><li>Obtén VP, FP, FN y VN, y verifica que los totales cierren.</li></ol>
-<p><b>Viene de:</b> <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · <b>Sigue:</b> <a href="metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></p>
+<p><b>Viene de:</b> <a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · <b>Sigue:</b> <a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></p>
 <p><b>Vuelve a tu activación:</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> En el caso de los 100 pacientes, ¿cuántos falsos positivos hay y cuál es la precisión?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="metricas_clasificacion.html">Continuar → Clase 13 · Precisión, sensibilidad, exactitud y F1</a>
+<a class="continuar" href="12_metricas_clasificacion.html">Continuar → Clase 13 · Precisión, sensibilidad, exactitud y F1</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>

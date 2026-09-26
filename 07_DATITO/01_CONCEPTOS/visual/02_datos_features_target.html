@@ -200,7 +200,7 @@ de discutirla con el curso, cerró así:</p>
   <b>dos calificadores</b> («por día y por camión»). En esa tabla <b>una fila no es
   una observación</b> —las filas «El Lunes», «El Martes» son separadores—, y por
   eso no se puede modelar hasta reestructurarla. La reestructuración, desde el
-  ángulo de la calidad, está en <a href="limpieza_preparacion.html">limpieza_preparacion.html</a>.
+  ángulo de la calidad, está en <a href="04_limpieza_preparacion.html">limpieza_preparacion.html</a>.
 </div>
 
 <details>
@@ -254,8 +254,8 @@ Camión 3           0</pre>
     <p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · láminas 27–28]
     · La 9A (calificaciones con fechas como encabezados y una <code>Matrícula</code>
     con <code>N/A</code>) y la 9B (camiones con <code>−999</code> y <code>2900</code>)
-    son variantes de este mismo ejercicio: <a href="certamen_1.html#p9a">certamen_1.html#p9a</a>
-    · <a href="certamen_1.html#p9b">certamen_1.html#p9b</a>.</p>
+    son variantes de este mismo ejercicio: <a href="../../04_EJERCICIOS/certamen_1.html#p9a">certamen_1.html#p9a</a>
+    · <a href="../../04_EJERCICIOS/certamen_1.html#p9b">certamen_1.html#p9b</a>.</p>
   </details>
 </details>
 
@@ -322,7 +322,7 @@ una razón de modelamiento, no de orden:</p>
   <span class="fuente">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 1:05:04–1:05:32]</span>.<br>
   Un ID repetido no es un detalle cosmético: significa que <b>no sabes qué es una
   fila</b>. Es lo que rompe la 9A del Certamen 1, donde la <code>Matrícula</code>
-  vale <code>N/A</code> en una fila (<a href="certamen_1.html#p9a">certamen_1.html#p9a</a>).
+  vale <code>N/A</code> en una fila (<a href="../../04_EJERCICIOS/certamen_1.html#p9a">certamen_1.html#p9a</a>).
 </div>
 
 <details>
@@ -360,7 +360,7 @@ una razón de modelamiento, no de orden:</p>
     <p class="fuente">[DATITO] Ejercicio construido para este artefacto. El
     mecanismo —una columna que no existe al momento de predecir— tiene nombre,
     fuga de información, y está en la sección 9; su consecuencia sobre la
-    partición de filas, en <a href="train_validation_test.html">train_validation_test.html</a>.</p>
+    partición de filas, en <a href="05_train_validation_test.html">train_validation_test.html</a>.</p>
   </details>
 </details>
 
@@ -398,7 +398,7 @@ cambia de tipo de problema.</p>
   <p><b>Error típico:</b> decidir el tipo de problema mirando las features («como
   <code>Rooms</code> y <code>Distance</code> son números, es regresión»). Lo fija el
   target, no las entradas.</p>
-  <p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 20] · mismo razonamiento que la P6 del Certamen 1 (<a href="certamen_1.html#p6">certamen_1.html#p6</a>) · pasos [DATITO]</p>
+  <p class="fuente">[FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_04_CalidadDeDatos.md · lámina 20] · mismo razonamiento que la P6 del Certamen 1 (<a href="../../04_EJERCICIOS/certamen_1.html#p6">certamen_1.html#p6</a>) · pasos [DATITO]</p>
 </details>
 
 <div class="panel">
@@ -698,7 +698,7 @@ categoría, y el profesor lo corrigió:</p>
   Lo que fija el tipo de modelo es <b>el target</b>, no las entradas. Y
   «bueno / regular / malo» tiene orden, igual que «adulto joven / adulto mayor»:
   es la trampa del orden. Análisis completo en
-  <a href="certamen_1.html#p6">certamen_1.html#p6</a>.
+  <a href="../../04_EJERCICIOS/certamen_1.html#p6">certamen_1.html#p6</a>.
 </div>
 
 <div class="vecino">
@@ -742,7 +742,7 @@ pregunta 3. Es fácil de decir y difícil de sentir, así que acá se mueve.</p>
   no se traslada: la brecha crece.</p>
   <p><b>Error típico:</b> «queda igual, porque el ruido no aporta nada». Confunde
   señal con libertad: el ruido no aporta señal, pero sí flexibilidad. Es la trampa
-  de la P3 del Certamen 2 (<a href="certamen_2.html#p3">certamen_2.html#p3</a>).</p>
+  de la P3 del Certamen 2 (<a href="../../04_EJERCICIOS/certamen_2.html#p3">certamen_2.html#p3</a>).</p>
   <p class="fuente">[DATITO] simulación de mínimos cuadrados de esta sección; cifras
   ilustrativas, no una corrida de tu modelo.</p>
 </details>
@@ -1018,9 +1018,9 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
     <em>¿el modelo puede aprender algo útil de Date con este split?</em></li>
     <li>Dice qué rango de fechas ve el modelo en train, qué rango le llega en test,
     y qué hace un modelo con valores que nunca vio
-    (<a href="generalizacion.html">generalizacion.html</a>).</li>
+    (<a href="07_generalizacion.html">generalizacion.html</a>).</li>
     <li>Menciona qué papel ya cumple <code>Date</code> en tu proyecto
-    (<a href="train_validation_test.html">train_validation_test.html</a>).</li>
+    (<a href="05_train_validation_test.html">train_validation_test.html</a>).</li>
     <li>Cierra con una etiqueta justificada, no con «porque no sirve».</li>
   </ul>
   <p>Escríbela antes de abrir la respuesta, y llévala a Datito: es la pregunta con
@@ -1048,7 +1048,7 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
     <li><b>Qué haría con eso.</b> Un modelo de árboles como HistGradientBoosting no
     extrapola: a cualquier fecha de 2017 la trata como «las últimas fechas de 2016».
     Lo único que podría aprender son patrones propios de 2016, que no tienen por qué
-    repetirse (ver <a href="generalizacion.html">generalizacion.html</a>).</li>
+    repetirse (ver <a href="07_generalizacion.html">generalizacion.html</a>).</li>
     <li><b>Etiqueta:</b> extrapolación temporal, no fuga. Un derivado como el mes de
     venta sí podría evaluarse como feature (estacionalidad), porque sus valores se
     repiten entre años.</li>
@@ -1122,8 +1122,8 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
   Te dan una tabla mal estructurada y tienes que nombrar las variables y decir qué
   se está midiendo. Se castiga responder «las variables son las columnas» cuando
   una sola columna tiene tres variables adentro.
-  Ver <a href="certamen_1.html#p9a">certamen_1.html#p9a</a> ·
-  <a href="certamen_1.html#p9b">certamen_1.html#p9b</a>.
+  Ver <a href="../../04_EJERCICIOS/certamen_1.html#p9a">certamen_1.html#p9a</a> ·
+  <a href="../../04_EJERCICIOS/certamen_1.html#p9b">certamen_1.html#p9b</a>.
 </div>
 
 <div class="dist">
@@ -1131,7 +1131,7 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
   <span style="font-size:1.02rem">Tipo de la <b>salida</b> &nbsp;≠&nbsp; tipo de las
   entradas</span><br>
   El tipo de modelo lo fija el target. Está desarrollada en la sección 6 y en
-  <a href="certamen_1.html#p6">certamen_1.html#p6</a>.
+  <a href="../../04_EJERCICIOS/certamen_1.html#p6">certamen_1.html#p6</a>.
 </div>
 
 <div class="dist">
@@ -1140,7 +1140,7 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
   &nbsp;≠&nbsp; más <b>columnas</b> (lo aumenta si no traen señal)</span><br>
   La afirmación trampa invierte la relación entre evidencia y parámetros. La
   sección 7 es exactamente esta pregunta, con deslizadores. Ver
-  <a href="certamen_2.html#p3">certamen_2.html#p3</a>.
+  <a href="../../04_EJERCICIOS/certamen_2.html#p3">certamen_2.html#p3</a>.
 </div>
 
 <p class="fuente">[FUENTE · Repo: <code>07_DATITO/patron_evaluacion.md</code> y
@@ -1255,12 +1255,12 @@ literalmente el método de tu profesor.</p>
 </details>
 
 <div class="vecino">
-  <b>Qué sigue.</b> Con esto ya puedes entrar a <a href="eda.html">eda.html</a>
+  <b>Qué sigue.</b> Con esto ya puedes entrar a <a href="03_eda.html">eda.html</a>
   (mirar esas columnas de a una y de a dos) y a
-  <a href="limpieza_preparacion.html">limpieza_preparacion.html</a> (corregir lo
+  <a href="04_limpieza_preparacion.html">limpieza_preparacion.html</a> (corregir lo
   que está mal registrado y separar eso de las decisiones de modelado). Y te deja
   en condiciones de entender por qué
-  <a href="train_validation_test.html">train_validation_test.html</a> es una
+  <a href="05_train_validation_test.html">train_validation_test.html</a> es una
   decisión sobre <b>filas</b>, no sobre columnas.
 </div>
 
@@ -1271,12 +1271,12 @@ literalmente el método de tu profesor.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Cada fila es una observación y cada columna una variable; qué es una fila se decide antes de modelar.</li><li>El target es una decisión tuya, no una propiedad de la columna.</li><li>Un identificador sirve para rastrear errores, no para predecir.</li><li>Fuga de información: usar una columna que no existirá cuando haya que predecir.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Más filas ≠ más columnas (C2 P3).</li><li>Variable categórica sin orden ≠ numérica discretizada, que conserva el orden (C1 P6).</li><li>Dato ≠ información: la información son datos en un contexto.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Define qué es una fila.</li><li>Marca el target: lo que quieres predecir.</li><li>Para cada columna: ¿existirá al momento de predecir? Si no, es fuga.</li><li>Separa los identificadores y clasifica el resto por tipo.</li></ol>
-<p><b>Viene de:</b> <a href="fundamentos_ciencia_datos.html">Clase 1 · ¿Qué problema resuelve la ciencia de datos?</a> · <b>Sigue:</b> <a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></p>
+<p><b>Viene de:</b> <a href="01_fundamentos.html">Clase 1 · ¿Qué problema resuelve la ciencia de datos?</a> · <b>Sigue:</b> <a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></p>
 <p><b>Vuelve a tu activación:</b> En Galaxy Zoo, las columnas p_el y p_cs predicen casi perfecto la clase de cada galaxia. ¿Por qué no se pueden usar para entrenar? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Quieres predecir si un cliente comprará, y el dataset trae «monto_final_pagado». ¿Es una buena feature?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>No: ese monto se conoce después de la compra. Usarla es fuga de información: el modelo se vería excelente al validar y fallaría al predecir de verdad. [DATITO]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="eda.html">Continuar → Clase 3 · EDA: conocer los datos antes de modelar</a>
+<a class="continuar" href="03_eda.html">Continuar → Clase 3 · EDA: conocer los datos antes de modelar</a>
 </section>
 <!-- datito:cierre:fin -->
 

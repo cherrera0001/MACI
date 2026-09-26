@@ -123,8 +123,8 @@ main{overflow-wrap:anywhere}
 <div class="barra"><span style="width:36.4%"></span></div>
 <div class="lt">Clase 8 · Validación cruzada y selección de modelos</div>
 <p><b>Objetivo.</b> Elegir una estrategia de validación y justificar por qué una sola partición puede engañar.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="train_validation_test.html">Clase 7 · Train, validation y test</a></div>
-<div><span class="et">habilita</span><a href="overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a></div>
+<div><span class="et">habilita</span><a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a></div>
 <div><span class="et">tiempo estimado</span>~30 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Explica K-Fold, bootstrap y submuestreo, y elige uno según la cantidad de datos y su orden.</li>
@@ -133,12 +133,12 @@ main{overflow-wrap:anywhere}
 <div class="activ"><b>Activación.</b> Con una partición gana el polinomio de grado 7; con otra, el de grado 4. ¿Cuál eliges? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="8"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="train_validation_test.html">← Clase 7 · Train, validation y test</a></span><a href="index.html">Índice del curso</a><span><a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos →</a></span></nav>
+<nav class="pasos"><span><a href="05_train_validation_test.html">← Clase 7 · Train, validation y test</a></span><a href="index.html">Índice del curso</a><span><a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Validacion cruzada</b></span> · <span class="et">viene de</span><a href="train_validation_test.html">Train / validation / test</a> · <span class="et">habilita</span><a href="overfitting_underfitting.html">Overfitting y underfitting</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 9 · peso en certamen baja (aparece como remedio, no como pregunta propia) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_2.html#p3">C2 P3</a></div>
+<div class="fila"><span class="cpt"><b>Validacion cruzada</b></span> · <span class="et">viene de</span><a href="05_train_validation_test.html">Train / validation / test</a> · <span class="et">habilita</span><a href="08_overfitting_underfitting.html">Overfitting y underfitting</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 9 · peso en certamen baja (aparece como remedio, no como pregunta propia) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p3">C2 P3</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:02:14–0:02:38 · profesor — anuncia «la tecnica mas importante yo creo de quizas…»<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:02:14]</span></li><li><b>Clase del 31-jul</b> · 0:43:28–0:43:55 · profesor — la respuesta a la mayor parte de los problemas<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:43:28]</span></li><li><b>Clase del 31-jul</b> · 0:49:13–0:51:59 · profesor — sobreajustar la validacion; «validacion nomas»; estrategias<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:13]</span></li><li><b>Clase del 31-jul</b> · 0:55:04–1:15:03 · profesor — holdout, bootstrap, submuestreo y K-Fold<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:55:04]</span></li><li><b>Clase del 7-ago</b> · 1:03:34–1:04:25 · profesor — lo mismo en clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:03:34]</span></li><li><b>Ayudantía del 31-jul</b> · 1:25:10–1:30:40 · ayudantía — KFold en el P4 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:25:10]</span></li><li><b>Ayudantía del 7-ago</b> · 0:12:03–0:30:25 · ayudantía — k=5, busqueda de hiperparametros, MSE negativo <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:12:03]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -221,7 +221,7 @@ lista (una partición, un solo valor, «validación nomás»); las otras tres lo
 validación cruzada propiamente tal. <em>Shuffle split</em> es el nombre en
 scikit-learn del submuestreo aleatorio [INFERENCIA]. En el papel: nombra las
 cuatro y marca que el holdout entrega un solo valor. Es el mismo vocabulario de
-<a href="train_validation_test.html">train_validation_test.html</a>.
+<a href="05_train_validation_test.html">train_validation_test.html</a>.
 </div>
 
 <p>Antes, en el mismo bloque, había dicho algo que conviene tener a mano:</p>
@@ -416,7 +416,7 @@ queda muy separado de la validación
 Una tercera se desprende de lo que dijo en otra clase, comentando un proyecto de
 Melbourne [INFERENCIA]: que los datos cambian entre un período y otro, y que con
 la validación también se tomaron decisiones — está en
-<a href="generalizacion.html">generalizacion.html</a>.
+<a href="07_generalizacion.html">generalizacion.html</a>.
 </div>
 
 <h2>6 · La ecuación, desarmada</h2>
@@ -565,8 +565,8 @@ test 2017, <strong>sin mezclar entre años</strong>. Dentro de 2016 sí se usó 
 con mezcla (k = 5) para elegir el modelo
 [FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · l. 76], y esa validación no
 podía ver lo que cambió en 2017. El profesor lo comentó en el Hito 2: está en
-<a href="generalizacion.html">generalizacion.html</a>. Y la partición temporal en
-sí, en <a href="train_validation_test.html">train_validation_test.html</a>.
+<a href="07_generalizacion.html">generalizacion.html</a>. Y la partición temporal en
+sí, en <a href="05_train_validation_test.html">train_validation_test.html</a>.
 </div>
 
 <h2>8 · Por qué esto te importa a ti en particular</h2>
@@ -716,10 +716,10 @@ el caso minero es [DATITO].</p>
 cruzada</strong> (re-particionar y mirar la distribución).<br>
 <strong>Estimar el error ≠ mejorar el modelo</strong>: la validación cruzada mejora
 tu estimación; el modelo mejora solo si con ella eliges mejor.<br><br>
-Dónde se pregunta: en la <a href="certamen_2.html#p3">P3 del Certamen 2</a> la
+Dónde se pregunta: en la <a href="../../04_EJERCICIOS/certamen_2.html#p3">P3 del Certamen 2</a> la
 afirmación «se puede medir el nivel de sobreajuste utilizando validación cruzada»
 es correcta. Y la brecha que mide está en
-<a href="overfitting_underfitting.html">overfitting_underfitting.html</a>.
+<a href="08_overfitting_underfitting.html">overfitting_underfitting.html</a>.
 </div>
 
 <table>
@@ -787,14 +787,14 @@ cruzada, esto es validación nomás»
 <div class="vecino">
 <strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="train_validation_test.html"><code>train_validation_test.html</code></a> —
+<li><a href="05_train_validation_test.html"><code>train_validation_test.html</code></a> —
     de dónde viene esto, y las cuatro estrategias dibujadas con el test aparte</li>
-<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué es
+<li><a href="07_generalizacion.html"><code>generalizacion.html</code></a> — qué es
     exactamente la brecha que la validación cruzada mide, y por qué el test de 2017
     de Melbourne quedó por encima de la validación de 2016</li>
-<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+<li><a href="08_overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
     el concepto que este habilita directamente</li>
-<li><a href="certamen_2.html#p3"><code>certamen_2.html#p3</code></a> — dónde se
+<li><a href="../../04_EJERCICIOS/certamen_2.html#p3"><code>certamen_2.html#p3</code></a> — dónde se
     pregunta: la P3 dice <em>«se puede medir el nivel de sobreajuste utilizando
     validación cruzada»</em>, y es verdadera</li>
 </ul>
@@ -807,12 +807,12 @@ cruzada, esto es validación nomás»
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Re-particionar varias veces evita depender de una partición con suerte.</li><li>En K-Fold cada dato valida exactamente una vez.</li><li>El bootstrap muestrea con reemplazo; con muestras de tamaño n contiene cerca del 63,2 % de los datos distintos.</li><li>Los modelos se comparan con la misma partición.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Una sola partición («validación nomás») ≠ validación cruzada.</li><li>Error promedio ≠ distribución del error.</li><li>Con orden temporal no se desordena al azar.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>¿Cuántos datos hay? ¿Tienen orden temporal?</li><li>Elige la estrategia y fija la partición.</li><li>Compara por el promedio y por la dispersión del error.</li><li>El test sigue aparte.</li></ol>
-<p><b>Viene de:</b> <a href="train_validation_test.html">Clase 7 · Train, validation y test</a> · <b>Sigue:</b> <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></p>
+<p><b>Viene de:</b> <a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a> · <b>Sigue:</b> <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></p>
 <p><b>Vuelve a tu activación:</b> Con una partición gana el polinomio de grado 7; con otra, el de grado 4. ¿Cuál eliges? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> En sklearn un modelo obtiene −0,8 y otro −1,2 (MSE negativo). ¿Cuál es mejor?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>El de −0,8: más cercano a cero significa menor error. Lo explicó la ayudantía, que no entra al certamen. [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:29:51]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="generalizacion.html">Continuar → Clase 9 · Generalización, extrapolación y datos no vistos</a>
+<a class="continuar" href="07_generalizacion.html">Continuar → Clase 9 · Generalización, extrapolación y datos no vistos</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>

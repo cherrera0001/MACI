@@ -75,8 +75,8 @@
 <div class="barra"><span style="width:31.8%"></span></div>
 <div class="lt">Clase 7 · Train, validation y test</div>
 <p><b>Objetivo.</b> Separar entrenamiento, validación y test, y decir qué decisión se toma con cada uno.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
-<div><span class="et">habilita</span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a></div>
 <div><span class="et">tiempo estimado</span>~25 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Asigna cada decisión (ajustar θ, elegir hiperparámetro, reportar) al conjunto correcto.</li>
@@ -85,12 +85,12 @@
 <div class="activ"><b>Activación.</b> Si eliges el mejor modelo mirando el test, ¿ese número de test sigue siendo una medida honesta? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="7"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="regresion_y_costo.html">← Clase 6 · Función de costo, error y R²</a></span><a href="index.html">Índice del curso</a><span><a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos →</a></span></nav>
+<nav class="pasos"><span><a href="09_regresion.html">← Clase 6 · Función de costo, error y R²</a></span><a href="index.html">Índice del curso</a><span><a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Train / validation / test</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="generalizacion.html">Generalizacion</a>, <a href="validacion_cruzada.html">Validacion cruzada</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 11 · peso en certamen media (transversal) · <span class="et">certamen</span><a href="certamen_2.html#p2">C2 P2</a> · <a href="certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="cpt"><b>Train / validation / test</b></span> · <span class="et">viene de</span><a href="02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="07_generalizacion.html">Generalizacion</a>, <a href="06_validacion_cruzada.html">Validacion cruzada</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 11 · peso en certamen media (transversal) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p2">C2 P2</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:43:55–0:54:42 · profesor — tres conjuntos; hiperparametros; por que validacion y test<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:43:55]</span></li><li><b>Clase del 31-jul</b> · 1:06:15–1:07:22 · profesor — un test no representativo (el ejemplo de 2008)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:15]</span></li><li><b>Clase del 31-jul</b> · 1:27:34–1:30:53 · profesor — el sistema para Arauco: etiquetar y evaluar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:27:34]</span></li><li><b>Clase del 7-ago</b> · 1:25:05–1:26:31 · profesor — el criterio de impureza es un hiperparametro<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:25:05]</span></li><li><b>Presentaciones del 4-sep</b> · 2:01:26–2:09:21 · profesor — pregunta a un grupo por entrenamiento y evaluacion (Melbourne)<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:01:26]</span></li><li><b>Ayudantía del 31-jul</b> · 0:58:01–1:01:05 · ayudantía — particiones en el notebook <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:58:01]</span></li><li><b>Ayudantía del 7-ago</b> · 0:10:55–0:14:05 · ayudantía — split aleatorio y estratificacion <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:10:55]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -138,7 +138,7 @@ dentro de casi todas. Estudiarlo por lo que puntúa es leer mal el mapa.
 La de su vecino sí lo está: la validación cruzada es «fundacional pero poco
 preguntada» —peso de evaluación bajo, aparece <em>como remedio, no como pregunta
 propia</em>— aunque el profesor la haya anunciado como la técnica más importante.
-Está en <a href="validacion_cruzada.html">validacion_cruzada.html</a>.
+Está en <a href="06_validacion_cruzada.html">validacion_cruzada.html</a>.
 </div>
 
 <h2>1 · El problema, con el caso del profesor</h2>
@@ -193,7 +193,7 @@ Y cerró así:</p>
 <p>Fíjate en lo que eso implica: <strong>el criterio de impureza de un árbol es un
 hiperparámetro</strong>, igual que el grado del polinomio. Todo lo que se fija antes
 de entrenar se elige con validación, no con el entrenamiento. Árboles en
-<a href="arboles_y_ensambles.html#arboles">arboles_y_ensambles.html</a>.</p>
+<a href="14_arboles_decision.html#arboles">arboles_y_ensambles.html</a>.</p>
 
 <table>
 <tr><th></th><th>Parámetro</th><th>Hiperparámetro</th></tr>
@@ -279,7 +279,7 @@ y minutos después puso el holdout primero en la lista de estrategias
 Lectura coherente [INFERENCIA]: el holdout es el <strong>caso base</strong> (una
 partición, un solo valor); submuestreo aleatorio, K-Fold y bootstrap lo
 <strong>repiten</strong>, y eso los vuelve validación cruzada propiamente tal. El
-detalle, con las citas, en <a href="validacion_cruzada.html">validacion_cruzada.html</a>.</p>
+detalle, con las citas, en <a href="06_validacion_cruzada.html">validacion_cruzada.html</a>.</p>
 
 <p>Pulsa cada una para ver cómo reparte las 1.200 imágenes ilustrativas [DATITO].
 En <strong>todas</strong> el test (300) se aparta primero y no cambia entre
@@ -307,7 +307,7 @@ rondas:</p>
 <tr><th>¿Los datos tienen orden temporal?</th><th>Método</th><th>Por qué</th></tr>
 <tr><td><strong>No</strong> — cada fila es independiente</td><td>K-Fold con mezcla</td><td>Aprovecha todos los datos y promedia el azar de la partición</td></tr>
 <tr><td><strong>Sí</strong> — hay fechas y predices el futuro</td><td><strong>Corte temporal</strong></td><td>Mezclar filtra información del futuro hacia el entrenamiento</td></tr>
-<tr><td>Pocos datos</td><td>Oficial (P4): K-Fold. En clase: bootstrap si son <em>muy</em> pocos</td><td>Un holdout desperdicia datos que no sobran. Las dos fuentes no dicen lo mismo: ver <a href="validacion_cruzada.html">validacion_cruzada.html</a> §7</td></tr>
+<tr><td>Pocos datos</td><td>Oficial (P4): K-Fold. En clase: bootstrap si son <em>muy</em> pocos</td><td>Un holdout desperdicia datos que no sobran. Las dos fuentes no dicen lo mismo: ver <a href="06_validacion_cruzada.html">validacion_cruzada.html</a> §7</td></tr>
 <tr><td>Hay clases (clasificación)</td><td>Partición estratificada</td><td>Que cada conjunto conserve las proporciones de clases (ayudantía, abajo)</td></tr>
 </table>
 
@@ -419,7 +419,7 @@ validación «hay algo raro»: un test con anomalías o no representativo
 [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:06:22–1:06:47].
 Antes de reportar, hay que averiguar en qué se diferencia el test: ¿otro período?,
 ¿otra población?, ¿se decidió tanto con la validación que quedó optimista? Más en
-<a href="validacion_cruzada.html">validacion_cruzada.html</a> §5.</p>
+<a href="06_validacion_cruzada.html">validacion_cruzada.html</a> §5.</p>
 <p style="margin-bottom:0"><strong>De dónde sale:</strong> la regla es del profesor
 (fuente arriba); las cifras son [DATITO].</p>
 </details>
@@ -505,8 +505,8 @@ profesor en el Hito 2 (fuente arriba). La redacción de los rótulos es [DATITO]
 <strong>medir para decidir ≠ medir para reportar</strong> (validación ≠ test). Es
 la misma firma del profesor de <code>patron_evaluacion.md</code> §1: separar dos
 cosas que se parecen.<br><br>
-Dónde aparece: la <a href="certamen_2.html#p3">P3 del Certamen 2</a> (validación
-cruzada para medir el sobreajuste) y la <a href="certamen_2.html#p7">P7</a>
+Dónde aparece: la <a href="../../04_EJERCICIOS/certamen_2.html#p3">P3 del Certamen 2</a> (validación
+cruzada para medir el sobreajuste) y la <a href="../../04_EJERCICIOS/certamen_2.html#p7">P7</a>
 (error de entrenamiento ≠ calidad del modelo; el grado del polinomio es un
 hiperparámetro).
 </div>
@@ -581,15 +581,15 @@ aleatorio que «anunciaba 81 % de precisión» está en
 <div class="vecino">
 <strong>A dónde seguir.</strong> Este concepto es la puerta de dos caminos:
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — qué pasa
+<li><a href="07_generalizacion.html"><code>generalizacion.html</code></a> — qué pasa
     cuando el modelo se enfrenta a datos que nunca vio. Es el concepto que este
     habilita directamente, y donde el 29,1 % de suburbios nuevos cobra sentido.</li>
-<li><a href="validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — las
+<li><a href="06_validacion_cruzada.html"><code>validacion_cruzada.html</code></a> — las
     cuatro estrategias con sus citas, la distribución del error y dónde debe caer el
     test.</li>
-<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
+<li><a href="08_overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> —
     lo que la partición permite diagnosticar.</li>
-<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+<li><a href="../../04_EJERCICIOS/triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
     antes de partir los datos hay que saber qué tipo de problema tienes.</li>
 </ul>
 </div>
@@ -601,12 +601,12 @@ aleatorio que «anunciaba 81 % de precisión» está en
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El test se guarda «en el bolsillo»: no se usa para decidir.</li><li>La validación sirve para elegir hiperparámetros, como el grado del polinomio.</li><li>Si decides con un conjunto, su número queda optimista.</li><li>Un test debe representar los datos donde se usará el modelo.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Parámetro (lo aprende el algoritmo) ≠ hiperparámetro (lo fijas tú antes).</li><li>Entrenado con ≠ evaluado sobre.</li><li>Elegir (validación) ≠ medir (test).</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Aparta el test primero.</li><li>Ajusta con train; elige con validación.</li><li>Mide una sola vez en test y reporta.</li></ol>
-<p><b>Viene de:</b> <a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a> · <b>Sigue:</b> <a href="validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a></p>
+<p><b>Viene de:</b> <a href="09_regresion.html">Clase 6 · Función de costo, error y R²</a> · <b>Sigue:</b> <a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a></p>
 <p><b>Vuelve a tu activación:</b> Si eliges el mejor modelo mirando el test, ¿ese número de test sigue siendo una medida honesta? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> ¿Por qué hacen falta validación y test, si ambos son datos que el modelo no vio?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque al elegir con la validación, esa medida se vuelve optimista; el test, que no se usó para decidir, da la medida honesta. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:49:50]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="validacion_cruzada.html">Continuar → Clase 8 · Validación cruzada y selección de modelos</a>
+<a class="continuar" href="06_validacion_cruzada.html">Continuar → Clase 8 · Validación cruzada y selección de modelos</a>
 </section>
 <!-- datito:cierre:fin -->
 <!-- datito:dudas:inicio -->
@@ -614,7 +614,7 @@ aleatorio que «anunciaba 81 % de precisión» está en
 <section class="ddudas" id="dudas-resueltas">
 <h2>Dudas resueltas con Datito, en orden</h2>
 <p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
-<article class="duda" id="duda-2026-09-18-baseline-mejora"><div class="dm">18-sep · quedó abierta en la sesión: aquí está la respuesta · <a href="generalizacion.html">Generalizacion</a>, <b>Train / validation / test</b> · también en <a href="generalizacion.html#duda-2026-09-18-baseline-mejora">generalizacion.html</a></div><p><b>Pregunta.</b> En Melbourne, el MAE de validación cruzada en 2016 y el de test en 2017 fueron: baseline (mediana) 449.160 → 431.649 (mejora 17.511); árbol de decisión 219.821 → 246.568 (empeora 26.747); HistGradientBoosting 159.777 → 188.218 (empeora 28.441). ¿Por qué el baseline mejora al pasar a 2017 mientras los modelos empeoran, y por qué el mejor modelo es el que más empeora?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> Intento 1: «entonces, podemos hablar de un sobreajuste». Intento 2: «el modelo fue entrenado con datos del 2016, pero un modelo que deberías validar, o que debería probar es gradient boosting, o random forest».</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> El baseline no aprendió nada de 2016 salvo un número (la mediana, 900.000), así que su error solo refleja qué tan dispersos están los precios del año que mide; los modelos aprendieron relaciones de 2016 que en 2017 valen menos, y además fueron elegidos mirando 2016, por eso el más ajustado a 2016 es el que más pierde.</p><ol><li>El baseline: predecir siempre 900.000 da MAE 449.122 sobre los precios de 2016 y 431.649 sobre los de 2017 (este último es exactamente su MAE de test). Los precios de 2017 están algo menos dispersos alrededor de 900.000. La «mejora» es una propiedad de los datos, no del modelo.</li><li>Los modelos: aprendieron cómo se relacionan ubicación, tipo y tamaño con el precio EN 2016. En 2017 el 29,1 % de las propiedades están en suburbios que no existían en 2016: parte de lo aprendido ya no aplica (cambio de distribución).</li><li>El mejor es el que más empeora (HGB +17,8 %, 159.777 → 188.218; árbol +12,2 %): es el que más estructura fina de 2016 capturó, y además fue ELEGIDO por tener el menor error en 2016, así que su número de validación es optimista.</li><li>Así lo dijo el profesor al comentar este mismo proyecto: los datos «cambian un poco entre el 2016 y el 2017» y «también tomaron decisiones con ese subconjunto de datos», y lo llamó «un poquito sobreajustado a los datos del 2016». Son dos mecanismos: optimismo por selección y cambio de distribución.</li><li>Por qué no basta decir «sobreajuste»: las dos columnas de la tabla son datos que el modelo no usó para entrenar. Sin nombrar el mecanismo, la etiqueta no explica por qué el baseline mejora.</li></ol><p><b>Error típico.</b> Poner la etiqueta «sobreajuste» sin mecanismo, o proponer otro modelo sin leer que la tabla ya contiene los resultados del propio proyecto.</p><p class="df">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017<br>[FUENTE · Repo: 04_DATOS/housing_dashai_2016_2017.csv + 05_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21<br>[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor<br>[INFERENCIA] la descomposición en dos mecanismos<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-18-train_validation_test.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-18-baseline-mejora"><div class="dm">18-sep · quedó abierta en la sesión: aquí está la respuesta · <a href="07_generalizacion.html">Generalizacion</a>, <b>Train / validation / test</b> · también en <a href="07_generalizacion.html#duda-2026-09-18-baseline-mejora">generalizacion.html</a></div><p><b>Pregunta.</b> En Melbourne, el MAE de validación cruzada en 2016 y el de test en 2017 fueron: baseline (mediana) 449.160 → 431.649 (mejora 17.511); árbol de decisión 219.821 → 246.568 (empeora 26.747); HistGradientBoosting 159.777 → 188.218 (empeora 28.441). ¿Por qué el baseline mejora al pasar a 2017 mientras los modelos empeoran, y por qué el mejor modelo es el que más empeora?</p><p class="dr"><b>Lo que respondiste en la sesión:</b> Intento 1: «entonces, podemos hablar de un sobreajuste». Intento 2: «el modelo fue entrenado con datos del 2016, pero un modelo que deberías validar, o que debería probar es gradient boosting, o random forest».</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> El baseline no aprendió nada de 2016 salvo un número (la mediana, 900.000), así que su error solo refleja qué tan dispersos están los precios del año que mide; los modelos aprendieron relaciones de 2016 que en 2017 valen menos, y además fueron elegidos mirando 2016, por eso el más ajustado a 2016 es el que más pierde.</p><ol><li>El baseline: predecir siempre 900.000 da MAE 449.122 sobre los precios de 2016 y 431.649 sobre los de 2017 (este último es exactamente su MAE de test). Los precios de 2017 están algo menos dispersos alrededor de 900.000. La «mejora» es una propiedad de los datos, no del modelo.</li><li>Los modelos: aprendieron cómo se relacionan ubicación, tipo y tamaño con el precio EN 2016. En 2017 el 29,1 % de las propiedades están en suburbios que no existían en 2016: parte de lo aprendido ya no aplica (cambio de distribución).</li><li>El mejor es el que más empeora (HGB +17,8 %, 159.777 → 188.218; árbol +12,2 %): es el que más estructura fina de 2016 capturó, y además fue ELEGIDO por tener el menor error en 2016, así que su número de validación es optimista.</li><li>Así lo dijo el profesor al comentar este mismo proyecto: los datos «cambian un poco entre el 2016 y el 2017» y «también tomaron decisiones con ese subconjunto de datos», y lo llamó «un poquito sobreajustado a los datos del 2016». Son dos mecanismos: optimismo por selección y cambio de distribución.</li><li>Por qué no basta decir «sobreajuste»: las dos columnas de la tabla son datos que el modelo no usó para entrenar. Sin nombrar el mecanismo, la etiqueta no explica por qué el baseline mejora.</li></ol><p><b>Error típico.</b> Poner la etiqueta «sobreajuste» sin mecanismo, o proponer otro modelo sin leer que la tabla ya contiene los resultados del propio proyecto.</p><p class="df">[FUENTE · Repo: 05_RESULTADOS/resultados_temporal.json] MAE de CV 2016 y test 2017<br>[FUENTE · Repo: 04_DATOS/housing_dashai_2016_2017.csv + 05_RESULTADOS/dashai_split_indices.json] MAE de predecir 900.000: 449.122 (2016) y 431.649 (2017), calculado el 2026-09-21<br>[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 2:08:49–2:09:16] comentario del profesor<br>[INFERENCIA] la descomposición en dos mecanismos<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-18-train_validation_test.md</code></p></details></article>
 </section>
 <!-- datito:dudas:fin -->
 <footer>
@@ -640,7 +640,7 @@ const METODOS={
  holdout:{
   t:'Holdout (método de retención) · el caso base',
   barras:[[['tr',600,'entrenamiento · 600'],['va',300,'validación · 300'],TE]],
-  d:'<strong>Se parte una vez y listo</strong>: 2/3 para entrenar y 1/3 para validar, la proporción que dio el profesor (citada en <a href="validacion_cruzada.html">validacion_cruzada.html</a> §7). Sencillo y barato, pero entrega <strong>un solo valor</strong>: depende de qué imágenes cayeron en cada lado. Es la «validación nomás».',
+  d:'<strong>Se parte una vez y listo</strong>: 2/3 para entrenar y 1/3 para validar, la proporción que dio el profesor (citada en <a href="06_validacion_cruzada.html">validacion_cruzada.html</a> §7). Sencillo y barato, pero entrega <strong>un solo valor</strong>: depende de qué imágenes cayeron en cada lado. Es la «validación nomás».',
   cuando:'Cuando hay datos de sobra y entrenar es caro. Por sí solo no permite ver la distribución del error.'},
  submuestreo:{
   t:'Submuestreo aleatorio (shuffle split)',

@@ -144,8 +144,8 @@ main{overflow-wrap:anywhere}
 <div class="barra"><span style="width:13.6%"></span></div>
 <div class="lt">Clase 3 · EDA: conocer los datos antes de modelar</div>
 <p><b>Objetivo.</b> Leer la distribución de una variable y detectar faltantes, atípicos y dificultades del problema antes de modelar.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
-<div><span class="et">habilita</span><a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></div>
 <div><span class="et">tiempo estimado</span>~55 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Analizar</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Interpreta un resumen (media, mediana, desviación, percentiles) y dice qué revela y qué no revela sobre la forma y la calidad.</li>
@@ -154,12 +154,12 @@ main{overflow-wrap:anywhere}
 <div class="activ"><b>Activación.</b> En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="3"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="datos_features_target.html">← Clase 2 · Datos, filas, columnas, features y target</a></span><a href="index.html">Índice del curso</a><span><a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos →</a></span></nav>
+<nav class="pasos"><span><a href="02_datos_features_target.html">← Clase 2 · Datos, filas, columnas, features y target</a></span><a href="index.html">Índice del curso</a><span><a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Analisis exploratorio de datos (EDA)</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="limpieza_preparacion.html">Limpieza y preparacion de datos</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C1: 9A, de forma indirecta) · <span class="et">certamen</span><a href="certamen_1.html#p9a">C1 P9A</a> · <a href="certamen_2.html#p4">C2 P4</a> · <a href="certamen_2.html#p11">C2 P11</a></div>
+<div class="fila"><span class="cpt"><b>Analisis exploratorio de datos (EDA)</b></span> · <span class="et">viene de</span><a href="02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="04_limpieza_preparacion.html">Limpieza y preparacion de datos</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C1: 9A, de forma indirecta) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p9a">C1 P9A</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p11">C2 P11</a></div>
 <details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 17-jul</b> · 0:05:20–1:27:00 · profesor — la clase completa de EDA<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:05:20]</span></li><li><b>Presentaciones del 14-ago</b> · 1:19:25–1:21:04 · profesor — boxplots con pocos datos no aseguran significancia<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:25]</span></li><li><b>Ayudantía del 10-jul</b> · 0:12:57–0:36:43 · ayudantía — P1 sobre MovieLens: describe, filtros con &amp; y |, value_counts, nunique, sort_values, groupby <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:12:57]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -169,16 +169,16 @@ main{overflow-wrap:anywhere}
 <p class="sub">Mirar los datos antes de modelarlos. Qué te dicen los resúmenes, y sobre todo qué te esconden.</p>
 
 <div class="grafo">
-  <a class="n" href="datos_features_target.html">Datos, features y target</a>
+  <a class="n" href="02_datos_features_target.html">Datos, features y target</a>
   <span class="fl">→</span>
   <span class="n aqui">EDA</span>
   <span class="fl">→</span>
-  <a class="n" href="limpieza_preparacion.html">Limpieza y preparación</a>
+  <a class="n" href="04_limpieza_preparacion.html">Limpieza y preparación</a>
 </div>
 <p style="font-size:.88rem;color:var(--suave);margin-top:-.4rem">
   Primero tienes que saber qué es una fila y qué es una columna
-  (<a href="datos_features_target.html">datos, features y target</a>). Después de esto viene decidir
-  qué haces con lo que encontraste (<a href="limpieza_preparacion.html">limpieza y preparación</a>).
+  (<a href="02_datos_features_target.html">datos, features y target</a>). Después de esto viene decidir
+  qué haces con lo que encontraste (<a href="04_limpieza_preparacion.html">limpieza y preparación</a>).
   <em>El EDA no arregla nada: encuentra.</em>
   <span style="display:block;margin-top:.3rem">[FUENTE · Repo: <code>07_DATITO/curriculum.yaml</code>, campo <code>prerrequisitos</code>]</span>
 </p>
@@ -199,7 +199,7 @@ una hipótesis. Yo no lo sé porque no sé qué midió esto ni si son adultos o 
   <strong>Medido ≠ supuesto.</strong> «La media es 1,8 m» es una <em>medición</em>: sale de los datos.
   «Son adultos» es una <em>hipótesis</em>: la pusiste tú. El EDA produce las dos cosas y tu trabajo es
   no mezclarlas. Es la distinción que el Certamen 2 cobró en su última ficha
-  (<a href="certamen_2.html#p11">P11: medido / supuesto / no disponible</a>).
+  (<a href="../../04_EJERCICIOS/certamen_2.html#p11">P11: medido / supuesto / no disponible</a>).
   <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: <code>07_DATITO/patron_evaluacion.md</code>, §1]</span>
 </div>
 
@@ -233,9 +233,9 @@ La vibración es una buena feature, pero <strong>no suficiente</strong>: sola da
 hay que buscar otras variables (él mismo aceptó la fecha de mantención como candidata
 [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:17:44–0:17:56]).
 Esas falsas alarmas son los falsos positivos que vas a medir en
-<a href="metricas_clasificacion.html">métricas de clasificación</a> [INFERENCIA]. Y la forma del
+<a href="12_metricas_clasificacion.html">métricas de clasificación</a> [INFERENCIA]. Y la forma del
 razonamiento es pariente de la ficha P6 del Certamen 2, causa ≠ condición habilitante
-(<a href="certamen_2.html#p6">certamen_2.html#p6</a>).</p>
+(<a href="../../04_EJERCICIOS/certamen_2.html#p6">certamen_2.html#p6</a>).</p>
 <p style="margin-bottom:0"><strong>Error típico:</strong> leer la flecha al revés. «Falla → alza» es
 una condición <em>necesaria</em> (sin alza no hubo falla); para anticipar sin falsas alarmas harías
 falta «alza → falla», que es <em>suficiente</em>, y los datos del profesor muestran alzas sin falla.
@@ -424,11 +424,11 @@ quién anotó los datos y dónde estaban los camiones
 </ol>
 
 <div class="peligro">
-  <strong>El precedente en tu Certamen 1.</strong> La <a href="certamen_1.html#p9b">pregunta 9B</a> es este
+  <strong>El precedente en tu Certamen 1.</strong> La <a href="../../04_EJERCICIOS/certamen_1.html#p9b">pregunta 9B</a> es este
   mismo registro de camiones, con un <code>0</code> (conductor enfermo: medición real, se queda), un
   <code>−999</code> (en mantenimiento: faltante escrito como número) y un <code>2900</code> frente a 200
   (atípico, no necesariamente error). Si los tratas igual, te equivocas en al menos uno. Qué hacer con
-  cada uno ya es <a href="limpieza_preparacion.html">limpieza y preparación</a>; al EDA le toca
+  cada uno ya es <a href="04_limpieza_preparacion.html">limpieza y preparación</a>; al EDA le toca
   <em>encontrarlos</em> y decir qué supone de cada uno.
   <span style="display:block;margin-top:.3rem;font-size:.85rem">[FUENTE · Repo: <code>07_DATITO/visual/certamen_1.html</code>, ficha 9B]</span>
 </div>
@@ -670,7 +670,7 @@ P25 cae en la posición 2 → el 3.er dato = <strong>39</strong>; P75 cae en la 
 <p class="clave" style="margin-bottom:0"><strong>¿Lo borrarías?</strong> No por ser atípico. En este problema
 los valores altos de vibración son justamente los momentos de falla: borrar el 70 es borrar lo que quieres
 predecir. Atípico describe una <em>posición</em> en la distribución; error es un juicio que hay que
-verificar. Es el mismo criterio del 2900 de la <a href="certamen_1.html#p9b">9B</a>. (Otros textos calculan
+verificar. Es el mismo criterio del 2900 de la <a href="../../04_EJERCICIOS/certamen_1.html#p9b">9B</a>. (Otros textos calculan
 los cuartiles con otra regla y dan números algo distintos; el procedimiento no cambia.)</p>
 </details>
 
@@ -937,7 +937,7 @@ práctico.)</p>
   correlación, siempre que sepas qué es el 0 y qué es el 1: si inviertes el código, se invierte el signo
   [INFERENCIA]. (2) En 1:13:50 la transcripción dice «la matrita confusión», pero por contexto sigue
   hablando de la matriz de <strong>correlación</strong> —la recomienda para elegir variables en regresión—,
-  no de la <a href="matriz_confusion.html">matriz de confusión</a>, que es de clasificación [INFERENCIA]
+  no de la <a href="11_matriz_confusion.html">matriz de confusión</a>, que es de clasificación [INFERENCIA]
   [FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 1:13:50–1:14:12].
 </div>
 
@@ -988,7 +988,7 @@ medidas por vino (lámina 44). Su secuencia fue esta
 <ol class="proc">
 <li><strong>Contar las clases.</strong> Hay más vinos del cultivador 1 que del 2 y del 0, y eso importa
 porque los modelos tienden a ajustarse a la clase más representada. Es el desbalance que después
-castigan las <a href="metricas_clasificacion.html">métricas de clasificación</a>.</li>
+castigan las <a href="12_metricas_clasificacion.html">métricas de clasificación</a>.</li>
 <li><strong>Resumen por variable.</strong> Media, desviación, mínimo, P25, P50, P75 y máximo de las 13.
 Alcohol: media cercana a 13 y desviación 0,8, con la mediana parecida a la media → simétrica. Intensidad
 de color: media 5,05 y mediana 4,69 → corrida hacia valores bajos. (Cifras dichas en clase ⚠.)</li>
@@ -1002,7 +1002,7 @@ En el gráfico 2D los tres grupos casi se separan: no será perfecto, pero se pu
 
 <div class="clave">
   Fíjate en qué entrega el EDA al final: no un gráfico bonito, sino una <strong>hipótesis comprobable</strong>
-  que el modelo va a poner a prueba. Antes de <a href="clasificacion.html">clasificar</a>, ya sabes qué
+  que el modelo va a poner a prueba. Antes de <a href="10_clasificacion.html">clasificar</a>, ya sabes qué
   variables deberían servir y por qué. Y, como viste con los boxplots de la sección 6, la hipótesis
   todavía no está demostrada.
 </div>
@@ -1092,7 +1092,7 @@ profesor lo tomó como un problema comunicacional que aparece de muchas formas
 compañero advirtió que el reparto real no es uniforme. Si en ese rubro solo se trabaja de lunes a viernes,
 la referencia sería 2/5 = 40 % y el 25 % quedaría todavía más abajo [DATITO]. Cambias el denominador y
 cambia la conclusión; por eso hay que escribirlo. Es el mismo problema que vas a encontrar en las
-<a href="metricas_clasificacion.html">métricas de clasificación</a>: un porcentaje sin su denominador no
+<a href="12_metricas_clasificacion.html">métricas de clasificación</a>: un porcentaje sin su denominador no
 dice nada.</p>
 </details>
 
@@ -1109,7 +1109,7 @@ dice nada.</p>
   clasificador y clases verdaderas contra las que comparar. La varianza existe con o sin clases: es un
   estadístico descriptivo de una columna. (La ganancia de pureza cae por otra razón: sirve para
   <em>construir</em> un árbol, no para evaluarlo.) Enunciado y análisis completos en
-  <a href="certamen_2.html#p4">certamen_2.html#p4</a>.</span>
+  <a href="../../04_EJERCICIOS/certamen_2.html#p4">certamen_2.html#p4</a>.</span>
   <span style="display:block;margin-top:.4rem;font-size:.85rem">[FUENTE · Repo:
   <code>01_DOCUMENTACION/01_CERTAMEN2/02_MAPA_PROCESO_ESTUDIO.md</code>, ficha P4]</span>
 </div>
@@ -1125,10 +1125,10 @@ dice nada.</p>
 <tr><td>Gráfico de barras</td><td>Gráfico de líneas</td><td>Si puedes interpolar entre dos valores del eje X, línea. Si no, barras</td></tr>
 <tr><td>Correlación</td><td>Causalidad</td><td>El mecanismo. Sin mecanismo, <code>r</code> alto no es evidencia</td></tr>
 <tr><td>Resumen estadístico</td><td>Forma de la distribución</td><td>Anscombe: cuatro formas distintas, un solo resumen</td></tr>
-<tr><td>Un estadístico descriptivo</td><td>Una métrica de evaluación</td><td>Qué objeto describe: una variable o un modelo (<a href="certamen_2.html#p4">P4</a>)</td></tr>
-<tr><td>Medición</td><td>Hipótesis (supuesto)</td><td>¿Sale de los datos o la pusiste tú? «Media 1,8 m» es medido; «son adultos» es hipótesis (<a href="certamen_2.html#p11">P11</a>)</td></tr>
+<tr><td>Un estadístico descriptivo</td><td>Una métrica de evaluación</td><td>Qué objeto describe: una variable o un modelo (<a href="../../04_EJERCICIOS/certamen_2.html#p4">P4</a>)</td></tr>
+<tr><td>Medición</td><td>Hipótesis (supuesto)</td><td>¿Sale de los datos o la pusiste tú? «Media 1,8 m» es medido; «son adultos» es hipótesis (<a href="../../04_EJERCICIOS/certamen_2.html#p11">P11</a>)</td></tr>
 <tr><td>Condición necesaria</td><td>Condición suficiente</td><td>Falla → alza de vibración no implica alza → falla. La feature ayuda, pero no basta</td></tr>
-<tr><td>Cero medido</td><td>Faltante disfrazado (0, −999, <code>Unavailable</code>)</td><td>¿Qué significaría ese valor si fuera real? Si no puedes contestarlo, es sospechoso (<a href="certamen_1.html#p9b">9B</a>)</td></tr>
+<tr><td>Cero medido</td><td>Faltante disfrazado (0, −999, <code>Unavailable</code>)</td><td>¿Qué significaría ese valor si fuera real? Si no puedes contestarlo, es sospechoso (<a href="../../04_EJERCICIOS/certamen_1.html#p9b">9B</a>)</td></tr>
 <tr><td>Atípico</td><td>Error</td><td>Atípico es una posición (fuera de 1,5 × RIC); error es un juicio que se verifica. El 2900 de la 9B y la vibración de 70 son atípicos, no errores probados</td></tr>
 <tr><td>Separación en un boxplot</td><td>Significancia estadística</td><td>El número de datos. Un boxplot bonito con tres datos no asegura nada</td></tr>
 </table>
@@ -1332,12 +1332,12 @@ repregunte.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un resumen no determina la forma: hay que mirar la distribución.</li><li>La media se mueve con los extremos; la mediana no.</li><li>La varianza de una muestra divide por n − 1.</li><li>Correlación no es causalidad, y un gráfico puede engañar por su escala.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Cantidad que describe una variable (varianza) ≠ cantidad que describe un clasificador (precisión, AUC) (C2 P4).</li><li>Hipótesis ≠ medición (C2 P11).</li><li>Necesario ≠ suficiente: toda falla trae vibración, no toda vibración es falla.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Tipo de variable → gráfico adecuado.</li><li>Centro (media y mediana) y extensión (desviación, percentiles).</li><li>Busca ceros, centinelas y atípicos: ¿error o dato real?</li><li>Escribe hipótesis, no conclusiones.</li></ol>
-<p><b>Viene de:</b> <a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · <b>Sigue:</b> <a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></p>
+<p><b>Viene de:</b> <a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · <b>Sigue:</b> <a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></p>
 <p><b>Vuelve a tu activación:</b> En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Si la media es mucho mayor que la mediana, ¿qué te dice eso de la distribución?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Que tiene cola a la derecha: unos pocos valores altos arrastran la media, y la mediana representa mejor el caso típico. [DATITO]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="limpieza_preparacion.html">Continuar → Clase 4 · Calidad, limpieza y preparación de datos</a>
+<a class="continuar" href="04_limpieza_preparacion.html">Continuar → Clase 4 · Calidad, limpieza y preparación de datos</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>

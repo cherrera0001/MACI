@@ -16,8 +16,8 @@
 <div class="barra"><span style="width:22.7%"></span></div>
 <div class="lt">Clase 5 · Regresión: predecir una cantidad</div>
 <p><b>Objetivo.</b> Explicar el modelo lineal ŷ = θ₀ + θ₁x: qué es dato, qué aprende el modelo y qué significa cada símbolo.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
-<div><span class="et">habilita</span><a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a>, <a href="clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="../01_CONCEPTOS/visual/02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a></div>
+<div><span class="et">habilita</span><a href="../01_CONCEPTOS/visual/09_regresion.html">Clase 6 · Función de costo, error y R²</a>, <a href="../01_CONCEPTOS/visual/10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
 <div><span class="et">tiempo estimado</span>~20 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Comprender</b><ul>
 <li><b>Evidencia de aprendizaje:</b> Explica θ₀ y θ₁ con sus unidades y predice un valor dentro del rango de los datos.</li>
@@ -26,12 +26,12 @@
 <div class="activ"><b>Activación.</b> El profesor quiere saber cuánto pesa un árbol sin cortarlo. ¿Qué medirías, y cómo lo usarías para predecir? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="5"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="limpieza_preparacion.html">← Clase 4 · Calidad, limpieza y preparación de datos</a></span><a href="index.html">Índice del curso</a><span><a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R² →</a></span></nav>
+<nav class="pasos"><span><a href="../01_CONCEPTOS/visual/04_limpieza_preparacion.html">← Clase 4 · Calidad, limpieza y preparación de datos</a></span><a href="../01_CONCEPTOS/visual/00_index.html">Índice del curso</a><span><a href="../01_CONCEPTOS/visual/09_regresion.html">Clase 6 · Función de costo, error y R² →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="clasificacion.html">Clasificacion</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><a href="../01_CONCEPTOS/visual/00_index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="../01_CONCEPTOS/visual/02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="../01_CONCEPTOS/visual/10_clasificacion.html">Clasificacion</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -63,7 +63,7 @@ donde sale todo lo demás. No lo estudies por puntaje.
 <div class="vecino">
 <strong>Este documento es la clase completa.</strong> Si lo que quieres es
 experimentar con la función de coste —mover la recta y ver el error crecer—,
-abre <a href="regresion_y_costo.html"><code>regresion_y_costo.html</code></a>, que es el laboratorio.
+abre <a href="../01_CONCEPTOS/visual/09_regresion.html"><code>regresion_y_costo.html</code></a>, que es el laboratorio.
 </div>
 
 <h2>El ejemplo es de tu profesor</h2>
@@ -170,9 +170,9 @@ polinomio de grado 10 con oscilaciones violentas que pasa muy cerca de casi todo
 puntos: es donde el curso introduce el sobreajuste
 [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/Resumen_Clase6_Regresion.md · lámina 11, §6.5.4].
 Muévelo tú mismo en
-<a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a>,
+<a href="../01_CONCEPTOS/visual/08_overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a>,
 y mira cómo lo preguntó el certamen en la
-<a href="certamen_2.html#p7">ficha P7</a>.
+<a href="../04_EJERCICIOS/certamen_2.html#p7">ficha P7</a>.
 </div>
 
 <h2>3 · La función de costo</h2>
@@ -512,7 +512,7 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
     <li><strong>Qué hacer.</strong> O entregas el número con una advertencia explícita
     («extrapolación: el modelo se entrenó con radios de 8 a 22 cm»), o, mejor, mides y
     cortas algunos árboles grandes para ampliar el rango. Más en
-    <a href="generalizacion.html"><code>generalizacion.html</code></a></li>
+    <a href="../01_CONCEPTOS/visual/07_generalizacion.html"><code>generalizacion.html</code></a></li>
   </ol>
   <p><strong>Respuesta a «explícaselo a alguien»:</strong> el compañero se equivoca de
   símbolo. Respuesta modelo: <em>«θ₁ es la pendiente: cuántos kilos gana el árbol por
@@ -533,9 +533,9 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 <div class="vecino">
 <strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="regresion_y_costo.html"><code>regresion_y_costo.html</code></a> — el laboratorio de la función de costo</li>
-<li><a href="overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> — qué pasa al subir el grado del polinomio: sobreajuste y subajuste</li>
-<li><a href="certamen_2.html#p7"><code>certamen_2.html</code></a> — la P7, regresión polinomial con 5 árboles</li>
+<li><a href="../01_CONCEPTOS/visual/09_regresion.html"><code>regresion_y_costo.html</code></a> — el laboratorio de la función de costo</li>
+<li><a href="../01_CONCEPTOS/visual/08_overfitting_underfitting.html"><code>overfitting_underfitting.html</code></a> — qué pasa al subir el grado del polinomio: sobreajuste y subajuste</li>
+<li><a href="../04_EJERCICIOS/certamen_2.html#p7"><code>certamen_2.html</code></a> — la P7, regresión polinomial con 5 árboles</li>
 </ul>
 </div>
 
@@ -546,12 +546,12 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Regresión: predecir un valor real, una cantidad.</li><li>θ₁ es cuánto cambia ŷ por unidad de x; θ₀ es ŷ cuando x = 0.</li><li>La regresión se llama lineal por ser lineal en los θ, no en x.</li><li>La complejidad del modelo es su número de parámetros.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Pendiente (θ₁) ≠ intercepto (θ₀).</li><li>Lineal en θ ≠ lineal en x: la polinomial sigue siendo regresión lineal.</li><li>Predecir dentro del rango ≠ extrapolar.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Identifica x (dato), y (target) y los θ (lo que aprende el modelo).</li><li>Interpreta θ₁ en unidades de y por unidad de x.</li><li>Antes de predecir, revisa el rango de x observado.</li></ol>
-<p><b>Viene de:</b> <a href="limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a> · <b>Sigue:</b> <a href="regresion_y_costo.html">Clase 6 · Función de costo, error y R²</a></p>
+<p><b>Viene de:</b> <a href="../01_CONCEPTOS/visual/04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a> · <b>Sigue:</b> <a href="../01_CONCEPTOS/visual/09_regresion.html">Clase 6 · Función de costo, error y R²</a></p>
 <p><b>Vuelve a tu activación:</b> El profesor quiere saber cuánto pesa un árbol sin cortarlo. ¿Qué medirías, y cómo lo usarías para predecir? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> ¿Es ŷ = θ₀ + θ₁x + θ₂x² una regresión lineal?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Sí: es lineal en los parámetros, porque cada θ aparece una vez multiplicando un término; x² es solo una columna nueva. [FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:37:49]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="regresion_y_costo.html">Continuar → Clase 6 · Función de costo, error y R²</a>
+<a class="continuar" href="../01_CONCEPTOS/visual/09_regresion.html">Continuar → Clase 6 · Función de costo, error y R²</a>
 </section>
 <!-- datito:cierre:fin -->
 <!-- datito:dudas:inicio -->
@@ -559,7 +559,7 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 <section class="ddudas" id="dudas-resueltas">
 <h2>Dudas resueltas con Datito, en orden</h2>
 <p>Lo que se trabajó en las sesiones sobre este tema, para volver a leerlo y re-intentarlo. Primero responde tú; después abre la respuesta. Fuente: <code>07_DATITO/dudas.yaml</code>.</p>
-<article class="duda" id="duda-2026-09-21-arbol-45cm"><div class="dm">21-sep · resuelta en la sesión · <b>Regresion</b>, <a href="generalizacion.html">Generalizacion</a> · también en <a href="generalizacion.html#duda-2026-09-21-arbol-45cm">generalizacion.html</a></div><p><b>Pregunta.</b> Cortaste 20 árboles y ajustaste la recta: R² = 0,93. Tu jefe te pide predecir el peso de un árbol de radio 45 cm. Los 20 árboles tenían radios entre 8 y 22 cm. ¿Le entregas la predicción? Justifica.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No como una predicción confiable: 45 cm está fuera del rango observado (8–22 cm), es una extrapolación; si se entrega, va con esa advertencia explícita, y lo correcto es medir árboles de ese tamaño.</p><ol><li>El rango de tus datos es 8–22 cm. 45 cm es más del doble del máximo: el modelo nunca vio un árbol así.</li><li>R² = 0,93 mide el ajuste a los 20 árboles con que ajustaste la recta, todos dentro de 8–22 cm. No dice nada fuera de ese rango.</li><li>El modelo igual devuelve un número. Con la recta de la página (θ₁ ≈ 9,72 kg por cm, θ₀ ≈ −6,9 kg): ŷ = −6,9 + 9,72·45 ≈ 430 kg. Tener un número no es tener evidencia.</li><li>El peso crece con el volumen (aprox. radio² × altura), más rápido que una recta: con árboles grandes la recta probablemente se queda corta.</li><li>Qué haces: entregas el número declarando la extrapolación y por qué no es confiable, o mides árboles grandes y vuelves a ajustar.</li><li>Frase para la prueba: «No la entrego como confiable: 45 cm está fuera del rango observado (8–22 cm), así que es extrapolación. El R² de 0,93 mide el ajuste solo dentro de ese rango.»</li></ol><p><b>Error típico.</b> Creer que un R² alto autoriza a predecir en cualquier parte; el R² se calculó solo donde había datos.</p><p class="df">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes<br>[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html] los 20 árboles y la recta de mínimos cuadrados<br>[INFERENCIA] «extrapolación»: el profesor no usa esa palabra en las 14 transcripciones<br>[DATITO] el argumento físico del volumen<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
+<article class="duda" id="duda-2026-09-21-arbol-45cm"><div class="dm">21-sep · resuelta en la sesión · <b>Regresion</b>, <a href="../01_CONCEPTOS/visual/07_generalizacion.html">Generalizacion</a> · también en <a href="../01_CONCEPTOS/visual/07_generalizacion.html#duda-2026-09-21-arbol-45cm">generalizacion.html</a></div><p><b>Pregunta.</b> Cortaste 20 árboles y ajustaste la recta: R² = 0,93. Tu jefe te pide predecir el peso de un árbol de radio 45 cm. Los 20 árboles tenían radios entre 8 y 22 cm. ¿Le entregas la predicción? Justifica.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No como una predicción confiable: 45 cm está fuera del rango observado (8–22 cm), es una extrapolación; si se entrega, va con esa advertencia explícita, y lo correcto es medir árboles de ese tamaño.</p><ol><li>El rango de tus datos es 8–22 cm. 45 cm es más del doble del máximo: el modelo nunca vio un árbol así.</li><li>R² = 0,93 mide el ajuste a los 20 árboles con que ajustaste la recta, todos dentro de 8–22 cm. No dice nada fuera de ese rango.</li><li>El modelo igual devuelve un número. Con la recta de la página (θ₁ ≈ 9,72 kg por cm, θ₀ ≈ −6,9 kg): ŷ = −6,9 + 9,72·45 ≈ 430 kg. Tener un número no es tener evidencia.</li><li>El peso crece con el volumen (aprox. radio² × altura), más rápido que una recta: con árboles grandes la recta probablemente se queda corta.</li><li>Qué haces: entregas el número declarando la extrapolación y por qué no es confiable, o mides árboles grandes y vuelves a ajustar.</li><li>Frase para la prueba: «No la entrego como confiable: 45 cm está fuera del rango observado (8–22 cm), así que es extrapolación. El R² de 0,93 mide el ajuste solo dentro de ese rango.»</li></ol><p><b>Error típico.</b> Creer que un R² alto autoriza a predecir en cualquier parte; el R² se calculó solo donde había datos.</p><p class="df">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:42:10] generalizar: funcionar para datos que no ha visto antes<br>[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html] los 20 árboles y la recta de mínimos cuadrados<br>[INFERENCIA] «extrapolación»: el profesor no usa esa palabra en las 14 transcripciones<br>[DATITO] el argumento físico del volumen<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
 <article class="duda" id="duda-2026-09-21-theta0-theta1"><div class="dm">21-sep · resuelta en la sesión · <b>Regresion</b></div><p><b>Pregunta.</b> Un compañero dice: «si θ₁ es 82,13, entonces un árbol de radio cero pesaría 82 kilos». ¿Tiene razón? Justifícalo nombrando qué símbolo responde esa pregunta.</p><details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p><b>Respuesta.</b> No: el peso con radio cero lo da θ₀ (el intercepto), no θ₁; θ₁ es la pendiente, cuántos kilos sube el peso por cada centímetro más de radio.</p><ol><li>En ŷ = θ₀ + θ₁·x, con x = 0 queda ŷ = θ₀. El símbolo que responde es θ₀.</li><li>θ₁ no es un peso: es kilos POR centímetro. Leerlo como peso confunde pendiente con intercepto.</li><li>Con la recta de la página, θ₀ ≈ −6,9 kg: un peso negativo, imposible. Eso muestra lo segundo: radio 0 también está fuera de los datos (8–22 cm), así que ni siquiera θ₀ tiene interpretación física aquí.</li><li>Ojo con las cifras: 82,13 y 0,2588 son los coeficientes del P4 sobre datos sintéticos (make_regression), no de árboles. Con esas cifras, radio 0 daría 0,26 kg; el razonamiento es el mismo.</li><li>Frase para la prueba: «No. &quot;Cuánto pesa con radio cero&quot; lo responde θ₀, no θ₁; θ₁ es cuánto aumenta el peso por centímetro. Y radio 0 está fuera de los datos, así que θ₀ no se interpreta físicamente.»</li></ol><p><b>Error típico.</b> Leer la pendiente como si fuera el valor de ŷ; interpretar θ₀ fuera del rango de los datos.</p><p class="df">[FUENTE · Repo: 07_DATITO/visual/clase6_regresion.html §7] la notación desarmada<br>[FUENTE · Repo: 08_PRACTICA/_markdown/2026_P4_Regresión_res.md] 82,13 y 0,2588 vienen de make_regression<br>[INFERENCIA] la lectura de θ₀ negativo como señal de extrapolación<br>Contexto de la sesión: <code>07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md</code></p></details></article>
 </section>
 <!-- datito:dudas:fin -->

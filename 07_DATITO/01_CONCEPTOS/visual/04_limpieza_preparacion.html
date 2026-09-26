@@ -143,7 +143,7 @@ main{overflow-wrap:anywhere}
 <div class="barra"><span style="width:18.2%"></span></div>
 <div class="lt">Clase 4 · Calidad, limpieza y preparación de datos</div>
 <p><b>Objetivo.</b> Decidir qué es un error de datos que se limpia y qué es una decisión de modelado que se documenta.</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span><a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></div>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a></div>
 <div><span class="et">habilita</span>ninguna</div>
 <div><span class="et">tiempo estimado</span>~45 min</div></div>
 <div class="ficha"><b>Ficha Bloom · Evaluar</b><ul>
@@ -153,12 +153,12 @@ main{overflow-wrap:anywhere}
 <div class="activ"><b>Activación.</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="4"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="eda.html">← Clase 3 · EDA: conocer los datos antes de modelar</a></span><a href="index.html">Índice del curso</a><span><a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad →</a></span></nav>
+<nav class="pasos"><span><a href="03_eda.html">← Clase 3 · EDA: conocer los datos antes de modelar</a></span><a href="index.html">Índice del curso</a><span><a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Limpieza y preparacion de datos</b></span> · <span class="et">viene de</span><a href="eda.html">Analisis exploratorio de datos (EDA)</a> · <span class="et">habilita</span>—</div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen alta (C1: 9A y 9B; la 9B vale 2,0 pts) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="certamen_1.html#p9a">C1 P9A</a> · <a href="certamen_1.html#p9b">C1 P9B</a></div>
+<div class="fila"><span class="cpt"><b>Limpieza y preparacion de datos</b></span> · <span class="et">viene de</span><a href="03_eda.html">Analisis exploratorio de datos (EDA)</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen alta (C1: 9A y 9B; la 9B vale 2,0 pts) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p9a">C1 P9A</a> · <a href="../../04_EJERCICIOS/certamen_1.html#p9b">C1 P9B</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 15-jul</b> · 0:59:41–1:16:23 · profesor — problemas tipicos, formato, camiones, fechas; anuncia el ejercicio tipo 9B<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Clase_Recuperación_Fundamentos_en_Ciencia_de_Datos_15_julio.md · 0:59:41]</span></li><li><b>Clase del 17-jul</b> · 0:44:12–0:45:21 · profesor — camiones: muchos ceros y un valor anomalo<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:44:12]</span></li><li><b>Clase del 19-jun</b> · 2:20:37–2:22:40 · segundo docente — sensores sin dato y el secador de pelo<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:20:37]</span></li><li><b>Ayudantía del 10-jul</b> · 0:40:37–0:56:27 · ayudantía — la calidad «siempre depende»; primera mirada a una tabla sucia; duplicados de filas y de indices <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:40:37]</span></li><li><b>Ayudantía del 10-jul</b> · 0:56:27–1:16:16 · ayudantía — fuera de rango y faltantes: blancos que no son NaN, fillna frente a dropna; antes, descartar columnas inutiles <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:56:27]</span></li><li><b>Ayudantía del 10-jul</b> · 1:16:16–1:43:20 · ayudantía — inconsistencias de texto (.str) y tipos incorrectos (astype, datetime); deja de tarea el ejercicio, resuelto el 17-jul <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 1:16:16]</span></li><li><b>Ayudantía del 17-jul</b> · 0:10:31–0:37:25 · ayudantía — resuelve el P2 de calidad <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P2: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Ayudantía_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:10:31]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -183,7 +183,7 @@ litros.<br><br>
 <strong>Es la pregunta de mayor peso del Certamen 1.</strong> Aparece en la 9A y
 en la 9B, y <strong>la 9B sola vale 2,0 pts</strong>: la mitad de las ocho cerradas
 juntas (8 × 0,5 = 4,0) y la pregunta individual de mayor puntaje
-(<a href="certamen_1.html#p9b">certamen_1.html#p9b</a>).
+(<a href="../../04_EJERCICIOS/certamen_1.html#p9b">certamen_1.html#p9b</a>).
 <span style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md, tabla de estructura]</span>
 </div>
 
@@ -248,7 +248,7 @@ limpiar. Depende → decidir.</p>
 <tr><td>Rellenar los faltantes de <code>Car</code> con la mediana y agregar <code>Car_missing</code></td><td><strong>Decidir</strong></td><td>Imputar no corrige nada: inventa valores (sección 7). Por eso se deja marcado dónde</td></tr>
 <tr><td>Excluir <code>BuildingArea</code> (47,5 % nulos) y <code>YearBuilt</code> (39,6 %)</td><td><strong>Decidir</strong></td><td>Los valores que sí están no están mal medidos. Excluirlas es una elección sobre el modelo, no una corrección</td></tr>
 <tr><td>Excluir <code>CouncilArea</code>: 0 % de nulos en 2016, 18,9 % en 2017 y 14 categorías nuevas</td><td><strong>Decidir</strong></td><td>La columna es útil en 2016; el problema es cómo llega a 2017. Con ella el error bajaba 599 AUD y aun así se conservó el modelo sin ella</td></tr>
-<tr><td>Usar <code>Price</code> (o <code>log1p(Price)</code>) como target</td><td><strong>Decidir</strong></td><td>Ningún dato está mal: es tu pregunta. Ver <a href="datos_features_target.html">datos_features_target.html</a></td></tr>
+<tr><td>Usar <code>Price</code> (o <code>log1p(Price)</code>) como target</td><td><strong>Decidir</strong></td><td>Ningún dato está mal: es tu pregunta. Ver <a href="02_datos_features_target.html">datos_features_target.html</a></td></tr>
 </table>
 <p style="font-size:.82rem;color:var(--suave)">[FUENTE · Repo: 07_DATITO/referencia/material.md, «Experimento CouncilArea» · 05_RESULTADOS/experimento_councilarea_2026-09-18.json (lista <code>categorias_solo_en_2017</code>, que incluye «Unavailable») · 05_RESULTADOS/auditoria_dashai_vs_crudo.json · <code>Car_missing</code>: 03_CODIGO/modelamiento_temporal.py]</p>
 
@@ -674,7 +674,7 @@ El <code>2900</code> <strong>no se resuelve desde la tabla</strong>. Puede ser u
 legítimamente consume eso.<br><br>
 <strong>Decir «hay que verificarlo antes de decidir» no es rodeo: es la
 respuesta.</strong> Es exactamente lo que el profesor premia en la última
-pregunta del Certamen 2 (<a href="certamen_2.html#p11" style="color:#fbbf24">certamen_2.html#p11</a>),
+pregunta del Certamen 2 (<a href="../../04_EJERCICIOS/certamen_2.html#p11" style="color:#fbbf24">certamen_2.html#p11</a>),
 donde hay que separar lo <em>medido</em> de lo <em>supuesto</em> de lo <em>no
 disponible</em>. Borrar el 2900 sin decir por qué es inventar una respuesta
 plausible.
@@ -699,7 +699,7 @@ Mira lo que <strong>no</strong> hizo: no borró el valor grande ni los ceros. Le
 dos explicaciones posibles para los ceros —un 0 real (camión inactivo) o un
 dato no reportado escrito como 0— y dijo cómo distinguirlas. Es la distinción
 <code>0</code> ≠ <code>−999</code> de la 9B, una semana antes de que la tuvieras en
-el papel. Más sobre esa lectura de la distribución en <a href="eda.html">eda.html</a>.</p>
+el papel. Más sobre esa lectura de la distribución en <a href="03_eda.html">eda.html</a>.</p>
 
 <h3>Errores que ninguna prueba estadística ve</h3>
 
@@ -1083,19 +1083,19 @@ es una decisión de modelado.</p>
 <div class="vecino">
 <strong>A dónde seguir.</strong>
 <ul style="margin:.5rem 0 0;padding-left:1.2rem">
-<li><a href="certamen_1.html#p9b"><code>certamen_1.html#p9b</code></a> — dónde se
+<li><a href="../../04_EJERCICIOS/certamen_1.html#p9b"><code>certamen_1.html#p9b</code></a> — dónde se
     pregunta: la <strong>9B</strong>, con el análisis de la respuesta. Y
-    <a href="certamen_1.html#p9a"><code>#p9a</code></a>, el caso de calificaciones,
+    <a href="../../04_EJERCICIOS/certamen_1.html#p9a"><code>#p9a</code></a>, el caso de calificaciones,
     que es el mismo concepto atacando la <em>estructura</em> en vez de los valores.</li>
-<li><a href="eda.html"><code>eda.html</code></a> — de dónde viene: ahí se
+<li><a href="03_eda.html"><code>eda.html</code></a> — de dónde viene: ahí se
     <em>detectan</em> los problemas que aquí se corrigen o se deciden.</li>
-<li><a href="datos_features_target.html"><code>datos_features_target.html</code></a>
+<li><a href="02_datos_features_target.html"><code>datos_features_target.html</code></a>
     — qué es una fila, qué es un identificador y qué columna no debe entrar nunca
     (fuga de información). Es la otra mitad de las decisiones de modelado.</li>
-<li><a href="triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
+<li><a href="../../04_EJERCICIOS/triaje_de_problemas.html"><code>triaje_de_problemas.html</code></a> —
     qué tipo de problema tienes delante. Viene antes de decidir qué limpiar:
     la pregunta define la limpieza.</li>
-<li><a href="generalizacion.html"><code>generalizacion.html</code></a> — a dónde
+<li><a href="07_generalizacion.html"><code>generalizacion.html</code></a> — a dónde
     va esto. Una columna imputada al 47,5 % es una fuente de brecha entre lo que
     mides y lo que obtienes.</li>
 <li><code>08_PRACTICA/2026_[P2]Calidad_de_Datos(vacio).ipynb</code> — el
@@ -1112,12 +1112,12 @@ es una decisión de modelado.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un centinela (−999) no es un número: sesga cualquier promedio.</li><li>Un atípico puede ser real o un error de digitación: se verifica, no se borra por defecto.</li><li>Excluir una columna útil o imputar son decisiones de modelado, no limpieza.</li><li>Una tabla bien formada: una fila por observación, identificadores que enlazan otras tablas, fechas completas.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Limpiar (corregir lo mal registrado) ≠ decidir (excluir, imputar, elegir target).</li><li>Atípico ≠ error.</li><li>Faltante ≠ cero.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Define la fila y las variables.</li><li>Busca centinelas, faltantes, tipos mezclados y atípicos.</li><li>Para cada uno: ¿está mal registrado (limpiar) o es una decisión (documentar)?</li><li>Calcula el efecto en la media antes y después.</li></ol>
-<p><b>Viene de:</b> <a href="eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · <b>Sigue:</b> <a href="clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></p>
+<p><b>Viene de:</b> <a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · <b>Sigue:</b> <a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></p>
 <p><b>Vuelve a tu activación:</b> En la tabla de consumo minero aparece −999 y un 2900 entre valores cercanos a 200. ¿Los borras? Responde antes de leer. ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> ¿Por qué no basta con borrar en la 9B los valores a más de dos desviaciones de la media?
 <details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque los −999 inflan la desviación y pueden quedar dentro del corte, y porque un atípico puede ser real. Primero se tratan los centinelas como faltantes; después se evalúa cada atípico. [FUENTE · Repo: 07_DATITO/visual/limpieza_preparacion.html §6]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
-<a class="continuar" href="clase6_regresion.html">Continuar → Clase 5 · Regresión: predecir una cantidad</a>
+<a class="continuar" href="../../02_REFERENCIA/clase6_regresion.html">Continuar → Clase 5 · Regresión: predecir una cantidad</a>
 </section>
 <!-- datito:cierre:fin -->
 <footer>
