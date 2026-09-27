@@ -647,6 +647,33 @@ clases:
       pregunta_final: '¿Qué distinción decide la P9 del Certamen 2?'
       respuesta_final: 'Comparar un punto de operación ≠ comparar un modelo: un modelo es una curva ROC completa. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §1]'
 
+  - n: 23
+    unidad: 6
+    titulo: 'Distinciones del Certamen 3'
+    visual: certamen_3.html
+    tipo: repaso
+    conceptos: [roc_auc, llm, agentes_ia, redes_neuronales]
+    objetivo: 'Resolver el Certamen 3 nombrando en cada pregunta la distinción que la decide.'
+    activacion: 'Antes de abrir cada respuesta: escribe la distinción que crees que decide la pregunta.'
+    bloom:
+      nivel: Evaluar
+      evidencia: 'Resuelve las tres preguntas y acierta la distinción de cada una.'
+      actividad_final: 'La P3 completa, en papel.'
+      criterio_dominio: 'Nombra las tres distinciones sin mirar la respuesta y resuelve cada pregunta con justificación.'
+    cierre:
+      aprendiste:
+        - 'ROC-AUC es una herramienta para comparar modelos en clasificación desbalanceada.'
+        - 'Un LLM aislado redacta; un agente ejecuta: la diferencia es el ciclo de acción-retroalimentación.'
+      no_confundir:
+        - 'Comparar dos modelos por un punto (umbral) vs comparar por su curva completa.'
+        - 'Un LLM que responde preguntas vs un agente que resuelve problemas.'
+      procedimiento:
+        - 'Identifica qué se compara: ¿dos modelos o dos umbrales?'
+        - 'Si son modelos, dibuja sus curvas ROC y compara el área (AUC).'
+        - 'Si es un agente, identifica dónde está el ciclo: percibe, decide, actúa, mide.'
+      pregunta_final: '¿Cuál es la distinción que decide si un LLM es suficiente o necesitas un agente?'
+      respuesta_final: 'Un LLM genera texto. Un agente genera texto Y ejecuta acciones en un sistema real, midiendo si funcionó. Si el problema requiere cerrar loops en el mundo real, necesitas un agente. [DATITO]'
+
   - n: 22
     unidad: 6
     titulo: 'Transferencia: ¿qué problema tengo delante?'
