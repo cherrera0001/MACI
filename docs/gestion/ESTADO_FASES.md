@@ -16,13 +16,13 @@ Proyecto: Convertir MACI en laboratorio de GitHub Projects con gestión real + c
 
 | Fase | Nombre | Estado | Gate | Responsable |
 |------|--------|--------|------|-------------|
-| F0 | Auditoría completa (solo lectura) | **PENDIENTE** | Cristóbal aprueba lista de hallazgos | A1 (Auditor forense) |
-| F1 | Backlog y tablero | PENDIENTE | Cristóbal revisa vistas y fija prioridades | A2 (PO asistente) |
-| F2 | Arquitectura destino | PENDIENTE | Cristóbal aprueba ADR-004 y plan migración | A3 (Arquitecto) |
-| F3 | Reparación issue por issue | PENDIENTE | CI verde, 0 rutas rotas, web revisada | A4 (Ingeniero) |
-| F4 | Diseño del curso de gestión | PENDIENTE | Cristóbal aprueba secuencia y fichas | A5 (Diseñador instruccional) |
-| F5 | Presentación y guía generadas | PENDIENTE | A7 verifica coherencia, A8 aprueba castellano | A6 (Docente) |
-| F6 | Verificación final y retrospectiva | PENDIENTE | A7 emite veredicto | A0 (Orquestador) |
+| F0 | Auditoría completa (solo lectura) | ✅ HECHO | APROBADO (18 hallazgos verificados) | A1 (Auditor forense) |
+| F1 | Backlog y tablero | ✅ HECHO | backlog.yaml generado (7 épicas, 49 historias) | A2 (PO asistente) |
+| F2 | Arquitectura destino | ✅ HECHO | ADR-004 + PLAN_MIGRACION.md | A3 (Arquitecto) |
+| F3 | Reparación issue por issue | **EN CURSO** | 10 PRs en orden (E-4 → E-1 → E-2 → E-3 → E-5) | A4 (Ingeniero) |
+| F4 | Diseño del curso de gestión | PENDIENTE | 14 clases con nivel Bloom | A5 (Diseñador instruccional) |
+| F5 | Presentación y guía generadas | PENDIENTE | .pptx + .docx desde clases.yaml | A6 (Docente) |
+| F6 | Verificación final y retrospectiva | PENDIENTE | VERIFICACION_FINAL.md + RETROSPECTIVA.md | A0 (Orquestador) |
 
 ---
 
