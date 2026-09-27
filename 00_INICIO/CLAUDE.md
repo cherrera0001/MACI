@@ -8,6 +8,17 @@ Mapa completo del material: `01_DOCUMENTACION/00_INDICE_GENERAL.md`.
 
 ---
 
+## Antes de decir «listo»
+
+```bash
+python 03_SCRIPTS/verificar_todo.py --navegador     # y --en-linea después de un push
+```
+
+Nada se declara terminado hasta que esto imprime `LISTO: todo verificado`, y en el reporte se cita su
+salida. Reúne el generador (idempotente), el contrato de Datito, las citas, los tests del curso y Edge real
+a 390 y 1280 px. Cada comprobación existe porque ese error ya ocurrió. Un error nuevo se vuelve una prueba
+en `04_CODIGO/test_curso_integro.py`, no una nota.
+
 ## Datito
 
 **Datito es el tutor personal de Cristobal para Fundamentos de Ciencia de Datos.**

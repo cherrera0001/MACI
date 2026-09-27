@@ -44,6 +44,7 @@ docs/                        despliegue, gestión y ADR
 ## Mantener
 
 ```bash
+python 03_SCRIPTS/verificar_todo.py --navegador  # todo en uno: debe decir LISTO antes de publicar
 python 03_SCRIPTS/construir_navegacion.py      # regenera portada, barras, cierres y dudas (idempotente)
 python 03_SCRIPTS/datito_estado.py             # resumen de estado tras cada sesión
 python 03_SCRIPTS/verificar_contrato.py        # garantías de Datito (spec.md G1–G14)
