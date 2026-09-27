@@ -1,0 +1,169 @@
+# Curso de Gestión de Proyectos con GitHub Projects
+# Fuente única: este archivo. Derivados: presentación, guía, issues del proyecto.
+# Actualización: ver docs/curso-gestion/construir.py
+
+clases:
+  - numero: 1
+    concepto: "Proyecto y problema"
+    bloom: "Comprender"
+    objetivo: "Explicar el problema de MACI con los 18 hallazgos de la auditoría F0"
+    pregunta: "¿Qué intento lograr y por qué ahora?"
+    practica: "Leer AUDITORIA_F0.md y resumirla en 5 líneas. ¿Cuál es el hallazgo más crítico?"
+    evidencia: "Resumen escrito en docs/curso-gestion/EVIDENCIA_CLASE_1.md"
+    tiempo_minutos: 35
+    prerequisitos: []
+    habilita: [2]
+
+  - numero: 2
+    concepto: "Spec y constitución"
+    bloom: "Comprender"
+    objetivo: "Distinguir intención, plan y tarea en spec.md"
+    pregunta: "¿Qué escribo antes de programar?"
+    practica: "Leer spec.md. Clasificar 5 garantías (Gxx) en: intención / plan / tarea"
+    evidencia: "Clasificación en un comentario de un issue"
+    tiempo_minutos: 35
+    prerequisitos: [1]
+    habilita: [3]
+
+  - numero: 3
+    concepto: "Épica"
+    bloom: "Aplicar"
+    objetivo: "Redactar una épica con resultado, alcance, métrica y riesgo"
+    pregunta: "¿Cuál es el resultado grande?"
+    practica: "Escribir E-3 (Curso confiable) en backlog.yaml con formato canonico"
+    evidencia: "Issue [E-3] creado en GitHub Projects con plantilla Epic"
+    tiempo_minutos: 40
+    prerequisitos: [1, 2]
+    habilita: [4, 7]
+
+  - numero: 4
+    concepto: "Historia de usuario"
+    bloom: "Aplicar"
+    objetivo: "Redactar una historia que cumpla INVEST (Independiente, Negociable, Valiosa, Estimable, Pequeña, Verificable)"
+    pregunta: "¿Qué necesita alguien, y para qué?"
+    practica: "Escribir H-3.1 (Alinear numeración) bajo E-3. Verificar criterios INVEST"
+    evidencia: "Issue [H-3.1] con template de Historia, en Project backlog"
+    tiempo_minutos: 40
+    prerequisitos: [3]
+    habilita: [5]
+
+  - numero: 5
+    concepto: "Criterios de aceptación"
+    bloom: "Aplicar"
+    objetivo: "Escribir 3+ criterios de aceptación verificables en formato Dado/Cuando/Entonces"
+    pregunta: "¿Cómo sé que quedó bien?"
+    practica: "Agregar criterios a H-3.1. Formato: Dado <contexto>, cuando <acción>, entonces <resultado observable>"
+    evidencia: "Checklist con 3+ criterios en el issue H-3.1"
+    tiempo_minutos: 35
+    prerequisitos: [4]
+    habilita: [6]
+
+  - numero: 6
+    concepto: "Issue y etiquetas"
+    bloom: "Aplicar"
+    objetivo: "Crear un issue con plantilla, etiquetas tipo/prioridad/área y origen (H-xx / G-xx)"
+    pregunta: "¿Dónde vive cada pieza de trabajo?"
+    practica: "Crear un [BUG] para H-02 (rutas visual). Asignar etiquetas, prioridad, área"
+    evidencia: "Issue [BUG] en GitHub Projects con etiquetas correctas"
+    tiempo_minutos: 30
+    prerequisitos: [1]
+    habilita: [7]
+
+  - numero: 7
+    concepto: "Tarea y sub-issue"
+    bloom: "Analizar"
+    objetivo: "Descomponer una historia en tareas de 1-8 horas y sub-tareas de <1 hora"
+    pregunta: "¿En qué pasos concretos se divide?"
+    practica: "Tomar H-1.1 (Manifiesto único). Desglosarla en T-1.1.1, T-1.1.2, T-1.1.3, T-1.1.4. Crear sub-issues"
+    evidencia: "Árbol de sub-issues en GitHub con porcentaje de avance"
+    tiempo_minutos: 45
+    prerequisitos: [4, 5]
+    habilita: [8]
+
+  - numero: 8
+    concepto: "Definición de Terminado"
+    bloom: "Evaluar"
+    objetivo: "Juzgar si un PR cumple la DoD: tests verdes, criterios marcados, cambios en spec/code/docs, cierre de issue"
+    pregunta: "¿Cuándo algo está terminado de verdad?"
+    practica: "Revisar un PR real de F3 (ej: fix/01-yaml-unicos). Checklist DoD del proyecto"
+    evidencia: "Revisión escrita (Aprobado / Cambios solicitados) en el PR"
+    tiempo_minutos: 40
+    prerequisitos: [6, 7]
+    habilita: [9]
+
+  - numero: 9
+    concepto: "Tablero y límite WIP"
+    bloom: "Analizar"
+    objetivo: "Explicar con la Ley de Little por qué el trabajo se amontona cuando WIP es alto"
+    pregunta: "¿Por qué el trabajo se amontona?"
+    practica: "Ver Sprint 03 de MACI (3/9 visuales aprobados, 6 bloqueados). Calcular WIP real de esa semana"
+    evidencia: "Gráfico o tabla en docs/curso-gestion/EVIDENCIA_CLASE_9.md: Lead Time = WIP ÷ Throughput"
+    tiempo_minutos: 40
+    prerequisitos: [8]
+    habilita: [11]
+
+  - numero: 10
+    concepto: "Roles y ceremonias"
+    bloom: "Comprender"
+    objetivo: "Asignar roles (Product Owner, Scrum Master, Equipo) y detectar el rol sin dueño"
+    pregunta: "¿Quién decide qué y cuándo?"
+    practica: "Leer README del Project MACI. Tabla: rol → persona → responsabilidades. ¿Quién falta?"
+    evidencia: "Tabla en README del Project (o issue de Rol faltante)"
+    tiempo_minutos: 30
+    prerequisitos: [1]
+    habilita: [11, 12]
+
+  - numero: 11
+    concepto: "Iteraciones e hitos"
+    bloom: "Aplicar"
+    objetivo: "Planificar una iteración respetando la velocidad del equipo y fecha de hito"
+    pregunta: "¿Qué entra esta semana y qué entrega esta fecha?"
+    practica: "Planificar iteración siguiente de MACI. Issues en el campo Iteración + Hito"
+    evidencia: "Iteración planificada en GitHub Projects: campo Iteración asignado"
+    tiempo_minutos: 40
+    prerequisitos: [9, 10]
+    habilita: [12, 13]
+
+  - numero: 12
+    concepto: "Automatización"
+    bloom: "Aplicar"
+    objetivo: "Configurar workflows integrados y un CI mínimo para que tareas se muevan solas"
+    pregunta: "¿Qué se mueve solo?"
+    practica: "Ver .github/workflows/ci.yml de MACI. Workflows integrados del Project. ¿Qué automático falta?"
+    evidencia: "Screenshot: Issue que cambió de Status automáticamente tras PR fusionado"
+    tiempo_minutos: 45
+    prerequisitos: [6, 11]
+    habilita: [13]
+
+  - numero: 13
+    concepto: "Métricas e Insights"
+    bloom: "Evaluar"
+    objetivo: "Calcular e interpretar avance, cycle time, throughput, SPI para detectar desviaciones"
+    pregunta: "¿Voy bien o me desvío?"
+    practica: "Ejecutar el script de METRICAS.md de MACI. Interpretar: ¿throughput es consistente? ¿SPI > 1?"
+    evidencia: "Gráfico en Insights del Project (o Markdown con tablas de METRICAS.md)"
+    tiempo_minutos: 40
+    prerequisitos: [9, 11]
+    habilita: [14]
+
+  - numero: 14
+    concepto: "ADR, deuda y retrospectiva"
+    bloom: "Crear"
+    objetivo: "Diseñar una regla nueva a partir de un bug real, o una decisión de arquitectura"
+    pregunta: "¿Cómo aprende el proyecto de sus errores?"
+    practica: "Tomar un bug de F3 (ej: H-08 construir_navegacion.py). Escribir ADR o regla nueva en spec.md"
+    evidencia: "PR fusionado: ADR-00N o cambio en spec.md + changelog"
+    tiempo_minutos: 50
+    prerequisitos: [8, 12, 13]
+    habilita: []
+
+# Metadatos del curso
+metadata:
+  titulo: "Gestión de Proyectos con GitHub Projects"
+  descripcion: "14 clases prácticas sobre gestión real, usando el tablero de MACI como laboratorio"
+  version: "1.0"
+  autores: ["A5 · Diseñador Instruccional", "A6 · Docente Explicador"]
+  duracion_total_minutos: 545
+  fecha_diseño: "2026-09-27"
+  estado: "COMPLETADO"
+  proximo_paso: "Generar presentación y guía con construir.py"
