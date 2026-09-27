@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/07_DATITO/01_CONCEPTOS/visual/00_index.html"
+      "destination": "/07_DATITO/01_CONCEPTOS/visual/index.html"
     },
     {
       "source": "/(.*)",
