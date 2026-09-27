@@ -1,126 +1,50 @@
-# Deployment: MACI en maci.c4a.cl
+# Despliegue: maci.c4a.cl
 
-**Estado:** Dominio agregado a Vercel ✅ | DNS pendiente ⏳
+Verificado el 2026-09-27: `/` responde 307 hacia la portada; 23 páginas y 30 recursos responden 200; 0 enlaces o anclas rotos.
 
-## Arquitectura
+## Cómo funciona
 
 ```
-GitHub (cherrera0001/MACI)
-        ↓
-    Vercel (maci project)
-        ↓
-    maci.c4a.cl (Cloudflare DNS)
-        ↓
-    Usuario navegador
+push a main (GitHub cherrera0001/MACI)
+  → Vercel, proyecto "maci" (prj_lLD3lhsfxwbQFI1Q0fQB8twAunVe)
+  → build: node 03_SCRIPTS/publicar_sitio.mjs   (arma public/)
+  → publica solo public/
+  → maci.c4a.cl (CNAME en Cloudflare → d01ed64b4defd5f7.vercel-dns-017.com)
 ```
 
-## Configuración Realizada
+`publicar_sitio.mjs` copia con la misma estructura relativa de `07_DATITO/`, así los enlaces entre carpetas siguen valiendo:
 
-### 1. Vercel (✅ Completado)
+| Se publica | No se publica |
+|---|---|
+| `01_CONCEPTOS/visual/` (sin la plantilla) | YAML de datos (`clases`, `progreso`, `dudas`…) |
+| `02_REFERENCIA/clase6_regresion.html` | transcripciones de `05_CLASES` |
+| `04_EJERCICIOS/*.html`, `assets/`, `guias/`, `cuadernillos/` | `04_EJERCICIOS/entregas/`, `09_PERSONAL`, resto del repo |
 
-- **Proyecto:** maci (prj_lLD3lhsfxwbQFI1Q0fQB8twAunVe)
-- **Dominio actual:** maci-rose.vercel.app
-- **Dominio personalizado agregado:** maci.c4a.cl
-- **Estado:** Verificado en Vercel, esperando DNS
+Un enlace a algo que no se publica se convierte en texto con la leyenda «Disponible en la copia local del repositorio». En línea no hay 404.
 
-### 2. Cloudflare DNS (⏳ Pendiente)
+## Rutas
 
-**Registro requerido:**
-```
-Tipo:    CNAME
-Nombre:  maci
-Apunta:  cname.vercel.app
-TTL:     Auto (0)
-Proxy:   DNS only (gris)
-```
+| URL | Destino |
+|---|---|
+| `/` | 307 → `/01_CONCEPTOS/visual/00_index.html` |
+| `/03_eda.html` (y toda `/NN_*.html`) | 308 → `/01_CONCEPTOS/visual/03_eda.html` |
+| `/certamen_1.html`, `/triaje_de_problemas.html` | 308 → `/04_EJERCICIOS/…` |
 
-**Pasos para crear el registro:**
+Cabeceras: `X-Content-Type-Options: nosniff` y `Referrer-Policy: no-referrer`. Vercel agrega HSTS.
 
-1. Accede a Cloudflare Dashboard: https://dash.cloudflare.com/
-2. Selecciona dominio: c4a.cl
-3. Ve a: DNS → Records
-4. Click "Add record"
-5. Rellena:
-   - Type: CNAME
-   - Name: maci
-   - Content: cname.vercel.app
-   - TTL: Auto
-   - Proxy status: DNS only
-6. Save
-
-## Verificación
-
-Después de crear el registro en Cloudflare (puede tardar 5-15 minutos):
+## Verificar
 
 ```bash
-# Verificar propagación DNS
-nslookup maci.c4a.cl
-
-# Verificar CNAME
-dig maci.c4a.cl CNAME
-
-# Probar acceso HTTPS
-curl -I https://maci.c4a.cl
-
-# Debería devolver:
-# HTTP/2 200
-# Content-Type: text/html
+node 03_SCRIPTS/publicar_sitio.mjs                            # arma public/ en local
+python -m unittest discover -s 04_CODIGO -p "test_*.py"       # incluye "sitio publicado sin enlaces rotos"
+curl -sI https://maci.c4a.cl/ | head -3                       # 307 hacia la portada
+curl -s -o /dev/null -w '%{http_code}\n' https://maci.c4a.cl/07_DATITO/progreso.yaml   # 404
 ```
 
-## Automatización (opcional)
+## Volver atrás
 
-Si tienes API token de Cloudflare:
+Vercel guarda cada despliegue: se puede promover uno anterior desde el panel del proyecto, o hacer `git revert` del commit y `push`.
 
-```bash
-# 1. Copiar archivo de configuración
-cp .env.cloudflare.example .env.cloudflare
+## Aviso
 
-# 2. Editar .env.cloudflare con tus credenciales
-# Obtenidas en https://dash.cloudflare.com/profile/api-tokens
-
-# 3. Ejecutar script
-bash 03_SCRIPTS/setup_cloudflare_dns.sh
-```
-
-## Flujo de Deploy
-
-Cuando empujas a main:
-
-```
-git push origin main
-        ↓
-    GitHub Webhook
-        ↓
-    Vercel CI/CD
-        ↓
-    Build: npm/python tests
-        ↓
-    Deploy to maci-rose.vercel.app
-        ↓
-    Alias: maci.c4a.cl (después de DNS)
-```
-
-## Direcciones Activas
-
-- **De desarrollo:** maci-rose.vercel.app
-- **De producción:** maci.c4a.cl (después de DNS)
-- **Git:** https://github.com/cherrera0001/MACI (main branch)
-
-## Rollback
-
-Si hay problemas:
-
-1. DNS still pointing to maci-rose.vercel.app (sin cambios a c4a.cl)
-2. Vercel project tiene historial de deployments
-3. Puedes revertir en GitHub (git revert commit_hash)
-
-## Monitoreo
-
-- Vercel Dashboard: https://vercel.com/cherrera0001/maci
-- Cloudflare Dashboard: https://dash.cloudflare.com/ (c4a.cl)
-- Logs: `git log --oneline --graph`
-
----
-
-**Última actualización:** 2026-09-27  
-**Responsable:** Claude Code + Vercel + Cloudflare
+El repositorio de GitHub es **público**. Lo que no se publica en maci.c4a.cl sigue visible en GitHub: config, progreso y archivos personales. Para ocultarlo hay que hacer el repo privado; Vercel sigue desplegando igual.

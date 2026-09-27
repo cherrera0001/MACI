@@ -1,189 +1,75 @@
 # MACI — Máquina Asistida de Ciencia de Datos Interactiva
 
-**MACI** es el repositorio de trabajo para **Fundamentos de Ciencia de Datos** (FCD) de la Universidad de Concepción, semestre T2-2026. Contiene:
+Repositorio de trabajo de **Fundamentos de Ciencia de Datos** (FCD), Universidad de Concepción, T2-2026:
 
-1. **Datito**: tutor personal interactivo (skill en `.claude/skills/datito/`)
-2. **Curso estático**: 19 clases + 3 certámenes HTML interactivas, transcripciones
-3. **Spec Kit**: framework de Spec-Driven Development integrado
-4. **Sistema de rastreo**: progreso, errores conceptuales, dudas resueltas
+1. **El curso**: 23 clases en 6 unidades, en HTML interactivo que funciona sin conexión. 22 están construidas; la clase 19 (repaso integrado Melbourne) está pendiente. Incluye 3 certámenes con su resolución.
+2. **Datito**: tutor personal socrático (skill `.claude/skills/datito/`). Registra el progreso, los errores y las dudas resueltas.
+3. **El proyecto semestral**: predicción de precios en Melbourne y desafío Galaxy Zoo (`08_PROYECTO_FCD/`, `09_RESULTADOS/`).
 
-## Qué es este repositorio
+## Estudiar
 
-- **18 Historias de Usuario** mapeadas a aprendizaje (US-01 a US-18 en `historias_usuario.yaml`)
-- **17 Conceptos curriculares** organizados en orden de dependencias (`curriculum.yaml`)
-- **22 Clases** con estructura Bloom y navegación automática (`clases.yaml`)
-- **Rastreo de estado** con cadena de evidencia: explicar → aplicar → interpretar → transferir
-- **Sin conexión**: todo funciona localmente en HTML5 + Canvas + SVG
+- **En línea:** https://maci.c4a.cl abre el índice del curso.
+- **Sin conexión:** abre `07_DATITO/01_CONCEPTOS/visual/00_index.html` con doble clic.
 
-## Acceso online
+Cada clase abre con su objetivo, su ficha Bloom (evidencia, actividad final, criterio de dominio) y una pregunta de activación. Cierra con qué aprendiste, qué no confundir, un procedimiento para el papel y una pregunta final con su respuesta oculta. Predice antes de mover un control y responde antes de abrir cada `<details>`.
 
-**🔴 EN VIVO:** https://maci.c4a.cl
+## Fuentes únicas
 
-- Desplegado automáticamente desde main branch en Vercel
-- Dominio: maci.c4a.cl (DNS via Cloudflare)
-- SSL/TLS: automático (HSTS preload)
-- Caché: 1 hora
-- Sin SSO: acceso público
+Todo lo que ves en las páginas se genera desde estos archivos. No hay otra copia.
 
-Ver documentación completa: `docs/DEPLOYMENT.md`
-
-## Cómo estudiar
-
-1. **Online**: https://maci.c4a.cl → 00_index.html (automático)
-2. **Local**: Abre `07_DATITO/01_CONCEPTOS/visual/00_index.html` en navegador
-3. En cada clase: **predice antes de mover** un control
-4. Resuelve los ejercicios **antes de** abrir las respuestas (`<details>`)
-5. Lee la lección final y pasa a la siguiente
-
-**22 clases disponibles. Certamenes autocorregibles.**
-
-## El tutor Datito
-
-Datito es el asistente que **no está en este sitio**. Sigue siendo local en tu máquina (en `F:/MACI`). Aquí solo tienes el curso estático.
-
-En Datito puedes:
-- Estudiar cada concepto paso a paso
-- Hacer preguntas en lenguaje natural
-- Grabar audio de tus respuestas
-
-Ese es un software aparte. **Este deploy es solo el material del curso.**
-
-## Navegación y estructura
-
-```
-Entrada
-  ↓
-07_DATITO/01_CONCEPTOS/visual/00_index.html
-  ├─ 22 clases (01_fundamentos.html → 19_deep_learning.html)
-  ├─ 3 certámenes (04_EJERCICIOS/certamen_1.html, certamen_2.html, ...)
-  ├─ Transcripciones (05_CLASES/transcripciones/)
-  └─ Guías y referencias (04_EJERCICIOS/guias/, 02_REFERENCIA/)
-```
-
-Cada visual es independiente. Los enlaces funcionan sin servidor.
-
-## Garantías
-
-✅ **Todo funciona sin conexión**
-✅ **Todas las clases tienen el mismo diseño (template canónico v1)**
-✅ **Los certámenes son autocorregibles**
-✅ **Las transcripciones están integradas y citadas**
-✅ **Los tests verifican que no hay enlaces rotos**
-
-## Información técnica
-
-- Lenguaje: HTML5 + CSS3 (sin CDN, sin frameworks pesados)
-- Gráficos: Canvas y SVG inline
-- Interactividad: JavaScript plano (sin librerías remotas)
-- Deploy: Static site en Vercel (sin build, sin servidor)
-- Almacenamiento: LocalStorage (marca de clases leídas, solo en tu navegador)
-
-## Para estudiantes
-
-Abre `07_DATITO/01_CONCEPTOS/visual/00_index.html` en tu navegador. No necesitas nada más.
-
-Si estás viendo esto desde Internet: la URL que ves es el sitio publicado. Los enlaces funcionan igual.
-
-## Estructura de Datito (tutor interactivo)
-
-Ubicación: `./.claude/skills/datito/SKILL.md` (skill autónoma, se carga por sesión)
-
-**Fuentes únicas de verdad:**
-- `07_DATITO/curriculum.yaml` — 17 conceptos (plan estático)
-- `07_DATITO/clases.yaml` — 22 clases en secuencia (orden de estudio)
-- `07_DATITO/historias_usuario.yaml` — 18 historias con criterios de aceptación
-- `07_DATITO/progreso.yaml` — estado actual (DESCONOCIDO → ... → DOMINADO)
-- `07_DATITO/errores_conceptuales.yaml` — observados + patrones vigilados
-- `07_DATITO/dudas.yaml` — respuestas dadas (se renderizan en visuales)
-- `07_DATITO/datito.config.yaml` — datos del alumno (no reglas)
-
-**Garantías (spec.md §2):**
-- G1: Espera de verdad (pausa, no simula respuesta)
-- G4: Cada afirmación lleva etiqueta (FUENTE, INFERENCIA, DATITO)
-- G9: Exposición en artefactos consultables (HTML, no solo chat)
-- G14: Material es un curso, no una carpeta (clases.yaml es fuente única)
-
-## Para profesores / mantenimiento
-
-Regenerar navegación: `python 03_SCRIPTS/construir_navegacion.py`
-- Lee `clases.yaml` → genera portada y cierres de clase
-- Lee `dudas.yaml` → renderiza respuestas en visuales
-- Lee `grafo.yaml` → calcula prerrequisitos
-
-Usar Spec Kit:
-- `/speckit-constitution` — Establecer principios del proyecto
-- `/speckit-specify` — Crear especificación base
-- `/speckit-plan` — Diseñar solución
-- `/speckit-tasks` — Generar tareas accionables
-
-**No uses scripts de reparación (repair_*.py) en producción.**
-
-## Estado actual (2026-09-27)
-
-| Componente | Estado |
+| Archivo | Qué contiene |
 |---|---|
-| **Deployment online** | ✅ LIVE en https://maci.c4a.cl (HTTP 200 OK) |
-| **Routing index** | ✅ index.html → 00_index.html (fuente única) |
-| **Dominio personalizado** | ✅ maci.c4a.cl → Vercel production |
-| **DNS (Cloudflare)** | ✅ CNAME propagado (d01ed64b4defd5f7.vercel-dns-017.com) |
-| **GitHub Project #3** | ✅ Issues vinculados y rastreados |
-| **Historias de Usuario** | ✅ 18 definidas (US-01 a US-18), criterios de aceptación auditables |
-| **Spec Kit** | ✅ Integrado (.specify/, .claude/skills/speckit-*) |
-| **Clases HTML** | ✅ 19 clases + 3 certámenes con estructura Bloom y navegación automática |
-| **Navegación automática** | ✅ Inyectadas en visuales: ficha Bloom, prerequisitos, cierre |
-| **Transcripciones** | ✅ 15/15 integradas con marca de tiempo |
-| **Árbol canónico** | ✅ 00_INICIO–10_ARCHIVO + docs/.github/.specify/ |
-| **Dudas resueltas** | ✅ Sistema en place, integradas en visuales |
+| `07_DATITO/clases.yaml` | 23 clases: orden, unidad, ficha Bloom, activación y cierre |
+| `07_DATITO/curriculum.yaml` | 21 conceptos, prerrequisitos y material citado |
+| `07_DATITO/grafo.yaml` | Dependencias y prioridades (lo genera `03_SCRIPTS/grafo_conceptual.py`) |
+| `07_DATITO/dudas.yaml` | 6 dudas resueltas por Datito, renderizadas en sus clases |
+| `07_DATITO/progreso.yaml` | Estado de cada concepto (NO_ESTUDIADO → … → DOMINADO) con evidencia |
+| `07_DATITO/errores_conceptuales.yaml` | Errores observados y patrones vigilados |
+| `07_DATITO/historias_usuario.yaml` | 18 historias de usuario con criterios de aceptación |
+| `05_CLASES/mapa_ensenanza.yaml` | Dónde se enseñó cada concepto en las 15 clases transcritas |
 
-## Cómo empezar
+## Estructura
 
-### Como alumno (estudiar)
-1. Abre `.claude/skills/datito/SKILL.md` o escribe `/datito` en Claude Code
-2. Haz preguntas sobre los conceptos
-3. Datito te preguntará, esperará tu respuesta, diagnosticará y te guiará
-4. Verifica tu progreso en `07_DATITO/progreso.yaml`
-
-### Como profesor (mantener)
-1. Lee `00_INICIO/spec.md` para entender garantías
-2. Actualiza `07_DATITO/clases.yaml` si cambias el orden de clases
-3. Usa `/speckit-*` skills para cambios estructurales
-4. Los cambios a curriculum deben pasar por `00_INICIO/historias_usuario.yaml`
-
-### Como desarrollador (integración)
-- Spec Kit está en `.specify/` (no está versionado su Git)
-- MCP NotebookLM en `.mcp.json` (credenciales en `~/.notebooklm/`)
-- Tests en `04_CODIGO/test_*.py` (corren en CI)
-- Visuales en `07_DATITO/01_CONCEPTOS/visual/` (template canonical)
-
-## Acceso y despliegue
-
-### Online (recomendado)
-- **URL:** https://maci.c4a.cl
-- **Estado:** ✅ EN VIVO (HTTP 200)
-- **Servidor:** Vercel (Deploy automático desde main)
-- **Dominio:** Cloudflare DNS
-
-### Local (sin conexión)
-```bash
-cd F:\MACI
-# Abre en navegador:
-file:///F:/MACI/07_DATITO/01_CONCEPTOS/visual/00_index.html
+```
+07_DATITO/
+  01_CONCEPTOS/visual/   00_index.html (portada) y 16 clases numeradas; _TEMPLATE_CANONICO.html
+  02_REFERENCIA/         clase6_regresion.html (clase 5) y material de referencia
+  04_EJERCICIOS/         certamen_1..3, triaje, simulador de predicción de falla, guías, cuadernillos
+  06_AUDITORIAS/         patron_evaluacion.md: cómo evalúa el profesor
+  07_BITACORA/           una entrada por sesión de Datito
+05_CLASES/transcripciones/   15 clases transcritas (se citan con marca de tiempo)
+docs/                        despliegue, gestión y ADR
 ```
 
-### GitHub
-- **Repositorio:** https://github.com/cherrera0001/MACI
-- **Branch principal:** main (auto-deploy en Vercel)
-- **Project:** #3 (MACI) — issues rastreados
+## Mantener
 
-## Licencia y atribución
+```bash
+python 03_SCRIPTS/construir_navegacion.py      # regenera portada, barras, cierres y dudas (idempotente)
+python 03_SCRIPTS/datito_estado.py             # resumen de estado tras cada sesión
+python 03_SCRIPTS/verificar_contrato.py        # garantías de Datito (spec.md G1–G14)
+python -m unittest discover -s 04_CODIGO -p "test_*.py"
+uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py   # Edge real, sin red, 390 y 1280 px
+```
 
-**Contenido académico:** Profesor Titular, UdeC (Fundamentos de Ciencia de Datos)  
-**Datito (tutor interactivo):** Claude Code + Spec Kit framework  
-**Deploy:** Vercel + Cloudflare  
-**Estructura y sistema:** 2026-09 · T2-2026
+Los tests corren en CI (GitHub Actions) en cada push. `04_CODIGO/test_curso_integro.py` exige, en todas las páginas del curso:
+
+- 0 enlaces o anclas rotos y 0 relleno.
+- Viewport, y el cierre de cada clase.
+- Cada duda renderizada.
+- Una sola copia de cada dato.
+- Generador sin cambios pendientes.
+- Sitio publicado sin enlaces rotos.
+
+Para crear o cambiar una clase: edita `07_DATITO/clases.yaml` y el HTML con `/datito-visual` (siempre desde `_TEMPLATE_CANONICO.html`). Luego corre `construir_navegacion.py` y los tests.
+
+## Publicación
+
+`vercel.json` corre `node 03_SCRIPTS/publicar_sitio.mjs`, que arma `public/` solo con el curso: clases, clase 5, certámenes, guías y cuadernillos. Las transcripciones, los YAML y los datos personales no se publican; en línea, sus citas aparecen como texto. Cada push a `main` se despliega en https://maci.c4a.cl. Detalle: `docs/DEPLOYMENT.md`.
+
+## Datito
+
+Escribe `/datito` en Claude Code. Datito pregunta, **espera tu respuesta**, diagnostica y registra evidencia; nunca simula tu respuesta. Las reglas están en `.claude/skills/datito/SKILL.md` y el contrato en `00_INICIO/spec.md`. El sitio en línea tiene solo el material; el tutor corre en local.
 
 ---
 
-Para dudas académicas: https://maci.c4a.cl o `07_DATITO/` localmente  
-Para soporte: GitHub Issues (cherrera0001/MACI)  
-Documentación técnica: `docs/DEPLOYMENT.md`
+Contenido académico: profesor titular, UdeC · Repositorio: https://github.com/cherrera0001/MACI · Seguimiento: GitHub Project #3
