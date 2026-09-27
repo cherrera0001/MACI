@@ -117,7 +117,7 @@ document.getElementById('grado').addEventListener('input',function(){document.ge
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Overfitting y underfitting</b></span> · <span class="et">viene de</span><a href="07_generalizacion.html">Generalizacion</a>, <a href="06_validacion_cruzada.html">Validacion cruzada</a> · <span class="et">habilita</span><a href="14_arboles_decision.html#arboles">Arboles de decision</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 8 · peso en certamen alta (C2: P2, P3, P7 — 3 preguntas) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p2">C2 P2</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p3">C2 P3</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 8 · peso en certamen alta (C2: P2, P3, P7 — 3 preguntas) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p2">C2 P2</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p3">C2 P3</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p2">C3 P2</a></div>
 <details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:36:16–0:43:37 · profesor — complejidad = numero de parametros; el balance<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 31-jul</b> · 0:47:10–0:50:35 · profesor — error 0 con grado alto; sobreajustar la validacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:47:10]</span></li><li><b>Clase del 7-ago</b> · 1:03:03–1:03:51 · profesor — sobreajuste en clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:03:03]</span></li><li><b>Clase del 7-ago</b> · 1:28:08–1:28:43 · profesor — arboles: parar antes de sobreajustar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:08]</span></li><li><b>Ayudantía del 31-jul</b> · 1:15:44–1:23:15 · ayudantía — grados 4, 7, 10 y 13 del P4 <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 1:15:44]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -492,9 +492,32 @@ function drawOverfitting() {
 }
 
 function updateGrafico() {
+  const selectedGrade = parseInt(document.getElementById('grado')?.value || '1');
+
+  // Redraw canvas with highlight
   drawTrainTestLoss();
   drawUnderfitting();
   drawOverfitting();
+
+  // Update metrics display
+  const trainLoss = [5.62, 4.10, 2.80, 1.90, 0.90, 0.30, 0.10, 0.05, 0.02, 0.01, 0.005, 0];
+  const testLoss = [7.14, 5.20, 3.50, 1.64, 1.60, 2.30, 5.60, 15.40, 42.10, 61.50, 71.20, 84.47];
+  const idx = selectedGrade - 1;
+
+  document.getElementById('m-par').textContent = (selectedGrade + 1);
+  document.getElementById('m-tr').textContent = trainLoss[idx].toFixed(2);
+  document.getElementById('m-va').textContent = testLoss[idx].toFixed(2);
+  document.getElementById('m-br').textContent = (testLoss[idx] - trainLoss[idx]).toFixed(2);
+
+  if (selectedGrade <= 3) {
+    document.getElementById('m-lec').textContent = 'Subajuste';
+  } else if (selectedGrade === 4) {
+    document.getElementById('m-lec').textContent = '✓ Óptimo';
+  } else if (selectedGrade <= 6) {
+    document.getElementById('m-lec').textContent = 'Ligero sobreajuste';
+  } else {
+    document.getElementById('m-lec').textContent = '⚠ Sobreajuste';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -502,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<h2>3 · El criterio es la brecha, no un número</h2>
+<h2 id="brecha">3 · El criterio es la brecha, no un número</h2>
 
 <p>Un número solo no diagnostica nada. <strong>0,98 de R² en entrenamiento</strong>
 puede ser memoria; <strong>0,41</strong> puede ser un problema difícil. Lo que
@@ -1070,6 +1093,7 @@ Datito</strong> para que lo revise.
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Brecha grande entre entrenamiento y prueba: sobreajuste. Malo en ambos: subajuste.</li><li>La complejidad (número de parámetros) mueve el balance entre ambos.</li><li>Un error de entrenamiento igual a cero no prueba calidad.</li><li>También se puede sobreajustar la validación: por eso existe el test.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Sobreajuste ≠ subajuste ≠ error alto (C2 P2).</li><li>Más filas (reduce el sobreajuste) ≠ más columnas (lo aumenta) (C2 P3).</li><li>Error de entrenamiento ≠ calidad del modelo (C2 P7).</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Localiza el par de números: dentro y fuera del entrenamiento.</li><li>Calcula la brecha.</li><li>Clasifica: brecha grande → sobreajuste; malo en ambos → subajuste.</li><li>Nombra el mecanismo, no solo la etiqueta.</li><li>Remedio según la causa: simplificar, más filas, elegir con validación cruzada.</li></ol>
+<p><b>Certamen 3.</b> La pregunta 2 trae RMSE de entrenamiento y de prueba para polinomios de grado 1 a 10. El grado 10 gana el entrenamiento y pierde la prueba: es esta brecha. <a href="../../04_EJERCICIOS/certamen_3.html#p2">C3 P2</a>.</p>
 <p><b>Viene de:</b> <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a> · <b>Sigue:</b> <a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></p>
 <p><b>Vuelve a tu activación:</b> El modelo B tiene R² 0,98 en entrenamiento y 0,54 en prueba. ¿Es el mejor de la tabla? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Con MAE (menos es mejor): P 0,15 / 0,92 y Q 0,71 / 0,78. ¿Cuál sobreajusta?
