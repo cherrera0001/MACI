@@ -15,14 +15,27 @@
 - **Rastreo de estado** con cadena de evidencia: explicar → aplicar → interpretar → transferir
 - **Sin conexión**: todo funciona localmente en HTML5 + Canvas + SVG
 
+## Acceso online
+
+**🔴 EN VIVO:** https://maci.c4a.cl
+
+- Desplegado automáticamente desde main branch en Vercel
+- Dominio: maci.c4a.cl (DNS via Cloudflare)
+- SSL/TLS: automático (HSTS preload)
+- Caché: 1 hora
+- Sin SSO: acceso público
+
+Ver documentación completa: `docs/DEPLOYMENT.md`
+
 ## Cómo estudiar
 
-1. Abre el índice (archivo `07_DATITO/01_CONCEPTOS/visual/00_index.html` localmente, o desde la URL tras el deploy)
-2. En cada clase: **predice antes de mover** un control
-3. Resuelve los ejercicios **antes de** abrir las respuestas (`<details>`)
-4. Lee la lección final y pasa a la siguiente
+1. **Online**: https://maci.c4a.cl → 00_index.html (automático)
+2. **Local**: Abre `07_DATITO/01_CONCEPTOS/visual/00_index.html` en navegador
+3. En cada clase: **predice antes de mover** un control
+4. Resuelve los ejercicios **antes de** abrir las respuestas (`<details>`)
+5. Lee la lección final y pasa a la siguiente
 
-**21 clases están listas. La clase 19 (Repaso integrado: el proyecto Melbourne) está pendiente.**
+**22 clases disponibles. Certamenes autocorregibles.**
 
 ## El tutor Datito
 
@@ -105,18 +118,21 @@ Usar Spec Kit:
 
 **No uses scripts de reparación (repair_*.py) en producción.**
 
-## Estado actual (2026-09-27)
+## Estado actual (2026-09-27, 22:18 UTC)
 
 | Componente | Estado |
 |---|---|
+| **Deployment online** | ✅ LIVE en https://maci.c4a.cl (HTTP 200) |
+| **Dominio personalizado** | ✅ maci.c4a.cl → Vercel production |
+| **DNS (Cloudflare)** | ✅ CNAME propagado (d01ed64b4defd5f7.vercel-dns-017.com) |
+| **GitHub Project** | ✅ Project #3: #20 In Progress, #23 Done |
 | **Historias de Usuario** | ✅ 18 definidas (US-01 a US-18), criterios de aceptación auditables |
 | **Spec Kit** | ✅ Integrado (.specify/, .claude/skills/speckit-*) |
 | **progreso.yaml** | ✅ Rastreador de 17 conceptos (DESCONOCIDO por defecto) |
 | **Datito SKILL** | ✅ 14 garantías (G1–G14) documentadas en spec.md |
-| **Clases HTML** | ✅ 22 clases con estructura Bloom, generadas desde clases.yaml |
+| **Clases HTML** | ✅ 22 clases con estructura Bloom, navegación automática |
 | **Certámenes** | ✅ 3 funcionales (autocorregibles con `<details>`) |
 | **Transcripciones** | ✅ 15/15 integradas con marca de tiempo |
-| **GitHub Project** | ✅ Project #3 (MACI), issues #20 y #23 en Todo |
 | **Árbol canónico** | ✅ 00_INICIO–10_ARCHIVO + docs/.github/.specify/ |
 | **Dudas resueltas** | ✅ Sistema en place, 0 dudas logueadas (primera sesión) |
 
@@ -140,13 +156,35 @@ Usar Spec Kit:
 - Tests en `04_CODIGO/test_*.py` (corren en CI)
 - Visuales en `07_DATITO/01_CONCEPTOS/visual/` (template canonical)
 
+## Acceso y despliegue
+
+### Online (recomendado)
+- **URL:** https://maci.c4a.cl
+- **Estado:** ✅ EN VIVO (HTTP 200)
+- **Servidor:** Vercel (Deploy automático desde main)
+- **Dominio:** Cloudflare DNS
+
+### Local (sin conexión)
+```bash
+cd F:\MACI
+# Abre en navegador:
+file:///F:/MACI/07_DATITO/01_CONCEPTOS/visual/00_index.html
+```
+
+### GitHub
+- **Repositorio:** https://github.com/cherrera0001/MACI
+- **Branch principal:** main (auto-deploy en Vercel)
+- **Project:** #3 (MACI) — issues rastreados
+
 ## Licencia y atribución
 
 **Contenido académico:** Profesor Titular, UdeC (Fundamentos de Ciencia de Datos)  
 **Datito (tutor interactivo):** Claude Code + Spec Kit framework  
+**Deploy:** Vercel + Cloudflare  
 **Estructura y sistema:** 2026-09 · T2-2026
 
 ---
 
-Para dudas académicas: consulta las transcripciones en cada clase o pregunta a Datito.  
-Para bugs en el sistema: abre issue en GitHub (cherrera0001/MACI).
+Para dudas académicas: https://maci.c4a.cl o `07_DATITO/` localmente  
+Para soporte: GitHub Issues (cherrera0001/MACI)  
+Documentación técnica: `docs/DEPLOYMENT.md`
