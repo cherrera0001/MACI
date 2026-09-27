@@ -3,7 +3,7 @@
 **MACI** es el repositorio de trabajo para **Fundamentos de Ciencia de Datos** (FCD) de la Universidad de Concepción, semestre T2-2026. Contiene:
 
 1. **Datito**: tutor personal interactivo (skill en `.claude/skills/datito/`)
-2. **Curso estático**: 22 clases HTML interactivas, transcripciones, certámenes
+2. **Curso estático**: 19 clases + 3 certámenes HTML interactivas, transcripciones
 3. **Spec Kit**: framework de Spec-Driven Development integrado
 4. **Sistema de rastreo**: progreso, errores conceptuales, dudas resueltas
 
@@ -118,23 +118,22 @@ Usar Spec Kit:
 
 **No uses scripts de reparación (repair_*.py) en producción.**
 
-## Estado actual (2026-09-27, 22:18 UTC)
+## Estado actual (2026-09-27)
 
 | Componente | Estado |
 |---|---|
-| **Deployment online** | ✅ LIVE en https://maci.c4a.cl (HTTP 200) |
+| **Deployment online** | ✅ LIVE en https://maci.c4a.cl (HTTP 200 OK) |
+| **Routing index** | ✅ index.html → 00_index.html (fuente única) |
 | **Dominio personalizado** | ✅ maci.c4a.cl → Vercel production |
 | **DNS (Cloudflare)** | ✅ CNAME propagado (d01ed64b4defd5f7.vercel-dns-017.com) |
-| **GitHub Project** | ✅ Project #3: #20 In Progress, #23 Done |
+| **GitHub Project #3** | ✅ Issues vinculados y rastreados |
 | **Historias de Usuario** | ✅ 18 definidas (US-01 a US-18), criterios de aceptación auditables |
 | **Spec Kit** | ✅ Integrado (.specify/, .claude/skills/speckit-*) |
-| **progreso.yaml** | ✅ Rastreador de 17 conceptos (DESCONOCIDO por defecto) |
-| **Datito SKILL** | ✅ 14 garantías (G1–G14) documentadas en spec.md |
-| **Clases HTML** | ✅ 22 clases con estructura Bloom, navegación automática |
-| **Certámenes** | ✅ 3 funcionales (autocorregibles con `<details>`) |
+| **Clases HTML** | ✅ 19 clases + 3 certámenes con estructura Bloom y navegación automática |
+| **Navegación automática** | ✅ Inyectadas en visuales: ficha Bloom, prerequisitos, cierre |
 | **Transcripciones** | ✅ 15/15 integradas con marca de tiempo |
 | **Árbol canónico** | ✅ 00_INICIO–10_ARCHIVO + docs/.github/.specify/ |
-| **Dudas resueltas** | ✅ Sistema en place, 0 dudas logueadas (primera sesión) |
+| **Dudas resueltas** | ✅ Sistema en place, integradas en visuales |
 
 ## Cómo empezar
 
