@@ -198,10 +198,30 @@ mejor material disponible para ensenar fuga de informacion.
 
 ## Convenciones del repositorio
 
-Estructura numerada por funcion (`00_INICIO`, `01_` a `10_ARCHIVO`). Ningun
-documento suelto en la raiz excepto `.env*` y `.claude/`.
+**Estructura base numerada por función:** `00_INICIO`, `01_DOCUMENTACION`, ..., `10_ARCHIVO`.
+Ningún documento suelto en la raíz excepto `.env*` y `.claude/`.
 
-El repositorio usa etiquetas auditables en su documentacion: `[EVIDENCIA]`,
-`[INFERENCIA]`, `[NO EVIDENCIADO]`. Respetalas al editar documentos existentes.
+**EXCEPCIONES (ADR-004, 2026-09-27):**
 
-Los scripts se ejecutan **desde la raiz** (`F:\MACI`), no desde `03_SCRIPTS/`.
+Los siguientes directorios NO se numeran (son módulos modernos, no funcionales):
+
+| Directorio | Propósito | Decisión ADR-004 |
+|---|---|---|
+| `docs/` | Gestión, ADRs, curso de gestión | Moderno, fuera de 00-10 |
+| `herramientas/` | Scripts consolidados (H-05) | Moderno, fuera de 00-10 |
+| `tests/` | Pytest suite (H-11) | Moderno, fuera de 00-10 |
+| `.github/` | Workflows, CI/CD, templates | Especial, fuera de 00-10 |
+
+Estos directorios fueron creados en Sesión 1-2 como parte de ADR-004 (Migration Plan).
+Se respeta su ubicación sin numerar como decisión arquitectónica deliberada.
+
+**Regla para nuevos archivos:** Verificar que FUENTES coincidan antes de crear:
+1. Leer esta sección (Convenciones)
+2. Verificar `00_INICIO/ADR-*.md` para excepciones
+3. Observar estructura en disco (`ls -d */`)
+4. Si coinciden → crear. Si contradicen → consultar con Cristóbal.
+
+El repositorio usa etiquetas auditables en su documentación: `[EVIDENCIA]`,
+`[INFERENCIA]`, `[NO EVIDENCIADO]`. Respétalas al editar documentos existentes.
+
+Los scripts se ejecutan **desde la raíz** (`F:\MACI`), no desde `03_SCRIPTS/`.
