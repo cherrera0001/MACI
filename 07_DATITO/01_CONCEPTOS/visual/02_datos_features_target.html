@@ -59,6 +59,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -104,12 +105,14 @@
     .cols button{font-family:ui-monospace,monospace;font-size:.82rem;font-weight:600;
     .cols button:hover{border-color:var(--azul);background:#eff6ff}
     .cols button.esY{background:var(--rojo);color:#fff;border-color:var(--rojo)}
-  @media (max-width:500px){body{padding:1rem .5rem}h1{font-size:1.3rem;margin:0 0 .2rem}h2{font-size:1rem;margin:1.5rem 0 .5rem}table{font-size:.8rem;margin:.6rem 0;width:100%;overflow-x:auto}th,td{padding:.35rem .3rem;font-size:.8rem}code{font-size:.8em}.pred{padding:.5rem .8rem;margin:.5rem 0}.pred .q{font-size:.9rem;margin-bottom:.4rem}.pred button{padding:.25rem .5rem;font-size:.75rem;margin:.15rem .25rem 0 0}.cols{gap:.25rem;margin:.6rem 0;flex-wrap:wrap}.cols button{font-size:.7rem;padding:.25rem .5rem;min-width:max-content}canvas{height:auto;max-width:100%}.met{grid-template-columns:1fr;gap:.4rem}.met div{padding:.5rem .35rem}.met .n{font-size:1rem}.met .e{font-size:.55rem}.ecu{padding:.8rem 1rem;margin:.8rem 0}.ecu .f{font-size:.95rem}.cita,.clave,.nota,.peligro,.tension{padding:.6rem .8rem;margin:.8rem 0;font-size:.9rem}.repreg{padding:.8rem 1rem;font-size:.9rem}details{padding:.6rem 1rem;margin:.5rem 0}summary{font-size:.95rem}.lbl{font-size:.65rem;margin:.8rem 0 .2rem}.simb{font-size:.75rem;width:100%}.grafo{font-size:.75rem;padding:.5rem .8rem;gap:.3rem}.panel{padding:.9rem;margin:1rem 0}.panel .cols{gap:.2rem}.dist{font-size:.9rem;padding:.6rem .8rem}.vecino{padding:.6rem .8rem;font-size:.88rem}pre{font-size:.75rem;padding:.6rem;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word}footer{font-size:.8rem}}</style>
+  @media (max-width:640px){html{width:100%;overflow-x:hidden}body{overflow-x:hidden;width:100%}main{overflow-x:hidden;width:100%}table{display:block;max-width:100%;overflow-x:auto}}
+  @media (max-width:500px){body{padding:1rem .5rem;overflow-x:hidden}h1{font-size:1.3rem;margin:0 0 .2rem}h2{font-size:1rem;margin:1.5rem 0 .5rem}table{font-size:.8rem;margin:.6rem 0;width:100%;overflow-x:auto}th,td{padding:.35rem .3rem;font-size:.8rem}code{font-size:.8em}.pred{padding:.5rem .8rem;margin:.5rem 0}.pred .q{font-size:.9rem;margin-bottom:.4rem}.pred button{padding:.25rem .5rem;font-size:.75rem;margin:.15rem .25rem 0 0}.cols{gap:.25rem;margin:.6rem 0;flex-wrap:wrap}.cols button{font-size:.7rem;padding:.25rem .5rem;min-width:max-content}canvas{height:auto;max-width:100%}.met{grid-template-columns:1fr;gap:.4rem}.met div{padding:.5rem .35rem}.met .n{font-size:1rem}.met .e{font-size:.55rem}.ecu{padding:.8rem 1rem;margin:.8rem 0}.ecu .f{font-size:.95rem}.cita,.clave,.nota,.peligro,.tension{padding:.6rem .8rem;margin:.8rem 0;font-size:.9rem}.repreg{padding:.8rem 1rem;font-size:.9rem}details{padding:.6rem 1rem;margin:.5rem 0}summary{font-size:.95rem}.lbl{font-size:.65rem;margin:.8rem 0 .2rem}.simb{font-size:.75rem;width:100%}.grafo{font-size:.75rem;padding:.5rem .8rem;gap:.3rem}.panel{padding:.9rem;margin:1rem 0}.panel .cols{gap:.2rem}.dist{font-size:.9rem;padding:.6rem .8rem}.vecino{padding:.6rem .8rem;font-size:.88rem}pre{font-size:.75rem;padding:.6rem;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word}footer{font-size:.8rem}}
+  @media (max-width:640px){html{width:100%;overflow-x:hidden}body{width:100%;overflow-x:hidden}main{width:100%;overflow-x:hidden}pre{overflow-x:auto}table{display:block;overflow-x:auto}}</style>
 </head>
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<!-- La barra la inyecta 03_CODIGO/construir_navegacion.py. No la escribas a mano. -->
+<!-- La barra la inyecta 03_SCRIPTS/construir_navegacion.py. No la escribas a mano. -->
 <!-- datito:nav:fin -->
 
 
@@ -414,7 +417,7 @@ cambia de tipo de problema.</p>
   <div class="clave" style="margin-top:1rem" id="mPregunta"></div>
   <p style="font-size:.88rem;color:var(--suave);margin:0">
   Columnas reales de tu dataset de Melbourne, antes del <em>encoding</em>.
-  <span class="fuente">[FUENTE · Repo: <code>03_CODIGO/modelamiento_temporal.py</code>, listas <code>NUM</code> y <code>CAT</code>]</span></p>
+  <span class="fuente">[FUENTE · Repo: <code>03_SCRIPTS/modelamiento_temporal.py</code>, listas <code>NUM</code> y <code>CAT</code>]</span></p>
 </div>
 
 <div class="clave">
@@ -585,7 +588,7 @@ escrita así, sin la tabla al lado:</p>
   <p><b>Error típico:</b> leer <code>p = 23</code> como «23 variables» (son 12
   conceptuales, sección 6) y decir que una fila es «una casa» (una casa vendida dos
   veces son dos filas).</p>
-  <p class="fuente">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code> y <code>03_CODIGO/modelamiento_temporal.py</code>]</p>
+  <p class="fuente">[FUENTE · Repo: <code>05_RESULTADOS/resultados_temporal.json</code> y <code>03_SCRIPTS/modelamiento_temporal.py</code>]</p>
 </details>
 
 
@@ -655,7 +658,7 @@ salen las 11 extra?</p>
   <tr><td><code>Regionname</code> (5 valores)</td><td>One-hot → 5 columnas <code>Regionname_*</code></td><td class="num">+5</td></tr>
   <tr><td colspan="2"><b>Total p</b></td><td class="num"><b>23</b></td></tr>
 </table>
-<p class="fuente">[FUENTE · Repo: encabezado de <code>04_DATOS/housing_dashai_2016_2017.csv</code> y el <code>ColumnTransformer</code> de <code>03_CODIGO/modelamiento_temporal.py</code>]</p>
+<p class="fuente">[FUENTE · Repo: encabezado de <code>04_DATOS/housing_dashai_2016_2017.csv</code> y el <code>ColumnTransformer</code> de <code>03_SCRIPTS/modelamiento_temporal.py</code>]</p>
 
 <div class="clave">
   <b>Una variable categórica con k valores se convierte en k columnas.</b> Por eso
@@ -848,7 +851,7 @@ original y contienen información real:</p>
   <tr><td><code>YearBuilt</code></td><td>Demasiados faltantes</td><td>Calidad</td></tr>
   <tr><td><code>Date</code></td><td><b>—</b></td><td><b>—</b></td></tr>
 </table>
-<p class="fuente">[FUENTE · Repo: lista <code>EXCLUIDAS</code> de <code>03_CODIGO/modelamiento_temporal.py</code>. Las razones de Suburb, de las de calidad y de CouncilArea están documentadas (CouncilArea: <code>07_DATITO/referencia/material.md</code> y <code>05_RESULTADOS/experimento_councilarea_2026-09-18.json</code>); la de Postcode es [INFERENCIA] a partir del código.]</p>
+<p class="fuente">[FUENTE · Repo: lista <code>EXCLUIDAS</code> de <code>03_SCRIPTS/modelamiento_temporal.py</code>. Las razones de Suburb, de las de calidad y de CouncilArea están documentadas (CouncilArea: <code>07_DATITO/referencia/material.md</code> y <code>05_RESULTADOS/experimento_councilarea_2026-09-18.json</code>); la de Postcode es [INFERENCIA] a partir del código.]</p>
 
 <div class="repreg">
   <strong>La fila de <code>Date</code> quedó en blanco a propósito.</strong><br>
@@ -1059,7 +1062,7 @@ label = 0  en otro caso         → coincide en 998 de 1.000 filas (99,8 %)</pre
   venga del target o del futuro (no viene de ninguno), o «porque no sirve» sin decir
   por qué. El otro error: creer que una columna con información real tiene que ser
   feature.</p>
-  <p class="fuente">[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py, líneas 33–36
+  <p class="fuente">[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py, líneas 33–36
   (año desde <code>Date</code> y partición 2016/2017) y lista <code>EXCLUIDAS</code>]
   · el porqué es [INFERENCIA] a partir del código: el proyecto no documenta la razón
   de esta exclusión en particular · lo del mes, [INFERENCIA].</p>
@@ -1284,6 +1287,77 @@ literalmente el método de tu profesor.</p>
 
 </main>
 <script>
+/* ---------- utilidades de predicción ---------- */
+function predic(id, correcta, textos){
+  var box = document.getElementById(id);
+  var vd  = box.querySelector('.veredicto');
+  box.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      box.querySelectorAll('button').forEach(function(x){x.classList.remove('elegida');});
+      b.classList.add('elegida');
+      box.dataset.respuesta = b.dataset.v;
+      vd.innerHTML = textos[b.dataset.v];
+      vd.classList.add('on');
+    });
+  });
+}
+
+predic('pred1', 'no', {
+  si : '<b>Revisa.</b> Mueve el target a <code>Type</code> en el panel de abajo y mira el tipo de problema. La pista: ¿qué significaría predecir «2,7» cuando los valores posibles son casa, townhouse y unidad?',
+  no : '<b>Correcto, y el porqué importa.</b> <code>Price</code> es continuo: se puede estar cerca. <code>Type</code> es categórico: o aciertas o no. Cambia el target y cambia la naturaleza del error, las métricas y hasta el modelo.',
+  ns : 'Vale. Mueve el target en el panel de abajo y vuelve a esta pregunta después. La clave está en qué valores puede tomar la columna que elegiste.'
+});
+
+predic('pred2', 'sube', {
+  baja  : '<b>Casi, pero al revés.</b> Eso pasa en <em>datos nuevos</em>, no en entrenamiento. Sobre las mismas filas con que se ajustó, más columnas siempre dan más libertad para pegarse a los datos. Sube p en el panel y mira la curva azul.',
+  igual : '<b>No.</b> Es la intuición más común y es la que castiga la P3. El ruido no aporta señal, pero sí aporta <em>libertad</em>: con más columnas el modelo tiene más formas de calzar las filas que ya vio. Sube p y mira la azul.',
+  sube  : '<b>Exacto — y ese es el problema.</b> Sube porque el modelo aprovecha el ruido para calzar <em>estas</em> filas. Como el ruido no se repite en filas nuevas, el R² de test cae. Ahora sube p y mira la distancia entre las dos curvas.'
+});
+
+predic('pred3', 'alto', {
+  bajo  : '<b>No.</b> Son votos humanos, sí, pero el <code>label</code> se construyó desde esos votos. Mira el panel de abajo: una regla de una línea con esas dos columnas acierta 998 de 1.000.',
+  igual : '<b>No, sube muchísimo.</b> No aportan «un poco más de señal»: traen la respuesta adentro. Mira el panel de abajo.',
+  alto  : '<b>Exacto, y por eso es una trampa.</b> Casi perfecto en validación, porque el <code>label</code> se armó desde esos votos. Y en el test ni siquiera corre: esas columnas no existen ahí. Mira el panel de abajo.'
+});
+
+/* ---------- 3 · selector de target ---------- */
+var VARS = [
+  {n:'Rooms',        t:'Regresión',     q:'¿Cuántas habitaciones tiene esta propiedad?'},
+  {n:'Distance',     t:'Regresión',     q:'¿A qué distancia del centro está esta propiedad?'},
+  {n:'Bathroom',     t:'Regresión',     q:'¿Cuántos baños tiene esta propiedad?'},
+  {n:'Landsize',     t:'Regresión',     q:'¿Qué superficie de terreno tiene?'},
+  {n:'Type',         t:'Clasificación', q:'¿Es una casa, un townhouse o una unidad?', k:3},
+  {n:'Regionname',   t:'Clasificación', q:'¿En qué región metropolitana está?', k:5},
+  {n:'Price',        t:'Regresión',     q:'¿Cuánto costará esta propiedad?'}
+];
+var yActual = 'Price';
+var cont = document.getElementById('colsMel');
+
+function pintaCols(){
+  cont.innerHTML = '';
+  VARS.forEach(function(v){
+    var b = document.createElement('button');
+    b.textContent = v.n;
+    b.className = (v.n === yActual) ? 'esY' : 'esX';
+    b.title = (v.n === yActual) ? 'Es el target' : 'Haz clic para convertirla en target';
+    b.addEventListener('click', function(){ yActual = v.n; pintaCols(); });
+    cont.appendChild(b);
+  });
+  var v = VARS.filter(function(x){return x.n === yActual;})[0];
+  document.getElementById('mTarget').textContent = v.n;
+  document.getElementById('mP').textContent = VARS.length - 1;
+  document.getElementById('mTipo').textContent = v.t;
+  var extra = v.t === 'Clasificación'
+    ? ' <br><span style="font-size:.9rem">El error deja de tener grados: con ' + v.k +
+      ' clases posibles, o aciertas la clase o no. No existe «te pasaste por poco».</span>'
+    : ' <br><span style="font-size:.9rem">El error tiene magnitud: puedes equivocarte por poco o por mucho, y eso se mide en las mismas unidades de la variable.</span>';
+  document.getElementById('mPregunta').innerHTML =
+    '<b>La pregunta que responde el modelo:</b> «' + v.q + '»' + extra +
+    '<br><span style="font-size:.9rem;color:#666">Las otras 6 variables pasan a ser features. ' +
+    '<b>' + v.n + ' ya no puede estar entre ellas</b>: si el modelo viera el target como entrada, copiaría la respuesta.</span>';
+}
+pintaCols();
+
 const rho = 0.76;
 function actualizarGrafico(n, p) {
   const canvas = document.getElementById('cv');
