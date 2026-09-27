@@ -68,7 +68,7 @@ y en qué minuto, escribe el índice, y las sube a NotebookLM.
 Agrega la clase y sus tramos a `mapa_ensenanza.yaml` y corre
 `python 03_SCRIPTS/construir_navegacion.py`: los visuales muestran el nuevo tramo
 en «Dónde se enseñó» y el índice `07_DATITO/01_CONCEPTOS/visual/00_index.html` se regenera. Luego
-`python 04_CODIGO/verificar_visuales.py` comprueba que cada marca exista.
+`python 03_SCRIPTS/verificar_visuales.py` comprueba que cada marca exista.
 
 Es **idempotente** —lo ya integrado se omite— y **degrada**: si NotebookLM no
 responde, el índice local se completa igual y queda anotado para reintentar.

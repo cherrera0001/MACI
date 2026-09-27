@@ -87,7 +87,7 @@ Genera archivo `_NEW.html` basado en template canónico con guía paso a paso.
 ## 📁 ARCHIVOS ENTREGADOS
 
 ### Documentación
-- ✅ `07_DATITO/07_BITACORA/PLAN_MIGRACION_GLOBAL.md` — Estrategia completa
+- ✅ `docs/gestion/PLAN_MIGRACION_GLOBAL.md` — Estrategia completa
 - ✅ `07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md` — Piezas del sistema
 - ✅ `07_DATITO/07_BITACORA/learning_loop/program_loop.md` — Protocolo
 - ✅ `07_DATITO/07_BITACORA/learning_loop/agent_lessons.yaml` — Lecciones (VIZ-FAIL-001, VIZ-FAIL-002)

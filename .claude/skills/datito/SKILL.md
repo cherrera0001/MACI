@@ -36,7 +36,7 @@ cat 07_DATITO/estado.md
 | `09_CLASES/mapa_ensenanza.yaml` | **Primero aqui**: donde se enseno cada concepto, con rango y hablante |
 | `09_CLASES/indice_clases.yaml` | Primera *mencion* de cada termino, automatica (no distingue quien habla) |
 | `09_CLASES/transcripciones/` | El texto completo, una vez sepas donde buscar |
-| `07_DATITO/visual/` | Artefactos ya generados: reusalos antes de crear otro. Indice: `visual/index.html` |
+| `07_DATITO/01_CONCEPTOS/visual/` | Artefactos ya generados: reusalos antes de crear otro. Indice: `00_index.html` |
 | `07_DATITO/dudas.yaml` | **Todo lo que respondes se escribe aqui** (REGLA UNO-B). Al abrir sesion, retoma las `practica` pendientes |
 
 ---
@@ -111,7 +111,7 @@ no tiene diagramas, ni interaccion, ni formulas legibles. Cristobal ya lo
 reporto dos veces.
 
 **Si vas a explicar un concepto nuevo, genera un HTML en
-`07_DATITO/visual/` y dale la ruta.** No lo expliques en el chat "y ademas"
+`07_DATITO/01_CONCEPTOS/visual/` y dale la ruta.** No lo expliques en el chat "y ademas"
 generes el archivo: el archivo ES la explicacion.
 
 | Va en HTML | Va en el chat |
@@ -144,7 +144,7 @@ que le dejes (estado `practica`: queda oculta en el visual).
     pregunta · respondio [solo si respondio, textual] · respuesta ·
     resolucion [pasos] · error_tipico · fuentes [con etiqueta G4])
 2. python 03_SCRIPTS/construir_navegacion.py
-   → queda en orden en cada visual listado y en visual/index.html,
+   → queda en orden en cada visual listado y en 00_index.html,
      con la respuesta oculta en <details class="resp">
 3. En el chat: a lo mas 3 lineas + la ruta visual.html#duda-<id>
 ```
@@ -215,7 +215,7 @@ leer 85 KB:
    certamen: dilo. Si choca con una lamina, manda la lamina
 
 Antes de explicar un concepto, revisa si ya tiene visual en
-`07_DATITO/visual/index.html` y derivalo ahi (G9).
+`07_DATITO/01_CONCEPTOS/visual/00_index.html` y derivalo ahi (G9).
 
 Si hay que **crear** un visual: solo vía `/datito-visual` copiando
 `_TEMPLATE_CANONICO.html`. Si el diseño se rompe (CDN, look púrpura, tabla

@@ -59,10 +59,10 @@
 
 ### Archivos de Estado y Plan:
 - ✅ `07_DATITO/MIGRACION_STATUS_2026_09_25.md` — Estado actual (Fase 1 ✅, Fase 2 INICIADA, Fase 3 PENDIENTE)
-- ✅ `07_DATITO/07_BITACORA/PLAN_MIGRACION_GLOBAL.md` — Estrategia completa con fases
-- ✅ `07_DATITO/07_BITACORA/NAVEGACION_STATUS.md` — Infraestructura de navegación
+- ✅ `docs/gestion/PLAN_MIGRACION_GLOBAL.md` — Estrategia completa con fases
+- ✅ `docs/gestion/NAVEGACION_STATUS.md` — Infraestructura de navegación
 - ✅ `07_DATITO/00_INICIO/ARQUITECTURA.md` — Diseño del sistema Datito
-- ✅ `07_DATITO/07_BITACORA/TECH_DEBT.md` — Deuda técnica anterior
+- ✅ `docs/gestion/TECH_DEBT.md` — Deuda técnica anterior
 
 ### Archivos de Configuración YAML:
 - ✅ `07_DATITO/00_INICIO/clases.yaml` — 22 clases, 17 conceptos
@@ -82,7 +82,7 @@
 - ✅ `04_CODIGO/datito_migracion_inicio.py` — Genera _NEW.html basado en template
 
 ### Scripts de Generación (ACTIVOS):
-- ✅ `03_SCRIPTS/generar_index.py` — Genera index.html desde grafo.yaml (150 líneas)
+- ✅ `10_ARCHIVO/_obsoleto_scripts/generar_index.py` — Genera index.html desde grafo.yaml (150 líneas)
 - ✅ `03_SCRIPTS/construir_navegacion.py` — Inyecta nav entre marcadores datito:nav (ERROR CONOCIDO)
 - ✅ `03_SCRIPTS/verificar_contrato.py` — Valida 12 garantías del sistema
 - ✅ `03_SCRIPTS/verificar_visuales.py` — Audita HTML: sin red, enlaces, citas
@@ -292,7 +292,7 @@ Archivos generados por scripts (no son artefactos de estudio):
 | Ver template canónico | `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` |
 | Evaluar un archivo | `python 04_CODIGO/datito_loop_eval.py --path <ruta>` |
 | Evaluar lote | `python 04_CODIGO/datito_batch_eval.py` |
-| Plan migración | `07_DATITO/07_BITACORA/PLAN_MIGRACION_GLOBAL.md` |
+| Plan migración | `docs/gestion/PLAN_MIGRACION_GLOBAL.md` |
 | Estado actual | `07_DATITO/MIGRACION_STATUS_2026_09_25.md` |
 | Arquitectura | `07_DATITO/00_INICIO/ARQUITECTURA.md` |
 

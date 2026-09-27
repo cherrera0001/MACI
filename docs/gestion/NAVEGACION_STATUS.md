@@ -76,7 +76,7 @@ La navegación regenerada es un **"nice-to-have"** para:
 - Lee grafo.yaml
 - Genera index.html (7.9K, offline)
 - Enlaza los 13 archivos KEEP
-- Actualizable: `python 03_SCRIPTS/generar_index.py`
+- Actualizable: `python 10_ARCHIVO/_obsoleto_scripts/generar_index.py`
 
 **Status:** NAVEGACIÓN COMPLETADA
 

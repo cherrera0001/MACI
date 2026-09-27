@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- datito:template:v1 -->
 <title>Matriz de confusión y métricas · Datito</title>
 <style>
@@ -129,27 +130,28 @@
 <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="11" id="clase-11">
-<div class="leccion-top"><span class="uni">Unidad 4 · {&#x27;titulo&#x27;: &#x27;Evaluar clasificadores&#x27;}</span><b>Clase 11 de 16</b></div>
-<div class="barra"><span style="width:68.8%"></span></div>
-<div class="lt">Clase 11 · Matriz de confusión</div>
-<p><b>Objetivo.</b> Evaluar clasificadores</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span>ninguna: es el punto de partida</div>
-<div><span class="et">habilita</span><a href="12_metricas_clasificacion.html">Clase 12 · Métricas de clasificación</a>, <a href="13_roc_auc.html">Clase 13 · ROC/AUC</a></div>
+<section class="leccion" data-clase="12" id="clase-12">
+<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 12 de 23</b></div>
+<div class="barra"><span style="width:52.2%"></span></div>
+<div class="lt">Clase 12 · Matriz de confusión</div>
+<p><b>Objetivo.</b> Construir y leer una matriz de confusión, y pasar de tasas a conteos en una población.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a></div>
+<div><span class="et">habilita</span><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></div>
 <div><span class="et">tiempo estimado</span>~30 min</div></div>
-<div class="ficha"><b>Ficha Bloom · Comprender</b><ul>
-<li><b>Evidencia de aprendizaje:</b> Leer matriz de confusión e identificar TP, FP, FN, TN</li>
-<li><b>Actividad final:</b> Ejercicio clase 11: Matriz de confusión</li>
-<li><b>Criterio de dominio:</b> Aplicación correcta del concepto en evaluar clasificadores</li></ul></div>
-<div class="activ"><b>Activación.</b> Pregunta de inicio <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
-<label class="hecha"><input type="checkbox" data-clase-hecha="11"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Construye la matriz desde un enunciado y verifica que los totales cierren.</li>
+<li><b>Actividad final:</b> El ejercicio de los 100 pacientes, que el profesor llamó «lo más importante del curso».</li>
+<li><b>Criterio de dominio:</b> Declara la clase positiva, lee los rótulos de filas y columnas, y llega a 36 positivos en el ejercicio del profesor.</li></ul></div>
+<div class="activ"><b>Activación.</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="12"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="10_clasificacion.html">← Clase 10 · Clasificación</a></span><a href="index.html">Índice del curso</a><span><a href="12_metricas_clasificacion.html">Clase 12 · Métricas de clasificación →</a></span></nav>
+<nav class="pasos"><span><a href="10_clasificacion.html">← Clase 11 · Clasificación: cuando la etiqueta no es un número</a></span><a href="00_index.html">Índice del curso</a><span><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1 →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Matriz de confusión</b></span> · <span class="et">viene de</span>— · <span class="et">habilita</span><a href="12_metricas_clasificacion.html">Métricas</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular None · peso en certamen ? () · <span class="et">certamen</span><a href="certamen_2.html#p8">C2 P8</a></div>
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Matriz de confusion</b></span> · <span class="et">viene de</span><a href="10_clasificacion.html">Clasificacion</a> · <span class="et">habilita</span><a href="12_metricas_clasificacion.html">Accuracy, precision, recall y F1</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen alta (C2: P8, con calculo manual) · <span class="ten">tensión declarada (G12): las dos prioridades difieren</span> · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p8">C2 P8</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p1a">C3 P1A</a></div>
+<details><summary>Dónde se enseñó en clase (4 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:44:25–0:47:52 · profesor — la convencion del positivo; contar VP, FP, FN, VN<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:44:25]</span></li><li><b>Clase del 7-ago</b> · 1:00:54–1:02:54 · profesor — construir la matriz; el caso multiclase<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:54]</span></li><li><b>Presentaciones del 4-sep</b> · 1:28:40–1:48:16 · profesor — ejercicio de 100 pacientes con 20 enfermos («lo mas importante del curso»)<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:28:40]</span></li><li><b>Ayudantía del 7-ago</b> · 1:00:34–1:10:12 · ayudantía — el ejemplo Guitarra y el caso de 3 clases <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 1:00:34]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
 
@@ -853,6 +855,21 @@ verdadero o falso <em>con justificación</em> es el que usan los certámenes
 </div>
 
 
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-12">
+<h2>Cierre de la Clase 12 · Matriz de confusión</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Cuatro casillas: VP, FP, FN, VN.</li><li>Qué clase es la positiva es una convención que se declara.</li><li>La matriz solo describe el conjunto de test, no la realidad.</li><li>Una tasa multiplicada por la población da un conteo.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Filas = real ≠ filas = predicho: lee los rótulos (la lámina 19 pone lo predicho en las filas).</li><li>Falso positivo ≠ falso negativo.</li><li>Test ≠ realidad.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Declara la clase positiva.</li><li>Ubica los positivos reales y los positivos predichos.</li><li>Obtén VP, FP, FN y VN, y verifica que los totales cierren.</li></ol>
+<p><b>Viene de:</b> <a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · <b>Sigue:</b> <a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a></p>
+<p><b>Vuelve a tu activación:</b> De 100 pacientes, 20 tienen cáncer. Un modelo tiene TPR 1 y FPR 0,2. ¿A cuántos les dirá que tienen cáncer? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> En el caso de los 100 pacientes, ¿cuántos falsos positivos hay y cuál es la precisión?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>FP = 0,2 × 80 = 16; precisión = 20/36 ≈ 0,56. El profesor llegó a los 16 y los 36; la precisión no la dijo en clase [DATITO]. [FUENTE · Repo: 05_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:43:36]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="12_metricas_clasificacion.html">Continuar → Clase 13 · Precisión, sensibilidad, exactitud y F1</a>
+</section>
+<!-- datito:cierre:fin -->
 <footer>
 Generado por Datito · <code>07_DATITO/visual/matriz_confusion.html</code> · funciona sin conexión ·
 fuentes: lámina FCD-2026-2_07_Clasificacion (láminas 17–19), transcripciones de la Clase del 7-ago y de la

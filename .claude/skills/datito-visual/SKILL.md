@@ -20,7 +20,6 @@ contexto y no debe gastar el de la sesion de estudio.
 
 1. Leer `07_DATITO/07_BITACORA/learning_loop/agent_lessons.yaml`
 2. Copiar `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html`
-   (espejo: `07_DATITO/visual/_TEMPLATE_CANONICO.html`)
 3. Conservar `<!-- datito:template:v1 -->` y el bloque `:root{…}`
 4. Rellenar título + cuerpo; **no** inventar CSS, gradientes ni CDN
 
@@ -73,7 +72,7 @@ cuando hay una **relacion que se entiende moviendola**.
 
 # ANTES DE ESCRIBIR
 
-**1. Mira si ya existe.** `07_DATITO/visual/` puede tener uno del mismo
+**1. Mira si ya existe.** `07_DATITO/01_CONCEPTOS/visual/` puede tener uno del mismo
 concepto o de uno vecino. Extenderlo suele ser mejor que crear otro.
 
 **2. Busca el ejemplo del propio profesor.** Empieza por
@@ -82,7 +81,7 @@ ayudantia, alumnos) se enseno cada concepto. Luego abre el `.md` de esa clase en
 ese rango. Si el profesor uso un ejemplo para ese concepto, **usa ese** — vale
 mas que cualquiera que inventes, porque es el que va a reconocer en la prueba.
 
-Reglas de cita, que verifica `04_CODIGO/verificar_visuales.py`:
+Reglas de cita, que verifica `03_SCRIPTS/verificar_visuales.py`:
 
 - Ruta **completa** del `.md` y marca o rango `H:MM:SS–H:MM:SS`. Nunca el
   `_plano.txt` (no tiene marcas), nunca una ruta truncada con «…».
@@ -225,9 +224,11 @@ Canvas y JavaScript plano. Su prueba es sin Internet.
 
 # SALIDA
 
-Escribe en `07_DATITO/visual/<concepto>.html`, corre
+Escribe en `07_DATITO/01_CONCEPTOS/visual/NN_<concepto>.html` (NN: su lugar en la
+secuencia, como los demas; una sola copia por concepto), registralo en
+`07_DATITO/clases.yaml`, corre
 `python 03_SCRIPTS/construir_navegacion.py` y
-`python 04_CODIGO/verificar_visuales.py` (0 fallos), y devuelve **solo**:
+`python 03_SCRIPTS/verificar_visuales.py` (0 fallos), y devuelve **solo**:
 
 ```
 ruta del archivo

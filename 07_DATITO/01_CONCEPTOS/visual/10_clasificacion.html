@@ -1,38 +1,13 @@
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- datito:template:v1 -->
 <!--
   TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
   ------------------------------------------------------------------
   Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
   1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
-  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
-<!-- datito:nav:inicio -->
-<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
-<section class="leccion" data-clase="10" id="clase-10">
-<div class="leccion-top"><span class="uni">Unidad 4 · {&#x27;titulo&#x27;: &#x27;Evaluar clasificadores&#x27;}</span><b>Clase 10 de 16</b></div>
-<div class="barra"><span style="width:62.5%"></span></div>
-<div class="lt">Clase 10 · Clasificación</div>
-<p><b>Objetivo.</b> Resolver problemas de clasificación</p>
-<div class="fichas"><div><span class="et">prerrequisitos</span>ninguna: es el punto de partida</div>
-<div><span class="et">habilita</span>ninguna</div>
-<div><span class="et">tiempo estimado</span>~40 min</div></div>
-<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
-<li><b>Evidencia de aprendizaje:</b> Entrenar clasificador e interpretar matriz de confusión</li>
-<li><b>Actividad final:</b> Ejercicio clase 10: Clasificación</li>
-<li><b>Criterio de dominio:</b> Aplicación correcta del concepto en resolver problemas de clasificación</li></ul></div>
-<div class="activ"><b>Activación.</b> Pregunta de inicio <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
-<label class="hecha"><input type="checkbox" data-clase-hecha="10"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
-</section>
-<nav class="pasos"><span><a href="09_regresion.html">← Clase 9 · Regresión</a></span><a href="index.html">Índice del curso</a><span><a href="11_matriz_confusion.html">Clase 11 · Matriz de confusión →</a></span></nav>
-<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
-<nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Clasificación</b></span> · <span class="et">viene de</span>— · <span class="et">habilita</span><a href="11_matriz_confusion.html">Matriz de confusión</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular None · peso en certamen ? () · <span class="et">certamen</span><a href="certamen_1.html#p6">C1 P6</a> · <a href="certamen_2.html#p4">C2 P4</a></div>
-</nav>
-<!-- datito:nav:fin -->
- tras la nav.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
   3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
   4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
   5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
@@ -133,8 +108,11 @@
 </head>
 <body>
 <main>
-<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 11 de 22</b></div>
-<div class="barra"><span style="width:50.0%"></span></div>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="11" id="clase-11">
+<div class="leccion-top"><span class="uni">Unidad 4 · Clasificar y evaluar</span><b>Clase 11 de 23</b></div>
+<div class="barra"><span style="width:47.8%"></span></div>
 <div class="lt">Clase 11 · Clasificación: cuando la etiqueta no es un número</div>
 <p><b>Objetivo.</b> Distinguir un problema de clasificación de uno de regresión, y explicar qué cambia en el error.</p>
 <div class="fichas"><div><span class="et">prerrequisitos</span><a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a></div>
@@ -147,13 +125,13 @@
 <div class="activ"><b>Activación.</b> «Frío, templado, caliente»: ¿es un problema de clasificación o de regresión? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
 <label class="hecha"><input type="checkbox" data-clase-hecha="11"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
 </section>
-<nav class="pasos"><span><a href="08_overfitting_underfitting.html">← Clase 10 · Overfitting y underfitting</a></span><a href="index.html">Índice del curso</a><span><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión →</a></span></nav>
+<nav class="pasos"><span><a href="08_overfitting_underfitting.html">← Clase 10 · Overfitting y underfitting</a></span><a href="00_index.html">Índice del curso</a><span><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
 <nav class="dnav" aria-label="Navegación de Datito">
-<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Clasificacion</b></span> · <span class="et">viene de</span><a href="../../02_REFERENCIA/clase6_regresion.html">Regresion</a> · <span class="et">habilita</span><a href="11_matriz_confusion.html">Matriz de confusion</a></div>
 <div class="fila"><span class="et">prioridad</span>importancia curricular 3 · peso en certamen media (C1: P6; base de C2) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p6">C1 P6</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a></div>
-<details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:00:09–0:09:22 · profesor — regresion frente a clasificacion; perro o gato<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:09]</span></li><li><b>Clase del 7-ago</b> · 0:09:22–0:16:16 · profesor — categorica frente a numerica; el orden<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:09:22]</span></li><li><b>Clase del 7-ago</b> · 0:19:23–0:25:05 · profesor — clasificar por cercania (KNN) y la probabilidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:19:23]</span></li><li><b>Clase del 7-ago</b> · 0:25:11–0:44:15 · profesor — SVM y el margen<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:25:11]</span></li><li><b>Ayudantía del 7-ago</b> · 0:33:57–0:47:26 · ayudantía — get_dummies y LabelEncoder <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:33:57]</span></li></ul></details>
+<details><summary>Dónde se enseñó en clase (5 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 0:00:09–0:09:22 · profesor — regresion frente a clasificacion; perro o gato<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:00:09]</span></li><li><b>Clase del 7-ago</b> · 0:09:22–0:16:16 · profesor — categorica frente a numerica; el orden<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:09:22]</span></li><li><b>Clase del 7-ago</b> · 0:19:23–0:25:05 · profesor — clasificar por cercania (KNN) y la probabilidad<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:19:23]</span></li><li><b>Clase del 7-ago</b> · 0:25:11–0:44:15 · profesor — SVM y el margen<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 0:25:11]</span></li><li><b>Ayudantía del 7-ago</b> · 0:33:57–0:47:26 · ayudantía — get_dummies y LabelEncoder <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P5: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T23_57_03Z_Fundamentos_en_Ciencia_de_Datos.md · 0:33:57]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
 
@@ -763,9 +741,11 @@
 <p><b>Viene de:</b> <a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · <b>Sigue:</b> <a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a></p>
 <p><b>Vuelve a tu activación:</b> «Frío, templado, caliente»: ¿es un problema de clasificación o de regresión? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Predecir la nota de 1 a 7 de un alumno: ¿regresión o clasificación?
-<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]</p>
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Regresión si interesa el valor, porque es un número con distancia; clasificación si solo interesa aprobado o reprobado. Lo decide el uso de la predicción. [INFERENCIA] Así lo planteó el profesor a un grupo: [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:57:26]</p>
 <p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
 <a class="continuar" href="11_matriz_confusion.html">Continuar → Clase 12 · Matriz de confusión</a>
+</section>
+<!-- datito:cierre:fin -->
 </main>
 
 <script>

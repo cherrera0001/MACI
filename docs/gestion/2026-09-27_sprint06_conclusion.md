@@ -105,7 +105,7 @@ Sin paso 3, los cambios quedan "en el aire" y futuras sesiones no saben qué se 
 .claude/projects/F--MACI/memory/sprint_06_conclusion.md
   → Detailed Sprint 06 analysis + technical insights
   
-07_DATITO/07_BITACORA/2026-09-27_sprint06_conclusion.md
+docs/gestion/2026-09-27_sprint06_conclusion.md
   → This file — formal session entry
 ```
 

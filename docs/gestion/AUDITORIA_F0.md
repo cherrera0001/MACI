@@ -15,7 +15,7 @@
 | H-05 | ✅ CONFIRMADO | Dos carpetas código solapadas: `03_SCRIPTS/` (42 archivos) vs `03_CODIGO/` (14 archivos) | `ls 03_SCRIPTS 03_CODIGO \| wc -l` | Epic E-2: Fusionar en una estructura limpia |
 | H-06 | ✅ CONFIRMADO | Skills duplicadas en `.claude/skills/` y `.agents/skills/` | `find . -name "*.md" -path "*/skills/*"` → dos copias | Epic E-2: Una fuente, enlaces o sincronización |
 | H-07 | ✅ CONFIRMADO | Plantilla espejada en dos directorios; dos archivos `index.html` | `ls 07_DATITO/visual/_TEMPLATE_CANONICO.html` y `ls 07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` | Epic E-2: Una plantilla canónica |
-| H-08 | ✅ CONFIRMADO | `construir_navegacion.py` (949 líneas) con bugs documentados | `07_DATITO/07_BITACORA/TECH_DEBT.md` lista 4 bugs | Epic E-2: Reparar o reemplazar |
+| H-08 | ✅ CONFIRMADO | `construir_navegacion.py` (949 líneas) con bugs documentados | `docs/gestion/TECH_DEBT.md` lista 4 bugs | Epic E-2: Reparar o reemplazar |
 | H-09 | ✅ CONFIRMADO | Sprint 03: 3 de 9 visuales aprobados (bloqueados: #02, #05, #08, #09, #14, #19) | Commits del 26-09 en `git log \| grep -i sprint` | Epic E-3: Desbloquear |
 | H-10 | ✅ CONFIRMADO | Estado contradictorio: 50 % y 66 % de cobertura en distintos documentos | `ESTADO_PROYECTO.txt` línea 7 vs README vs web visual | Epic E-1: Generar estado desde manifiesto, no a mano |
 | H-11 | ✅ CONFIRMADO | Sin `.github/`: no hay plantillas de issue, PR template ni CI; tests no corren | `ls .github/` → no existe; `test_*.py` solo locales | Epic E-4: Crear CI y plantillas |

@@ -31,7 +31,6 @@ con un bucle medible. Tú eres el agente constructor que **lee lecciones** y
 07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html
 ```
 
-(Copia espejo en `07_DATITO/visual/_TEMPLATE_CANONICO.html`.)
 
 Todo HTML nuevo o reescritura mayor:
 
