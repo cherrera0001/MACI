@@ -24,14 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pyyaml
+        pip install pyyaml
 
-    - name: Run pytest
-      run: python -m pytest tests/ -v --tb=short 2>/dev/null || echo "No tests yet"
-
-    - name: Lint Python (herramientas)
-      run: |
-        pip install pylint 2>/dev/null || echo "pylint no disponible"
-        find herramientas -name "*.py" -type f 2>/dev/null | head -3 | while read f; do
-          pylint "$f" --disable=all --enable=E,F 2>/dev/null || echo "Lint omitido para $f"
-        done || echo "No herramientas/scripts to lint yet"
+    - name: Run tests
+      run: python -m unittest discover -s 04_CODIGO -p "test_*.py" -v
