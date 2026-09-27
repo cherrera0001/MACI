@@ -221,11 +221,11 @@ C3_ITEMS = [
 
 # Visuales que no son de un concepto, y los que cubren varios.
 ESPECIALES = {
-    "certamen_1.html": {"titulo": "Certamen 1 auditado", "conceptos": [
+    "certamen_1.html": {"titulo": "Certamen 1", "conceptos": [
         "fundamentos_ciencia_datos", "datos_features_target", "limpieza_preparacion", "eda"],
         "rol": "certamen", "sesion": "05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio",
         "rango": ("0:05:42", "0:22:34")},
-    "certamen_2.html": {"titulo": "Certamen 2 auditado", "conceptos": [
+    "certamen_2.html": {"titulo": "Certamen 2", "conceptos": [
         "overfitting_underfitting", "metricas_clasificacion", "matriz_confusion", "roc_auc",
         "ensembles", "llm", "agentes_ia", "redes_neuronales"],
         "rol": "certamen", "sesion": "2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos",
@@ -519,7 +519,7 @@ CSS_NAV = (
     ".dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}"
     ".dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;"
     "background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 \"Segoe UI\",system-ui,sans-serif}"
-    ".leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}"
+    ".leccion-top,nav.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}"
     ".barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}"
     ".ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}"
     ".actividad{margin:.7rem 0;color:#334155}"
@@ -528,12 +528,12 @@ CSS_NAV = (
     ".fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}"
     ".ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}"
     ".hecha{display:block;margin:.5rem 0;font-size:.85rem}"
-    ".pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;"
-    "font:14px/1.5 \"Segoe UI\",system-ui,sans-serif}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}"
+    "nav.pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;"
+    "font:14px/1.5 \"Segoe UI\",system-ui,sans-serif}nav.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}"
     # En el celular, rutas y codigo largos cortan linea en vez de ensanchar la pagina.
     "@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}"
     ".fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}"
-    "pre{white-space:pre-wrap}.leccion-top,.pasos{flex-wrap:wrap}}</style>"
+    "pre{white-space:pre-wrap}.leccion-top,nav.pasos{flex-wrap:wrap}}</style>"
 )
 
 
@@ -820,7 +820,7 @@ def indice(grafo, nombres, mapa, dudas=()):
         filas_d.append(f'<tr><td><a href="{CERT_ARCHIVO["C2"]}#{p.lower()}">C2 {p}</a></td>'
                        f"<td>{esc(re.sub(r'[*]', '', texto))}</td><td>{vis}</td></tr>")
     for p, texto, cs in C1_ITEMS:
-        vis = ", ".join(enlace_concepto(c, PORTADA, nombres) for c in cs) or "solo en el certamen auditado"
+        vis = ", ".join(enlace_concepto(c, PORTADA, nombres) for c in cs) or "láminas 8–10 de FCD-04"
         filas_d.append(f'<tr><td><a href="{CERT_ARCHIVO["C1"]}#{p}">C1 {p.upper()}</a></td>'
                        f"<td>{esc(texto)}</td><td>{vis}</td></tr>")
 
@@ -931,9 +931,9 @@ Fuente única: <a href="{desde_visual("07_DATITO/dudas.yaml")}">07_DATITO/dudas.
 <p>Cada pregunta real se resuelve separando dos conceptos vecinos. No evalúa definiciones: evalúa
 discriminación [FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §1].</p>
 <table><tr><th>Pregunta</th><th>La distinción</th><th>Dónde se entrena</th></tr>{''.join(filas_d)}</table>
-<div class="nota">Los enunciados del Certamen 1 vienen de un compañero: son fiables; sus respuestas no están
-verificadas. El profesor dijo que cada certamen se arma desde un «pool de preguntas», así que tu versión puede
-diferir [FUENTE · Repo: {TRANS}/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].</div>
+<div class="nota">Cada certamen se arma sorteando preguntas de un banco, así que tu versión puede traer otras
+preguntas del mismo tipo: domina la distinción, no solo la respuesta
+[FUENTE · Repo: {TRANS}/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].</div>
 
 <h2>3 · Mapa por cadenas del currículum</h2>
 <p>De <a href="{desde_visual("07_DATITO/grafo.yaml")}">grafo.yaml</a>: cada cadena es un camino de prerrequisitos.</p>
@@ -941,7 +941,7 @@ diferir [FUENTE · Repo: {TRANS}/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_J
 <p>Herramientas: <a href="{desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html")}">triaje de problemas</a> (¿qué tipo de problema tengo?) ·
 <a href="09_regresion.html">laboratorio de la función de costo</a> ·
 <a href="{desde_visual("07_DATITO/04_EJERCICIOS/simulador_prediccion_falla.html")}">simulador de predicción de falla</a> (umbral, matriz y métricas) ·
-<a href="{CERT_ARCHIVO["C1"]}">Certamen 1 auditado</a> · <a href="{CERT_ARCHIVO["C2"]}">Certamen 2 auditado</a> · <a href="{CERT_ARCHIVO["C3"]}">Certamen 3</a> ·
+<a href="{CERT_ARCHIVO["C1"]}">Certamen 1</a> · <a href="{CERT_ARCHIVO["C2"]}">Certamen 2</a> · <a href="{CERT_ARCHIVO["C3"]}">Certamen 3</a> ·
 guía escrita <a href="{desde_visual("07_DATITO/04_EJERCICIOS/guias/overfitting_underfitting.md")}">overfitting_underfitting.md</a> ·
 cuadernillo <a href="{desde_visual("07_DATITO/04_EJERCICIOS/cuadernillos/01_sobreajuste_y_calidad_de_datos.md")}">01_sobreajuste_y_calidad_de_datos.md</a>.</p>
 <h3>Certamen 3, leído desde las clases</h3>

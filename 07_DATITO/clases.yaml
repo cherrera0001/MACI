@@ -602,7 +602,7 @@ clases:
     activacion: 'Antes de abrir cada pregunta: escribe tu respuesta y la distinción que la decide.'
     bloom:
       nivel: Evaluar
-      evidencia: 'Responde cada pregunta con justificación y la contrasta con la auditoría.'
+      evidencia: 'Responde cada pregunta con justificación y la contrasta con el análisis de la página.'
       actividad_final: 'La 9B completa, en papel.'
       criterio_dominio: 'Justifica cada respuesta con un mecanismo o una fuente, no con intuición.'
     cierre:
@@ -611,7 +611,7 @@ clases:
         - 'La 9B (2,0 puntos) se gana con procedimiento: fila, problemas, clasificación, tratamiento.'
       no_confundir:
         - 'Recordar una definición ≠ discriminar entre dos conceptos.'
-        - 'Tu versión del certamen puede no ser la de un compañero: se arma desde un banco de preguntas.'
+        - 'Cada certamen se arma sorteando preguntas de un banco: domina el tipo de pregunta, no solo esta versión.'
       procedimiento:
         - 'Lee el enunciado dos veces y subraya la cláusula que acota.'
         - 'Nombra la distinción que decide.'

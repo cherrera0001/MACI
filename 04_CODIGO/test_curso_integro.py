@@ -66,6 +66,25 @@ class CursoIntegro(unittest.TestCase):
                 fallos.append(f"{p.name}: texto interno de la plantilla visible")
         self.assertEqual([], fallos)
 
+    def test_css_generado_no_pisa_clases_de_la_pagina(self):
+        # nav.pasos y ol.pasos comparten nombre: un ".pasos{" sin acotar volvía horizontales 94 listas
+        con_choque = [p.name for p in paginas_del_curso()
+                      if re.search(r"(?<![\w.-])\.pasos\s*\{", "".join(m.group(0) for m in BLOQUE.finditer(
+                          p.read_text(encoding="utf-8"))))]
+        self.assertEqual([], con_choque)
+
+    def test_certamenes_son_guia_no_auditoria(self):
+        # un lector busca una guía precisa: sin lenguaje de auditoría, incertidumbre ni «un compañero»
+        prohibido = re.compile(r"Veredicto sobre la respuesta|respuesta del compañero|no se (?:puede|pueden) validar|"
+                               r"sin evidencia|no verificad|auditado|expediente|no sabemos|no tenemos la", re.I)
+        fallos = []
+        for n in ("certamen_1.html", "certamen_2.html"):
+            t = COMENTARIO.sub("", (DATITO / "04_EJERCICIOS" / n).read_text(encoding="utf-8"))
+            fallos += [f"{n}: {m.group(0)}" for m in prohibido.finditer(t)]
+            sin_enunciados = re.sub(r'<div class="enun">.*?</div>', "", t, flags=re.S)
+            fallos += [f"{n}: «compañero» fuera de un enunciado" for _ in re.finditer(r"compañer", sin_enunciados, re.I)]
+        self.assertEqual([], fallos)
+
     def test_plantilla_sin_bloques_generados(self):
         t = (VISUAL / "_TEMPLATE_CANONICO.html").read_text(encoding="utf-8")
         self.assertNotIn('class="dnav"', t)
