@@ -30,36 +30,7 @@ jobs:
       run: python -m pytest tests/ -v --tb=short 2>/dev/null || echo "No tests yet"
 
     - name: Verify manifiesto rutas
-      run: |
-        python3 << 'EOF'
-        import yaml
-        from pathlib import Path
-
-        try:
-          with open("07_DATITO/00_INICIO/clases.yaml", "r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-
-          visual_dir = Path("07_DATITO/01_CONCEPTOS/visual")
-          faltan = []
-
-          for clase in data.get("clases", []):
-            visual = clase.get("visual")
-            if visual:
-              base = visual.split("#")[0]
-              ruta = visual_dir / base
-              if not ruta.exists():
-                faltan.append((clase.get("n"), visual))
-
-          if faltan:
-            print(f"ERROR: {len(faltan)} rutas visual faltantes")
-            for n, v in faltan[:5]:
-              print(f"  Clase {n}: {v}")
-            exit(1)
-          else:
-            print("✓ Todas las rutas visual existen")
-        except Exception as e:
-          print(f"Verificación saltada: {e}")
-        EOF
+      run: python3 tests/test_manifiesto.py
 
     - name: Lint Python (herramientas)
       run: |
