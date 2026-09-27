@@ -1,0 +1,35 @@
+name: "Historia de usuario"
+description: "Valor para un usuario, cabe en una iteración"
+title: "[H-n.m] Como <rol>, quiero <capacidad>, para <beneficio>"
+labels: ["tipo:historia"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Historia de Usuario
+  - type: textarea
+    id: historia
+    attributes:
+      label: "Historia"
+      description: "Formato: Como <rol>, quiero <capacidad>, para <beneficio>"
+      placeholder: "Como mantenedor, quiero un solo manifiesto de clases, para que índice y web no se contradigan"
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: "Criterios de aceptación"
+      description: "Formato: Dado <contexto>, cuando <acción>, entonces <resultado>"
+      placeholder: |
+        - [ ] Dado el repo, cuando busco clases.yaml, entonces existe uno solo
+        - [ ] Dado el manifiesto, cuando corro test_manifiesto.py, entonces todas las rutas existen
+    validations:
+      required: true
+  - type: textarea
+    id: notas
+    attributes:
+      label: "Notas de diseño"
+  - type: textarea
+    id: invest
+    attributes:
+      label: "Chequeo INVEST (Independiente, Negociable, Valiosa, Estimable, Pequeña, Verificable)"

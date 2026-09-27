@@ -1,0 +1,40 @@
+name: "Bug"
+description: "Síntoma observable que no debería pasar"
+title: "[BUG] Síntoma observable"
+labels: ["tipo:bug"]
+body:
+  - type: textarea
+    id: sintoma
+    attributes:
+      label: "Síntoma"
+      placeholder: "Qué falla o qué ves que no debería pasar"
+    validations:
+      required: true
+  - type: textarea
+    id: reproducir
+    attributes:
+      label: "Pasos para reproducir"
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: "Resultado esperado vs obtenido"
+      description: "Qué debería pasar vs qué pasa"
+    validations:
+      required: true
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: "Evidencia"
+      description: "Ruta, línea, captura, salida de comando"
+    validations:
+      required: true
+  - type: textarea
+    id: causa
+    attributes:
+      label: "Causa raíz (se completa al cerrar)"

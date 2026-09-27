@@ -1,0 +1,30 @@
+name: "Tarea"
+description: "Acción técnica de 1 a 8 horas"
+title: "[T-n.m.k] Verbo + objeto"
+labels: ["tipo:tarea"]
+body:
+  - type: textarea
+    id: que
+    attributes:
+      label: "Qué hay que hacer"
+    validations:
+      required: true
+  - type: textarea
+    id: archivos
+    attributes:
+      label: "Archivos afectados"
+      placeholder: |
+        - 07_DATITO/clases.yaml
+        - herramientas/test_manifiesto.py
+  - type: textarea
+    id: verificacion
+    attributes:
+      label: "Cómo se verifica"
+      placeholder: "Comando exacto y resultado esperado"
+    validations:
+      required: true
+  - type: input
+    id: estimacion
+    attributes:
+      label: "Estimación (horas)"
+      type: number

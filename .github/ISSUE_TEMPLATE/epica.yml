@@ -1,0 +1,45 @@
+name: "Épica"
+description: "Resultado grande: 2-6 semanas, varias historias"
+title: "[E-n] Resultado en infinitivo"
+labels: ["tipo:epica"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Épica
+        Resultado que cambia para el usuario cuando termina.
+  - type: textarea
+    id: resultado
+    attributes:
+      label: "Resultado esperado"
+      description: "Qué cambia cuando esta épica termina (1-2 frases)"
+      placeholder: "Ej: El manifiesto es uno solo, todas las rutas existen, índice y web usan el mismo"
+    validations:
+      required: true
+  - type: textarea
+    id: origen
+    attributes:
+      label: "Origen (hallazgos/garantías)"
+      description: "H-xx, G-xx o pedido nuevo"
+      placeholder: "H-01, H-02, H-10, H-12"
+    validations:
+      required: true
+  - type: textarea
+    id: alcance
+    attributes:
+      label: "Alcance"
+      description: "Incluye / No incluye"
+      placeholder: |
+        Incluye: ...
+        No incluye: ...
+    validations:
+      required: true
+  - type: textarea
+    id: metricas
+    attributes:
+      label: "Métricas de éxito"
+      description: "Indicador medible y su valor objetivo"
+  - type: textarea
+    id: riesgos
+    attributes:
+      label: "Riesgos"
