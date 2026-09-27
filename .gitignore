@@ -63,3 +63,6 @@ auth.json
 repair_loop.md
 repair_piel.py
 04_CODIGO/reporte_validacion.json
+
+# salida de 03_SCRIPTS/publicar_sitio.mjs (se arma en Vercel)
+public/

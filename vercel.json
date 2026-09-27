@@ -1,12 +1,22 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/07_DATITO/01_CONCEPTOS/visual/index.html"
-    },
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "node 03_SCRIPTS/publicar_sitio.mjs",
+  "outputDirectory": "public",
+  "redirects": [
+    { "source": "/", "destination": "/01_CONCEPTOS/visual/00_index.html", "permanent": false },
+    { "source": "/index.html", "destination": "/01_CONCEPTOS/visual/00_index.html", "permanent": true },
+    { "source": "/00_index.html", "destination": "/01_CONCEPTOS/visual/00_index.html", "permanent": true },
+    { "source": "/:pagina(\\d\\d_[^/]+\\.html)", "destination": "/01_CONCEPTOS/visual/:pagina", "permanent": true },
+    { "source": "/:pagina(certamen_[123]\\.html|triaje_de_problemas\\.html)", "destination": "/04_EJERCICIOS/:pagina", "permanent": true }
+  ],
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/07_DATITO/01_CONCEPTOS/visual/$1"
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
     }
   ]
 }

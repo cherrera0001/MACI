@@ -234,6 +234,8 @@ ESPECIALES = {
         "roc_auc", "matriz_confusion", "metricas_clasificacion", "overfitting_underfitting",
         "regresion", "eda", "limpieza_preparacion", "llm", "agentes_ia"], "rol": "certamen"},
     "triaje_de_problemas.html": {"titulo": "Triaje de problemas", "conceptos": [], "rol": "herramienta"},
+    "simulador_prediccion_falla.html": {"titulo": "Simulador de predicción de falla",
+                                        "conceptos": ["matriz_confusion", "roc_auc"], "rol": "herramienta"},
     "09_regresion.html": {"titulo": "Función de costo, error y R²",
                           "conceptos": ["regresion"], "rol": "laboratorio"},
 }
@@ -933,6 +935,7 @@ diferir [FUENTE · Repo: {TRANS}/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_J
 <ul>{''.join(cadenas)}</ul>
 <p>Herramientas: <a href="{desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html")}">triaje de problemas</a> (¿qué tipo de problema tengo?) ·
 <a href="09_regresion.html">laboratorio de la función de costo</a> ·
+<a href="{desde_visual("07_DATITO/04_EJERCICIOS/simulador_prediccion_falla.html")}">simulador de predicción de falla</a> (umbral, matriz y métricas) ·
 <a href="{CERT_ARCHIVO["C1"]}">Certamen 1 auditado</a> · <a href="{CERT_ARCHIVO["C2"]}">Certamen 2 auditado</a> · <a href="{CERT_ARCHIVO["C3"]}">Certamen 3</a> ·
 guía escrita <a href="{desde_visual("07_DATITO/04_EJERCICIOS/guias/overfitting_underfitting.md")}">overfitting_underfitting.md</a> ·
 cuadernillo <a href="{desde_visual("07_DATITO/04_EJERCICIOS/cuadernillos/01_sobreajuste_y_calidad_de_datos.md")}">01_sobreajuste_y_calidad_de_datos.md</a>.</p>
@@ -1016,6 +1019,7 @@ def main():
     claves = {f for f in os.listdir(VISUAL) if re.match(r"\d\d_.+\.html$", f) and f != PORTADA}
     claves |= {c["visual"].split("#")[0] for c in CURSO["con_visual"]}
     claves.add(desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html"))
+    claves.add(desde_visual("07_DATITO/04_EJERCICIOS/simulador_prediccion_falla.html"))
     for f in sorted(os.listdir(VISUAL)):
         if f.endswith(".html") and f not in claves and f not in (PORTADA, "index.html"):
             print(f"  {f:34} fuera del curso: no se toca")
