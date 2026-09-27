@@ -38,6 +38,7 @@ from urllib.parse import unquote
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VISUAL = os.path.join(RAIZ, "07_DATITO", "01_CONCEPTOS", "visual")
 TRANS_DIR = os.path.join(RAIZ, "05_CLASES", "transcripciones")
+PORTADAS = {"00_index.html", "index.html"}  # portada y redireccion: no son clases
 
 MARCA_MD = re.compile(r"\*\*\[(\d+:\d{2}:\d{2})\]\*\*\s*(.*)")
 MARCA = re.compile(r"\b(\d:\d{2}:\d{2})\b")
@@ -84,7 +85,8 @@ def texto_plano(fragmento):
 # --------------------------------------------------------------------------
 def revisar(detalle=False):
     fallos, avisos = [], []
-    archivos = sorted(glob.glob(os.path.join(VISUAL, "*.html")))
+    archivos = sorted(a for a in glob.glob(os.path.join(VISUAL, "*.html"))
+                      if not os.path.basename(a).startswith("_"))
     nombres = {os.path.basename(a) for a in archivos}
     contenido = {os.path.basename(a): open(a, encoding="utf-8", errors="replace").read() for a in archivos}
     ids = {n: set(re.findall(r'\bid\s*=\s*["\']([^"\']+)["\']', t)) for n, t in contenido.items()}
@@ -193,13 +195,13 @@ def revisar(detalle=False):
                               f"({mr.group(1)[:38]}…): «{' '.join(cita.split())[:70]}»")
 
         # --- navegacion y etiquetas
-        if n != "index.html" and "<!-- datito:nav:inicio -->" not in t:
+        if n not in PORTADAS and "<!-- datito:nav:inicio -->" not in t:
             fallos.append(f"{n}: falta el bloque de navegacion (correr construir_navegacion.py)")
-        if n not in ("index.html",) and not re.search(r"\[(FUENTE|INFERENCIA|DATITO)", texto_plano(t)):
+        if n not in PORTADAS and not re.search(r"\[(FUENTE|INFERENCIA|DATITO)", texto_plano(t)):
             avisos.append(f"{n}: sin ninguna etiqueta G4")
 
     for n in nombres:
-        if n != "index.html" and not (entrantes[n] - {"index.html"}):
+        if n not in PORTADAS and not (entrantes[n] - PORTADAS):
             avisos.append(f"{n}: ningun otro visual enlaza aqui (solo el indice)")
 
     # --- mapa de ensenanza

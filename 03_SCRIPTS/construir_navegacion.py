@@ -16,8 +16,14 @@ QUE HACE
          <!-- datito:dudas:inicio -->  ...  <!-- datito:dudas:fin -->
      (antes del <footer>). Asi nada de lo que Datito responde queda solo en la
      terminal (spec.md G9, REGLA UNO-B).
-  3. Genera visual/index.html: ruta de repaso del certamen, dudas
-     resueltas, distinciones (desde patron_evaluacion.md), cadenas y clases.
+  3. Genera 01_CONCEPTOS/visual/00_index.html (la portada: clases, ruta de
+     repaso, dudas, distinciones, cadenas y transcripciones) e index.html, que
+     solo redirige a la portada.
+
+Las clases que viven fuera de visual/ (certamenes en 04_EJERCICIOS, la clase
+de regresion en 02_REFERENCIA) reciben los mismos bloques: los enlaces se
+escriben relativos a visual/ y se reescriben para la carpeta real del archivo.
+_TEMPLATE_CANONICO.html nunca se toca.
 
 Es idempotente: correrlo dos veces deja el mismo resultado. Lo que esta fuera
 de los marcadores no se toca.
@@ -38,6 +44,7 @@ MULTI-CURSO (ADR-001)
 """
 import argparse
 import html
+import json
 import os
 import re
 import sys
@@ -93,6 +100,39 @@ RUTAS = resolver_rutas(cargar_config())
 VISUAL = str(RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual") if (RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual").exists() else str(RUTAS["visual"])
 DUDAS = str(RUTAS["dudas"])
 CLASES_YAML = str(RUTAS["clases"])
+PORTADA = "00_index.html"
+PATRON = os.path.join(RAIZ, "07_DATITO", "06_AUDITORIAS", "patron_evaluacion.md")
+
+
+def desde_visual(ruta_repo):
+    """Ruta de un archivo del repo vista desde visual/, en formato URL."""
+    return Path(os.path.relpath(os.path.join(RAIZ, ruta_repo), VISUAL)).as_posix()
+
+
+def clave_de(ruta_abs):
+    """La clave con que clases.yaml y dudas.yaml nombran un archivo."""
+    return Path(os.path.relpath(ruta_abs, VISUAL)).as_posix()
+
+
+def relinkear(bloque, ruta_abs):
+    """Reescribe los href relativos a visual/ para el archivo que recibe el bloque."""
+    base = os.path.dirname(os.path.abspath(ruta_abs))
+    if os.path.normcase(base) == os.path.normcase(os.path.abspath(VISUAL)):
+        return bloque
+
+    def uno(m):
+        href = m.group(1)
+        if not href or href.startswith(("#", "http:", "https:", "mailto:", "javascript:")):
+            return m.group(0)
+        ruta, _, frag = href.partition("#")
+        destino = os.path.normpath(os.path.join(VISUAL, ruta))
+        if os.path.normcase(destino) == os.path.normcase(os.path.abspath(ruta_abs)):
+            nuevo = "" if frag else os.path.basename(destino)
+        else:
+            nuevo = Path(os.path.relpath(destino, base)).as_posix()
+        return f'href="{nuevo}{"#" + frag if frag else ""}"'
+
+    return re.sub(r'href="([^"]*)"', uno, bloque)
 ESTADO_DUDA = {
     "resuelta": "resuelta en la sesión",
     "abierta": "quedó abierta en la sesión: aquí está la respuesta",
@@ -111,14 +151,19 @@ VISUAL_DE = {
     "validacion_cruzada": "06_validacion_cruzada.html",
     "generalizacion": "07_generalizacion.html",
     "overfitting_underfitting": "08_overfitting_underfitting.html",
-    "regresion": "09_regresion.html",
+    "regresion": "../../02_REFERENCIA/clase6_regresion.html",
     "clasificacion": "10_clasificacion.html",
     "matriz_confusion": "11_matriz_confusion.html",
     "metricas_clasificacion": "12_metricas_clasificacion.html",
     "roc_auc": "13_roc_auc.html",
-    "arboles_decision": "14_arboles_decision.html",
+    "arboles_decision": "14_arboles_decision.html#arboles",
+    "random_forest": "14_arboles_decision.html#random-forest",
+    "gradient_boosting": "14_arboles_decision.html#boosting",
+    "ensembles": "14_arboles_decision.html#ensambles",
     "redes_neuronales": "18_redes_neuronales.html",
-    "deep_learning": "19_deep_learning.html",
+    "deep_learning": "19_deep_learning.html#deep-learning",
+    "llm": "19_deep_learning.html#llm",
+    "agentes_ia": "19_deep_learning.html#agentes",
 }
 
 # Preguntas de certamen que entrena cada concepto. Fuente: patron_evaluacion.md
@@ -128,27 +173,51 @@ CERTAMEN = {
     "fundamentos_ciencia_datos": [("C1", "p1"), ("C1", "p2"), ("C1", "p3"), ("C1", "p4"),
                                   ("C1", "p7"), ("C1", "p8"), ("C2", "p10"), ("C2", "p11")],
     "datos_features_target": [("C1", "p6"), ("C1", "p9a"), ("C2", "p3")],
-    "eda": [("C1", "p9a"), ("C2", "p4"), ("C2", "p11")],
-    "limpieza_preparacion": [("C1", "p9a"), ("C1", "p9b")],
+    "eda": [("C1", "p9a"), ("C2", "p4"), ("C2", "p11"), ("C3", "p3a"), ("C3", "p3b")],
+    "limpieza_preparacion": [("C1", "p9a"), ("C1", "p9b"), ("C3", "p3b")],
     "train_validation_test": [("C2", "p2"), ("C2", "p7")],
     "validacion_cruzada": [("C2", "p3")],
     "generalizacion": [("C2", "p2"), ("C2", "p3"), ("C2", "p7")],
-    "overfitting_underfitting": [("C2", "p2"), ("C2", "p3"), ("C2", "p7")],
-    "regresion": [("C2", "p7")],
+    "overfitting_underfitting": [("C2", "p2"), ("C2", "p3"), ("C2", "p7"), ("C3", "p2a"), ("C3", "p2b")],
+    "regresion": [("C2", "p7"), ("C3", "p2a"), ("C3", "p2c")],
     "clasificacion": [("C1", "p6"), ("C2", "p4")],
-    "matriz_confusion": [("C2", "p8")],
-    "metricas_clasificacion": [("C2", "p4"), ("C2", "p8")],
-    "roc_auc": [("C2", "p9")],
+    "matriz_confusion": [("C2", "p8"), ("C3", "p1a")],
+    "metricas_clasificacion": [("C2", "p4"), ("C2", "p8"), ("C3", "p1a")],
+    "roc_auc": [("C2", "p9"), ("C3", "p1a"), ("C3", "p1b"), ("C3", "p1c"), ("C3", "p1d")],
     "arboles_decision": [],
     "random_forest": [],
     "gradient_boosting": [],
     "ensembles": [("C2", "p1")],
     "redes_neuronales": [("C2", "p6")],
     "deep_learning": [("C2", "p6")],
-    "llm": [("C2", "p5")],
-    "agentes_ia": [("C2", "p5")],
+    "llm": [("C2", "p5"), ("C3", "p3c")],
+    "agentes_ia": [("C2", "p5"), ("C3", "p3d")],
 }
-CERT_ARCHIVO = {"C1": "certamen_1.html", "C2": "certamen_2.html"}
+CERT_ARCHIVO = {"C1": "../../04_EJERCICIOS/certamen_1.html",
+                "C2": "../../04_EJERCICIOS/certamen_2.html",
+                "C3": "../../04_EJERCICIOS/certamen_3.html"}
+
+# Certamen 3 leido desde las clases: (pregunta, que usa, [(texto, destino)]).
+C3_ITEMS = [
+    ("p1a", "De los conteos a la curva (FPR, TPR)", [
+        ("Clase 12", "11_matriz_confusion.html"), ("Clase 13", "12_metricas_clasificacion.html"),
+        ("Clase 14 · simulador", "13_roc_auc.html#simulador")]),
+    ("p1b", "Qué curva es mejor", [
+        ("Clase 14 · punto y modelo", "13_roc_auc.html#p9"), ("AUC", "13_roc_auc.html#auc")]),
+    ("p1c", "Umbral para detectar a todos", [("Clase 14 · simulador", "13_roc_auc.html#simulador")]),
+    ("p1d", "Falsos positivos al mes", [("Clase 14 · de la tasa a personas", "13_roc_auc.html#prevalencia")]),
+    ("p2a", "Grado 10 y error de entrenamiento", [
+        ("Clase 5 · polinomio", "../../02_REFERENCIA/clase6_regresion.html#modelo-lineal"),
+        ("Clase 10 · brecha", "08_overfitting_underfitting.html#brecha")]),
+    ("p2b", "Grado para datos nuevos", [("Clase 10 · brecha", "08_overfitting_underfitting.html#brecha")]),
+    ("p2c", "Media, desviación y RMSE", [("Clase 6 · costo", "09_regresion.html#costo")]),
+    ("p3a", "Leer dos paneles de adopción", [
+        ("Clase 3 · la forma", "03_eda.html#forma"), ("integridad visual", "03_eda.html#integridad")]),
+    ("p3b", "Histograma con dos montones", [
+        ("Clase 3", "03_eda.html#forma"), ("Clase 4 · verificar", "04_limpieza_preparacion.html#verificar")]),
+    ("p3c", "Límites de un LLM aislado", [("Clase 18 · LLM", "19_deep_learning.html#llm")]),
+    ("p3d", "Por qué la instrucción es de un agente", [("Clase 18 · agentes", "19_deep_learning.html#agentes")]),
+]
 
 # Visuales que no son de un concepto, y los que cubren varios.
 ESPECIALES = {
@@ -161,9 +230,12 @@ ESPECIALES = {
         "ensembles", "llm", "agentes_ia", "redes_neuronales"],
         "rol": "certamen", "sesion": "2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos",
         "rango": ("0:11:54", "2:01:28")},
+    "certamen_3.html": {"titulo": "Certamen 3", "conceptos": [
+        "roc_auc", "matriz_confusion", "metricas_clasificacion", "overfitting_underfitting",
+        "regresion", "eda", "limpieza_preparacion", "llm", "agentes_ia"], "rol": "certamen"},
     "triaje_de_problemas.html": {"titulo": "Triaje de problemas", "conceptos": [], "rol": "herramienta"},
-    "regresion_y_costo.html": {"titulo": "Función de costo, error y R²",
-                               "conceptos": ["regresion"], "rol": "clase"},
+    "09_regresion.html": {"titulo": "Función de costo, error y R²",
+                          "conceptos": ["regresion"], "rol": "laboratorio"},
 }
 
 # Orden de repaso para el certamen presencial (pedido del alumno, 2026-09-21).
@@ -209,7 +281,8 @@ def cargar_curso(grafo):
     data = cargar(CLASES_YAML)
     clases = sorted(data["clases"], key=lambda c: c["n"])
     CURSO["clases"] = clases
-    CURSO["unidades"] = {int(k): v for k, v in data["unidades"].items()}
+    CURSO["unidades"] = {int(k): (v.get("titulo") if isinstance(v, dict) else v)
+                         for k, v in data["unidades"].items()}
     por_archivo = {}
     for c in clases:
         if c.get("visual"):
@@ -326,7 +399,7 @@ def bloque_leccion(archivo, conceptos=()):
     ant, sig = vecina(clases[0], -1), vecina(clases[-1], +1)
     izq = enlace_clase(ant, archivo, "← {t}") if ant else '<span class="apagado">Inicio del curso</span>'
     der = enlace_clase(sig, archivo, "{t} →") if sig else '<span class="apagado">Fin del curso</span>'
-    nav = (f'<nav class="pasos"><span>{izq}</span><a href="index.html">Índice del curso</a>'
+    nav = (f'<nav class="pasos"><span>{izq}</span><a href="{PORTADA}">Índice del curso</a>'
            f'<span>{der}</span></nav>')
     js = ("<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){"
           "var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';"
@@ -363,7 +436,7 @@ def bloque_cierre(archivo):
             cont = (f'<a class="continuar" href="{sig["visual"]}">Continuar → Clase {sig["n"]} · '
                     f'{esc(sig["titulo"])}</a>')
         else:
-            cont = '<a class="continuar" href="index.html">Volver al índice del curso</a>'
+            cont = f'<a class="continuar" href="{PORTADA}">Volver al índice del curso</a>'
         secs.append(
             f'<section class="dcierre" id="cierre-clase-{c["n"]}">\n'
             f'<h2>Cierre de la Clase {c["n"]} · {esc(c["titulo"])}</h2>\n'
@@ -382,27 +455,53 @@ def bloque_cierre(archivo):
     return f"{CINI}\n{CSS_CIERRE}\n" + "\n".join(secs) + f"\n{CFIN}"
 
 
-def inyectar_cierre(ruta, bloque, revisar):
-    with open(ruta, encoding="utf-8") as f:
-        t = f.read()
-    patron_c = re.escape(CINI) + r".*?" + re.escape(CFIN)
-    if CINI in t:
-        nuevo = re.sub(patron_c, lambda _: bloque or "", t, count=1, flags=re.S)
-    elif bloque:
-        m = (re.search(re.escape(DINI), t) or re.search(r"<footer", t)
-             or re.search(r"</main>", t) or re.search(r"</body>", t))
-        if not m:
-            return "sin lugar para el cierre"
-        nuevo = t[:m.start()] + bloque + "\n" + t[m.start():]
-    else:
-        return "sin cierre"
+def _comentarios(t):
+    return [m.span() for m in re.finditer(r"<!--.*?-->", t, flags=re.S)]
+
+
+def colocar(t, ini, fin, bloque, patrones, despues=False):
+    """Reemplaza el bloque ini..fin o lo inserta junto al primer patron que no
+    este dentro de un comentario HTML (la plantilla menciona <main> en uno).
+    Un bloque que quedo atrapado en un comentario se saca de ahi y se reubica."""
+    m = re.search(re.escape(ini) + r".*?" + re.escape(fin), t, flags=re.S)
+    if m:
+        hueco = t[:m.start()] + " " + t[m.end():]
+        if not any(a <= m.start() < b for a, b in _comentarios(hueco)):
+            return t[:m.start()] + (bloque or "") + t[m.end():]
+        s, e = m.start(), m.end()
+        if t[s - 1:s] == "\n" and t[e:e + 1] == "\n":
+            s, e = s - 1, e + 1
+        t = t[:s] + t[e:]
+    if not bloque:
+        return t
+    spans = _comentarios(t)
+    for pat in patrones:
+        for m in re.finditer(pat, t):
+            if not any(a <= m.start() < b for a, b in spans):
+                if despues:
+                    return t[:m.end()] + "\n" + bloque + "\n" + t[m.end():]
+                return t[:m.start()] + bloque + "\n" + t[m.start():]
+    return None
+
+
+def escribir_si_cambia(ruta, t, nuevo, revisar):
     if nuevo == t:
-        return "cierre sin cambios"
+        return False
     if not revisar:
         with open(ruta, "w", encoding="utf-8", newline="") as f:
             f.write(nuevo)
-    return "cierre actualizado"
+    return True
 
+
+def inyectar_cierre(ruta, bloque, revisar):
+    with open(ruta, encoding="utf-8") as f:
+        t = f.read()
+    if CINI not in t and not bloque:
+        return "sin cierre"
+    nuevo = colocar(t, CINI, CFIN, bloque, [re.escape(DINI), r"<footer", r"</main>", r"</body>"])
+    if nuevo is None:
+        return "sin lugar para el cierre"
+    return "cierre actualizado" if escribir_si_cambia(ruta, t, nuevo, revisar) else "cierre sin cambios"
 MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 HABLA = {"titular": "profesor", "segundo_docente": "segundo docente",
          "ayudantia": "ayudantía", "alumnos": "alumnos", "invitado": "invitado"}
@@ -493,11 +592,11 @@ def li_tramo(t, clases):
 
 def bloque_nav(archivo, conceptos, grafo, nombres, mapa, especial=None):
     g = grafo["conceptos"]
-    filas = ['<div class="fila"><a href="index.html">← Índice de repaso</a>'
+    filas = [f'<div class="fila"><a href="{PORTADA}">← Índice del curso</a>'
              ' · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>']
     if especial and especial["rol"] == "laboratorio":
         filas.append('<div class="fila"><span class="et">Laboratorio</span>'
-                     'la clase completa está en <a href="clase6_regresion.html">clase6_regresion.html</a></div>')
+                     f'la clase completa está en <a href="{VISUAL_DE["regresion"]}">Clase 5 · Regresión</a></div>')
     tramos_html = []
     for cid in conceptos:
         d = g[cid]
@@ -537,18 +636,11 @@ def bloque_nav(archivo, conceptos, grafo, nombres, mapa, especial=None):
 def inyectar(ruta, bloque, revisar):
     with open(ruta, encoding="utf-8") as f:
         t = f.read()
-    if INI in t and FIN in t:
-        nuevo = re.sub(re.escape(INI) + r".*?" + re.escape(FIN), lambda _: bloque, t, count=1, flags=re.S)
-    else:
-        m = re.search(r"<main[^>]*>", t) or re.search(r"<body[^>]*>", t)
-        if not m:
-            return "sin <main> ni <body>"
-        nuevo = t[:m.end()] + "\n" + bloque + "\n" + t[m.end():]
-    if nuevo == t:
+    nuevo = colocar(t, INI, FIN, bloque, [r"<main[^>]*>", r"<body[^>]*>"], despues=True)
+    if nuevo is None:
+        return "sin <main> ni <body>"
+    if not escribir_si_cambia(ruta, t, nuevo, revisar):
         return "sin cambios"
-    if not revisar:
-        with open(ruta, "w", encoding="utf-8", newline="") as f:
-            f.write(nuevo)
     return "actualizado" if INI in t else "inyectado"
 
 
@@ -611,30 +703,20 @@ def bloque_dudas(archivo, dudas, nombres):
 def inyectar_dudas(ruta, bloque, revisar):
     with open(ruta, encoding="utf-8") as f:
         t = f.read()
-    patron_bloque = re.escape(DINI) + r".*?" + re.escape(DFIN)
-    if DINI in t:
-        nuevo = re.sub(patron_bloque, lambda _: bloque or "", t, count=1, flags=re.S)
-        if not bloque:
-            nuevo = re.sub(r"\n{3,}", "\n\n", nuevo)
-    elif bloque:
-        m = (re.search(r"<footer", t) or re.search(r"</main>", t) or re.search(r"</body>", t))
-        if not m:
-            return "sin lugar para las dudas"
-        nuevo = t[:m.start()] + bloque + "\n" + t[m.start():]
-    else:
+    if DINI not in t and not bloque:
         return "sin dudas"
-    if nuevo == t:
-        return "dudas sin cambios"
-    if not revisar:
-        with open(ruta, "w", encoding="utf-8", newline="") as f:
-            f.write(nuevo)
-    return "dudas actualizadas"
+    nuevo = colocar(t, DINI, DFIN, bloque, [r"<footer", r"</main>", r"</body>"])
+    if nuevo is None:
+        return "sin lugar para las dudas"
+    if not bloque:
+        nuevo = re.sub(r"\n{3,}", "\n\n", nuevo)
+    return "dudas actualizadas" if escribir_si_cambia(ruta, t, nuevo, revisar) else "dudas sin cambios"
 
 
 # --------------------------------------------------------------------------
 def distinciones():
     """Lee la tabla de §1 de patron_evaluacion.md: la fuente unica."""
-    with open(os.path.join(RAIZ, "07_DATITO", "patron_evaluacion.md"), encoding="utf-8") as f:
+    with open(PATRON, encoding="utf-8") as f:
         texto = f.read()
     return re.findall(r"^\| (P\d+) \| (.+?) \|\s*$", texto, flags=re.M)
 
@@ -716,7 +798,7 @@ def indice(grafo, nombres, mapa, dudas=()):
         ten = ' <span class="ten">⚑ tensión</span>' if d.get("tension") else ""
         cert = enlaces_certamen(CERTAMEN.get(cid, [])) or "—"
         n = len(mapa["conceptos"].get(cid, []))
-        return (f"<tr><td>{enlace_concepto(cid, 'index.html', nombres)}{ten}</td>"
+        return (f"<tr><td>{enlace_concepto(cid, PORTADA, nombres)}{ten}</td>"
                 f"<td>{esc(nota)}</td><td class=\"num\">{d.get('importancia_curricular')}</td>"
                 f"<td>{esc(pe.get('peso', '?'))}</td><td>{cert}</td><td class=\"num\">{n}</td></tr>")
 
@@ -727,22 +809,28 @@ def indice(grafo, nombres, mapa, dudas=()):
 
     filas_d = []
     for p, texto in distinciones():
-        vis = ", ".join(enlace_concepto(c, "index.html", nombres) for c in DIST_VISUAL.get(p, [])) or "—"
-        filas_d.append(f'<tr><td><a href="certamen_2.html#{p.lower()}">C2 {p}</a></td>'
+        vis = ", ".join(enlace_concepto(c, PORTADA, nombres) for c in DIST_VISUAL.get(p, [])) or "—"
+        filas_d.append(f'<tr><td><a href="{CERT_ARCHIVO["C2"]}#{p.lower()}">C2 {p}</a></td>'
                        f"<td>{esc(re.sub(r'[*]', '', texto))}</td><td>{vis}</td></tr>")
     for p, texto, cs in C1_ITEMS:
-        vis = ", ".join(enlace_concepto(c, "index.html", nombres) for c in cs) or "solo en el certamen auditado"
-        filas_d.append(f'<tr><td><a href="certamen_1.html#{p}">C1 {p.upper()}</a></td>'
+        vis = ", ".join(enlace_concepto(c, PORTADA, nombres) for c in cs) or "solo en el certamen auditado"
+        filas_d.append(f'<tr><td><a href="{CERT_ARCHIVO["C1"]}#{p}">C1 {p.upper()}</a></td>'
                        f"<td>{esc(texto)}</td><td>{vis}</td></tr>")
+
+    filas_c3 = []
+    for p, texto, destinos in C3_ITEMS:
+        donde = " · ".join(f'<a href="{d}">{esc(t)}</a>' for t, d in destinos)
+        filas_c3.append(f'<tr><td><a href="{CERT_ARCHIVO["C3"]}#{p}">C3 {p[:2].upper()}{p[2:]}</a></td>'
+                        f"<td>{esc(texto)}</td><td>{donde}</td></tr>")
 
     cadenas = []
     for nombre_cad, ids in grafo["cadenas"].items():
-        pasos = " → ".join(enlace_concepto(c, "index.html", nombres) for c in ids)
+        pasos = " → ".join(enlace_concepto(c, PORTADA, nombres) for c in ids)
         cadenas.append(f"<li><b>{esc(nombre_cad)}</b>: {pasos}</li>")
 
     filas_c = []
     for clave, meta in mapa["clases"].items():
-        href = "../../" + quote(f"{TRANS}/{clave}.md")
+        href = desde_visual(TRANS) + "/" + quote(f"{clave}.md")
         evaluable = "no (práctica)" if meta["tipo"] == "ayudantia" else (
             "sesión de certamen" if meta["tipo"] == "certamen" else "sí")
         en = ", ".join(enlace_clase(clase_n(x)) for x in sorted(usa.get(clave, []))) or "—"
@@ -754,6 +842,8 @@ def indice(grafo, nombres, mapa, dudas=()):
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
 <title>Fundamentos de Ciencia de Datos · el curso de Datito</title>
 <style>
   :root{{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;--azul:#2563eb;--morado:#7c3aed;--ambar:#d97706}}
@@ -788,14 +878,14 @@ def indice(grafo, nombres, mapa, dudas=()):
 lo que necesitas primero a lo que se apoya en eso, con preguntas que intentas antes de ver la respuesta.</p>
 <p><b>Propósito.</b> Que puedas resolver en papel, sin Internet, las preguntas que el profesor realmente hace:
 distinguir conceptos vecinos, calcular a mano e interpretar el resultado
-[FUENTE · Repo: 07_DATITO/patron_evaluacion.md].</p>
+[FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md].</p>
 
 <p>{('<a class="boton" href="' + primera["visual"] + '">Comenzar la Clase 1 →</a>') if primera else ""}
 <a class="boton alt" id="seguir" href="#curso-clases">Seguir donde quedé</a>
 <a class="boton alt" href="#repaso">Repaso del certamen</a>
 <a class="boton alt" href="#dudas">Dudas resueltas</a></p>
 <p>Tu avance (marcas de «Terminé esta clase» en este navegador): <b id="avance">0</b> de
-{len(CURSO["con_visual"])} clases disponibles.</p>
+<b id="total-clases">{len(CURSO["con_visual"])}</b> clases disponibles.</p>
 <div class="barra"><span id="barra"></span></div>
 
 <div class="clave"><b>Cómo usarlo.</b> Abre este archivo con doble clic: no necesita Internet.
@@ -816,8 +906,8 @@ es el estado registrado en <code>progreso.yaml</code> al generar esta página.</
 
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de
-<a href="../patron_evaluacion.md">patron_evaluacion.md</a>: sobreajuste, generalización y validación suman el
-36 % del Certamen 2 y las métricas de clasificación otro 27 % [FUENTE · Repo: 07_DATITO/patron_evaluacion.md].
+<a href="{desde_visual("07_DATITO/06_AUDITORIAS/patron_evaluacion.md")}">patron_evaluacion.md</a>: sobreajuste, generalización y validación suman el
+36 % del Certamen 2 y las métricas de clasificación otro 27 % [FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md].
 Cuando la importancia curricular y el peso en el certamen difieren, se marca ⚑ (G12): lo que menos se pregunta
 puede ser lo que más sostiene al resto.</p>
 <table>{cab}{ruta}</table>
@@ -827,25 +917,28 @@ puede ser lo que más sostiene al resto.</p>
 <h2 id="dudas">2 · Dudas resueltas por Datito, en orden</h2>
 <p>Todo lo que se resolvió en una sesión queda aquí y en el visual del tema, con la respuesta
 correcta y cómo se resuelve (oculta hasta que la abras). Nada queda solo en la terminal.
-Fuente única: <a href="../dudas.yaml">07_DATITO/dudas.yaml</a>.</p>
+Fuente única: <a href="{desde_visual("07_DATITO/dudas.yaml")}">07_DATITO/dudas.yaml</a>.</p>
 {tabla_dudas}
 
 <h2>2b · Distinciones que deciden el certamen</h2>
 <p>Cada pregunta real se resuelve separando dos conceptos vecinos. No evalúa definiciones: evalúa
-discriminación [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §1].</p>
+discriminación [FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §1].</p>
 <table><tr><th>Pregunta</th><th>La distinción</th><th>Dónde se entrena</th></tr>{''.join(filas_d)}</table>
 <div class="nota">Los enunciados del Certamen 1 vienen de un compañero: son fiables; sus respuestas no están
 verificadas. El profesor dijo que cada certamen se arma desde un «pool de preguntas», así que tu versión puede
 diferir [FUENTE · Repo: {TRANS}/05Certamen_Fundamentos_en_Ciencia_de_Datos_24_Julio.md · 0:05:48].</div>
 
 <h2>3 · Mapa por cadenas del currículum</h2>
-<p>De <a href="../grafo.yaml">grafo.yaml</a>: cada cadena es un camino de prerrequisitos.</p>
+<p>De <a href="{desde_visual("07_DATITO/grafo.yaml")}">grafo.yaml</a>: cada cadena es un camino de prerrequisitos.</p>
 <ul>{''.join(cadenas)}</ul>
-<p>Herramientas: <a href="triaje_de_problemas.html">triaje de problemas</a> (¿qué tipo de problema tengo?) ·
-<a href="regresion_y_costo.html">laboratorio de la función de costo</a> ·
-<a href="certamen_1.html">Certamen 1 auditado</a> · <a href="certamen_2.html">Certamen 2 auditado</a> ·
-guía escrita <a href="../guias/overfitting_underfitting.md">overfitting_underfitting.md</a> ·
-cuadernillo <a href="../cuadernillos/01_sobreajuste_y_calidad_de_datos.md">01_sobreajuste_y_calidad_de_datos.md</a>.</p>
+<p>Herramientas: <a href="{desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html")}">triaje de problemas</a> (¿qué tipo de problema tengo?) ·
+<a href="09_regresion.html">laboratorio de la función de costo</a> ·
+<a href="{CERT_ARCHIVO["C1"]}">Certamen 1 auditado</a> · <a href="{CERT_ARCHIVO["C2"]}">Certamen 2 auditado</a> · <a href="{CERT_ARCHIVO["C3"]}">Certamen 3</a> ·
+guía escrita <a href="{desde_visual("07_DATITO/04_EJERCICIOS/guias/overfitting_underfitting.md")}">overfitting_underfitting.md</a> ·
+cuadernillo <a href="{desde_visual("07_DATITO/04_EJERCICIOS/cuadernillos/01_sobreajuste_y_calidad_de_datos.md")}">01_sobreajuste_y_calidad_de_datos.md</a>.</p>
+<h3>Certamen 3, leído desde las clases</h3>
+<p>La prueba sigue en su página. Esta tabla dice en qué clase está cada idea.</p>
+<table><tr><th>Pregunta</th><th>Qué usa del examen</th><th>Dónde se vio</th></tr>{"".join(filas_c3)}</table>
 
 <h2>4 · Clases transcritas</h2>
 <p>La fuente citable de cada visual. Las transcripciones son automáticas y pueden errar en números y términos:
@@ -868,11 +961,12 @@ document.querySelectorAll('[data-marca]').forEach(function(s){{total++;var k=s.g
 var h=localStorage.getItem('datito-clase-'+k)==='1';s.textContent=h?'✓ terminada':'';if(h)n++;
 else if(!seguir){{var a=s.closest('tr').querySelector('a');if(a)seguir=a.getAttribute('href');}}}});
 document.getElementById('avance').textContent=n;
+document.getElementById('total-clases').textContent=total;
 document.getElementById('barra').style.width=(total?Math.round(100*n/total):0)+'%';
 if(seguir)document.getElementById('seguir').setAttribute('href',seguir);}}catch(e){{}}}})();</script>
 
 <footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> el {date.today().isoformat()} desde
-<code>07_DATITO/clases.yaml</code>, <code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/patron_evaluacion.md</code>
+<code>07_DATITO/clases.yaml</code>, <code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/06_AUDITORIAS/patron_evaluacion.md</code>
 y <code>05_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
 </main>
 </body>
@@ -917,32 +1011,57 @@ def main():
     for cid, destino in VISUAL_DE.items():
         cubre.setdefault(destino.split("#")[0], []).append(cid)
 
-    archivos = sorted(f for f in os.listdir(VISUAL) if f.endswith(".html") and f != "index.html")
-    for f in archivos:
+    # Solo las paginas del curso: los visuales numerados, las clases que viven
+    # fuera de visual/ y las herramientas declaradas. Nunca la plantilla.
+    claves = {f for f in os.listdir(VISUAL) if re.match(r"\d\d_.+\.html$", f) and f != PORTADA}
+    claves |= {c["visual"].split("#")[0] for c in CURSO["con_visual"]}
+    claves.add(desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html"))
+    for f in sorted(os.listdir(VISUAL)):
+        if f.endswith(".html") and f not in claves and f not in (PORTADA, "index.html"):
+            print(f"  {f:34} fuera del curso: no se toca")
+
+    for clave in sorted(claves):
+        ruta = os.path.normpath(os.path.join(VISUAL, clave))
+        f = os.path.basename(ruta)
         esp = ESPECIALES.get(f)
-        conceptos = esp["conceptos"] if esp else cubre.get(f, [])
-        if not esp and not conceptos:
-            print(f"  {f:34} sin concepto en el catalogo: solo enlace al indice")
-        bloque = bloque_nav(f, conceptos if not (esp and esp["rol"] == "certamen") else [],
+        conceptos = esp["conceptos"] if esp else cubre.get(clave, [])
+        bloque = bloque_nav(clave, conceptos if not (esp and esp["rol"] == "certamen") else [],
                             grafo, nombres, mapa, esp)
         if esp and esp["rol"] == "certamen":
             # los certamenes enlazan los conceptos que evaluan, sin repetir tramos
-            links = " · ".join(enlace_concepto(c, f, nombres) for c in esp["conceptos"])
+            links = " · ".join(enlace_concepto(c, clave, nombres) for c in esp["conceptos"])
             bloque = bloque.replace("</nav>", f'<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>')
-        estado = inyectar(os.path.join(VISUAL, f), bloque, a.revisar)
-        estado_c = inyectar_cierre(os.path.join(VISUAL, f), bloque_cierre(f), a.revisar)
-        estado_d = inyectar_dudas(os.path.join(VISUAL, f), bloque_dudas(f, dudas, nombres), a.revisar)
-        print(f"  {f:34} {estado} · {estado_c} · {estado_d}")
+        cierre, dudas_b = bloque_cierre(clave), bloque_dudas(clave, dudas, nombres)
+        estado = inyectar(ruta, relinkear(bloque, ruta), a.revisar)
+        estado_c = inyectar_cierre(ruta, cierre and relinkear(cierre, ruta), a.revisar)
+        estado_d = inyectar_dudas(ruta, dudas_b and relinkear(dudas_b, ruta), a.revisar)
+        print(f"  {clave:52} {estado} · {estado_c} · {estado_d}")
 
-    ruta_idx = os.path.join(VISUAL, "index.html")
-    contenido = indice(grafo, nombres, mapa, dudas)
-    previo = open(ruta_idx, encoding="utf-8").read() if os.path.exists(ruta_idx) else ""
-    # la fecha del pie no cuenta como cambio
-    iguales = re.sub(r"el \d{4}-\d{2}-\d{2}", "", previo) == re.sub(r"el \d{4}-\d{2}-\d{2}", "", contenido)
-    if not iguales and not a.revisar:
-        with open(ruta_idx, "w", encoding="utf-8", newline="\n") as f:
-            f.write(contenido)
-    print(f"  {'index.html':34} {'sin cambios' if iguales else ('cambiaria' if a.revisar else 'generado')}")
+    salidas = {
+        PORTADA: indice(grafo, nombres, mapa, dudas),
+        "index.html": ('<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
+                       f'<meta http-equiv="refresh" content="0; url={PORTADA}">\n'
+                       '<title>Fundamentos de Ciencia de Datos · el curso de Datito</title>\n'
+                       '</head>\n<body>\n'
+                       f'<p>El curso empieza en <a href="{PORTADA}">{PORTADA}</a>.</p>\n'
+                       '</body>\n</html>\n'),
+        "lecturas.json": json.dumps({
+            "curso": "Fundamentos de Ciencia de Datos", "semestre": "T2-2026",
+            "universidad": "Universidad de Concepción",
+            "total_clases": len(CURSO["clases"]), "lecturas_disponibles": len(CURSO["con_visual"]),
+            "lecturas": [{"clase": c["n"], "titulo": f'Clase {c["n"]} · {c["titulo"]}', "href": c["visual"]}
+                         for c in CURSO["con_visual"]],
+        }, ensure_ascii=False, indent=2) + "\n",
+    }
+    for nombre, contenido in salidas.items():
+        ruta_idx = os.path.join(VISUAL, nombre)
+        previo = open(ruta_idx, encoding="utf-8", errors="replace").read() if os.path.exists(ruta_idx) else ""
+        # la fecha del pie no cuenta como cambio
+        iguales = re.sub(r"el \d{4}-\d{2}-\d{2}", "", previo) == re.sub(r"el \d{4}-\d{2}-\d{2}", "", contenido)
+        if not iguales and not a.revisar:
+            with open(ruta_idx, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(contenido)
+        print(f"  {nombre:52} {'sin cambios' if iguales else ('cambiaria' if a.revisar else 'generado')}")
 
 
 if __name__ == "__main__":

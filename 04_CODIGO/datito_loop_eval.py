@@ -60,7 +60,8 @@ def gates(html: str) -> dict[str, bool]:
     # offline_draw: si hay intención de dibujo (canvas/svg o lib charts), exigir canvas/svg local
     # NO dispara por "roc" en prosa ni "procedimiento"
     has_canvas_or_svg = bool(re.search(r"<canvas|<svg", live, re.I))
-    mentions_chart_lib = bool(re.search(r"Chart|Plotly|D3\.js|Vega|matplotlib|ggplot", live, re.I))
+    # \b evita falsos positivos como "Vega" dentro de "navegación"
+    mentions_chart_lib = bool(re.search(r"\b(?:Chart|Plotly|D3\.js|Vega|matplotlib|ggplot)\b", live, re.I))
     if has_canvas_or_svg or mentions_chart_lib:
         g["offline_draw"] = has_canvas_or_svg or bool(re.search(r"</svg>|getContext\(\s*['\"]2d['\"]", live, re.I))
     return g

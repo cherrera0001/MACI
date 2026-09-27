@@ -104,7 +104,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument(
         "--path",
-        default=str(ROOT / "07_DATITO" / "visual" / "certamen3_examen_fcd2026.html"),
+        default=str(ROOT / "07_DATITO" / "04_EJERCICIOS" / "certamen_3.html"),
     )
     args = ap.parse_args()
     html_path = Path(args.path)
