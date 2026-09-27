@@ -1,0 +1,129 @@
+# Historias de Usuario - Datito
+# Mapeado a clases.yaml: cada clase es una historia de usuario completable
+
+historias:
+  - id: "US-01"
+    clase: 1
+    titulo: "Entender qué es Ciencia de Datos"
+    historia: "Como Cristóbal, quiero comprender los conceptos fundacionales de ciencia de datos, para aplicarlos a mis propios proyectos."
+    conceptos: [fundamentos_ciencia_datos]
+    criterio_aceptacion: "Explico qué es ciencia de datos en mis propias palabras y doy un ejemplo de mi proyecto."
+
+  - id: "US-02"
+    clase: 2
+    titulo: "Identificar estructura de datos"
+    historia: "Como Cristóbal, quiero reconocer features y targets en un dataset, para armar pipelines correctos."
+    conceptos: [datos_features_target]
+    criterio_aceptacion: "Identifico features y target en Melbourne housing; distingo variables categóricas y numéricas."
+
+  - id: "US-03"
+    clase: 3
+    titulo: "Explorar datos"
+    historia: "Como Cristóbal, quiero hacer EDA sin sesgo, para entender patrones antes de modelar."
+    conceptos: [eda]
+    criterio_aceptacion: "Describo distribuciones, correlaciones y outliers del dataset Melbourne; propongo hipótesis testables."
+
+  - id: "US-04"
+    clase: 4
+    titulo: "Preparar datos limpios"
+    historia: "Como Cristóbal, quiero limpiar y preparar datos, para entrenar modelos con calidad."
+    conceptos: [limpieza_preparacion]
+    criterio_aceptacion: "Manejo valores faltantes, outliers y transformaciones; documento decisiones."
+
+  - id: "US-05"
+    clase: 5
+    titulo: "Particionar datos correctamente"
+    historia: "Como Cristóbal, quiero partir datos sin fuga temporal, para validar modelos realistamente."
+    conceptos: [particionamiento_temporal]
+    criterio_aceptacion: "Divido Melbourne 2016→train, 2017→test; verifico que no haya información del futuro en el pasado."
+
+  - id: "US-06"
+    clase: 6
+    titulo: "Validar robustez con CV"
+    historia: "Como Cristóbal, quiero aplicar validación cruzada, para asegurar que mi modelo generaliza."
+    conceptos: [validacion_cruzada]
+    criterio_aceptacion: "Implemento k-fold CV; interpreto varianza entre folds; diferencio CV de test."
+
+  - id: "US-07"
+    clase: 7
+    titulo: "Comprender generalización"
+    historia: "Como Cristóbal, quiero entender error de generalización, para diagnosticar si estoy aprendiendo o memorizando."
+    conceptos: [generalizacion]
+    criterio_aceptacion: "Explico por qué un modelo con R² perfecto en train falla en test; propongo soluciones."
+
+  - id: "US-08"
+    clase: 8
+    titulo: "Detectar overfitting"
+    historia: "Como Cristóbal, quiero identificar y evitar overfitting, para construir modelos útiles."
+    conceptos: [overfitting_underfitting]
+    criterio_aceptacion: "Diagnostico overfitting desde gráficas; propongo regularización o reducción de complejidad."
+
+  - id: "US-09"
+    clase: 9
+    titulo: "Predecir con Regresión"
+    historia: "Como Cristóbal, quiero aplicar regresión, para predecir precios y evaluar importancia de features."
+    conceptos: [regresion]
+    criterio_aceptacion: "Entreno regresor en Melbourne; interpreto coeficientes; predigo 2017; calculo MAE y R²."
+
+  - id: "US-10"
+    clase: 10
+    titulo: "Medir calidad de predicción"
+    historia: "Como Cristóbal, quiero usar métricas de regresión, para evaluar si mi modelo es útil."
+    conceptos: [metricas_regresion]
+    criterio_aceptacion: "Calculo MAE, RMSE, R²; elijo métrica según el negocio; explico trade-offs."
+
+  - id: "US-11"
+    clase: 11
+    titulo: "Clasificar con decisiones"
+    historia: "Como Cristóbal, quiero resolver problemas de clasificación, para predecir categorías."
+    conceptos: [clasificacion]
+    criterio_aceptacion: "Entreno clasificador en un dataset; interpreto matriz de confusión; propongo threshold."
+
+  - id: "US-12"
+    clase: 12
+    titulo: "Evaluar clasificadores"
+    historia: "Como Cristóbal, quiero usar métricas de clasificación, para elegir el modelo adecuado."
+    conceptos: [metricas_clasificacion]
+    criterio_aceptacion: "Calculo precision, recall, F1, AUC; distingo cuándo cada una importa; evito optimizar la métrica equivocada."
+
+  - id: "US-13"
+    clase: 13
+    titulo: "Elegir umbral de decisión"
+    historia: "Como Cristóbal, quiero entender ROC/AUC, para elegir threshold según el costo de errores."
+    conceptos: [roc_auc]
+    criterio_aceptacion: "Grafico ROC; interpreto AUC; elijo threshold en base a costo falso-positivo/falso-negativo."
+
+  - id: "US-14"
+    clase: 14
+    titulo: "Usar Árboles de Decisión"
+    historia: "Como Cristóbal, quiero entrenar árboles, para obtener modelos interpretables."
+    conceptos: [arboles_decision]
+    criterio_aceptacion: "Entreno árbol; interpreto splits; obtengo importancia de features; evito overfitting."
+
+  - id: "US-15"
+    clase: 15
+    titulo: "Combinar modelos"
+    historia: "Como Cristóbal, quiero usar ensambles, para mejorar predicciones."
+    conceptos: [ensambles]
+    criterio_aceptacion: "Entreno random forest y gradient boosting; comparo con árbol simple; interpreto mejora."
+
+  - id: "US-16"
+    clase: 16
+    titulo: "Comprender Deep Learning"
+    historia: "Como Cristóbal, quiero entender redes neuronales, para saber cuándo usarlas."
+    conceptos: [redes_neuronales, deep_learning]
+    criterio_aceptacion: "Explico qué es una neurona, capas, activación; reconozco cuándo DL es overkill."
+
+  - id: "US-17"
+    clase: 17
+    titulo: "Interpretar resultados"
+    historia: "Como Cristóbal, quiero ir de números a decisiones, para comunicar hallazgos al negocio."
+    conceptos: [interpretacion]
+    criterio_aceptacion: "Presento resultados sin jerga; conecto métricas a impacto; reconozco limitaciones."
+
+  - id: "US-18"
+    clase: 18
+    titulo: "Transferir aprendizaje"
+    historia: "Como Cristóbal, quiero aplicar conceptos a nuevos datos, para resolver problemas reales."
+    conceptos: [transferencia]
+    criterio_aceptacion: "Resuelvo un problema nuevo usando técnicas aprendidas; comparo con Melbourne; reconozco diferencias."

@@ -25,6 +25,29 @@ Datito es el tutor; el razonamiento lo hace Cristóbal.
 
 ---
 
+## 1a · Historias de Usuario
+
+Cada clase en `clases.yaml` corresponde a una historia de usuario completable.
+Las historias mapean a conceptos del currículum y definen criterios de aceptación
+auditables: explicar, aplicar en Melbourne, interpretar resultados, transferir a
+un problema nuevo.
+
+**Fuente:** `07_DATITO/historias_usuario.yaml` — 18 historias, numeradas US-01 a
+US-18, cada una con criterio de aceptación concreto. No hay historia de usuario
+sin clase; no hay clase sin historia.
+
+Ejemplo:
+
+- **US-09:** Predecir con Regresión
+  - _Criterio:_ Entreno regresor en Melbourne; interpreto coeficientes; predigo
+    2017; calculo MAE y R².
+
+El orden de las historias en `clases.yaml` define la secuencia de aprendizaje.
+Una historia no se da por completa hasta que todos sus criterios tengan evidencia
+en `progreso.yaml`.
+
+---
+
 ## 2 · Garantías
 
 ### G1 — Se detiene y espera de verdad
