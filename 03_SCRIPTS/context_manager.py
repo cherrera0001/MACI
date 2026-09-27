@@ -112,8 +112,11 @@ class Context:
             return
 
         course_root = self.raiz / "courses" / self.course_id
+        if not course_root.exists() and self._resolver_un_curso():
+            return
         if not course_root.exists():
-            available = sorted([d.name for d in (self.raiz / "courses").iterdir() if d.is_dir()])
+            cursos = self.raiz / "courses"
+            available = sorted(d.name for d in cursos.iterdir() if d.is_dir()) if cursos.exists() else []
             self.error = f"Curso '{self.course_id}' no existe.\nCursos disponibles: {', '.join(available)}"
             return
 
@@ -178,6 +181,40 @@ class Context:
             entregas=learner_root / "entregas",
             mapa_ensenanza=self.raiz / "05_CLASES" / "mapa_ensenanza.yaml",
         )
+
+    def _resolver_un_curso(self) -> bool:
+        """Layout vigente de un solo curso: todo vive en 07_DATITO/ (decisión H-01)."""
+        d = self.raiz / "07_DATITO"
+        config = d / "datito.config.yaml"
+        if not config.exists():
+            return False
+        with open(config, encoding="utf-8") as f:
+            datos = yaml.safe_load(f) or {}
+        if datos.get("course_id") != self.course_id:
+            return False
+        if self.learner_id and datos.get("learner_id") != self.learner_id:
+            self.error = f"Estudiante '{self.learner_id}' no existe en el curso '{self.course_id}'."
+            return True
+        self.learner_id = self.learner_id or datos.get("learner_id")
+        self.paths = ContextPaths(
+            course_root=d,
+            learner_root=d,
+            course_config=config,
+            curriculum=d / "curriculum.yaml",
+            clases=d / "clases.yaml",
+            grafo=d / "grafo.yaml",
+            visual=d / "01_CONCEPTOS" / "visual",
+            referencia=d / "02_REFERENCIA",
+            learner_config=config,
+            progreso=d / "progreso.yaml",
+            errores_conceptuales=d / "errores_conceptuales.yaml",
+            estado=d / "estado.md",
+            dudas=d / "dudas.yaml",
+            bitacora=d / "07_BITACORA",
+            entregas=d / "04_EJERCICIOS" / "entregas",
+            mapa_ensenanza=self.raiz / "05_CLASES" / "mapa_ensenanza.yaml",
+        )
+        return True
 
     def is_valid(self) -> bool:
         """Retorna True si contexto es válido."""
@@ -254,6 +291,13 @@ def get_context(
                 learner_id = learner_id or saved.get("learner_id")
         except (json.JSONDecodeError, KeyError):
             pass  # No válido, ignorar
+
+    config = raiz / "07_DATITO" / "datito.config.yaml"
+    if config.exists() and not course_id:
+        with open(config, encoding="utf-8") as f:
+            datos = yaml.safe_load(f) or {}
+        course_id = datos.get("course_id")
+        learner_id = learner_id or datos.get("learner_id")
 
     ctx = Context(course_id=course_id, learner_id=learner_id, raiz=raiz)
 

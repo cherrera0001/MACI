@@ -71,7 +71,7 @@ F:\MACI/
 │   ├── transcripciones/          (faster-whisper + markdown)
 │   ├── laminas/                  (presentaciones)
 │   ├── mapa_ensenanza.yaml       (quién enseñó qué, cuándo)
-│   └── [22 clases ordenadas]
+│   └── [23 clases ordenadas]
 │
 ├── 06_LABORATORIOS/              ← Prácticos del curso (P1-P5)
 │   ├── P1_Pandas/                (vacio + resuelto)
@@ -171,9 +171,9 @@ python 03_SCRIPTS/verificar_g1_g9.py                  # audit garantías
 |---------|-----------|----------------|
 | `00_INICIO/CLAUDE.md` | Instrucciones del proyecto | Usuario solo |
 | `00_INICIO/spec.md` | Especificaciones Datito (G1-G14) | Usuario solo |
-| `07_DATITO/00_INICIO/curriculum.yaml` | 21 conceptos del curso | Lectura (NO editar durante sesión) |
-| `07_DATITO/00_INICIO/progreso.yaml` | Estado de aprendizaje | Solo Datito |
-| `07_DATITO/00_INICIO/dudas.yaml` | Respuestas dadas en sesión | Solo Datito |
+| `07_DATITO/curriculum.yaml` | 21 conceptos del curso | Lectura (NO editar durante sesión) |
+| `07_DATITO/progreso.yaml` | Estado de aprendizaje | Solo Datito |
+| `07_DATITO/dudas.yaml` | Respuestas dadas en sesión | Solo Datito |
 | `07_DATITO/07_BITACORA/*.md` | Sesiones por fecha | Solo Datito |
 | `09_RESULTADOS/resultados_temporal.json` | Métricas verificadas | Manual solo |
 
@@ -183,7 +183,7 @@ python 03_SCRIPTS/verificar_g1_g9.py                  # audit garantías
 
 Protegido (funcional, estable):
 - `01_DOCUMENTACION/` — Material del curso
-- `07_DATITO/00_INICIO/curriculum.yaml` — Plan pedagógico fijo
+- `07_DATITO/curriculum.yaml` — Plan pedagógico fijo
 - `08_PROYECTO_FCD/` — Proyecto semestral
 - `09_RESULTADOS/resultados_temporal.json` — Fuente de verdad
 

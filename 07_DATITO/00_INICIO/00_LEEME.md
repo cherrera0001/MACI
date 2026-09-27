@@ -49,7 +49,7 @@ el de la sesión.
 │   ├── ARQUITECTURA.md           componentes, planos de datos, invariantes
 │   ├── datito.config.yaml        DATOS del alumno. Las reglas viven en la skill
 │   ├── curriculum.yaml           21 conceptos: orden, prerrequisitos, material
-│   ├── clases.yaml               22 clases, unidades, cierre de aprendizaje
+│   ├── clases.yaml               23 clases, unidades, cierre de aprendizaje
 │   ├── progreso.yaml             estado y cadena de evidencia ← lo escribe Datito
 │   ├── errores_conceptuales.yaml errores observados ← ídem
 │   ├── estado.md                 resumen autogenerado, se inyecta en sesión
@@ -58,7 +58,7 @@ el de la sesión.
 │
 ├── 01_CONCEPTOS/            los 21 conceptos en orden del curriculum
 │   └── visual/                   HTML interactivos (01_fundamentos.html → 19_deep_learning.html)
-│       └── 00_index.html         portada: 22 clases, navegación, síntesis
+│       └── 00_index.html         portada: 23 clases, navegación, síntesis
 │
 ├── 02_REFERENCIA/           fuentes, documentación, material externo
 │   ├── fuentes.md               jerarquía de prioridad, etiquetado, NotebookLM
@@ -105,7 +105,7 @@ el de la sesión.
 ### Visuales interactivos — `01_CONCEPTOS/visual/`
 
 **Empieza por [`01_CONCEPTOS/visual/00_index.html`](../01_CONCEPTOS/visual/00_index.html)**: la portada del curso.
-Son 22 clases en 6 unidades, ordenadas por prerrequisitos (fuente única:
+Son 23 clases en 6 unidades, ordenadas por prerrequisitos (fuente única:
 [`clases.yaml`](clases.yaml)); cada una abre con objetivo, ficha Bloom y
 activación, y cierra con síntesis, procedimiento y pregunta final. Incluye el
 repaso del certamen y las dudas resueltas. Todo abre con doble clic, sin Internet.

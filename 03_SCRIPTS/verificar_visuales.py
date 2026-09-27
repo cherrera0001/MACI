@@ -36,7 +36,7 @@ import unicodedata
 from urllib.parse import unquote
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VISUAL = os.path.join(RAIZ, "07_DATITO", "visual")
+VISUAL = os.path.join(RAIZ, "07_DATITO", "01_CONCEPTOS", "visual")
 TRANS_DIR = os.path.join(RAIZ, "05_CLASES", "transcripciones")
 
 MARCA_MD = re.compile(r"\*\*\[(\d+:\d{2}:\d{2})\]\*\*\s*(.*)")

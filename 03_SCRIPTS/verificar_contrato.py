@@ -46,7 +46,7 @@ def git(*args):
 def g1_no_simula_respuestas():
     """Ninguna bitacora debe contener una respuesta inventada del alumno."""
     sospechosos = []
-    for f in glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*.md")):
+    for f in glob.glob(os.path.join(RAIZ, "07_DATITO", "07_BITACORA", "*.md")):
         t = open(f, encoding="utf-8", errors="replace").read()
         for patron in (r"probablemente dirias", r"supongamos que responde",
                        r"el alumno diria"):
@@ -85,10 +85,10 @@ def g9_exposicion_consultable():
     # Cualquier medio vale: HTML, guia, cuadernillo o bitacora con desarrollo.
     material = " ".join(
         os.path.basename(p) for p in
-        glob.glob(os.path.join(RAIZ, "07_DATITO", "visual", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_DATITO", "guias", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_DATITO", "cuadernillos", "*")) +
-        glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*"))
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "01_CONCEPTOS", "visual", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "04_EJERCICIOS", "guias", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "04_EJERCICIOS", "cuadernillos", "*")) +
+        glob.glob(os.path.join(RAIZ, "07_DATITO", "07_BITACORA", "*"))
     ).lower()
 
     sin = [c for c in tocados
@@ -240,7 +240,7 @@ def g9_lo_respondido_queda_escrito():
             html_v = leer(f"07_DATITO/01_CONCEPTOS/visual/{v}") or ""
             if f'id="duda-{d.get("id")}"' not in html_v:
                 problemas.append(f"{d.get('id')} no esta en {v} (correr construir_navegacion.py)")
-    for f in sorted(glob.glob(os.path.join(RAIZ, "07_DATITO", "bitacora", "*.md"))):
+    for f in sorted(glob.glob(os.path.join(RAIZ, "07_DATITO", "07_BITACORA", "*.md"))):
         nombre = os.path.basename(f)
         if nombre[:10] < "2026-09-21":
             continue  # la regla rige desde esa fecha
@@ -269,9 +269,9 @@ def g14_el_material_es_un_curso():
     if texto is None:
         return FALLO, "no existe 07_DATITO/clases.yaml"
     clases = (yaml.safe_load(texto) or {}).get("clases") or []
-    portada = leer("07_DATITO/01_CONCEPTOS/visual/index.html") or ""
+    portada = leer("07_DATITO/01_CONCEPTOS/visual/00_index.html") or ""
     if 'id="curso"' not in portada:
-        return FALLO, "visual/index.html no es la portada del curso (correr construir_navegacion.py)"
+        return FALLO, "visual/00_index.html no es la portada del curso (correr construir_navegacion.py)"
     problemas, pendientes = [], 0
     for c in clases:
         for campo in ("titulo", "objetivo", "activacion", "bloom"):

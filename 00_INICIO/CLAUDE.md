@@ -54,7 +54,7 @@ pequeños → **recién entonces** la notación.
 
 **Una respuesta también es exposición.** Si Cristóbal pide la respuesta
 correcta, o Datito resuelve o corrige algo, se escribe primero en
-`07_DATITO/00_INICIO/dudas.yaml` y se renderiza con `python 03_SCRIPTS/construir_navegacion.py`
+`07_DATITO/dudas.yaml` y se renderiza con `python 03_SCRIPTS/construir_navegacion.py`
 en el visual del tema; el chat lleva a lo más la frase corta y la ruta. Lo
 explicado solo en la terminal se pierde (spec.md G9; reportado tres veces).
 
@@ -71,23 +71,23 @@ ahi.
 |---|---|
 | `07_DATITO/00_INICIO/00_LEEME.md` | Instrucciones de uso. **Empezar aqui** |
 | `07_DATITO/00_INICIO/ARQUITECTURA.md` | Como esta construido: componentes, flujo de datos e invariantes |
-| `07_DATITO/00_INICIO/curriculum.yaml` | ESTATICO. 21 conceptos, prerrequisitos, material, practicos |
-| `07_DATITO/00_INICIO/progreso.yaml` | DINAMICO. Estado y cadena de evidencia |
-| `07_DATITO/00_INICIO/errores_conceptuales.yaml` | Errores observados + patrones a vigilar |
-| `07_DATITO/00_INICIO/estado.md` | Resumen autogenerado: **es lo que se inyecta en cada sesion** |
+| `07_DATITO/curriculum.yaml` | ESTATICO. 21 conceptos, prerrequisitos, material, practicos |
+| `07_DATITO/progreso.yaml` | DINAMICO. Estado y cadena de evidencia |
+| `07_DATITO/errores_conceptuales.yaml` | Errores observados + patrones a vigilar |
+| `07_DATITO/estado.md` | Resumen autogenerado: **es lo que se inyecta en cada sesion** |
 | `07_DATITO/06_AUDITORIAS/patron_evaluacion.md` | Como evalua el profesor, desde sus certamenes reales |
-| `07_DATITO/00_INICIO/datito.config.yaml` | DATOS del alumno. Las reglas viven en la skill |
+| `07_DATITO/datito.config.yaml` | DATOS del alumno. Las reglas viven en la skill |
 | `07_DATITO/02_REFERENCIA/` | fuentes, memoria y material. Se cargan bajo demanda |
 | `07_DATITO/01_CONCEPTOS/visual/` | Artefactos HTML para el navegador. **Empezar por `00_index.html`** |
 | `07_DATITO/04_EJERCICIOS/guias/` · `cuadernillos/` | Material escrito: referencia, con solucion |
 | `07_DATITO/04_EJERCICIOS/certamenes/` · `entregas/` | Certamenes sin solucion, entregas |
-| `07_DATITO/00_INICIO/clases.yaml` | El curso: 22 clases en orden, ficha Bloom y cierre de cada una (spec.md G14) |
-| `07_DATITO/00_INICIO/dudas.yaml` | Toda respuesta dada en sesion, en orden. Se renderiza en los visuales |
+| `07_DATITO/clases.yaml` | El curso: 23 clases en orden, ficha Bloom y cierre de cada una (spec.md G14) |
+| `07_DATITO/dudas.yaml` | Toda respuesta dada en sesion, en orden. Se renderiza en los visuales |
 | `07_DATITO/07_BITACORA/` | Una entrada por sesion |
 | `05_CLASES/transcripciones/` | Clases transcritas con faster-whisper |
 
-Solo Datito escribe en `00_INICIO/progreso.yaml`, `00_INICIO/errores_conceptuales.yaml`,
-`00_INICIO/dudas.yaml` y `07_BITACORA/`. `00_INICIO/curriculum.yaml` es de solo lectura durante las sesiones.
+Solo Datito escribe en `07_DATITO/progreso.yaml`, `07_DATITO/errores_conceptuales.yaml`,
+`07_DATITO/dudas.yaml` y `07_BITACORA/`. `07_DATITO/curriculum.yaml` es de solo lectura durante las sesiones.
 
 Tras cada sesion hay que regenerar el resumen, o la siguiente abre con datos
 viejos:
