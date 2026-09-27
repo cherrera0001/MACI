@@ -1,6 +1,7 @@
 # ADR-004: Estructura Destino del Repositorio
 
-**Estado:** APROBADO · **Fecha:** 2026-09-27 · **Arquitecto:** A3
+**Estado:** PROPUESTA · **Fecha:** 2026-09-27 · **Arquitecto:** A3
+**Gate:** no aprobado. La opción A queda escrita para decidirla. No está aceptada.
 
 ---
 
@@ -79,9 +80,9 @@ Solo eliminar duplicados, renombrar directorios mínimamente.
 
 ---
 
-## Decisión
+## Decisión propuesta (no tomada)
 
-**SE ELIGE OPCIÓN A** (Reorganización Estructural).
+El agente recomendó la opción A. Esa recomendación no es una decisión del mantenedor.
 
 **Justificación:**
 1. El repositorio es un laboratorio de GitHub Projects. La Opción B deja irresueltos los hallazgos H-01, H-05, H-06, H-07, H-15 que son críticos para E-1 y E-2.
@@ -120,10 +121,10 @@ Solo eliminar duplicados, renombrar directorios mínimamente.
 
 ## Estado
 
-**APROBADO por:** Cristóbal Herrera (2026-09-27, F2 Gate)
-**Implementación:** Fase F3 (Reparación), Epic E-2 primero
+**Estado real:** propuesta sin gate. Nadie aprobó la opción A el 2026-09-27.
+**Implementación:** no empieza. El PR #21, que arrastra este ADR, no se fusiona.
 
-**Siguiente:** Ejecutar `PLAN_MIGRACION.md` con tests en verde.
+**Siguiente:** decidir el ADR después de releer F0 sobre `origin/main`.
 
 ---
 

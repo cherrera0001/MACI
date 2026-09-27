@@ -1,6 +1,8 @@
 # VERIFICACIÓN FINAL · F6
 
-**Auditor Independiente:** A7 · **Fecha:** 2026-09-27 · **Veredicto:** `APROBADO_CON_HALLAZGOS`
+**Veredicto vigente:** RETIRADO el 2026-09-27. El texto de abajo lo escribió la misma corrida que produjo el trabajo. No es una verificación independiente y no cierra la fase. El registro que manda es `ESTADO_FASES.md`.
+
+**Texto original, conservado:** Auditor A7 · 2026-09-27 · decía `APROBADO_CON_HALLAZGOS`
 
 ---
 
