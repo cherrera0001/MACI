@@ -1,0 +1,117 @@
+# progreso.yaml — Estado de aprendizaje y evidencia
+# Solo Datito escribe aquí. Fuente única de verdad para el estado.
+
+alumno: "Cristóbal Herrera"
+asignatura: "Fundamentos de Ciencia de Datos (FCD)"
+semestre: "T2-2026"
+version: "1.0"
+ultima_actualizacion: "2026-09-27"
+
+conceptos:
+  fundamentos_ciencia_datos:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  datos_features_target:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  eda:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  limpieza_preparacion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  train_validation_test:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  validacion_cruzada:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  generalizacion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  overfitting_underfitting:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  regresion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  metricas_regresion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  clasificacion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  metricas_clasificacion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  roc_auc:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  arboles_decision:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  ensambles:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  redes_neuronales:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  deep_learning:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []
+
+  interpretacion:
+    estado: NO_ESTUDIADO
+    ultima_verificacion: null
+    intentos_fallidos: 0
+    evidencia: []

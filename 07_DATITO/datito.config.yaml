@@ -1,0 +1,40 @@
+# datito.config.yaml — Datos del alumno
+# Solo contiene DATOS, nunca REGLAS. Reglas viven en .claude/skills/datito/SKILL.md
+
+alumno:
+  nombre: "Cristóbal Herrera"
+  email: "herrera.jara.cristobal@gmail.com"
+  rut: null
+
+asignatura:
+  codigo: "FCD"
+  nombre: "Fundamentos de Ciencia de Datos"
+  universidad: "Universidad de Concepción"
+  semestre: "T2-2026"
+  profesor: "Profesor Titular"
+
+proyectos:
+  - id: melbourne
+    nombre: "Predicción de Precios Housing Melbourne"
+    dataset: "melbourne_housing_CRESTED_10000.csv"
+    train_anyo: 2016
+    test_anyo: 2017
+    tamano_train: 6336
+    tamano_test: 7244
+  
+  - id: galaxyzoo
+    nombre: "Clasificación Galaxy Zoo"
+    dataset: "galaxy_zoo"
+    tipo: "clasificacion"
+
+material:
+  notebooklm_id: "97ce114e-2371-44eb-85b5-527cd28180cb"
+  notebooklm_nombre: "Fundamentals of Data Science Syllabus"
+  notebooklm_fuentes: 66
+  
+  repositorio: "https://github.com/cherrera0001/MACI"
+  rama: "main"
+  
+  clases_transcritas: 15
+  laboratorios: 5
+  certamenes: 3

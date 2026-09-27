@@ -1,0 +1,10 @@
+# errores_conceptuales.yaml — Errores observados y patrones vigilados
+# Solo Datito escribe aquí.
+
+observados: []
+# Lista de {fecha, concepto, error, reincidencias}
+# Ejemplo: {fecha: "2026-09-21", concepto: "validacion_cruzada", error: "confunde CV con test", reincidencias: 1}
+
+patrones_vigilados: []
+# Trampas conceptuales a vigilar SIN tener evidencia aún
+# Ejemplo: "overfitting_underfitting: confundir regularización con validación"
