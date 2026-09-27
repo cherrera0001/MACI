@@ -80,8 +80,8 @@ Dejar como DISCARD, documentar que el gráfico debe recuperarse de Canvas.
 
 ```bash
 # Si se decide hacer Opción 1:
-python 03_CODIGO/agregar_svg_roc.py --archivo certamen_2.html
-python 03_CODIGO/datito_loop_eval.py --path 07_DATITO/04_EJERCICIOS/certamen_2.html
+python agregar_svg_roc.py --archivo certamen_2.html
+python 04_CODIGO/datito_loop_eval.py --path 07_DATITO/04_EJERCICIOS/certamen_2.html
 # Si score=1.0 → KEEP
 ```
 

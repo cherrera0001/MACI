@@ -3,7 +3,7 @@
 """Verificación de visuales Datito: template v1 + anti-CDN + profundidad certamen.
 
 Preferir el gate canónico:
-  python 03_CODIGO/datito_loop_eval.py --path <html>
+  python 04_CODIGO/datito_loop_eval.py --path <html>
 
 Este script mantiene checks de estructura Certamen 3 y delega anti-CDN
 con comentarios HTML ignorados (para no fallar el propio template).
@@ -144,7 +144,7 @@ def main() -> int:
         print(f"  {'OK' if ok else 'X'} {name}")
 
     print("\n" + "=" * 60)
-    print("Gate KEEP: python 03_CODIGO/datito_loop_eval.py --path <html>")
+    print("Gate KEEP: python 04_CODIGO/datito_loop_eval.py --path <html>")
     print("Workflow: 07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md")
     print("=" * 60)
 

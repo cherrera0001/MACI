@@ -32,7 +32,7 @@ def evaluate_file(html_path):
     """Ejecuta datito_loop_eval.py en un archivo"""
     try:
         result = subprocess.run(
-            [sys.executable, "03_CODIGO/datito_loop_eval.py", "--path", str(html_path)],
+            [sys.executable, "04_CODIGO/datito_loop_eval.py", "--path", str(html_path)],
             cwd=str(ROOT),
             capture_output=True,
             text=True,
@@ -100,9 +100,9 @@ def main():
     print("PRÓXIMOS PASOS:")
     print("-" * 80)
     print("1. Para cada archivo DISCARD:")
-    print("   python 03_CODIGO/datito_loop_once.py --path <archivo> --hypothesis 'migrate to template v1'")
+    print("   python 04_CODIGO/datito_loop_once.py --path <archivo> --hypothesis 'migrate to template v1'")
     print("\n2. O ejecutar la migración automática:")
-    print("   python 03_CODIGO/datito_migracion_masiva.py")
+    print("   python datito_migracion_masiva.py")
     print("=" * 80)
 
 if __name__ == "__main__":

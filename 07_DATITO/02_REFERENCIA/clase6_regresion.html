@@ -54,6 +54,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -116,7 +117,7 @@
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="../01_CONCEPTOS/visual/00_index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="../01_CONCEPTOS/visual/02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="../01_CONCEPTOS/visual/10_clasificacion.html">Clasificacion</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a> · <a href="../04_EJERCICIOS/certamen_3.html#p2a">C3 P2a</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -183,7 +184,7 @@ predices 338, no acertaste ni fallaste: estuviste cerca. Por eso todo aquí mide
 confusión más común con R².
 </div>
 
-<h2>2 · El modelo lineal</h2>
+<h2 id="modelo-lineal">2 · El modelo lineal</h2>
 
 <p>Tu apuesta más simple: <em>«por cada centímetro más de radio, el árbol pesa
 tantos kilos más»</em>.</p>
@@ -628,6 +629,7 @@ Pulsa «Mostrar zona sin datos» en el gráfico antes de responder.</p>
 <style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
 <section class="dcierre" id="cierre-clase-6">
 <h2>Cierre de la Clase 6 · Regresión: predecir una cantidad</h2>
+<p><b>Certamen 3.</b> La pregunta 2a rechaza el grado 10 porque ajusta el entrenamiento y se desarma en la prueba. Ese grado es el de esta lámina. <a href="../04_EJERCICIOS/certamen_3.html#p2a">C3 P2a</a>.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Regresión: predecir un valor real, una cantidad.</li><li>θ₁ es cuánto cambia ŷ por unidad de x; θ₀ es ŷ cuando x = 0.</li><li>La regresión se llama lineal por ser lineal en los θ, no en x.</li><li>La complejidad del modelo es su número de parámetros.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Pendiente (θ₁) ≠ intercepto (θ₀).</li><li>Lineal en θ ≠ lineal en x: la polinomial sigue siendo regresión lineal.</li><li>Predecir dentro del rango ≠ extrapolar.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Identifica x (dato), y (target) y los θ (lo que aprende el modelo).</li><li>Interpreta θ₁ en unidades de y por unidad de x.</li><li>Antes de predecir, revisa el rango de x observado.</li></ol>

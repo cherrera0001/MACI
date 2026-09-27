@@ -57,6 +57,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -115,7 +116,7 @@
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Regresion</b></span> · <span class="et">viene de</span><a href="02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="10_clasificacion.html">Clasificacion</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 4 · peso en certamen baja (casi no se pregunta directamente) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p7">C2 P7</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p2c">C3 P2c</a></div>
 <details><summary>Dónde se enseñó en clase (7 tramos)</summary><ul><li><b>Clase del 31-jul</b> · 0:18:53–0:21:42 · profesor — el peso del arbol segun el radio; ruido; theta0 + theta1 x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:18:53]</span></li><li><b>Clase del 31-jul</b> · 0:22:08–0:28:11 · profesor — funcion de costo; por que al cuadrado<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:22:08]</span></li><li><b>Clase del 31-jul</b> · 0:28:27–0:36:05 · profesor — minimizar: derivadas, solucion cerrada, gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:28:27]</span></li><li><b>Clase del 31-jul</b> · 0:36:16–0:40:51 · profesor — complejidad; lineal en los theta, no en x<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:36:16]</span></li><li><b>Clase del 7-ago</b> · 1:11:39–1:12:26 · profesor — R cuadrado es de regresion, no de clasificacion<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:11:39]</span></li><li><b>Clase del 21-ago</b> · 1:55:43–2:04:18 · profesor — la regresion como perceptron sin g; gradiente<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:55:43]</span></li><li><b>Ayudantía del 31-jul</b> · 0:50:27–1:17:30 · ayudantía — metricas, California Housing, PolynomialFeatures <span class="ay">· ayudantía: no entra al certamen</span> <span class="ay">· ⚠ resuelve el P4: intenta antes su versión (vacío)</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Ayudantia_Fundamentos_en_Ciencia_de_Datos_31_Julio.md · 0:50:27]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -247,7 +248,7 @@ arranca) y la pendiente (cuánto sube por cada tonelada). Entrenar un modelo
 lineal es encontrar esos dos números. Nada más.
 </div>
 
-<h2>2 · La función de costo</h2>
+<h2 id="costo">2 · La función de costo</h2>
 
 <p>Hay infinitas rectas posibles. Para elegir una necesitas
 <strong>un número que diga qué tan mala es</strong>.</p>
@@ -483,6 +484,7 @@ datos sintéticos de esta página [DATITO]. Escríbelo primero y llévaselo a Da
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>La función de costo resume en un número qué tan lejos está la recta de los datos.</li><li>Elevar al cuadrado elimina el signo y castiga más los errores grandes.</li><li>Entrenar es elegir los θ que minimizan el costo.</li><li>R² compara con predecir siempre la media: 0 es igual que la media; negativo, peor.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>MAE (en unidades de y) ≠ MSE (en unidades al cuadrado).</li><li>R² alto en entrenamiento ≠ buen modelo fuera de la muestra.</li><li>«R² está entre 0 y 1» es falso: puede ser negativo.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Calcula cada residuo y − ŷ.</li><li>Eleva al cuadrado (MSE) o toma el valor absoluto (MAE) y promedia.</li><li>R² = 1 − SSres/SStot: compara con la media.</li></ol>
+<p><b>Certamen 3.</b> La pregunta 2c pide la media del error, su desviación y el RMSE. El error con signo es este residuo, e = y − ŷ. El RMSE es la raíz del costo al cuadrado. <a href="../../04_EJERCICIOS/certamen_3.html#p2c">C3 P2c</a>.</p>
 <p><b>Viene de:</b> <a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · <b>Sigue:</b> <a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a></p>
 <p><b>Vuelve a tu activación:</b> Dos rectas pasan cerca de los mismos puntos. ¿Cómo decides cuál es mejor sin mirarlas? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Un modelo tiene R² = −0,08 en test. ¿Qué significa?

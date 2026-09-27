@@ -105,7 +105,7 @@ HTML canónico: `F:\MACI\07_DATITO\visual\certamen3_examen_fcd2026.html`
 ## 6. VERIFICACIÓN EJECUTABLE
 
 ```bash
-python 03_CODIGO/verificar_visuales.py
+python 04_CODIGO/verificar_visuales.py
 ```
 
 **Resultado:**

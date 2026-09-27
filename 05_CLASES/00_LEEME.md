@@ -40,8 +40,8 @@ vídeo  →  transcribir_clases.py  →  integrar_clase.py  →  disponible para
 ### 1 · Transcribir
 
 ```bash
-uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --listar
-uv run --with faster-whisper python 03_CODIGO/transcribir_clases.py --todas
+uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --listar
+uv run --with faster-whisper python 03_SCRIPTS/transcribir_clases.py --todas
 ```
 
 Usa `faster-whisper` con cuantización int8 sobre CPU. No requiere GPU ni
@@ -54,10 +54,10 @@ Genera dos archivos por clase: `.md` con marcas de tiempo por segmento, y
 ### 2 · Integrar
 
 ```bash
-python 03_CODIGO/integrar_clase.py              # todas las pendientes
-python 03_CODIGO/integrar_clase.py --sin-subir  # sin tocar NotebookLM
-python 03_CODIGO/integrar_clase.py --estado     # ver qué hay integrado
-python 03_CODIGO/integrar_clase.py --sin-subir --remapear   # recalcula todas
+python 03_SCRIPTS/integrar_clase.py              # todas las pendientes
+python 03_SCRIPTS/integrar_clase.py --sin-subir  # sin tocar NotebookLM
+python 03_SCRIPTS/integrar_clase.py --estado     # ver qué hay integrado
+python 03_SCRIPTS/integrar_clase.py --sin-subir --remapear   # recalcula todas
 ```
 
 Detecta las transcripciones nuevas, mapea qué conceptos del curriculum aparecen
@@ -66,9 +66,9 @@ y en qué minuto, escribe el índice, y las sube a NotebookLM.
 ### 3 · Llevarla a los visuales
 
 Agrega la clase y sus tramos a `mapa_ensenanza.yaml` y corre
-`python 03_CODIGO/construir_navegacion.py`: los visuales muestran el nuevo tramo
+`python 03_SCRIPTS/construir_navegacion.py`: los visuales muestran el nuevo tramo
 en «Dónde se enseñó» y el índice `07_DATITO/01_CONCEPTOS/visual/00_index.html` se regenera. Luego
-`python 03_CODIGO/verificar_visuales.py` comprueba que cada marca exista.
+`python 04_CODIGO/verificar_visuales.py` comprueba que cada marca exista.
 
 Es **idempotente** —lo ya integrado se omite— y **degrada**: si NotebookLM no
 responde, el índice local se completa igual y queda anotado para reintentar.
@@ -80,7 +80,7 @@ responde, el índice local se completa igual y queda anotado para reintentar.
 Consulta el estado actual con:
 
 ```bash
-python 03_CODIGO/integrar_clase.py --estado
+python 03_SCRIPTS/integrar_clase.py --estado
 ```
 
 ---

@@ -90,7 +90,7 @@ concepto a dominar.
 ## `_markdown/`
 
 Conversión de los notebooks resueltos a Markdown, generada por
-`03_CODIGO/practica_a_markdown.py`. Existe por una razón concreta: **NotebookLM
+`03_SCRIPTS/practica_a_markdown.py`. Existe por una razón concreta: **NotebookLM
 no acepta `.ipynb` como fuente, pero sí Markdown.**
 
 Se conservan texto y código, y se descartan las salidas binarias —imágenes en
@@ -103,5 +103,5 @@ consulta, y subirlos a NotebookLM permitiría consultarles la respuesta.
 Regenerar:
 
 ```bash
-python 03_CODIGO/practica_a_markdown.py
+python 03_SCRIPTS/practica_a_markdown.py
 ```

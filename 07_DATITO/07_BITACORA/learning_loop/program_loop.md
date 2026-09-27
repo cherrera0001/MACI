@@ -19,7 +19,7 @@
 1. Hipótesis + target_file
 2. Copiar/respetar template v1 si family=visual
 3. Editar solo lo necesario
-4. Correr: `python 03_CODIGO/datito_loop_eval.py --path <archivo>`
+4. Correr: `python 04_CODIGO/datito_loop_eval.py --path <archivo>`
 5. Append fila a `results.tsv`
 6. Si score mejora vs baseline de la familia → KEEP + lesson keep_patterns
 7. Si igual/peor/crash → DISCARD (revertir diff) + failure_patterns
@@ -44,5 +44,5 @@ KEEP solo si score == 1.0 (todos los gates).
 Ver `WORKFLOW_VISUAL.md` en esta misma carpeta. Una corrida tipica:
 
 ```bash
-python 03_CODIGO/datito_loop_once.py --path <html> --hypothesis "..."
+python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "..."
 ```

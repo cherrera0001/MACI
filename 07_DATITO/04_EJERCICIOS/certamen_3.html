@@ -70,9 +70,10 @@
 <!-- datito:nav:fin -->
 <h1>Certamen 3 · Clasificación, regresión e IA</h1>
 <p class="sub">Examen de Fundamentos en Ciencia de Datos 2026 · 6 puntos · 3 preguntas<br>
-El enunciado se lee aquí. La resolución está cerrada: ábrela después de intentar.</p>
+El enunciado se lee aquí. Cada pregunta indica la clase donde se vio la idea. La resolución está cerrada: ábrela después de intentar.</p>
 
-<h2>Pregunta 1 · Curva ROC <span class="sub">(2 puntos)</span></h2>
+<h2 id="p1">Pregunta 1 · Curva ROC <span class="sub">(2 puntos)</span></h2>
+<p class="fuente">En clase: <a href="../01_CONCEPTOS/visual/11_matriz_confusion.html">Clase 12 · la matriz</a> · <a href="../01_CONCEPTOS/visual/12_metricas_clasificacion.html">Clase 13 · el denominador de cada tasa</a> · <a href="../01_CONCEPTOS/visual/13_roc_auc.html#simulador">Clase 14 · el umbral recorre la curva</a>.</p>
 <p class="enun">Considere un modelo de clasificación binaria llamado «Modelo 1». Al mover un parámetro de sensibilidad α, el número de verdaderos positivos, falsos negativos, falsos positivos y verdaderos negativos cambia según estas figuras.</p>
 <figure>
 <img class="figura" src="assets/certamen_3/p1_conteos_a.png" alt="Verdaderos positivos y falsos negativos del Modelo 1 según alfa, de −2 a 4. En −2 hay 0 VP y 10 FN; en 4 hay 10 VP y 0 FN.">
@@ -85,7 +86,8 @@ El enunciado se lee aquí. La resolución está cerrada: ábrela después de int
 <figcaption class="fuente">Curva del otro modelo, tal como viene impresa. El PDF no trae su tabla numérica.</figcaption>
 </figure>
 
-<h3>a) Dibuje la curva ROC del Modelo 1 (0,5)</h3>
+<h3 id="p1a">a) Dibuje la curva ROC del Modelo 1 (0,5)</h3>
+<p class="fuente">En clase, cada umbral es un punto (FPR, TPR) y el modelo es la curva: <a href="../01_CONCEPTOS/visual/13_roc_auc.html#simulador">Clase 14 · simulador</a>.</p>
 <p>De las dos primeras figuras se lee esta tabla. Los conteos son del gráfico; TPR y FPR se calculan.</p>
 <table>
 <tr><th>α</th><th>VP</th><th>FN</th><th>FP</th><th>VN</th><th>TPR = VP/(VP+FN)</th><th>FPR = FP/(FP+VN)</th></tr>
@@ -157,7 +159,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p class="fuente">Conteos: figuras del enunciado. Tasas y área: calculadas.</p>
 </details>
 
-<h3>b) ¿Qué modelo es mejor? (0,5)</h3>
+<h3 id="p1b">b) ¿Qué modelo es mejor? (0,5)</h3>
+<p class="fuente">En clase, una curva que queda por encima de otra domina; si se cruzan, depende del umbral: <a href="../01_CONCEPTOS/visual/13_roc_auc.html#p9">Clase 14 · punto de operación y modelo</a> · <a href="../01_CONCEPTOS/visual/13_roc_auc.html#auc">el área</a>.</p>
 <p class="enun">Compare el Modelo 1 con la curva ya impresa. ¿Cuál es mejor, y por qué?</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -171,7 +174,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Declarar mejor el modelo de la figura impresa porque «ya viene dibujado», sin comparar las dos curvas.</p>
 </details>
 
-<h3>c) Umbral para detectar a todos los enfermos (0,5)</h3>
+<h3 id="p1c">c) Umbral para detectar a todos los enfermos (0,5)</h3>
+<p class="fuente">En clase, el umbral se elige por el error que quieres evitar. Detectar a todos los enfermos es TPR = 1: <a href="../01_CONCEPTOS/visual/13_roc_auc.html#simulador">Clase 14 · simulador</a>.</p>
 <p class="enun">El modelo predice si un paciente tiene una enfermedad (enfermo = positivo). El médico recibe 1.000 pacientes al mes. Dentro de ellos, 200 tienen la enfermedad. Si quiere que todos los enfermos sean detectados, ¿cuál es el mejor α? Justifique.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -184,7 +188,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Elegir α = 2 porque «ya va alto», o α = 4 porque es el más grande.</p>
 </details>
 
-<h3>d) Falsos positivos al mes (0,5)</h3>
+<h3 id="p1d">d) Falsos positivos al mes (0,5)</h3>
+<p class="fuente">En clase, la tasa se multiplica por las personas de ese grupo: <a href="../01_CONCEPTOS/visual/13_roc_auc.html#prevalencia">Clase 14 · de la tasa a personas</a>.</p>
 <p class="enun">Con el umbral de la pregunta anterior, ¿cuántos pacientes al mes quedarían marcados como enfermos sin tener la enfermedad?</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -197,7 +202,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Hacer 0,4 × 800 = 320 usando el FPR de α = 2, que no detecta a todos los enfermos.</p>
 </details>
 
-<h2>Pregunta 2 · Regresión polinomial <span class="sub">(2 puntos)</span></h2>
+<h2 id="p2">Pregunta 2 · Regresión polinomial <span class="sub">(2 puntos)</span></h2>
+<p class="fuente">En clase: <a href="../02_REFERENCIA/clase6_regresion.html#modelo-lineal">Clase 5 · el polinomio y el grado 10</a> · <a href="../01_CONCEPTOS/visual/08_overfitting_underfitting.html#brecha">Clase 10 · la brecha entre entrenamiento y prueba</a> · <a href="../01_CONCEPTOS/visual/09_regresion.html#costo">Clase 6 · el residuo y el costo al cuadrado</a>.</p>
 <p class="enun">Se quiere predecir el consumo eléctrico diario de un edificio (kWh) a partir de la temperatura media exterior (°C). Se ajustan polinomios de distinto grado en un conjunto de entrenamiento y se evalúan en un conjunto de prueba.</p>
 <table>
 <tr><th>Grado</th><th>RMSE entrenamiento (kWh)</th><th>RMSE prueba (kWh)</th><th>Media del error en prueba (kWh)</th><th>Desv. estándar del error (kWh)</th></tr>
@@ -209,7 +215,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 </table>
 <p class="enun">El error se define como e = y − ŷ. y es el consumo real y ŷ la predicción.</p>
 
-<h3>a) ¿Usar el grado 10? (0,5)</h3>
+<h3 id="p2a">a) ¿Usar el grado 10? (0,5)</h3>
+<p class="fuente">En clase, el grado 10 oscila para pasar por el entrenamiento: <a href="../02_REFERENCIA/clase6_regresion.html#modelo-lineal">Clase 5</a>. La decisión se toma con la brecha: <a href="../01_CONCEPTOS/visual/08_overfitting_underfitting.html#brecha">Clase 10</a>.</p>
 <p class="enun">Un analista propone el grado 10 porque tiene el menor RMSE de entrenamiento. ¿Está de acuerdo? Justifique.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -222,7 +229,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Elegir el modelo que «aprendió mejor los datos de entrenamiento».</p>
 </details>
 
-<h3>b) ¿Qué grado para días nuevos? (0,5)</h3>
+<h3 id="p2b">b) ¿Qué grado para días nuevos? (0,5)</h3>
+<p class="fuente">En clase, para datos que no entraron al ajuste manda el error de prueba: <a href="../01_CONCEPTOS/visual/08_overfitting_underfitting.html#brecha">Clase 10 · la brecha</a>.</p>
 <p class="enun">¿Qué grado (1, 2, 3, 5 o 10) usaría para predecir días que no entraron al entrenamiento? Justifique con las métricas de la tabla.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -235,7 +243,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Elegir el grado 5 o 10 por la media del error más cercana a cero, ignorando el RMSE de prueba.</p>
 </details>
 
-<h3>c) Media, desviación estándar y RMSE (1)</h3>
+<h3 id="p2c">c) Media, desviación estándar y RMSE (1)</h3>
+<p class="fuente">En clase, el error con signo es el residuo e = y − ŷ, y el cuadrado castiga los errores grandes. El RMSE del examen es la raíz de ese costo: <a href="../01_CONCEPTOS/visual/09_regresion.html#costo">Clase 6 · función de costo</a>.</p>
 <p class="enun">Para el modelo elegido en (b), interprete en este problema la media del error, la desviación estándar del error y el RMSE, todos medidos en la prueba.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -264,14 +273,16 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p class="fuente">Cifras y definición e = y − ŷ: tabla del enunciado. La raíz √(media² + desviación²) es una relación de esas dos columnas, no una cifra impresa aparte.</p>
 </details>
 
-<h2>Pregunta 3 · Adopción, datos y agentes <span class="sub">(2 puntos)</span></h2>
+<h2 id="p3">Pregunta 3 · Adopción, datos y agentes <span class="sub">(2 puntos)</span></h2>
+<p class="fuente">En clase: <a href="../01_CONCEPTOS/visual/03_eda.html#forma">Clase 3 · la forma del gráfico</a> · <a href="../01_CONCEPTOS/visual/04_limpieza_preparacion.html#verificar">Clase 4 · verificar antes de corregir</a> · <a href="../01_CONCEPTOS/visual/19_deep_learning.html#llm">Clase 18 · LLM</a> · <a href="../01_CONCEPTOS/visual/19_deep_learning.html#agentes">agentes</a>.</p>
 <p class="enun">Una empresa de mantenimiento de maquinaria industrial evalúa incorporar inteligencia artificial. Tiene años de mediciones (temperatura, presión, vibración y fallas) y quiere asistir a sus técnicos con IA generativa. El equipo directivo mira esta figura.</p>
 <figure>
 <img class="figura" src="assets/certamen_3/p3_adopcion.png" alt="Encuesta McKinsey: el porcentaje que usa IA en al menos una función pasa de 20 en 2017 a 88 en 2025, con bajadas en el camino. En 2025, la etapa es 7 por ciento completamente desplegada, 31 escalando, 30 en pilotos y 32 experimentando.">
 <figcaption class="fuente">Figura del enunciado. La nota al pie dice que la definición de «uso de IA» cambió entre 2017 y 2025.</figcaption>
 </figure>
 
-<h3>a) Dos conclusiones sobre la adopción (0,5)</h3>
+<h3 id="p3a">a) Dos conclusiones sobre la adopción (0,5)</h3>
+<p class="fuente">La figura es del examen. El criterio para leerla está en clase: dos paneles no son el mismo número, y la nota de la figura cambia la definición. <a href="../01_CONCEPTOS/visual/03_eda.html#forma">Clase 3 · el resumen no determina la forma</a> · <a href="../01_CONCEPTOS/visual/03_eda.html#integridad">integridad visual</a>.</p>
 <p class="enun">A partir de la figura, describa dos conclusiones sobre la evolución y el grado de adopción. ¿Por qué un alto porcentaje de organizaciones que utiliza IA no implica que esté completamente integrada en sus procesos?</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -284,7 +295,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Restar 88 − 7, o llamar al 7 % «usuarios superficiales». El 7 % es la etapa más integrada, no la más superficial.</p>
 </details>
 
-<h3>b) El histograma de temperaturas (0,5)</h3>
+<h3 id="p3b">b) El histograma de temperaturas (0,5)</h3>
+<p class="fuente">En clase, el histograma propone una hipótesis: <a href="../01_CONCEPTOS/visual/03_eda.html#forma">Clase 3</a>. Un desfase se verifica antes de tocarlo: <a href="../01_CONCEPTOS/visual/04_limpieza_preparacion.html#verificar">Clase 4</a>.</p>
 <p class="enun">La empresa junta temperaturas de sensores comprados a distintos proveedores, ya mezcladas en una sola base. El análisis exploratorio da este histograma. ¿Qué problema de calidad podría explicar lo que se ve? ¿Cómo comprobaría la hipótesis y cómo corregiría los datos?</p>
 <figure>
 <img class="figura" src="assets/certamen_3/p3_histograma.png" alt="Histograma con dos grupos: Proveedor 1 concentrado cerca de 55 °C, entre unos 30 y 90; Proveedor 2 concentrado cerca de 140 °C, entre unos 120 y 180.">
@@ -301,7 +313,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Declarar que un proveedor está malo y desplazar su histograma hasta que coincida con el otro.</p>
 </details>
 
-<h3>c) Dos límites de usar solo un LLM (0,5)</h3>
+<h3 id="p3c">c) Dos límites de usar solo un LLM (0,5)</h3>
+<p class="fuente">En clase, un LLM predice la siguiente palabra y no ejecuta por sí mismo: <a href="../01_CONCEPTOS/visual/19_deep_learning.html#llm">Clase 18 · LLM</a>.</p>
 <p class="enun">La empresa quiere un modelo de lenguaje para responder consultas de los técnicos. Mencione dos limitaciones de usar únicamente un LLM e indique qué tipo de modelo visto en clases podría usarse, con su funcionamiento breve.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>
@@ -314,7 +327,8 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 <p><strong>Error típico.</strong> Decir que un agente «no alucina» o que reemplaza al técnico.</p>
 </details>
 
-<h3>d) Por qué esta instrucción es de un agente (0,5)</h3>
+<h3 id="p3d">d) Por qué esta instrucción es de un agente (0,5)</h3>
+<p class="fuente">En clase, el agente es ese modelo dentro de un bucle: elige una herramienta, observa el resultado y eso condiciona el paso siguiente. <a href="../01_CONCEPTOS/visual/19_deep_learning.html#agentes">Clase 18 · agentes</a>.</p>
 <p class="enun">La empresa quiere que el sistema reciba: «Revisa las mediciones actuales del sensor de temperatura y, si detectas un valor anómalo, consulta el manual del equipo y genera una orden de inspección.» Explique por qué esto le queda mejor a un agente basado en un LLM que a un LLM aislado. Describa una secuencia posible, con el papel del modelo, de los datos del entorno y de las herramientas.</p>
 <details class="resp">
 <summary>Respuesta correcta y cómo se resuelve</summary>

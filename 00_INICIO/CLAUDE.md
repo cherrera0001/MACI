@@ -38,7 +38,7 @@ Ejemplos que deben activar a Datito:
 
 Visuales: `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` es la **única** piel.
 Workflow: `07_DATITO/07_BITACORA/learning_loop/WORKFLOW_VISUAL.md`.
-Gate: `python 03_CODIGO/datito_loop_eval.py --path <html>`.
+Gate: `python 04_CODIGO/datito_loop_eval.py --path <html>`.
 
 El tutor **no puede** ser subagente: un subagente no sabe esperar respuesta del
 usuario. Corregir y construir artefactos sí, porque no necesitan esperarlo.

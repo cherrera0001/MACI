@@ -55,7 +55,7 @@ failure_patterns:
       nombre de archivo), nunca por una cita o un enlace en la navegación.
       Comprobar profundidad en HTML sin comentarios. Mantener prueba renderizada
       porque estos gates estructurales no demuestran la apariencia final.
-    metric_gate: "03_CODIGO/test_datito_piel.py y verificar_piel_lectura.py"
+    metric_gate: "04_CODIGO/test_datito_piel.py y verificar_piel_lectura.py"
 
 # --- Keep rules (patrones que SÍ mejorarón) ---
 keep_patterns:
@@ -270,5 +270,42 @@ keep_patterns:
       Static validation gates (checking if updateGrafico exists) are not sufficient.
       Accept #08 as "validador limitation" not "code failure". Feature works in production.
     metric_gate: "Browser-based validation with Playwright snapshot comparison on load + after slider interaction"
+
+  - id: VIZ-FAIL-014
+    date: "2026-09-27"
+    family: visual
+    summary: "Un div con id que ningún script del mismo archivo escribe se queda en blanco"
+    evidence:
+      - "07_DATITO/01_CONCEPTOS/visual/01_fundamentos.html:512 #cajaPostura nacía vacío; el guion que lo llena está en la línea 1256 (pintaPostura)"
+      - "07_DATITO/01_CONCEPTOS/visual/02_datos_features_target.html:411 #colsMel nacía vacío hasta pintaCols"
+      - "01_DOCUMENTACION/controles_sin_guion.tsv registró los ids cuyo script no escribía el contenedor"
+    root_cause: >
+      El HTML dejó el hueco y el guion no viajó con él. Un score de marcadores
+      no mira si algún script del mismo archivo asigna innerHTML o dibuja ese id.
+    keep_rule: >
+      Antes de dar por buena una página, cada div o canvas con id y sin hijos
+      tiene que aparecer en un script del mismo archivo que lo escriba.
+      Si el guion está en 10_ARCHIVO/courses/fcd-2026-2/visual/, copiar solo ese
+      bloque. Si el botón ya tiene un dibujo, enganchar la escritura ahí.
+      Un solo addEventListener por botón. Prohibido rehacer la página desde el template.
+    metric_gate: "Playwright: el id tiene texto o hijos tras cargar, y un clic o un input cambia el texto nombrado en el contrato"
+
+  - id: VIZ-FAIL-015
+    date: "2026-09-27"
+    family: visual
+    summary: "keep_eligible true no demuestra que el botón cambie el recuadro"
+    evidence:
+      - "04_CODIGO/datito_loop_eval.py:99 keep_eligible exige score >= 1.0, template_marker y anti_cdn"
+      - "07_DATITO/07_BITACORA/learning_loop/program_loop.md:29-36 el score es la media de marcadores, no de aprendizaje"
+      - "07_DATITO/01_CONCEPTOS/visual/01_fundamentos.html:512 el recuadro puede estar vacío con el marcador del template presente"
+    root_cause: >
+      El gate certifica la piel y la ausencia de CDN. No certifica que el control
+      del contrato cambie un texto, ni que el estudiante pudiera distinguir el verbo.
+    keep_rule: >
+      keep_eligible true no se lee como «el estudiante ya puede».
+      La comprobación del control es Playwright: mover el id del contrato y ver
+      cambiar el texto de comprobar. La evidencia de que alguien lo hizo solo
+      queda vacía hasta que /datito-corregir escriba una respuesta.
+    metric_gate: "contrato_conocimiento.yaml comprobar, más verificar_piel_lectura.py; el score del loop no cierra la tarea"
 
 inbox: []

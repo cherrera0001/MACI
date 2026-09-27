@@ -41,8 +41,8 @@ Todo HTML nuevo o reescritura mayor:
 4. Evaluar:
 
 ```bash
-python 03_CODIGO/datito_loop_eval.py --path <html>
-python 03_CODIGO/datito_loop_once.py --path <html> --hypothesis "..."
+python 04_CODIGO/datito_loop_eval.py --path <html>
+python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "..."
 ```
 
 KEEP solo si `keep_eligible=true` (score 1.0 + template + anti_cdn).

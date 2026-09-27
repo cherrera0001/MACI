@@ -57,6 +57,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -789,6 +790,121 @@
       resultChanged = false;
       updateGrafico();
     });
+  }
+
+  /* ===================================================================
+     PREDICCIÓN 1: MAE vs EXACTITUD / ORDEN DE CÓDIGOS
+     =================================================================== */
+
+  var M = [[25,36,35],[18,176,33],[39,65,573]];
+  var NOM = ["ambigua","espiral","elíptica"];
+  var N = 1000;
+
+  var ORDENES = [
+    [0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]
+  ];
+  var ordenActivo = 0;
+
+  function codigosDe(orden){
+    var c = [0,0,0];
+    for(var k=0;k<3;k++){ c[orden[k]] = k; }
+    return c;
+  }
+
+  function maeDe(orden){
+    var c = codigosDe(orden), suma = 0;
+    for(var i=0;i<3;i++){
+      for(var j=0;j<3;j++){
+        suma += M[i][j] * Math.abs(c[j] - c[i]);
+      }
+    }
+    return suma / N;
+  }
+
+  function fmtNum(x,d){
+    return x.toFixed(d).replace(".",",");
+  }
+
+  var elPerm = document.getElementById("permBtns");
+
+  // Crear botones de permutación
+  ORDENES.forEach(function(orden, idx){
+    var b = document.createElement("button");
+    b.className = "bmet";
+    b.type = "button";
+    b.setAttribute("aria-pressed", idx===0 ? "true":"false");
+    b.textContent = orden.map(function(ci,k){ return NOM[ci]+"="+k; }).join(" · ");
+    b.addEventListener("click", function(){
+      ordenActivo = idx;
+      Array.prototype.forEach.call(elPerm.children, function(x,i){
+        x.setAttribute("aria-pressed", i===idx ? "true":"false");
+      });
+      maeMovido = true;
+      revisaContrasteMae();
+    });
+    elPerm.appendChild(b);
+  });
+
+  /* Predicción 1: MAE vs EXACTITUD */
+  var maeRespondio = null, maeMovido = false;
+  var contMae = document.getElementById("contMae");
+
+  Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(b){
+    b.addEventListener("click", function(){
+      maeRespondio = b.getAttribute("data-p");
+      Array.prototype.forEach.call(document.querySelectorAll('#predMae .bpred'), function(o){
+        o.setAttribute("aria-pressed", o===b ? "true":"false");
+      });
+      revisaContrasteMae();
+    });
+  });
+
+  function revisaContrasteMae(){
+    if(maeRespondio === null || !maeMovido) return;
+    var t;
+    if(maeRespondio === "mae"){
+      t = "<strong>Correcto.</strong> La exactitud no se movió de 0,774 y el MAE sí. ";
+    } else if(maeRespondio === "ninguna"){
+      t = "<strong>Se movió una.</strong> La exactitud efectivamente quedó clavada en 0,774 — esa parte la tenías. Pero el MAE recorre 0,280 · 0,300 · 0,324. ";
+    } else if(maeRespondio === "exac"){
+      t = "<strong>Al revés.</strong> La exactitud es la que <em>no</em> se mueve: cuenta aciertos, y un acierto sigue siendo un acierto llames como llames a las clases. El que se mueve es el MAE. ";
+    } else if(maeRespondio === "ambas"){
+      t = "<strong>Solo una.</strong> La exactitud no puede moverse: cuenta aciertos, y renombrar las clases no convierte un acierto en un fallo. El MAE sí se mueve. ";
+    } else { return; }
+    t += "Ahora la pregunta que importa: <strong>¿por qué</strong> el MAE es sensible a algo que la exactitud ignora? Pista: mira qué operación hace cada una. Una resta códigos; la otra solo compara si son iguales.";
+    contMae.innerHTML = t;
+    contMae.classList.add("on");
+  }
+
+  /* Predicción 2: Salto vs suave */
+  var saltoRespondio = null;
+  var contSalto = document.getElementById("contSalto");
+
+  Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(b){
+    b.addEventListener("click", function(){
+      saltoRespondio = b.getAttribute("data-p");
+      Array.prototype.forEach.call(document.querySelectorAll('#predSalto .bpred'), function(o){
+        o.setAttribute("aria-pressed", o===b ? "true":"false");
+      });
+      revisaContrasteSalto();
+    });
+  });
+
+  function revisaContrasteSalto(){
+    if(saltoRespondio === null) return;
+    var t;
+    if(saltoRespondio === "salto"){
+      t = "<strong>Mira el contador mientras giras.</strong> Se queda quieto varios grados y después baja un entero de golpe. ";
+    } else if(saltoRespondio === "suave"){
+      t = "<strong>No es así.</strong> Mira más de cerca mientras giras la recta. ";
+    } else if(saltoRespondio === "nose"){
+      t = "<strong>Buena idea.</strong> Mira el número de errores mientras giras 1º a la vez. ¿Qué ves? ";
+    } else { return; }
+    t += "La razón es que la recta solo cambia algo <em>cuando un punto le cruza por encima</em>, y eso ocurre de a un punto a la vez. " +
+         "<strong>Y de ahí sale la consecuencia grande:</strong> una función que salta no tiene derivada, así que el modelo no puede preguntarle «¿hacia dónde me muevo para mejorar?». " +
+         "Por eso ningún clasificador minimiza esto directamente — el §6 explica qué minimizan en su lugar.";
+    contSalto.innerHTML = t;
+    contSalto.classList.add("on");
   }
 })();
 </script>

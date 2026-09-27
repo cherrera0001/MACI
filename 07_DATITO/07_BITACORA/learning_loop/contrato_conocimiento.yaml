@@ -1,0 +1,16 @@
+# Una clase. La evidencia la llena /datito-corregir cuando haya una respuesta escrita.
+clase: 07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html
+verbo: >
+  distinguir. 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §1, fila P2:
+  Sobreajuste ≠ subajuste ≠ error alto.
+predecir: >
+  Antes de mover el grado: ¿un error de entrenamiento bajo basta para decir
+  que el modelo aprendió, o hace falta la brecha con el error de validación?
+control: grado
+comprobar: >
+  el texto de #m-lec (Subajuste, Se abre la brecha, Sobreajuste o Ajuste razonable)
+transferir: |
+  Un modelo predice si un paciente vuelve a urgencias.
+  En los casos con que se ajustó, el error es casi cero; en pacientes nuevos, el error es alto.
+  Distingue sobreajuste de subajuste y de «el error es alto»: di qué par de números miras antes de poner la etiqueta.
+evidencia: ""

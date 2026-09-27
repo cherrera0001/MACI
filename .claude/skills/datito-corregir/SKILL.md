@@ -87,7 +87,7 @@ Se honesto con el puntaje. Un informe amable no le sirve para el certamen.
 Por cada pregunta corregida, agrega una entrada a `07_DATITO/dudas.yaml` con
 el enunciado, lo que respondio (textual), la respuesta correcta, la resolucion
 paso a paso, el error tipico y la fuente, en el visual del concepto que evalua.
-Luego corre `python 03_CODIGO/construir_navegacion.py`. Lo que devuelves al que
+Luego corre `python 03_SCRIPTS/construir_navegacion.py`. Lo que devuelves al que
 te invoco es el RESUMEN, los CONCEPTOS RAIZ y la lista de ids registrados: el
 detalle por pregunta ya quedo en los visuales, en orden.
 
@@ -111,7 +111,7 @@ Reglas que no se rompen:
 Al terminar, regenera el resumen:
 
 ```bash
-python 03_CODIGO/datito_estado.py
+python 03_SCRIPTS/datito_estado.py
 ```
 
 ---

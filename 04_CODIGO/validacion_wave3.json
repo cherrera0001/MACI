@@ -1,0 +1,75 @@
+Exception in thread Thread-15 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 1614, in _readerthread
+    buffer.append(fh.read())
+                  ~~~~~~~^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 136: character maps to <undefined>
+Exception in thread Thread-17 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 1614, in _readerthread
+    buffer.append(fh.read())
+                  ~~~~~~~^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d in position 121: character maps to <undefined>
+Exception in thread Thread-27 (_readerthread):
+Traceback (most recent call last):
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1082, in _bootstrap_inner
+    self._context.run(self.run)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1024, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 1614, in _readerthread
+    buffer.append(fh.read())
+                  ~~~~~~~^^
+  File "C:\Users\herre\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 229: character maps to <undefined>
+=== Validador Visual Batch ===
+
+Verificando 16 conceptos...
+
+01_fundamentos                 [OK]
+02_datos_features_target       [FAIL] 1 errors
+03_eda                         [OK]
+04_limpieza_preparacion        [OK]
+05_train_validation_test       [FAIL] 1 errors
+06_validacion_cruzada          [OK]
+07_generalizacion              [OK]
+08_overfitting_underfitting    [FAIL] None errors
+09_regresion                   [FAIL] None errors
+10_clasificacion               [FAIL] 3 errors
+11_matriz_confusion            [FAIL] 1 errors
+12_metricas_clasificacion      [OK]
+13_roc_auc                     [OK]
+14_arboles_decision            [FAIL] None errors
+18_redes_neuronales            [FAIL] 1 errors
+19_deep_learning               [FAIL] 1 errors
+
+--- Resumen ---
+  OK:   7/16
+  FAIL: 9/16
+
+--- Errores por categoria ---
+  css              6 archivos
+  js               1 archivos
+
+Reporte guardado: reporte_validacion.json

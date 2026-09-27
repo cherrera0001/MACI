@@ -31,7 +31,7 @@ def classify_difficulty(result):
     return "easy", 1
 
 def main():
-    report_file = Path("03_CODIGO/reporte_validacion.json")
+    report_file = Path("04_CODIGO/reporte_validacion.json")
     if not report_file.exists():
         print("Error: Corre validador_visual.py primero")
         return
@@ -91,7 +91,7 @@ def main():
     md += f"3. Manual QA (hard): 1+ hrs - ~{len(classified.get('hard', []))} archivos\n\n"
     md += f"**Proyeccion:** 13 FAIL a OK en ~2.5 hrs (13/13 = 100%)\n"
 
-    plan_file = Path("03_CODIGO/plan_reparacion.md")
+    plan_file = Path("04_CODIGO/plan_reparacion.md")
     plan_file.write_text(md)
     print(md)
     print(f"\nPlan guardado: plan_reparacion.md")

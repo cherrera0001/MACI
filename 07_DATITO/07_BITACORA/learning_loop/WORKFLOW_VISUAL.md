@@ -20,8 +20,8 @@ Este workflow hace imposible un KEEP sin pasar por el template y la métrica.
 | Protocolo | `learning_loop/program_loop.md` |
 | Lecciones | `learning_loop/agent_lessons.yaml` |
 | Log | `learning_loop/results.tsv` |
-| Eval | `03_CODIGO/datito_loop_eval.py` |
-| Una iteración | `03_CODIGO/datito_loop_once.py` |
+| Eval | `04_CODIGO/datito_loop_eval.py` |
+| Una iteración | `04_CODIGO/datito_loop_once.py` |
 
 ## Flujo (obligatorio)
 
@@ -31,7 +31,7 @@ Este workflow hace imposible un KEEP sin pasar por el template y la métrica.
         ├─► leer agent_lessons.yaml
         ├─► COPIAR _TEMPLATE_CANONICO.html
         ├─► rellenar contenido (sin tocar :root / sin CDN)
-        ├─► python 03_CODIGO/datito_loop_eval.py --path …
+        ├─► python 04_CODIGO/datito_loop_eval.py --path …
         │         │
         │         ├─ keep_eligible=true  → datito_loop_once (KEEP) → listo
         │         └─ false               → DISCARD → /datito-loop repara desde template
@@ -42,13 +42,13 @@ Este workflow hace imposible un KEEP sin pasar por el template y la métrica.
 
 ```bash
 # Evaluar un visual (exit 1 = discard)
-python 03_CODIGO/datito_loop_eval.py --path 07_DATITO/visual/certamen3_p1a_roc_detallado.html
+python 04_CODIGO/datito_loop_eval.py --path 07_DATITO/visual/certamen3_p1a_roc_detallado.html
 
 # Loguear decisión
-python 03_CODIGO/datito_loop_once.py --path 07_DATITO/visual/foo.html --hypothesis "partir de template v1"
+python 04_CODIGO/datito_loop_once.py --path 07_DATITO/visual/foo.html --hypothesis "partir de template v1"
 
 # Tras keep de curso: regenerar nav si aplica
-python 03_CODIGO/construir_navegacion.py
+python 03_SCRIPTS/construir_navegacion.py
 ```
 
 ## Criterio KEEP (todos)

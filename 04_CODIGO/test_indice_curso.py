@@ -109,7 +109,7 @@ def ids_de(ruta):
 def rotos(ruta):
     fallos = []
     for href in enlaces_locales(ruta):
-        if href.startswith(("http://", "https://", "mailto:", "javascript:")):
+        if href.startswith(("http://", "https://", "mailto:", "javascript:")) or "${" in href:
             continue
         path, fragmento = partir(href)
         if not path:

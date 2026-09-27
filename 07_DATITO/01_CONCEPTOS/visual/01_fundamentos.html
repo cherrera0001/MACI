@@ -59,6 +59,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -124,7 +125,7 @@
 <body>
 <main>
 <!-- datito:nav:inicio -->
-<!-- La barra la inyecta 03_CODIGO/construir_navegacion.py. No la escribas a mano. -->
+<!-- La barra la inyecta 03_SCRIPTS/construir_navegacion.py. No la escribas a mano. -->
 <!-- datito:nav:fin -->
 
 <h1>Fundamentos de Ciencia de Datos</h1>
@@ -1228,6 +1229,153 @@ mecanismo.</li>
 
 </main>
 <script>
+/* ---------------- 3 · posturas ---------------- */
+var POSTURAS = {
+  exp: {
+    t: "Por experiencia",
+    h: "El jefe de patrimonio decide adelantar la cosecha porque lleva veinte años viendo rodales y este «se ve listo». El modelo existe, pero nadie lo abre.",
+    q: "Decide: la persona. Los datos: no entran.",
+    f: "Falla cuando el año no se parece a los veinte anteriores. Y no deja rastro: si sale mal, no hay nada que revisar.",
+    v: "Es rápido y usa conocimiento real que no está en ninguna tabla."
+  },
+  inf: {
+    t: "Data-informed (vocabulario externo, no del curso)",
+    h: "El modelo proyecta que esperar seis meses sube el rendimiento un 4 %. El jefe de patrimonio lo lee, lo cruza con que el camino forestal se corta con lluvia fuerte, y decide cosechar ahora igual.",
+    q: "Decide: la persona. Los datos: entran como una entrada más, con peso.",
+    f: "Falla cuando «el criterio experto» se usa como comodín para ignorar siempre lo que el dato dice. Sin registro de por qué se desvió, es experiencia disfrazada.",
+    v: "Incorpora lo que el modelo no tiene en X —el estado del camino— sin renunciar a la evidencia."
+  },
+  drv: {
+    t: "Data-driven",
+    h: "La regla está escrita de antemano: si el modelo proyecta una ganancia mayor al 3 %, se espera. El modelo proyecta 4 %. Se espera. La orden sale sin reunión.",
+    q: "Decide: la regla, alimentada por datos. La persona: la diseñó antes, y puede revisarla después.",
+    f: "Falla cuando el dato entra mal y nadie lo nota —la cuarta V, veracidad—, o cuando el mundo cambia y la regla no. Necesita monitoreo, que es la etapa de puesta en marcha.",
+    v: "Escala a miles de rodales, es consistente entre personas, y queda auditable: se sabe exactamente por qué se decidió así."
+  }
+};
+function pintaPostura(k){
+  var p = POSTURAS[k];
+  document.getElementById('cajaPostura').innerHTML =
+    '<div style="font-weight:700;margin-bottom:.4rem">' + p.t + '</div>' +
+    '<div>' + p.h + '</div>' +
+    '<b>Quién decide</b>' + p.q +
+    '<b>Dónde falla</b>' + p.f +
+    '<b>Qué aporta</b>' + p.v;
+}
+(function(){
+  var btns = document.querySelectorAll('#segPostura button');
+  for (var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click', function(){
+      for (var j=0;j<btns.length;j++) btns[j].classList.remove('on');
+      this.classList.add('on');
+      pintaPostura(this.getAttribute('data-p'));
+    });
+  }
+  pintaPostura('exp');
+})();
+
+(function(){
+  var pred = document.getElementById('predBD'), vBD = document.getElementById('vBD');
+  var RESP = {
+    si: 'Correcto, y fíjate <em>por qué</em>: el volumen no se movió, se movió la <strong>velocidad</strong>. Deja volumen y capacidad donde están y sube solo el deslizador de velocidad a 95: la barra se pone roja sola. Las tres V son puertas independientes — basta con que una supere la capacidad.',
+    no: 'Mira otra vez las tres barras. El volumen es una de las tres V, no la única. Deja volumen y capacidad quietos y sube solo <strong>velocidad</strong>: el mismo dato pasa a rojo. El error de fondo es leer <em>big data</em> como sinónimo de <em>muchos datos</em>.',
+    dep: 'Depende, sí — pero de algo concreto y nombrable: <strong>de la capacidad de la infraestructura</strong>. Sube velocidad a 95 y después sube la capacidad a 100: el mismo problema entra y sale de <em>big data</em> sin que el dato cambie. Eso es exactamente lo que dijo el profesor.'
+  };
+  var pb = pred.querySelectorAll('button');
+  for (var k=0;k<pb.length;k++){
+    pb[k].addEventListener('click', function(){
+      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
+      this.classList.add('elegida');
+      vBD.innerHTML = RESP[this.getAttribute('data-r')];
+      vBD.className = 'veredicto on';
+    });
+  }
+})();
+
+/* ---------------- 6 · simulador del ciclo ---------------- */
+(function(){
+  var ETAPAS = ['Requerimiento','Recolección','Limpieza','Exploración','Modelamiento','Comunicación','Puesta en marcha'];
+  var CASOS = [
+    { txt: 'El modelo de precios da resultados rarísimos: predice 12 millones para departamentos de un dormitorio. Revisas y hay filas con Landsize = 0 y otras con 40.000 m².',
+      ok: 'Limpieza',
+      fb: 'Valores fuera de rango → <strong>limpieza</strong>. Este es el caso que el segundo docente dice encontrar el 90 % de las veces que retrocede: llega al modelamiento, el resultado no cuadra, y el problema estaba dos etapas atrás.' },
+    { txt: 'Quieres predecir el consumo de combustible por camión y turno, pero el sistema de despacho solo registra el consumo agregado por día de toda la flota.',
+      ok: 'Requerimiento',
+      fb: 'El dato al nivel que la pregunta exige <strong>no existe</strong>. Puedes intentar recolectarlo, pero si no se registra, hay que volver al <strong>requerimiento</strong> y replantear la pregunta a un nivel respondible. El segundo docente lo explicó así en la clase del 19-jun: si al recolectar descubres que parte fundamental de los datos no está disponible, vuelves atrás y refinas la pregunta. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:02:23–2:02:44]</span>' },
+    { txt: 'El modelo funciona bien en validación. Lo presentas a gerencia y la primera pregunta es: «¿y esto qué significa para el presupuesto del próximo trimestre?». No sabes responder.',
+      ok: 'Comunicación',
+      fb: 'No es un problema de modelo: es de <strong>comunicación</strong>. El segundo docente fue explícito: de nada sirve el proceso completo si, una vez encontrada la respuesta, no eres capaz de comunicársela a los tomadores de decisiones. <span style="font-size:.8rem;color:#666">[FUENTE · Repo: 09_CLASES/transcripciones/01Clase_Bienvenida_Fundamentos_en_Ciencia_de_Datos_19_Junio.md · 2:04:43–2:05:02]</span> Un modelo que nadie sabe usar no produjo conocimiento.' },
+    { txt: 'Llevas un mes con el modelo en operación. Al principio acertaba; en las últimas tres semanas se degrada sin que nadie haya tocado el código.',
+      ok: 'Puesta en marcha',
+      fb: 'Detectarlo es función de la <strong>puesta en marcha</strong>: si no hay monitoreo, nadie se entera. Una vez detectado, el ciclo vuelve a girar — probablemente hacia recolección o requerimiento, porque cambió el mundo, no el código. Esta es la etapa que casi todos omiten al enumerar el ciclo.' },
+    { txt: 'Antes de modelar nada, notas que la columna CONSUMO de la planilla minera mezcla números de litros, IDs de camión y la palabra «mantención», además de un centinela -999.',
+      ok: 'Limpieza',
+      fb: 'Una columna con tres significados distintos es <strong>limpieza</strong> — sobrecarga semántica. Y es literalmente la pregunta 9B del Certamen 1, la que vale 2,0 puntos. Ojo con el reflejo de borrar: un centinela -999 hay que sacarlo, pero un consumo de 0 puede ser una medición real de un camión que no salió.' }
+  ];
+
+  var cont = document.getElementById('simCiclo');
+  var marcador = document.getElementById('marcador');
+  var aciertos = 0, respondidos = 0;
+
+  for (var i=0;i<CASOS.length;i++){
+    (function(c, idx){
+      var d = document.createElement('div');
+      d.className = 'sintoma';
+      var h = '<div class="txt">' + c.txt + '</div><div class="ciclo">';
+      for (var j=0;j<ETAPAS.length;j++) h += '<button data-e="' + ETAPAS[j] + '">' + ETAPAS[j] + '</button>';
+      h += '</div><div class="fb"></div>';
+      d.innerHTML = h;
+      cont.appendChild(d);
+
+      var fb = d.querySelector('.fb');
+      var bs = d.querySelectorAll('.ciclo button');
+      var yaContado = false;
+      for (var k=0;k<bs.length;k++){
+        bs[k].addEventListener('click', function(){
+          var e = this.getAttribute('data-e');
+          var bien = (e === c.ok);
+          for (var m=0;m<bs.length;m++){ bs[m].classList.remove('ok'); bs[m].classList.remove('no'); }
+          this.classList.add(bien ? 'ok' : 'no');
+          if (!bien){
+            for (var m=0;m<bs.length;m++){
+              if (bs[m].getAttribute('data-e') === c.ok) bs[m].classList.add('ok');
+            }
+          }
+          fb.innerHTML = (bien ? '<strong style="color:#059669">Sí.</strong> ' : '<strong style="color:#dc2626">No.</strong> ') + c.fb;
+          fb.className = 'fb on';
+          if (!yaContado){
+            yaContado = true; respondidos++;
+            if (bien) aciertos++;
+            marcador.style.display = 'block';
+            marcador.innerHTML = '<strong>' + aciertos + ' de ' + respondidos + '</strong> a la primera. ' +
+              (respondidos === CASOS.length
+                ? 'De los cinco síntomas, <strong>dos</strong> vuelven a limpieza. Ese sesgo no es del ejercicio: es el 90 % del que habló el segundo docente (causa de retrocesos, no tiempo invertido).'
+                : 'Sigue.');
+          }
+        });
+      }
+    })(CASOS[i], i);
+  }
+})();
+
+(function(){
+  var pred = document.getElementById('predEps'), vEps = document.getElementById('vEps');
+  var RESP = {
+    cero: 'No. Y es el punto entero de la ecuación. El modelo perfecto acierta <code>f(X)</code>, pero <code>Y</code> no es <code>f(X)</code>: es <code>f(X) + ε</code>. Le queda encima todo <code>ε</code>. Sube el deslizador y mira la primera cifra: es el error de un modelo que no comete ningún error propio.',
+    sube: 'Exacto. Sube el deslizador y verifica: <strong>MAE del modelo perfecto</strong> crece junto con ε. Eso es el <em>error irreducible</em>. Ningún algoritmo, ninguna cantidad de datos y ningún ajuste lo baja — solo bajarlo consiguiendo <em>features nuevas</em> que capturen lo que hoy está en ε.',
+    igual: 'Prueba a moverlo. La primera cifra sube. El modelo perfecto acierta <code>f(X)</code>, pero lo observado es <code>f(X) + ε</code>: la distancia entre ambos <em>es</em> ε. El error del modelo perfecto no es cero ni es constante: es el tamaño del ruido.'
+  };
+  var pb = pred.querySelectorAll('button');
+  for (var k=0;k<pb.length;k++){
+    pb[k].addEventListener('click', function(){
+      for (var j=0;j<pb.length;j++) pb[j].classList.remove('elegida');
+      this.classList.add('elegida');
+      vEps.innerHTML = RESP[this.getAttribute('data-r')];
+      vEps.className = 'veredicto on';
+    });
+  }
+})();
+
 // Manejador del simulador Big Data (secciones 5)
 function updateBigDataViz() {
   const sVol = document.getElementById('sVol');
@@ -1244,6 +1392,12 @@ function updateBigDataViz() {
   document.getElementById('bVol').style.width = vVol + '%';
   document.getElementById('bVel').style.width = vVel + '%';
   document.getElementById('bVar').style.width = vVar + '%';
+  document.getElementById('bVol').className = 'bd-barra ' + (vVol > vCap ? 'bd-mal' : 'bd-ok');
+  document.getElementById('bVel').className = 'bd-barra ' + (vVel > vCap ? 'bd-mal' : 'bd-ok');
+  document.getElementById('bVar').className = 'bd-barra ' + (vVar > vCap ? 'bd-mal' : 'bd-ok');
+  ['tVol', 'tVel', 'tVar'].forEach(function(id) {
+    document.getElementById(id).style.left = 'calc(' + vCap + '% - 1.5px)';
+  });
 
   // Actualizar etiquetas
   document.getElementById('lVol').textContent = Math.round(vVol);

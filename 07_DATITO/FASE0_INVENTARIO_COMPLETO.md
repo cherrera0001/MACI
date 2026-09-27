@@ -76,10 +76,10 @@
 ## 3. SCRIPTS AUTOMATIZADOS ENCONTRADOS
 
 ### Scripts de Evaluación (ACTIVOS):
-- ✅ `03_CODIGO/datito_loop_eval.py` — Evalúa UN archivo (11 gates, retorna score 0-1.0)
-- ✅ `03_CODIGO/datito_batch_eval.py` — Evalúa LOTE de archivos
-- ✅ `03_CODIGO/datito_loop_once.py` — Registra decisión migración en results.tsv
-- ✅ `03_CODIGO/datito_migracion_inicio.py` — Genera _NEW.html basado en template
+- ✅ `04_CODIGO/datito_loop_eval.py` — Evalúa UN archivo (11 gates, retorna score 0-1.0)
+- ✅ `04_CODIGO/datito_batch_eval.py` — Evalúa LOTE de archivos
+- ✅ `04_CODIGO/datito_loop_once.py` — Registra decisión migración en results.tsv
+- ✅ `04_CODIGO/datito_migracion_inicio.py` — Genera _NEW.html basado en template
 
 ### Scripts de Generación (ACTIVOS):
 - ✅ `03_SCRIPTS/generar_index.py` — Genera index.html desde grafo.yaml (150 líneas)
@@ -290,8 +290,8 @@ Archivos generados por scripts (no son artefactos de estudio):
 | Tarea | Archivo/Comando |
 |-------|-----------------|
 | Ver template canónico | `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` |
-| Evaluar un archivo | `python 03_CODIGO/datito_loop_eval.py --path <ruta>` |
-| Evaluar lote | `python 03_CODIGO/datito_batch_eval.py` |
+| Evaluar un archivo | `python 04_CODIGO/datito_loop_eval.py --path <ruta>` |
+| Evaluar lote | `python 04_CODIGO/datito_batch_eval.py` |
 | Plan migración | `07_DATITO/07_BITACORA/PLAN_MIGRACION_GLOBAL.md` |
 | Estado actual | `07_DATITO/MIGRACION_STATUS_2026_09_25.md` |
 | Arquitectura | `07_DATITO/00_INICIO/ARQUITECTURA.md` |

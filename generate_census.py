@@ -34,7 +34,7 @@ with open("07_DATITO/07_BITACORA/learning_loop/census.tsv", "w") as f:
     for html in html_files:
         try:
             result = subprocess.run(
-                ["python", "03_CODIGO/datito_loop_eval.py", "--path", html, "--json"],
+                ["python", "04_CODIGO/datito_loop_eval.py", "--path", html, "--json"],
                 capture_output=True, text=True, timeout=5
             )
             if result.returncode == 0:

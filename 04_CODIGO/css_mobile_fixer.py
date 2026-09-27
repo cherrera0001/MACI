@@ -19,7 +19,7 @@ EASY_FILES = [
 ]
 
 VISUAL_DIR = Path("07_DATITO/01_CONCEPTOS/visual")
-VERIFY_SCRIPT = Path("03_CODIGO/verificar_piel_lectura.py")
+VERIFY_SCRIPT = Path("04_CODIGO/verificar_piel_lectura.py")
 
 MEDIA_QUERY = "@media(max-width:600px){body{padding:0.6rem 0.4rem;font-size:14px}main{margin:0;padding:0}table{font-size:0.85rem;display:block;overflow-x:auto}canvas{max-width:100%}div{max-width:100%}}"
 

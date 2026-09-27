@@ -29,8 +29,8 @@ contexto y no debe gastar el de la sesion de estudio.
 Gate de KEEP:
 
 ```bash
-python 03_CODIGO/datito_loop_eval.py --path <html>
-python 03_CODIGO/datito_loop_once.py --path <html> --hypothesis "…"
+python 04_CODIGO/datito_loop_eval.py --path <html>
+python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "…"
 ```
 
 Si `keep_eligible` es false → discard y rehacer desde el template.
@@ -82,7 +82,7 @@ ayudantia, alumnos) se enseno cada concepto. Luego abre el `.md` de esa clase en
 ese rango. Si el profesor uso un ejemplo para ese concepto, **usa ese** — vale
 mas que cualquiera que inventes, porque es el que va a reconocer en la prueba.
 
-Reglas de cita, que verifica `03_CODIGO/verificar_visuales.py`:
+Reglas de cita, que verifica `04_CODIGO/verificar_visuales.py`:
 
 - Ruta **completa** del `.md` y marca o rango `H:MM:SS–H:MM:SS`. Nunca el
   `_plano.txt` (no tiene marcas), nunca una ruta truncada con «…».
@@ -95,7 +95,7 @@ Reglas de cita, que verifica `03_CODIGO/verificar_visuales.py`:
 - Un numero dicho en clase puede estar mal transcrito: contrastalo con la
   lamina o la aritmetica antes de usarlo.
 - No escribas la barra de navegacion: la inyecta
-  `03_CODIGO/construir_navegacion.py` entre `<!-- datito:nav:inicio -->` y
+  `03_SCRIPTS/construir_navegacion.py` entre `<!-- datito:nav:inicio -->` y
   `<!-- datito:nav:fin -->`. Si creas un visual nuevo, agregalo a `VISUAL_DE` en
   ese script y como clase en `07_DATITO/clases.yaml` (spec.md G14): con su
   ficha Bloom, activacion y cierre. La barra de clase y el cierre los genera el
@@ -226,8 +226,8 @@ Canvas y JavaScript plano. Su prueba es sin Internet.
 # SALIDA
 
 Escribe en `07_DATITO/visual/<concepto>.html`, corre
-`python 03_CODIGO/construir_navegacion.py` y
-`python 03_CODIGO/verificar_visuales.py` (0 fallos), y devuelve **solo**:
+`python 03_SCRIPTS/construir_navegacion.py` y
+`python 04_CODIGO/verificar_visuales.py` (0 fallos), y devuelve **solo**:
 
 ```
 ruta del archivo

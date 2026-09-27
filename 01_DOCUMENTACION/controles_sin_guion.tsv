@@ -1,0 +1,9 @@
+archivo	id	motivo
+07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html	c-ajuste	SIN_GUION en 10_ARCHIVO/courses/fcd-2026-2/visual/
+07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html	c-curva	SIN_GUION en 10_ARCHIVO/courses/fcd-2026-2/visual/
+07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html	tabla	SIN_GUION en 10_ARCHIVO/courses/fcd-2026-2/visual/
+07_DATITO/01_CONCEPTOS/visual/03_eda.html	camMet	el archivo eda.html escribe este div dentro de camDraw, que también redibuja #cCam y vuelve a escuchar #bCamReal. La página ya tiene drawTruckChart en ese botón. No se pegó el segundo guion.
+07_DATITO/01_CONCEPTOS/visual/03_eda.html	melMet	el archivo eda.html escribe este div dentro de melDraw, que también redibuja el canvas y vuelve a escuchar #bCrudo. La página ya tiene drawMelbourneChart. No se pegó el segundo guion.
+07_DATITO/01_CONCEPTOS/visual/10_clasificacion.html	contMae	el archivo clasificacion.html escribe este div en un guion que también dibuja #lienzo. La página ya tiene otro dibujo de #lienzo. No se pegó el segundo guion.
+07_DATITO/01_CONCEPTOS/visual/10_clasificacion.html	permBtns	mismo guion de clasificacion.html, mismo conflicto con #lienzo.
+07_DATITO/01_CONCEPTOS/visual/10_clasificacion.html	contSalto	mismo guion de clasificacion.html, mismo conflicto con #lienzo.

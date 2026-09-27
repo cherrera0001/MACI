@@ -60,6 +60,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -159,7 +160,7 @@ main{overflow-wrap:anywhere}
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>Analisis exploratorio de datos (EDA)</b></span> · <span class="et">viene de</span><a href="02_datos_features_target.html">Datos, filas, columnas, features y target</a> · <span class="et">habilita</span><a href="04_limpieza_preparacion.html">Limpieza y preparacion de datos</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C1: 9A, de forma indirecta) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p9a">C1 P9A</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p11">C2 P11</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C1: 9A, de forma indirecta) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_1.html#p9a">C1 P9A</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p4">C2 P4</a> · <a href="../../04_EJERCICIOS/certamen_2.html#p11">C2 P11</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3a">C3 P3a</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3b">C3 P3b</a></div>
 <details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 17-jul</b> · 0:05:20–1:27:00 · profesor — la clase completa de EDA<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/04Clase_Fundamentos_en_Ciencia_de_Datos_17_Julio.md · 0:05:20]</span></li><li><b>Presentaciones del 14-ago</b> · 1:19:25–1:21:04 · profesor — boxplots con pocos datos no aseguran significancia<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:25]</span></li><li><b>Ayudantía del 10-jul</b> · 0:12:57–0:36:43 · ayudantía — P1 sobre MovieLens: describe, filtros con &amp; y |, value_counts, nunique, sort_values, groupby <span class="ay">· ayudantía: no entra al certamen</span><br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/03Ayundatía_Fundamentos_en_Ciencia_de_Datos_11_Julio.md · 0:12:57]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -264,7 +265,7 @@ camiones que verás en la sección 3:</p>
 </div>
 
 
-<h2>2 · El resumen no determina la forma</h2>
+<h2 id="forma">2 · El resumen no determina la forma</h2>
 
 <p>Tu profesor puso cuatro conjuntos de datos en pantalla. Cada uno tiene dos variables,
 <code>x</code> e <code>y</code>, y once filas. Y los cuatro tienen exactamente el mismo resumen:</p>
@@ -1332,6 +1333,7 @@ repregunte.</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Un resumen no determina la forma: hay que mirar la distribución.</li><li>La media se mueve con los extremos; la mediana no.</li><li>La varianza de una muestra divide por n − 1.</li><li>Correlación no es causalidad, y un gráfico puede engañar por su escala.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Cantidad que describe una variable (varianza) ≠ cantidad que describe un clasificador (precisión, AUC) (C2 P4).</li><li>Hipótesis ≠ medición (C2 P11).</li><li>Necesario ≠ suficiente: toda falla trae vibración, no toda vibración es falla.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Tipo de variable → gráfico adecuado.</li><li>Centro (media y mediana) y extensión (desviación, percentiles).</li><li>Busca ceros, centinelas y atípicos: ¿error o dato real?</li><li>Escribe hipótesis, no conclusiones.</li></ol>
+<p><b>Certamen 3.</b> La pregunta 3a lee dos paneles que no comparten denominador. La 3b muestra un histograma con dos montones: la forma propone una hipótesis y no la demuestra. <a href="../../04_EJERCICIOS/certamen_3.html#p3a">C3 P3a</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3b">C3 P3b</a>.</p>
 <p><b>Viene de:</b> <a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · <b>Sigue:</b> <a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a></p>
 <p><b>Vuelve a tu activación:</b> En la clase de EDA, el histograma de consumo de camiones tenía muchísimos ceros. ¿Son camiones inactivos o reportes que faltan? ¿Cómo lo decidirías? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Si la media es mucho mayor que la mediana, ¿qué te dice eso de la distribución?
@@ -1360,6 +1362,25 @@ cerrar». Analogías, orden pedagógico y ejercicios: [DATITO].
 </footer>
 </main>
 <script>
+// ============================================================================
+// FUNCIONES AUXILIARES
+// ============================================================================
+function pct(a, p) {
+  var s = a.slice().sort(function(x, y) { return x - y; });
+  var i = (s.length - 1) * p / 100;
+  var lo = Math.floor(i), hi = Math.ceil(i);
+  if (lo === hi) return s[lo];
+  return s[lo] + (s[hi] - s[lo]) * (i - lo);
+}
+function media(a) { var t = 0; for (var i = 0; i < a.length; i++) t += a[i]; return t / a.length; }
+function mediana(a) { return pct(a, 50); }
+function fmt(x, d) {
+  var s = x.toFixed(d === undefined ? 2 : d);
+  var p = s.split(".");
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return p.length > 1 ? p[0] + "," + p[1] : p[0];
+}
+
 // ============================================================================
 // FUNCIONES DE DIBUJO PARA CANVAS
 // ============================================================================
@@ -1423,6 +1444,10 @@ function drawAnscombeChart(canvasId) {
   }
 }
 
+// Datos de camiones
+var CAM_POS = [2100, 2150, 2200, 2250, 2300, 2350, 2400, 2400, 2400, 2450, 2500, 2550, 2600, 2650, 2700];
+var CAM_CEROS = 10, CAM_TUYO = 2500;
+
 // 2. Histograma de consumo de camiones
 function drawTruckChart(canvasId, realZeros) {
   var canvas = document.getElementById(canvasId);
@@ -1432,6 +1457,14 @@ function drawTruckChart(canvasId, realZeros) {
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, w, h);
+
+  // Calcular datos reales para métricas
+  var datos = CAM_POS.slice(), i;
+  if (realZeros) {
+    for (i = 0; i < CAM_CEROS; i++) datos.push(0);
+  }
+  var m = media(datos), md = mediana(datos);
+  var sobre = (CAM_TUYO / m - 1) * 100;
 
   // Datos: 10 en cero, 15 entre 2100 y 2700
   var bins = [];
@@ -1482,6 +1515,13 @@ function drawTruckChart(canvasId, realZeros) {
   ctx.moveTo(40, 20);
   ctx.lineTo(40, h - 40);
   ctx.stroke();
+
+  // Actualizar métricas en camMet
+  document.getElementById("camMet").innerHTML =
+    '<div><div class="n">' + datos.length + '</div><div class="e">camiones en el cálculo</div></div>' +
+    '<div><div class="n">' + fmt(m, 0) + ' L</div><div class="e">media</div></div>' +
+    '<div><div class="n">' + fmt(md, 0) + ' L</div><div class="e">mediana</div></div>' +
+    '<div class="' + (sobre > 20 ? "alarma" : "bien") + '"><div class="n">+' + fmt(sobre, 0) + ' %</div><div class="e">tus 2.500 sobre la media</div></div>';
 }
 
 // 3. Distribución de vibración con curva normal
@@ -1556,6 +1596,11 @@ function drawVibrationChart(canvasId, skew) {
   ctx.fillText('70', chartX + chartW + 10, chartY + chartH + 15);
 }
 
+// Datos de Melbourne (seeded para consistencia)
+var MEL_SEED_CRUDO = [131093, 179090, 216400, 187880, 301845, 350670, 392000, 410500, 512000, 668000, 890000, 1100000, 1450000, 1850000, 2200000, 2650000, 3100000];
+var MEL_SEED_LOG = [11.78, 12.1, 12.28, 12.24, 12.61, 12.77, 12.88, 12.92, 13.14, 13.41, 13.7, 13.91, 14.19, 14.45, 14.61, 14.79, 14.95];
+var melSel = "crudo";
+
 // 4. Distribución de precios Melbourne
 function drawMelbourneChart(canvasId, logScale) {
   var canvas = document.getElementById(canvasId);
@@ -1565,6 +1610,20 @@ function drawMelbourneChart(canvasId, logScale) {
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, w, h);
+
+  // Establecer melSel para que se pueda usar en otros contextos
+  melSel = logScale ? "log" : "crudo";
+
+  // Usar datos seeded para calcular estadísticas
+  var S_data = logScale ? MEL_SEED_LOG : MEL_SEED_CRUDO;
+  var S_media = media(S_data);
+  var S_mediana = mediana(S_data);
+  var S_s = S_data.length > 1 ? Math.sqrt(S_data.reduce(function(sum, v) { return sum + Math.pow(v - S_media, 2); }, 0) / (S_data.length - 1)) : 0;
+  var S_d = logScale ? 2 : 0;
+  var S_bajo = logScale ? 52.5 : 61.5;
+
+  var dIzq = Math.abs((S_media - S_s) - pct(S_data, 5));
+  var dDer = Math.abs(pct(S_data, 95) - (S_media + S_s));
 
   // Generar datos con asimetría (como Price real de Melbourne)
   var data = [];
@@ -1622,6 +1681,15 @@ function drawMelbourneChart(canvasId, logScale) {
   ctx.textAlign = 'center';
   var label = logScale ? 'log(Price)' : 'Price (AUD)';
   ctx.fillText(label, w / 2, h - 10);
+
+  // Actualizar métricas en melMet
+  document.getElementById("melMet").innerHTML =
+    '<div><div class="n">' + fmt(S_media, S_d) + '</div><div class="e">media</div></div>' +
+    '<div><div class="n">' + fmt(S_mediana, S_d) + '</div><div class="e">mediana</div></div>' +
+    '<div><div class="n">' + fmt(S_s, S_d === 0 ? 0 : 4) + '</div><div class="e">desv. estándar</div></div>' +
+    '<div><div class="n">' + fmt(dIzq, S_d === 0 ? 0 : 4) + '</div><div class="e">(media−s) a P5</div></div>' +
+    '<div><div class="n">' + fmt(dDer, S_d === 0 ? 0 : 4) + '</div><div class="e">(media+s) a P95</div></div>' +
+    '<div class="' + (melSel === "crudo" ? "alarma" : "bien") + '"><div class="n">' + S_bajo.toFixed(1).replace(".", ",") + ' %</div><div class="e">bajo la media</div></div>';
 }
 
 // Inicializar canvas en DOMContentLoaded

@@ -63,7 +63,7 @@ SALIDA REQUERIDA (4 ITEMS)
 VERIFICACIONES EJECUTADAS
 ================================================================================
 
-✅ Python script: F:\MACI\03_CODIGO\verificar_visuales.py
+✅ Python script: F:\MACI\04_CODIGO\verificar_visuales.py
    - Sin CDN: OK
    - Estructura (14 checks): OK
    - Canvas 2D local: OK
@@ -94,7 +94,7 @@ CÓMO USAR
    - Expande/contrae details con click
 
 3. VERIFICAR SIN CDN:
-   python F:\MACI\03_CODIGO\verificar_visuales.py
+   python F:\MACI\04_CODIGO\verificar_visuales.py
 
 4. REPORTE COMPLETO:
    Ver: F:\MACI\07_DATITO\VERIFICACION_CERTAMEN3.md

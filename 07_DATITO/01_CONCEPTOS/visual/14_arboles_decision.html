@@ -57,6 +57,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -445,7 +446,7 @@ precisamente los frenos.</p>
 en train 2016 y <strong>0,6123</strong> en test 2017
 [FUENTE · Repo: 07_DATITO/referencia/material.md]. Estaba configurado con
 <code>max_depth=8, min_samples_leaf=20</code>
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 58].</p>
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · línea 58].</p>
 <p>(a) Calcula la brecha. (b) ¿Es el «árbol sin límite» de esta sección? ¿Qué número lo
 delata? (c) ¿Toda la brecha es sobreajuste? Nombra la otra causa que existe en tu
 proyecto.</p>
@@ -471,7 +472,7 @@ train, sin calcular la brecha ni mirar el nivel de train; y atribuir toda la ca�
 2016 a 2017 al sobreajuste. Los dos errores están registrados en tu historial.</p>
 <p><strong>De dónde sale:</strong> cifras de
 [FUENTE · Repo: 07_DATITO/referencia/material.md]; configuración de
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 58]; lectura [INFERENCIA].</p>
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · línea 58]; lectura [INFERENCIA].</p>
 </details></div>
 
 <p>Y el cierre del tema en clase, que explica por qué esta página no termina aquí:</p>
@@ -643,7 +644,7 @@ P5 en vivo (árbol con <code>plot_tree</code>, bosque e importancias): intenta
 <p>Un árbol profundo sobreajusta. Tu Random Forest de Melbourne promedió
 <strong>300 árboles</strong> con hojas de mínimo 2 casas
 (<code>n_estimators=300, min_samples_leaf=2</code>)
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 59]: árboles muy profundos.
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · línea 59]: árboles muy profundos.
 Escribe, en 5 a 8 líneas, <strong>por qué el promedio de esos árboles puede sobreajustar
 menos que cualquiera de ellos</strong>, y <strong>bajo qué condición dejaría de ser
 cierto</strong>. Escríbelo antes de abrir la respuesta modelo, y llévalo a Datito.</p>
@@ -796,7 +797,7 @@ un modelo» calza con el recuadro de abajo: boosting es una forma de <em>constru
 ensamble bajando el error paso a paso [INFERENCIA]. Pero «generalmente se usa para
 clasificación» choca con tu proyecto: tu modelo final es un
 <code>HistGradientBoostingRegressor</code>, de <strong>regresión</strong>
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 61]. En el mismo comentario el
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · línea 61]. En el mismo comentario el
 profesor recordó que el random forest tiene versión de regresión y de clasificación
 [FUENTE · Repo: 09_CLASES/transcripciones/2026-08-14T22_09_23Z_Fundamentos_en_Ciencia_de_Datos.md · 1:59:00–1:59:08];
 con boosting pasa lo mismo, como muestra tu código. No hay lámina que zanje el punto: si te
@@ -838,7 +839,7 @@ idea de bajar por el gradiente reaparece en
 <p>Tu modelo final es un HistGradientBoosting sobre log1p(Price): <strong>MAE 188.218 AUD
 y R² 0,757</strong> en 2017 [FUENTE · Repo: 07_DATITO/referencia/material.md]. Su
 configuración y la del Gradient Boosting clásico
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · líneas 60–61]:</p>
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · líneas 60–61]:</p>
 <ul>
   <li><code>GradientBoostingRegressor(n_estimators=400, max_depth=4, learning_rate=0.05, subsample=0.8)</code></li>
   <li><code>HistGradientBoostingRegressor(max_iter=500, learning_rate=0.05, max_leaf_nodes=31, l2_regularization=1.0)</code></li>
@@ -884,7 +885,7 @@ cada árbol corregiría todo su residuo de golpe, ruido de 2016 incluido; con pa
 usa datos distintos» (eso es Random Forest); o hablar del residuo en AUD cuando el modelo
 trabaja en log.</p>
 <p><strong>De dónde sale:</strong> recuadro de arriba [DATITO]; configuración de
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · línea 61]; escala logarítmica
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · línea 61]; escala logarítmica
 [INFERENCIA]. No es materia de clase: gradient boosting no tiene lámina.</p>
 </details>
 <details class="crit"><summary>Criterios con que se corrige tu versión</summary>
@@ -1437,7 +1438,7 @@ conexión · fuentes: láminas 25–39 de <code>FCD-2026-2_07_Clasificacion</cod
 <code>FCD-2026-2_08_DL_LLMs_Agents</code>; <code>Resumen_Clase7_Clasificacion</code> (híbrido:
 fórmulas de las láminas 30 y 31); transcripciones de <code>09_CLASES/transcripciones</code>
 (clase y ayudantía del 7-ago, sesión del 14-ago, clase del 21-ago y sesión del 4-sep), con
-marca de tiempo en cada cita; texto del P5; <code>03_CODIGO/modelamiento_temporal.py</code>;
+marca de tiempo en cada cita; texto del P5; <code>03_SCRIPTS/modelamiento_temporal.py</code>;
 <code>07_DATITO/referencia/material.md</code>; <code>02_PROYECTO_FCD/Desafio/REPORT.md</code> y
 <code>src/08_ensemble.py</code>; <code>07_DATITO/grafo.yaml</code> y
 <code>patron_evaluacion.md</code>.<br>

@@ -21,7 +21,7 @@ MEDIUM_FILES = {
 }
 
 VISUAL_DIR = Path("07_DATITO/01_CONCEPTOS/visual")
-VERIFY_SCRIPT = Path("03_CODIGO/verificar_piel_lectura.py")
+VERIFY_SCRIPT = Path("04_CODIGO/verificar_piel_lectura.py")
 GIT_COMMIT = "cabca76"  # Ultima version buena conocida
 
 def get_from_git(filename, commit):

@@ -57,6 +57,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -116,7 +117,7 @@
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
 <div class="fila"><span class="cpt"><b>ROC y AUC</b></span> · <span class="et">viene de</span><a href="12_metricas_clasificacion.html">Accuracy, precision, recall y F1</a> · <span class="et">habilita</span>—</div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen media (C2: P9) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p9">C2 P9</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen media (C2: P9) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p9">C2 P9</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p1">C3 P1</a></div>
 <details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 7-ago</b> · 1:04:17–1:13:50 · profesor — probabilidad, umbral, punto de operacion, curva ROC<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:04:17]</span></li><li><b>Sesión de certamen del 28-ago</b> · 1:19:26–1:20:34 · profesor — aclaracion durante el Certamen 2<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-28T22_09_14Z_Fundamentos_en_Ciencia_de_Datos.md · 1:19:26]</span></li><li><b>Presentaciones del 4-sep</b> · 1:35:16–1:45:35 · profesor — de un punto de la ROC a conteos de pacientes<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-09-04T22_05_05Z_Fundamentos_en_Ciencia_de_Datos.md · 1:35:16]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -997,6 +998,7 @@ redacción de la respuesta modelo [DATITO].</p>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El modelo entrega un puntaje; el umbral lo decides tú.</li><li>Cada umbral es un punto; el modelo es la curva completa.</li><li>El AUC resume toda la curva, pero no fija el umbral.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Punto de operación ≠ modelo (C2 P9).</li><li>AUC alto ≠ exactitud alta.</li><li>Subir el umbral baja TPR y FPR a la vez: no van en sentidos opuestos.</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>Un modelo es una curva, no un punto.</li><li>Compara umbral a umbral: ¿uno tiene mayor TPR y menor FPR en todos?</li><li>Si domina en todos, es mejor sin ambigüedad.</li><li>Si se cruzan, depende del punto de operación.</li></ol>
+<p><b>Certamen 3.</b> Esta clase es la pregunta 1: armar la curva desde los conteos, comparar dos curvas y pasar de una tasa a pacientes al mes. <a href="../../04_EJERCICIOS/certamen_3.html#p1">C3 P1</a>.</p>
 <p><b>Viene de:</b> <a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · <b>Sigue:</b> <a href="14_arboles_decision.html#arboles">Clase 15 · Árboles de decisión</a></p>
 <p><b>Vuelve a tu activación:</b> El modelo rojo tiene más TPR en un umbral y el naranjo en otro. ¿Cuál es mejor? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Dos curvas ROC se cruzan. ¿Puedes decir cuál modelo es mejor sin más información?

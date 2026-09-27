@@ -66,7 +66,7 @@
 
 ### Script iniciador disponible:
 ```bash
-python 03_CODIGO/datito_migracion_inicio.py --archivo <nombre>
+python 04_CODIGO/datito_migracion_inicio.py --archivo <nombre>
 ```
 Genera archivo `_NEW.html` basado en template canónico con guía paso a paso.
 
@@ -93,9 +93,9 @@ Genera archivo `_NEW.html` basado en template canónico con guía paso a paso.
 - ✅ `07_DATITO/07_BITACORA/learning_loop/agent_lessons.yaml` — Lecciones (VIZ-FAIL-001, VIZ-FAIL-002)
 
 ### Scripts
-- ✅ `03_CODIGO/datito_loop_eval.py` — Evaluación individual (9 gates)
-- ✅ `03_CODIGO/datito_batch_eval.py` — Auditoría en batch
-- ✅ `03_CODIGO/datito_migracion_inicio.py` — Generador de base _NEW
+- ✅ `04_CODIGO/datito_loop_eval.py` — Evaluación individual (9 gates)
+- ✅ `04_CODIGO/datito_batch_eval.py` — Auditoría en batch
+- ✅ `04_CODIGO/datito_migracion_inicio.py` — Generador de base _NEW
 
 ### Template canónico
 - ✅ `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` — Único permitido
@@ -108,7 +108,7 @@ Genera archivo `_NEW.html` basado en template canónico con guía paso a paso.
 ### Para Fase 2 (Conceptos):
 ```bash
 # 1. Generar _NEW con guía
-python 03_CODIGO/datito_migracion_inicio.py --archivo 03_eda.html
+python 04_CODIGO/datito_migracion_inicio.py --archivo 03_eda.html
 
 # 2. Editar 03_eda_NEW.html manualmente:
 #    - Copiar contenido pedagógico del viejo
@@ -116,10 +116,10 @@ python 03_CODIGO/datito_migracion_inicio.py --archivo 03_eda.html
 #    - No usar CDN ni colores #667eea/#764ba2
 
 # 3. Evaluar
-python 03_CODIGO/datito_loop_eval.py --path 07_DATITO/01_CONCEPTOS/visual/03_eda_NEW.html
+python 04_CODIGO/datito_loop_eval.py --path 07_DATITO/01_CONCEPTOS/visual/03_eda_NEW.html
 
 # 4. Si score=1.0: Loguear y reemplazar
-python 03_CODIGO/datito_loop_once.py --path … --hypothesis "migrate to template v1"
+python 04_CODIGO/datito_loop_once.py --path … --hypothesis "migrate to template v1"
 mv 03_eda_NEW.html 03_eda.html
 ```
 
@@ -162,7 +162,7 @@ grep -r "#667eea\|#764ba2" 07_DATITO/**/*.html
 # Resultado esperado: (vacío — ningún resultado)
 
 # Script de verificación final:
-python 03_CODIGO/datito_batch_eval.py
+python 04_CODIGO/datito_batch_eval.py
 # Resultado esperado: "KEEP (ya cumplen template v1): 24"
 ```
 
@@ -172,10 +172,10 @@ python 03_CODIGO/datito_batch_eval.py
 
 | Tarea | Comando |
 |---|---|
-| Auditar todos | `python 03_CODIGO/datito_batch_eval.py` |
-| Evaluar uno | `python 03_CODIGO/datito_loop_eval.py --path <archivo>` |
-| Iniciar migración | `python 03_CODIGO/datito_migracion_inicio.py --archivo <nombre>` |
-| Loguear decisión | `python 03_CODIGO/datito_loop_once.py --path <archivo> --hypothesis "..."` |
+| Auditar todos | `python 04_CODIGO/datito_batch_eval.py` |
+| Evaluar uno | `python 04_CODIGO/datito_loop_eval.py --path <archivo>` |
+| Iniciar migración | `python 04_CODIGO/datito_migracion_inicio.py --archivo <nombre>` |
+| Loguear decisión | `python 04_CODIGO/datito_loop_once.py --path <archivo> --hypothesis "..."` |
 | Ver template | `07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html` |
 
 ---

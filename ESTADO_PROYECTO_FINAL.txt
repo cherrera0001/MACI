@@ -11,7 +11,7 @@ VEREDICTO: NO_PLATAFORMA → PLATAFORMA_PARCIAL (50% cobertura, arquitectura en 
 ================================================================================
 
 1. CLI UNIFICADA
-   ✅ 03_CODIGO/maci_platform/ — Python Click CLI
+   ✅ maci_platform/ — Python Click CLI
    ✅ 3 comandos funcionales:
       • platform.py status    → matriz de capacidades (6×5)
       • platform.py report    → resumen + cobertura
@@ -55,7 +55,7 @@ VEREDICTO: NO_PLATAFORMA → PLATAFORMA_PARCIAL (50% cobertura, arquitectura en 
 
 DÍA 2-3: PROCESADORES LEGACY
   ❌ Mover 7 scripts clonados → 99_ARCHIVE/pipelines_legacy/
-  ❌ Crear 03_CODIGO/maci_platform/processors/canvas.py (orquestador)
+  ❌ Crear maci_platform/processors/canvas.py (orquestador)
   ❌ Integrar con courses.yaml (processor_script)
   ❌ Testing: python platform.py process --course 80014
 
@@ -92,7 +92,7 @@ TOTALES: 4/6 (66%) · 29 videos · 43 documentos · 18 ejercicios
 
 F:\MACI/
 │
-├── 03_CODIGO/maci_platform/          ← ⭐ NUEVO: CLI unificada
+├── maci_platform/          ← ⭐ NUEVO: CLI unificada
 │   ├── __init__.py
 │   ├── __main__.py (entry: python -m maci_platform)
 │   ├── cli.py (Click: status, report, process)
@@ -171,7 +171,7 @@ ENTRADA (antes de hoy):
 
 SALIDA (después de FASE-0 DÍA 1):
   • 7 scripts aún en raíz (se mueven DÍA 3)
-  • 1 CLI unificada (03_CODIGO/maci_platform/)
+  • 1 CLI unificada (maci_platform/)
   • 1 manifesto centralizado (courses.yaml)
   • 4/6 cursos con contenido (66%)
   • README honesto (sin falsedades)

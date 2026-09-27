@@ -12,7 +12,7 @@
 - `07_DATITO/visual/certamen3_examen_fcd2026.html` 
 - `07_DATITO/visual/certamen3_p1a_roc_detallado.html`
 - **Status:** Verificar que cumplan template v1
-- **Comando:** `python 03_CODIGO/datito_loop_eval.py --path <archivo>`
+- **Comando:** `python 04_CODIGO/datito_loop_eval.py --path <archivo>`
 - **Resultado esperado:** score=1.0 (5/5 gates)
 
 ### Fase 2: IMPORTANTE (Conceptos 01-14, 18-19)
@@ -28,7 +28,7 @@ Para CADA archivo:
 2. Copiar _TEMPLATE_CANONICO.html como base
 3. Reemplazar solo: title, h1, .sub, main (tras nav)
 4. Mantener intacto: :root, clases (.clave/.nota/.peligro/details.resp)
-5. Evaluar: python 03_CODIGO/datito_loop_eval.py --path <archivo>
+5. Evaluar: python 04_CODIGO/datito_loop_eval.py --path <archivo>
 6. Si OK (score=1.0): Loguear con datito_loop_once.py
 7. Si FALLA: Revisar qué gate falló y corregir
 ```
@@ -93,13 +93,13 @@ cp 07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html 07_DATITO/01_CONCEPTOS/
 
 ### Paso 2: Verificar
 ```bash
-python 03_CODIGO/datito_loop_eval.py --path 07_DATITO/01_CONCEPTOS/visual/01_fundamentos_NEW.html
+python 04_CODIGO/datito_loop_eval.py --path 07_DATITO/01_CONCEPTOS/visual/01_fundamentos_NEW.html
 # Espera: exit 0 (KEEP) o exit 1 (DISCARD)
 ```
 
 ### Paso 3: Loguear
 ```bash
-python 03_CODIGO/datito_loop_once.py \
+python 04_CODIGO/datito_loop_once.py \
   --path 07_DATITO/01_CONCEPTOS/visual/01_fundamentos_NEW.html \
   --hypothesis "migrate 01_fundamentos to template v1"
 # Append a results.tsv
@@ -114,11 +114,11 @@ mv 07_DATITO/01_CONCEPTOS/visual/01_fundamentos_NEW.html 07_DATITO/01_CONCEPTOS/
 
 ## Script Starter (migración semi-automática)
 
-**Disponible en:** `03_CODIGO/datito_migracion_inicio.py`
+**Disponible en:** `04_CODIGO/datito_migracion_inicio.py`
 
 ```bash
 # Migrar UN archivo a la vez (interactivo)
-python 03_CODIGO/datito_migracion_inicio.py --archivo 01_fundamentos.html
+python 04_CODIGO/datito_migracion_inicio.py --archivo 01_fundamentos.html
 
 # Genera:
 # 1. _NEW copia basada en template
@@ -168,7 +168,7 @@ Hacer 2-3 archivos por sesión. No en batch ciego para detectar problemas.
 
 ## Próximos Pasos (Inmediatos)
 
-1. **Verificar Certamen 3:** `python 03_CODIGO/datito_loop_eval.py --path 07_DATITO/visual/certamen3_examen_fcd2026.html`
+1. **Verificar Certamen 3:** `python 04_CODIGO/datito_loop_eval.py --path 07_DATITO/visual/certamen3_examen_fcd2026.html`
 2. **Si OK:** Loguear como KEEP
 3. **Si falla:** Corregir (probable: #667eea en CSS)
 4. **Luego:** Empezar Fase 2 con 01_fundamentos.html

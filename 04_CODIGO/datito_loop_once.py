@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LOOP = ROOT / "07_DATITO" / "07_BITACORA" / "learning_loop"
 RESULTS = LOOP / "results.tsv"
-EVAL = ROOT / "03_CODIGO" / "datito_loop_eval.py"
+EVAL = ROOT / "04_CODIGO" / "datito_loop_eval.py"
 
 
 def append_result(row: dict) -> None:

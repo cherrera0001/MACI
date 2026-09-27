@@ -24,7 +24,7 @@ CONCEPTOS = [
 ]
 
 VISUAL_DIR = Path("07_DATITO/01_CONCEPTOS/visual")
-VERIFY_SCRIPT = Path("03_CODIGO/verificar_piel_lectura.py")
+VERIFY_SCRIPT = Path("04_CODIGO/verificar_piel_lectura.py")
 
 def categorize_errors(failures):
     """Clasifica failures en categorias."""
@@ -119,7 +119,7 @@ def main():
         "details": results,
     }
 
-    report_file = Path("03_CODIGO/reporte_validacion.json")
+    report_file = Path("04_CODIGO/reporte_validacion.json")
     report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False))
     print(f"\nReporte guardado: reporte_validacion.json")
 

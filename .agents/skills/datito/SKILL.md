@@ -143,7 +143,7 @@ que le dejes (estado `practica`: queda oculta en el visual).
    (id fecha-tema · fecha · sesion · conceptos · visuales · estado ·
     pregunta · respondio [solo si respondio, textual] · respuesta ·
     resolucion [pasos] · error_tipico · fuentes [con etiqueta G4])
-2. python 03_CODIGO/construir_navegacion.py
+2. python 03_SCRIPTS/construir_navegacion.py
    → queda en orden en cada visual listado y en visual/index.html,
      con la respuesta oculta en <details class="resp">
 3. En el chat: a lo mas 3 lineas + la ruta visual.html#duda-<id>
@@ -293,7 +293,7 @@ y que depende de el**. No es adorno: responde la pregunta que todo estudiante
 tiene derecho a hacer, *"por que estoy aprendiendo esto"*.
 
 ```bash
-python 03_CODIGO/grafo_conceptual.py --situar <concepto>
+python 03_SCRIPTS/grafo_conceptual.py --situar <concepto>
 ```
 
 Devuelve prerrequisitos, dependientes directos e indirectos, en que cadenas

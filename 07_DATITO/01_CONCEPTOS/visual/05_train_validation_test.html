@@ -29,6 +29,7 @@
   .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;
            margin:1.1rem 0;font-size:.94rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
   th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
@@ -522,7 +523,7 @@ con 2017».</p>
 2017». 2017 fue solo el conjunto de evaluación.</p>
 <p style="margin-bottom:0"><strong>De dónde sale:</strong> el diseño temporal y el
 K-Fold dentro de 2016
-[FUENTE · Repo: 03_CODIGO/modelamiento_temporal.py · l. 76–100]; la pregunta del
+[FUENTE · Repo: 03_SCRIPTS/modelamiento_temporal.py · l. 76–100]; la pregunta del
 profesor en el Hito 2 (fuente arriba). La redacción de los rótulos es [DATITO].</p>
 </details>
 
@@ -697,7 +698,7 @@ const METODOS={
    [['tr',569,'entrena · 900 sorteos, ~569 distintas'],['va',331,'val · ~331 no salieron'],TE],
    [['va',331,'val · otras ~331'],['tr',569,'entrena · otro sorteo'],TE]],
   d:'<strong>Se sortean 900 imágenes con reemplazo</strong> entre las que no son test: algunas salen repetidas y otras nunca. En promedio el entrenamiento contiene ~63,2 % de imágenes <em>distintas</em> (≈ 569); las que no salieron (≈ 331, ~36,8 %) son la validación, que <strong>no tiene repetidas</strong>. Se repite muchas veces. (Las barras muestran imágenes distintas, no sorteos; la posición es solo ilustrativa.)',
-  cuando:'Según el profesor, cuando hay muy pocos datos. Ojo: en <code>03_CODIGO/bootstrap_comparacion.py</code> usaste bootstrap para otra cosa —intervalos de confianza de la diferencia de MAE sobre 2017—, no como estrategia de validación. Mismo remuestreo con reemplazo, distinto propósito.'}
+  cuando:'Según el profesor, cuando hay muy pocos datos. Ojo: en <code>03_SCRIPTS/bootstrap_comparacion.py</code> usaste bootstrap para otra cosa —intervalos de confianza de la diferencia de MAE sobre 2017—, no como estrategia de validación. Mismo remuestreo con reemplazo, distinto propósito.'}
 };
 
 // Prediccion con veredicto inmediato

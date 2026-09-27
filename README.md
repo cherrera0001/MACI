@@ -74,7 +74,7 @@ El curso se genera automáticamente desde:
 - `progreso.yaml` (marcas de Datito)
 - HTML individuales en `07_DATITO/01_CONCEPTOS/visual/`
 
-Para regenerar la navegación: `python 03_CODIGO/test_indice_curso.py` (corre tests, luego edita a mano si algo falla).
+Para regenerar la navegación: `python 04_CODIGO/test_indice_curso.py` (corre tests, luego edita a mano si algo falla).
 
 **No uses `datito_migracion_inicio.py` ni `repair_piel.py` en producción.**
 
