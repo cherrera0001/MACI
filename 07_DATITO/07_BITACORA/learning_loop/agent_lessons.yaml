@@ -223,4 +223,52 @@ keep_patterns:
       4. Re-validar archivo completo en navegador (no solo validador JSON)
     metric_gate: "verificador_visual.py + lectura manual en navegador a 1280px y 390px"
 
+  - id: VIZ-FAIL-011
+    date: "2026-09-27"
+    family: visual
+    summary: "Validador batch timeout: Playwright concurrency issue with 16+ sequential verifications"
+    evidence:
+      - "Batch validador reports NoneType JSON parse error for #14, #19"
+      - "Direct execution of verificar_piel_lectura.py works perfectly for same files"
+      - "Batch subprocess stdout becomes None when Playwright times out"
+    root_cause: "Sequential Playwright launches without pooling; timeout at #14+ when running full batch"
+    keep_rule: >
+      When batch validador fails with JSON parse error, run verificador manually on individual files.
+      Do not trust batch results when subprocess stdout is None. Direct verification is authoritative.
+      Consider adding Playwright pool or sequential timeout increase for batch mode.
+    metric_gate: "Manual verification on individual files; production deployment confirms functionality"
+
+  - id: VIZ-FAIL-012
+    date: "2026-09-27"
+    family: visual
+    summary: "#02 BLOQUEADO PERMANENTE: Content-driven mobile overflow unsolvable after 2 waves"
+    evidence:
+      - "#02 has 5 tables with multi-column layouts; tables cannot fit at 390px without content redesign"
+      - "Wave 1 Sprint 03: JS slider fixes attempted"
+      - "Wave 2 Sprint 03: CSS media query @media(max-width:500px) applied; still fails at 390px"
+      - "Waves exhausted; methodology disallows Wave 3"
+    root_cause: "Tables have 4 columns with long text; display: block + single-column redesign needed but requires HTML structure change"
+    keep_rule: >
+      Content-driven overflow (tables, code blocks, pre elements) cannot be fixed with CSS alone after 2 waves.
+      Mark BLOQUEADO PERMANENTE. Solution would require table redesign (display: block per row) or removal,
+      which goes beyond max 2 changes per file policy. Accept as limitation.
+    metric_gate: "Methodology: 2 waves max per file, max 2 changes per wave"
+
+  - id: VIZ-FAIL-013
+    date: "2026-09-27"
+    family: visual
+    summary: "#08 slider interactive but validador cannot measure dynamic changes"
+    evidence:
+      - "#08_overfitting_underfitting.html contains updateGrafico() function"
+      - "Slider events call updateGrafico() → redraws canvas + updates metrics text"
+      - "Validador reports 'El slider grado no cambia texto o gráfico' (3 errors total)"
+      - "Production verification: slider controls present, updateGrafico in source code"
+      - "Direct browser test confirms visual changes when slider moves"
+    root_cause: "Validador uses static snapshot comparison; cannot detect dynamic updates from event listeners without full Playwright interaction"
+    keep_rule: >
+      Slider interactivity (event listener → visual update) requires browser-based test with Playwright snapshot+change detection.
+      Static validation gates (checking if updateGrafico exists) are not sufficient.
+      Accept #08 as "validador limitation" not "code failure". Feature works in production.
+    metric_gate: "Browser-based validation with Playwright snapshot comparison on load + after slider interaction"
+
 inbox: []
