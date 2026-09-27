@@ -89,6 +89,26 @@
   .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
   .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+
+  @media(max-width:640px){
+    html, body { overflow-x: hidden; }
+    body { padding: 0.5rem; margin: 0; }
+    main { max-width: 100%; margin: 0; padding: 0.4rem; }
+    h1 { font-size: 1.3rem; }
+    h2 { font-size: 1rem; }
+    table { font-size: 0.75rem; display: block; overflow-x: auto; }
+    canvas { max-width: 100%!important; height: auto; }
+    pre, code { overflow-x: auto; max-width: 100%; word-break: break-word; }
+  }
+
+  @media(max-width:390px){
+    body { padding: 0.3rem; }
+    main { padding: 0.3rem; }
+    h1 { font-size: 1.1rem; }
+    h2 { font-size: 0.9rem; }
+    table { font-size: 0.65rem; }
+    .panel { padding: 0.3rem!important; }
+  }
 </style>
 </head>
 <body>
