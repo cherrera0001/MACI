@@ -109,14 +109,25 @@
   label.chk{display:inline-flex;align-items:center;gap:.35rem;font-size:.88rem;margin-right:1rem;cursor:pointer}
   input[type=text]{font:inherit;font-size:.9rem;padding:.35rem .5rem;border:1px solid var(--linea);border-radius:6px;width:10rem}
   .indice{font-size:.92rem}
+  @media(max-width:640px){
+    html, body { overflow-x: hidden; }
+    body{padding:0.4rem!important;margin:0!important}
+    main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
+    table{font-size:0.75rem;display:block;overflow-x:auto}
+    canvas{max-width:100%!important;height:auto}
+    div{max-width:100%!important}
+    .panel{padding:0.5rem!important}
+    .ecu{padding:0.5rem!important}
+    pre, code { overflow-x: auto; max-width: 100%; word-break: break-word; }
   }
-
-  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
-  table{font-size:0.75rem;display:block;overflow-x:auto}
-  canvas{max-width:100%!important}
-  div{max-width:100%!important}
-  .panel{padding:0.5rem!important}
-  .ecu{padding:0.5rem!important}
+  @media(max-width:390px){
+    body { padding: 0.3rem; }
+    main { padding: 0.3rem; }
+    table { font-size: 0.65rem; }
+    .panel { padding: 0.3rem!important; }
+    h1 { font-size: 1.3rem; }
+    h2 { font-size: 1rem; }
+  }
 }
 </style>
 </head>
@@ -124,24 +135,7 @@
 <main>
 <!-- datito:nav:inicio -->
 <style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}  }
-@media(max-width:640px){
-  body{padding:0.4rem!important;margin:0!important}
-  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
-  table{font-size:0.75rem;display:block;overflow-x:auto}
-  canvas{max-width:100%!important}
-  div{max-width:100%!important}
-  .panel{padding:0.5rem!important}
-  .ecu{padding:0.5rem!important}
-}
-@media(max-width:500px){
-  body{padding:0.4rem!important;margin:0!important}
-  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
-  table{font-size:0.75rem;display:block;overflow-x:auto}
-  canvas{max-width:100%!important}
-  div{max-width:100%!important}
-  .panel{padding:0.5rem!important}
-  .ecu{padding:0.5rem!important}
-}
+</style>
 </style>
 <section class="leccion" data-clase="18" id="clase-18">
 <div class="leccion-top"><span class="uni">Unidad 5 · Modelos más potentes</span><b>Clase 18 de 22</b></div>
@@ -165,9 +159,9 @@
 <div class="fila"><span class="cpt"><a href="#deep-learning">Deep learning</a></span> · <span class="et">viene de</span><a href="18_redes_neuronales.html">Redes neuronales</a> · <span class="et">habilita</span><a href="#llm">Modelos de lenguaje (LLM)</a></div>
 <div class="fila"><span class="et">prioridad</span>importancia curricular 2 · peso en certamen baja (C2: P6, de forma indirecta) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p6">C2 P6</a></div>
 <div class="fila"><span class="cpt"><a href="#llm">Modelos de lenguaje (LLM)</a></span> · <span class="et">viene de</span><a href="#deep-learning">Deep learning</a> · <span class="et">habilita</span><a href="#agentes">Agentes de IA</a></div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3c">C3 P3c</a></div>
 <div class="fila"><span class="cpt"><a href="#agentes">Agentes de IA</a></span> · <span class="et">viene de</span><a href="#llm">Modelos de lenguaje (LLM)</a> · <span class="et">habilita</span>—</div>
-<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3d">C3 P3d</a></div>
 <details><summary>Dónde se enseñó en clase (9 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 1:37:26–1:53:00 · profesor — ImageNet, 2012, GPU, definicion, datos frente a desempeno<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 1:37:26]</span></li><li><b>Clase del 21-ago</b> · 2:54:51–2:56:10 · profesor — Premio Turing e historia<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:54:51]</span></li><li><b>Clase del 7-ago</b> · 1:35:32–1:36:34 · profesor — con datos tabulares un random forest puede ganar<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-07T22_14_16Z_Fundamentos_en_Ciencia_de_Datos.md · 1:35:32]</span></li><li><b>Clase del 21-ago</b> · 2:11:41–2:35:37 · profesor — transformer, atencion, BERT, predecir la siguiente palabra<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:41]</span></li><li><b>Clase del 21-ago</b> · 2:43:47–2:46:54 · profesor — destilacion y limitaciones<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:43:47]</span></li><li><b>Clase del 31-jul</b> · 0:04:42–0:06:34 · profesor — GPT es el modelo; ChatGPT, el sistema<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:42]</span></li><li><b>Clase del 21-ago</b> · 2:45:33–2:54:43 · profesor — definicion, mecanismo de herramientas, multiagente, responsabilidad<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:45:33]</span></li><li><b>Clase del 21-ago</b> · 3:04:17–3:05:41 · profesor — uso autonomo del computador; agentes multimodales<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 3:04:17]</span></li><li><b>Clase del 31-jul</b> · 1:21:54–1:23:15 · profesor — un agente con un LLM de base<br><span class="f">[FUENTE · Repo: 09_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:21:54]</span></li></ul></details>
 </nav>
 <!-- datito:nav:fin -->
@@ -1288,6 +1282,7 @@ la P5, y es falsa.</li>
 <div class="c2"><div><h3>Qué aprendiste</h3><ul><li>Deep learning: redes profundas que dominan imagen y texto cuando hay muchos datos.</li><li>Con pocos datos tabulares, los algoritmos clásicos suelen ganar.</li><li>Un LLM predice la siguiente palabra.</li><li>Un agente es un LLM con herramientas y objetivos, cuyo resultado vuelve y condiciona lo siguiente.</li></ul></div>
 <div><h3>Qué no debes confundir</h3><ul><li>Generar texto ≠ ejecutar acciones y observar su resultado (C2 P5).</li><li>Avance mediante redes ≠ factor que lo hizo posible (C2 P6).</li><li>GPT (el modelo) ≠ ChatGPT (el sistema).</li></ul></div></div>
 <h3>Procedimiento para el papel</h3><ol><li>¿Aprende sus propias variables? Es deep learning.</li><li>¿Solo genera texto? Es un LLM.</li><li>¿Actúa con herramientas y observa el resultado? Es un agente.</li></ol>
+<p><b>Certamen 3.</b> La pregunta 3c pide dos límites de un LLM aislado. La 3d pide una secuencia en la que el modelo consulta un sensor, aplica un criterio y deja una orden. <a href="../../04_EJERCICIOS/certamen_3.html#p3c">C3 P3c</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3d">C3 P3d</a>.</p>
 <p><b>Viene de:</b> <a href="18_redes_neuronales.html">Clase 17 · Redes neuronales</a> · <b>Sigue:</b> <a href="../../04_EJERCICIOS/certamen_1.html">Clase 20 · Distinciones del Certamen 1</a></p>
 <p><b>Vuelve a tu activación:</b> Un chatbot que puede buscar en Internet y leer lo que encuentra, ¿es un LLM o un agente? ¿Cambiarías tu respuesta?</p>
 <div class="pf"><b>Pregunta final.</b> Un modelo genera un token especial que llama a una calculadora y usa el resultado para seguir. ¿Es un LLM o un agente?

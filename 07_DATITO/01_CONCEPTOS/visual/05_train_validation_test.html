@@ -63,24 +63,26 @@
   details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
   details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
   .vecino a{color:var(--azul)}
-  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}table,canvas,div{max-width:100%;overflow-x:auto}}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  @media(max-width:640px){
+    html, body { overflow-x: hidden; }
+    body { padding: 0.5rem; margin: 0; }
+    main { max-width: 100%; margin: 0; padding: 0.4rem; }
+    table { font-size: 0.75rem; display: block; overflow-x: auto; }
+    canvas { max-width: 100%!important; height: auto; }
+    div { max-width: 100%!important; }
+    .panel { padding: 0.5rem!important; }
+    .ecu { padding: 0.5rem!important; }
+    pre, code { overflow-x: auto; max-width: 100%; word-break: break-word; }
   }
-
-  main{max-width:100%!important;margin:0!important;padding:0.4rem!important}
-  table{font-size:0.75rem;display:block;overflow-x:auto}
-  canvas{max-width:100%!important}
-  div{max-width:100%!important}
-  .panel{padding:0.5rem!important}
-  .ecu{padding:0.5rem!important}
-}
-@media (max-width:500px) {
-  html, body { overflow-x: hidden; }
-  body { padding: 0.5rem; }
-  main { max-width: 100%; }
-  table { font-size: 0.75rem; max-width: 100%; }
-  pre, code { overflow-x: auto; max-width: 100%; word-break: break-word; }
-  canvas { max-width: 100%; height: auto; }
-}
+  @media(max-width:390px){
+    body { padding: 0.3rem; }
+    main { padding: 0.3rem; }
+    table { font-size: 0.65rem; }
+    .panel { padding: 0.3rem!important; }
+    h1 { font-size: 1.3rem; }
+    h2 { font-size: 1rem; }
+  }
 </style>
 </head>
 <body>
