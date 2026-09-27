@@ -528,7 +528,12 @@ CSS_NAV = (
     ".fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}"
     ".ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}"
     ".hecha{display:block;margin:.5rem 0;font-size:.85rem}"
-    ".pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>"
+    ".pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;"
+    "font:14px/1.5 \"Segoe UI\",system-ui,sans-serif}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}"
+    # En el celular, rutas y codigo largos cortan linea en vez de ensanchar la pagina.
+    "@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}"
+    ".fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}"
+    "pre{white-space:pre-wrap}.leccion-top,.pasos{flex-wrap:wrap}}</style>"
 )
 
 
@@ -868,7 +873,7 @@ def indice(grafo, nombres, mapa, dudas=()):
   .boton{{display:inline-block;background:var(--azul);color:#fff;padding:.7rem 1.3rem;border-radius:9px;font-weight:700;margin:.3rem .5rem .3rem 0}}
   .boton.alt{{background:#fff;color:var(--azul);border:2px solid var(--azul)}}
   .barra{{height:10px;background:#dbeafe;border-radius:8px;margin:.4rem 0}} .barra span{{display:block;height:100%;background:var(--azul);border-radius:8px;width:0}}
-  @media (max-width:640px){{body{{padding:1rem .6rem}} table{{font-size:.8rem}} th,td{{padding:.3rem .35rem}}}}
+  @media (max-width:640px){{body{{padding:1rem .6rem;overflow-wrap:break-word}} table{{display:block;overflow-x:auto;font-size:.8rem}} th,td{{padding:.3rem .35rem}} code{{overflow-wrap:anywhere}}}}
 </style>
 </head>
 <body>
@@ -1034,7 +1039,8 @@ def main():
         if esp and esp["rol"] == "certamen":
             # los certamenes enlazan los conceptos que evaluan, sin repetir tramos
             links = " · ".join(enlace_concepto(c, clave, nombres) for c in esp["conceptos"])
-            bloque = bloque.replace("</nav>", f'<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>')
+            antes, _, despues = bloque.rpartition("</nav>")  # solo en la barra de Datito (la ultima)
+            bloque = f'{antes}<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>{despues}'
         cierre, dudas_b = bloque_cierre(clave), bloque_dudas(clave, dudas, nombres)
         estado = inyectar(ruta, relinkear(bloque, ruta), a.revisar)
         estado_c = inyectar_cierre(ruta, cierre and relinkear(cierre, ruta), a.revisar)

@@ -423,7 +423,7 @@ clases:
         - 'Escribe la fórmula antes de sustituir.'
         - 'Calcula e interpreta en palabras del problema.'
       pregunta_final: 'Con la lámina 19 (VP 6, FP 2, FN 1, VN 7), calcula FPR y 1 − precisión.'
-      respuesta_final: 'FPR = 2/9 ≈ 0,22 y 1 − precisión = 1 − 6/8 = 0,25: dividen por universos distintos. [FUENTE · Repo: 11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19]'
+      respuesta_final: 'FPR = 2/9 ≈ 0,22 y 1 − precisión = 1 − 6/8 = 0,25: dividen por universos distintos. [FUENTE · Repo: 05_CLASES/11_PRESENTACIÓN/_markdown/FCD-2026-2_07_Clasificacion.md · lámina 19]'
 
   - n: 14
     unidad: 4
@@ -453,7 +453,7 @@ clases:
         - 'Si domina en todos, es mejor sin ambigüedad.'
         - 'Si se cruzan, depende del punto de operación.'
       pregunta_final: 'Dos curvas ROC se cruzan. ¿Puedes decir cuál modelo es mejor sin más información?'
-      respuesta_final: 'No: depende del punto de operación, es decir, del costo relativo de falsos positivos y negativos. Solo una curva que domina en todos los umbrales es mejor sin ambigüedad. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7]'
+      respuesta_final: 'No: depende del punto de operación, es decir, del costo relativo de falsos positivos y negativos. Solo una curva que domina en todos los umbrales es mejor sin ambigüedad. [FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §7]'
 
   - n: 15
     unidad: 5
@@ -645,7 +645,7 @@ clases:
         - 'Nombra la distinción.'
         - 'Resuelve por el mecanismo y ancla con la cifra.'
       pregunta_final: '¿Qué distinción decide la P9 del Certamen 2?'
-      respuesta_final: 'Comparar un punto de operación ≠ comparar un modelo: un modelo es una curva ROC completa. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §1]'
+      respuesta_final: 'Comparar un punto de operación ≠ comparar un modelo: un modelo es una curva ROC completa. [FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §1]'
 
   - n: 23
     unidad: 6

@@ -30,7 +30,7 @@ dudas:
 
   - id: 2026-09-18-baseline-mejora
     fecha: '2026-09-18'
-    sesion: 07_DATITO/bitacora/2026-09-18-train_validation_test.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-18-train_validation_test.md
     conceptos: [generalizacion, train_validation_test]
     visuales: [07_generalizacion.html, 05_train_validation_test.html]
     estado: abierta
@@ -84,7 +84,7 @@ dudas:
 
   - id: 2026-09-19-brecha-abc
     fecha: '2026-09-19'
-    sesion: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-19-overfitting_underfitting.md
     conceptos: [overfitting_underfitting]
     visuales: [08_overfitting_underfitting.html]
     estado: resuelta
@@ -117,13 +117,13 @@ dudas:
       Clasificar mirando un solo número por modelo en vez de calcular la brecha
       primero; y dar remedios que suponen un tipo de modelo no declarado.
     fuentes:
-      - '[FUENTE · Repo: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md] problema y respuestas'
-      - '[FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7] procedimiento de diagnóstico'
+      - '[FUENTE · Repo: 07_DATITO/07_BITACORA/2026-09-19-overfitting_underfitting.md] problema y respuestas'
+      - '[FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §7] procedimiento de diagnóstico'
       - '[FUENTE · Repo: 07_DATITO/errores_conceptuales.yaml] error diagnostica_sin_calcular_la_brecha'
 
   - id: 2026-09-19-mae-pqr
     fecha: '2026-09-19'
-    sesion: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-19-overfitting_underfitting.md
     conceptos: [overfitting_underfitting]
     visuales: [08_overfitting_underfitting.html]
     estado: resuelta
@@ -143,12 +143,12 @@ dudas:
       Aplicar de memoria la regla de R² («más alto es mejor») a una métrica de error
       e invertir el diagnóstico.
     fuentes:
-      - '[FUENTE · Repo: 07_DATITO/bitacora/2026-09-19-overfitting_underfitting.md] problema y respuesta'
-      - '[FUENTE · Repo: 07_DATITO/patron_evaluacion.md §7] procedimiento de diagnóstico'
+      - '[FUENTE · Repo: 07_DATITO/07_BITACORA/2026-09-19-overfitting_underfitting.md] problema y respuesta'
+      - '[FUENTE · Repo: 07_DATITO/06_AUDITORIAS/patron_evaluacion.md §7] procedimiento de diagnóstico'
 
   - id: 2026-09-21-arbol-45cm
     fecha: '2026-09-21'
-    sesion: 07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-21-regresion_generalizacion.md
     conceptos: [regresion, generalizacion]
     visuales: [../../02_REFERENCIA/clase6_regresion.html, 07_generalizacion.html]
     estado: resuelta
@@ -186,7 +186,7 @@ dudas:
 
   - id: 2026-09-21-theta0-theta1
     fecha: '2026-09-21'
-    sesion: 07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-21-regresion_generalizacion.md
     conceptos: [regresion]
     visuales: [../../02_REFERENCIA/clase6_regresion.html]
     estado: resuelta
@@ -219,7 +219,7 @@ dudas:
 
   - id: 2026-09-21-agronomo-lluvia
     fecha: '2026-09-21'
-    sesion: 07_DATITO/bitacora/2026-09-21-regresion_generalizacion.md
+    sesion: 07_DATITO/07_BITACORA/2026-09-21-regresion_generalizacion.md
     conceptos: [generalizacion, regresion]
     visuales: [07_generalizacion.html]
     estado: practica

@@ -128,7 +128,7 @@ conceptos:
       Sesion 1 (2026-09-18). EXPLICAR y APLICAR cumplidos. Falta TRANSFERIR:
       debe disenar el mismo tipo de experimento en un dominio distinto de
       Melbourne. Dataset de transferencia entregado en
-      07_DATITO/transferencia/. NO marcar DOMINADO hasta que resuelva ese
+      07_DATITO/05_TRANSFERENCIA/. NO marcar DOMINADO hasta que resuelva ese
       caso sin recibir la solucion.
 
   - id: validacion_cruzada
@@ -165,7 +165,7 @@ conceptos:
       Falta el caso por cambio de relacion features-target, y falta APLICAR y
       TRANSFERIR. Segunda etapa abierta: trasladar un modelo de Melbourne 2016 a
       Gran Concepcion es un problema de generalizacion entre poblaciones,
-      lugares y epocas distintas. Ver 07_DATITO/osint_gran_concepcion.md.
+      lugares y epocas distintas. Ver 07_DATITO/09_PERSONAL/osint_gran_concepcion.md.
 
   - id: overfitting_underfitting
     estado: COMPRENSION_PARCIAL

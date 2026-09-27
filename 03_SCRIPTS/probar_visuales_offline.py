@@ -12,7 +12,8 @@ REQUISITOS
 
 USO
   uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py
-  uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py eda.html
+  uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py 03_eda.html
+  uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py --capturas=DIR  # guarda PNG a 390 y 1280 px
 """
 import glob
 import os
@@ -21,7 +22,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VISUAL = os.path.join(RAIZ, "07_DATITO", "visual")
+VISUAL = os.path.join(RAIZ, "07_DATITO", "01_CONCEPTOS", "visual")
 
 USAR = r"""
 () => {
@@ -61,29 +62,83 @@ def probar(pagina, ruta):
     return errores, externas, n
 
 
+DESBORDE = r"""
+() => {
+  const w = window.innerWidth, exceso = document.documentElement.scrollWidth - w;
+  const culpables = [];
+  if (exceso > 1) {
+    for (const el of document.body.querySelectorAll('*')) {
+      const r = el.getBoundingClientRect();
+      if (r.right > w + 1 && r.width > 0 && getComputedStyle(el).position !== 'fixed') {
+        let dentro = false;
+        for (let p = el.parentElement; p; p = p.parentElement) {
+          const o = getComputedStyle(p).overflowX;
+          if (o === 'auto' || o === 'scroll' || o === 'hidden') { dentro = true; break; }
+        }
+        if (!dentro) culpables.push(el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ')[0] : ''));
+      }
+      if (culpables.length >= 3) break;
+    }
+  }
+  return [exceso, culpables];
+}
+"""
+ANCHOS = (390, 1280)
+
+
+def paginas_del_curso():
+    """Todas las paginas del curso: visual/ (sin la plantilla), ejercicios y la clase 5."""
+    base = [p for p in glob.glob(os.path.join(VISUAL, "*.html")) if not os.path.basename(p).startswith("_")]
+    extra = glob.glob(os.path.join(RAIZ, "07_DATITO", "04_EJERCICIOS", "*.html"))
+    extra.append(os.path.join(RAIZ, "07_DATITO", "02_REFERENCIA", "clase6_regresion.html"))
+    return sorted(base) + sorted(extra)
+
+
 def main():
-    nombres = sys.argv[1:] or sorted(os.path.basename(p) for p in glob.glob(os.path.join(VISUAL, "*.html")))
+    args = [a for a in sys.argv[1:] if not a.startswith("--capturas=")]
+    capturas = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--capturas=")), None)
+    rutas = [a if os.path.isabs(a) else os.path.join(VISUAL, a) for a in args] or paginas_del_curso()
     malos = 0
     with sync_playwright() as p:
         nav = p.chromium.launch(channel="msedge", headless=True)
         ctx = nav.new_context(offline=True)
-        for n in nombres:
+        for ruta in rutas:
+            n = os.path.basename(ruta)
+            if n == "index.html":  # redireccion a la portada
+                continue
             pagina = ctx.new_page()
             try:
-                errores, externas, acciones = probar(pagina, os.path.join(VISUAL, n))
+                errores, externas, acciones = probar(pagina, ruta)
             except Exception as e:  # la pagina ni siquiera cargo
                 errores, externas, acciones = [f"no cargo: {e}"], [], 0
             pagina.close()
-            estado = "ok" if not errores and not externas else "FALLO"
+            desbordes = []
+            for ancho in ANCHOS:
+                c = nav.new_context(offline=True, viewport={"width": ancho, "height": 900})
+                pg = c.new_page()
+                pg.goto("file:///" + ruta.replace("\\", "/"), wait_until="load")
+                pg.wait_for_timeout(200)
+                exceso, culpables = pg.evaluate(DESBORDE)
+                if capturas:
+                    os.makedirs(capturas, exist_ok=True)
+                    pg.screenshot(path=os.path.join(capturas, f"{n[:-5]}_{ancho}.png"))
+                if exceso > 1:
+                    desbordes.append(f"{ancho}px: +{exceso}px ({', '.join(culpables) or '?'})")
+                c.close()
+            estado = "ok" if not errores and not externas and not desbordes else "FALLO"
             malos += estado != "ok"
             print(f"[{estado:>5}] {n:34} {acciones:4} interacciones · "
-                  f"{len(errores)} errores JS · {len(externas)} pedidos externos")
+                  f"{len(errores)} errores JS · {len(externas)} pedidos externos · "
+                  f"{'sin desborde' if not desbordes else 'DESBORDE'}")
             for e in errores[:5]:
                 print(f"          {e[:160]}")
             for u in externas[:3]:
                 print(f"          externo: {u[:120]}")
+            for d in desbordes:
+                print(f"          desborde {d}")
         nav.close()
-    print(f"{len(nombres) - malos} de {len(nombres)} visuales sin errores y sin red")
+    total = len([r for r in rutas if os.path.basename(r) != "index.html"])
+    print(f"{total - malos} de {total} paginas sin errores, sin red y sin desborde a {ANCHOS[0]} y {ANCHOS[1]} px")
     sys.exit(1 if malos else 0)
 
 
