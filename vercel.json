@@ -1,4 +1,5 @@
 {
+  "public": "07_DATITO/01_CONCEPTOS/visual",
   "headers": [
     {
       "source": "/(.*)",
@@ -14,8 +15,18 @@
         {
           "key": "X-Frame-Options",
           "value": "DENY"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/00_index.html"
     }
   ]
 }
