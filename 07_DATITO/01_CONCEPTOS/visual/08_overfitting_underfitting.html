@@ -57,6 +57,7 @@
   .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
   .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
   .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
   .repreg strong{color:#fbbf24}
   .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
   .vecino a{color:var(--azul)}
@@ -89,6 +90,14 @@
   .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
   .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
   footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  @media(max-width:640px){
+    html{width:100%;overflow-x:hidden}
+    body{padding:1.5rem .75rem;overflow-x:hidden;width:100%}
+    main{overflow-x:hidden;width:100%;margin:0 auto}
+    canvas{width:100%;max-width:100%;overflow-x:hidden}
+    .met{grid-template-columns:1fr;gap:.5rem}
+    table{display:block;max-width:100%;overflow-x:auto}
+  }
 </style>
 </head>
 <body>
@@ -112,7 +121,7 @@
 </section>
 <nav class="pasos"><span><a href="07_generalizacion.html">← Clase 9 · Generalización, extrapolación y datos no vistos</a></span><a href="index.html">Índice del curso</a><span><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número →</a></span></nav>
 <script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();
-document.getElementById('grado').addEventListener('input',function(){document.getElementById('grado-out').value=this.value;if(typeof updateGrafico==='function'){updateGrafico();}});
+document.addEventListener('DOMContentLoaded',function(){var g=document.getElementById('grado'),o=document.getElementById('grado-out');if(g&&o){g.addEventListener('input',function(){o.textContent=this.value;});}});
 </script>
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
@@ -313,215 +322,250 @@ columnas lo suben.
 </div>
 
 <script>
-function drawTrainTestLoss() {
-  const canvas = document.getElementById('c-train-test-loss');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+const $ = id => document.getElementById(id);
+const fmt = (v, d) => v.toFixed(d).replace('.', ',');
 
-  const degrees = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const trainLoss = [5.62, 4.10, 2.80, 1.90, 0.90, 0.30, 0.10, 0.05, 0.02, 0.01, 0.005, 0];
-  const testLoss = [7.14, 5.20, 3.50, 1.64, 1.60, 2.30, 5.60, 15.40, 42.10, 61.50, 71.20, 84.47];
-
-  const padding = 50;
-  const w = canvas.width - 2 * padding;
-  const h = canvas.height - 2 * padding;
-  const maxLoss = Math.max(...trainLoss, ...testLoss);
-  const selectedGrade = parseInt(document.getElementById('grado')?.value || '1');
-
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = '#d8d8d8';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(padding, padding);
-  ctx.lineTo(padding, canvas.height - padding);
-  ctx.lineTo(canvas.width - padding, canvas.height - padding);
-  ctx.stroke();
-
-  ctx.strokeStyle = '#2563eb';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  for (let i = 0; i < degrees.length; i++) {
-    const x = padding + (i / (degrees.length - 1)) * w;
-    const y = canvas.height - padding - (trainLoss[i] / maxLoss) * h;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+// ---- Predicciones: se responden con un clic; nunca bloquean los controles ----
+const PRED = {
+  curva: {
+    ambos: '<strong>No.</strong> El de entrenamiento sí baja siempre, pero el de validación no: mueve el deslizador hasta 12 y mira la curva naranja. Pasado cierto grado el modelo empieza a perseguir el ruido de estos 13 pinos, y eso se paga fuera.',
+    u: '<strong>Eso es.</strong> Entrenamiento nunca sube (cada grado puede imitar al anterior), y validación forma una U: baja mientras el modelo aprende la forma, sube cuando empieza a memorizar. Compruébalo recorriendo del 1 al 12.',
+    ambosu: '<strong>Casi.</strong> Validación sí baja y después sube. Pero el de entrenamiento no puede subir al agregar grado: el polinomio de grado mayor siempre puede copiar al de grado menor poniendo en cero los θ nuevos. Por eso el entrenamiento no sirve para elegir.',
+    cruz: '<strong>No.</strong> Es al revés en los dos. Con grado 1 los dos errores son altos (subajuste); al subir el grado el de entrenamiento baja hasta llegar a 0 en grado 12.'
+  },
+  cero: {
+    mejor: '<strong>No.</strong> Con tantos parámetros como datos, cualquier polinomio pasa por todos los puntos, tenga o no la forma real. En el simulador, el grado 12 tiene error de entrenamiento 0 y el peor error de validación.',
+    sobre: '<strong>Tampoco, aunque es una buena alarma.</strong> Un 0 de entrenamiento es sospechoso, no un veredicto: el veredicto lo da el error fuera. Abre abajo la paradoja de la ayudantía: un grado que pasa perfecto por todos los puntos y aun así gana en validación.',
+    nada: '<strong>Eso es.</strong> El 0 de entrenamiento no distingue un modelo que aprendió de uno que memorizó. Hace falta el error en datos que no vio, y comparar: la brecha. Es la P7.'
   }
-  ctx.stroke();
+};
+document.querySelectorAll('.pred').forEach(p => {
+  const k = p.dataset.p;
+  p.querySelectorAll('button').forEach(b => {
+    b.onclick = () => {
+      p.querySelectorAll('button').forEach(x => x.classList.remove('elegida'));
+      b.classList.add('elegida');
+      const v = p.querySelector('.veredicto');
+      v.innerHTML = PRED[k][b.dataset.r];
+      v.classList.add('on');
+    };
+  });
+});
 
-  ctx.strokeStyle = '#dc2626';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  for (let i = 0; i < degrees.length; i++) {
-    const x = padding + (i / (degrees.length - 1)) * w;
-    const y = canvas.height - padding - (testLoss[i] / maxLoss) * h;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  }
-  ctx.stroke();
-
-  // Highlight selected grade with vertical line
-  const selectedIdx = selectedGrade - 1;
-  const xSelected = padding + (selectedIdx / (degrees.length - 1)) * w;
-  ctx.strokeStyle = '#7c3aed';
-  ctx.lineWidth = 1.5;
-  ctx.setLineDash([3, 3]);
-  ctx.beginPath();
-  ctx.moveTo(xSelected, padding);
-  ctx.lineTo(xSelected, canvas.height - padding);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.font = '11px "Segoe UI"';
-  ctx.fillStyle = '#2563eb';
-  ctx.fillText('Train', padding + 10, padding - 5);
-  ctx.fillStyle = '#dc2626';
-  ctx.fillText('Test', padding + 60, padding - 5);
-
-  ctx.fillStyle = '#666';
-  ctx.font = '10px "Segoe UI"';
-  ctx.fillText('Grado 1', padding - 5, canvas.height - padding + 15);
-  ctx.fillText('Grado 12', canvas.width - padding - 35, canvas.height - padding + 15);
+// ---- Datos [DATITO]: altura de pinos (m) segun edad (anos). Cifras inventadas, semilla fija ----
+function crearRng(s){ return function(){ s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; }; }
+const rnd = crearRng(221743);
+function gauss(){ let v = 0; for (let i = 0; i < 12; i++) v += rnd(); return v - 6; }
+const XMIN = 2, XMAX = 38, DE = 1.2;
+const verdad = x => 31 * Math.pow(1 - Math.exp(-0.085 * x), 1.7);
+const TR = [], VA = [], EX = [];
+for (let i = 0; i < 13; i++){
+  const x = XMIN + i * 3 + (i > 0 && i < 12 ? (rnd() - 0.5) * 1.2 : 0);
+  TR.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
+}
+for (let i = 0; i < 12; i++){
+  const x = XMIN + 0.5 + (XMAX - XMIN - 1) * (i + rnd()) / 12;
+  VA.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
+}
+for (let i = 0; i < 26; i++){
+  const x = XMIN + (XMAX - XMIN) * (i + rnd()) / 26;
+  EX.push({x, y: Math.max(0.3, verdad(x) + DE * gauss())});
 }
 
-function drawUnderfitting() {
-  const canvas = document.getElementById('c-underfitting');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  const points = [
-    {x: 1.5, y: 2.5}, {x: 2.5, y: 4.0}, {x: 3.5, y: 5.5}, {x: 4.5, y: 7.2},
-    {x: 5.5, y: 8.8}, {x: 6.5, y: 10.5}, {x: 7.5, y: 12.0}, {x: 8.5, y: 13.8}
-  ];
-
-  const padding = 50;
-  const w = canvas.width - 2 * padding;
-  const h = canvas.height - 2 * padding;
-
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = '#d8d8d8';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(padding, padding);
-  ctx.lineTo(padding, canvas.height - padding);
-  ctx.lineTo(canvas.width - padding, canvas.height - padding);
-  ctx.stroke();
-
-  ctx.fillStyle = '#2563eb';
-  for (let p of points) {
-    const x = padding + ((p.x - 1) / 8) * w;
-    const y = canvas.height - padding - ((p.y - 2) / 13) * h;
-    ctx.beginPath();
-    ctx.arc(x, y, 3.5, 0, 2 * Math.PI);
-    ctx.fill();
+// ---- Ajuste por minimos cuadrados. Base de Chebyshev (mismo polinomio, mejor condicionado) ----
+const u = x => 2 * (x - XMIN) / (XMAX - XMIN) - 1;
+function base(x, g){
+  const t = u(x), T = [1, t];
+  for (let k = 2; k <= g; k++) T.push(2 * t * T[k-1] - T[k-2]);
+  return T.slice(0, g + 1);
+}
+function ajustar(P, g){
+  const m = g + 1;
+  const A = Array.from({length: m}, () => new Array(m).fill(0)), b = new Array(m).fill(0);
+  for (const p of P){
+    const B = base(p.x, g);
+    for (let r = 0; r < m; r++){
+      for (let c = 0; c < m; c++) A[r][c] += B[r] * B[c];
+      b[r] += B[r] * p.y;
+    }
   }
-
-  ctx.strokeStyle = '#dc2626';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  for (let i = 0; i <= 100; i++) {
-    const t = i / 100;
-    const xVal = 1 + t * 8;
-    const yVal = 2 + t * 12;
-    const x = padding + ((xVal - 1) / 8) * w;
-    const y = canvas.height - padding - ((yVal - 2) / 13) * h;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  for (let c = 0; c < m; c++){
+    let piv = c;
+    for (let r = c + 1; r < m; r++) if (Math.abs(A[r][c]) > Math.abs(A[piv][c])) piv = r;
+    [A[c], A[piv]] = [A[piv], A[c]]; [b[c], b[piv]] = [b[piv], b[c]];
+    for (let r = c + 1; r < m; r++){
+      const k = A[r][c] / A[c][c];
+      for (let j = c; j < m; j++) A[r][j] -= k * A[c][j];
+      b[r] -= k * b[c];
+    }
   }
-  ctx.stroke();
+  const co = new Array(m).fill(0);
+  for (let r = m - 1; r >= 0; r--){
+    let s = b[r];
+    for (let j = r + 1; j < m; j++) s -= A[r][j] * co[j];
+    co[r] = s / A[r][r];
+  }
+  return co;
+}
+function evaluar(co, x){ const B = base(x, co.length - 1); let s = 0; for (let k = 0; k < co.length; k++) s += co[k] * B[k]; return s; }
+function ecm(co, P){ let s = 0; for (const p of P) s += (p.y - evaluar(co, p.x)) ** 2; return s / P.length; }
 
-  ctx.fillStyle = '#666';
-  ctx.font = '10px "Segoe UI"';
-  ctx.fillText('Línea simple (subajuste)', padding + 10, padding - 5);
+// Se calcula todo una vez: 12 grados x 2 modos (13 filas / 39 filas)
+const MODOS = [TR, TR.concat(EX)];
+const TABLA = MODOS.map(P => {
+  const filas = [];
+  for (let g = 1; g <= 12; g++){ const co = ajustar(P, g); filas.push({g, co, tr: ecm(co, P), va: ecm(co, VA)}); }
+  const minVa = Math.min(...filas.map(f => f.va));
+  filas.forEach(f => f.lec = lectura(f.tr, f.va, minVa));
+  return filas;
+});
+function lectura(tr, va, minVa){
+  if (tr > 2 * minVa && va > 2 * minVa) return {txt: 'Subajuste', cls: 'sub', col: '#b45309'};
+  if (va - tr >= minVa) return {txt: 'Sobreajuste', cls: 'sobre', col: '#dc2626'};
+  if (va - tr >= 0.5 * minVa) return {txt: 'Se abre la brecha', cls: 'medio', col: '#be185d'};
+  return {txt: 'Ajuste razonable', cls: 'ok', col: '#059669'};
 }
 
-function drawOverfitting() {
-  const canvas = document.getElementById('c-overfitting');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+let grado = 1, modo = 0;
 
-  const points = [
-    {x: 1.5, y: 2.8}, {x: 2.3, y: 5.2}, {x: 3.2, y: 4.5}, {x: 4.1, y: 7.8},
-    {x: 5.0, y: 9.5}, {x: 6.2, y: 10.8}, {x: 7.1, y: 11.2}, {x: 8.3, y: 13.9}
-  ];
-
-  const padding = 50;
-  const w = canvas.width - 2 * padding;
-  const h = canvas.height - 2 * padding;
-
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = '#d8d8d8';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(padding, padding);
-  ctx.lineTo(padding, canvas.height - padding);
-  ctx.lineTo(canvas.width - padding, canvas.height - padding);
-  ctx.stroke();
-
-  ctx.fillStyle = '#2563eb';
-  for (let p of points) {
-    const x = padding + ((p.x - 1) / 8) * w;
-    const y = canvas.height - padding - ((p.y - 2) / 13) * h;
-    ctx.beginPath();
-    ctx.arc(x, y, 3.5, 0, 2 * Math.PI);
-    ctx.fill();
+// ---- Dibujo 1: datos y curva ajustada ----
+function dibujaAjuste(){
+  const c = $('c-ajuste'), g = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 56, MR = 16, MT = 24, MB = 44;
+  const X0 = 0, X1 = 40, Y0 = 0, Y1 = 38;
+  const px = x => ML + (x - X0) / (X1 - X0) * (W - ML - MR);
+  const py = y => H - MB - (y - Y0) / (Y1 - Y0) * (H - MT - MB);
+  g.clearRect(0, 0, W, H);
+  g.font = '11px system-ui'; g.lineWidth = 1;
+  for (let y = 0; y <= 35; y += 5){
+    g.strokeStyle = '#ececec'; g.beginPath(); g.moveTo(ML, py(y)); g.lineTo(W - MR, py(y)); g.stroke();
+    g.fillStyle = '#666'; g.textAlign = 'right'; g.fillText(y, ML - 8, py(y) + 4);
   }
+  g.textAlign = 'center';
+  for (let x = 0; x <= 40; x += 5) g.fillText(x, px(x), H - MB + 16);
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(ML, MT); g.lineTo(ML, H - MB); g.lineTo(W - MR, H - MB); g.stroke();
+  g.fillStyle = '#444'; g.font = '600 12px system-ui';
+  g.fillText('Edad del pino [años]', (ML + W - MR) / 2, H - 8);
+  g.save(); g.translate(15, (MT + H - MB) / 2); g.rotate(-Math.PI / 2); g.fillText('Altura [m]', 0, 0); g.restore();
 
-  ctx.strokeStyle = '#059669';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  for (let i = 0; i <= 150; i++) {
-    const t = i / 150;
-    const xVal = 1 + t * 8;
-    const yVal = 2.5 + 11.5*t + 3.5*Math.sin(5*t*Math.PI) - t*2;
-    const x = padding + ((xVal - 1) / 8) * w;
-    const y = canvas.height - padding - ((yVal - 2) / 13) * h;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  // curva recortada al area del grafico
+  const fila = TABLA[modo][grado - 1];
+  g.save(); g.beginPath(); g.rect(ML, MT, W - ML - MR, H - MT - MB); g.clip();
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 2.5; g.beginPath();
+  let primero = true;
+  for (let x = XMIN; x <= XMAX + 1e-9; x += 0.05){
+    const Y = Math.max(-50, Math.min(H + 50, py(evaluar(fila.co, x))));
+    if (primero){ g.moveTo(px(x), Y); primero = false; } else g.lineTo(px(x), Y);
   }
-  ctx.stroke();
+  g.stroke(); g.restore();
 
-  ctx.fillStyle = '#666';
-  ctx.font = '10px "Segoe UI"';
-  ctx.fillText('Curva compleja (sobreajuste)', padding + 10, padding - 5);
+  if (modo === 1) EX.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 3.5, 0, 7); g.fillStyle = '#93c5fd'; g.fill(); });
+  TR.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 5, 0, 7); g.fillStyle = '#2563eb'; g.fill(); });
+  VA.forEach(p => { g.beginPath(); g.arc(px(p.x), py(p.y), 5, 0, 7); g.strokeStyle = '#d97706'; g.lineWidth = 2.2; g.stroke(); });
+
+  g.textAlign = 'left'; g.font = '12px system-ui';
+  g.fillStyle = '#2563eb'; g.fillText('● entrenamiento (' + MODOS[modo].length + ')', ML + 10, MT + 4);
+  g.fillStyle = '#d97706'; g.fillText('○ validación (12)', ML + 175, MT + 4);
+  g.fillStyle = '#1a1a1a'; g.fillText('— polinomio de grado ' + grado, ML + 300, MT + 4);
+  g.fillStyle = '#9ca3af'; g.textAlign = 'right'; g.fillText('cifras ilustrativas [DATITO]', W - MR - 4, MT + 4);
 }
 
-function updateGrafico() {
-  const selectedGrade = parseInt(document.getElementById('grado')?.value || '1');
-
-  // Redraw canvas with highlight
-  drawTrainTestLoss();
-  drawUnderfitting();
-  drawOverfitting();
-
-  // Update metrics display
-  const trainLoss = [5.62, 4.10, 2.80, 1.90, 0.90, 0.30, 0.10, 0.05, 0.02, 0.01, 0.005, 0];
-  const testLoss = [7.14, 5.20, 3.50, 1.64, 1.60, 2.30, 5.60, 15.40, 42.10, 61.50, 71.20, 84.47];
-  const idx = selectedGrade - 1;
-
-  document.getElementById('m-par').textContent = (selectedGrade + 1);
-  document.getElementById('m-tr').textContent = trainLoss[idx].toFixed(2);
-  document.getElementById('m-va').textContent = testLoss[idx].toFixed(2);
-  document.getElementById('m-br').textContent = (testLoss[idx] - trainLoss[idx]).toFixed(2);
-
-  if (selectedGrade <= 3) {
-    document.getElementById('m-lec').textContent = 'Subajuste';
-  } else if (selectedGrade === 4) {
-    document.getElementById('m-lec').textContent = '✓ Óptimo';
-  } else if (selectedGrade <= 6) {
-    document.getElementById('m-lec').textContent = 'Ligero sobreajuste';
-  } else {
-    document.getElementById('m-lec').textContent = '⚠ Sobreajuste';
+// ---- Dibujo 2: curva de complejidad ----
+function dibujaCurva(){
+  const c = $('c-curva'), g = c.getContext('2d');
+  const W = c.width, H = c.height, ML = 56, MR = 16, MT = 26, MB = 44, YTOP = 10;
+  const filas = TABLA[modo];
+  const px = k => ML + (k - 0.5) / 12 * (W - ML - MR);
+  const py = y => H - MB - Math.min(y, YTOP) / YTOP * (H - MT - MB);
+  g.clearRect(0, 0, W, H);
+  // zonas
+  const fondo = {sub: '#fef3c7', sobre: '#fee2e2', medio: '#fdf2f8', ok: '#f0fdf4'};
+  filas.forEach(f => { g.fillStyle = fondo[f.lec.cls]; g.fillRect(px(f.g - 0.5), MT, px(f.g + 0.5) - px(f.g - 0.5), H - MT - MB); });
+  const rotulos = {sub: 'subajuste', sobre: 'sobreajuste'};
+  ['sub', 'sobre'].forEach(cls => {
+    const ks = filas.filter(f => f.lec.cls === cls).map(f => f.g);
+    if (!ks.length) return;
+    g.fillStyle = cls === 'sub' ? '#92400e' : '#991b1b'; g.font = '600 11px system-ui'; g.textAlign = 'center';
+    g.fillText(rotulos[cls], (px(Math.min(...ks)) + px(Math.max(...ks))) / 2, MT + 14);
+  });
+  // ejes
+  g.font = '11px system-ui'; g.fillStyle = '#666'; g.textAlign = 'right';
+  for (let y = 0; y <= YTOP; y += 2){
+    g.strokeStyle = '#e5e5e5'; g.lineWidth = 1; g.beginPath(); g.moveTo(ML, py(y)); g.lineTo(W - MR, py(y)); g.stroke();
+    g.fillText(y, ML - 8, py(y) + 4);
   }
+  g.textAlign = 'center';
+  for (let k = 1; k <= 12; k++) g.fillText(k, px(k), H - MB + 16);
+  g.strokeStyle = '#1a1a1a'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(ML, MT); g.lineTo(ML, H - MB); g.lineTo(W - MR, H - MB); g.stroke();
+  g.fillStyle = '#444'; g.font = '600 12px system-ui';
+  g.fillText('Grado del polinomio (más grado = más parámetros = más complejidad)', (ML + W - MR) / 2, H - 8);
+  g.save(); g.translate(15, (MT + H - MB) / 2); g.rotate(-Math.PI / 2); g.fillText('ECM [m²]', 0, 0); g.restore();
+  // grado actual
+  g.setLineDash([5, 4]); g.strokeStyle = '#7c3aed'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(px(grado), MT); g.lineTo(px(grado), H - MB); g.stroke(); g.setLineDash([]);
+  // lineas
+  function linea(clave, color){
+    g.strokeStyle = color; g.lineWidth = 2.5; g.beginPath();
+    filas.forEach((f, i) => { const X = px(f.g), Y = py(f[clave]); if (i === 0) g.moveTo(X, Y); else g.lineTo(X, Y); });
+    g.stroke();
+    filas.forEach(f => {
+      const X = px(f.g), Y = py(f[clave]), fuera = f[clave] > YTOP;
+      g.fillStyle = color; g.beginPath();
+      if (fuera){ g.moveTo(X, Y - 7); g.lineTo(X - 6, Y + 3); g.lineTo(X + 6, Y + 3); g.closePath(); }
+      else g.arc(X, Y, f.g === grado ? 6 : 3.5, 0, 7);
+      g.fill();
+      if (fuera){ g.font = '600 10px system-ui'; g.textAlign = 'center'; g.fillText(fmt(f[clave], 1) + ' ↑', X, Y + 16); }
+    });
+  }
+  linea('tr', '#2563eb');
+  linea('va', '#d97706');
+  g.textAlign = 'left'; g.font = '12px system-ui';
+  g.fillStyle = '#2563eb'; g.fillText('— entrenamiento', W - MR - 250, MT - 8);
+  g.fillStyle = '#d97706'; g.fillText('— validación', W - MR - 130, MT - 8);
+}
+
+function pintaTabla(){
+  const filas = TABLA[modo];
+  let h = '<table><tr><th>Grado</th><th>Parámetros</th><th>ECM entren.</th><th>ECM valid.</th><th>Brecha</th><th>Lectura</th></tr>';
+  filas.forEach(f => {
+    h += '<tr><td>' + f.g + '</td><td class="num">' + (f.g + 1) + '</td><td class="num">' + fmt(f.tr, 3) +
+         '</td><td class="num">' + fmt(f.va, 3) + '</td><td class="num">' + fmt(f.va - f.tr, 3) +
+         '</td><td style="color:' + f.lec.col + '">' + f.lec.txt + '</td></tr>';
+  });
+  h += '</table><p style="font-size:.85rem;color:#666;margin:0">Modo actual: ' + MODOS[modo].length +
+       ' pinos de entrenamiento. Cifras ilustrativas [DATITO].</p>';
+  $('tabla').innerHTML = h;
+}
+
+function actualizar(){
+  const f = TABLA[modo][grado - 1];
+  $('grado').value = grado;
+  $('grado-out').textContent = grado;
+  $('m-par').textContent = grado + 1;
+  $('m-tr').textContent = fmt(f.tr, 3);
+  $('m-va').textContent = fmt(f.va, 3);
+  $('m-br').textContent = (f.va - f.tr >= 0 ? '+' : '') + fmt(f.va - f.tr, 3);
+  $('m-lec').textContent = f.lec.txt;
+  $('m-lec').style.color = f.lec.col;
+  $('b-filas').textContent = modo === 0 ? 'Más filas: pasar de 13 a 39 pinos de entrenamiento' : 'Volver a 13 pinos de entrenamiento';
+  dibujaAjuste();
+  dibujaCurva();
+  pintaTabla();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  updateGrafico();
+  $('grado').oninput = () => { grado = +$('grado').value; actualizar(); };
+  $('b-g1').onclick = () => { grado = 1; actualizar(); };
+  $('b-g12').onclick = () => { grado = 12; actualizar(); };
+  $('b-mejor').onclick = () => {
+    const filas = TABLA[modo];
+    grado = filas.reduce((m, f) => f.va < m.va ? f : m, filas[0]).g;
+    actualizar();
+  };
+  $('b-filas').onclick = () => { modo = 1 - modo; actualizar(); };
+  actualizar();
 });
 </script>
 
