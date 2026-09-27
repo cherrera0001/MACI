@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/07_DATITO/01_CONCEPTOS/visual/00_index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/07_DATITO/01_CONCEPTOS/visual/$1"
     }
