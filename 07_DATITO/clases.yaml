@@ -1,113 +1,237 @@
-# clases.yaml — Solo archivos que existen en 07_DATITO/01_CONCEPTOS/visual/
-
 unidades:
   1:
-    titulo: "Del problema a los datos"
+    titulo: Del problema a los datos
   2:
-    titulo: "Preparar y partir"
+    titulo: Preparar y partir
   3:
-    titulo: "Medir si el modelo sirve"
+    titulo: Medir si el modelo sirve
   4:
-    titulo: "Evaluar clasificadores"
+    titulo: Evaluar clasificadores
   5:
-    titulo: "Modelos complejos"
-
+    titulo: Modelos complejos
 clases:
-  - n: 1
-    titulo: "Fundamentos"
-    visual: "01_fundamentos.html"
-    unidad: 1
-    objetivo: "Comprender qué es ciencia de datos"
-    tipo: concepto
-    conceptos: [fundamentos_ciencia_datos]
-    bloom: {nivel: "Comprender"}
-  
-  - n: 2
-    titulo: "Datos, features, target"
-    visual: "02_datos_features_target.html"
-    unidad: 1
-    objetivo: "Identificar estructura de datos"
-    tipo: concepto
-    conceptos: [datos_features_target]
-    bloom: {nivel: "Comprender"}
-  
-  - n: 3
-    titulo: "EDA"
-    visual: "03_eda.html"
-    unidad: 1
-    objetivo: "Explorar datos"
-    tipo: concepto
-    conceptos: [eda]
-    bloom: {nivel: "Comprender"}
-  
-  - n: 4
-    titulo: "Limpieza"
-    visual: "04_limpieza_preparacion.html"
-    unidad: 2
-    objetivo: "Preparar datos"
-    tipo: concepto
-    conceptos: [limpieza_preparacion]
-    bloom: {nivel: "Aplicar"}
-  
-  - n: 6
-    titulo: "Validación cruzada"
-    visual: "06_validacion_cruzada.html"
-    unidad: 2
-    objetivo: "Validar robustez"
-    tipo: concepto
-    conceptos: [validacion_cruzada]
-    bloom: {nivel: "Aplicar"}
-  
-  - n: 7
-    titulo: "Generalización"
-    visual: "07_generalizacion.html"
-    unidad: 3
-    objetivo: "Comprender error de generalización"
-    tipo: concepto
-    conceptos: [generalizacion]
-    bloom: {nivel: "Comprender"}
-  
-  - n: 8
-    titulo: "Overfitting"
-    visual: "08_overfitting_underfitting.html"
-    unidad: 3
-    objetivo: "Detectar overfitting"
-    tipo: concepto
-    conceptos: [overfitting_underfitting]
-    bloom: {nivel: "Analizar"}
-  
-  - n: 9
-    titulo: "Regresión"
-    visual: "09_regresion.html"
-    unidad: 3
-    objetivo: "Predecir valores continuos"
-    tipo: concepto
-    conceptos: [regresion]
-    bloom: {nivel: "Aplicar"}
-  
-  - n: 13
-    titulo: "ROC/AUC"
-    visual: "13_roc_auc.html"
-    unidad: 4
-    objetivo: "Elegir umbral"
-    tipo: concepto
-    conceptos: [roc_auc]
-    bloom: {nivel: "Analizar"}
-  
-  - n: 14
-    titulo: "Árboles"
-    visual: "14_arboles_decision.html"
-    unidad: 5
-    objetivo: "Usar árboles de decisión"
-    tipo: concepto
-    conceptos: [arboles_decision]
-    bloom: {nivel: "Aplicar"}
-  
-  - n: 18
-    titulo: "Redes neuronales"
-    visual: "18_redes_neuronales.html"
-    unidad: 5
-    objetivo: "Entender redes neuronales"
-    tipo: concepto
-    conceptos: [redes_neuronales]
-    bloom: {nivel: "Comprender"}
+- n: 1
+  titulo: Fundamentos
+  visual: 01_fundamentos.html
+  unidad: 1
+  objetivo: Comprender qué es ciencia de datos
+  tipo: concepto
+  conceptos:
+  - fundamentos_ciencia_datos
+  bloom:
+    nivel: Comprender
+    evidencia: Explicar qué es ciencia de datos en tus palabras
+    actividad_final: Define ciencia de datos
+    criterio_dominio: Definición coherente con ejemplos
+  activacion: Pregunta de inicio
+- n: 2
+  titulo: Datos, features, target
+  visual: 02_datos_features_target.html
+  unidad: 1
+  objetivo: Identificar estructura de datos
+  tipo: concepto
+  conceptos:
+  - datos_features_target
+  bloom:
+    nivel: Comprender
+    evidencia: Identificar features y target en un dataset
+    actividad_final: 'Ejercicio clase 2: Datos, features, target'
+    criterio_dominio: Aplicación correcta del concepto en identificar estructura de
+      datos
+  activacion: Pregunta de inicio
+- n: 3
+  titulo: EDA
+  visual: 03_eda.html
+  unidad: 1
+  objetivo: Explorar datos
+  tipo: concepto
+  conceptos:
+  - eda
+  bloom:
+    nivel: Comprender
+    evidencia: Describir distribuciones y patrones principales
+    actividad_final: 'Ejercicio clase 3: EDA'
+    criterio_dominio: Aplicación correcta del concepto en explorar datos
+  activacion: Pregunta de inicio
+- n: 4
+  titulo: Limpieza
+  visual: 04_limpieza_preparacion.html
+  unidad: 2
+  objetivo: Preparar datos
+  tipo: concepto
+  conceptos:
+  - limpieza_preparacion
+  bloom:
+    nivel: Aplicar
+    evidencia: Documentar decisiones de limpieza en Melbourne
+    actividad_final: 'Ejercicio clase 4: Limpieza'
+    criterio_dominio: Aplicación correcta del concepto en preparar datos
+  activacion: Pregunta de inicio
+- n: 5
+  titulo: Train/Test Split
+  visual: 05_train_validation_test.html
+  unidad: 2
+  objetivo: Partir datos sin fuga temporal
+  tipo: concepto
+  conceptos:
+  - train_validation_test
+  bloom:
+    nivel: Aplicar
+    evidencia: Dividir 2016→train, 2017→test sin información futura
+    actividad_final: 'Ejercicio clase 5: Train/Test Split'
+    criterio_dominio: Aplicación correcta del concepto en partir datos sin fuga temporal
+  activacion: Pregunta de inicio
+- n: 6
+  titulo: Validación cruzada
+  visual: 06_validacion_cruzada.html
+  unidad: 2
+  objetivo: Validar robustez
+  tipo: concepto
+  conceptos:
+  - validacion_cruzada
+  bloom:
+    nivel: Aplicar
+    evidencia: Implementar k-fold CV e interpretar varianza
+    actividad_final: 'Ejercicio clase 6: Validación cruzada'
+    criterio_dominio: Aplicación correcta del concepto en validar robustez
+  activacion: Pregunta de inicio
+- n: 7
+  titulo: Generalización
+  visual: 07_generalizacion.html
+  unidad: 3
+  objetivo: Comprender error de generalización
+  tipo: concepto
+  conceptos:
+  - generalizacion
+  bloom:
+    nivel: Comprender
+    evidencia: Explicar por qué R²train ≠ R²test
+    actividad_final: 'Ejercicio clase 7: Generalización'
+    criterio_dominio: Aplicación correcta del concepto en comprender error de generalización
+  activacion: Pregunta de inicio
+- n: 8
+  titulo: Overfitting
+  visual: 08_overfitting_underfitting.html
+  unidad: 3
+  objetivo: Detectar overfitting
+  tipo: concepto
+  conceptos:
+  - overfitting_underfitting
+  bloom:
+    nivel: Analizar
+    evidencia: Diagnosticar overfitting desde gráficas de aprendizaje
+    actividad_final: 'Ejercicio clase 8: Overfitting'
+    criterio_dominio: Aplicación correcta del concepto en detectar overfitting
+  activacion: Pregunta de inicio
+- n: 9
+  titulo: Regresión
+  visual: 09_regresion.html
+  unidad: 3
+  objetivo: Predecir valores continuos
+  tipo: concepto
+  conceptos:
+  - regresion
+  bloom:
+    nivel: Aplicar
+    evidencia: Entrenar regresor en Melbourne y calcular MAE, R²
+    actividad_final: 'Ejercicio clase 9: Regresión'
+    criterio_dominio: Aplicación correcta del concepto en predecir valores continuos
+  activacion: Pregunta de inicio
+- n: 10
+  titulo: Clasificación
+  visual: 10_clasificacion.html
+  unidad: 4
+  objetivo: Resolver problemas de clasificación
+  tipo: concepto
+  conceptos:
+  - clasificacion
+  bloom:
+    nivel: Aplicar
+    evidencia: Entrenar clasificador e interpretar matriz de confusión
+    actividad_final: 'Ejercicio clase 10: Clasificación'
+    criterio_dominio: Aplicación correcta del concepto en resolver problemas de clasificación
+  activacion: Pregunta de inicio
+- n: 11
+  titulo: Matriz de confusión
+  visual: 11_matriz_confusion.html
+  unidad: 4
+  objetivo: Evaluar clasificadores
+  tipo: concepto
+  conceptos:
+  - metricas_clasificacion
+  bloom:
+    nivel: Comprender
+    evidencia: Leer matriz de confusión e identificar TP, FP, FN, TN
+    actividad_final: 'Ejercicio clase 11: Matriz de confusión'
+    criterio_dominio: Aplicación correcta del concepto en evaluar clasificadores
+  activacion: Pregunta de inicio
+- n: 12
+  titulo: Métricas de clasificación
+  visual: 12_metricas_clasificacion.html
+  unidad: 4
+  objetivo: Elegir métrica correcta
+  tipo: concepto
+  conceptos:
+  - metricas_clasificacion
+  bloom:
+    nivel: Analizar
+    evidencia: Calcular Precision, Recall, F1 y elegir según costo
+    actividad_final: 'Ejercicio clase 12: Métricas de clasificación'
+    criterio_dominio: Aplicación correcta del concepto en elegir métrica correcta
+  activacion: Pregunta de inicio
+- n: 13
+  titulo: ROC/AUC
+  visual: 13_roc_auc.html
+  unidad: 4
+  objetivo: Elegir umbral
+  tipo: concepto
+  conceptos:
+  - roc_auc
+  bloom:
+    nivel: Analizar
+    evidencia: Graficar ROC e interpretar AUC para elegir threshold
+    actividad_final: 'Ejercicio clase 13: ROC/AUC'
+    criterio_dominio: Aplicación correcta del concepto en elegir umbral
+  activacion: Pregunta de inicio
+- n: 14
+  titulo: Árboles
+  visual: 14_arboles_decision.html
+  unidad: 5
+  objetivo: Usar árboles de decisión
+  tipo: concepto
+  conceptos:
+  - arboles_decision
+  bloom:
+    nivel: Aplicar
+    evidencia: Entrenar árbol, interpretar splits, obtener importancia
+    actividad_final: 'Ejercicio clase 14: Árboles'
+    criterio_dominio: Aplicación correcta del concepto en usar árboles de decisión
+  activacion: Pregunta de inicio
+- n: 18
+  titulo: Redes neuronales
+  visual: 18_redes_neuronales.html
+  unidad: 5
+  objetivo: Entender redes neuronales
+  tipo: concepto
+  conceptos:
+  - redes_neuronales
+  bloom:
+    nivel: Comprender
+    evidencia: Explicar neurona, capas y activación sin jerga
+    actividad_final: 'Ejercicio clase 18: Redes neuronales'
+    criterio_dominio: Aplicación correcta del concepto en entender redes neuronales
+  activacion: Pregunta de inicio
+- n: 19
+  titulo: Deep Learning
+  visual: 19_deep_learning.html
+  unidad: 5
+  objetivo: Aplicar redes profundas
+  tipo: concepto
+  conceptos:
+  - deep_learning
+  bloom:
+    nivel: Aplicar
+    evidencia: Reconocer cuándo DL es overkill vs necesario
+    actividad_final: 'Ejercicio clase 19: Deep Learning'
+    criterio_dominio: Aplicación correcta del concepto en aplicar redes profundas
+  activacion: Pregunta de inicio

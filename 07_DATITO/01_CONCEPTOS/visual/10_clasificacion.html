@@ -6,7 +6,33 @@
   ------------------------------------------------------------------
   Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
   1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
-  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}.pasos{border-top:1px solid #bfdbfe;padding-top:.7rem}.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}</style>
+<section class="leccion" data-clase="10" id="clase-10">
+<div class="leccion-top"><span class="uni">Unidad 4 · {&#x27;titulo&#x27;: &#x27;Evaluar clasificadores&#x27;}</span><b>Clase 10 de 16</b></div>
+<div class="barra"><span style="width:62.5%"></span></div>
+<div class="lt">Clase 10 · Clasificación</div>
+<p><b>Objetivo.</b> Resolver problemas de clasificación</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span>ninguna: es el punto de partida</div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~40 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Aplicar</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Entrenar clasificador e interpretar matriz de confusión</li>
+<li><b>Actividad final:</b> Ejercicio clase 10: Clasificación</li>
+<li><b>Criterio de dominio:</b> Aplicación correcta del concepto en resolver problemas de clasificación</li></ul></div>
+<div class="activ"><b>Activación.</b> Pregunta de inicio <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="10"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="09_regresion.html">← Clase 9 · Regresión</a></span><a href="index.html">Índice del curso</a><span><a href="11_matriz_confusion.html">Clase 11 · Matriz de confusión →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="index.html">← Índice de repaso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Clasificación</b></span> · <span class="et">viene de</span>— · <span class="et">habilita</span><a href="11_matriz_confusion.html">Matriz de confusión</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular None · peso en certamen ? () · <span class="et">certamen</span><a href="certamen_1.html#p6">C1 P6</a> · <a href="certamen_2.html#p4">C2 P4</a></div>
+</nav>
+<!-- datito:nav:fin -->
+ tras la nav.
   3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
   4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
   5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
