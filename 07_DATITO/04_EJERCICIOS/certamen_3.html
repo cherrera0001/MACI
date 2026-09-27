@@ -361,40 +361,15 @@ El Modelo 1 tiene AUC = 0,82, lo que significa que en el 82 % de los pares (posi
 </div>
 
 <h2>Cierre de la Clase 23 · Distinciones del Certamen 3</h2>
-
-<div class="clave"><strong>Qué aprendiste aquí.</strong></div>
-<ul style="margin:.4rem 0 0 1.1rem">
-<li>ROC-AUC es una herramienta para comparar modelos en clasificación desbalanceada.</li>
-<li>Un LLM aislado redacta; un agente ejecuta: la diferencia es el ciclo de acción-retroalimentación.</li>
-</ul>
-
-<div class="clave"><strong>No confundas.</strong></div>
-<ul style="margin:.4rem 0 0 1.1rem">
-<li>Comparar dos modelos por un punto (umbral) ≠ comparar por su curva completa.</li>
-<li>Un LLM que responde preguntas ≠ un agente que resuelve problemas.</li>
-</ul>
-
-<div class="clave"><strong>El procedimiento que funciona.</strong></div>
-<ol style="margin:.4rem 0 0 1.1rem">
-<li>Identifica qué se compara: ¿dos modelos o dos umbrales?</li>
-<li>Si son modelos, dibuja sus curvas ROC y compara el área (AUC).</li>
-<li>Si es un agente, identifica dónde está el ciclo: percibe, decide, actúa, mide.</li>
-</ol>
-
-<div class="clave"><strong>Pregunta final para ti.</strong></div>
-<p>¿Cuál es la distinción que decide si un LLM es suficiente o necesitas un agente?</p>
-
-<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary>
-<p><strong>Respuesta.</strong> Un LLM genera texto. Un agente genera texto Y ejecuta acciones en un sistema real, midiendo si funcionó. Si el problema requiere cerrar loops en el mundo real, necesitas un agente.</p>
-<p><strong>Criterios con que se corrige:</strong></p>
-<ul style="margin:.3rem 0 .6rem;padding-left:1.2rem">
-<li>Nombra el ciclo: percibe, actúa, mide.</li>
-<li>Distingue: redactar información ≠ ejecutar una acción.</li>
-<li>Dice qué problema requiere agente: uno que dependa de resultados del mundo real.</li>
-<li>No confunde un LLM «inteligente» con un sistema que cierra loops.</li>
-</ul>
-<p><strong>Error típico:</strong> Responder «un agente es un LLM mejorado» sin mencionar que necesita herramientas y retroalimentación del entorno.</p>
-</details>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>ROC-AUC es la herramienta para comparar dos modelos en clasificación desbalanceada.</li><li>Un LLM redacta; un agente redacta Y ejecuta: la diferencia es el ciclo percibe-actúa-mide.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>Comparar dos modelos por un punto de operación ≠ comparar la curva ROC completa.</li><li>Un LLM que responde preguntas ≠ un agente que resuelve problemas con retroalimentación del mundo real.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Identifica qué se compara: ¿dos modelos? ¿dos umbrales? ¿LLM vs agente?</li><li>Si son modelos: dibuja las dos curvas ROC y compara las áreas (AUC).</li><li>Si es agente: identifica el ciclo: percibe, decide, actúa, mide el resultado real.</li></ol>
+<p><b>Viene de:</b> <a href="certamen_2.html">Clase 21 · Distinciones del Certamen 2</a> · <b>Sigue:</b> <a href="triaje_de_problemas.html">Clase 24 · Triaje: ¿qué tipo de problema es este?</a></p>
+<p><b>Vuelve a tu activación:</b> Antes de resolver cada pregunta del certamen: ¿qué distinción crees que decide tu respuesta? ¿Cambiarías tu respuesta si cambias esa distinción?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Cuál es la distinción que decide si un LLM es suficiente o necesitas un agente?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Un LLM genera texto. Un agente genera texto Y ejecuta acciones en un sistema real, midiendo si funcionó. Si el problema requiere cerrar loops en el mundo real, necesitas un agente. [FUENTE · Repo: 07_DATITO/patron_evaluacion.md §2]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="triaje_de_problemas.html">Continuar → Clase 24 · Triaje: ¿qué tipo de problema es este?</a>
 
 <footer>
 Certamen 3 · enunciado del examen FCD 2026 y resolución de Datito. Las figuras salen del PDF. Las tasas, el área y los falsos positivos mensuales están calculados a partir de esas figuras.
