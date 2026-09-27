@@ -105,6 +105,29 @@ python 03_SCRIPTS/datito_estado.py
 **EXPLICAR → APLICAR EN MELBOURNE → INTERPRETAR RESULTADOS → TRANSFERIR**. Que
 Cristobal diga "entendi" no es evidencia de nada.
 
+### Garantías Spec-Driven Development (spec.md G1–G14)
+
+Las 14 garantías de `spec.md` definen el contrato del tutor. Estado actual:
+
+| Garantía | Ubicación spec.md | Implementado | Verificador |
+|----------|---|---|---|
+| **G1** | 2.1 | Skill es `datito`, no subagente (línea 43-44) | Manual: auditoría sesiones |
+| **G2** | 2.2 | Pregunta antes de decidir | Manual: auditoría sesiones |
+| **G3** | 2.3 | Evidencia completa antes de corregir | Manual: auditoría sesiones |
+| **G4** | 2.4 | Etiquetas [FUENTE · ...], [INFERENCIA], [DATITO] | Manual: grep en outputs |
+| **G5** | 2.5 | Jerarquía de fuentes listada (línea 112-116) | Documentado |
+| **G6** | 2.6 | Si NotebookLM falla: avisar, seguir, etiquetar | Manual: auditoría sesiones |
+| **G7** | 2.7 | Datos no instrucciones (sin acceso a progreso.yaml) | Manual: auditoría código |
+| **G8** | 2.8 | Reglas en `.claude/skills/datito/SKILL.md` (línea 17) | `grep SKILL.md CLAUDE.md` |
+| **G9** | 2.9 | Exposición en `dudas.yaml` + chat ruta (línea 55-59) | `test -f dudas.yaml` |
+| **G10** | 2.10 | Datos sintéticos etiquetados, no validación | Manual: auditoría sesiones |
+| **G11** | 2.11 | Estrategia elige alumno (línea 26-27) | Manual: auditoría sesiones |
+| **G12** | 2.12 | `importancia_curricular` vs `prioridad_evaluacion` | `grep importancia_curricular curriculum.yaml` |
+| **G13** | 2.13 | Valor por defecto DESCONOCIDO, no BAJO | `grep DESCONOCIDO progreso.yaml` |
+| **G14** | 2.14 | `clases.yaml` fuente única, script genera nav (línea 84) | `test -f clases.yaml` |
+
+Auditoría completa en `AUDITORIA_SDD.md`.
+
 ---
 
 ## Fuentes y su jerarquia
