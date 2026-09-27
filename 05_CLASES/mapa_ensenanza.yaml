@@ -1,31 +1,53 @@
 # mapa_ensenanza.yaml — Dónde se enseñó cada concepto
 # Vincula conceptos con transcripciones de clase
+# Estructura: conceptos (concept_id → tramos) y clases (clase_key → metadatos)
 
-ensenanza:
+conceptos:
   fundamentos_ciencia_datos:
-    - clase: "2026-06-19"
+    - clase: "01_Clase_Bienvenida"
       inicio: "0:00:00"
       fin: "1:00:00"
-      archivo: "01_Clase_Bienvenida.md"
-      hablante: "profesor"
-  
+      que: "Introducción a la ciencia de datos"
+      hablante: "titular"
+
   datos_features_target:
-    - clase: "2026-06-26"
+    - clase: "02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio"
       inicio: "0:15:00"
       fin: "1:00:00"
-      archivo: "02_Clase_Datos.md"
-      hablante: "profesor"
-  
+      que: "Features y targets"
+      hablante: "titular"
+
   generalizacion:
-    - clase: "2026-07-31"
+    - clase: "07Clase_Entrenamiento_Validacion_Datos_en_Ciencia_de_Datos_31_Julio"
       inicio: "0:30:00"
       fin: "1:30:00"
-      archivo: "06_Clase_Generalizacion.md"
-      hablante: "profesor"
-  
+      que: "Generalización"
+      hablante: "titular"
+
   roc_auc:
-    - clase: "2026-08-28"
+    - clase: "2026-08-28-Clase_ROC"
       inicio: "1:00:00"
       fin: "2:00:00"
-      archivo: "08_Clase_ROC.md"
-      hablante: "profesor"
+      que: "ROC-AUC y curvas"
+      hablante: "titular"
+
+clases:
+  "01_Clase_Bienvenida":
+    fecha: "2026-06-19"
+    tipo: "clase"
+    hablantes: "Profesor"
+
+  "02Clase_y_Ayudantía_Fundamentos_en_Ciencia_de_Datos_26_Junio":
+    fecha: "2026-06-26"
+    tipo: "clase"
+    hablantes: "Profesor y ayudantía"
+
+  "07Clase_Entrenamiento_Validacion_Datos_en_Ciencia_de_Datos_31_Julio":
+    fecha: "2026-07-31"
+    tipo: "clase"
+    hablantes: "Profesor"
+
+  "2026-08-28-Clase_ROC":
+    fecha: "2026-08-28"
+    tipo: "clase"
+    hablantes: "Profesor"
