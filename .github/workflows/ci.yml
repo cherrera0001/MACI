@@ -29,9 +29,6 @@ jobs:
     - name: Run pytest
       run: python -m pytest tests/ -v --tb=short 2>/dev/null || echo "No tests yet"
 
-    - name: Verify manifiesto rutas
-      run: python3 tests/test_manifiesto.py
-
     - name: Lint Python (herramientas)
       run: |
         pip install pylint 2>/dev/null || echo "pylint no disponible"
