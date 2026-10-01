@@ -1,11 +1,11 @@
 # agent_lessons.yaml — memoria del Agents Learning Loop (Datito constructor)
 # Se LEE al inicio de cada /datito-visual y /datito-loop.
 # Se ESCRIBE solo tras keep|discard|crash con evidencia.
+# Cada lección va en la lista de su id (-FAIL- / -KEEP-); lo comprueba
+# 04_CODIGO/test_learning_loop.py.
 
 version: 1
-updated: "2026-09-26"
-
-# --- Sprint 03 Failures (VIZ-FAIL-005, 006, 007) ---
+updated: "2026-10-01"
 
 # --- Failure patterns (NO repetir) ---
 failure_patterns:
@@ -41,48 +41,6 @@ failure_patterns:
       + details + resp + errores + checklist. No KEEP si la tabla no sale de la figura.
     metric_gate: "bloques_profundidad == 6 por subpregunta; cifras contrastadas con PDF"
 
-  - id: VIZ-FAIL-004
-    date: "2026-09-26"
-    family: visual
-    summary: "El gate aprobaba un head truncado y confundía conceptos con exámenes"
-    evidence:
-      - "evidence/sprint01/04_limpieza_preparacion/baseline-browser.json: lectura rota con score previo 1.0"
-      - "07_generalizacion, 08_overfitting_underfitting y 09_regresion: falso fallo bloque_que_paso tras retirar placeholders"
-    root_cause: "Se buscaban marcadores y palabras en todo el archivo, incluidos navegación y comentarios"
-    keep_rule: >
-      Comprobar head/title/body, un main, un h1, root canónico y ausencia de
-      placeholders. Activar profundidad de certamen por identidad (título/h1 o
-      nombre de archivo), nunca por una cita o un enlace en la navegación.
-      Comprobar profundidad en HTML sin comentarios. Mantener prueba renderizada
-      porque estos gates estructurales no demuestran la apariencia final.
-    metric_gate: "04_CODIGO/test_datito_piel.py y verificar_piel_lectura.py"
-
-# --- Keep rules (patrones que SÍ mejorarón) ---
-keep_patterns:
-
-  - id: VIZ-KEEP-001
-    date: "2026-09-25"
-    family: visual
-    summary: "Añadir explicación figura→tabla sin rediseñar layout"
-    evidence: "Usuario pidió no cambiar diseño; sí sumar explicación — funcionó"
-    keep_rule: "Preferir insertar bloques .clave/.nota/.pasos dentro del template; no rehacer CSS"
-
-  - id: VIZ-KEEP-002
-    date: "2026-09-26"
-    family: visual
-    summary: "Migrar Plotly CDN → Canvas 2D local sin perder interactividad"
-    evidence:
-      - "simulador_prediccion_falla.html: Plotly remoto (https://cdn.plot.ly/)"
-      - "Migrado a Canvas 2D con sliders, actualizaciones reactivas, grid + scatter"
-      - "Score 0.5 → 1.0; pass gates offline_draw, anti_cdn"
-    keep_rule: >
-      Diagramas interactivos pueden migrarse de CDN a Canvas sin rediseño.
-      Canvas es más controlable offline, pero perder librería (Plotly) requiere
-      2-3h de reimplementación. Evaluar ROI por archivo crítico.
-    metric_gate: "datito_loop_eval.py gates anti_cdn + offline_draw ambos PASS"
-
-# --- Nueva lección: arreglo del harness ---
-
   - id: VIZ-FAIL-003
     date: "2026-09-26"
     family: visual
@@ -98,26 +56,21 @@ keep_patterns:
       o librería de charts mencionada. NO por substring "roc"/"FPR"/"TPR".
     metric_gate: "datito_loop_eval.py línea 49-55 corregida"
 
-# --- Inbox: hipótesis pendientes (las llenan errores del alumno o fallos de build) ---
-
-  - id: VIZ-KEEP-003
+  - id: VIZ-FAIL-004
     date: "2026-09-26"
     family: visual
-    summary: "Recuperar la piel por visual conservando la lección y sus controles"
+    summary: "El gate aprobaba un head truncado y confundía conceptos con exámenes"
     evidence:
-      - "evidence/sprint01/03_eda/: antes/después, controles y browser.json offline a 1280 y 390 px"
-      - "evidence/sprint01/04_limpieza_preparacion/: .repreg oscura, fuentes menores, fórmulas y controles legibles"
-      - "04_limpieza_preparacion baseline: gate 1.0 pese head roto y etiquetas sin estilo; baseline-browser.json lo detecta"
+      - "evidence/sprint01/04_limpieza_preparacion/baseline-browser.json: lectura rota con score previo 1.0"
+      - "07_generalizacion, 08_overfitting_underfitting y 09_regresion: falso fallo bloque_que_paso tras retirar placeholders"
+    root_cause: "Se buscaban marcadores y palabras en todo el archivo, incluidos navegación y comentarios"
     keep_rule: >
-      La lectura renderizada decide: no basta el score. Restituir head desde el
-      template, cerrar comentario antes de title y conservar un solo root.
-      Conservar cuerpo real y scripts; quitar solo cola placeholder demostrada.
-      Recuperar CSS específico del propio concepto y acotar estilos de navegación
-      (nav.pasos, .leccion .barra) para no romper listas ni widgets.
-      Comprobar capturas, estilos aplicados, controles y móvil offline con
-      verificar_piel_lectura.py además del gate existente. Si una clase no existe
-      en el cuerpo, verificar su equivalente real sin inventar contenido.
-    metric_gate: "datito_loop_eval.py y verificar_piel_lectura.py, más inspección visual y controles"
+      Comprobar head/title/body, un main, un h1, root canónico y ausencia de
+      placeholders. Activar profundidad de certamen por identidad (título/h1 o
+      nombre de archivo), nunca por una cita o un enlace en la navegación.
+      Comprobar profundidad en HTML sin comentarios. Mantener prueba renderizada
+      porque estos gates estructurales no demuestran la apariencia final.
+    metric_gate: "04_CODIGO/test_datito_piel.py y verificar_piel_lectura.py"
 
   - id: VIZ-FAIL-005
     date: "2026-09-26"
@@ -308,4 +261,65 @@ keep_patterns:
       queda vacía hasta que /datito-corregir escriba una respuesta.
     metric_gate: "contrato_conocimiento.yaml comprobar, más verificar_piel_lectura.py; el score del loop no cierra la tarea"
 
+  - id: VIZ-FAIL-016
+    date: "2026-10-01"
+    family: loop
+    summary: "12 lecciones de fallo quedaron archivadas bajo keep_patterns"
+    evidence:
+      - "agent_lessons.yaml: failure_patterns tenía 3 ids (001, 002, 004); VIZ-FAIL-003 y 005 a 015 colgaban de keep_patterns"
+      - "program_loop.md:7 manda leer failure_patterns primero: quien sigue el protocolo veía 3 de 15 fallos"
+      - "results.tsv: última fila del 2026-09-26; las lecciones 011 a 015 se escribieron sin fila"
+    root_cause: >
+      Cada lección nueva se pegó al final del archivo, y el final del archivo
+      era la lista keep_patterns. Nada comprobaba la lista contra el id.
+    keep_rule: >
+      Una lección -FAIL- va al final de failure_patterns y una -KEEP- al final
+      de keep_patterns, nunca al final del archivo. Toda lección nueva lleva su
+      fila en results.tsv con ese lesson_id.
+    metric_gate: "04_CODIGO/test_learning_loop.py (corre dentro de verificar_todo.py y en CI)"
+
+# --- Keep rules (patrones que SÍ mejoraron) ---
+keep_patterns:
+
+  - id: VIZ-KEEP-001
+    date: "2026-09-25"
+    family: visual
+    summary: "Añadir explicación figura→tabla sin rediseñar layout"
+    evidence: "Usuario pidió no cambiar diseño; sí sumar explicación — funcionó"
+    keep_rule: "Preferir insertar bloques .clave/.nota/.pasos dentro del template; no rehacer CSS"
+
+  - id: VIZ-KEEP-002
+    date: "2026-09-26"
+    family: visual
+    summary: "Migrar Plotly CDN → Canvas 2D local sin perder interactividad"
+    evidence:
+      - "simulador_prediccion_falla.html: Plotly remoto (https://cdn.plot.ly/)"
+      - "Migrado a Canvas 2D con sliders, actualizaciones reactivas, grid + scatter"
+      - "Score 0.5 → 1.0; pass gates offline_draw, anti_cdn"
+    keep_rule: >
+      Diagramas interactivos pueden migrarse de CDN a Canvas sin rediseño.
+      Canvas es más controlable offline, pero perder librería (Plotly) requiere
+      2-3h de reimplementación. Evaluar ROI por archivo crítico.
+    metric_gate: "datito_loop_eval.py gates anti_cdn + offline_draw ambos PASS"
+
+  - id: VIZ-KEEP-003
+    date: "2026-09-26"
+    family: visual
+    summary: "Recuperar la piel por visual conservando la lección y sus controles"
+    evidence:
+      - "evidence/sprint01/03_eda/: antes/después, controles y browser.json offline a 1280 y 390 px"
+      - "evidence/sprint01/04_limpieza_preparacion/: .repreg oscura, fuentes menores, fórmulas y controles legibles"
+      - "04_limpieza_preparacion baseline: gate 1.0 pese head roto y etiquetas sin estilo; baseline-browser.json lo detecta"
+    keep_rule: >
+      La lectura renderizada decide: no basta el score. Restituir head desde el
+      template, cerrar comentario antes de title y conservar un solo root.
+      Conservar cuerpo real y scripts; quitar solo cola placeholder demostrada.
+      Recuperar CSS específico del propio concepto y acotar estilos de navegación
+      (nav.pasos, .leccion .barra) para no romper listas ni widgets.
+      Comprobar capturas, estilos aplicados, controles y móvil offline con
+      verificar_piel_lectura.py además del gate existente. Si una clase no existe
+      en el cuerpo, verificar su equivalente real sin inventar contenido.
+    metric_gate: "datito_loop_eval.py y verificar_piel_lectura.py, más inspección visual y controles"
+
+# --- Inbox: hipótesis pendientes (las llenan errores del alumno o fallos de build) ---
 inbox: []
