@@ -1,462 +1,479 @@
-# Backlog MACI · Gestión con GitHub Projects
-# Versión: 1.0 · Fecha: 2026-09-27
-# Taxonomía: Sección 4 del Prompt Maestro v2
-# Responsable: A2 (PO Asistente)
+# Backlog de MACI · semilla de los issues del Project #3
+#
+# Este archivo es la SEMILLA con la que 03_SCRIPTS/crear_backlog.py creó los
+# issues el 2026-10-01. Desde ese día manda GitHub: el estado, los comentarios
+# y el cierre de cada ítem viven en el issue, no aquí. Se edita este archivo
+# solo para sembrar ítems nuevos (el script es idempotente: no duplica títulos).
+#
+# Jerarquía: épica [E-n] → historia [H-n.m] o decisión [D-n.m] → tarea [T-n.m.p]
+# Cada cifra de «contexto» se midió en el repo el 2026-10-01.
+#
+# El backlog anterior (7 épicas del Prompt Maestro v2, nunca importado) está en
+# historico/backlog_prompt_maestro_v2.yaml.
+
+repo: cherrera0001/MACI
+project: 3
+
+milestone:
+  titulo: "v1.0 · Curso completo y verificable"
+  descripcion: >-
+    Primera versión de MACI. Las 23 clases construidas (falta la 19), el tablero
+    ordenado en épicas, historias y tareas, la memoria del Learning Loop legible
+    y la decisión sobre qué se publica tomada. Se cierra cuando
+    `python 03_SCRIPTS/verificar_todo.py --navegador --en-linea` dice LISTO con
+    las 23 clases y no queda ningún ítem P0 o P1 abierto en este milestone.
+
+procesos:
+  P1: "P1 Construir una clase"
+  P2: "P2 Estudiar con Datito"
+  P3: "P3 Verificar y publicar"
+  P4: "P4 Aprender de fallos (ALL)"
+  P5: "P5 Gestionar el backlog"
+  P6: "P6 Proyecto semestral"
+
+# Issues anteriores al 2026-10-01: se cuelgan de su épica y reciben tipo y proceso.
+historicos:
+  1:  {tipo: epica,    area: curso,      proceso: P1, padre: E-1}
+  2:  {tipo: historia, area: curso,      proceso: P1}
+  3:  {tipo: tarea,    area: curso,      proceso: P1}
+  4:  {tipo: tarea,    area: curso,      proceso: P1}
+  5:  {tipo: tarea,    area: curso,      proceso: P1}
+  6:  {tipo: tarea,    area: curso,      proceso: P1}
+  7:  {tipo: tarea,    area: curso,      proceso: P1}
+  8:  {tipo: tarea,    area: curso,      proceso: P1}
+  9:  {tipo: tarea,    area: curso,      proceso: P1}
+  10: {tipo: tarea,    area: curso,      proceso: P1}
+  11: {tipo: tarea,    area: curso,      proceso: P1}
+  12: {tipo: tarea,    area: curso,      proceso: P1}
+  13: {tipo: tarea,    area: curso,      proceso: P1}
+  14: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  15: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  16: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  17: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  18: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  19: {tipo: tarea,    area: loop,       proceso: P4, padre: E-4}
+  20: {tipo: decision, area: curso,      proceso: P1, padre: E-1}
+  23: {tipo: decision, area: gobernanza, proceso: P5, padre: E-6}
+  24: {tipo: historia, area: plataforma, proceso: P3, padre: E-3}
+  25: {tipo: historia, area: plataforma, proceso: P3, padre: E-3}
+  26: {tipo: historia, area: curso,      proceso: P1, padre: E-1}
+  27: {tipo: historia, area: plataforma, proceso: P3, padre: E-3}
+  28: {tipo: historia, area: plataforma, proceso: P3, padre: E-3}
+  29: {tipo: historia, area: plataforma, proceso: P3, padre: E-3}
 
 epicas:
+
+  # ───────────────────────────────────────────────────────────── E-1 Curso
   - id: E-1
-    nombre: "[E-1] Establecer una fuente única de verdad del curso"
-    resultado: "El manifiesto es uno solo, todas las rutas existen, índice y web usan la misma fuente"
-    origen: ["H-01", "H-02", "H-10", "H-12"]
+    titulo: "Curso: las 23 clases se estudian completas, sin conexión y fieles a la fuente"
+    area: curso
+    proceso: P1
+    prioridad: P1
+    v1: true
+    resultado: >-
+      Un alumno abre el índice, recorre las 23 clases en orden y en cada una
+      encuentra objetivo, ficha Bloom, activación, contenido con cita y cierre.
+      Nada depende de la red y ninguna cifra contradice el material del profesor.
+    contexto: |
+      - 23 clases en 6 unidades, definidas en `07_DATITO/clases.yaml`. 22 tienen visual; la clase 19 tiene `visual: null`.
+      - Historia: el Sprint 01 «Lectura» (#1, #2 y #3 a #13) recuperó la piel de 11 visuales que se leían como texto plano. La restauración del 2026-09-27 (#26) devolvió cierres, dudas y ficha Bloom. #20 dejó el Certamen 3 como clase 23.
+      - Los certámenes 1 y 2 se reescribieron como guía de estudio (commit b58ef1f).
     metricas:
-      - "0 archivos duplicados (clases.yaml, curriculum.yaml, grafo.yaml, dudas.yaml)"
-      - "0 rutas rotas en manifiesto"
-      - "100% de clases apuntan a visuales existentes"
-    riesgos:
-      - "Elegir el manifiesto equivocado (ADR-004 debe decidir)"
-      - "Migración sin preservar git history"
+      - "23 de 23 clases con `visual:` en `clases.yaml`"
+      - "`probar_visuales_offline.py`: 23 de 23 páginas sin errores, sin red y sin desborde a 390 y 1280 px"
+      - "`test_curso_integro.py`: 0 enlaces rotos, 0 relleno, cierre en cada clase"
     historias:
       - id: H-1.1
-        titulo: "[H-1.1] Como mantenedor, quiero un solo manifiesto de clases, para que índice y web no se contradigan"
+        titulo: "Como estudiante, quiero la clase 19 «Repaso integrado: el proyecto Melbourne» construida, para cerrar el curso aplicando todo sobre un solo caso"
+        prioridad: P1
+        v1: true
+        contexto: |
+          Es la única clase sin visual (`n: 19`, unidad 6, tipo repaso, `visual: null`). El README la declara pendiente desde la restauración.
+          El caso existe en el repo: `08_PROYECTO_FCD/Hito1/`, `09_RESULTADOS/resultados_temporal.json` y `09_RESULTADOS/06_ENTREGABLES/`.
+          Lecciones que aplican: VIZ-FAIL-001 (partir del template), VIZ-FAIL-002 y VIZ-FAIL-010 (cifras fieles a la fuente), VIZ-FAIL-014 (ningún contenedor con id sin guion que lo escriba).
         criterios:
-          - "Dado el repo, cuando busco clases.yaml, entonces existe exactamente uno"
-          - "Dado el manifiesto, cuando corro test_manifiesto.py, entonces todas las rutas apuntan a archivos existentes"
-          - "Dado el repo, cuando corro CI, entonces index.html se regenera desde el manifiesto"
+          - "Dado `clases.yaml`, cuando leo la clase 19, entonces `visual:` apunta a un archivo que existe"
+          - "Dado el visual, cuando lo abro sin red a 390 y 1280 px, entonces no hay errores de consola, peticiones de red ni desborde"
+          - "Dada cada cifra del proyecto Melbourne en la página, cuando la busco en `09_RESULTADOS/`, entonces coincide y lleva su etiqueta de fuente"
+          - "Dado el cierre de la clase, cuando lo leo, entonces tiene qué aprendiste, qué no confundir, procedimiento y pregunta final con respuesta oculta"
+          - "Dado el repo, cuando corro `verificar_todo.py --navegador --en-linea`, entonces dice LISTO con 23 clases construidas"
         tareas:
           - id: T-1.1.1
-            titulo: "Comparar 4 pares de YAML duplicados"
-            descripcion: "diff clases.yaml, curriculum.yaml, grafo.yaml, dudas.yaml entre raíz y 00_INICIO"
-            horas: 2
+            titulo: "Escribir el guion del repaso: qué concepto de cada unidad se aplica en Melbourne y con qué cifra"
+            detalle: "Entregable: lista de secciones, cada una con el concepto (id de `curriculum.yaml`), la cifra y el archivo de `09_RESULTADOS/` de donde sale. Sin guion no se abre el HTML."
           - id: T-1.1.2
-            titulo: "Ejecutar ADR-004 para elegir el manifiesto canónico"
-            descripcion: "Decidir cuál mantener (versión larga en 00_INICIO o corta en raíz) con criterios"
-            bloqueado_por: ["T-1.1.1"]
-            horas: 1
+            titulo: "Construir el visual de la clase 19 desde `_TEMPLATE_CANONICO.html` con `/datito-visual`"
+            detalle: "Una corrida del loop: `datito_loop_once.py --path <html> --hypothesis ... --lesson-id ...`. KEEP solo con `keep_eligible=true` y lectura comprobada en navegador."
           - id: T-1.1.3
-            titulo: "Fusionar el manifiesto elegido y eliminar copias"
-            descripcion: "git mv + edición final + cleanup"
-            bloqueado_por: ["T-1.1.2"]
-            horas: 2
-          - id: T-1.1.4
-            titulo: "Escribir test_manifiesto.py y agregarlo a CI"
-            descripcion: "Validador: todas las rutas de visuales existen"
-            bloqueado_por: ["T-1.1.3"]
-            horas: 3
+            titulo: "Declarar el visual en `clases.yaml`, regenerar la navegación y pasar la verificación completa"
+            detalle: "`construir_navegacion.py`, luego `verificar_todo.py --navegador --en-linea`. Actualizar en el README «22 están construidas»."
 
       - id: H-1.2
-        titulo: "[H-1.2] Como estudiante, quiero que el número de clase coincida con el archivo, para no perderme"
+        titulo: "Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña"
+        prioridad: P2
+        v1: false
+        contexto: |
+          El curso no tiene glosario. Hay un glosario de referencia de un curso de Google (unos 420 términos en inglés) en `11_GOOGLE/`, carpeta local sin versionar: sirve como lista de control, no como texto a copiar.
+          Todo término nuevo tiene que salir del material del profesor y citar la clase, igual que el resto del curso.
         criterios:
-          - "Dado un archivo 05_*.html, cuando busco su clase en el manifiesto, entonces encuentra exactamente una"
-          - "Dado el manifiesto, cuando verifico, entonces clase.n == numero en archivo"
+          - "Dado el glosario de referencia, cuando lo cruzo contra las 23 clases, entonces queda una lista de términos del curso con la clase donde aparece cada uno y otra de términos que el curso no nombra"
+          - "Dado el glosario del curso, cuando abro un término, entonces enlaza a la clase y ancla donde se enseña"
+          - "Dado el glosario, cuando busco texto copiado de la referencia, entonces no hay: cada definición está en español y con la fuente del curso"
         tareas:
           - id: T-1.2.1
-            titulo: "Generar tabla ruta declarada → archivo real"
-            descripcion: "Mostrar discrepancias de numeración"
-            horas: 2
+            titulo: "Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias"
+            detalle: "Requiere un mapa inglés → español de los términos pertinentes. Entregable: tabla en `07_DATITO/06_AUDITORIAS/`."
           - id: T-1.2.2
-            titulo: "Decidir: renombrar archivos o editar manifiesto"
-            descripcion: "ADR-004 debe tomar esta decisión"
-            bloqueado_por: ["T-1.2.1"]
-            horas: 1
-          - id: T-1.2.3
-            titulo: "Aplicar cambios (renombra o edición según decisión)"
-            descripcion: "Preservar git history con git mv"
-            bloqueado_por: ["T-1.2.2"]
-            horas: 3
+            titulo: "Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador"
+            detalle: "Fuente única en YAML bajo `07_DATITO/`; la página la genera `construir_navegacion.py`."
 
-      - id: H-1.3
-        titulo: "[H-1.3] Como PO, quiero que el estado del proyecto se calcule solo, para no publicar cifras contradictorias"
-        criterios:
-          - "Dado el manifiesto, cuando ejecuto README.md.build.py, entonces README muestra % de avance real"
-          - "Dado el repo, cuando se fusiona un PR, entonces el estado se actualiza"
-        tareas:
-          - id: T-1.3.1
-            titulo: "Crear script que genera README.md y ESTADO.md desde manifiesto"
-            descripcion: "Calcula: clases totales, clases con visual, clases completas, % cobertura"
-            bloqueado_por: ["T-1.1.3"]
-            horas: 3
-          - id: T-1.3.2
-            titulo: "Agregar GitHub Action que regenera estado en cada push"
-            descripcion: ".github/workflows/actualizar-estado.yml"
-            horas: 2
-
-      - id: H-1.4
-        titulo: "[H-1.4] Como ingeniero, quiero test_fuente_unica.py pasando, para verificar garantía G14"
-        criterios:
-          - "Dado el repo, cuando corro test_fuente_unica.py, entonces sale exitoso"
-          - "Dado una modificación al manifiesto, cuando corre CI, entonces el test falla si se rompen garantías"
-        tareas:
-          - id: T-1.4.1
-            titulo: "Escribir test: no existen duplicados de YAML"
-            horas: 2
-          - id: T-1.4.2
-            titulo: "Escribir test: todas las rutas existen"
-            horas: 2
-          - id: T-1.4.3
-            titulo: "Escribir test: cada clase apunta a exactamente un visual"
-            horas: 1
-
+  # ──────────────────────────────────────────────────────────── E-2 Datito
   - id: E-2
-    nombre: "[E-2] Arquitectura y orden del repositorio"
-    resultado: "Carpetas claras por función, sin duplicados, nombres consistentes, one template canonical"
-    origen: ["H-05", "H-06", "H-07", "H-08", "H-15"]
+    titulo: "Datito: el tutor lleva al alumno de NO_ESTUDIADO a DOMINADO con evidencia"
+    area: datito
+    proceso: P2
+    prioridad: P1
+    v1: false
+    resultado: >-
+      Cada concepto del currículo tiene un estado respaldado por lo que el alumno
+      explicó, aplicó, interpretó y transfirió. Datito pregunta, espera la
+      respuesta y registra; nunca simula la respuesta.
+    contexto: |
+      - Skills: `/datito` (sesión socrática), `/datito-corregir`, `/datito-progreso`, `/datito-pedagogia`, `/datito-visual`. Contrato en `00_INICIO/spec.md` (garantías G1 a G14), comprobado por `verificar_contrato.py`: 12 ok, 0 fallos.
+      - Estado al 2026-09-27 (`07_DATITO/estado.md`): 3 sesiones; 1 concepto COMPRENDIDO, 2 con comprensión parcial, 1 en estudio y 17 sin estudiar, de 21.
+      - 15 clases del profesor transcritas en `05_CLASES/transcripciones/` y citadas con marca de tiempo.
     metricas:
-      - "1 carpeta código (herramientas/), 0 solapadas"
-      - "1 solo _TEMPLATE_CANONICO.html, con todas las defensas"
-      - "0 referencias a Guillito"
+      - "Conceptos con evidencia E·A·I·T completa, de 21"
+      - "Errores conceptuales abiertos en `errores_conceptuales.yaml`"
+      - "`verificar_contrato.py`: 0 fallos"
     historias:
       - id: H-2.1
-        titulo: "[H-2.1] Como ingeniero, quiero una sola carpeta de código, para no duplicar mantención"
+        titulo: "Como alumno, quiero recorrer los 21 conceptos con Datito hasta tener evidencia de explicar, aplicar, interpretar y transferir, para dominar el curso y no memorizarlo"
+        prioridad: P1
+        v1: false
+        contexto: |
+          Solo `train_validation_test` está COMPRENDIDO (evidencia E y A). `generalizacion` y `overfitting_underfitting` tienen comprensión parcial. `regresion` está en estudio. Los otros 17 conceptos no se han estudiado.
+          Hay un error abierto, `diagnostica_sin_calcular_la_brecha`, en overfitting. El siguiente concepto recomendado por `datito_estado.py` es `generalizacion`.
+          Esta historia la avanza el alumno en sesiones `/datito`; un agente no puede cerrarla por él.
         criterios:
-          - "Dado el repo, cuando listo herramientas/, entonces veo un paquete Python con __init__.py"
-          - "Cuando importo desde herramientas, entonces carga correctamente"
+          - "Dado un concepto, cuando Datito lo marca DOMINADO, entonces `progreso.yaml` tiene las cuatro evidencias con la respuesta escrita por el alumno"
+          - "Dado un error en `errores_conceptuales.yaml`, cuando se cierra, entonces hay una respuesta posterior del alumno que ya no lo comete"
+          - "Dada una sesión, cuando termina, entonces `datito_estado.py` regenera `estado.md` y hay una entrada en `07_BITACORA/`"
+          - "Unidad 1 (4 conceptos) · Unidad 2 (regresión) · Unidad 3 (4 conceptos) · Unidad 4 (4 conceptos) · Unidad 5 (8 conceptos): cada unidad se marca aquí al quedar COMPRENDIDA o mejor"
         tareas:
           - id: T-2.1.1
-            titulo: "Inventariar 03_SCRIPTS (42 archivos) y 03_CODIGO (14 archivos)"
-            horas: 2
+            titulo: "Cerrar el error abierto `diagnostica_sin_calcular_la_brecha` en una sesión `/datito`"
+            detalle: "El alumno clasificó tres modelos sin restar train y validación. Se cierra cuando resuelve una tabla nueva calculando la brecha antes de nombrar el diagnóstico."
           - id: T-2.1.2
-            titulo: "Diseñar estructura herramientas/ con subcarpetas funcionales"
-            descripcion: "validadores/, builders/, fixers/, etc"
-            bloqueado_por: ["T-2.1.1"]
-            horas: 2
-          - id: T-2.1.3
-            titulo: "Migrar código a herramientas/"
-            descripcion: "git mv, imports, tests"
-            bloqueado_por: ["T-2.1.2"]
-            horas: 4
+            titulo: "Llevar `generalizacion` y `overfitting_underfitting` de comprensión parcial a COMPRENDIDO"
+            detalle: "Es el siguiente concepto que recomienda `datito_estado.py`. Falta evidencia de aplicar."
 
       - id: H-2.2
-        titulo: "[H-2.2] Como diseñador, quiero una sola plantilla canónica, para que todos los visuales sean coherentes"
+        titulo: "Como mantenedor, quiero que `historias_usuario.yaml` describa las 23 clases vigentes, para que ninguna historia cite una clase o un concepto que no existe"
+        prioridad: P1
+        v1: true
+        contexto: |
+          `07_DATITO/historias_usuario.yaml` tiene 18 historias (US-01 a US-18) escritas para una numeración de 18 clases que ya no existe: hoy son 23 y el orden cambió (la clase 5 es regresión, no particionamiento).
+          Cinco ids de concepto no están en `curriculum.yaml`: `ensambles`, `interpretacion`, `metricas_regresion`, `particionamiento_temporal` y `transferencia`.
+          `00_INICIO/spec.md:35` y el README citan el archivo como fuente. Ningún test lo compara contra `clases.yaml`.
         criterios:
-          - "Dado un nuevo visual, cuando uso _TEMPLATE_CANONICO.html, entonces sale con score 1,0"
-          - "Dado dos visuales, cuando comparo su CSS, entonces es idéntico"
+          - "Dado `historias_usuario.yaml`, cuando leo cada `clase:`, entonces existe en `clases.yaml` y el título corresponde"
+          - "Dado cada `conceptos:`, cuando lo busco en `curriculum.yaml`, entonces existe"
+          - "Dado el repo, cuando alguien desalinea los dos archivos, entonces `verificar_todo.py` falla y lo nombra"
         tareas:
           - id: T-2.2.1
-            titulo: "Unificar _TEMPLATE_CANONICO.html en curso/plantilla/"
-            descripcion: "Eliminar copias en visual/ y 01_CONCEPTOS/visual/"
-            horas: 2
+            titulo: "Reescribir las historias contra las 23 clases y los 21 conceptos vigentes"
+            detalle: "Una historia por clase de tipo concepto y una por repaso. Conservar los criterios de aceptación que sigan siendo ciertos; no inventar los que falten."
           - id: T-2.2.2
-            titulo: "Documentar defensas CSS (media queries, Bloom, etc)"
-            descripcion: "Qué no se puede quitar"
-            horas: 1
+            titulo: "Añadir la comprobación historias ↔ clases ↔ currículo a los tests"
+            detalle: "Un test en `04_CODIGO/` que falle con el archivo actual y pase tras T-2.2.1. Actualizar las cifras en README y `spec.md`."
 
       - id: H-2.3
-        titulo: "[H-2.3] Como auditor, quiero saber dónde vive cada skill, para que no tengamos dos copias"
+        titulo: "Como alumno, quiero las 15 clases transcritas como fuentes de NotebookLM, para consultar el curso completo con cita a la clase"
+        prioridad: P2
+        v1: false
+        contexto: |
+          `05_CLASES/indice_clases.yaml` tiene 15 clases; 10 siguen con `notebooklm: null`.
+          El 2026-09-21 la sesión de NotebookLM estaba caducada: `auth check` respondía ok y `source list` fallaba. El inicio de sesión es interactivo y lo hace el dueño de la cuenta.
         criterios:
-          - "Dado .claude/skills/, cuando listo, entonces veo el registro único"
-          - "Dado .agents/skills/, cuando listo, entonces son enlaces o están vacío"
+          - "Dado `indice_clases.yaml`, cuando cuento `notebooklm: null`, entonces es 0"
+          - "Dado el cuaderno, cuando listo las fuentes, entonces ninguna clase está duplicada"
         tareas:
           - id: T-2.3.1
-            titulo: "Inventariar skills en .claude/ vs .agents/ vs .cursor/ vs .codex/"
-            horas: 1
+            titulo: "Renovar la sesión de NotebookLM y comprobarla con `source list`"
+            detalle: "`notebooklm login --browser msedge`. La hace el dueño de la cuenta."
           - id: T-2.3.2
-            titulo: "Eliminar duplicados, enlazar con ln -s o scripts de sync"
-            horas: 2
+            titulo: "Subir las 10 transcripciones pendientes con `integrar_clase.py`, sin duplicar"
+            detalle: "Listar antes las fuentes del cuaderno. `python 03_SCRIPTS/integrar_clase.py` sin `--sin-subir`."
 
-      - id: H-2.4
-        titulo: "[H-2.4] Como técnico, quiero construir_navegacion.py reparado o reemplazado"
-        criterios:
-          - "Dado un visual modificado, cuando corro construir_navegacion.py, entonces sale sin errores"
-          - "Cuando reviso el output, entonces tiene nav, cierre y dudas correctas"
-        tareas:
-          - id: T-2.4.1
-            titulo: "Diagnosticar los 4 bugs de construir_navegacion.py"
-            descripcion: "Ver TECH_DEBT.md, línea por línea"
-            horas: 2
-          - id: T-2.4.2
-            titulo: "Decidir: reparar o reemplazar"
-            descripcion: "ADR-005 si es compleja la decisión"
-            bloqueado_por: ["T-2.4.1"]
-            horas: 1
-          - id: T-2.4.3
-            titulo: "Ejecutar decisión (reparar o escribir nuevo)"
-            descripcion: "Tests deben pasar"
-            bloqueado_por: ["T-2.4.2"]
-            horas: 5
-
-      - id: H-2.5
-        titulo: "[H-2.5] Como mantenedor, quiero eliminar todas las referencias a Guillito"
-        criterios:
-          - "Dado el repo, cuando corro grep -r Guillito, entonces sale vacío"
-        tareas:
-          - id: T-2.5.1
-            titulo: "Encontrar y reemplazar Guillito en 3 archivos"
-            horas: 1
-
+  # ──────────────────────────────────────────────────────── E-3 Plataforma
   - id: E-3
-    nombre: "[E-3] Curso publicado confiable"
-    resultado: "Sprint 03 desatascado, todos los 9 visuales listos, numeración consistente, clase 19 construida"
-    origen: ["H-03", "H-04", "H-09"]
+    titulo: "Plataforma: una fuente de datos, un generador, una verificación y una publicación"
+    area: plataforma
+    proceso: P3
+    prioridad: P1
+    v1: true
+    resultado: >-
+      Cada dato del curso vive en un solo YAML, las páginas se generan desde ahí,
+      un solo comando dice si el repo está listo y a maci.c4a.cl sube solo el curso.
+    contexto: |
+      - Historia: restauración del 2026-09-27 en seis fases. #24 fuente única en `07_DATITO/*.yaml`, #25 generador de navegación, #27 publicación sin enlaces rotos, #28 verificación automática, #29 documentación con datos medidos. Los PR #21 y #22 trajeron el paquete de scripts y el CI.
+      - Hoy: `verificar_todo.py --navegador --en-linea` dice LISTO (26 tests; 23 de 23 páginas en Edge; sitio en vivo con 0 rotos y 0 privados expuestos).
     metricas:
-      - "9/9 visuales aprobados (fueron 3/9)"
-      - "Clase 19 completada o explícitamente archivada"
+      - "`verificar_todo.py --navegador --en-linea` → LISTO"
+      - "CI verde en `main`"
+      - "0 archivos privados accesibles en maci.c4a.cl"
     historias:
       - id: H-3.1
-        titulo: "[H-3.1] Como estudiante, quiero que los 6 visuales bloqueados salgan del atasco, para poder estudiar"
+        titulo: "Como mantenedor, quiero que `auditar_drift_documental.py` audite las rutas que existen hoy, para que su fallo signifique algo"
+        prioridad: P2
+        v1: true
+        contexto: |
+          El script sale con 1 y lista 5 rutas «canónicas» que la reorganización movió o eliminó: `06_ENTREGABLES/INFORME_MODELO_FCD_P3.md`, `06_ENTREGABLES/PITCH_HITO2_REVISION.md`, `07_DATITO/00_LEEME.md`, `spec.md` y `.mcp.json`.
+          No forma parte de `verificar_todo.py`, así que hoy falla sin que nadie lo vea.
         criterios:
-          - "Dado #02 datos_features_target, cuando abro en móvil, entonces no hay overflow"
-          - "Dado #05, #08, #09, #14, #19, cuando valido cada uno, entonces pasan el score"
+          - "Dado el repo en `main`, cuando corro `python 03_SCRIPTS/auditar_drift_documental.py`, entonces sale con 0"
+          - "Dada una ruta de la lista, cuando la borro, entonces el script falla y la nombra"
+          - "Dada la decisión de conservarlo, cuando corro `verificar_todo.py`, entonces incluye esta auditoría; si se decide retirarlo, se archiva en `10_ARCHIVO/`"
         tareas:
           - id: T-3.1.1
-            titulo: "Revisar y desbloquear #02 (datos_features_target) — overflow móvil"
-            horas: 3
+            titulo: "Corregir la lista de rutas canónicas contra el disco (o archivar el script)"
+            detalle: "`06_ENTREGABLES/` vive en `09_RESULTADOS/06_ENTREGABLES/`; `spec.md` en `00_INICIO/spec.md`."
           - id: T-3.1.2
-            titulo: "Revisar y desbloquear #05 (validación cruzada)"
-            horas: 2
-          - id: T-3.1.3
-            titulo: "Revisar y desbloquear #08 (overfitting)"
-            horas: 3
-          - id: T-3.1.4
-            titulo: "Revisar y desbloquear #09 (regresión)"
-            horas: 2
-          - id: T-3.1.5
-            titulo: "Revisar y desbloquear #14 (random forest)"
-            horas: 2
-          - id: T-3.1.6
-            titulo: "Revisar y desbloquear #19 (repaso integrado)"
-            horas: 3
+            titulo: "Sumar la auditoría de rutas a `verificar_todo.py`"
+            detalle: "Una línea más en `pasos`. Solo si T-3.1.1 conserva el script."
 
       - id: H-3.2
-        titulo: "[H-3.2] Como profesor, quiero la clase 19 construida o explícitamente archivada, para aclarar el estado"
+        titulo: "Como mantenedor, quiero que las cifras del README se comprueben contra la fuente, para no publicar un estado que ya cambió"
+        prioridad: P2
+        v1: false
+        contexto: |
+          El README declara a mano «23 clases», «22 están construidas», «21 conceptos», «6 dudas», «18 historias» y «15 clases transcritas». Ningún test las compara con los YAML.
+          El 2026-10-01 las cifras del curso coinciden; la de historias describe un archivo desalineado (ver H-2.2).
         criterios:
-          - "Dado el manifiesto, cuando busco clase 19, entonces tiene visual: archivo.html O visual: null con razón"
+          - "Dada una cifra del README, cuando cambia el YAML del que sale, entonces un test falla y dice cuál"
+          - "Dado el test, cuando corre en CI, entonces no necesita red"
         tareas:
           - id: T-3.2.1
-            titulo: "Decidir: construir o archivar clase 19 (Repaso integrado)"
-            horas: 1
-          - id: T-3.2.2
-            titulo: "Ejecutar decisión (crear visual o editar manifiesto con nota)"
-            bloqueado_por: ["T-3.2.1"]
-            horas: 4
+            titulo: "Test que compara las cifras del README con `clases.yaml`, `curriculum.yaml`, `dudas.yaml` e `indice_clases.yaml`"
+            detalle: "En `04_CODIGO/test_curso_integro.py` o junto a él. Sin generar el README: solo comprobarlo."
 
+  # ─────────────────────────────────────────────────── E-4 Learning Loop
   - id: E-4
-    nombre: "[E-4] Calidad automatizada y CI"
-    resultado: "CI verde en cada PR, tests pasan, links verificados, visuales validados, deployable cualquier momento"
-    origen: ["H-11", "H-18"]
+    titulo: "Agents Learning Loop: cada fallo de construcción deja una lección que el siguiente agente lee"
+    area: loop
+    proceso: P4
+    prioridad: P1
+    v1: true
+    resultado: >-
+      Un agente que construye o repara una página lee antes los fallos pasados,
+      trabaja con una hipótesis y un archivo, mide con un gate fijo y deja la
+      decisión keep o discard con su lección. No se afinan pesos: mejora el repo.
+    contexto: |
+      - Vive en `07_DATITO/07_BITACORA/learning_loop/`: `program_loop.md` (protocolo), `agent_lessons.yaml` (16 fallos y 3 aciertos), `results.tsv` (una fila por corrida) y `contrato_conocimiento.yaml`.
+      - Historia: los skills #14 a #19 (validador, clasificador, fixers, QA, colector) salieron de los sprints 03 a 06. #23 fijó que nada se publica sin pasar el gate.
+      - Lección de fondo (VIZ-FAIL-015): el score certifica la piel de la página, no que el control funcione ni que el alumno aprenda.
     metricas:
-      - "CI en verde al 100%"
-      - "Cobertura de tests > 80% en herramientas/"
-      - "0 links rotos en la web"
+      - "Lecciones archivadas en la lista de su id: 19 de 19 (`test_learning_loop.py`)"
+      - "Filas de `results.tsv` con una lección que existe: todas"
+      - "Fallos repetidos tras tener lección: 0"
     historias:
       - id: H-4.1
-        titulo: "[H-4.1] Como ingeniero, quiero plantillas de issue, PR template y CI básico, para que todo sea automático"
+        titulo: "Como agente constructor, quiero encontrar todos los fallos en `failure_patterns`, para no repetir uno que ya tiene lección"
+        prioridad: P1
+        v1: true
+        contexto: |
+          `program_loop.md` manda leer `failure_patterns` primero. El 2026-10-01, 12 de las 15 lecciones de fallo colgaban de `keep_patterns`: cada lección nueva se había pegado al final del archivo, y el final era esa lista. Quien seguía el protocolo veía 3 fallos.
+          Resuelto en la rama `docs/gestion-github-v1`: se reagrupó el archivo sin cambiar ninguna lección y se añadió `04_CODIGO/test_learning_loop.py`, que corre en `verificar_todo.py` y en CI. Quedó como VIZ-FAIL-016 con su fila en `results.tsv`.
         criterios:
-          - "Dado un nuevo issue, cuando abro la plantilla, entonces veo campos de tipo, prioridad, origen"
-          - "Dado un nuevo PR, cuando lo abro, entonces muestra DoD checklist"
-          - "Dado un push, cuando corre CI, entonces valida código, tests, links"
-        tareas:
-          - id: T-4.1.1
-            titulo: "Crear .github/ISSUE_TEMPLATE/ con plantillas para épica, historia, tarea, bug, deuda, ADR"
-            horas: 3
-          - id: T-4.1.2
-            titulo: "Crear .github/pull_request_template.md con DoD y 'Closes #N'"
-            horas: 1
-          - id: T-4.1.3
-            titulo: "Crear .github/workflows/ci.yml: tests, links, gates visuales"
-            horas: 4
-          - id: T-4.1.4
-            titulo: "Validar que CI pasa en rama main"
-            bloqueado_por: ["T-4.1.3"]
-            horas: 1
+          - "Dado `agent_lessons.yaml`, cuando leo `failure_patterns`, entonces están todos los ids `-FAIL-` y ningún `-KEEP-`"
+          - "Dada una lección archivada en la lista equivocada, cuando corre `test_learning_loop.py`, entonces falla y la nombra"
+          - "Dada una fila de `results.tsv`, cuando leo su `lesson_id`, entonces existe en `agent_lessons.yaml`"
+          - "Dado el espejo `.agents/skills`, cuando difiere de `.claude/skills`, entonces el test falla"
+        tareas: []
 
       - id: H-4.2
-        titulo: "[H-4.2] Como técnico, quiero mapa_ensenanza.yaml completo para que construir_navegacion.py no falle"
+        titulo: "Como mantenedor, quiero que una corrida del loop no pueda registrarse con una lección que no le corresponde, para confiar en `results.tsv`"
+        prioridad: P2
+        v1: false
+        contexto: |
+          `04_CODIGO/datito_loop_once.py:61` asigna `VIZ-KEEP-001` a todo keep y `VIZ-FAIL-001` a todo discard cuando no se pasa `--lesson-id`. La primera fila de `results.tsv` es un discard etiquetado `VIZ-KEEP-001`.
+          Las lecciones VIZ-FAIL-011 a 015 se escribieron sin fila en `results.tsv`: el protocolo («no declarar sin fila nueva») no se cumplió y nada lo detectó.
         criterios:
-          - "Dado el script, cuando corre, entonces no hay KeyError"
-          - "Cuando verifica conceptos, entonces encuentra todos los tramos de clase"
+          - "Dada una corrida sin `--lesson-id`, cuando termina, entonces la fila queda con el id vacío o el script lo exige; nunca con un id por defecto"
+          - "Dada una lección nueva, cuando no hay fila en `results.tsv` que la cite, entonces `test_learning_loop.py` lo avisa para las lecciones posteriores al 2026-10-01"
         tareas:
           - id: T-4.2.1
-            titulo: "Completar estructura mapa_ensenanza.yaml (conceptos + clases)"
-            descripcion: "Ver H-18, completar las secciones faltantes"
-            horas: 2
+            titulo: "Quitar los ids por defecto de `datito_loop_once.py` y exigir `--lesson-id` al registrar"
+            detalle: "Una función, un test. No reescribir las filas históricas."
+          - id: T-4.2.2
+            titulo: "Test: cada lección fechada después del 2026-10-01 tiene al menos una fila en `results.tsv`"
+            detalle: "Las lecciones 011 a 015 quedan exentas por fecha; no se inventan filas."
 
+      - id: H-4.3
+        titulo: "Como mantenedor, quiero que el gate del loop compruebe que el control cambia lo que promete, para que keep no signifique solo «tiene la piel»"
+        prioridad: P2
+        v1: false
+        contexto: |
+          `datito_loop_eval.py` da `keep_eligible` con score 1.0, marcador de template y cero CDN. VIZ-FAIL-014 y VIZ-FAIL-015 documentan páginas con ese score y un recuadro vacío o un botón que no cambiaba nada. VIZ-FAIL-013: el validador estático no ve lo que cambia un slider.
+          `contrato_conocimiento.yaml` ya declara, por página, qué control mover y qué texto debe cambiar (`comprobar`).
+        criterios:
+          - "Dada una página con control en el contrato, cuando corre el gate, entonces mueve el control en un navegador real y compara el texto antes y después"
+          - "Dado un contenedor con id que ningún guion escribe, cuando corre el gate, entonces la decisión es discard"
+          - "Dado el gate nuevo, cuando evalúa las 23 páginas actuales, entonces el resultado queda en `results.tsv` como línea base"
+        tareas:
+          - id: T-4.3.1
+            titulo: "Llevar la comprobación de `contrato_conocimiento.yaml` (Playwright) dentro de `datito_loop_once.py`"
+            detalle: "Reusar `verificar_piel_lectura.py` y `probar_visuales_offline.py`; no escribir un tercer verificador."
+
+      - id: D-4.4
+        tipo: decision
+        titulo: "¿Se versiona `.agents/skills` como espejo de `.claude/skills` o se ignora?"
+        prioridad: P2
+        v1: true
+        contexto: |
+          `.agents/skills/` apareció el 2026-09-30 sin versionar. Es copia exacta de los 16 skills de `.claude/skills/`. `.codex/` y `.cursor/` sí están versionados.
+          `test_learning_loop.py` ya falla si el espejo diverge, donde exista.
+        opciones:
+          - "Versionarlo: otros agentes (Codex, Cursor) leen los mismos skills; cuesta mantener dos copias, que el test vigila."
+          - "Ignorarlo en `.gitignore`: una sola copia en el repo; cada máquina genera su espejo."
+        criterios:
+          - "Dada la decisión, cuando corro `git status`, entonces `.agents/` no aparece como sin seguimiento"
+        tareas: []
+
+  # ────────────────────────────────────────────────── E-5 Proyecto semestral
   - id: E-5
-    nombre: "[E-5] Higiene y cumplimiento del repositorio"
-    resultado: "Repo privado o limpio, sin secretos, material de terceros gestionado, peso optimizado"
-    origen: ["H-13", "H-14"]
+    titulo: "Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes"
+    area: proyecto-fcd
+    proceso: P6
+    prioridad: P2
+    v1: false
+    resultado: >-
+      Las entregas evaluadas del ramo se pueden reproducir desde el repo: datos,
+      código, resultados e informe, con validación temporal estricta.
+    contexto: |
+      - Predicción de precios en Melbourne (entrenar con 2016, predecir 2017): Hito 1 en `08_PROYECTO_FCD/Hito1/`; resultados en `09_RESULTADOS/` (`resultados_temporal.json`, `predicciones_2017.csv`, comparación con DashAI); pitch e informe del Hito 2 en `09_RESULTADOS/06_ENTREGABLES/`.
+      - Desafío Galaxy Zoo: `08_PROYECTO_FCD/Desafio/` con `REPORT.md`, `src/` y `analysis/`.
+      - Certámenes 1, 2 y 3: resueltos como guía de estudio dentro del curso (clases 20, 21 y 23).
+      - Método: partición temporal, validación fuera de muestra y reproducibilidad.
     metricas:
-      - "Peso .git < 100 MB (opción: LFS)"
-      - "Material de terceros: privado O movido O eliminado"
+      - "Cada cifra de un informe se regenera con un script del repo"
     historias:
-      - id: H-5.1
-        titulo: "[H-5.1] Como auditor, quiero gestionar material de terceros (UdeC, transcripciones con voces)"
+      - id: D-5.1
+        tipo: decision
+        titulo: "¿Qué entregas del proyecto semestral quedan por hacer y cuáles se dan por cerradas?"
+        prioridad: P2
+        v1: false
+        contexto: |
+          El repo tiene Hito 1, pitch e informe del Hito 2 y el desafío Galaxy Zoo. No registra si falta una entrega final ni sus fechas. Sin ese dato esta épica no se puede planificar ni cerrar.
+        opciones:
+          - "Quedan entregas: se abren como historias de esta épica con su fecha."
+          - "No quedan: la épica se cierra con la lista de entregables y la ruta de cada uno."
         criterios:
-          - "Dado el repo, cuando es público, entonces no contiene datos personales ni material licenciado"
-        tareas:
-          - id: T-5.1.1
-            titulo: "Inventariar material de terceros (transcripciones, PDFs, syllabus)"
-            horas: 1
-          - id: T-5.1.2
-            titulo: "Decision: mover a privado, repo separado, o eliminar (Cristóbal decide)"
-            horas: 0
-          - id: T-5.1.3
-            titulo: "Ejecutar decision (git filter-repo si necesario)"
-            bloqueado_por: ["T-5.1.2"]
-            horas: 3
+          - "Dada la respuesta del alumno, cuando leo esta épica, entonces dice qué entregas faltan o queda cerrada con evidencia"
+        tareas: []
 
-      - id: H-5.2
-        titulo: "[H-5.2] Como ingeniero, quiero optimizar el peso del repo (229 MB en .git)"
-        criterios:
-          - "Dado el repo, cuando corro du -sh .git, entonces < 100 MB"
-        tareas:
-          - id: T-5.2.1
-            titulo: "Analizar qué ocupa espacio en .git (binarios históricos, archivos grandes)"
-            horas: 1
-          - id: T-5.2.2
-            titulo: "Decidir: git-lfs para binarios o git filter-repo para historial (Cristóbal decide)"
-            horas: 0
-          - id: T-5.2.3
-            titulo: "Ejecutar limpieza elegida"
-            bloqueado_por: ["T-5.2.2"]
-            horas: 2
-
+  # ────────────────────────────────────────────────────────── E-6 Gobernanza
   - id: E-6
-    nombre: "[E-6] Gestión con GitHub Projects"
-    resultado: "Project configurado, backlog en GitHub, issues de E-1 a E-5 creados, workflows funcionando"
-    origen: ["Sistema", "Requerimiento"]
+    titulo: "Gobernanza: el repositorio público muestra solo lo que debe y el trabajo se sigue en GitHub"
+    area: gobernanza
+    proceso: P5
+    prioridad: P0
+    v1: true
+    resultado: >-
+      Lo que está en el repo público es lo que se decidió publicar. El trabajo se
+      planifica y se cierra en el Project con evidencia, y quien llega entiende
+      cómo opera leyendo la wiki.
+    contexto: |
+      - El repositorio es público. El sitio maci.c4a.cl publica solo el curso, pero el repo versiona además progreso de estudio, notas personales, transcripciones de clases y laboratorios del ramo.
+      - Historia: #23 detuvo la publicación de la reorganización del Prompt Maestro v2 hasta pasar el gate. Ese plan dejó 7 épicas en un YAML que nunca se importó (`docs/gestion/historico/`) y 5 ramas sin fusionar.
+      - Desde el 2026-10-01 el backlog vive en los issues del Project #3, con campos Tipo, Prioridad y Proceso.
     metricas:
-      - "Project «MACI · Gestión» existente y enlazado al repo"
-      - "100% de hallazgos H-01 a H-15 tienen issue"
+      - "Decisión de visibilidad tomada y ejecutada"
+      - "0 ramas huérfanas"
+      - "Todo issue abierto tiene tipo, prioridad, proceso y, salvo las épicas, un padre"
     historias:
-      - id: H-6.1
-        titulo: "[H-6.1] Como PM, quiero que el Project esté configurado con campos, vistas y workflows"
+      - id: D-6.1
+        tipo: decision
+        titulo: "¿Qué queda versionado en el repositorio público: datos personales, transcripciones y material del ramo?"
+        prioridad: P0
+        v1: true
+        contexto: |
+          Pendiente desde la restauración del 2026-09-27. El repo es público y versiona 856 archivos, entre ellos el progreso y los errores del alumno, una carpeta de notas personales, 15 transcripciones de clases con voces de terceros y los laboratorios del ramo con solución.
+          `.gitignore` ya excluye videos, PDF y el examen del Certamen 3. `11_GOOGLE/` (glosario de un curso de Google e imagen) está en disco sin versionar y no debe subirse.
+          Quitar un archivo de `main` no lo borra del historial: eso exige reescribir el historial, que es irreversible para quien ya clonó.
+        opciones:
+          - "Repo privado: se conserva todo; el sitio sigue público. El Project y la wiki dejan de verse desde fuera."
+          - "Repo público limpio: lo personal y lo de terceros sale a un repo privado aparte; se decide si además se reescribe el historial."
+          - "Dejarlo como está, por escrito, con la lista de lo que se acepta exponer."
         criterios:
-          - "Dado el Project, cuando abro la vista Backlog, entonces veo épicas agrupadas por prioridad"
-          - "Cuando arrastro un item, entonces cambia de Status automáticamente"
+          - "Dada la decisión, cuando queda escrita en este issue, entonces nombra qué carpetas se quedan y cuáles salen"
+          - "Dada la opción elegida, cuando se ejecuta, entonces `verificar_todo.py --navegador --en-linea` sigue diciendo LISTO"
+          - "Dado `11_GOOGLE/`, cuando corro `git status`, entonces está ignorado"
         tareas:
           - id: T-6.1.1
-            titulo: "Crear Project «MACI · Gestión» y enlazarlo al repo"
-            horas: 1
+            titulo: "Inventariar lo personal y lo de terceros que está versionado, con ruta y tamaño"
+            detalle: "Entregable: tabla en este issue. Solo lectura."
           - id: T-6.1.2
-            titulo: "Crear campos: Status, Tipo, Prioridad, Estimación, Iteración, Área, Origen, Nivel Bloom, Fecha"
-            horas: 2
+            titulo: "Ignorar `11_GOOGLE/` en `.gitignore`"
+            detalle: "Material de terceros: no se versiona en ninguna de las tres opciones."
           - id: T-6.1.3
-            titulo: "Configurar vistas: Backlog, Iteración, Roadmap, Bugs, Curso"
-            horas: 2
-          - id: T-6.1.4
-            titulo: "Activar workflows integrados y GitHub Actions"
-            horas: 1
+            titulo: "Ejecutar la opción elegida"
+            detalle: "Bloqueada por la decisión. Reescribir historial o cambiar la visibilidad solo con confirmación escrita del dueño."
 
       - id: H-6.2
-        titulo: "[H-6.2] Como técnico, quiero que el backlog.yaml se importe como issues al Project"
+        titulo: "Como mantenedor, quiero el Project con épicas, historias y tareas enlazadas y con tipo, prioridad y proceso, para ver de un vistazo qué falta y por qué"
+        prioridad: P1
+        v1: true
+        contexto: |
+          Hasta el 2026-10-01 el Project #3 tenía 27 issues cerrados sin jerarquía común y un solo campo, Status. Las plantillas de issue pedían etiquetas `tipo:*` que no existían.
+          Hecho el 2026-10-01 con `03_SCRIPTS/crear_backlog.py`: etiquetas `tipo:`, `area:` y `prioridad:`; campos Tipo, Prioridad y Proceso; 6 épicas con sus historias y tareas como sub-issues; los issues históricos colgados de su épica; milestone v1.0; milestones anteriores cerrados.
+          Lo que la API no permite y queda a mano: las vistas del tablero y los flujos automáticos.
         criterios:
-          - "Dado backlog.yaml, cuando corro crear_backlog.py, entonces crea issues + sub-issues en GitHub"
+          - "Dado un issue abierto, cuando lo abro en el Project, entonces tiene Tipo, Prioridad y Proceso, y un padre si no es épica"
+          - "Dado el Project, cuando abro la vista «Por épica», entonces agrupa por Parent issue y muestra el avance de sub-issues"
+          - "Dado un issue que se cierra, cuando miro el tablero, entonces pasa a Done sin moverlo a mano"
         tareas:
           - id: T-6.2.1
-            titulo: "Escribir crear_backlog.py (idempotente, con --dry-run)"
-            horas: 4
+            titulo: "Crear las vistas del Project: Por épica, Tablero por estado, v1.0 y Por proceso"
+            detalle: "En la interfaz (la API no crea vistas). Configuración exacta en la wiki, página «Cómo opera el tablero»."
           - id: T-6.2.2
-            titulo: "Importar backlog completo al Project"
-            bloqueado_por: ["T-6.2.1"]
-            horas: 1
+            titulo: "Activar los flujos automáticos del Project: auto-agregar issues del repo y pasar a Done al cerrar"
+            detalle: "Project → Workflows. Sin esto, cada issue nuevo hay que agregarlo a mano."
+          - id: T-6.2.3
+            titulo: "Decidir si el Project #3 pasa a público"
+            detalle: "Hoy es privado y el README lo cita como seguimiento: quien no es el dueño no puede abrirlo."
 
       - id: H-6.3
-        titulo: "[H-6.3] Como documenter, quiero un README del Project que explique la taxonomía"
+        titulo: "Como persona que llega al repo, quiero una wiki que explique qué es MACI, cómo opera el tablero y los conceptos de GitHub Projects, para orientarme sin preguntar"
+        prioridad: P1
+        v1: true
+        contexto: |
+          La wiki estaba desactivada. Se activó el 2026-10-01 y sus páginas se escriben en `docs/wiki/` (fuente única, revisable por PR). `03_SCRIPTS/publicar_wiki.sh` las copia al repositorio de la wiki.
+          GitHub no crea el repositorio de una wiki hasta que alguien guarda la primera página desde la web; ese paso es manual y es uno solo.
         criterios:
-          - "Dado el Project, cuando abro README, entonces veo misión, campos, vistas, cómo contribuir"
+          - "Dada la wiki, cuando abro Home, entonces enlaza a: qué es MACI y Datito, procesos, cómo opera el tablero, conceptos de GitHub Projects y pendientes"
+          - "Dado un cambio en `docs/wiki/`, cuando corro `publicar_wiki.sh`, entonces la wiki queda igual que la carpeta"
+          - "Dada cada cifra de la wiki, cuando la comparo con el repo, entonces coincide o enlaza a donde se mide"
         tareas:
           - id: T-6.3.1
-            titulo: "Redactar README del Project con secciones de taxonomía (4.2 del prompt)"
-            horas: 2
+            titulo: "Guardar la primera página desde la web y publicar `docs/wiki/` con `publicar_wiki.sh`"
+            detalle: "https://github.com/cherrera0001/MACI/wiki → «Create the first page» → Save. Después: `bash 03_SCRIPTS/publicar_wiki.sh`."
 
-  - id: E-7
-    nombre: "[E-7] Curso de gestión de proyectos (14 clases)"
-    resultado: "14 clases redactadas, practicadas, evidencia recolectada, presentación y guía generadas"
-    origen: ["Prompt Maestro v2", "Sección 7"]
-    metricas:
-      - "14/14 clases completadas"
-      - "100% con ficha Bloom, objetivo, práctica, evidencia"
-    historias:
-      - id: H-7.1
-        titulo: "[H-7.1] Clase 1 · Proyecto y problema"
-        nivel_bloom: "Comprender"
+      - id: H-6.4
+        titulo: "Como mantenedor, quiero el repo sin ramas huérfanas, para que una rama abierta signifique trabajo en curso"
+        prioridad: P2
+        v1: true
+        contexto: |
+          Quedan 5 ramas del Prompt Maestro v2: `fix/01-yaml-unicos`, `fix/02-rutas-visual`, `fix/05-herramientas-unicas`, `fix/08-generar-index-simple` y `feat/11-ci-minimo`. Tres están también en el remoto.
+          La restauración del 2026-09-27 resolvió por otra vía lo que intentaban. Borrarlas es irreversible en el remoto, así que antes se comprueba que no tengan nada que `main` no tenga.
         criterios:
-          - "Cristóbal explica el problema de MACI con hallazgos H-01 a H-15"
-        tarea: "Leer AUDITORIA_F0 y resumir en 5 líneas en README del Project"
-      - id: H-7.2
-        titulo: "[H-7.2] Clase 2 · Spec y constitución"
-        nivel_bloom: "Comprender"
-        tarea: "Clasificar 5 garantías de spec.md"
-      - id: H-7.3
-        titulo: "[H-7.3] Clase 3 · Épica"
-        nivel_bloom: "Aplicar"
-        tarea: "Redactar E-3 (Curso publicado confiable)"
-      - id: H-7.4
-        titulo: "[H-7.4] Clase 4 · Historia de usuario"
-        nivel_bloom: "Aplicar"
-        tarea: "Redactar H-3.1"
-      - id: H-7.5
-        titulo: "[H-7.5] Clase 5 · Criterios de aceptación"
-        nivel_bloom: "Aplicar"
-        tarea: "Escribir 3 criterios de H-3.1"
-      - id: H-7.6
-        titulo: "[H-7.6] Clase 6 · Issue y etiquetas"
-        nivel_bloom: "Aplicar"
-        tarea: "Crear un issue [BUG] para H-02"
-      - id: H-7.7
-        titulo: "[H-7.7] Clase 7 · Tarea y sub-issue"
-        nivel_bloom: "Analizar"
-        tarea: "Descomponer H-1.1 en subtareas"
-      - id: H-7.8
-        titulo: "[H-7.8] Clase 8 · Definición de Terminado"
-        nivel_bloom: "Evaluar"
-        tarea: "Revisar un PR de F3 contra DoD"
-      - id: H-7.9
-        titulo: "[H-7.9] Clase 9 · Tablero y límite WIP"
-        nivel_bloom: "Analizar"
-        tarea: "Configurar límites WIP en Iteración"
-      - id: H-7.10
-        titulo: "[H-7.10] Clase 10 · Roles y ceremonias"
-        nivel_bloom: "Comprender"
-        tarea: "Tabla de roles MACI en README del Project"
-      - id: H-7.11
-        titulo: "[H-7.11] Clase 11 · Iteraciones e hitos"
-        nivel_bloom: "Aplicar"
-        tarea: "Planificar iteración siguiente"
-      - id: H-7.12
-        titulo: "[H-7.12] Clase 12 · Automatización"
-        nivel_bloom: "Aplicar"
-        tarea: "Ejecutar workflow integrado de status"
-      - id: H-7.13
-        titulo: "[H-7.13] Clase 13 · Métricas e Insights"
-        nivel_bloom: "Evaluar"
-        tarea: "Generar primer METRICAS.md"
-      - id: H-7.14
-        titulo: "[H-7.14] Clase 14 · ADR, deuda y retrospectiva"
-        nivel_bloom: "Crear"
-        tarea: "Escribir ADR-005 o regla nueva en spec.md"
-
----
-# Configuración de prioridades (se establece en F1 Gate)
-
-prioridades:
-  critica:
-    - E-1
-    - E-4
-  alta:
-    - E-2
-    - E-3
-  media:
-    - E-5
-    - E-6
-    - E-7
-
-# Bloques de dependencia entre épicas
-
-dependencias:
-  E-4: "E-4 debe estar hecho primero (CI protege todo lo demás)"
-  E-1:
-    - bloqueado_por: "E-4"
-      razon: "Necesita CI verde antes de tocar manifiesto"
-  E-2:
-    - bloqueado_por: "E-1"
-      razon: "No puedo reorganizar sin manifiesto canónico"
-  E-3:
-    - bloqueado_por: "E-1, E-2"
-      razon: "Necesita manifiesto y arquitectura limpios"
-  E-6:
-    - bloqueado_por: "E-1, E-2, E-3, E-4, E-5"
-      razon: "Los issues de gestión se crean DESPUÉS de que exista el backlog"
-  E-7:
-    - bloqueado_por: "E-6"
-      razon: "El curso de gestión se enseña DURANTE la ejecución de F3"
+          - "Dada cada rama, cuando comparo con `main`, entonces queda anotado en este issue si tiene commits propios y qué contienen"
+          - "Dadas las ramas sin nada que rescatar, cuando termino, entonces no existen ni en local ni en el remoto"
+        tareas:
+          - id: T-6.4.1
+            titulo: "Comparar las 5 ramas contra `main` y anotar qué tiene cada una"
+            detalle: "`git log main..<rama> --oneline` y `git diff main...<rama> --stat`. Solo lectura."
+          - id: T-6.4.2
+            titulo: "Borrar las ramas sin contenido propio, en local y en el remoto"
+            detalle: "Con la confirmación del dueño en el issue."

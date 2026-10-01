@@ -1,0 +1,462 @@
+# Backlog MACI · Gestión con GitHub Projects
+# Versión: 1.0 · Fecha: 2026-09-27
+# Taxonomía: Sección 4 del Prompt Maestro v2
+# Responsable: A2 (PO Asistente)
+
+epicas:
+  - id: E-1
+    nombre: "[E-1] Establecer una fuente única de verdad del curso"
+    resultado: "El manifiesto es uno solo, todas las rutas existen, índice y web usan la misma fuente"
+    origen: ["H-01", "H-02", "H-10", "H-12"]
+    metricas:
+      - "0 archivos duplicados (clases.yaml, curriculum.yaml, grafo.yaml, dudas.yaml)"
+      - "0 rutas rotas en manifiesto"
+      - "100% de clases apuntan a visuales existentes"
+    riesgos:
+      - "Elegir el manifiesto equivocado (ADR-004 debe decidir)"
+      - "Migración sin preservar git history"
+    historias:
+      - id: H-1.1
+        titulo: "[H-1.1] Como mantenedor, quiero un solo manifiesto de clases, para que índice y web no se contradigan"
+        criterios:
+          - "Dado el repo, cuando busco clases.yaml, entonces existe exactamente uno"
+          - "Dado el manifiesto, cuando corro test_manifiesto.py, entonces todas las rutas apuntan a archivos existentes"
+          - "Dado el repo, cuando corro CI, entonces index.html se regenera desde el manifiesto"
+        tareas:
+          - id: T-1.1.1
+            titulo: "Comparar 4 pares de YAML duplicados"
+            descripcion: "diff clases.yaml, curriculum.yaml, grafo.yaml, dudas.yaml entre raíz y 00_INICIO"
+            horas: 2
+          - id: T-1.1.2
+            titulo: "Ejecutar ADR-004 para elegir el manifiesto canónico"
+            descripcion: "Decidir cuál mantener (versión larga en 00_INICIO o corta en raíz) con criterios"
+            bloqueado_por: ["T-1.1.1"]
+            horas: 1
+          - id: T-1.1.3
+            titulo: "Fusionar el manifiesto elegido y eliminar copias"
+            descripcion: "git mv + edición final + cleanup"
+            bloqueado_por: ["T-1.1.2"]
+            horas: 2
+          - id: T-1.1.4
+            titulo: "Escribir test_manifiesto.py y agregarlo a CI"
+            descripcion: "Validador: todas las rutas de visuales existen"
+            bloqueado_por: ["T-1.1.3"]
+            horas: 3
+
+      - id: H-1.2
+        titulo: "[H-1.2] Como estudiante, quiero que el número de clase coincida con el archivo, para no perderme"
+        criterios:
+          - "Dado un archivo 05_*.html, cuando busco su clase en el manifiesto, entonces encuentra exactamente una"
+          - "Dado el manifiesto, cuando verifico, entonces clase.n == numero en archivo"
+        tareas:
+          - id: T-1.2.1
+            titulo: "Generar tabla ruta declarada → archivo real"
+            descripcion: "Mostrar discrepancias de numeración"
+            horas: 2
+          - id: T-1.2.2
+            titulo: "Decidir: renombrar archivos o editar manifiesto"
+            descripcion: "ADR-004 debe tomar esta decisión"
+            bloqueado_por: ["T-1.2.1"]
+            horas: 1
+          - id: T-1.2.3
+            titulo: "Aplicar cambios (renombra o edición según decisión)"
+            descripcion: "Preservar git history con git mv"
+            bloqueado_por: ["T-1.2.2"]
+            horas: 3
+
+      - id: H-1.3
+        titulo: "[H-1.3] Como PO, quiero que el estado del proyecto se calcule solo, para no publicar cifras contradictorias"
+        criterios:
+          - "Dado el manifiesto, cuando ejecuto README.md.build.py, entonces README muestra % de avance real"
+          - "Dado el repo, cuando se fusiona un PR, entonces el estado se actualiza"
+        tareas:
+          - id: T-1.3.1
+            titulo: "Crear script que genera README.md y ESTADO.md desde manifiesto"
+            descripcion: "Calcula: clases totales, clases con visual, clases completas, % cobertura"
+            bloqueado_por: ["T-1.1.3"]
+            horas: 3
+          - id: T-1.3.2
+            titulo: "Agregar GitHub Action que regenera estado en cada push"
+            descripcion: ".github/workflows/actualizar-estado.yml"
+            horas: 2
+
+      - id: H-1.4
+        titulo: "[H-1.4] Como ingeniero, quiero test_fuente_unica.py pasando, para verificar garantía G14"
+        criterios:
+          - "Dado el repo, cuando corro test_fuente_unica.py, entonces sale exitoso"
+          - "Dado una modificación al manifiesto, cuando corre CI, entonces el test falla si se rompen garantías"
+        tareas:
+          - id: T-1.4.1
+            titulo: "Escribir test: no existen duplicados de YAML"
+            horas: 2
+          - id: T-1.4.2
+            titulo: "Escribir test: todas las rutas existen"
+            horas: 2
+          - id: T-1.4.3
+            titulo: "Escribir test: cada clase apunta a exactamente un visual"
+            horas: 1
+
+  - id: E-2
+    nombre: "[E-2] Arquitectura y orden del repositorio"
+    resultado: "Carpetas claras por función, sin duplicados, nombres consistentes, one template canonical"
+    origen: ["H-05", "H-06", "H-07", "H-08", "H-15"]
+    metricas:
+      - "1 carpeta código (herramientas/), 0 solapadas"
+      - "1 solo _TEMPLATE_CANONICO.html, con todas las defensas"
+      - "0 referencias a Guillito"
+    historias:
+      - id: H-2.1
+        titulo: "[H-2.1] Como ingeniero, quiero una sola carpeta de código, para no duplicar mantención"
+        criterios:
+          - "Dado el repo, cuando listo herramientas/, entonces veo un paquete Python con __init__.py"
+          - "Cuando importo desde herramientas, entonces carga correctamente"
+        tareas:
+          - id: T-2.1.1
+            titulo: "Inventariar 03_SCRIPTS (42 archivos) y 03_CODIGO (14 archivos)"
+            horas: 2
+          - id: T-2.1.2
+            titulo: "Diseñar estructura herramientas/ con subcarpetas funcionales"
+            descripcion: "validadores/, builders/, fixers/, etc"
+            bloqueado_por: ["T-2.1.1"]
+            horas: 2
+          - id: T-2.1.3
+            titulo: "Migrar código a herramientas/"
+            descripcion: "git mv, imports, tests"
+            bloqueado_por: ["T-2.1.2"]
+            horas: 4
+
+      - id: H-2.2
+        titulo: "[H-2.2] Como diseñador, quiero una sola plantilla canónica, para que todos los visuales sean coherentes"
+        criterios:
+          - "Dado un nuevo visual, cuando uso _TEMPLATE_CANONICO.html, entonces sale con score 1,0"
+          - "Dado dos visuales, cuando comparo su CSS, entonces es idéntico"
+        tareas:
+          - id: T-2.2.1
+            titulo: "Unificar _TEMPLATE_CANONICO.html en curso/plantilla/"
+            descripcion: "Eliminar copias en visual/ y 01_CONCEPTOS/visual/"
+            horas: 2
+          - id: T-2.2.2
+            titulo: "Documentar defensas CSS (media queries, Bloom, etc)"
+            descripcion: "Qué no se puede quitar"
+            horas: 1
+
+      - id: H-2.3
+        titulo: "[H-2.3] Como auditor, quiero saber dónde vive cada skill, para que no tengamos dos copias"
+        criterios:
+          - "Dado .claude/skills/, cuando listo, entonces veo el registro único"
+          - "Dado .agents/skills/, cuando listo, entonces son enlaces o están vacío"
+        tareas:
+          - id: T-2.3.1
+            titulo: "Inventariar skills en .claude/ vs .agents/ vs .cursor/ vs .codex/"
+            horas: 1
+          - id: T-2.3.2
+            titulo: "Eliminar duplicados, enlazar con ln -s o scripts de sync"
+            horas: 2
+
+      - id: H-2.4
+        titulo: "[H-2.4] Como técnico, quiero construir_navegacion.py reparado o reemplazado"
+        criterios:
+          - "Dado un visual modificado, cuando corro construir_navegacion.py, entonces sale sin errores"
+          - "Cuando reviso el output, entonces tiene nav, cierre y dudas correctas"
+        tareas:
+          - id: T-2.4.1
+            titulo: "Diagnosticar los 4 bugs de construir_navegacion.py"
+            descripcion: "Ver TECH_DEBT.md, línea por línea"
+            horas: 2
+          - id: T-2.4.2
+            titulo: "Decidir: reparar o reemplazar"
+            descripcion: "ADR-005 si es compleja la decisión"
+            bloqueado_por: ["T-2.4.1"]
+            horas: 1
+          - id: T-2.4.3
+            titulo: "Ejecutar decisión (reparar o escribir nuevo)"
+            descripcion: "Tests deben pasar"
+            bloqueado_por: ["T-2.4.2"]
+            horas: 5
+
+      - id: H-2.5
+        titulo: "[H-2.5] Como mantenedor, quiero eliminar todas las referencias a Guillito"
+        criterios:
+          - "Dado el repo, cuando corro grep -r Guillito, entonces sale vacío"
+        tareas:
+          - id: T-2.5.1
+            titulo: "Encontrar y reemplazar Guillito en 3 archivos"
+            horas: 1
+
+  - id: E-3
+    nombre: "[E-3] Curso publicado confiable"
+    resultado: "Sprint 03 desatascado, todos los 9 visuales listos, numeración consistente, clase 19 construida"
+    origen: ["H-03", "H-04", "H-09"]
+    metricas:
+      - "9/9 visuales aprobados (fueron 3/9)"
+      - "Clase 19 completada o explícitamente archivada"
+    historias:
+      - id: H-3.1
+        titulo: "[H-3.1] Como estudiante, quiero que los 6 visuales bloqueados salgan del atasco, para poder estudiar"
+        criterios:
+          - "Dado #02 datos_features_target, cuando abro en móvil, entonces no hay overflow"
+          - "Dado #05, #08, #09, #14, #19, cuando valido cada uno, entonces pasan el score"
+        tareas:
+          - id: T-3.1.1
+            titulo: "Revisar y desbloquear #02 (datos_features_target) — overflow móvil"
+            horas: 3
+          - id: T-3.1.2
+            titulo: "Revisar y desbloquear #05 (validación cruzada)"
+            horas: 2
+          - id: T-3.1.3
+            titulo: "Revisar y desbloquear #08 (overfitting)"
+            horas: 3
+          - id: T-3.1.4
+            titulo: "Revisar y desbloquear #09 (regresión)"
+            horas: 2
+          - id: T-3.1.5
+            titulo: "Revisar y desbloquear #14 (random forest)"
+            horas: 2
+          - id: T-3.1.6
+            titulo: "Revisar y desbloquear #19 (repaso integrado)"
+            horas: 3
+
+      - id: H-3.2
+        titulo: "[H-3.2] Como profesor, quiero la clase 19 construida o explícitamente archivada, para aclarar el estado"
+        criterios:
+          - "Dado el manifiesto, cuando busco clase 19, entonces tiene visual: archivo.html O visual: null con razón"
+        tareas:
+          - id: T-3.2.1
+            titulo: "Decidir: construir o archivar clase 19 (Repaso integrado)"
+            horas: 1
+          - id: T-3.2.2
+            titulo: "Ejecutar decisión (crear visual o editar manifiesto con nota)"
+            bloqueado_por: ["T-3.2.1"]
+            horas: 4
+
+  - id: E-4
+    nombre: "[E-4] Calidad automatizada y CI"
+    resultado: "CI verde en cada PR, tests pasan, links verificados, visuales validados, deployable cualquier momento"
+    origen: ["H-11", "H-18"]
+    metricas:
+      - "CI en verde al 100%"
+      - "Cobertura de tests > 80% en herramientas/"
+      - "0 links rotos en la web"
+    historias:
+      - id: H-4.1
+        titulo: "[H-4.1] Como ingeniero, quiero plantillas de issue, PR template y CI básico, para que todo sea automático"
+        criterios:
+          - "Dado un nuevo issue, cuando abro la plantilla, entonces veo campos de tipo, prioridad, origen"
+          - "Dado un nuevo PR, cuando lo abro, entonces muestra DoD checklist"
+          - "Dado un push, cuando corre CI, entonces valida código, tests, links"
+        tareas:
+          - id: T-4.1.1
+            titulo: "Crear .github/ISSUE_TEMPLATE/ con plantillas para épica, historia, tarea, bug, deuda, ADR"
+            horas: 3
+          - id: T-4.1.2
+            titulo: "Crear .github/pull_request_template.md con DoD y 'Closes #N'"
+            horas: 1
+          - id: T-4.1.3
+            titulo: "Crear .github/workflows/ci.yml: tests, links, gates visuales"
+            horas: 4
+          - id: T-4.1.4
+            titulo: "Validar que CI pasa en rama main"
+            bloqueado_por: ["T-4.1.3"]
+            horas: 1
+
+      - id: H-4.2
+        titulo: "[H-4.2] Como técnico, quiero mapa_ensenanza.yaml completo para que construir_navegacion.py no falle"
+        criterios:
+          - "Dado el script, cuando corre, entonces no hay KeyError"
+          - "Cuando verifica conceptos, entonces encuentra todos los tramos de clase"
+        tareas:
+          - id: T-4.2.1
+            titulo: "Completar estructura mapa_ensenanza.yaml (conceptos + clases)"
+            descripcion: "Ver H-18, completar las secciones faltantes"
+            horas: 2
+
+  - id: E-5
+    nombre: "[E-5] Higiene y cumplimiento del repositorio"
+    resultado: "Repo privado o limpio, sin secretos, material de terceros gestionado, peso optimizado"
+    origen: ["H-13", "H-14"]
+    metricas:
+      - "Peso .git < 100 MB (opción: LFS)"
+      - "Material de terceros: privado O movido O eliminado"
+    historias:
+      - id: H-5.1
+        titulo: "[H-5.1] Como auditor, quiero gestionar material de terceros (UdeC, transcripciones con voces)"
+        criterios:
+          - "Dado el repo, cuando es público, entonces no contiene datos personales ni material licenciado"
+        tareas:
+          - id: T-5.1.1
+            titulo: "Inventariar material de terceros (transcripciones, PDFs, syllabus)"
+            horas: 1
+          - id: T-5.1.2
+            titulo: "Decision: mover a privado, repo separado, o eliminar (Cristóbal decide)"
+            horas: 0
+          - id: T-5.1.3
+            titulo: "Ejecutar decision (git filter-repo si necesario)"
+            bloqueado_por: ["T-5.1.2"]
+            horas: 3
+
+      - id: H-5.2
+        titulo: "[H-5.2] Como ingeniero, quiero optimizar el peso del repo (229 MB en .git)"
+        criterios:
+          - "Dado el repo, cuando corro du -sh .git, entonces < 100 MB"
+        tareas:
+          - id: T-5.2.1
+            titulo: "Analizar qué ocupa espacio en .git (binarios históricos, archivos grandes)"
+            horas: 1
+          - id: T-5.2.2
+            titulo: "Decidir: git-lfs para binarios o git filter-repo para historial (Cristóbal decide)"
+            horas: 0
+          - id: T-5.2.3
+            titulo: "Ejecutar limpieza elegida"
+            bloqueado_por: ["T-5.2.2"]
+            horas: 2
+
+  - id: E-6
+    nombre: "[E-6] Gestión con GitHub Projects"
+    resultado: "Project configurado, backlog en GitHub, issues de E-1 a E-5 creados, workflows funcionando"
+    origen: ["Sistema", "Requerimiento"]
+    metricas:
+      - "Project «MACI · Gestión» existente y enlazado al repo"
+      - "100% de hallazgos H-01 a H-15 tienen issue"
+    historias:
+      - id: H-6.1
+        titulo: "[H-6.1] Como PM, quiero que el Project esté configurado con campos, vistas y workflows"
+        criterios:
+          - "Dado el Project, cuando abro la vista Backlog, entonces veo épicas agrupadas por prioridad"
+          - "Cuando arrastro un item, entonces cambia de Status automáticamente"
+        tareas:
+          - id: T-6.1.1
+            titulo: "Crear Project «MACI · Gestión» y enlazarlo al repo"
+            horas: 1
+          - id: T-6.1.2
+            titulo: "Crear campos: Status, Tipo, Prioridad, Estimación, Iteración, Área, Origen, Nivel Bloom, Fecha"
+            horas: 2
+          - id: T-6.1.3
+            titulo: "Configurar vistas: Backlog, Iteración, Roadmap, Bugs, Curso"
+            horas: 2
+          - id: T-6.1.4
+            titulo: "Activar workflows integrados y GitHub Actions"
+            horas: 1
+
+      - id: H-6.2
+        titulo: "[H-6.2] Como técnico, quiero que el backlog.yaml se importe como issues al Project"
+        criterios:
+          - "Dado backlog.yaml, cuando corro crear_backlog.py, entonces crea issues + sub-issues en GitHub"
+        tareas:
+          - id: T-6.2.1
+            titulo: "Escribir crear_backlog.py (idempotente, con --dry-run)"
+            horas: 4
+          - id: T-6.2.2
+            titulo: "Importar backlog completo al Project"
+            bloqueado_por: ["T-6.2.1"]
+            horas: 1
+
+      - id: H-6.3
+        titulo: "[H-6.3] Como documenter, quiero un README del Project que explique la taxonomía"
+        criterios:
+          - "Dado el Project, cuando abro README, entonces veo misión, campos, vistas, cómo contribuir"
+        tareas:
+          - id: T-6.3.1
+            titulo: "Redactar README del Project con secciones de taxonomía (4.2 del prompt)"
+            horas: 2
+
+  - id: E-7
+    nombre: "[E-7] Curso de gestión de proyectos (14 clases)"
+    resultado: "14 clases redactadas, practicadas, evidencia recolectada, presentación y guía generadas"
+    origen: ["Prompt Maestro v2", "Sección 7"]
+    metricas:
+      - "14/14 clases completadas"
+      - "100% con ficha Bloom, objetivo, práctica, evidencia"
+    historias:
+      - id: H-7.1
+        titulo: "[H-7.1] Clase 1 · Proyecto y problema"
+        nivel_bloom: "Comprender"
+        criterios:
+          - "Cristóbal explica el problema de MACI con hallazgos H-01 a H-15"
+        tarea: "Leer AUDITORIA_F0 y resumir en 5 líneas en README del Project"
+      - id: H-7.2
+        titulo: "[H-7.2] Clase 2 · Spec y constitución"
+        nivel_bloom: "Comprender"
+        tarea: "Clasificar 5 garantías de spec.md"
+      - id: H-7.3
+        titulo: "[H-7.3] Clase 3 · Épica"
+        nivel_bloom: "Aplicar"
+        tarea: "Redactar E-3 (Curso publicado confiable)"
+      - id: H-7.4
+        titulo: "[H-7.4] Clase 4 · Historia de usuario"
+        nivel_bloom: "Aplicar"
+        tarea: "Redactar H-3.1"
+      - id: H-7.5
+        titulo: "[H-7.5] Clase 5 · Criterios de aceptación"
+        nivel_bloom: "Aplicar"
+        tarea: "Escribir 3 criterios de H-3.1"
+      - id: H-7.6
+        titulo: "[H-7.6] Clase 6 · Issue y etiquetas"
+        nivel_bloom: "Aplicar"
+        tarea: "Crear un issue [BUG] para H-02"
+      - id: H-7.7
+        titulo: "[H-7.7] Clase 7 · Tarea y sub-issue"
+        nivel_bloom: "Analizar"
+        tarea: "Descomponer H-1.1 en subtareas"
+      - id: H-7.8
+        titulo: "[H-7.8] Clase 8 · Definición de Terminado"
+        nivel_bloom: "Evaluar"
+        tarea: "Revisar un PR de F3 contra DoD"
+      - id: H-7.9
+        titulo: "[H-7.9] Clase 9 · Tablero y límite WIP"
+        nivel_bloom: "Analizar"
+        tarea: "Configurar límites WIP en Iteración"
+      - id: H-7.10
+        titulo: "[H-7.10] Clase 10 · Roles y ceremonias"
+        nivel_bloom: "Comprender"
+        tarea: "Tabla de roles MACI en README del Project"
+      - id: H-7.11
+        titulo: "[H-7.11] Clase 11 · Iteraciones e hitos"
+        nivel_bloom: "Aplicar"
+        tarea: "Planificar iteración siguiente"
+      - id: H-7.12
+        titulo: "[H-7.12] Clase 12 · Automatización"
+        nivel_bloom: "Aplicar"
+        tarea: "Ejecutar workflow integrado de status"
+      - id: H-7.13
+        titulo: "[H-7.13] Clase 13 · Métricas e Insights"
+        nivel_bloom: "Evaluar"
+        tarea: "Generar primer METRICAS.md"
+      - id: H-7.14
+        titulo: "[H-7.14] Clase 14 · ADR, deuda y retrospectiva"
+        nivel_bloom: "Crear"
+        tarea: "Escribir ADR-005 o regla nueva en spec.md"
+
+---
+# Configuración de prioridades (se establece en F1 Gate)
+
+prioridades:
+  critica:
+    - E-1
+    - E-4
+  alta:
+    - E-2
+    - E-3
+  media:
+    - E-5
+    - E-6
+    - E-7
+
+# Bloques de dependencia entre épicas
+
+dependencias:
+  E-4: "E-4 debe estar hecho primero (CI protege todo lo demás)"
+  E-1:
+    - bloqueado_por: "E-4"
+      razon: "Necesita CI verde antes de tocar manifiesto"
+  E-2:
+    - bloqueado_por: "E-1"
+      razon: "No puedo reorganizar sin manifiesto canónico"
+  E-3:
+    - bloqueado_por: "E-1, E-2"
+      razon: "Necesita manifiesto y arquitectura limpios"
+  E-6:
+    - bloqueado_por: "E-1, E-2, E-3, E-4, E-5"
+      razon: "Los issues de gestión se crean DESPUÉS de que exista el backlog"
+  E-7:
+    - bloqueado_por: "E-6"
+      razon: "El curso de gestión se enseña DURANTE la ejecución de F3"

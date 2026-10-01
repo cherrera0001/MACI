@@ -33,7 +33,7 @@
 | Path | Purpose |
 |------|---------|
 | `.claude/projects/F--MACI/memory/sprint_06_conclusion.md` | Session memory for future iterations |
-| `docs/gestion/2026-09-27_sprint06_conclusion.md` | Formal session entry (BITÁCORA) |
+| `docs/gestion/historico/2026-09-27_sprint06_conclusion.md` | Formal session entry (BITÁCORA) |
 | `01_DOCUMENTACION/SPRINT_06_COMPLETION_REPORT.md` | This file — central declaration |
 
 ### Git Commits
