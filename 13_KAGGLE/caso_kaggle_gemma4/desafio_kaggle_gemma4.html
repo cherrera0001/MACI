@@ -16,7 +16,7 @@
   6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
   7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
 -->
-<title>Nuevo desafío: Kaggle Gemma 4 · Datito</title>
+<title>ZorzALL · el desafío Gemma 4 de Kaggle · Datito</title>
 <style>
   :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
         --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
@@ -103,22 +103,40 @@
 
 
 
-<h1>Nuevo desafío: un agente que corrige código, medido en Kaggle</h1>
-<p class="sub">Google – The Gemma 4 Developer Agent Competition · caso de Agents Learning Loops · estado al 2026-10-04, 22:00 UTC</p>
+<h1>ZorzALL: un modelo pequeño que escucha antes de resolver</h1>
+<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-04, 23:45 UTC</p>
 
 <div class="clave">
-  <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso, leer una nota de la tabla como un número
-  de tareas, y decidir si la diferencia entre dos resultados es real o es ruido.
+  <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso y cómo funciona por dentro, leer una nota
+  como un número de tareas, decidir si una diferencia es real o es ruido, y entender qué es ZorzALL, qué se
+  sabe de él y qué falta por probar.
 </div>
 
-<div class="grafo">
-  <span class="n">Train / validation / test</span> →
-  <span class="n">Generalización</span> →
-  <span class="n aqui">Desafío Kaggle: medir antes de mejorar</span> →
-  <span class="n">Comparar dos modelos</span>
+<div class="nota">
+  <strong>Estado honesto.</strong> ZorzALL es hoy una hipótesis con su diseño de prueba, no un resultado. Nuestro
+  único envío con nota resolvió 4 tareas de 58. Todo lo que aquí aparece como «medido» tiene un dato detrás; lo
+  demás está marcado como probable, sin medir o por verificar.
 </div>
 
-<h2>El caso en seis preguntas</h2>
+<div class="panel">
+  <div class="lbl">Mapa de la página</div>
+  <ol class="pasos">
+    <li><a href="#seis">El caso en seis preguntas</a></li>
+    <li><a href="#competencia">Cómo funciona la competencia</a></li>
+    <li><a href="#arnes">El arnés por dentro: ayudas, trampas y diferencias</a></li>
+    <li><a href="#sec-tabla">Dónde estamos en la tabla</a></li>
+    <li><a href="#sec-ruido">¿Una diferencia es real o es ruido?</a></li>
+    <li><a href="#proceso">El proceso: catorce pruebas</a></li>
+    <li><a href="#zorzall">ZorzALL: la idea</a></li>
+    <li><a href="#literatura">Qué dice la literatura</a></li>
+    <li><a href="#concilio">El concilio: lo que se cayó y lo que queda</a></li>
+    <li><a href="#validar">Cómo se valida: historias, criterios y pruebas</a></li>
+    <li><a href="#sabemos">Qué sabemos y qué no</a></li>
+    <li><a href="#papel">Para resolver en papel</a></li>
+  </ol>
+</div>
+
+<h2 id="seis">1 · El caso en seis preguntas</h2>
 
 <h3>1 · ¿Qué plantea Google como desafío?</h3>
 <div class="cita">
@@ -197,6 +215,7 @@ las ve.</div>
 tabla.</p>
 
 <h3>6 · ¿Cuál es nuestro artículo y cuál la hipótesis?</h3>
+<p>La propuesta se llama <strong>ZorzALL</strong>; su idea está en la <a href="#zorzall">sección 7</a>.</p>
 <p><strong>Título del borrador:</strong> «Agents Learning Loops con Gemma 4: cuánto se puede creer una
 diferencia antes de convertir una lección en instrucción del agente». Aún no se ha enviado a la pista de
 artículo.</p>
@@ -220,44 +239,147 @@ artículo.</p>
   </ul>
 </div>
 
-<h2>1 · Cómo funciona: qué te dan y qué te piden</h2>
-<p>No entregas predicciones. Entregas un archivo que describe un <strong>agente</strong>: sus instrucciones, sus
-herramientas y sus ayudantes. Kaggle pone a ese agente, con el modelo Gemma 4, a corregir errores reales en
-repositorios de Python.</p>
 
-<div class="panel">
-  <div class="lbl">Qué pasa con cada tarea</div>
-  <ol class="pasos">
-    <li><strong>Lee</strong> el problema que reportó un usuario.</li>
-    <li><strong>Explora</strong> el código con sus herramientas.</li>
-    <li><strong>Edita</strong> uno o más archivos.</li>
-    <li><strong>Entrega</strong> el cambio, o se le acaba el presupuesto.</li>
-    <li>Unas <strong>pruebas ocultas</strong> dicen si quedó resuelto: sí o no.</li>
-  </ol>
-  <div class="met">
-    <div><div class="n">129</div><div class="e">tareas públicas</div></div>
-    <div><div class="n">~120</div><div class="e">tareas ocultas</div></div>
-    <div><div class="n">58</div><div class="e">en la tabla pública</div></div>
-    <div><div class="n">12 h</div><div class="e">para todo el envío</div></div>
-    <div><div class="n">1</div><div class="e">envío por día</div></div>
-  </div>
+
+<h2 id="competencia">2 · Cómo funciona la competencia</h2>
+<p>Lo que entregas no es un modelo ni un programa. Es la <strong>configuración de un agente</strong>. La
+evaluación ocurre en dos etapas separadas, y confundirlas lleva a conclusiones equivocadas.</p>
+
+<svg viewBox="0 0 860 250" role="img" aria-label="Las dos etapas de la evaluación" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <defs><marker id="f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+  <rect x="14" y="70" width="150" height="90" rx="8" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="89" y="100" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a">Tu envío</text>
+  <text x="89" y="122" text-anchor="middle" font-size="12" fill="#666">instrucciones</text>
+  <text x="89" y="138" text-anchor="middle" font-size="12" fill="#666">herramientas, ayudantes</text>
+  <rect x="214" y="30" width="290" height="170" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="359" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a">Etapa 1 · el agente trabaja</text>
+  <text x="359" y="80" text-anchor="middle" font-size="12" fill="#666">Gemma 4 en cuatro GPU</text>
+  <text x="359" y="100" text-anchor="middle" font-size="12" fill="#666">lee, explora, edita y entrega un parche</text>
+  <text x="359" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">12 horas para todas las tareas</text>
+  <text x="359" y="150" text-anchor="middle" font-size="12" fill="#666">límite por tarea: opcional, lo pones tú</text>
+  <text x="359" y="178" text-anchor="middle" font-size="12" fill="#666">produce un parche por tarea</text>
+  <rect x="554" y="30" width="170" height="170" rx="8" fill="#f0fdf4" stroke="#059669"/>
+  <text x="639" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a">Etapa 2 · se valida</text>
+  <text x="639" y="84" text-anchor="middle" font-size="12" fill="#666">entorno limpio</text>
+  <text x="639" y="104" text-anchor="middle" font-size="12" fill="#666">se aplica el parche</text>
+  <text x="639" y="124" text-anchor="middle" font-size="12" fill="#666">se añaden pruebas ocultas</text>
+  <text x="639" y="144" text-anchor="middle" font-size="12" fill="#666">pasan o no pasan</text>
+  <text x="639" y="178" text-anchor="middle" font-size="12" fill="#666">fuera de las 12 horas</text>
+  <rect x="764" y="85" width="84" height="60" rx="8" fill="#fffbeb" stroke="#d97706"/>
+  <text x="806" y="111" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Nota</text>
+  <text x="806" y="130" text-anchor="middle" font-size="11" fill="#666">resueltas ÷ total</text>
+  <line x1="164" y1="115" x2="210" y2="115" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="504" y1="115" x2="550" y2="115" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="724" y1="115" x2="760" y2="115" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <text x="430" y="232" text-anchor="middle" font-size="12" fill="#666">Fuente: página de evaluación de la competencia y documento del arnés</text>
+</svg>
+
+<h3>El presupuesto: qué es oficial y qué no</h3>
+<div style="overflow-x:auto"><table>
+  <tr><th>Límite</th><th>Valor</th><th>Quién lo pone</th></tr>
+  <tr><td>Tiempo total</td><td>12 horas para todas las tareas, con el montaje incluido</td><td><span class="rol r-dato">oficial</span></td></tr>
+  <tr><td>Ventana de contexto</td><td>32 768 tokens</td><td><span class="rol r-dato">oficial</span></td></tr>
+  <tr><td>Tiempo, llamadas y turnos por tarea</td><td>No hay límite oficial</td><td><span class="rol r-decide">tú decides</span></td></tr>
+  <tr><td>Si no decides nada</td><td>60 minutos por tarea, sin tope de llamadas</td><td>valor por omisión del arnés</td></tr>
+  <tr><td>Kit de inicio</td><td>1 minuto, 10 llamadas</td><td>ejemplo del organizador</td></tr>
+  <tr><td>Nuestro envío</td><td>4 minutos, 40 llamadas, 100 turnos</td><td><span class="rol r-decide">nosotros</span></td></tr>
+</table></div>
+<div class="tension">
+  <strong>Lo que esto cambia.</strong> El tope de 40 llamadas que frenó a nuestro agente lo pusimos nosotros. Lo
+  escaso de verdad es el fondo común de tiempo (unos 5,9 minutos de promedio por tarea, con unas 120 tareas) y la
+  ventana de contexto. Si el envío pasa de 12 horas, falla completo.
 </div>
 
-<div style="overflow-x:auto"><table class="simb">
-  <tr><th>Pieza</th><th>Qué es</th><th>Quién la decide</th></tr>
-  <tr><td>modelo</td><td>Gemma 4, igual para todos</td><td><span class="rol r-dato">dato</span></td></tr>
-  <tr><td>arnés</td><td>El programa que corre al agente y verifica el cambio</td><td><span class="rol r-dato">dato</span></td></tr>
-  <tr><td>presupuesto</td><td>Minutos, llamadas a herramientas y turnos por tarea</td><td><span class="rol r-decide">tú decides</span></td></tr>
-  <tr><td>instrucciones</td><td>Lo que el agente lee antes de empezar</td><td><span class="rol r-decide">tú decides</span></td></tr>
-  <tr><td>nota</td><td>Tareas resueltas ÷ tareas</td><td><span class="rol r-cuenta">se calcula</span></td></tr>
+<h3>Qué pasa con cada tarea</h3>
+<div class="grafo">
+  <span class="n">Lee el problema</span> →
+  <span class="n">Explora el código</span> →
+  <span class="n">Edita</span> →
+  <span class="n">Comprueba</span> →
+  <span class="n">Entrega el parche</span> →
+  <span class="n aqui">Pruebas ocultas: sí o no</span>
+</div>
+<div class="met">
+  <div><div class="n">129</div><div class="e">tareas públicas</div></div>
+  <div><div class="n">~120</div><div class="e">tareas ocultas</div></div>
+  <div><div class="n">58</div><div class="e">en la tabla pública</div></div>
+  <div><div class="n">1</div><div class="e">envío por día</div></div>
+</div>
+
+<h2 id="arnes">3 · El arnés por dentro: ayudas, trampas y diferencias</h2>
+<p>El <strong>arnés</strong> es el programa del organizador que pone a trabajar al agente: levanta el modelo, le
+da herramientas, cuenta el presupuesto y recoge el parche. Es lo único que podemos configurar, así que conviene
+conocerlo mejor que al modelo.</p>
+
+<svg viewBox="0 0 860 300" role="img" aria-label="Las piezas del arnés" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <rect x="20" y="20" width="820" height="260" rx="10" fill="#faf9f7" stroke="#d8d8d8"/>
+  <text x="36" y="44" font-size="13" font-weight="700" fill="#666">ARNÉS · una tarea</text>
+  <rect x="40" y="60" width="200" height="90" rx="8" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="140" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Agente principal</text>
+  <text x="140" y="108" text-anchor="middle" font-size="12" fill="#666">Gemma 4 + tus instrucciones</text>
+  <text x="140" y="126" text-anchor="middle" font-size="12" fill="#666">su contexto se va llenando</text>
+  <rect x="40" y="175" width="200" height="80" rx="8" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="140" y="202" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Ayudante</text>
+  <text x="140" y="222" text-anchor="middle" font-size="12" fill="#666">mismo modelo, contexto limpio</text>
+  <text x="140" y="240" text-anchor="middle" font-size="12" fill="#666">devuelve solo su respuesta</text>
+  <rect x="300" y="60" width="250" height="195" rx="8" fill="#fff" stroke="#d8d8d8"/>
+  <text x="425" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Nueve herramientas</text>
+  <text x="318" y="108" font-size="12" fill="#1a1a1a">ejecutar comando · leer archivo</text>
+  <text x="318" y="128" font-size="12" fill="#1a1a1a">editar · escribir archivo</text>
+  <text x="318" y="148" font-size="12" fill="#1a1a1a">vecinos y subgrafo del código</text>
+  <text x="318" y="168" font-size="12" fill="#1a1a1a">buscar código parecido</text>
+  <text x="318" y="196" font-size="12" fill="#059669">ver estado · entregar parche</text>
+  <text x="318" y="214" font-size="11" fill="#059669">(estas dos no gastan llamadas)</text>
+  <text x="318" y="240" font-size="11" fill="#666">las respuestas largas se recortan</text>
+  <rect x="610" y="60" width="210" height="90" rx="8" fill="#f0fdf4" stroke="#059669"/>
+  <text x="715" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Entorno de la tarea</text>
+  <text x="715" y="108" text-anchor="middle" font-size="12" fill="#666">copia del repositorio</text>
+  <text x="715" y="126" text-anchor="middle" font-size="12" fill="#666">sin Internet</text>
+  <rect x="610" y="175" width="210" height="80" rx="8" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="715" y="202" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a">Un solo contador</text>
+  <text x="715" y="222" text-anchor="middle" font-size="12" fill="#666">llamadas, turnos y reloj</text>
+  <text x="715" y="240" text-anchor="middle" font-size="12" fill="#666">compartidos por todos los agentes</text>
+  <line x1="240" y1="105" x2="296" y2="105" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="140" y1="150" x2="140" y2="171" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="550" y1="105" x2="606" y2="105" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="550" y1="215" x2="606" y2="215" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+</svg>
+
+<h3>Ayudas del arnés: lo que juega a tu favor</h3>
+<div style="overflow-x:auto"><table>
+  <tr><th>Ayuda</th><th>Qué hace</th><th>Costo</th></tr>
+  <tr><td>Rescate del parche</td><td>Si el agente no entrega, el arnés toma lo que haya cambiado en el repositorio</td><td>Ninguno</td></tr>
+  <tr><td>Consulta de estado</td><td>Dice cuánto presupuesto queda</td><td>Un turno, cero llamadas</td></tr>
+  <tr><td>Aviso de presupuesto</td><td>Avisa solo cuando quedan 10 llamadas o menos</td><td>Ninguno</td></tr>
+  <tr><td>Ayudante con contexto limpio</td><td>Recibe solo el encargo; al principal le vuelve solo la respuesta final</td><td>Llamarlo: cero. Lo que haga dentro: del mismo contador</td></tr>
+  <tr><td>Agentes en secuencia</td><td>Una etapa que explora y otra que edita</td><td>Del mismo contador</td></tr>
+  <tr><td>Skills</td><td>Texto, recursos y guiones que se ejecutan en el entorno de la tarea</td><td>Cargar una: dos turnos. Ejecutar un guion: una llamada</td></tr>
+  <tr><td>Empujón</td><td>Si el agente se detiene sin entregar, el arnés le pide que siga. Al tercero seguido, termina</td><td>Un turno cada uno</td></tr>
 </table></div>
 
-<div class="tension">
-  <strong>La trampa del desafío.</strong> Practicas con 129 tareas de 4 repositorios conocidos. Te evalúan con
-  repositorios privados que nunca ves. Es el mismo problema de entrenar con un año y predecir el siguiente.
-</div>
+<h3>Trampas del arnés: lo que nadie avisa</h3>
+<p>Las encontró un revisor leyendo el código y ejecutándolo con un modelo simulado.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Trampa</th><th>Consecuencia</th><th>A quién afecta</th></tr>
+  <tr><td>Una opción del kit corta el turno del agente cada vez que vuelve el ayudante</td><td>El agente solo continúa porque el arnés lo empuja</td><td>A nosotros y, probablemente, a quien copió el kit</td></tr>
+  <tr><td>Un empujón reinicia la secuencia desde la primera etapa</td><td>Se vuelve a explorar y se gasta presupuesto dos veces</td><td>A los diseños de dos etapas</td></tr>
+  <tr><td>Entregar el parche congela lo hecho hasta ahí</td><td>Lo que se edite después se pierde</td><td>A todos</td></tr>
+  <tr><td>Una llave suelta en una instrucción</td><td>La tarea muere antes de empezar, sin rescate</td><td>A todos</td></tr>
+  <tr><td>Una etapa «de solo lectura» puede escribir igual con un comando</td><td>Quitarle la herramienta de editar no la hace de solo lectura</td><td>A quien confíe en la estructura</td></tr>
+  <tr><td>El arnés le dice al agente que todas las dependencias están instaladas</td><td>En el entorno del notebook no es cierto para algunos paquetes de pruebas</td><td>A todos</td></tr>
+</table></div>
 
-<h2>2 · Dónde estamos en la tabla</h2>
+<h3>Dos entornos distintos</h3>
+<div style="overflow-x:auto"><table>
+  <tr><th></th><th>Entorno del notebook de Kaggle</th><th>Entorno con contenedores</th></tr>
+  <tr><td>Dónde se usa</td><td>En el notebook oficial y en nuestras corridas</td><td>En un computador con Docker</td></tr>
+  <tr><td>Dependencias por tarea</td><td>No se instalan: hereda lo que traiga el notebook</td><td>Se instalan por tarea</td></tr>
+  <tr><td>Tareas públicas válidas para medir</td><td>71 de 129; 103 si se añaden tres paquetes de pruebas</td><td>Otro participante informa 114 en su entorno local, reparando dependencias</td></tr>
+</table></div>
+<div class="nota">No sabemos en cuál de los dos se valida la nota. El documento del arnés habla de contenedores;
+no lo pudimos comprobar.</div>
+
+<h2 id="sec-tabla">4 · Dónde estamos en la tabla</h2>
 <p>La tabla trunca la nota a dos decimales. Conviene leerla en tareas: 0,06 son 4 de 58.</p>
 <div class="panel">
   <canvas id="tabla" width="860" height="300" role="img" aria-label="Equipos por número de tareas resueltas"></canvas>
@@ -270,7 +392,9 @@ repositorios de Python.</p>
   </div>
 </div>
 
-<h2>3 · ¿Una diferencia es real o es ruido?</h2>
+
+
+<h2 id="sec-ruido">5 · ¿Una diferencia es real o es ruido?</h2>
 <p>Es la pregunta de todo el caso. Mueve los controles y mira si los dos intervalos se separan.</p>
 
 <div class="pred" id="pred1">
@@ -329,68 +453,84 @@ repositorios de Python.</p>
   <p class="fuente">[DATITO] · cifras de la tabla pública del 2026-10-04</p>
 </details>
 
-<h2>4 · Cómo hemos iterado: once pruebas</h2>
-<p>Cada prueba responde una sola pregunta. Las que no necesitan el modelo se hacen sin GPU, porque una corrida
-con GPU espera entre 3 y 8 horas en cola.</p>
+
+
+<h3>Cuántas tareas hacen falta para ver una mejora</h3>
+<p>Calculado por simulación en la revisión de método. Diferencia mínima que se detecta ocho de cada diez veces,
+con una tasa base del 20 %:</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Tareas</th><th>Una pasada por configuración</th><th>Cuatro pasadas</th></tr>
+  <tr><td class="num">15</td><td>54 a 58 puntos</td><td>26 a 28 puntos</td></tr>
+  <tr><td class="num">43</td><td>26 a 32 puntos</td><td>12 a 16 puntos</td></tr>
+  <tr><td class="num">103</td><td>16 a 20 puntos</td><td>8 a 10 puntos</td></tr>
+</table></div>
+<div class="peligro"><strong>Consecuencia.</strong> Con 15 tareas y una pasada, solo se vería una mejora de más
+de 50 puntos. Casi todas las comparaciones que se hacen en este concurso están por debajo de lo que se puede
+medir.</div>
+
+<h2 id="proceso">6 · El proceso: catorce pruebas</h2>
+<p>Cada prueba responde una sola pregunta. Las que no necesitan el modelo se hacen sin GPU, porque una corrida con
+GPU espera entre 3 y 8 horas en cola.</p>
+
+<div class="lbl">Primero el instrumento</div>
+<div class="grafo">
+  <span class="n">1 · primer envío</span> →
+  <span class="n">2 · el servidor cae</span> →
+  <span class="n">3 · simulacro sin GPU</span> →
+  <span class="n">4 · ¿las tareas sirven?</span>
+</div>
+<div class="lbl">Después el agente</div>
+<div class="grafo">
+  <span class="n">5 · primera corrida con el modelo</span> →
+  <span class="n">6 · cancelar en cola</span> →
+  <span class="n">7 · leer a los demás</span>
+</div>
+<div class="lbl">Después la causa</div>
+<div class="grafo">
+  <span class="n">8 · leer el arnés</span> →
+  <span class="n">10 · el error real</span> →
+  <span class="n">12 · instalar lo que falta</span>
+</div>
+<div class="lbl">Y la idea</div>
+<div class="grafo">
+  <span class="n">13 · concilio de revisores</span> →
+  <span class="n aqui">14 · el oído, en local</span> →
+  <span class="n">9 y 11 · corridas en curso</span>
+</div>
 
 <div style="overflow-x:auto"><table>
   <tr><th>#</th><th>Pregunta</th><th>Dónde</th><th>Resultado</th><th>Estado</th></tr>
   <tr><td class="num">1</td><td>¿Cuánto da el kit ajustado?</td><td>Envío</td><td>4 de 58</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">2</td><td>¿Arranca el modelo en un notebook propio?</td><td>GPU</td><td>Cayó dos veces y el error se perdió. Ahora se guarda</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
-  <tr><td class="num">3</td><td>¿El envío está bien armado?</td><td>Sin GPU</td><td>8 de 8 comprobaciones con un modelo falso</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">3</td><td>¿El envío está bien armado?</td><td>Sin GPU</td><td>8 de 8 comprobaciones con un modelo simulado</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">4</td><td>¿Las tareas públicas sirven para medir?</td><td>CPU</td><td>71 de 129</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td class="num">5</td><td>¿Qué hace el agente con el modelo real?</td><td>GPU</td><td>Tres intentos. Carga en 12 min 45 s; 0 de 2 tareas</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td class="num">6</td><td>¿Se puede cancelar una corrida en cola?</td><td>API</td><td>Sí, con una llamada interna</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
+  <tr><td class="num">5</td><td>¿Qué hace el agente con el modelo real?</td><td>GPU</td><td>Carga en 12 min 45 s; 0 de 2 tareas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">6</td><td>¿Se puede cancelar una corrida en cola?</td><td>API</td><td>Sí</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
   <tr><td class="num">7</td><td>¿Qué hacen los demás?</td><td>API</td><td>112 notebooks públicos leídos</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td class="num">8</td><td>¿Por qué 55 tareas no sirven?</td><td>Código</td><td>El entorno del notebook no instala dependencias por tarea</td><td><span class="rol r-cuenta">confirmado en 34</span></td></tr>
+  <tr><td class="num">8</td><td>¿Por qué 55 tareas no sirven?</td><td>Código</td><td>El entorno del notebook no instala dependencias por tarea</td><td><span class="rol r-cuenta">confirmado</span></td></tr>
   <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">corriendo</span></td></tr>
-  <tr><td class="num">10</td><td>¿Cuál es el error real de las 55?</td><td>CPU</td><td>En 34 falta un paquete que solo usan los tests. Quedan 21 sin explicar</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">en cola</span></td></tr>
+  <tr><td class="num">10</td><td>¿Cuál es el error real?</td><td>CPU</td><td>En 34 tareas falta un paquete que solo usan las pruebas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">corriendo</span></td></tr>
+  <tr><td class="num">12</td><td>¿Se recuperan las tareas instalando esos paquetes?</td><td>CPU</td><td>De 71 a 103 válidas; ninguna de las 71 se pierde</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">13</td><td>¿Resiste la idea una revisión independiente?</td><td>Tres revisores</td><td>Solo con cambios</td><td><span class="rol r-cuenta">hecho</span></td></tr>
+  <tr><td class="num">14</td><td>¿Puede el envío llevar su propio oído?</td><td>Local, sin GPU</td><td>Sí: las pruebas que cargan pasan de 690–2 927 a 2 486–3 711 en tres tareas</td><td><span class="rol r-decide">solo en local</span></td></tr>
 </table></div>
-
-<details>
-  <summary>Prueba 4 en detalle: medir el instrumento antes que al agente</summary>
-  <p>Cada tarea se corrió dos veces: sin cambio y con la solución oficial. Sirve si falla sin cambio y pasa con
-  la solución.</p>
-  <div style="overflow-x:auto"><table>
-    <tr><th>Repositorio</th><th>Tareas</th><th>Sirven</th></tr>
-    <tr><td>rich</td><td class="num">48</td><td class="num">42</td></tr>
-    <tr><td>fastapi</td><td class="num">67</td><td class="num">29</td></tr>
-    <tr><td>requests</td><td class="num">13</td><td class="num">0</td></tr>
-    <tr><td>httpx</td><td class="num">1</td><td class="num">0</td></tr>
-  </table></div>
-  <p>Otro participante, en su propio entorno y reparando dependencias, obtiene 114. Las dos cifras pueden ser
-  correctas: miden entornos distintos.</p>
-</details>
-
-<details>
-  <summary>Prueba 5 en detalle: ocho horas perdidas por una ruta de archivos</summary>
-  <p>El primer intento esperó 8 h 20 min en cola y se detuvo al empezar: Kaggle monta los datos en dos
-  disposiciones distintas y el notebook solo conocía una. Desde entonces, una guardia al inicio busca los datos
-  en ambas y se prueba en local antes de subir.</p>
-  <div class="met">
-    <div><div class="n">57</div><div class="e">tokens por turno</div></div>
-    <div><div class="n">9 900</div><div class="e">tokens de entrada por petición</div></div>
-    <div><div class="n">1,6 min</div><div class="e">por tarea, de 4</div></div>
-    <div><div class="n">39 de 40</div><div class="e">llamadas en la tarea 1</div></div>
-  </div>
-  <p>Yo había predicho que el agente se quedaría sin tiempo. No fue así: se quedó sin llamadas, con más de la
-  mitad del tiempo libre.</p>
-</details>
 
 <details>
   <summary>La lección de cada prueba, en una línea</summary>
   <div style="overflow-x:auto"><table>
     <tr><th>#</th><th>Lección</th></tr>
-    <tr><td class="num">1</td><td>Leer el foro antes de enviar. El kit sin cambios habría desperdiciado el envío del día.</td></tr>
-    <tr><td class="num">2</td><td>Un fallo sin su mensaje de error obliga a repetir la prueba. Guardar el error es parte de la prueba.</td></tr>
-    <tr><td class="num">3</td><td>«El envío está mal armado» y «el modelo no resuelve» son preguntas distintas. La primera no necesita GPU.</td></tr>
+    <tr><td class="num">1</td><td>Leer el foro antes de enviar.</td></tr>
+    <tr><td class="num">2</td><td>Guardar el mensaje de error es parte de la prueba.</td></tr>
+    <tr><td class="num">3</td><td>«El envío está mal armado» y «el modelo no resuelve» son preguntas distintas.</td></tr>
     <tr><td class="num">4</td><td>Antes de medir al agente, medir el instrumento.</td></tr>
-    <tr><td class="num">5</td><td>Todo lo que pueda fallar sin el modelo se prueba en local antes de entrar a la cola.</td></tr>
-    <tr><td class="num">6</td><td>Con dos plazas de GPU, saber cancelar vale tanto como saber lanzar.</td></tr>
-    <tr><td class="num">7</td><td>Los notebooks públicos son datos. Leerlos el primer día habría ahorrado una semana.</td></tr>
+    <tr><td class="num">5</td><td>Lo que pueda fallar sin el modelo se prueba en local antes de entrar a la cola.</td></tr>
+    <tr><td class="num">7</td><td>Los notebooks públicos son datos.</td></tr>
     <tr><td class="num">8</td><td>Cuando el instrumento da un resultado raro, leer su código.</td></tr>
-    <tr><td class="num">10</td><td>Dos cruces indirectos de datos no separaron nada. Leer el mensaje de error lo resolvió en 25 minutos.</td></tr>
+    <tr><td class="num">10</td><td>Dos cruces indirectos de datos no separaron nada; leer el mensaje de error lo resolvió en 25 minutos.</td></tr>
+    <tr><td class="num">12</td><td>Una causa se confirma interviniendo, no solo leyendo.</td></tr>
+    <tr><td class="num">13</td><td>Pedir que te refuten antes de gastar la cuota.</td></tr>
+    <tr><td class="num">14</td><td>El dato corrigió la idea: lo que fallaba en esas 34 tareas era la verificación, no el oído del agente.</td></tr>
   </table></div>
 </details>
 
@@ -399,28 +539,178 @@ con GPU espera entre 3 y 8 horas en cola.</p>
   <button type="button" data-v="si">Sí</button>
   <button type="button" data-v="no">No</button>
   <button type="button" data-v="ns">No se sabe todavía</button>
-  <div class="veredicto" id="pred2v">Es la prueba 11 y aún no corre. Anota tu respuesta: la comparamos con el resultado.</div>
+  <div class="veredicto" id="pred2v">Es la prueba 11 y aún no termina. Anota tu respuesta: la comparamos con el resultado.</div>
 </div>
 
-<h2>5 · Las cinco reglas del ciclo</h2>
-<ol class="pasos">
-  <li><strong>Un cambio por corrida.</strong> Con dos cambios no sabes cuál actuó.</li>
-  <li><strong>La predicción se escribe antes.</strong> Así el resultado puede contradecirte.</li>
-  <li><strong>Un cambio se conserva solo si supera el ruido.</strong> El ruido se mide repitiendo lo mismo.</li>
-  <li><strong>Sin GPU todo lo que se pueda.</strong> Un error de rutas no se descubre tras ocho horas de cola.</li>
-  <li><strong>Se rescata todo.</strong> Logs, salidas, tabla y notebooks públicos son datos.</li>
-</ol>
+<h2 id="zorzall">7 · ZorzALL: la idea</h2>
+<div class="cita">
+  El zorzal no gana por fuerza. Camina, se detiene, ladea la cabeza y escucha lo que hay bajo la tierra. Cuando
+  ubica la lombriz, trabaja sobre ese punto hasta sacarla.
+  <span class="f">La lombriz es el objetivo: el defecto que hay que corregir. Nada que ver con atacar un sistema.</span>
+</div>
+<p>Gemma 4 es un modelo pequeño con un fondo de tiempo fijo. No puede ganar por fuerza. <strong>ZorzALL</strong>
+es una forma de armar su arnés para que primero escuche la señal real del fallo y, cuando la ubica, trabaje sobre
+ese punto hasta resolverlo. El nombre lleva dentro ALL, de Agents Learning Loops.</p>
 
-<h2>6 · Qué sabemos y qué no</h2>
+<svg viewBox="0 0 860 230" role="img" aria-label="El ciclo de ZorzALL" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <rect x="60" y="70" width="190" height="90" rx="45" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="155" y="110" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">Escucha</text>
+  <text x="155" y="132" text-anchor="middle" font-size="12" fill="#666">busca · oye · ubica</text>
+  <rect x="335" y="70" width="190" height="90" rx="45" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="430" y="110" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">Resuelve</text>
+  <text x="430" y="132" text-anchor="middle" font-size="12" fill="#666">construye · depura · corrige</text>
+  <rect x="610" y="70" width="190" height="90" rx="45" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+  <text x="705" y="110" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">Comprueba</text>
+  <text x="705" y="132" text-anchor="middle" font-size="12" fill="#666">entrega lo que pasó una prueba</text>
+  <line x1="250" y1="115" x2="331" y2="115" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="525" y1="115" x2="606" y2="115" stroke="#666" stroke-width="2" marker-end="url(#f1)"/>
+  <path d="M705 160 C705 215, 155 215, 155 164" fill="none" stroke="#d97706" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#f1)"/>
+  <text x="430" y="218" text-anchor="middle" font-size="12" fill="#92400e">si la prueba falla, vuelve a oír: ese ciclo es el aprendizaje dentro de la tarea</text>
+  <text x="430" y="40" text-anchor="middle" font-size="13" fill="#666">Sin memoria entre tareas: el arnés corre cada tarea aislada</text>
+</svg>
+
+<h3>Los rasgos</h3>
+<p>Hay dos versiones. La primera está registrada con sus umbrales; la segunda es la definición corregida tras la
+revisión y espera aprobación.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Versión 1 · registrada</th><th>Versión 2 · en discusión</th><th>Qué significa</th></tr>
+  <tr><td>Busca</td><td>Busca</td><td>Recorre el código antes de tocarlo</td></tr>
+  <tr><td>Oye</td><td>Oye</td><td>Toma la señal de la ejecución: el error, la traza, la prueba que falla</td></tr>
+  <tr><td>Observa</td><td>Ubica</td><td>Decide dónde está el fallo antes de editar; no repite lo que ya falló</td></tr>
+  <tr><td>Espera · Acierta</td><td>Resuelve</td><td>Trabaja sobre ese punto las veces que haga falta</td></tr>
+  <tr><td>—</td><td>Comprueba</td><td>Entrega después de una prueba que pasa</td></tr>
+</table></div>
+
+<h3>Decirlo o construirlo</h3>
+<div style="overflow-x:auto"><table>
+  <tr><th></th><th>Zorzal dicho</th><th>Zorzal construido</th></tr>
+  <tr><td>Cómo</td><td>Se le pide en las instrucciones</td><td>El entorno lo hace posible o inevitable</td></tr>
+  <tr><td>Ejemplo en el agente</td><td>«Busca antes de editar»</td><td>Una etapa sin herramienta de edición; un guion que deja listas las pruebas</td></tr>
+  <tr><td>Ejemplo en nuestra operación</td><td>«No subas sin ensayo local», dicho tres veces y roto tres veces</td><td>Revisión y pruebas automáticas: no se fusionó nada roto</td></tr>
+</table></div>
+<div class="clave"><strong>La idea propia de ALL.</strong> Una lección aprendida no vuelve al agente como un
+párrafo: vuelve como un cambio en su entorno.</div>
+
+<h3>Canta: pedir ayuda a pares</h3>
+<p>Cuando un zorzal canta, llegan otros. En el arnés eso es llamar a un ayudante del mismo modelo, con contexto
+limpio, y pasarle la señal de la ejecución. No es gratis: lo que el ayudante haga gasta del mismo contador. Por
+eso el canto necesita un disparador. Es una idea sin medir.</p>
+
+<h3>El oído: donde nadie está corrigiendo</h3>
+<p>Casi todos los equipos corrigen al agente: instrucciones, presupuesto, número de agentes. Pocos miran el suelo
+donde el agente trabaja. En cinco copias de un repositorio, entre el 13 % y el 61 % de los archivos de prueba
+existentes no se pueden cargar, porque faltan paquetes que solo usan las pruebas.</p>
+<p>El envío puede llevar una skill con esos paquetes y dejarlos disponibles. Lo probamos en local, con el arnés
+real y un modelo simulado:</p>
+
+<svg viewBox="0 0 860 240" role="img" aria-label="Pruebas que se pueden cargar antes y después del oído" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <text x="20" y="26" font-size="13" font-weight="700" fill="#1a1a1a">Pruebas del repositorio que el agente puede cargar</text>
+  <text x="20" y="64" font-size="12" fill="#666">Tarea 1</text>
+  <rect x="90" y="50" width="194" height="16" fill="#9ca3af"/><text x="290" y="63" font-size="12" fill="#1a1a1a">1 032</text>
+  <rect x="90" y="70" width="581" height="16" fill="#059669"/><text x="677" y="83" font-size="12" fill="#1a1a1a">3 083</text>
+  <text x="20" y="124" font-size="12" fill="#666">Tarea 2</text>
+  <rect x="90" y="110" width="130" height="16" fill="#9ca3af"/><text x="226" y="123" font-size="12" fill="#1a1a1a">690</text>
+  <rect x="90" y="130" width="469" height="16" fill="#059669"/><text x="565" y="143" font-size="12" fill="#1a1a1a">2 486</text>
+  <text x="20" y="184" font-size="12" fill="#666">Tarea 3</text>
+  <rect x="90" y="170" width="552" height="16" fill="#9ca3af"/><text x="648" y="183" font-size="12" fill="#1a1a1a">2 927</text>
+  <rect x="90" y="190" width="700" height="16" fill="#059669"/><text x="796" y="203" font-size="12" fill="#1a1a1a">3 711</text>
+  <rect x="560" y="14" width="12" height="12" fill="#9ca3af"/><text x="578" y="25" font-size="12" fill="#666">antes</text>
+  <rect x="640" y="14" width="12" height="12" fill="#059669"/><text x="658" y="25" font-size="12" fill="#666">después del oído</text>
+  <text x="20" y="230" font-size="11" fill="#666">Sandbox local con contenedores, tres tareas de muestra. Errores de carga: de 301, 132 y 65 a 4, 3 y 4.</text>
+</svg>
+
+<div class="peligro">
+  <strong>Lo que este resultado no dice.</strong>
+  <ul>
+    <li>No es el entorno de Kaggle: falta repetirlo allá.</li>
+    <li>Son tres tareas.</li>
+    <li>Mide que el agente puede oír, no que resuelva más.</li>
+    <li>En los repositorios ocultos pueden faltar otros paquetes.</li>
+  </ul>
+</div>
+
+<h2 id="literatura">8 · Qué dice la literatura</h2>
+<p>Revisión hecha el 2026-10-04 por un revisor independiente con búsqueda web. Las referencias de la lista son
+las que el revisor abrió; hay que volver a abrir cada una antes de citarla en un artículo.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Afirmación de ZorzALL</th><th>Estado</th><th>Lo más cercano</th></tr>
+  <tr><td>Escuchar antes de actuar ayuda</td><td><span class="rol r-decide">ya observada</span></td><td>Un estudio de 9 374 trayectorias de 19 agentes: los que reúnen contexto antes de editar y validan aciertan más. Es correlación, y en modelos grandes</td></tr>
+  <tr><td>Construirlo rinde más que decirlo</td><td><span class="rol r-dato">abierta</span></td><td>No se encontró un experimento controlado. Hay un resultado en contra en modelos grandes: restringir herramientas bajó el costo y no cambió el acierto</td></tr>
+  <tr><td>Cantar: ayudante con contexto limpio</td><td><span class="rol r-decide">vecino cercano</span></td><td>Un trabajo detecta el tropiezo y relanza el mismo modelo sin historial: sube de 66,6 % a 71,8 %</td></tr>
+  <tr><td>Los conteos de la traza predicen el acierto</td><td><span class="rol r-cuenta">demostrada en general</span></td><td>Varios predictores, con exactitud de 89 a 97 %</td></tr>
+  <tr><td>Aprender del fallo dentro de la tarea</td><td><span class="rol r-decide">parcial</span></td><td>Monitores que corrigen en línea. La memoria entre tareas, en cambio, degradó el rendimiento en un estudio</td></tr>
+  <tr><td>Pasarle al ayudante la traza y no el texto del problema</td><td><span class="rol r-dato">sin evaluar</span></td><td>No se encontró ningún trabajo</td></tr>
+</table></div>
+<div class="tension"><strong>El dato que más pesa.</strong> Entre el 60 % y el 69 % de los fallos estudiados
+llegan a la función correcta y la editan mal. El cuello de botella no es ubicar: es comprobar.</div>
+<details>
+  <summary>Referencias abiertas por el revisor</summary>
+  <ul>
+    <li><a href="https://arxiv.org/abs/2604.02547">arXiv:2604.02547</a> · Beyond Resolution Rates</li>
+    <li><a href="https://arxiv.org/abs/2603.24631">arXiv:2603.24631</a> · Coherence Collapse</li>
+    <li><a href="https://arxiv.org/abs/2608.03222">arXiv:2608.03222</a> · Fail-Fast, Restart-Smart</li>
+    <li><a href="https://arxiv.org/abs/2609.02783">arXiv:2609.02783</a> · EarlyEval</li>
+    <li><a href="https://arxiv.org/abs/2605.15206">arXiv:2605.15206</a> · AgentStop</li>
+    <li><a href="https://arxiv.org/abs/2604.26102">arXiv:2604.26102</a> · SWE-Edit</li>
+    <li><a href="https://arxiv.org/abs/2601.14914">arXiv:2601.14914</a> · CodeDelegator</li>
+    <li><a href="https://arxiv.org/abs/2509.02360">arXiv:2509.02360</a> · SWE-PRM</li>
+    <li><a href="https://arxiv.org/abs/2407.01489">arXiv:2407.01489</a> · Agentless</li>
+    <li><a href="https://arxiv.org/abs/2405.15793">arXiv:2405.15793</a> · SWE-agent</li>
+    <li><a href="https://arxiv.org/abs/2303.11366">arXiv:2303.11366</a> · Reflexion</li>
+  </ul>
+  <p class="fuente">El resultado en contra (arXiv:2607.10569) el revisor lo vio solo por una fuente secundaria.</p>
+</details>
+
+<h2 id="concilio">9 · El concilio: lo que se cayó y lo que queda</h2>
+<p>Antes de gastar la cuota, tres revisores independientes intentaron refutar la idea: uno con la literatura, uno
+con estadística y simulaciones, y uno leyendo y ejecutando el arnés.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Lo que se había dicho</th><th>Qué encontró la revisión</th></tr>
+  <tr><td>«Una etapa sin herramienta de editar no puede escribir»</td><td>Falso: puede hacerlo con un comando</td></tr>
+  <tr><td>La regla de decisión «ruido más una tarea»</td><td>Mal planteada: se vuelve más exigente con más tareas. Con una mejora real de 10 puntos acertaría entre el 1 % y el 13 % de las veces</td></tr>
+  <tr><td>«Las sesiones con perfil zorzal se resuelven más»</td><td>En parte es una tautología: sin relación real saldría «apoyada» entre el 48 % y el 92 % de las veces</td></tr>
+  <tr><td>Comparar tres o cuatro configuraciones</td><td>No cabe en la cuota con potencia razonable</td></tr>
+  <tr><td>«Escuchar antes de actuar» como novedad</td><td>Ya está observado en modelos grandes</td></tr>
+</table></div>
+<div class="clave">
+  <strong>Lo que queda en pie.</strong> Una sola comparación: el arnés base con un texto de relleno, contra el
+  arnés ZorzALL, con los mismos topes. Con 103 tareas y dos pasadas por configuración, detectaría una mejora de 10
+  puntos ocho de cada diez veces. Tres veredictos posibles: apoyada, refutada o no concluyente.
+</div>
+
+<h2 id="validar">10 · Cómo se valida: historias, criterios y pruebas</h2>
+<p>Cada afirmación se escribe como una historia; su criterio de aceptación es una prueba que corre sola. Si
+alguien cambia la regla, la prueba falla.</p>
+<div class="grafo">
+  <span class="n">Hipótesis</span> →
+  <span class="n">Historia: quién necesita qué</span> →
+  <span class="n">Criterio de aceptación</span> →
+  <span class="n aqui">Prueba automática</span> →
+  <span class="n">Umbral congelado antes de los datos</span>
+</div>
+<div style="overflow-x:auto"><table>
+  <tr><th>Historia</th><th>Se acepta cuando</th></tr>
+  <tr><td>Clasificar una sesión por sus rasgos</td><td>Cada rasgo falla justo al cruzar su umbral</td></tr>
+  <tr><td>Leer cada hipótesis con una regla fijada antes</td><td>Devuelve apoyada, refutada o no evaluable según casos de prueba</td></tr>
+  <tr><td>Un informe antes de actuar: qué oí, qué vi, qué falta, la única acción</td><td>Tiene sus cuatro partes, nombra sus fuentes y propone una acción o ninguna</td></tr>
+  <tr><td>Usar solo conteos de la traza</td><td>Un registro con texto se rechaza</td></tr>
+  <tr><td>Usar solo tareas válidas</td><td>Las demás quedan fuera de la lectura</td></tr>
+  <tr><td>No cambiar los umbrales después de ver los datos</td><td>La huella del archivo de umbrales no cambió</td></tr>
+</table></div>
+<p class="fuente">39 pruebas en el repositorio público de Agents Learning Loops. La revisión de método pidió cambios
+que aún no se aplican.</p>
+
+<h2 id="sabemos">11 · Qué sabemos y qué no</h2>
 <div style="overflow-x:auto"><table>
   <tr><th>Afirmación</th><th>Estado</th></tr>
   <tr><td>El envío está bien armado y el agente opera en Kaggle</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td>Nuestro 4 está dentro del ruido del kit público</td><td><span class="rol r-cuenta">calculado</span></td></tr>
-  <tr><td>En el notebook, 71 de 129 tareas sirven para medir</td><td><span class="rol r-cuenta">medido una vez</span></td></tr>
-  <tr><td>El límite que aprieta es el de llamadas</td><td><span class="rol r-decide">indicio, 2 tareas</span></td></tr>
-  <tr><td>El entorno explica 34 de las 55 tareas que no sirven</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td>Por qué fallan las otras 21</td><td><span class="rol r-dato">sin medir</span></td></tr>
-  <tr><td>El diseño de dos agentes es mejor que el nuestro</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>No hay límite oficial por tarea; solo 12 horas en total</td><td><span class="rol r-cuenta">leído en las reglas</span></td></tr>
+  <tr><td>En el notebook, 71 de 129 tareas sirven para medir; 103 con tres paquetes</td><td><span class="rol r-cuenta">medido dos veces</span></td></tr>
+  <tr><td>Un envío puede llevar su propio oído</td><td><span class="rol r-decide">medido solo en local</span></td></tr>
+  <tr><td>El límite que aprieta al agente es el de llamadas</td><td><span class="rol r-decide">indicio, 2 tareas</span></td></tr>
+  <tr><td>En qué entorno se valida la nota</td><td><span class="rol r-dato">no se sabe</span></td></tr>
+  <tr><td>ZorzALL resuelve más tareas que el arnés base</td><td><span class="rol r-dato">sin medir</span></td></tr>
   <tr><td>Cuánto cambia el resultado entre dos corridas iguales</td><td><span class="rol r-dato">sin medir</span></td></tr>
 </table></div>
 
@@ -431,10 +721,12 @@ con GPU espera entre 3 y 8 horas en cola.</p>
     <li>Subir un notebook a la cola de GPU sin probar sus rutas en local.</li>
     <li>Perder el mensaje de error y tener que repetir la prueba.</li>
     <li>Afirmar algo del entorno oculto sin evidencia.</li>
+    <li>Fijar una regla de decisión sin simularla.</li>
+    <li>Resubir cuatro veces el mismo notebook antes de tener un resultado.</li>
   </ul>
 </div>
 
-<h2>7 · Para resolver en papel</h2>
+<h2 id="papel">12 · Para resolver en papel</h2>
 
 <p><strong>P1.</strong> Mides en 15 tareas. A resuelve 3 y B resuelve 5. ¿Puedes afirmar que B es mejor?</p>
 <details class="resp">
@@ -482,6 +774,8 @@ tipo de error de validación es ese?</p>
     <li>□ ¿Las tareas usadas sirven para medir?</li>
   </ul>
 </div>
+
+
 
 <div class="vecino">
   El código, el pre-registro y el borrador del artículo están en el repositorio público de Agents Learning Loops:
@@ -588,5 +882,6 @@ tipo de error de validación es ese?</p>
   actualizar();
 })();
 </script>
+
 </body>
 </html>
