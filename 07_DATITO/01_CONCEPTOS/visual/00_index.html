@@ -43,6 +43,7 @@ distinguir conceptos vecinos, calcular a mano e interpretar el resultado
 <p><a class="boton" href="01_fundamentos.html">Comenzar la Clase 1 →</a>
 <a class="boton alt" id="seguir" href="#curso-clases">Seguir donde quedé</a>
 <a class="boton alt" href="#repaso">Repaso del certamen</a>
+<a class="boton alt" href="#desafios">Desafío aplicado</a>
 <a class="boton alt" href="#dudas">Dudas resueltas</a></p>
 <p>Tu avance (marcas de «Terminé esta clase» en este navegador): <b id="avance">0</b> de
 <b id="total-clases">22</b> clases disponibles.</p>
@@ -63,6 +64,14 @@ es el estado registrado en <code>progreso.yaml</code> al generar esta página.</
 <p><b>Conceptos cubiertos (21 de 21):</b> Fundamentos de Ciencia de Datos (C1), Datos, filas, columnas, features y target (C2), Analisis exploratorio de datos (EDA) (C3), Limpieza y preparacion de datos (C4), Regresion (C5), Train / validation / test (C7), Validacion cruzada (C8), Generalizacion (C9), Overfitting y underfitting (C10), Clasificacion (C11), Matriz de confusion (C12), Accuracy, precision, recall y F1 (C13), ROC y AUC (C14), Arboles de decision (C15), Random Forest (C16), Gradient Boosting (C16), Ensembles (C16), Redes neuronales (C17), Deep learning (C18), Modelos de lenguaje (LLM) (C18), Agentes de IA (C18).</p>
 <p><b>Conceptos sin clase:</b> ninguno.
 <b>Clases pendientes de construir:</b> Clase 19 · Repaso integrado: el proyecto Melbourne.</p>
+
+<h2 id="desafios">0b · Desafío aplicado: el curso fuera del aula</h2>
+<p>Un caso real donde se usan las ideas del curso: validación que no se parece a la evaluación, ruido de una
+métrica con pocas observaciones y comparación de dos modelos. No entra al certamen.</p>
+<table><tr><th>Desafío</th><th>Qué se practica</th><th>Clases que conviene tener</th></tr>
+<tr><td><a href="../../../13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html">Kaggle: un agente que
+corrige código con Gemma 4</a></td><td>Leer una nota como un conteo, calcular su error estándar y decidir si
+una diferencia es real o es ruido</td><td>Train / validation / test · Generalización</td></tr></table>
 
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de
@@ -126,7 +135,7 @@ document.getElementById('total-clases').textContent=total;
 document.getElementById('barra').style.width=(total?Math.round(100*n/total):0)+'%';
 if(seguir)document.getElementById('seguir').setAttribute('href',seguir);}catch(e){}})();</script>
 
-<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> el 2026-09-27 desde
+<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> el 2026-10-04 desde
 <code>07_DATITO/clases.yaml</code>, <code>07_DATITO/grafo.yaml</code>, <code>07_DATITO/curriculum.yaml</code>, <code>07_DATITO/06_AUDITORIAS/patron_evaluacion.md</code>
 y <code>05_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
 </main>
