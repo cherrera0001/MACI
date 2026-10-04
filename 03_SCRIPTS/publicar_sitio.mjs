@@ -1,5 +1,6 @@
-// Arma public/ para maci.c4a.cl: solo el material del curso, con la misma
-// estructura relativa que 07_DATITO/ para que los enlaces sigan valiendo.
+// Arma public/ para maci.c4a.cl: el material del curso, con la misma
+// estructura relativa que 07_DATITO/ para que los enlaces sigan valiendo,
+// más las páginas de DESAFIOS, que viven fuera de 07_DATITO/.
 // Un enlace a algo que no se publica (transcripciones, YAML, auditorías) se
 // convierte en texto: en línea no queda ningún 404.
 //   node 03_SCRIPTS/publicar_sitio.mjs
@@ -21,6 +22,14 @@ const PUBLICAR = [
   ["04_EJERCICIOS/cuadernillos", () => true],
 ];
 const PORTADA = "01_CONCEPTOS/visual/00_index.html";
+
+// [archivo relativo a la raíz del repositorio, destino relativo a public/]
+// Son páginas autocontenidas: no enlazan a otros archivos del repositorio.
+const DESAFIOS = [
+  ["13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html", "desafios/kaggle_gemma4.html"],
+];
+const NAV_INI = "<!-- datito:nav:inicio -->";
+const NAV_FIN = "<!-- datito:nav:fin -->";
 
 function copiarCarpeta(rel, filtro) {
   const desde = path.join(ORIGEN, rel);
@@ -54,6 +63,39 @@ function existe(archivo, href) {
 
 fs.rmSync(SALIDA, { recursive: true, force: true });
 for (const [rel, filtro] of PUBLICAR) copiarCarpeta(rel, filtro);
+
+// Cada desafío se copia a su destino con un enlace de vuelta al índice, y el
+// enlace que le apunta desde las páginas del curso se reescribe a ese destino.
+const reescribir = [];
+for (const [desde, hacia] of DESAFIOS) {
+  const origen = path.join(RAIZ, desde);
+  if (!fs.existsSync(origen)) throw new Error(`falta el desafío ${desde}`);
+  const destino = path.join(SALIDA, hacia);
+  fs.mkdirSync(path.dirname(destino), { recursive: true });
+  const portada = path.relative(path.dirname(destino), path.join(SALIDA, PORTADA)).split(path.sep).join("/");
+  const html = fs.readFileSync(origen, "utf8");
+  const i = html.indexOf(NAV_INI);
+  const j = html.indexOf(NAV_FIN);
+  if (i < 0 || j < i) throw new Error(`${desde} no tiene los marcadores de navegación`);
+  const nav = `${NAV_INI}\n<p class="fuente"><a href="${portada}">← Índice del curso</a></p>\n`;
+  fs.writeFileSync(destino, html.slice(0, i) + nav + html.slice(j));
+  reescribir.push([desde, hacia]);
+}
+for (const archivo of paginas(SALIDA)) {
+  let html = fs.readFileSync(archivo, "utf8");
+  let cambio = false;
+  for (const [desde, hacia] of reescribir) {
+    const origenRel = path
+      .relative(path.dirname(path.join(ORIGEN, path.relative(SALIDA, archivo))), path.join(RAIZ, desde))
+      .split(path.sep).join("/");
+    const destinoRel = path.relative(path.dirname(archivo), path.join(SALIDA, hacia)).split(path.sep).join("/");
+    if (html.includes(`href="${origenRel}"`)) {
+      html = html.split(`href="${origenRel}"`).join(`href="${destinoRel}"`);
+      cambio = true;
+    }
+  }
+  if (cambio) fs.writeFileSync(archivo, html);
+}
 
 let convertidos = 0;
 const ENLACE = /<a\b([^>]*?)\bhref="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g;

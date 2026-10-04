@@ -890,6 +890,7 @@ distinguir conceptos vecinos, calcular a mano e interpretar el resultado
 <p>{('<a class="boton" href="' + primera["visual"] + '">Comenzar la Clase 1 →</a>') if primera else ""}
 <a class="boton alt" id="seguir" href="#curso-clases">Seguir donde quedé</a>
 <a class="boton alt" href="#repaso">Repaso del certamen</a>
+<a class="boton alt" href="#desafios">Desafío aplicado</a>
 <a class="boton alt" href="#dudas">Dudas resueltas</a></p>
 <p>Tu avance (marcas de «Terminé esta clase» en este navegador): <b id="avance">0</b> de
 <b id="total-clases">{len(CURSO["con_visual"])}</b> clases disponibles.</p>
@@ -910,6 +911,14 @@ es el estado registrado en <code>progreso.yaml</code> al generar esta página.</
 <p><b>Conceptos cubiertos ({len(cubiertos)} de {len(nombres)}):</b> {lista_cubiertos}.</p>
 <p><b>Conceptos sin clase:</b> {(", ".join(esc(nombres[c]) for c in sin_clase)) or "ninguno"}.
 <b>Clases pendientes de construir:</b> {txt_pend}.</p>
+
+<h2 id="desafios">0b · Desafío aplicado: el curso fuera del aula</h2>
+<p>Un caso real donde se usan las ideas del curso: validación que no se parece a la evaluación, ruido de una
+métrica con pocas observaciones y comparación de dos modelos. No entra al certamen.</p>
+<table><tr><th>Desafío</th><th>Qué se practica</th><th>Clases que conviene tener</th></tr>
+<tr><td><a href="{desde_visual("13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html")}">Kaggle: un agente que
+corrige código con Gemma 4</a></td><td>Leer una nota como un conteo, calcular su error estándar y decidir si
+una diferencia es real o es ruido</td><td>Train / validation / test · Generalización</td></tr></table>
 
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de

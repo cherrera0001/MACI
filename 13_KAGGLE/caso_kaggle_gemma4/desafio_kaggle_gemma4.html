@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<!--
+  TEMPLATE CANÓNICO DATITO — ÚNICO permitido para /datito-visual
+  ------------------------------------------------------------------
+  Reglas (Agents Learning Loop — lecciones VIZ-FAIL-001 y VIZ-FAIL-002):
+  1. Copiar ESTE archivo. No inventar CSS/layout desde cero.
+  2. Reemplazar solo: <title>, h1, .sub, y el cuerpo dentro de <main> tras la nav.
+  3. PROHIBIDO: CDN, Chart.js remoto, fonts.google, linear-gradient púrpura (#667eea/#764ba2).
+  4. Gráficos: <canvas> + JS plano embebido, o SVG inline. Sin red.
+  5. Dejar intactos: :root tokens, clases .clave/.nota/.peligro/.cita/.panel/details.resp
+  6. Nav: solo marcadores datito:nav — construir_navegacion.py los rellena.
+  7. Toda pregunta lleva <details class="resp"> con respuesta + resolución + error típico + G4.
+-->
+<title>Nuevo desafío: Kaggle Gemma 4 · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<!-- La barra la inyecta 03_SCRIPTS/construir_navegacion.py. No la escribas a mano. -->
+<!-- datito:nav:fin -->
+
+
+
+<h1>Nuevo desafío: un agente que corrige código, medido en Kaggle</h1>
+<p class="sub">Google – The Gemma 4 Developer Agent Competition · caso de Agents Learning Loops · estado al 2026-10-04, 22:00 UTC</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso, leer una nota de la tabla como un número
+  de tareas, y decidir si la diferencia entre dos resultados es real o es ruido.
+</div>
+
+<div class="grafo">
+  <span class="n">Train / validation / test</span> →
+  <span class="n">Generalización</span> →
+  <span class="n aqui">Desafío Kaggle: medir antes de mejorar</span> →
+  <span class="n">Comparar dos modelos</span>
+</div>
+
+<h2>El caso en seis preguntas</h2>
+
+<h3>1 · ¿Qué plantea Google como desafío?</h3>
+<div class="cita">
+  «¿Y si cada desarrollador pudiera contar con un agente autónomo igual de capaz sin conexión, en hardware de
+  consumo?»
+  <span class="f">Resumen oficial de la competencia, traducido · kaggle.com/competitions/gemma-4-developer-agent</span>
+</div>
+<p>Los mejores agentes de programación dependen de modelos enormes en la nube. Google pide lo contrario: tomar
+un modelo abierto y pequeño, <strong>Gemma 4</strong>, y convertirlo en un agente fiable que navegue un
+repositorio y proponga la corrección de un problema real.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Pista</th><th>Qué se entrega</th><th>Cómo se juzga</th><th>Premios</th><th>Cierre</th></tr>
+  <tr><td>Código</td><td>La configuración de un agente, en un zip</td><td>Fracción de tareas ocultas resueltas</td><td>37 000, 18 000 y 10 000 USD</td><td>2026-12-02</td></tr>
+  <tr><td>Artículo</td><td>Un escrito con investigación no publicada</td><td>Novedad, calidad, relevancia, verificabilidad y claridad; de 0 a 5 cada una</td><td>35 000 USD entre tres</td><td>2026-11-12</td></tr>
+</table></div>
+<p>Google nombra el camino que espera: <strong>post-entrenar</strong> el modelo (adaptadores, aprendizaje por
+refuerzo) y aprovechar los grafos de código que entrega. También acepta trabajos sobre tareas y formas de
+evaluar.</p>
+
+<h3>2 · ¿Qué pregunta buscamos resolver?</h3>
+<p>Tenemos dos, y la segunda es condición de la primera.</p>
+<div class="clave">
+  <strong>La pregunta de Agents Learning Loops.</strong> Si un agente convierte su experiencia en
+  instrucciones para sí mismo, ¿resuelve más tareas después?
+</div>
+<div class="clave">
+  <strong>La pregunta que hay que responder antes.</strong> ¿Qué diferencia entre dos configuraciones de un
+  agente se puede distinguir de lo que cambia al repetir una sola?
+</div>
+<p>Sin la segunda, cualquier «mejora» de la primera puede ser azar. Por eso el caso empezó midiendo el
+instrumento y no al agente.</p>
+
+<h3>3 · ¿Qué datos usamos?</h3>
+<div style="overflow-x:auto"><table>
+  <tr><th>Dato</th><th>De dónde sale</th><th>Para qué lo usamos</th></tr>
+  <tr><td>129 tareas públicas: problema, solución oficial y pruebas</td><td>Competencia</td><td>Medir al agente en local. La solución oficial solo se usa para comprobar que la tarea sirve; nunca entra en las instrucciones</td></tr>
+  <tr><td>Una copia del repositorio por tarea</td><td>Competencia</td><td>El código que el agente explora y edita</td></tr>
+  <tr><td>Grafos de código y representaciones numéricas</td><td>Competencia</td><td>Herramientas de navegación del agente</td></tr>
+  <tr><td>Tabla pública: 1 709 equipos</td><td>API de Kaggle</td><td>Saber dónde estamos y cuánto ruido tiene una nota</td></tr>
+  <tr><td>112 notebooks públicos</td><td>API de Kaggle</td><td>Qué configuran los demás y qué nota declaran</td></tr>
+  <tr><td>Logs y salidas de nuestras corridas</td><td>Propios</td><td>Tiempos, tokens, llamadas y causa de cada fallo</td></tr>
+</table></div>
+<div class="nota">Las tareas con las que se pone la nota son otras: unas 120, de repositorios privados. Nadie
+las ve.</div>
+
+<h3>4 · ¿Qué ofrecemos?</h3>
+<p>Hoy no ofrecemos una nota alta. Ofrecemos tres cosas que le sirven a cualquier participante:</p>
+<ol class="pasos">
+  <li><strong>Una medición del instrumento.</strong> En el entorno del notebook oficial, solo 71 de las 129
+  tareas públicas permiten comprobar una solución. En 34 de las que fallan, la causa es que falta un paquete
+  que solo usan las pruebas.</li>
+  <li><strong>Un método.</strong> Medir el ruido antes de comparar, escribir la predicción antes de correr y
+  conservar solo lo que supera el ruido.</li>
+  <li><strong>Herramientas abiertas.</strong> Un simulacro que valida un envío sin GPU, un chequeo previo de
+  notebooks y un rescate de todo lo que Kaggle entrega. Están en el repositorio público de ALL.</li>
+</ol>
+
+<h3>5 · ¿Qué hemos enviado?</h3>
+<div class="panel">
+  <p>Un solo archivo, enviado dos veces. Es el kit oficial con cuatro ajustes, sin nada entrenado.</p>
+  <div style="overflow-x:auto"><table>
+    <tr><th>Parte</th><th>Qué contiene</th></tr>
+    <tr><td>Agente principal</td><td>Instrucciones del kit y nueve herramientas: ejecutar comandos, leer, editar, escribir, entregar y consultar el grafo</td></tr>
+    <tr><td>Un ayudante</td><td>Analiza el código para localizar la causa</td></tr>
+    <tr><td>Presupuesto por tarea</td><td>4 minutos, 40 llamadas a herramientas, 100 turnos, 60 segundos por comando</td></tr>
+    <tr><td>Generación</td><td>Hasta 8 192 tokens; razonamiento apagado</td></tr>
+    <tr><td>Adaptadores entrenados</td><td>Ninguno</td></tr>
+  </table></div>
+  <div class="met">
+    <div><div class="n">0,06</div><div class="e">primer envío: 4 de 58</div></div>
+    <div><div class="n">—</div><div class="e">segundo envío, sin nota aún</div></div>
+    <div><div class="n">0</div><div class="e">artículos enviados</div></div>
+  </div>
+</div>
+<p>El segundo envío es el mismo archivo a propósito: dos notas del mismo envío muestran cuánto ruido tiene la
+tabla.</p>
+
+<h3>6 · ¿Cuál es nuestro artículo y cuál la hipótesis?</h3>
+<p><strong>Título del borrador:</strong> «Agents Learning Loops con Gemma 4: cuánto se puede creer una
+diferencia antes de convertir una lección en instrucción del agente». Aún no se ha enviado a la pista de
+artículo.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Qué afirma o predice</th><th>Estado</th></tr>
+  <tr><td>Solo 71 de 129 tareas públicas sirven para medir en el notebook oficial</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>Con 42 tareas de prueba, una diferencia menor que 14 puntos porcentuales no se puede declarar</td><td><span class="rol r-cuenta">calculado</span></td></tr>
+  <tr><td>P1 · Al repetir la misma configuración, algunas tareas cambian de resultado</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>P2 · La mayoría de las tareas no resueltas se quedan sin tiempo o sin presupuesto</td><td><span class="rol r-decide">indicio en contra del tiempo, 2 tareas</span></td></tr>
+  <tr><td>P3 · Se resuelve menos de la mitad de las tareas</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>Resultado previo de ALL, sin modelo de lenguaje: cuando el problema nombra la parte equivocada, la memoria acierta 0 de 18 y sin memoria 6 de 18</td><td><span class="rol r-cuenta">medido</span></td></tr>
+</table></div>
+<div class="tension">
+  <strong>Tres tensiones que el artículo debe resolver.</strong>
+  <ul>
+    <li>El borrador todavía dice «no hemos ejecutado Gemma 4». Ya hay una corrida y vienen más.</li>
+    <li>La hipótesis propia de ALL (instrucciones derivadas de experiencia frente a un texto de relleno) se
+    retiró del artículo: con 42 tareas no hay potencia para detectar una mejora pequeña.</li>
+    <li>Google pide post-entrenar el modelo. Nosotros no entrenamos nada. Nuestro lugar es el tema de tareas y
+    evaluación.</li>
+  </ul>
+</div>
+
+<h2>1 · Cómo funciona: qué te dan y qué te piden</h2>
+<p>No entregas predicciones. Entregas un archivo que describe un <strong>agente</strong>: sus instrucciones, sus
+herramientas y sus ayudantes. Kaggle pone a ese agente, con el modelo Gemma 4, a corregir errores reales en
+repositorios de Python.</p>
+
+<div class="panel">
+  <div class="lbl">Qué pasa con cada tarea</div>
+  <ol class="pasos">
+    <li><strong>Lee</strong> el problema que reportó un usuario.</li>
+    <li><strong>Explora</strong> el código con sus herramientas.</li>
+    <li><strong>Edita</strong> uno o más archivos.</li>
+    <li><strong>Entrega</strong> el cambio, o se le acaba el presupuesto.</li>
+    <li>Unas <strong>pruebas ocultas</strong> dicen si quedó resuelto: sí o no.</li>
+  </ol>
+  <div class="met">
+    <div><div class="n">129</div><div class="e">tareas públicas</div></div>
+    <div><div class="n">~120</div><div class="e">tareas ocultas</div></div>
+    <div><div class="n">58</div><div class="e">en la tabla pública</div></div>
+    <div><div class="n">12 h</div><div class="e">para todo el envío</div></div>
+    <div><div class="n">1</div><div class="e">envío por día</div></div>
+  </div>
+</div>
+
+<div style="overflow-x:auto"><table class="simb">
+  <tr><th>Pieza</th><th>Qué es</th><th>Quién la decide</th></tr>
+  <tr><td>modelo</td><td>Gemma 4, igual para todos</td><td><span class="rol r-dato">dato</span></td></tr>
+  <tr><td>arnés</td><td>El programa que corre al agente y verifica el cambio</td><td><span class="rol r-dato">dato</span></td></tr>
+  <tr><td>presupuesto</td><td>Minutos, llamadas a herramientas y turnos por tarea</td><td><span class="rol r-decide">tú decides</span></td></tr>
+  <tr><td>instrucciones</td><td>Lo que el agente lee antes de empezar</td><td><span class="rol r-decide">tú decides</span></td></tr>
+  <tr><td>nota</td><td>Tareas resueltas ÷ tareas</td><td><span class="rol r-cuenta">se calcula</span></td></tr>
+</table></div>
+
+<div class="tension">
+  <strong>La trampa del desafío.</strong> Practicas con 129 tareas de 4 repositorios conocidos. Te evalúan con
+  repositorios privados que nunca ves. Es el mismo problema de entrenar con un año y predecir el siguiente.
+</div>
+
+<h2>2 · Dónde estamos en la tabla</h2>
+<p>La tabla trunca la nota a dos decimales. Conviene leerla en tareas: 0,06 son 4 de 58.</p>
+<div class="panel">
+  <canvas id="tabla" width="860" height="300" role="img" aria-label="Equipos por número de tareas resueltas"></canvas>
+  <p class="fuente">Tabla pública leída por API el 2026-10-04, 21:04 UTC · 1 709 equipos · barra roja: nuestro envío</p>
+  <div class="met">
+    <div><div class="n">4</div><div class="e">nuestro envío</div></div>
+    <div><div class="n">5</div><div class="e">mediana</div></div>
+    <div><div class="n">14</div><div class="e">máximo</div></div>
+    <div><div class="n">3 a 8</div><div class="e">notebooks públicos</div></div>
+  </div>
+</div>
+
+<h2>3 · ¿Una diferencia es real o es ruido?</h2>
+<p>Es la pregunta de todo el caso. Mueve los controles y mira si los dos intervalos se separan.</p>
+
+<div class="pred" id="pred1">
+  <div class="q">Antes de mover nada: un envío resuelve 4 de 58 y otro 6 de 58. ¿El segundo es mejor?</div>
+  <button type="button" data-v="si">Sí, resolvió más</button>
+  <button type="button" data-v="no">No se puede afirmar</button>
+  <div class="veredicto" id="pred1v">Compruébalo abajo con A = 4, B = 6 y 58 tareas.</div>
+</div>
+
+<div class="panel">
+  <p>
+    <label>Tareas del conjunto:
+      <select id="n" style="max-width:100%">
+        <option value="58">58 · tabla pública</option>
+        <option value="15">15 · nuestro conjunto de desarrollo</option>
+        <option value="71">71 · tareas públicas que sirven para medir</option>
+        <option value="129">129 · todas las públicas</option>
+      </select>
+    </label>
+  </p>
+  <p><label>A resuelve <strong id="va">4</strong> <input type="range" id="a" min="0" max="58" value="4" style="width:60%"></label></p>
+  <p><label>B resuelve <strong id="vb">6</strong> <input type="range" id="b" min="0" max="58" value="6" style="width:60%"></label></p>
+  <canvas id="ruido" width="860" height="230" role="img" aria-label="Intervalos de confianza de A y B"></canvas>
+  <div class="met">
+    <div><div class="n" id="ea">–</div><div class="e">error estándar de A, en tareas</div></div>
+    <div><div class="n" id="dif">–</div><div class="e">diferencia B − A</div></div>
+    <div><div class="n" id="ed">–</div><div class="e">error estándar de la diferencia</div></div>
+    <div><div class="n" id="z">–</div><div class="e">diferencia ÷ su error</div></div>
+  </div>
+  <p id="veredicto" class="nota"></p>
+</div>
+
+<div class="ecu">
+  <div class="f">EE = √( p · (1 − p) / n )</div>
+  <p><strong>Qué resuelve:</strong> cuánto cambiaría la tasa si repitieras la medición con otras tareas.
+  <strong>p</strong> es la tasa observada (dato). <strong>n</strong> es el número de tareas (lo decide el
+  concurso, o tú al elegir tu conjunto). Multiplicado por n, queda en tareas.</p>
+</div>
+
+<details>
+  <summary>Por qué en nuestras pruebas comparamos de otra forma</summary>
+  <p>La calculadora trata A y B como dos muestras separadas. En nuestras corridas, A y B resuelven
+  <strong>las mismas tareas</strong>. Ahí conviene mirar solo las tareas donde difieren, y comparar esa cantidad
+  con las que cambian cuando se repite la misma configuración dos veces. Por eso cada corrida incluye la
+  configuración enviada dos veces.</p>
+</details>
+
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> no se puede afirmar que el segundo sea mejor.</p>
+  <p><strong>Resolución:</strong> con 4 de 58, p = 0,069 y EE = √(0,069 · 0,931 / 58) = 0,033, es decir 1,9 tareas.
+  Con 6 de 58, EE = 2,3 tareas. El error de la diferencia es √(1,9² + 2,3²) = 3,0 tareas. La diferencia es 2:
+  menos de un error estándar.</p>
+  <p><strong>Error típico:</strong> leer la tabla como un ranking exacto. Entre 3 y 8 tareas, casi todos los
+  envíos públicos son indistinguibles.</p>
+  <p class="fuente">[DATITO] · cifras de la tabla pública del 2026-10-04</p>
+</details>
+
+<h2>4 · Cómo hemos iterado: once pruebas</h2>
+<p>Cada prueba responde una sola pregunta. Las que no necesitan el modelo se hacen sin GPU, porque una corrida
+con GPU espera entre 3 y 8 horas en cola.</p>
+
+<div style="overflow-x:auto"><table>
+  <tr><th>#</th><th>Pregunta</th><th>Dónde</th><th>Resultado</th><th>Estado</th></tr>
+  <tr><td class="num">1</td><td>¿Cuánto da el kit ajustado?</td><td>Envío</td><td>4 de 58</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">2</td><td>¿Arranca el modelo en un notebook propio?</td><td>GPU</td><td>Cayó dos veces y el error se perdió. Ahora se guarda</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
+  <tr><td class="num">3</td><td>¿El envío está bien armado?</td><td>Sin GPU</td><td>8 de 8 comprobaciones con un modelo falso</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">4</td><td>¿Las tareas públicas sirven para medir?</td><td>CPU</td><td>71 de 129</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">5</td><td>¿Qué hace el agente con el modelo real?</td><td>GPU</td><td>Tres intentos. Carga en 12 min 45 s; 0 de 2 tareas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">6</td><td>¿Se puede cancelar una corrida en cola?</td><td>API</td><td>Sí, con una llamada interna</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
+  <tr><td class="num">7</td><td>¿Qué hacen los demás?</td><td>API</td><td>112 notebooks públicos leídos</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">8</td><td>¿Por qué 55 tareas no sirven?</td><td>Código</td><td>El entorno del notebook no instala dependencias por tarea</td><td><span class="rol r-cuenta">confirmado en 34</span></td></tr>
+  <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">corriendo</span></td></tr>
+  <tr><td class="num">10</td><td>¿Cuál es el error real de las 55?</td><td>CPU</td><td>En 34 falta un paquete que solo usan los tests. Quedan 21 sin explicar</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">en cola</span></td></tr>
+</table></div>
+
+<details>
+  <summary>Prueba 4 en detalle: medir el instrumento antes que al agente</summary>
+  <p>Cada tarea se corrió dos veces: sin cambio y con la solución oficial. Sirve si falla sin cambio y pasa con
+  la solución.</p>
+  <div style="overflow-x:auto"><table>
+    <tr><th>Repositorio</th><th>Tareas</th><th>Sirven</th></tr>
+    <tr><td>rich</td><td class="num">48</td><td class="num">42</td></tr>
+    <tr><td>fastapi</td><td class="num">67</td><td class="num">29</td></tr>
+    <tr><td>requests</td><td class="num">13</td><td class="num">0</td></tr>
+    <tr><td>httpx</td><td class="num">1</td><td class="num">0</td></tr>
+  </table></div>
+  <p>Otro participante, en su propio entorno y reparando dependencias, obtiene 114. Las dos cifras pueden ser
+  correctas: miden entornos distintos.</p>
+</details>
+
+<details>
+  <summary>Prueba 5 en detalle: ocho horas perdidas por una ruta de archivos</summary>
+  <p>El primer intento esperó 8 h 20 min en cola y se detuvo al empezar: Kaggle monta los datos en dos
+  disposiciones distintas y el notebook solo conocía una. Desde entonces, una guardia al inicio busca los datos
+  en ambas y se prueba en local antes de subir.</p>
+  <div class="met">
+    <div><div class="n">57</div><div class="e">tokens por turno</div></div>
+    <div><div class="n">9 900</div><div class="e">tokens de entrada por petición</div></div>
+    <div><div class="n">1,6 min</div><div class="e">por tarea, de 4</div></div>
+    <div><div class="n">39 de 40</div><div class="e">llamadas en la tarea 1</div></div>
+  </div>
+  <p>Yo había predicho que el agente se quedaría sin tiempo. No fue así: se quedó sin llamadas, con más de la
+  mitad del tiempo libre.</p>
+</details>
+
+<details>
+  <summary>La lección de cada prueba, en una línea</summary>
+  <div style="overflow-x:auto"><table>
+    <tr><th>#</th><th>Lección</th></tr>
+    <tr><td class="num">1</td><td>Leer el foro antes de enviar. El kit sin cambios habría desperdiciado el envío del día.</td></tr>
+    <tr><td class="num">2</td><td>Un fallo sin su mensaje de error obliga a repetir la prueba. Guardar el error es parte de la prueba.</td></tr>
+    <tr><td class="num">3</td><td>«El envío está mal armado» y «el modelo no resuelve» son preguntas distintas. La primera no necesita GPU.</td></tr>
+    <tr><td class="num">4</td><td>Antes de medir al agente, medir el instrumento.</td></tr>
+    <tr><td class="num">5</td><td>Todo lo que pueda fallar sin el modelo se prueba en local antes de entrar a la cola.</td></tr>
+    <tr><td class="num">6</td><td>Con dos plazas de GPU, saber cancelar vale tanto como saber lanzar.</td></tr>
+    <tr><td class="num">7</td><td>Los notebooks públicos son datos. Leerlos el primer día habría ahorrado una semana.</td></tr>
+    <tr><td class="num">8</td><td>Cuando el instrumento da un resultado raro, leer su código.</td></tr>
+    <tr><td class="num">10</td><td>Dos cruces indirectos de datos no separaron nada. Leer el mensaje de error lo resolvió en 25 minutos.</td></tr>
+  </table></div>
+</details>
+
+<div class="pred" id="pred2">
+  <div class="q">El agente usó 39 de 40 llamadas y le sobró la mitad del tiempo. Si le damos 100 llamadas, ¿resolverá más tareas?</div>
+  <button type="button" data-v="si">Sí</button>
+  <button type="button" data-v="no">No</button>
+  <button type="button" data-v="ns">No se sabe todavía</button>
+  <div class="veredicto" id="pred2v">Es la prueba 11 y aún no corre. Anota tu respuesta: la comparamos con el resultado.</div>
+</div>
+
+<h2>5 · Las cinco reglas del ciclo</h2>
+<ol class="pasos">
+  <li><strong>Un cambio por corrida.</strong> Con dos cambios no sabes cuál actuó.</li>
+  <li><strong>La predicción se escribe antes.</strong> Así el resultado puede contradecirte.</li>
+  <li><strong>Un cambio se conserva solo si supera el ruido.</strong> El ruido se mide repitiendo lo mismo.</li>
+  <li><strong>Sin GPU todo lo que se pueda.</strong> Un error de rutas no se descubre tras ocho horas de cola.</li>
+  <li><strong>Se rescata todo.</strong> Logs, salidas, tabla y notebooks públicos son datos.</li>
+</ol>
+
+<h2>6 · Qué sabemos y qué no</h2>
+<div style="overflow-x:auto"><table>
+  <tr><th>Afirmación</th><th>Estado</th></tr>
+  <tr><td>El envío está bien armado y el agente opera en Kaggle</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>Nuestro 4 está dentro del ruido del kit público</td><td><span class="rol r-cuenta">calculado</span></td></tr>
+  <tr><td>En el notebook, 71 de 129 tareas sirven para medir</td><td><span class="rol r-cuenta">medido una vez</span></td></tr>
+  <tr><td>El límite que aprieta es el de llamadas</td><td><span class="rol r-decide">indicio, 2 tareas</span></td></tr>
+  <tr><td>El entorno explica 34 de las 55 tareas que no sirven</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>Por qué fallan las otras 21</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>El diseño de dos agentes es mejor que el nuestro</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>Cuánto cambia el resultado entre dos corridas iguales</td><td><span class="rol r-dato">sin medir</span></td></tr>
+</table></div>
+
+<div class="peligro">
+  <strong>Errores que este caso ya cometió.</strong>
+  <ul>
+    <li>Recomendar un envío sin leer el foro.</li>
+    <li>Subir un notebook a la cola de GPU sin probar sus rutas en local.</li>
+    <li>Perder el mensaje de error y tener que repetir la prueba.</li>
+    <li>Afirmar algo del entorno oculto sin evidencia.</li>
+  </ul>
+</div>
+
+<h2>7 · Para resolver en papel</h2>
+
+<p><strong>P1.</strong> Mides en 15 tareas. A resuelve 3 y B resuelve 5. ¿Puedes afirmar que B es mejor?</p>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> no.</p>
+  <p><strong>Resolución:</strong> EE de A = √(0,20 · 0,80 / 15) = 0,103, es decir 1,5 tareas. EE de B =
+  √(0,33 · 0,67 / 15) = 0,122, es decir 1,8 tareas. Error de la diferencia: √(1,5² + 1,8²) = 2,4 tareas.
+  La diferencia es 2.</p>
+  <p><strong>Error típico:</strong> creer que con pocas tareas una diferencia de 2 es grande. Con pocas tareas el
+  ruido también es grande.</p>
+  <p class="fuente">[DATITO]</p>
+</details>
+
+<p><strong>P2.</strong> Medimos en un repositorio público y la nota se pone sobre repositorios privados. ¿Qué
+tipo de error de validación es ese?</p>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> la validación no representa a la población donde se evalúa. La estimación local
+  será optimista.</p>
+  <p><strong>Resolución:</strong> identifica qué cambia entre los dos conjuntos: aquí, el repositorio. El modelo
+  pudo haber visto los repositorios públicos durante su entrenamiento; los privados no. Un resultado local
+  sirve para comparar dos configuraciones entre sí, no para predecir la nota.</p>
+  <p><strong>Error típico:</strong> esperar en la tabla la misma tasa que en local. Un participante informa
+  cerca de 30 % en local y 12 % en la tabla.</p>
+  <p class="fuente">[DATITO] · cifra del notebook público «Gemma 4: Measure Before You Tune», consultado el 2026-10-04</p>
+</details>
+
+<p><strong>P3.</strong> ¿Por qué cada corrida incluye la misma configuración dos veces?</p>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> para medir el ruido: cuántas tareas cambian de resultado sin que nada cambie.</p>
+  <p><strong>Resolución:</strong> el modelo no responde igual dos veces. Si entre dos pasadas idénticas cambian
+  2 tareas, una mejora de 2 tareas no prueba nada. Solo cuenta una diferencia mayor que esa.</p>
+  <p><strong>Error típico:</strong> correr una vez cada configuración y quedarse con la que dio más.</p>
+  <p class="fuente">[DATITO]</p>
+</details>
+
+<div class="nota">
+  <strong>Checklist antes de creer un resultado.</strong>
+  <ul>
+    <li>□ ¿Está escrito en tareas, no solo en decimales?</li>
+    <li>□ ¿La diferencia supera el ruido medido?</li>
+    <li>□ ¿Cambió una sola cosa?</li>
+    <li>□ ¿La predicción estaba escrita antes?</li>
+    <li>□ ¿Las tareas usadas sirven para medir?</li>
+  </ul>
+</div>
+
+<div class="vecino">
+  El código, el pre-registro y el borrador del artículo están en el repositorio público de Agents Learning Loops:
+  <a href="https://github.com/cherrera0001/Agents_Learning_Loops">github.com/cherrera0001/Agents_Learning_Loops</a>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code>&lt;!-- datito:template:v1 --&gt;</code>
+</footer>
+</main>
+<script>
+(function(){
+  var css=getComputedStyle(document.documentElement);
+  function col(n){return css.getPropertyValue(n).trim();}
+
+  // Tabla pública: equipos por tareas resueltas
+  var dist=[132,54,65,150,197,314,340,286,127,37,6,0,0,0,1], propio=4;
+  function dibujarTabla(){
+    var c=document.getElementById('tabla'),x=c.getContext('2d'),W=c.width,H=c.height;
+    x.clearRect(0,0,W,H);
+    var m={i:46,d:12,a:16,b:42},aw=(W-m.i-m.d)/dist.length,max=Math.max.apply(null,dist);
+    x.font='12px Segoe UI, system-ui, sans-serif';
+    for(var i=0;i<dist.length;i++){
+      var h=(H-m.a-m.b)*dist[i]/max,px=m.i+i*aw,py=H-m.b-h;
+      x.fillStyle=(i===propio)?col('--rojo'):col('--azul');
+      x.fillRect(px+4,py,aw-8,h);
+      x.fillStyle=col('--tinta');x.textAlign='center';
+      x.fillText(String(i),px+aw/2,H-m.b+16);
+      if(dist[i]>0){x.fillStyle=col('--suave');x.fillText(String(dist[i]),px+aw/2,py-4);}
+    }
+    x.fillStyle=col('--suave');x.textAlign='center';
+    x.fillText('tareas resueltas de 58',m.i+(W-m.i-m.d)/2,H-8);
+    x.save();x.translate(14,H/2);x.rotate(-Math.PI/2);x.fillText('equipos',0,0);x.restore();
+    x.strokeStyle=col('--linea');x.beginPath();x.moveTo(m.i,H-m.b);x.lineTo(W-m.d,H-m.b);x.stroke();
+  }
+
+  // Intervalo de Wilson al 95 %
+  function wilson(k,n){
+    var z=1.96,p=k/n,d=1+z*z/n,c=(p+z*z/(2*n))/d,r=z*Math.sqrt(p*(1-p)/n+z*z/(4*n*n))/d;
+    return [Math.max(0,c-r)*n,Math.min(1,c+r)*n];
+  }
+  function ee(k,n){var p=k/n;return Math.sqrt(p*(1-p)/n)*n;}
+  function f1(v){return v.toFixed(1).replace('.',',');}
+
+  var sn=document.getElementById('n'),sa=document.getElementById('a'),sb=document.getElementById('b');
+  function actualizar(){
+    var n=parseInt(sn.value,10);
+    sa.max=n;sb.max=n;
+    var a=Math.min(parseInt(sa.value,10),n),b=Math.min(parseInt(sb.value,10),n);
+    sa.value=a;sb.value=b;
+    document.getElementById('va').textContent=a;
+    document.getElementById('vb').textContent=b;
+    var ea=ee(a,n),eb=ee(b,n),ed=Math.sqrt(ea*ea+eb*eb),d=b-a,z=ed>0?d/ed:0;
+    document.getElementById('ea').textContent=f1(ea);
+    document.getElementById('dif').textContent=(d>0?'+':'')+d;
+    document.getElementById('ed').textContent=f1(ed);
+    document.getElementById('z').textContent=ed>0?f1(z):'–';
+    var v=document.getElementById('veredicto');
+    if(d===0){v.textContent='A y B resuelven lo mismo.';}
+    else if(ed===0){v.textContent='Sin variación estimable: una de las tasas es 0 o 1 en ambos. Hacen falta más tareas.';}
+    else if(Math.abs(z)<2){v.textContent='No se distingue del ruido: la diferencia ('+Math.abs(d)+' tareas) es menor que dos veces su error estándar ('+f1(2*ed)+' tareas).';}
+    else{v.textContent='Se distingue del ruido: la diferencia ('+Math.abs(d)+' tareas) supera dos veces su error estándar ('+f1(2*ed)+' tareas).';}
+    dibujarRuido(a,b,n);
+  }
+  function dibujarRuido(a,b,n){
+    var c=document.getElementById('ruido'),x=c.getContext('2d'),W=c.width,H=c.height;
+    x.clearRect(0,0,W,H);
+    var m={i:60,d:24},esc=function(t){return m.i+(W-m.i-m.d)*t/n;};
+    x.font='12px Segoe UI, system-ui, sans-serif';
+    x.strokeStyle=col('--linea');x.fillStyle=col('--suave');x.textAlign='center';
+    var paso=n<=20?1:(n<=60?5:10);
+    for(var t=0;t<=n;t+=paso){
+      x.beginPath();x.moveTo(esc(t),30);x.lineTo(esc(t),H-40);x.stroke();
+      x.fillText(String(t),esc(t),H-24);
+    }
+    x.fillText('tareas resueltas de '+n+' · barra: intervalo de 95 %',m.i+(W-m.i-m.d)/2,H-6);
+    function fila(k,y,color,nombre){
+      var w=wilson(k,n);
+      x.strokeStyle=color;x.lineWidth=6;x.beginPath();x.moveTo(esc(w[0]),y);x.lineTo(esc(w[1]),y);x.stroke();
+      x.lineWidth=1;x.fillStyle=color;x.beginPath();x.arc(esc(k),y,9,0,2*Math.PI);x.fill();
+      x.fillStyle=col('--tinta');x.textAlign='left';x.fillText(nombre,12,y+4);
+    }
+    fila(a,75,col('--azul'),'A');
+    fila(b,135,col('--verde'),'B');
+  }
+  sn.addEventListener('change',actualizar);
+  sa.addEventListener('input',actualizar);
+  sb.addEventListener('input',actualizar);
+
+  // Predicciones: marcar la elegida y mostrar el siguiente paso
+  ['pred1','pred2'].forEach(function(id){
+    var caja=document.getElementById(id),botones=caja.querySelectorAll('button');
+    for(var i=0;i<botones.length;i++){
+      botones[i].addEventListener('click',function(){
+        for(var j=0;j<botones.length;j++){botones[j].classList.remove('elegida');}
+        this.classList.add('elegida');
+        document.getElementById(id+'v').classList.add('on');
+      });
+    }
+  });
+
+  dibujarTabla();
+  actualizar();
+})();
+</script>
+</body>
+</html>
