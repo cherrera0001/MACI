@@ -104,7 +104,7 @@
 
 
 <h1>ZorzALL: un modelo pequeño que escucha antes de resolver</h1>
-<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-05, 03:30 UTC</p>
+<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-05, 02:25 UTC</p>
 
 <div class="clave">
   <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso y cómo funciona por dentro, leer una nota
@@ -126,8 +126,9 @@
     <li><a href="#arnes">El arnés por dentro: ayudas, trampas y diferencias</a></li>
     <li><a href="#sec-tabla">Dónde estamos en la tabla</a></li>
     <li><a href="#sec-ruido">¿Una diferencia es real o es ruido?</a></li>
-    <li><a href="#proceso">El proceso: quince pruebas</a></li>
+    <li><a href="#proceso">El proceso: diecisiete pruebas</a></li>
     <li><a href="#medicion">Lo que mostró la primera medición completa</a></li>
+    <li><a href="#enunciado">Lo que de verdad separa lo resuelto de lo no resuelto</a></li>
     <li><a href="#zorzall">ZorzALL: la idea</a></li>
     <li><a href="#literatura">Qué dice la literatura</a></li>
     <li><a href="#concilio">El concilio: lo que se cayó y lo que queda</a></li>
@@ -469,7 +470,7 @@ con una tasa base del 20 %:</p>
 de 50 puntos. Casi todas las comparaciones que se hacen en este concurso están por debajo de lo que se puede
 medir.</div>
 
-<h2 id="proceso">6 · El proceso: quince pruebas</h2>
+<h2 id="proceso">6 · El proceso: diecisiete pruebas</h2>
 <p>Cada prueba responde una sola pregunta. Las que no necesitan el modelo se hacen sin GPU, porque una corrida con
 GPU espera entre 3 y 8 horas en cola.</p>
 
@@ -497,7 +498,9 @@ GPU espera entre 3 y 8 horas en cola.</p>
   <span class="n">13 · concilio de revisores</span> →
   <span class="n">14 · el oído, en local</span> →
   <span class="n">9 y 11 · medición completa</span> →
-  <span class="n aqui">15 · por qué no edita</span>
+  <span class="n">15 · por qué no edita</span> →
+  <span class="n">16 · mirar las tareas</span> →
+  <span class="n aqui">17 · corrida en cola</span>
 </div>
 
 <div style="overflow-x:auto"><table>
@@ -516,7 +519,9 @@ GPU espera entre 3 y 8 horas en cola.</p>
   <tr><td class="num">12</td><td>¿Se recuperan las tareas instalando esos paquetes?</td><td>CPU</td><td>De 71 a 103 válidas; ninguna de las 71 se pierde</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">13</td><td>¿Resiste la idea una revisión independiente?</td><td>Tres revisores</td><td>Solo con cambios</td><td><span class="rol r-cuenta">hecho</span></td></tr>
   <tr><td class="num">14</td><td>¿Puede el envío llevar su propio oído?</td><td>Local, sin GPU</td><td>Sí: las pruebas que cargan pasan de 690–2 927 a 2 486–3 711 en tres tareas</td><td><span class="rol r-decide">solo en local</span></td></tr>
-  <tr><td class="num">15</td><td>¿Por qué el agente tarda en editar?</td><td>Datos de la 11</td><td>Edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">15</td><td>¿Por qué el agente tarda en editar?</td><td>Datos de la 11</td><td>En 3 tareas, edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-decide">indicio fuerte</span></td></tr>
+  <tr><td class="num">16</td><td>¿Qué separa las tareas resueltas de las que no?</td><td>Sin GPU</td><td>El largo del enunciado: 0 de 66 pasadas con enunciado corto, 22 de 42 con enunciado largo</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">17</td><td>¿El agente llega al archivo correcto? ¿Edita antes si se le avisa o se le pide?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">en cola</span></td></tr>
 </table></div>
 
 <details>
@@ -536,6 +541,7 @@ GPU espera entre 3 y 8 horas en cola.</p>
     <tr><td class="num">14</td><td>El dato corrigió la idea: lo que fallaba en esas 34 tareas era la verificación, no el oído del agente.</td></tr>
     <tr><td class="num">11</td><td>Dos predicciones propias quedaron refutadas. Escribirlas antes fue lo que permitió verlo.</td></tr>
     <tr><td class="num">15</td><td>La respuesta estaba en un conteo ya guardado: en qué llamada ocurre la primera edición.</td></tr>
+    <tr><td class="num">16</td><td>Tres hipótesis salieron de mirar al agente. La que explicaba el resultado salió de mirar las tareas.</td></tr>
   </table></div>
 </details>
 
@@ -627,6 +633,48 @@ mismas tareas: no son dos confirmaciones independientes. Es un indicio fuerte, n
 </table></div>
 <div class="nota">Las tres pasan las cuatro comprobaciones del simulacro. Falta elegir una y medirla contra la
 configuración enviada con un texto de relleno, con los mismos topes.</div>
+
+<h2 id="enunciado">6c · Lo que de verdad separa lo resuelto de lo no resuelto</h2>
+<p>Después de comparar configuraciones del agente sin ver diferencias, cruzamos los resultados con las tareas.
+La separación no estaba en el agente.</p>
+
+<svg viewBox="0 0 860 190" role="img" aria-label="Pasadas resueltas según el largo del enunciado" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <text x="20" y="26" font-size="13" font-weight="700" fill="#1a1a1a">Pasadas resueltas, sumando todas las configuraciones probadas</text>
+  <text x="20" y="70" font-size="12" fill="#666">Enunciado de 250</text><text x="20" y="85" font-size="12" fill="#666">caracteres o más</text>
+  <rect x="150" y="56" width="640" height="30" fill="#e5e7eb"/><rect x="150" y="56" width="335" height="30" fill="#059669"/>
+  <text x="493" y="76" font-size="13" font-weight="700" fill="#1a1a1a">22 de 42</text>
+  <text x="20" y="130" font-size="12" fill="#666">Enunciado de</text><text x="20" y="145" font-size="12" fill="#666">menos de 250</text>
+  <rect x="150" y="116" width="640" height="30" fill="#e5e7eb"/>
+  <text x="158" y="136" font-size="13" font-weight="700" fill="#dc2626">0 de 66</text>
+  <text x="20" y="176" font-size="11" fill="#666">16 tareas de un repositorio, 7 pasadas por tarea. Probabilidad de ver esta separación por azar: 0,0014.</text>
+</svg>
+
+<div class="clave"><strong>Ninguna configuración resolvió nunca una tarea de enunciado corto.</strong> Ni la
+enviada, ni el razonamiento, ni el diseño de dos etapas, ni las 100 llamadas. Todas las comparaciones se
+decidieron en 6 tareas.</div>
+
+<h3>Qué es un enunciado corto</h3>
+<p>Un título y una o dos líneas. En 32 de los 47 que hay entre las tareas públicas, lo que sigue al título es una
+referencia a un issue o una dirección web que el agente no puede abrir, porque trabaja sin Internet. Le quedan 3
+o 4 palabras útiles. Son el 36 % de las tareas públicas.</p>
+
+<h3>¿Puede encontrar el archivo con tan poco?</h3>
+<p>Sí, y eso fue lo inesperado. Ordenamos los 124 archivos de código de cada repositorio por cuántas palabras del
+enunciado contienen, y miramos en qué puesto queda el que había que corregir:</p>
+<div style="overflow-x:auto"><table>
+  <tr><th></th><th>Enunciado corto (9 tareas)</th><th>Enunciado largo (6 tareas)</th></tr>
+  <tr><td>Archivo correcto en el primer puesto</td><td class="num">6</td><td class="num">0</td></tr>
+  <tr><td>Entre los 5 primeros</td><td class="num">7</td><td class="num">3</td></tr>
+  <tr><td>Las pruebas exigen un nombre que no existía</td><td class="num">2</td><td class="num">2</td></tr>
+  <tr><td>Búsquedas por similitud que hace el agente, por pasada</td><td class="num">43 a 49</td><td class="num">3</td></tr>
+  <tr><td>Resueltas alguna vez</td><td class="num">0</td><td class="num">5</td></tr>
+</table></div>
+<div class="tension"><strong>Lo que esto corrige.</strong> Creíamos que el freno era el bucle. El bucle es un
+síntoma: aparece donde el enunciado no dice qué corregir, y el agente busca sin saber qué busca. Ubicar el
+archivo no es el obstáculo. Falta saber qué cambiar.</div>
+<div class="nota"><strong>Límites.</strong> Nueve y seis tareas de un solo repositorio. El corte de 250
+caracteres se eligió mirando estos mismos datos y hay que confirmarlo en tareas no vistas. No sabemos todavía si
+el agente llega a leer el archivo correcto: es lo que mide la corrida en cola.</div>
 
 <h2 id="zorzall">7 · ZorzALL: la idea</h2>
 <div class="cita">
@@ -801,7 +849,10 @@ que aún no se aplican.</p>
   <tr><td>En qué entorno se valida la nota</td><td><span class="rol r-dato">no se sabe</span></td></tr>
   <tr><td>ZorzALL resuelve más tareas que el arnés base</td><td><span class="rol r-dato">sin medir</span></td></tr>
   <tr><td>Entre dos corridas iguales cambian 2 tareas de 15 o 16; en la tabla, 1 de 58</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td>Romper el bucle hace que el agente resuelva más</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>Con enunciado corto el agente no resuelve nada: 0 de 66 pasadas</td><td><span class="rol r-cuenta">medido, 10 tareas</span></td></tr>
+  <tr><td>En las tareas cortas, el archivo correcto se encuentra buscando las palabras del título</td><td><span class="rol r-cuenta">medido, 6 de 9</span></td></tr>
+  <tr><td>El agente llega a leer ese archivo</td><td><span class="rol r-dato">en medición</span></td></tr>
+  <tr><td>Hay una forma de que resuelva tareas de enunciado corto</td><td><span class="rol r-dato">sin medir</span></td></tr>
 </table></div>
 
 <div class="peligro">
@@ -816,6 +867,7 @@ que aún no se aplican.</p>
     <li>Predecir que más llamadas ayudarían. El dato dijo lo contrario.</li>
     <li>Contar «sesiones sin edición» mirando solo una herramienta, cuando el agente también edita por consola.</li>
     <li>Escribir una predicción que no podía fallar. Otra sesión lo vio antes de correr.</li>
+    <li>Buscar la causa en el agente durante un día entero antes de mirar las tareas.</li>
   </ul>
 </div>
 
