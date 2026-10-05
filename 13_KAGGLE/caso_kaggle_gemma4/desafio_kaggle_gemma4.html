@@ -104,7 +104,7 @@
 
 
 <h1>ZorzALL: un modelo pequeño que escucha antes de resolver</h1>
-<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-04, 23:45 UTC</p>
+<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-05, 01:20 UTC</p>
 
 <div class="clave">
   <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso y cómo funciona por dentro, leer una nota
@@ -113,8 +113,8 @@
 </div>
 
 <div class="nota">
-  <strong>Estado honesto.</strong> ZorzALL es hoy una hipótesis con su diseño de prueba, no un resultado. Nuestro
-  único envío con nota resolvió 4 tareas de 58. Todo lo que aquí aparece como «medido» tiene un dato detrás; lo
+  <strong>Estado honesto.</strong> ZorzALL es hoy una hipótesis con su diseño de prueba, no un resultado. El mismo
+  envío, puntuado dos veces, resolvió 4 y 3 tareas de 58. Todo lo que aquí aparece como «medido» tiene un dato detrás; lo
   demás está marcado como probable, sin medir o por verificar.
 </div>
 
@@ -126,7 +126,8 @@
     <li><a href="#arnes">El arnés por dentro: ayudas, trampas y diferencias</a></li>
     <li><a href="#sec-tabla">Dónde estamos en la tabla</a></li>
     <li><a href="#sec-ruido">¿Una diferencia es real o es ruido?</a></li>
-    <li><a href="#proceso">El proceso: catorce pruebas</a></li>
+    <li><a href="#proceso">El proceso: quince pruebas</a></li>
+    <li><a href="#medicion">Lo que mostró la primera medición completa</a></li>
     <li><a href="#zorzall">ZorzALL: la idea</a></li>
     <li><a href="#literatura">Qué dice la literatura</a></li>
     <li><a href="#concilio">El concilio: lo que se cayó y lo que queda</a></li>
@@ -207,11 +208,11 @@ las ve.</div>
   </table></div>
   <div class="met">
     <div><div class="n">0,06</div><div class="e">primer envío: 4 de 58</div></div>
-    <div><div class="n">—</div><div class="e">segundo envío, sin nota aún</div></div>
+    <div><div class="n">0,05</div><div class="e">segundo envío: 3 de 58</div></div>
     <div><div class="n">0</div><div class="e">artículos enviados</div></div>
   </div>
 </div>
-<p>El segundo envío es el mismo archivo a propósito: dos notas del mismo envío muestran cuánto ruido tiene la
+<p>El segundo envío es el mismo archivo a propósito. Dio una tarea menos que el primero: ese es el ruido de la
 tabla.</p>
 
 <h3>6 · ¿Cuál es nuestro artículo y cuál la hipótesis?</h3>
@@ -468,7 +469,7 @@ con una tasa base del 20 %:</p>
 de 50 puntos. Casi todas las comparaciones que se hacen en este concurso están por debajo de lo que se puede
 medir.</div>
 
-<h2 id="proceso">6 · El proceso: catorce pruebas</h2>
+<h2 id="proceso">6 · El proceso: quince pruebas</h2>
 <p>Cada prueba responde una sola pregunta. Las que no necesitan el modelo se hacen sin GPU, porque una corrida con
 GPU espera entre 3 y 8 horas en cola.</p>
 
@@ -494,8 +495,9 @@ GPU espera entre 3 y 8 horas en cola.</p>
 <div class="lbl">Y la idea</div>
 <div class="grafo">
   <span class="n">13 · concilio de revisores</span> →
-  <span class="n aqui">14 · el oído, en local</span> →
-  <span class="n">9 y 11 · corridas en curso</span>
+  <span class="n">14 · el oído, en local</span> →
+  <span class="n">9 y 11 · medición completa</span> →
+  <span class="n aqui">15 · por qué no edita</span>
 </div>
 
 <div style="overflow-x:auto"><table>
@@ -508,12 +510,13 @@ GPU espera entre 3 y 8 horas en cola.</p>
   <tr><td class="num">6</td><td>¿Se puede cancelar una corrida en cola?</td><td>API</td><td>Sí</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
   <tr><td class="num">7</td><td>¿Qué hacen los demás?</td><td>API</td><td>112 notebooks públicos leídos</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">8</td><td>¿Por qué 55 tareas no sirven?</td><td>Código</td><td>El entorno del notebook no instala dependencias por tarea</td><td><span class="rol r-cuenta">confirmado</span></td></tr>
-  <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">corriendo</span></td></tr>
+  <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>No, con 4 minutos: 3 de 16 frente a 4, y el doble de tiempo</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">10</td><td>¿Cuál es el error real?</td><td>CPU</td><td>En 34 tareas falta un paquete que solo usan las pruebas</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">corriendo</span></td></tr>
+  <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>Ninguno: 3 de 15 el de dos agentes, 2 con 100 llamadas, 3 el enviado</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">12</td><td>¿Se recuperan las tareas instalando esos paquetes?</td><td>CPU</td><td>De 71 a 103 válidas; ninguna de las 71 se pierde</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">13</td><td>¿Resiste la idea una revisión independiente?</td><td>Tres revisores</td><td>Solo con cambios</td><td><span class="rol r-cuenta">hecho</span></td></tr>
   <tr><td class="num">14</td><td>¿Puede el envío llevar su propio oído?</td><td>Local, sin GPU</td><td>Sí: las pruebas que cargan pasan de 690–2 927 a 2 486–3 711 en tres tareas</td><td><span class="rol r-decide">solo en local</span></td></tr>
+  <tr><td class="num">15</td><td>¿Por qué el agente tarda en editar?</td><td>Datos de la 11</td><td>Edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
 </table></div>
 
 <details>
@@ -531,6 +534,8 @@ GPU espera entre 3 y 8 horas en cola.</p>
     <tr><td class="num">12</td><td>Una causa se confirma interviniendo, no solo leyendo.</td></tr>
     <tr><td class="num">13</td><td>Pedir que te refuten antes de gastar la cuota.</td></tr>
     <tr><td class="num">14</td><td>El dato corrigió la idea: lo que fallaba en esas 34 tareas era la verificación, no el oído del agente.</td></tr>
+    <tr><td class="num">11</td><td>Dos predicciones propias quedaron refutadas. Escribirlas antes fue lo que permitió verlo.</td></tr>
+    <tr><td class="num">15</td><td>La respuesta estaba en un conteo ya guardado: en qué llamada ocurre la primera edición.</td></tr>
   </table></div>
 </details>
 
@@ -539,8 +544,67 @@ GPU espera entre 3 y 8 horas en cola.</p>
   <button type="button" data-v="si">Sí</button>
   <button type="button" data-v="no">No</button>
   <button type="button" data-v="ns">No se sabe todavía</button>
-  <div class="veredicto" id="pred2v">Es la prueba 11 y aún no termina. Anota tu respuesta: la comparamos con el resultado.</div>
+  <div class="veredicto" id="pred2v">Resultado de la prueba 11: no. Con 100 llamadas resolvió 2 de 15, frente a 3. Repitió más y editó más tarde. La sección siguiente explica por qué.</div>
 </div>
+
+<h2 id="medicion">6b · Lo que mostró la primera medición completa</h2>
+<p>Dos corridas con GPU, sobre tareas válidas de un mismo repositorio. Cada una repite la configuración enviada
+dos veces, para medir el ruido.</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Configuración</th><th>Resueltas</th><th>Minutos por tarea</th><th>Llamadas que repiten una anterior</th><th>Sesiones sin ninguna edición</th></tr>
+  <tr><td>Enviada, 1.ª pasada</td><td>3 de 15</td><td class="num">1,52</td><td class="num">50 %</td><td class="num">7</td></tr>
+  <tr><td>Enviada, 2.ª pasada</td><td>3 de 15</td><td class="num">1,46</td><td class="num">54 %</td><td class="num">6</td></tr>
+  <tr><td>Pública de dos etapas</td><td>3 de 15</td><td class="num">2,07</td><td class="num">47 %</td><td class="num">3</td></tr>
+  <tr><td>Enviada con 100 llamadas</td><td>2 de 15</td><td class="num">2,93</td><td class="num">68 %</td><td class="num">5</td></tr>
+  <tr><td>Enviada con razonamiento (otra corrida)</td><td>3 de 16, frente a 4 y 4</td><td class="num">3,76</td><td>sin medir</td><td>sin medir</td></tr>
+</table></div>
+<div class="met">
+  <div><div class="n">2</div><div class="e">tareas que cambian entre dos pasadas iguales</div></div>
+  <div><div class="n">1 de 2</div><div class="e">llamadas repiten una idéntica</div></div>
+  <div><div class="n">5 a 8</div><div class="e">llamadas en una tarea resuelta típica</div></div>
+  <div><div class="n">2 a 4</div><div class="e">de 15 tareas ejecutan las pruebas</div></div>
+</div>
+
+<div class="clave"><strong>El freno no es el presupuesto: es el bucle.</strong> Con más llamadas el agente no
+resuelve más; repite más. Copiar el mejor diseño público tampoco resolvió más en estas tareas.</div>
+
+<h3>El hallazgo: el agente edita cuando el arnés le avisa</h3>
+<p>El arnés avisa cuando quedan 10 llamadas o menos. Cada punto es una tarea, puesto en la llamada donde hizo su
+primera edición.</p>
+<svg viewBox="0 0 860 300" role="img" aria-label="En qué llamada ocurre la primera edición" style="width:100%;height:auto;display:block;background:#fff;border:1px solid #d8d8d8;border-radius:8px">
+  <text x="20" y="24" font-size="13" font-weight="700" fill="#1a1a1a">Tope de 40 llamadas · dos pasadas de la configuración enviada</text>
+  <line x1="60" y1="100" x2="820" y2="100" stroke="#d8d8d8"/>
+  <rect x="630" y="40" width="190" height="60" fill="#fffbeb"/>
+  <line x1="630" y1="36" x2="630" y2="104" stroke="#d97706" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="634" y="33" font-size="11" fill="#92400e">aviso del arnés: quedan 10</text>
+  <circle cx="117" cy="92" r="6" fill="#059669"/><circle cx="117" cy="79" r="6" fill="#059669"/><circle cx="155" cy="92" r="6" fill="#059669"/><circle cx="155" cy="79" r="6" fill="#059669"/><circle cx="288" cy="92" r="6" fill="#059669"/><circle cx="649" cy="92" r="6" fill="#059669"/><circle cx="212" cy="92" r="6" fill="#9ca3af"/><circle cx="326" cy="92" r="6" fill="#9ca3af"/><circle cx="649" cy="79" r="6" fill="#9ca3af"/><circle cx="649" cy="66" r="6" fill="#9ca3af"/><circle cx="649" cy="53" r="6" fill="#9ca3af"/><circle cx="668" cy="92" r="6" fill="#9ca3af"/><circle cx="668" cy="79" r="6" fill="#9ca3af"/><circle cx="668" cy="66" r="6" fill="#9ca3af"/><circle cx="763" cy="92" r="6" fill="#9ca3af"/><circle cx="820" cy="92" r="6" fill="#9ca3af"/><circle cx="820" cy="79" r="6" fill="#9ca3af"/>
+  <g font-size="11" fill="#666" text-anchor="middle"><text x="60" y="118">0</text><text x="250" y="118">10</text><text x="440" y="118">20</text><text x="630" y="118">30</text><text x="820" y="118">40</text></g>
+  <text x="20" y="164" font-size="13" font-weight="700" fill="#1a1a1a">Tope de 100 llamadas</text>
+  <line x1="60" y1="230" x2="820" y2="230" stroke="#d8d8d8"/>
+  <rect x="744" y="176" width="76" height="54" fill="#fffbeb"/>
+  <line x1="744" y1="172" x2="744" y2="234" stroke="#d97706" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="640" y="188" font-size="11" fill="#92400e">aviso: quedan 10</text>
+  <circle cx="90" cy="223" r="5" fill="#059669"/><circle cx="98" cy="223" r="5" fill="#059669"/><circle cx="182" cy="223" r="5" fill="#9ca3af"/><circle cx="197" cy="223" r="5" fill="#9ca3af"/><circle cx="425" cy="223" r="5" fill="#9ca3af"/><circle cx="584" cy="223" r="5" fill="#9ca3af"/><circle cx="645" cy="223" r="5" fill="#9ca3af"/><circle cx="752" cy="223" r="5" fill="#9ca3af"/><circle cx="752" cy="212" r="5" fill="#9ca3af"/><circle cx="759" cy="223" r="5" fill="#9ca3af"/>
+  <g font-size="11" fill="#666" text-anchor="middle"><text x="60" y="248">0</text><text x="250" y="248">25</text><text x="440" y="248">50</text><text x="630" y="248">75</text><text x="820" y="248">100</text></g>
+  <circle cx="68" cy="278" r="6" fill="#059669"/><text x="80" y="282" font-size="12" fill="#666">tarea resuelta</text>
+  <circle cx="200" cy="278" r="6" fill="#9ca3af"/><text x="212" y="282" font-size="12" fill="#666">tarea no resuelta</text>
+  <text x="820" y="282" font-size="11" fill="#666" text-anchor="end">Eje: número de llamada de la primera edición</text>
+</svg>
+<p>Las tareas resueltas editan pronto, casi todas antes de la llamada 15. Las que no, esperan al aviso: con tope
+de 40 editan en las llamadas 31 y 32; con tope de 100, en la 91 y 92. Antes del aviso, el agente repite llamadas
+sin decidirse.</p>
+
+<h3>Tres maneras de romper el bucle</h3>
+<p>Cada una cambia una sola cosa. Están ensayadas en local con el arnés real y un modelo simulado.
+<strong>Ninguna se ha medido todavía con el modelo.</strong></p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Manera</th><th>Qué cambia</th><th>Tipo</th><th>Qué confirmó el ensayo</th><th>Riesgo</th></tr>
+  <tr><td>Aviso temprano</td><td>El tope baja de 40 a 20 llamadas</td><td>Construido: usa una ayuda del arnés</td><td>El aviso llega tras la llamada 10, no tras la 30</td><td>Cortar tareas que hoy se resuelven con más de 20 llamadas</td></tr>
+  <tr><td>Regla escrita</td><td>Tres líneas en la instrucción: no repetir, editar antes de la llamada 10, comprobar y entregar</td><td>Dicho</td><td>La instrucción crece 291 caracteres y el envío compila</td><td>Que un modelo que casi no razona no la siga</td></tr>
+  <tr><td>Penalizar la repetición</td><td>Un parámetro del muestreo</td><td>Construido: en el modelo</td><td>El parámetro llega al modelo</td><td>Que rompa el formato de las llamadas a herramientas</td></tr>
+</table></div>
+<div class="nota">Las tres pasan las cuatro comprobaciones del simulacro. Falta elegir una y medirla contra la
+configuración enviada con un texto de relleno, con los mismos topes.</div>
 
 <h2 id="zorzall">7 · ZorzALL: la idea</h2>
 <div class="cita">
@@ -708,10 +772,13 @@ que aún no se aplican.</p>
   <tr><td>No hay límite oficial por tarea; solo 12 horas en total</td><td><span class="rol r-cuenta">leído en las reglas</span></td></tr>
   <tr><td>En el notebook, 71 de 129 tareas sirven para medir; 103 con tres paquetes</td><td><span class="rol r-cuenta">medido dos veces</span></td></tr>
   <tr><td>Un envío puede llevar su propio oído</td><td><span class="rol r-decide">medido solo en local</span></td></tr>
-  <tr><td>El límite que aprieta al agente es el de llamadas</td><td><span class="rol r-decide">indicio, 2 tareas</span></td></tr>
+  <tr><td>La mitad de las llamadas del agente repite una idéntica</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>El agente edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>Más llamadas, razonamiento con 4 minutos o el diseño público de dos etapas no resuelven más</td><td><span class="rol r-cuenta">medido, 15 a 16 tareas</span></td></tr>
   <tr><td>En qué entorno se valida la nota</td><td><span class="rol r-dato">no se sabe</span></td></tr>
   <tr><td>ZorzALL resuelve más tareas que el arnés base</td><td><span class="rol r-dato">sin medir</span></td></tr>
-  <tr><td>Cuánto cambia el resultado entre dos corridas iguales</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>Entre dos corridas iguales cambian 2 tareas de 15 o 16; en la tabla, 1 de 58</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>Romper el bucle hace que el agente resuelva más</td><td><span class="rol r-dato">sin medir</span></td></tr>
 </table></div>
 
 <div class="peligro">
@@ -723,6 +790,7 @@ que aún no se aplican.</p>
     <li>Afirmar algo del entorno oculto sin evidencia.</li>
     <li>Fijar una regla de decisión sin simularla.</li>
     <li>Resubir cuatro veces el mismo notebook antes de tener un resultado.</li>
+    <li>Predecir que más llamadas ayudarían. El dato dijo lo contrario.</li>
   </ul>
 </div>
 
