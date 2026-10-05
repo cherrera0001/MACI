@@ -104,7 +104,7 @@
 
 
 <h1>ZorzALL: un modelo pequeño que escucha antes de resolver</h1>
-<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-05, 01:20 UTC</p>
+<p class="sub">Caso de Agents Learning Loops en la competencia Gemma 4 Developer Agent de Kaggle · estado al 2026-10-05, 03:30 UTC</p>
 
 <div class="clave">
   <strong>Qué vas a poder hacer.</strong> Explicar qué pide el concurso y cómo funciona por dentro, leer una nota
@@ -551,7 +551,7 @@ GPU espera entre 3 y 8 horas en cola.</p>
 <p>Dos corridas con GPU, sobre tareas válidas de un mismo repositorio. Cada una repite la configuración enviada
 dos veces, para medir el ruido.</p>
 <div style="overflow-x:auto"><table>
-  <tr><th>Configuración</th><th>Resueltas</th><th>Minutos por tarea</th><th>Llamadas que repiten una anterior</th><th>Sesiones sin ninguna edición</th></tr>
+  <tr><th>Configuración</th><th>Resueltas</th><th>Minutos por tarea</th><th>Llamadas que repiten una anterior</th><th>Sesiones sin ninguna llamada de edición</th></tr>
   <tr><td>Enviada, 1.ª pasada</td><td>3 de 15</td><td class="num">1,52</td><td class="num">50 %</td><td class="num">7</td></tr>
   <tr><td>Enviada, 2.ª pasada</td><td>3 de 15</td><td class="num">1,46</td><td class="num">54 %</td><td class="num">6</td></tr>
   <tr><td>Pública de dos etapas</td><td>3 de 15</td><td class="num">2,07</td><td class="num">47 %</td><td class="num">3</td></tr>
@@ -562,8 +562,13 @@ dos veces, para medir el ruido.</p>
   <div><div class="n">2</div><div class="e">tareas que cambian entre dos pasadas iguales</div></div>
   <div><div class="n">1 de 2</div><div class="e">llamadas repiten una idéntica</div></div>
   <div><div class="n">5 a 8</div><div class="e">llamadas en una tarea resuelta típica</div></div>
-  <div><div class="n">2 a 4</div><div class="e">de 15 tareas ejecutan las pruebas</div></div>
+  <div><div class="n">0 a 4</div><div class="e">de 15 tareas ejecutan las pruebas</div></div>
 </div>
+
+<div class="nota"><strong>Dos límites de esta tabla, encontrados al auditar los datos.</strong> La última columna
+cuenta llamadas a la herramienta de editar; en una sesión por pasada hubo parche sin ninguna, porque el agente
+también modifica archivos con comandos de consola. Y «repite» incluye repeticiones legítimas, como volver a
+correr una prueba tras editar. En las sesiones sin edición la repetición va del 25 % al 97 % según la tarea.</div>
 
 <div class="clave"><strong>El freno no es el presupuesto: es el bucle.</strong> Con más llamadas el agente no
 resuelve más; repite más. Copiar el mejor diseño público tampoco resolvió más en estas tareas.</div>
@@ -590,9 +595,26 @@ primera edición.</p>
   <circle cx="200" cy="278" r="6" fill="#9ca3af"/><text x="212" y="282" font-size="12" fill="#666">tarea no resuelta</text>
   <text x="820" y="282" font-size="11" fill="#666" text-anchor="end">Eje: número de llamada de la primera edición</text>
 </svg>
-<p>Las tareas resueltas editan pronto, casi todas antes de la llamada 15. Las que no, esperan al aviso: con tope
-de 40 editan en las llamadas 31 y 32; con tope de 100, en la 91 y 92. Antes del aviso, el agente repite llamadas
-sin decidirse.</p>
+<p>Las tareas resueltas editan pronto, casi todas antes de la llamada 15. Entre las que editan tarde, muchas lo
+hacen justo después del aviso:</p>
+<div style="overflow-x:auto"><table>
+  <tr><th>Pasada</th><th>Ediciones tardías</th><th>Justo tras el aviso</th><th>Si cayeran al azar</th></tr>
+  <tr><td>Enviada, 1.ª (tope 40)</td><td class="num">5</td><td class="num">3</td><td>8 % de ellas</td></tr>
+  <tr><td>Enviada, 2.ª (tope 40)</td><td class="num">5</td><td class="num">4</td><td>8 %</td></tr>
+  <tr><td>Enviada con tope 100</td><td class="num">8</td><td class="num">3</td><td>2 %</td></tr>
+  <tr><td>Pública de dos etapas (tope 60)</td><td class="num">5</td><td class="num">0</td><td>4 %</td></tr>
+</table></div>
+<div class="nota"><strong>Cuánto vale este hallazgo.</strong> Se ve en la configuración enviada con los dos
+topes, y no en el diseño de dos etapas. Son 3 o 4 tareas por pasada, y las dos pasadas con tope 40 usan las
+mismas tareas: no son dos confirmaciones independientes. Es un indicio fuerte, no una ley.</div>
+<h3>Dos datos que moderan la lectura</h3>
+<ul>
+  <li><strong>11 de las 15 tareas no se resolvieron en ninguna de las cuatro pasadas.</strong> Solo 4 se
+  resolvieron alguna vez, y 2 en las cuatro.</li>
+  <li><strong>Quedarse sin editar es en parte cosa de la tarea.</strong> De las sesiones sin llamada de edición,
+  5 tareas se repiten en las dos pasadas iguales y 3 aparecen solo en una. No es solo azar del agente: hay
+  tareas donde no logra ubicar el fallo.</li>
+</ul>
 
 <h3>Tres maneras de romper el bucle</h3>
 <p>Cada una cambia una sola cosa. Están ensayadas en local con el arnés real y un modelo simulado.
@@ -773,7 +795,8 @@ que aún no se aplican.</p>
   <tr><td>En el notebook, 71 de 129 tareas sirven para medir; 103 con tres paquetes</td><td><span class="rol r-cuenta">medido dos veces</span></td></tr>
   <tr><td>Un envío puede llevar su propio oído</td><td><span class="rol r-decide">medido solo en local</span></td></tr>
   <tr><td>La mitad de las llamadas del agente repite una idéntica</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td>El agente edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td>En la configuración enviada, el agente suele editar cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-decide">indicio fuerte, 3 a 4 tareas por pasada</span></td></tr>
+  <tr><td>11 de las 15 tareas de desarrollo no se resolvieron en ninguna de cuatro pasadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td>Más llamadas, razonamiento con 4 minutos o el diseño público de dos etapas no resuelven más</td><td><span class="rol r-cuenta">medido, 15 a 16 tareas</span></td></tr>
   <tr><td>En qué entorno se valida la nota</td><td><span class="rol r-dato">no se sabe</span></td></tr>
   <tr><td>ZorzALL resuelve más tareas que el arnés base</td><td><span class="rol r-dato">sin medir</span></td></tr>
@@ -791,6 +814,8 @@ que aún no se aplican.</p>
     <li>Fijar una regla de decisión sin simularla.</li>
     <li>Resubir cuatro veces el mismo notebook antes de tener un resultado.</li>
     <li>Predecir que más llamadas ayudarían. El dato dijo lo contrario.</li>
+    <li>Contar «sesiones sin edición» mirando solo una herramienta, cuando el agente también edita por consola.</li>
+    <li>Escribir una predicción que no podía fallar. Otra sesión lo vio antes de correr.</li>
   </ul>
 </div>
 
