@@ -21,8 +21,8 @@ aprender cómo se itera en un desafío de Kaggle.
 | ¿Qué pregunta buscamos resolver? | La de ALL: si un agente convierte su experiencia en instrucciones, ¿resuelve más tareas? Y antes, la que la hace medible: ¿qué diferencia entre dos configuraciones se distingue de repetir una sola? |
 | ¿Qué datos usamos? | Las 129 tareas públicas con su copia del repositorio y sus grafos; la tabla pública; 112 notebooks públicos; nuestros logs. La solución oficial solo se usa para comprobar que una tarea sirve |
 | ¿Qué ofrecemos? | Una medición del instrumento (71 de 129 tareas sirven en el notebook oficial, y por qué), un método para no confundir ruido con mejora, y herramientas abiertas para validar sin GPU |
-| ¿Qué hemos enviado? | El kit oficial con cuatro ajustes y nada entrenado, dos veces. Primera nota: 0,06 (4 de 58). Ningún artículo todavía |
-| ¿Cuál es el artículo? | «Agents Learning Loops con Gemma 4: cuánto se puede creer una diferencia antes de convertir una lección en instrucción del agente». Borrador, sin enviar |
+| ¿Qué hemos enviado? | El kit oficial con cuatro ajustes y nada entrenado, dos veces: 0,06 y 0,05 (4 y 3 de 58). El 2026-10-07, un tercer envío con razonamiento encendido, 60 llamadas y 4,5 min; pendiente de nota. Ningún artículo todavía |
+| ¿Cuál es el artículo? | «Cuánto se puede creer una diferencia»: validez de las tareas, ruido entre ejecuciones y predicciones escritas antes de correr. El borrador del 2026-10-04 no se puede publicar como está (cinco revisores, 2026-10-07); se reescribe en inglés. Cierre: 2026-11-12, 3 000 palabras |
 
 El detalle de cada respuesta está en la [versión visual](desafio_kaggle_gemma4.html).
 
@@ -295,31 +295,89 @@ Las predicciones de cada una, escritas antes de correr, están en la bitácora (
 
 ---
 
+### Prueba 17 — resultado (2026-10-05)
+
+- **Qué salió.** 2, 2 y 4 de 15. El tope de 20 llamadas resuelve lo mismo con la mitad de tokens. La regla
+  escrita no adelanta la edición; sus 2 tareas de más son las que cambian solas entre pasadas iguales.
+- **Qué dejó.** En las tareas cortas el agente lee el archivo correcto en 6 de 9 y no sabe qué cambiar.
+
+### Pruebas 18 y 19 — La misma configuración dos veces, con trazas (`iteracion-03` y `04`, 2026-10-06)
+
+- **Qué preguntan.** Si el corte por largo del enunciado se sostiene en tareas no vistas, y cuánto ruido hay.
+- **Qué salió.** 6 y 7 de 30 (rich 3 y 3; fastapi 3 y 4). Enunciado corto: 0 de 15 en las dos. Cambia de
+  resultado 1 tarea de 30; cambia de clase de fallo en 13 de 30.
+- **Qué dejó.** Por primera vez se guardaron las trazas. Con ellas se vio que el agente llama a `edit_file` sin
+  `old_string` en 160 de 202 llamadas y queda atrapado repitiéndola en 3 de 30 sesiones.
+
+### Prueba 20 — Leer lo público por la API (sin GPU, 2026-10-06)
+
+- **Qué se bajó.** 121 notebooks públicos, 12 comentarios en ellos, 134 temas del foro con 304 comentarios y
+  10 temas de cola y GPU de Product Feedback. Todo por la API oficial, sin navegador.
+- **Qué dejó.** Otro equipo ya reportaba el mismo fallo de edición. Dos equipos informan que las reglas
+  escritas no rompen los bucles. Una herramienta no declarada termina la tarea: no conviene quitar herramientas.
+
+### Prueba 21 — Una línea para la herramienta de edición (`iteracion-05`, 2026-10-06)
+
+- **Qué pregunta.** Si con una línea en la instrucción dejan de quedar sesiones atrapadas.
+- **Qué salió.** 0 sesiones atrapadas (base 3 y 3) y 0 llamadas mal formadas de 26. Resueltas: 7 de 30, las
+  mismas de la base.
+- **Qué dejó.** Un mecanismo puede desaparecer sin que cambie el resultado.
+
+### Prueba 22 — El concilio sobre las 23 tareas nunca resueltas (sin GPU, 2026-10-06)
+
+- **Quiénes.** Cuatro revisores en paralelo: trazas, código, pruebas y foro.
+- **Qué salió.** 12 de las 23 eran resolubles; 10 de esas 12 se pierden antes de una edición pertinente. De 41
+  sesiones con parche, 16 son parches inertes. Ningún fallo es del entorno.
+- **Qué dejó.** Tres correcciones a lo que creíamos: el razonamiento no está medido, las cortas no son
+  irresolubles, y la mezcla pública no dice nada de la tabla.
+
+### Prueba 23 — Tercer envío: razonamiento encendido (2026-10-07, 00:26 UTC)
+
+- **Qué se envió.** El mismo kit con razonamiento encendido, 60 llamadas y 4,5 minutos por tarea.
+- **Predicción.** Se conserva con 6 tareas o más de 58; con 5 se reenvía; con 4 o menos se descarta.
+- **Estado.** Pendiente de nota.
+
+### Prueba 24 — La misma condición en 19 tareas (`iteracion-06`, 2026-10-07, 00:37 UTC)
+
+- **Qué pregunta.** Si con esa condición el agente llega a editar en las tareas resolubles o se queda sin tiempo.
+- **Qué salió.** 9 de 19 (base 6, 7 y 7). Tres tareas nunca resueltas antes, dos de enunciado corto; se
+  pierde una de las 7 que ya se resolvían. De 10 fallos, 9 agotan el tiempo y ninguno llega a 60 llamadas.
+- **Qué dejó.** Primera señal a favor, en una sola corrida y bajo el umbral de 10 fijado antes: no decide.
+  El freno pasó de las llamadas al tiempo.
+
+---
+
 ## 5. Qué sabemos y qué no
+
+Al 2026-10-07, 01:20 UTC.
 
 | Afirmación | Estado |
 |---|---|
 | El zip enviado está bien armado | Medido |
 | El modelo arranca y el agente opera en Kaggle | Medido |
-| Con el razonamiento apagado el modelo escribe muy poco por turno | Medido, en 2 tareas |
-| En el notebook, 71 de 129 tareas públicas sirven para medir | Medido, una vez |
-| Nuestro resultado está dentro del ruido del kit público | Calculado con la tabla |
-| El límite que aprieta es el de llamadas | Indicio, 2 tareas |
-| El entorno del notebook explica 34 de las 55 tareas que no sirven | Medido |
-| Por qué fallan las otras 21 | Sin medir |
-| El diseño de dos agentes resuelve más tareas que el nuestro | Sin medir; es la prueba 11 |
-| El razonamiento encendido ayuda | Sin medir; es la prueba 9 |
-| Cuánto cambia el resultado entre dos corridas iguales | Sin medir; pruebas 9 y 11 |
+| En el notebook, 71 de 129 tareas públicas sirven para medir; 103 instalando tres paquetes de pruebas | Medido, dos veces |
+| El entorno del notebook explica 34 de las 55 tareas que no sirven | Medido, y confirmado al instalar los paquetes |
+| Por qué fallan las otras 23 | Sin medir |
+| Cuánto cambia el resultado entre dos corridas iguales | Medido: 2 de 16, 2 de 15 y 1 de 30 tareas |
+| El mismo envío da notas distintas | Medido: 4 y 3 de 58 |
+| La clase de fallo de una sola pasada es fiable | No: cambia en 13 de 30 tareas entre pasadas iguales |
+| El límite que aprieta es el de llamadas | Medido: 36 de 69 sesiones fallidas llegan a 40; 4 terminan por tiempo |
+| El diseño de dos agentes resuelve más | Medido una vez: 3 frente a 3 de 15 |
+| El razonamiento encendido ayuda | Indicio a favor, una corrida: 9 de 19 frente a 6, 7 y 7, con tres tareas nunca resueltas antes. Falta la nota del envío |
+| Con enunciado corto el agente no resuelve nada | Cierto con el razonamiento apagado (0 de 16 tareas). Con razonamiento se resolvieron 2, en una corrida |
+| Las tareas cortas son irresolubles | No: 7 de 15 lo eran, según un revisor |
+| Quitar el fallo de la herramienta de edición resuelve más | Medido una vez: no, 7 de 30 igual que la base |
+| El conjunto oculto se parece al público | El organizador dice que se depuró aparte; sin medir |
 
 ---
 
 ## 6. Qué sigue
 
-1. Decidir si se instalan los dos paquetes que faltan para medir sobre más tareas.
-2. Leer las pruebas 9 y 11. Si el diseño de dos agentes gana por más que el ruido, pasa a ser la base.
-3. Sobre esa base, probar un cambio de ALL: una instrucción derivada de experiencia, frente a un texto de
-   relleno del mismo largo.
-4. Enviar a Kaggle solo lo que ganó en la medición propia.
+1. Leer la nota del tercer envío contra su predicción (6 tareas o más de 58).
+2. Si el razonamiento mueve la nota, reenviar el mismo zip para ver el ruido antes de sumar otro cambio.
+3. Si no la mueve, medir más llamadas y más tiempo por separado, con la cuota nueva del 2026-10-10.
+4. Firmar el manuscrito en inglés (PR #150 de ALL, 2 995 palabras, APA 7, PDF de 12 páginas) cuando lleguen
+   los dos resultados pendientes, y enviarlo como Writeup antes del 2026-11-12.
 
 ---
 

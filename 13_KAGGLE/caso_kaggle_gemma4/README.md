@@ -70,6 +70,8 @@ estimador «mayoría estricta» y la predicción de que H(C, A) no quedaría apo
 
 ## 1. Estado y veredicto al 2026-10-04 00:10 UTC
 
+> **Lo vigente está en la sección 1.8 (2026-10-07).** Las secciones 1.1 a 1.7 son historia fechada.
+
 ### 1.1 Qué cambió desde la primera evaluación
 
 | Qué | Antes | Ahora |
@@ -227,6 +229,72 @@ planteada; el costo de la fase 3 son 17 horas de cuota y no 9. El detalle está 
 **Veredicto actualizado.** El proyecto ya mide, y medir mostró dónde está el problema: no en el presupuesto ni
 en el diseño del agente, sino en un tercio de las tareas donde el enunciado no dice qué corregir. Ahí está la
 palanca, y todavía no hay un candidato probado para moverla.
+
+---
+
+### 1.8 Estado al 2026-10-07 01:20 UTC
+
+Lo vigente. La sección 1.7 queda como historia; cuatro de sus afirmaciones se corrigen abajo.
+
+| Qué | A las 02:25 UTC del día 5 | A las 01:20 UTC del día 7 |
+|---|---|---|
+| Envíos | 2 del mismo archivo: 4 y 3 de 58 | 3: el tercero (56895202, razonamiento encendido, 60 llamadas, 4,5 min) está pendiente de nota |
+| Corridas con el modelo terminadas | 2 | 7 |
+| Conjunto de medición | 15 tareas de rich | 30: las 15 de rich y 15 de fastapi no vistas |
+| Resueltas en ese conjunto | 3 de 15 y 4 de 16 | 6, 7 y 7 de 30 en tres pasadas |
+| Ruido entre dos pasadas iguales | 2 tareas de 15 | 1 tarea de 30; la clase de fallo cambia en 13 de 30 |
+| Enunciado corto | 0 de 10 tareas | 0 de 16 tareas, replicado en fastapi no vistas (0 de 6) |
+| Cambios de configuración probados | 3 | 6 con resultado; ninguno resuelve más |
+| Predicciones escritas antes de correr | 11 | 40: 19 cumplidas, 11 refutadas, 3 sin poder leerse, 1 sin correr, 6 pendientes |
+| Cierre | Sin leer | Code Track 2026-12-02; Paper Track 2026-11-12, 3 000 palabras |
+| Tabla pública | 1 709 equipos, mediana 5 | 1 935 equipos, mediana 6; envío propio en el puesto 1 503 |
+| Cuota de GPU | 13,4 h usadas de 30 | Estimado: unas 2 h libres hasta el reinicio del 2026-10-10 |
+
+**Lo que se aprendió desde la 1.7, en orden de importancia.**
+
+1. **El agente no falla por el contenido del parche sino antes.** De 23 tareas nunca resueltas en tres pasadas,
+   un revisor juzgó 12 resolubles con el enunciado y el repositorio. En 10 de esas 12 el agente no llega a una
+   edición pertinente: 6 no leen el archivo correcto y 4 lo leen sin editarlo.
+2. **El límite que ata es el de llamadas.** 36 de 69 sesiones fallidas llegan a 40 llamadas; 4 terminan por
+   tiempo. La mitad de las llamadas repite una idéntica.
+3. **Quitar un fallo real no recupera tareas.** Una línea en la instrucción dejó en cero las llamadas a
+   `edit_file` sin `old_string` (107 y 49 en la base) y se resolvieron las mismas 7 de 30.
+4. **La herramienta de lectura pierde el rango de líneas en 4 de cada 10 llamadas**, y la búsqueda por
+   similitud no devuelve nada en 209 de 209. Gastan llamadas; no separan resueltas de no resueltas.
+5. **Lo público no representa lo oculto.** El organizador dice que las tareas ocultas se depuraron aparte.
+6. **Ningún fallo de verificación es del entorno.** De 41 sesiones con parche, 16 son parches inertes y en 23
+   de las 25 restantes el agente pasa cero pruebas objetivo.
+
+**Lo que se corrigió de la 1.7.**
+
+- «En las tareas cortas, ubicar el archivo no es el obstáculo»: demasiado fuerte. Buscando palabras del título
+  el archivo sale primero en 6 de 9, pero el agente no llega a leerlo en 10 de las 23 nunca resueltas.
+- «Un tercio de las tareas donde el enunciado no dice qué corregir» como palanca: retirado. 7 de las 15 cortas
+  eran resolubles, y el conjunto oculto no tiene por qué traer esa mezcla.
+- «Ningún ajuste resuelve más, tampoco el razonamiento»: el razonamiento solo se midió con 4 minutos, donde 11
+  de 13 sesiones se quedaron sin tiempo, y el envío lo llevaba apagado. No está medido en condiciones válidas.
+- «El agente rinde tres o cuatro veces mejor en lo público»: el dato sigue, la lectura cambia. No es que la
+  tabla sea más difícil por tener tareas cortas; es otro conjunto.
+
+**El manuscrito.** Cinco revisores lo leyeron el 2026-10-07: no se puede publicar como está. Sus tablas
+coinciden con sus fuentes, pero dice «no hemos ejecutado Gemma 4», da por desconocida la causa de las tareas
+que no sirven y por no repetida la medición de validez; las tres cosas son falsas hoy. Se reescribe en inglés,
+sobre lo medido. Detalle en la vuelta 35 de la bitácora.
+
+**Manuscrito nuevo, 01:55 UTC.** En inglés, 2 995 palabras, citas en APA 7 y PDF de 12 páginas: PR #150 del
+repositorio de ALL, en borrador. Pasó tres rondas de revisión y está sin firma del validador sobre su versión
+exacta. La suite de revisión quedó en el repositorio (PR #149): dos roles nuevos, un comprobador automático
+del manuscrito y el generador del PDF. Detalle en la vuelta 36.
+
+**Primer resultado a favor, 02:13 UTC del día 7 (`iteracion-06`).** Con razonamiento encendido, 60 llamadas y
+4,5 minutos, 9 de 19 tareas (base 6, 7 y 7). Tres de ellas nunca se habían resuelto, dos de enunciado corto:
+las primeras en 138 sesiones. Se pierde una de las 7 que ya se resolvían. Es una sola corrida y queda bajo
+el umbral de 10 que se fijó antes: no decide. El freno pasó de las llamadas al tiempo: 9 de 10 fallos agotan
+los 4,5 minutos. Detalle en la vuelta 37.
+
+**Veredicto actualizado.** El proyecto mide bien, sabe dónde se pierde el agente y tiene su primera señal de
+mejora, todavía sin confirmar. La confirma o la desmiente la nota del envío pendiente, que lleva esa misma
+condición.
 
 ---
 

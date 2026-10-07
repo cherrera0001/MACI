@@ -96,6 +96,8 @@
 </style>
 </head>
 <body>
+<p style="margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #b45309;border-radius:.5rem;font-family:system-ui,sans-serif">Página con el estado del 2026-10-05, corregida en parte el 2026-10-07. Lo vigente está en la sección 1.8 del <a href="README.md">README del caso</a> y en la <a href="BITACORA_MEJORA.md">bitácora</a>: tres envíos, seis corridas, 1 935 equipos y mediana de 6 tareas en la tabla.</p>
+
 <main>
 <!-- datito:nav:inicio -->
 <!-- La barra la inyecta 03_SCRIPTS/construir_navegacion.py. No la escribas a mano. -->
@@ -204,7 +206,7 @@ las ve.</div>
     <tr><td>Agente principal</td><td>Instrucciones del kit y nueve herramientas: ejecutar comandos, leer, editar, escribir, entregar y consultar el grafo</td></tr>
     <tr><td>Un ayudante</td><td>Analiza el código para localizar la causa</td></tr>
     <tr><td>Presupuesto por tarea</td><td>4 minutos, 40 llamadas a herramientas, 100 turnos, 60 segundos por comando</td></tr>
-    <tr><td>Generación</td><td>Hasta 8 192 tokens; razonamiento apagado</td></tr>
+    <tr><td>Generación</td><td>Hasta 8 192 tokens; razonamiento apagado en los dos primeros envíos y encendido en el tercero (2026-10-07)</td></tr>
     <tr><td>Adaptadores entrenados</td><td>Ninguno</td></tr>
   </table></div>
   <div class="met">
@@ -225,15 +227,15 @@ artículo.</p>
   <tr><th>Qué afirma o predice</th><th>Estado</th></tr>
   <tr><td>Solo 71 de 129 tareas públicas sirven para medir en el notebook oficial</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td>Con 42 tareas de prueba, una diferencia menor que 14 puntos porcentuales no se puede declarar</td><td><span class="rol r-cuenta">calculado</span></td></tr>
-  <tr><td>P1 · Al repetir la misma configuración, algunas tareas cambian de resultado</td><td><span class="rol r-dato">sin medir</span></td></tr>
-  <tr><td>P2 · La mayoría de las tareas no resueltas se quedan sin tiempo o sin presupuesto</td><td><span class="rol r-decide">indicio en contra del tiempo, 2 tareas</span></td></tr>
-  <tr><td>P3 · Se resuelve menos de la mitad de las tareas</td><td><span class="rol r-dato">sin medir</span></td></tr>
+  <tr><td>P1 · Al repetir la misma configuración, algunas tareas cambian de resultado</td><td><span class="rol r-cuenta">medido fuera del diseño preregistrado: cambian 2 de 16, 2 de 15 y 1 de 30</span></td></tr>
+  <tr><td>P2 · La mayoría de las tareas no resueltas se quedan sin tiempo o sin presupuesto</td><td><span class="rol r-cuenta">medido: 36 de 69 sesiones agotan las llamadas y 4 el tiempo</span></td></tr>
+  <tr><td>P3 · Se resuelve menos de la mitad de las tareas</td><td><span class="rol r-cuenta">medido fuera del diseño preregistrado: como máximo 7 de 30</span></td></tr>
   <tr><td>Resultado previo de ALL, sin modelo de lenguaje: cuando el problema nombra la parte equivocada, la memoria acierta 0 de 18 y sin memoria 6 de 18</td><td><span class="rol r-cuenta">medido</span></td></tr>
 </table></div>
 <div class="tension">
   <strong>Tres tensiones que el artículo debe resolver.</strong>
   <ul>
-    <li>El borrador todavía dice «no hemos ejecutado Gemma 4». Ya hay una corrida y vienen más.</li>
+    <li>El borrador todavía dice «no hemos ejecutado Gemma 4». Hay seis corridas y tres envíos. Cinco revisores lo leyeron el 2026-10-07: no se puede publicar como está y se reescribe.</li>
     <li>La hipótesis propia de ALL (instrucciones derivadas de experiencia frente a un texto de relleno) se
     retiró del artículo: con 42 tareas no hay potencia para detectar una mejora pequeña.</li>
     <li>Google pide post-entrenar el modelo. Nosotros no entrenamos nada. Nuestro lugar es el tema de tareas y
@@ -513,14 +515,14 @@ GPU espera entre 3 y 8 horas en cola.</p>
   <tr><td class="num">6</td><td>¿Se puede cancelar una corrida en cola?</td><td>API</td><td>Sí</td><td><span class="rol r-cuenta">resuelto</span></td></tr>
   <tr><td class="num">7</td><td>¿Qué hacen los demás?</td><td>API</td><td>112 notebooks públicos leídos</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">8</td><td>¿Por qué 55 tareas no sirven?</td><td>Código</td><td>El entorno del notebook no instala dependencias por tarea</td><td><span class="rol r-cuenta">confirmado</span></td></tr>
-  <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>No, con 4 minutos: 3 de 16 frente a 4, y el doble de tiempo</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">9</td><td>¿Ayuda el razonamiento?</td><td>GPU</td><td>Sin respuesta válida: con 4 minutos, 11 de 13 sesiones se quedaron sin tiempo (3 de 16 frente a 4). Se vuelve a medir con 4,5 minutos y 60 llamadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">10</td><td>¿Cuál es el error real?</td><td>CPU</td><td>En 34 tareas falta un paquete que solo usan las pruebas</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">11</td><td>¿Gana el diseño de dos agentes? ¿Y 100 llamadas?</td><td>GPU</td><td>Ninguno: 3 de 15 el de dos agentes, 2 con 100 llamadas, 3 el enviado</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">12</td><td>¿Se recuperan las tareas instalando esos paquetes?</td><td>CPU</td><td>De 71 a 103 válidas; ninguna de las 71 se pierde</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">13</td><td>¿Resiste la idea una revisión independiente?</td><td>Tres revisores</td><td>Solo con cambios</td><td><span class="rol r-cuenta">hecho</span></td></tr>
   <tr><td class="num">14</td><td>¿Puede el envío llevar su propio oído?</td><td>Local, sin GPU</td><td>Sí: las pruebas que cargan pasan de 690–2 927 a 2 486–3 711 en tres tareas</td><td><span class="rol r-decide">solo en local</span></td></tr>
   <tr><td class="num">15</td><td>¿Por qué el agente tarda en editar?</td><td>Datos de la 11</td><td>En 3 tareas, edita cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-decide">indicio fuerte</span></td></tr>
-  <tr><td class="num">16</td><td>¿Qué separa las tareas resueltas de las que no?</td><td>Sin GPU</td><td>El largo del enunciado: 0 de 66 pasadas con enunciado corto, 22 de 42 con enunciado largo</td><td><span class="rol r-cuenta">medido</span></td></tr>
+  <tr><td class="num">16</td><td>¿Qué separa las tareas resueltas de las que no?</td><td>Sin GPU</td><td>El largo del enunciado separa lo que el agente resuelve (0 de 16 tareas cortas, replicado en un repositorio no visto), pero no lo que se puede resolver: 7 de 15 cortas eran resolubles</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td class="num">17</td><td>¿El agente llega al archivo correcto? ¿Edita antes si se le avisa o se le pide?</td><td>GPU</td><td>—</td><td><span class="rol r-dato">en cola</span></td></tr>
 </table></div>
 
@@ -845,11 +847,11 @@ que aún no se aplican.</p>
   <tr><td>La mitad de las llamadas del agente repite una idéntica</td><td><span class="rol r-cuenta">medido</span></td></tr>
   <tr><td>En la configuración enviada, el agente suele editar cuando el arnés le avisa que le quedan 10 llamadas</td><td><span class="rol r-decide">indicio fuerte, 3 a 4 tareas por pasada</span></td></tr>
   <tr><td>11 de las 15 tareas de desarrollo no se resolvieron en ninguna de cuatro pasadas</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td>Más llamadas, razonamiento con 4 minutos o el diseño público de dos etapas no resuelven más</td><td><span class="rol r-cuenta">medido, 15 a 16 tareas</span></td></tr>
+  <tr><td>Más llamadas, el diseño público de dos etapas, el tope 20, una regla escrita y una regla para la herramienta de edición no resuelven más. El razonamiento solo se midió con 4 minutos: no cuenta</td><td><span class="rol r-cuenta">medido, 15 a 16 tareas</span></td></tr>
   <tr><td>En qué entorno se valida la nota</td><td><span class="rol r-dato">no se sabe</span></td></tr>
   <tr><td>ZorzALL resuelve más tareas que el arnés base</td><td><span class="rol r-dato">sin medir</span></td></tr>
   <tr><td>Entre dos corridas iguales cambian 2 tareas de 15 o 16; en la tabla, 1 de 58</td><td><span class="rol r-cuenta">medido</span></td></tr>
-  <tr><td>Con enunciado corto el agente no resuelve nada: 0 de 66 pasadas</td><td><span class="rol r-cuenta">medido, 10 tareas</span></td></tr>
+  <tr><td>Con enunciado corto el agente no resuelve nada: 0 de 16 tareas en todas las pasadas</td><td><span class="rol r-cuenta">medido, 16 tareas</span></td></tr>
   <tr><td>En las tareas cortas, el archivo correcto se encuentra buscando las palabras del título</td><td><span class="rol r-cuenta">medido, 6 de 9</span></td></tr>
   <tr><td>El agente llega a leer ese archivo</td><td><span class="rol r-dato">en medición</span></td></tr>
   <tr><td>Hay una forma de que resuelva tareas de enunciado corto</td><td><span class="rol r-dato">sin medir</span></td></tr>
