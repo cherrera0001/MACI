@@ -14,7 +14,16 @@ bitácora, qué se subió, para responder qué, con qué resultado y dónde est�
 |---|---|---|---|---|
 | 2026-10-03 23:46 | 56808559 | Kit ajustado: 4 minutos, 40 llamadas, sin adaptadores, razonamiento apagado | 0,06 | 4 de 58 |
 | 2026-10-04 17:41 | 56830336 | El mismo archivo, para ver el ruido de la tabla | 0,05 | 3 de 58 |
-| 2026-10-07 00:26 | 56895202 | `i_razona`: el mismo kit con razonamiento encendido, 60 llamadas y 4,5 min por tarea (zip `65a0216007e19bf6…`). Ordenado por el dueño. Predicciones P38 y P39 en la vuelta 33 de la bitácora | Pendiente | Pendiente |
+| 2026-10-07 00:26 | 56895202 | `i_razona`: el mismo kit con razonamiento encendido, 60 llamadas y 4,5 min por tarea (zip `65a0216007e19bf6…`). Ordenado por el dueño. Predicciones P38 y P39 en la vuelta 33 de la bitácora | **0,08.** Estuvo en error de sistema (leído el 2026-10-07 a las 15:55 UTC) y Kaggle lo volvió a puntuar solo: `complete` el 2026-10-08 a las 21:37 UTC. P38: no decide (regla de la vuelta 33). P39: sin poder leerse | 5 de 58 |
+| 2026-10-07 16:25 | 56916129 | El mismo zip `65a0216007e19bf6…` del 56895202, byte a byte, reenviado tras su error de sistema. Aprobado por el dueño («Sí, reenvía el mismo zip»). Mismas predicciones P38 y P39 | **0,13.** En error de sistema hasta el 2026-10-08 a las 22:31 UTC; `complete` leído el 2026-10-09 a las 13:42 UTC, dentro de una tanda de repuntuación del organizador (inferencia) | 8 de 58 |
+
+Los cuatro envíos son dos archivos enviados dos veces: sin razonamiento, 4 y 3 tareas; con razonamiento, 5 y 8.
+Con dos notas por archivo no se distingue uno de otro. Última lectura por la API: 2026-10-09 a las 21:55 UTC,
+sin cambios. Tabla pública a las 17:41 UTC: 2 188 equipos, puesto oficial 544, 277 equipos con más nota.
+
+**Preparado y no enviado:** kit K «interfaz limpia» (`sub-004` en el registro del repositorio, huella
+`3346af0e…c8b1`): la base sin subagente, sin las tres herramientas de grafo y sin la línea de la instrucción
+que ordenaba la búsqueda. Vuelta 42 de la bitácora.
 
 ## Corridas en notebooks
 
@@ -34,6 +43,16 @@ bitácora, qué se subió, para responder qué, con qué resultado y dónde est�
 | 12 | `iteracion-04` | GPU | El mismo notebook byte a byte: ¿cuántas tareas cambian de resultado entre dos pasadas iguales en fastapi no vistas (el ruido) y en rich? | 3 de 15 en rich, 4 de 15 en fastapi, 1 de 13 en requests; cambian de resultado 0, 1 y 1 tareas; se cumplen P27, P28 y P29, se refuta P30 | Terminada |
 | 13 | `iteracion-05` | GPU | Con una línea más en la instrucción (candidato `h_edicion`), ¿dejan de quedar sesiones atrapadas repitiendo `edit_file` sin `old_string`? | 7 de 30 (rich 3, fastapi 4), igual que la base; 0 sesiones atrapadas (base 3 y 3) y 0 llamadas a `edit_file` sin `old_string` (base 107 y 49); se cumple P32, P33 dentro del ruido, P34 sin casos | Terminada |
 | 14 | `iteracion-06` | GPU | Con la condición del envío 56895202 (razonamiento encendido, 60 llamadas, 4,5 min), ¿el agente llega a editar en las tareas resolubles, o se queda sin tiempo? | 9 de 19 (base 6, 7 y 7): tres tareas nunca resueltas antes, dos de enunciado corto; 9 de 10 fallos por tiempo agotado; P36 se cumple, P35, P37 y P40 no deciden | Terminada |
+| 15 | `iteracion-07` | GPU | Segunda pasada de la condición del envío (`i_razona`) sobre 10 tareas: las 7 ya resueltas y las 3 que la 06 resolvió por primera vez. ¿Se repiten? | 9 de 10. Las 3 nuevas de la 06 se repiten (3 de 3) y de las 7 ya resueltas se mantienen 6; 0 rechazos por contexto. P41, P42 y P43 se sostienen. No se compara con los 9 de 19: las diez se eligieron por haberse resuelto | Terminada |
+
+**Armada y no subida:** iteración 08 (la base dos veces sobre 60 tareas sorteadas entre las 71 válidas, con el
+registro nuevo; 6,9 a 9,0 h de cuota). No está lista para lanzar: falta repetir el ensayo local con la versión
+de `ipykernel` de Kaggle, el análisis que excluye los pares faltantes, cuota de 14,6 h o más y la orden del
+dueño. Vueltas 40 a 42 de la bitácora.
+
+**Aviso sobre las filas 11 a 15:** el 2026-10-08 un verificador halló que los 145 logs por tarea de las
+iteraciones 03 a 07 tienen 0 bytes. Las cifras de resueltas valen (salen de los resultados y las trazas), pero
+ninguna de esas corridas cumple el criterio de «corrida válida» aprobado ese día.
 
 `iteracion-01` se subió cuatro veces antes de ejecutarse: tres resubidas para cambiar el plan o añadir medidas.
 
