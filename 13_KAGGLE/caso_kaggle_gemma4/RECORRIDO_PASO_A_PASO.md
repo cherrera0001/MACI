@@ -4,7 +4,7 @@ Este documento cuenta, en orden, qué pide el concurso y qué hicimos para resol
 esperábamos, qué salió y qué decidimos después. Sirve para dos cosas: retomar el trabajo sin releer todo, y
 aprender cómo se itera en un desafío de Kaggle.
 
-- **Estado al:** 2026-10-05, 02:25 UTC.
+- **Estado al:** 2026-10-09, 18:20 UTC.
 - **Registro de cada corrida:** [`REGISTRO_DE_PRUEBAS.md`](REGISTRO_DE_PRUEBAS.md).
 - **Versión visual, pensada para publicarse en la web:** [`desafio_kaggle_gemma4.html`](desafio_kaggle_gemma4.html). Es una sola página y no depende de este documento.
 - **Solo agregados:** no hay enunciados, parches, pruebas ni identificadores de tareas.
@@ -21,7 +21,7 @@ aprender cómo se itera en un desafío de Kaggle.
 | ¿Qué pregunta buscamos resolver? | La de ALL: si un agente convierte su experiencia en instrucciones, ¿resuelve más tareas? Y antes, la que la hace medible: ¿qué diferencia entre dos configuraciones se distingue de repetir una sola? |
 | ¿Qué datos usamos? | Las 129 tareas públicas con su copia del repositorio y sus grafos; la tabla pública; 112 notebooks públicos; nuestros logs. La solución oficial solo se usa para comprobar que una tarea sirve |
 | ¿Qué ofrecemos? | Una medición del instrumento (71 de 129 tareas sirven en el notebook oficial, y por qué), un método para no confundir ruido con mejora, y herramientas abiertas para validar sin GPU |
-| ¿Qué hemos enviado? | El kit oficial con cuatro ajustes y nada entrenado, dos veces: 0,06 y 0,05 (4 y 3 de 58). El 2026-10-07, un tercer envío con razonamiento encendido, 60 llamadas y 4,5 min; pendiente de nota. Ningún artículo todavía |
+| ¿Qué hemos enviado? | El kit oficial con cuatro ajustes y nada entrenado, dos veces: 0,06 y 0,05 (4 y 3 de 58). Después, el mismo kit con razonamiento encendido, 60 llamadas y 4,5 min, también dos veces: 0,08 y 0,13 (5 y 8 de 58). Ningún artículo todavía |
 | ¿Cuál es el artículo? | «Cuánto se puede creer una diferencia»: validez de las tareas, ruido entre ejecuciones y predicciones escritas antes de correr. El borrador del 2026-10-04 no se puede publicar como está (cinco revisores, 2026-10-07); se reescribe en inglés. Cierre: 2026-11-12, 3 000 palabras |
 
 El detalle de cada respuesta está en la [versión visual](desafio_kaggle_gemma4.html).
@@ -335,7 +335,8 @@ Las predicciones de cada una, escritas antes de correr, están en la bitácora (
 
 - **Qué se envió.** El mismo kit con razonamiento encendido, 60 llamadas y 4,5 minutos por tarea.
 - **Predicción.** Se conserva con 6 tareas o más de 58; con 5 se reenvía; con 4 o menos se descarta.
-- **Estado.** Pendiente de nota.
+- **Estado.** Quedó en error de sistema y Kaggle lo volvió a puntuar solo: 0,08, 5 de 58 (leído el
+  2026-10-08). Con 5 la regla escrita dice «no decide». Sigue en la prueba 25.
 
 ### Prueba 24 — La misma condición en 19 tareas (`iteracion-06`, 2026-10-07, 00:37 UTC)
 
@@ -345,11 +346,62 @@ Las predicciones de cada una, escritas antes de correr, están en la bitácora (
 - **Qué dejó.** Primera señal a favor, en una sola corrida y bajo el umbral de 10 fijado antes: no decide.
   El freno pasó de las llamadas al tiempo.
 
+### Prueba 25 — Reenviar el mismo archivo y repetir en notebook (2026-10-07, 16:25 UTC)
+
+- **Qué pregunta.** Si el error era de la configuración o del sistema, y si las tareas nuevas de la prueba 24
+  se repiten.
+- **Qué salió.** El reenvío estuvo en error hasta el 2026-10-08 y el 2026-10-09 apareció con 0,13: 8 de 58.
+  El mismo archivo dio 5 y 8. En el notebook (`iteracion-07`, 10 tareas elegidas por haberse resuelto antes):
+  9 de 10, y las 3 nuevas se repiten.
+- **Qué dejó.** Un error de Kaggle no es un estado final: el organizador repuntúa. Dos notas por archivo
+  (4 y 3; 5 y 8) no bastan para decir que el razonamiento mejora.
+
+### Prueba 26 — Auditar el propio instrumento (sin GPU, 2026-10-08)
+
+- **Qué pregunta.** Si lo afirmado en la bitácora se sostiene cuando lo vuelve a medir alguien que no leyó el
+  relato.
+- **Qué salió.** Los 145 logs por tarea tenían 0 bytes y el rescate no lo avisaba. Varias cifras se cayeron
+  (eran 135 sesiones y no 76). Con 19 tareas y una pasada, una mejora real de 2 tareas se detecta 1 o 2 veces
+  de cada 100.
+- **Qué dejó.** Se dejó de probar condiciones para arreglar primero el registro. Criterio nuevo, aprobado por
+  el dueño: una corrida vale si cada tarea deja sus archivos con contenido; una decisión vale con 60 tareas
+  por brazo o 6 discordantes a favor, predicción previa y una repetición de la base.
+
+### Prueba 27 — Diseñar la iteración 08 y ensayarla en local (sin GPU, 2026-10-08 y 09)
+
+- **Qué pregunta.** Cuánto cambia el resultado entre dos pasadas idénticas de la base sobre 60 tareas, con un
+  registro que no pierda nada.
+- **Qué salió.** Notebooks armados; ensayo local con cortes forzados; tope de 900 s por tarea para que una
+  tarea colgada no se lleve la sesión. No se subió.
+- **Qué dejó.** Condiciones de lanzamiento sin cumplir, entre ellas repetir el ensayo con la versión de
+  `ipykernel` de Kaggle y la orden del dueño.
+
+### Prueba 28 — En qué se van las llamadas (sin GPU, 2026-10-09)
+
+- **Qué pregunta.** La del dueño: ¿es coherente gastar 31 de 40 llamadas sin resolver? ¿Quién controla cada
+  llamada?
+- **Qué salió.** Cerca del 45 % de las llamadas contadas no trae información nueva (1 822 de 4 086):
+  repeticiones, lecturas con el argumento mal formado, búsquedas vacías (300 de 300) y un subagente que no
+  resolvió ninguna de sus 7 sesiones. Nadie juzga una llamada: el arnés solo lleva un contador total, el
+  reloj y los turnos.
+- **Qué dejó.** El kit K «interfaz limpia» (sin subagente, sin grafo, sin la línea que ordenaba la búsqueda),
+  armado y sin enviar; retira 7,9 % de las llamadas y se juzgará por criterio mecánico. El concilio pasó a
+  tener una segunda ronda en que cada rol lee a los demás. El dato se había medido cuatro veces sin
+  convertirse en acción.
+
+### Prueba 29 — Leer la tabla y a los demás otra vez (sin GPU, 2026-10-09)
+
+- **Qué salió.** 2 188 equipos; nosotros 8 tareas, puesto oficial 544. La tabla premia el número de envíos:
+  con uno, el 10 % de los equipos llega a 0,13 o más; con diez, el 53 %. Los que declaran más nota usan de 5
+  a 8 minutos por tarea; nuestro tope de 4 minutos es nuestro, no del concurso (12 h para unas 120 tareas).
+  Ningún notebook público declara más de 0,18.
+- **Qué dejó.** Los minutos por tarea y el uso del envío diario pasan al concilio de la vuelta 43.
+
 ---
 
 ## 5. Qué sabemos y qué no
 
-Al 2026-10-07, 01:20 UTC.
+Al 2026-10-09, 18:20 UTC.
 
 | Afirmación | Estado |
 |---|---|
@@ -359,11 +411,15 @@ Al 2026-10-07, 01:20 UTC.
 | El entorno del notebook explica 34 de las 55 tareas que no sirven | Medido, y confirmado al instalar los paquetes |
 | Por qué fallan las otras 23 | Sin medir |
 | Cuánto cambia el resultado entre dos corridas iguales | Medido: 2 de 16, 2 de 15 y 1 de 30 tareas |
-| El mismo envío da notas distintas | Medido: 4 y 3 de 58 |
+| El mismo envío da notas distintas | Medido dos veces: 4 y 3 de 58; 5 y 8 de 58 |
+| Un envío en error no tiene nota | No: los dos en error recibieron nota después, sin reenviar |
+| En qué se van las llamadas | Medido por dos líneas independientes: cerca del 45 % no trae información nueva |
+| Los registros de las corridas estaban completos | No: 145 de 145 logs por tarea con 0 bytes; corregido en el rescate |
 | La clase de fallo de una sola pasada es fiable | No: cambia en 13 de 30 tareas entre pasadas iguales |
-| El límite que aprieta es el de llamadas | Medido: 36 de 69 sesiones fallidas llegan a 40; 4 terminan por tiempo |
+| El límite que aprieta es el de llamadas | Sin razonamiento, sí, y es síntoma del gasto sin avance; con razonamiento aprieta el reloj |
 | El diseño de dos agentes resuelve más | Medido una vez: 3 frente a 3 de 15 |
-| El razonamiento encendido ayuda | Indicio a favor, una corrida: 9 de 19 frente a 6, 7 y 7, con tres tareas nunca resueltas antes. Falta la nota del envío |
+| El razonamiento encendido ayuda | Sin decidir: 9 de 19 en notebook y notas de 5 y 8 frente a 4 y 3. Cambia tres cosas a la vez y dos notas por archivo no bastan |
+| Más minutos por tarea ayudan | Sin medir por nosotros; otros declaran más nota con 5 a 8 minutos |
 | Con enunciado corto el agente no resuelve nada | Cierto con el razonamiento apagado (0 de 16 tareas). Con razonamiento se resolvieron 2, en una corrida |
 | Las tareas cortas son irresolubles | No: 7 de 15 lo eran, según un revisor |
 | Quitar el fallo de la herramienta de edición resuelve más | Medido una vez: no, 7 de 30 igual que la base |
@@ -373,9 +429,11 @@ Al 2026-10-07, 01:20 UTC.
 
 ## 6. Qué sigue
 
-1. Leer la nota del tercer envío contra su predicción (6 tareas o más de 58).
-2. Si el razonamiento mueve la nota, reenviar el mismo zip para ver el ruido antes de sumar otro cambio.
-3. Si no la mueve, medir más llamadas y más tiempo por separado, con la cuota nueva del 2026-10-10.
+1. Cerrar el concilio de la vuelta 43: minutos por tarea, uso del envío diario y los siete hallazgos medidos
+   que siguen sin decisión.
+2. Cumplir las condiciones de lanzamiento de la iteración 08 y pedir la orden del dueño. La cuota se repone el
+   2026-10-10.
+3. Decidir con el dueño qué se envía y cuándo: nada se sube sin su orden.
 4. Firmar el manuscrito en inglés (PR #150 de ALL, 2 995 palabras, APA 7, PDF de 12 páginas) cuando lleguen
    los dos resultados pendientes, y enviarlo como Writeup antes del 2026-11-12.
 
@@ -391,6 +449,11 @@ Al 2026-10-07, 01:20 UTC.
 | Perder el error del servidor | El notebook guarda la salida de la excepción |
 | Dos sesiones haciendo el mismo trabajo sin coordinarse | Un responsable por pieza; los hallazgos se dejan en el issue |
 | Afirmar algo del entorno oculto sin evidencia | Separar en cada afirmación lo medido de lo supuesto |
+| Dar por final un error de Kaggle con una sola lectura | Cada lectura de envíos se guarda con su hora; un vigía avisa al abrir sesión si algo cambió |
+| Decir «hay logs» sin mirar su tamaño | El rescate cuenta un archivo vacío como faltante |
+| Medir cuatro veces el mismo problema sin actuar | Registro de hallazgos: ninguno pasa dos vueltas sin decisión escrita |
+| Un concilio en que nadie lee a nadie | Segunda ronda cruzada, con los informes anonimizados |
+| Documentos de entrada dos días atrasados | Se actualizan en el mismo paso que la bitácora |
 
 ---
 
