@@ -913,12 +913,16 @@ es el estado registrado en <code>progreso.yaml</code> al generar esta página.</
 <b>Clases pendientes de construir:</b> {txt_pend}.</p>
 
 <h2 id="desafios">0b · Desafío aplicado: el curso fuera del aula</h2>
-<p>Un caso real donde se usan las ideas del curso: validación que no se parece a la evaluación, ruido de una
-métrica con pocas observaciones y comparación de dos modelos. No entra al certamen.</p>
+<p>Casos reales donde se usan las ideas del curso: validación que no se parece a la evaluación, ruido de una
+métrica con pocas observaciones y comparación de un modelo contra el azar. No entran al certamen.</p>
 <table><tr><th>Desafío</th><th>Qué se practica</th><th>Clases que conviene tener</th></tr>
 <tr><td><a href="{desde_visual("13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html")}">Kaggle: un agente que
 corrige código con Gemma 4</a></td><td>Leer una nota como un conteo, calcular su error estándar y decidir si
-una diferencia es real o es ruido</td><td>Train / validation / test · Generalización</td></tr></table>
+una diferencia es real o es ruido</td><td>Train / validation / test · Generalización</td></tr>
+<tr><td><a href="{desde_visual("14_INVESTIGACION/azar_fisico/azar_fisico.html")}">Azar físico: ¿se puede predecir un
+sorteo de bolillas?</a></td><td>Separar un sesgo de una predicción, calcular cuántas observaciones hacen falta para
+ver un efecto y exigir una línea base antes de creerle a un modelo</td><td>Train / validation / test ·
+Generalización · Overfitting y underfitting</td></tr></table>
 
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de

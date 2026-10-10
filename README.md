@@ -6,6 +6,7 @@ Repositorio de trabajo de **Fundamentos de Ciencia de Datos** (FCD), Universidad
 2. **Datito**: tutor personal socrático (skill `.claude/skills/datito/`). Registra el progreso, los errores y las dudas resueltas.
 3. **El proyecto semestral**: predicción de precios en Melbourne y desafío Galaxy Zoo (`08_PROYECTO_FCD/`, `09_RESULTADOS/`).
 4. **Un desafío aplicado**: el caso de la competencia Gemma 4 de Kaggle, documentado prueba por prueba, con sus predicciones, resultados y correcciones (`13_KAGGLE/`).
+5. **Una investigación aplicada**: estado del arte sobre sesgo y predicción en sorteos de bolillas, con hoja visual, simulador y fuentes verificadas (`14_INVESTIGACION/`).
 
 ## Estudiar
 
@@ -40,6 +41,7 @@ Todo lo que ves en las páginas se genera desde estos archivos. No hay otra copi
   07_BITACORA/           una entrada por sesión de Datito
 05_CLASES/transcripciones/   15 clases transcritas (se citan con marca de tiempo)
 13_KAGGLE/caso_kaggle_gemma4/ caso Gemma 4: análisis, recorrido, bitácora, registro de pruebas y página visual
+14_INVESTIGACION/azar_fisico/ azar físico: hoja visual, informes de fuentes y cálculo de potencia
 docs/                        despliegue, gestión y ADR
 .agents/skills/              copia de las skills de .claude/skills/ para otros agentes
 ```

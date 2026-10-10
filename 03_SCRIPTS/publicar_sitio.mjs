@@ -27,6 +27,7 @@ const PORTADA = "01_CONCEPTOS/visual/00_index.html";
 // Son páginas autocontenidas: no enlazan a otros archivos del repositorio.
 const DESAFIOS = [
   ["13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html", "desafios/kaggle_gemma4.html"],
+  ["14_INVESTIGACION/azar_fisico/azar_fisico.html", "desafios/azar_fisico.html"],
 ];
 const NAV_INI = "<!-- datito:nav:inicio -->";
 const NAV_FIN = "<!-- datito:nav:fin -->";
