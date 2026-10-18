@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<!--
+  Hoja construida sobre el TEMPLATE CANÓNICO DATITO (07_DATITO/01_CONCEPTOS/visual/_TEMPLATE_CANONICO.html).
+  Sin CDN ni fuentes remotas. Gráficos: SVG generado con JS plano embebido.
+  Los estilos propios de esta hoja van al final del bloque de estilo, sin tocar los tokens.
+-->
+<title>¿Se puede predecir un sorteo de bolillas? · Estado del arte · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+
+  /* --- propio de esta hoja: gráficos, controles y tablas anchas --- */
+  .tabla-scroll{overflow-x:auto;margin:.9rem 0}
+  .tabla-scroll table{margin:0;min-width:560px}
+  .grafico{margin:.6rem 0 .2rem}
+  .grafico svg{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--linea);border-radius:8px}
+  .grafico text{font-family:"Segoe UI",system-ui,sans-serif;fill:var(--suave);font-size:12px}
+  .grafico text.val{fill:var(--tinta);font-weight:700}
+  .grafico text.eje{fill:var(--tinta);font-size:12px}
+  .grafico .hit{fill:transparent;cursor:default;outline:none}
+  .grafico .hit:hover,.grafico .hit:focus{fill:rgba(26,26,26,.06)}
+  .pie{font-size:.82rem;color:var(--suave);margin:.3rem 0 0}
+  .ctrl{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem 1.4rem;margin:.4rem 0 .8rem}
+  .ctrl label{display:block;font-size:.86rem;font-weight:600}
+  .ctrl output{font-weight:700;color:var(--azul);font-variant-numeric:tabular-nums}
+  .ctrl input[type=range]{width:100%;margin:.25rem 0 0}
+  .ctrl select{width:100%;padding:.35rem;border:1px solid var(--linea);border-radius:6px;font:inherit;font-size:.9rem;background:#fff}
+  .leyenda{display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;font-size:.8rem;color:var(--suave);margin:.4rem 0 0}
+  .leyenda span:before{content:"";display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:.35rem;vertical-align:-1px;background:var(--c,#999)}
+  .leyenda span.raya:before{height:0;border-top:2px dashed var(--c,#999);vertical-align:3px;border-radius:0;background:none}
+  .resultado{background:var(--fondo);border-radius:8px;padding:.7rem .9rem;margin:.7rem 0 0;font-size:.93rem}
+  .resultado p{margin:.2rem 0}
+  #tip{position:fixed;z-index:20;display:none;pointer-events:none;background:#1a1a1a;color:#f5f5f4;
+       border-radius:6px;padding:.35rem .6rem;font-size:.8rem;line-height:1.35;max-width:240px}
+  #tip strong{display:block;font-size:.95rem;color:#fff}
+  .estado{font-size:.68rem;font-weight:700;padding:.12rem .5rem;border-radius:20px;white-space:nowrap}
+  .e-si{background:#d1fae5;color:#065f46}
+  .e-no{background:#fee2e2;color:#991b1b}
+  .e-ab{background:#fef3c7;color:#92400e}
+  .e-ne{background:#e5e7eb;color:#374151}
+  .refs li{margin-bottom:.45rem;font-size:.88rem}
+  .refs a,.panel a,td a,p a{color:var(--azul)}
+  @media(max-width:520px){
+    body{padding:1.2rem .7rem}
+    h1{font-size:1.4rem}
+    .panel,.ecu{padding:.9rem}
+    .ecu .f{font-size:.9rem;overflow-x:auto}
+  }
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<!-- La barra la inyecta 03_SCRIPTS/construir_navegacion.py. No la escribas a mano. -->
+<!-- datito:nav:fin -->
+
+<h1>¿Se puede predecir un sorteo de bolillas?</h1>
+<p class="sub">Estado del arte sobre azar físico, sesgo y predicción · revisión del concilio de Datito · búsqueda cerrada el 2026-10-09</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Distinguir un sesgo de una predicción, calcular cuántas extracciones
+  hacen falta para ver un sesgo de un tamaño dado, explicar por qué una ruleta se ha podido anticipar y un bombo
+  de bolillas no, y decir qué está medido, qué es inferencia y qué nadie ha estudiado todavía.
+</div>
+
+<div class="nota">
+  <strong>Estado honesto.</strong> Esto es una revisión de literatura, no un experimento propio. Cinco agentes
+  buscaron por separado y confirmaron cada referencia en Crossref, arXiv o la página del editor; de muchas solo se
+  leyó el resumen o los metadatos, y la <a href="#matriz">matriz</a> lo dice fila por fila. Los cálculos marcados
+  «cálculo propio» son nuestros y están en <code>analisis/potencia.py</code>. Lo que no se pudo confirmar quedó
+  fuera de esta hoja y está listado en los archivos de <code>fuentes/</code>.
+</div>
+
+<div class="panel">
+  <div class="lbl">Mapa de la hoja</div>
+  <ol class="pasos">
+    <li><a href="#respuesta">La respuesta corta</a></li>
+    <li><a href="#palabras">Cinco palabras que se confunden</a></li>
+    <li><a href="#sesgo">Sesgo no es predicción</a></li>
+    <li><a href="#medido">Lo que se ha medido: moneda, dado y ruleta</a></li>
+    <li><a href="#horizonte">Por qué la ruleta sí y un bombo no</a></li>
+    <li><a href="#tailandia">El único experimento con bolillas</a></li>
+    <li><a href="#simulador">Simulador: ¿cuántas extracciones para ver un sesgo?</a></li>
+    <li><a href="#reales">Sorteos reales, fraudes y tolerancias</a></li>
+    <li><a href="#pruebas">Qué pruebas sirven y cuáles no (NIST)</a></li>
+    <li><a href="#ml">Qué puede y qué no el aprendizaje automático</a></li>
+    <li><a href="#chile">El caso chileno: Loto y Kino</a></li>
+    <li><a href="#hipotesis">Mapa de hipótesis</a></li>
+    <li><a href="#experimento">El experimento que falta</a></li>
+    <li><a href="#sabemos">Qué sabemos y qué no</a></li>
+    <li><a href="#papel">Para resolver en papel</a></li>
+    <li><a href="#matriz">Matriz bibliográfica y herramientas</a></li>
+  </ol>
+</div>
+
+<h2 id="respuesta">1 · La respuesta corta</h2>
+<p>La evidencia publicada sostiene tres cosas y ninguna más.</p>
+<ol class="pasos">
+  <li><strong>Los aparatos de azar tienen sesgos reales, pero pequeños.</strong> Una moneda cae del lado del que
+      partió 50,8 % de las veces; un dado barato favorece dos caras por dos décimas de punto. Verlos costó cientos
+      de miles de repeticiones.</li>
+  <li><strong>Predecir un resultado concreto se ha logrado solo donde hay una fase lenta y regular antes de pocos
+      choques.</strong> El caso documentado es la ruleta, mientras la bola todavía gira en el riel.</li>
+  <li><strong>En un bombo de bolillas nadie ha medido nada de esto.</strong> Hay un solo experimento, con una
+      máquina casera, que muestra un sesgo por masa. No hay ningún estudio que prediga una extracción, ni que mida
+      cuánto dura la «memoria» del bombo.</li>
+</ol>
+<div class="met">
+  <div><div class="n">50,8 %</div><div class="e">moneda: mismo lado inicial (350 757 lanzamientos)</div></div>
+  <div><div class="n">13 de 100</div><div class="e">aciertos con la bola 1 % más liviana, en vez de 10</div></div>
+  <div><div class="n">≈ 8</div><div class="e">tiempos de Lyapunov: techo de los modelos, en simulación</div></div>
+  <div><div class="n">0</div><div class="e">estudios que predigan una extracción de un bombo</div></div>
+</div>
+
+<h2 id="palabras">2 · Cinco palabras que se confunden</h2>
+<p>Casi toda la confusión del tema viene de usar «aleatorio» para cosas distintas. Unas describen la
+<em>secuencia</em> de resultados; otras, el <em>proceso</em> que la produce.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Palabra</th><th>Qué dice</th><th>De qué habla</th><th>Ejemplo</th></tr>
+  <tr><td><strong>Aleatoriedad matemática</strong></td><td>Una secuencia que no se puede describir con nada más corto que ella misma (Kolmogorov) y que pasa toda prueba estadística calculable (Martin-Löf).</td><td>La secuencia</td><td>Un ideal: no se puede comprobar del todo.</td></tr>
+  <tr><td><strong>Pseudoaleatoriedad</strong></td><td>Una secuencia producida por una regla corta y determinista, que nadie con recursos limitados distingue del azar.</td><td>La secuencia y quién la observa</td><td>El generador de un computador. Quien conoce la regla y la semilla predice todo.</td></tr>
+  <tr><td><strong>Caos determinista</strong></td><td>Un sistema sin azar en sus leyes donde un error inicial crece exponencialmente.</td><td>El proceso</td><td>Péndulo doble; bolas que chocan.</td></tr>
+  <tr><td><strong>Incertidumbre física</strong></td><td>Lo que no sabes del estado del sistema. Puede ser falta de medición (se reduce midiendo mejor) o propia del sistema (no se reduce).</td><td>Tu conocimiento</td><td>No saber con qué velocidad salió la moneda.</td></tr>
+  <tr><td><strong>Entropía</strong></td><td>Cuánta incertidumbre hay, en bits. La de Shannon mide el promedio; la min-entropía, el peor caso (el resultado más probable).</td><td>Una distribución</td><td>Un sorteo 6 de 41 ideal vale 22,1 bits.</td></tr>
+</table>
+</div>
+<div class="dist">
+  <strong>La distinción que importa.</strong> Una secuencia puede pasar todas las pruebas estadísticas y venir de
+  un proceso con un sesgo físico pequeño. Las pruebas miran la secuencia; la física mira el proceso. Responden
+  preguntas distintas.
+</div>
+<p class="fuente">Conceptos: Kolmogorov 1968; Martin-Löf 1966; Blum y Micali 1984; Boffetta et al. 2002; Atmanspacher 2000. Solo metadatos o resumen leídos: las definiciones son conocimiento estándar expuesto por nosotros.</p>
+
+<h2 id="sesgo">3 · Sesgo no es predicción</h2>
+<p>Son dos preguntas, y casi todo lo que se lee sobre «ganarle a la lotería» las mezcla.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th></th><th>Sesgo</th><th>Predicción</th></tr>
+  <tr><td><strong>Qué afirma</strong></td><td>Algunos resultados salen más que otros, de forma estable.</td><td>Puedo decir, antes de que ocurra, qué va a salir esta vez.</td></tr>
+  <tr><td><strong>Cómo se demuestra</strong></td><td>Muchas repeticiones con el mismo equipo y una prueba estadística.</td><td>Midiendo el estado del sistema en ese momento y acertando en ensayos nuevos.</td></tr>
+  <tr><td><strong>Qué necesita</strong></td><td>Paciencia: miles o cientos de miles de resultados.</td><td>Instrumentos y una ventana de tiempo en que el sistema todavía sea regular.</td></tr>
+  <tr><td><strong>Ejemplo medido</strong></td><td>Moneda, dado, bola liviana en máquina de aire.</td><td>Ruleta, antes de que la bola toque los deflectores.</td></tr>
+</table>
+</div>
+<div class="pred" id="q1">
+  <div class="q">Antes de seguir: una bolilla sale 13 % de las veces en lugar de 10 %. Si apuestas siempre a ella, ¿cuántas de 100 extracciones fallas?</div>
+  <button type="button" data-v="13">13</button>
+  <button type="button" data-v="50">Cerca de 50</button>
+  <button type="button" data-v="87">87</button>
+  <div class="veredicto" id="q1v"></div>
+</div>
+<p>Un sesgo sí da una ventaja pequeña a quien lo conoce, y por eso es un problema de equidad para el operador.
+Pero no dice qué bolilla va a salir en el próximo sorteo.</p>
+
+<h2 id="medido">4 · Lo que se ha medido: moneda, dado y ruleta</h2>
+<p>Ningún aparato mecánico de azar estudiado con rigor es «intrínsecamente aleatorio». Todos siguen leyes
+deterministas y su azar aparente viene de no conocer el estado inicial con suficiente precisión.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Sistema</th><th>Qué se encontró</th><th>Cuánto costó verlo</th><th>Fuente</th></tr>
+  <tr><td><strong>Moneda</strong> lanzada a mano</td><td>Cae del mismo lado del que partió 50,8 % de las veces (intervalo de 95 %: 50,6 a 50,9). No hay sesgo cara o sello. Varía mucho entre personas y baja con la práctica.</td><td>350 757 lanzamientos de 48 personas</td><td>Bartoš et al. 2025; predicho por Diaconis, Holmes y Montgomery 2007</td></tr>
+  <tr><td><strong>Moneda</strong> lanzada por una máquina</td><td>Cae siempre igual: 100 % de caras con ajuste cuidadoso.</td><td>Un resorte y un trinquete</td><td>Diaconis et al. 2007</td></tr>
+  <tr><td><strong>Dado</strong> de plástico corriente</td><td>Frecuencias por cara entre 16,51 % y 16,88 % en vez de 16,67 % (p = 0,00014). La causa medida es de forma: un eje 0,2 % más corto, no el peso de los puntos.</td><td>26 306 tiradas de 12 dados, automatizadas</td><td>Labby 2009</td></tr>
+  <tr><td><strong>Dado</strong>, tirada individual</td><td>La cara que parte más abajo es la más probable. Más roce en la mesa da más rebotes y menos predicción.</td><td>Modelo en tres dimensiones y cámara rápida</td><td>Kapitaniak et al. 2012 (solo resumen leído)</td></tr>
+  <tr><td><strong>Ruleta</strong>, tirada individual</td><td>Con una cámara a 90 cuadros por segundo, la casilla predicha sale más que por azar. A mano, 13 aciertos de media rueda en 22 intentos: evidencia débil.</td><td>700 ensayos con cámara; 22 a mano</td><td>Small y Tse 2012</td></tr>
+  <tr><td><strong>Sorteo militar</strong> de EE. UU., 1969</td><td>Las cápsulas de diciembre, cargadas al final y mal mezcladas, salieron antes: correlación de −0,226 entre día del año y orden de sorteo.</td><td>Un solo sorteo de 366 cápsulas</td><td>Fienberg 1971; Starr 1997</td></tr>
+</table>
+</div>
+<div class="nota">
+  <strong>Lo que no se sostiene.</strong> La ganancia de +44 % de Thorp y Shannon con su computador de 1961, y la
+  historia de los Eudaemons, son relatos sin datos brutos. Los casos famosos de ruedas sesgadas (Jagger,
+  García-Pelayo) solo aparecen en prensa, con cifras que no coinciden entre sí.
+</div>
+
+<h2 id="horizonte">5 · Por qué la ruleta sí y un bombo no</h2>
+<p>La ruleta tiene una fase larga en que la bola rueda sola por el riel y se frena de manera suave. Ahí basta
+cronometrar. La predicción termina donde empiezan los choques con los deflectores, y los propios autores tratan
+lo que sigue como azar. Un bombo es lo contrario: decenas de esferas que chocan entre sí todo el tiempo.</p>
+<p>Cada choque entre dos superficies curvas agranda el error con que conoces la trayectoria. Si el error era
+<code>δ</code>, después de un choque es <code>δ·(1 + 2ℓ/r)</code>, donde <code>ℓ</code> es cuánto viaja la bola
+entre choques y <code>r</code> es su radio.</p>
+<div class="ecu">
+  <div class="f">n ≈ ln(r / δ₀) / ln(1 + 2ℓ/r)</div>
+  <p><strong>Qué resuelve:</strong> cuántos choques <code>n</code> pasan hasta que el error es tan grande como la
+  bola misma, y ya no sabes contra qué va a chocar. <strong>Datos:</strong> <code>r</code> (radio) y
+  <code>ℓ</code> (camino libre entre choques). <strong>Lo que decide quien mide:</strong> <code>δ₀</code>, el
+  error de la medición inicial. Como <code>δ₀</code> está dentro de un logaritmo, medir diez veces mejor solo
+  suma una cantidad fija y pequeña de choques.</p>
+</div>
+
+<div class="panel">
+  <div class="lbl">Mueve la medición y mira cuánto compra</div>
+  <div class="ctrl">
+    <div><label for="hExp">Error de la medición inicial: <output id="hExpO"></output></label>
+      <input type="range" id="hExp" min="3" max="17" step="1" value="6"></div>
+    <div><label for="hLr">Camino libre dividido por el radio (ℓ/r): <output id="hLrO"></output></label>
+      <input type="range" id="hLr" min="1" max="40" step="0.5" value="4"></div>
+  </div>
+  <button type="button" id="hBombo">Bombo (parámetros supuestos)</button>
+  <button type="button" class="alt" id="hBillar">Mesa de billar (Albrecht y Phillips)</button>
+  <div class="grafico" id="hGraf"></div>
+  <div class="leyenda"><span style="--c:#2563eb">error de posición tras cada choque</span><span class="raya" style="--c:#d97706">radio de la bolilla (25 mm)</span></div>
+  <div class="resultado" id="hTexto"></div>
+  <p class="pie">Eje vertical en escala logarítmica. La fórmula es de Albrecht y Phillips (2014) para esferas
+  elásticas lisas; con sus parámetros exactos de billar obtienen 8 choques hasta el límite cuántico. Los valores
+  del bombo (bolilla de 25 mm de radio, 10 cm entre choques) son un supuesto ilustrativo nuestro: no hay medición
+  publicada de un bombo real, y el aire, el roce y el giro cambian la cifra.</p>
+</div>
+
+<div class="tension">
+  <strong>El límite que no depende del instrumento.</strong> Para bolas de billar, una estimación teórica dice que
+  la incertidumbre cuántica ya domina tras unos 8 choques. No es una medición, pero marca el orden de magnitud:
+  unidades o decenas de choques, no cientos. Más allá de eso no existe una condición inicial que medir mejor.
+</div>
+<p>Un dato medido para comparar: en un péndulo doble el error crece con una tasa de 7,5 por segundo
+(Shinbrot et al. 1992). Por cálculo propio, medir diez veces mejor alarga la predicción solo 0,3 segundos.</p>
+
+<h2 id="tailandia">6 · El único experimento con bolillas</h2>
+<p>En 2014, tras una polémica por un premio de la lotería tailandesa, tres investigadores de la Universidad de
+Khon Kaen construyeron una máquina de aire y cambiaron la masa de las bolas a propósito. Es el punto de partida
+de esta revisión y, hasta donde llegó la búsqueda, el único experimento publicado de su tipo.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Ficha</th><th>Dato</th></tr>
+  <tr><td>Referencia</td><td>Pinitsoontorn, Buathong y Srisodaphol. «Is it possible to cheat the lottery draw by weighing?». <em>KKU Research Journal</em> 19(6): 804–818, 2014. Sin DOI; texto en tailandés con resumen en inglés. <a href="https://so01.tci-thaijo.org/index.php/APST/article/view/83061">Página del artículo</a>.</td></tr>
+  <tr><td>Máquina</td><td>Casera, de mezcla por aire: tambor de acrílico de 50 cm y soplador de 60 W. No es la máquina oficial tailandesa, que es manual.</td></tr>
+  <tr><td>Bolas</td><td>10 esferas de espuma de 3,8 cm y 0,28 g. Para aligerar una bola le rebanaron material.</td></tr>
+  <tr><td>Procedimiento</td><td>Una bola por extracción, con reposición. 1000 extracciones por condición, siete condiciones.</td></tr>
+</table>
+</div>
+
+<div class="panel">
+  <div class="lbl">Los datos publicados: frecuencia de cada bola en 1000 extracciones</div>
+  <div class="ctrl">
+    <div><label for="tCond">Condición del experimento</label>
+      <select id="tCond">
+        <option value="0">1 · Diez bolas iguales (control)</option>
+        <option value="1" selected>2 · Bola 9 un 1 % más liviana</option>
+        <option value="2">3 · Bola 9 un 1 % más pesada</option>
+        <option value="3">4 · Bola 9 un 5 % más liviana</option>
+        <option value="4">5 · Bola 9 un 5 % más pesada</option>
+        <option value="5">6 · Diez bolas en escalera de 1 %</option>
+      </select></div>
+  </div>
+  <div class="grafico" id="tGraf"></div>
+  <div class="leyenda"><span style="--c:#2563eb">bolas sin alterar</span><span style="--c:#d97706">bola 9</span><span class="raya" style="--c:#6b7280">esperado si todas valen igual (10 %)</span><span style="--c:#eceae6">franja de azar normal (±2 errores estándar)</span></div>
+  <div class="resultado" id="tTexto"></div>
+</div>
+
+<h3>La lección de muestra que trae el propio artículo</h3>
+<p>Los autores cortaron cada serie a 50, 200, 500 y 1000 extracciones y calcularon el valor p en cada corte.
+Mira la primera fila: con bolas <em>iguales</em>, a 200 extracciones el control casi «detecta» un sesgo que no existe.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Condición</th><th>n = 50</th><th>n = 200</th><th>n = 500</th><th>n = 1000</th></tr>
+  <tr><td>Bolas iguales</td><td class="num">0,350</td><td class="num"><span class="highlight">0,076</span></td><td class="num">0,798</td><td class="num">0,544</td></tr>
+  <tr><td>Una bola 1 % más liviana</td><td class="num">0,384</td><td class="num">0,067</td><td class="num">0,001</td><td class="num">0,003</td></tr>
+  <tr><td>Una bola 1 % más pesada</td><td class="num">0,112</td><td class="num">0,143</td><td class="num">0,131</td><td class="num">0,075</td></tr>
+  <tr><td>Una bola 5 % más liviana</td><td class="num">0,384</td><td class="num">0,033</td><td class="num">0,013</td><td class="num">&lt; 0,001</td></tr>
+  <tr><td>Una bola 5 % más pesada</td><td class="num">0,122</td><td class="num">0,559</td><td class="num">0,255</td><td class="num">0,361</td></tr>
+</table>
+</div>
+
+<div class="peligro">
+  <strong>Por qué no se puede llevar este resultado a una lotería real.</strong>
+  <ul>
+    <li>Una sola corrida por condición, sin réplicas. No separa el efecto de la masa del de esa bola en particular.</li>
+    <li>En el control, la bola 9 ya era la menos frecuente (81 de 1000). Todas las condiciones alteran justamente la bola 9.</li>
+    <li>El efecto de 1 % (12,8 %) y el de 5 % (13,6 %) no se distinguen entre sí: sus intervalos se traslapan casi por completo (cálculo propio).</li>
+    <li>La prueba global, la que haría un auditor que no sabe cuál bola está alterada, no detecta el 1 % con mil extracciones (cálculo propio: p ≈ 0,11).</li>
+    <li>Bolas de 0,28 g. Las reales pesan entre 2,7 g (tipo ping-pong) y 11 a 13 g (espuma).</li>
+    <li>Es una máquina de aire. En una de gravedad con paletas el efecto de la masa no está medido en ningún sentido.</li>
+  </ul>
+</div>
+
+<h2 id="simulador">7 · Simulador: ¿cuántas extracciones para ver un sesgo?</h2>
+<p>Este bombo virtual tiene 10 bolillas, como el experimento tailandés. Tú decides cuánto más sale la bolilla 9 y
+cuántas extracciones miras. Compara dos pruebas: la <strong>global</strong> (no sabes cuál bolilla está alterada)
+y la <strong>dirigida</strong> (lo sabías antes de mirar).</p>
+<div class="panel">
+  <div class="ctrl">
+    <div><label for="sDelta">Sesgo de la bolilla 9: <output id="sDeltaO"></output></label>
+      <input type="range" id="sDelta" min="0" max="50" step="1" value="28"></div>
+    <div><label for="sN">Extracciones que observas</label>
+      <select id="sN">
+        <option value="50">50</option><option value="200">200</option>
+        <option value="1000" selected>1 000</option><option value="5000">5 000</option>
+        <option value="20000">20 000</option>
+      </select></div>
+  </div>
+  <button type="button" id="sUna">Sortear</button>
+  <button type="button" class="alt" id="sMuchas">Repetir 300 veces</button>
+  <div class="grafico" id="sGraf"></div>
+  <div class="leyenda"><span style="--c:#2563eb">bolillas 0 a 8</span><span style="--c:#d97706">bolilla 9</span><span class="raya" style="--c:#6b7280">esperado sin sesgo (10 %)</span><span style="--c:#eceae6">franja de azar normal</span></div>
+  <div class="resultado" id="sTexto"></div>
+  <div class="resultado" id="sPot"></div>
+  <p class="pie">Un sesgo de 28 % relativo es el del experimento tailandés (12,8 % en vez de 10 %). Con sesgo 0,
+  «Repetir 300 veces» muestra cuántas veces una prueba grita «sesgo» sin que lo haya: debe rondar 5 %.</p>
+</div>
+<div class="pred" id="q2">
+  <div class="q">Pon el sesgo en 0 y 200 extracciones, y sortea varias veces. ¿Qué vas a ver en las barras?</div>
+  <button type="button" data-v="a">Todas casi iguales</button>
+  <button type="button" data-v="b">Diferencias a simple vista, sin sesgo alguno</button>
+  <div class="veredicto" id="q2v"></div>
+</div>
+
+<h2 id="reales">8 · Sorteos reales, fraudes y tolerancias</h2>
+<h3>Los historiales largos no rechazan el azar</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Lotería</th><th>Datos</th><th>Resultado</th><th>Fuente</th></tr>
+  <tr><td>Lotto 6/49, Canadá</td><td>1798 sorteos, 1982 a 2001</td><td>Números individuales: p = 0,104. Pares: p = 0,300. No rechaza.</td><td>Genest, Lockhart y Stephens 2002</td></tr>
+  <tr><td>Lotería Nacional, Reino Unido</td><td>Primeros 96 sorteos</td><td>Compatible con azar. Poca potencia.</td><td>Haigh 1997 (resumen)</td></tr>
+  <tr><td>Sportka, República Checa</td><td>1957 a 2010</td><td>Ningún año rechaza la uniformidad.</td><td>Rozkovec 2012</td></tr>
+  <tr><td>Melate, México</td><td>211 sorteos del período con 51 bolas</td><td>p = 0,0056: rechaza. Los otros tres períodos, no.</td><td>Coronel-Brizio et al. 2008</td></tr>
+  <tr><td>Lotto, Italia (rueda de Roma)</td><td>450 sorteos de un período</td><td>p &lt; 0,00001: rechaza. Los otros tres períodos, no.</td><td>Coronel-Brizio et al. 2008</td></tr>
+</table>
+</div>
+<div class="tension">
+  <strong>Hallazgos contradictorios y por qué.</strong> Los estudios que rechazan parten el historial en períodos
+  y prueban cada uno (ocho pruebas sin corregir), con muestras de 200 a 500 sorteos y un estadístico distinto.
+  Ninguno identifica la causa física ni cuánta ventaja daría. No tienen réplica con datos posteriores.
+</div>
+<div class="nota">
+  <strong>«No se rechaza» dice poco.</strong> En 1798 sorteos de un 6/49 cada número sale unas 220 veces, con un
+  vaivén normal de 6,3 % (cálculo propio). Un sesgo de un par de puntos por bola no se vería ni en veinte años,
+  y la rotación de máquinas y juegos de bolas lo diluye todavía más.
+</div>
+
+<h3>Los resultados alterados que sí están documentados</h3>
+<p>Todos los casos confirmados son manipulación deliberada o error de programa. No se encontró ninguno de sesgo
+natural de una máquina certificada que alguien haya aprovechado.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Caso</th><th>Qué pasó</th><th>Cómo se descubrió</th></tr>
+  <tr><td><strong>Pensilvania, 1980</strong></td><td>Bolas lastradas con pintura, salvo las 4 y las 6. Salió 666.</td><td>Por el patrón raro de apuestas y un aviso anónimo. No por estadística.</td></tr>
+  <tr><td><strong>Milán, 1995 a 1999</strong></td><td>Bolas barnizadas o con otra temperatura, para que los niños vendados que extraían las reconocieran al tacto.</td><td>Investigación policial.</td></tr>
+  <tr><td><strong>Tipton, EE. UU., 2005 a 2011</strong></td><td>Código en el generador de números: resultado conocible en tres fechas del año.</td><td>Por el intento de cobrar un boleto. No por estadística.</td></tr>
+  <tr><td><strong>Tennessee, 2007</strong></td><td>Error de programa: ningún dígito podía repetirse en un sorteo.</td><td>La propia lotería, a las tres semanas.</td></tr>
+  <tr><td><strong>Visas de EE. UU., 2011</strong></td><td>Programa nuevo sin probar: más de 90 % de los elegidos venía de los dos primeros días.</td><td>Al publicarse el resultado.</td></tr>
+</table>
+</div>
+<p class="fuente">Nivel de evidencia: prensa y expedientes citados por fuentes secundarias; no se leyeron las sentencias. Detalle en fuentes/02_loterias_sesgos.md, sección 4.</p>
+
+<h3>Qué tolerancia de masa permiten los operadores</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Jurisdicción</th><th>Bolas</th><th>Tolerancia publicada</th><th>En proporción a la masa</th></tr>
+  <tr><td>Texas</td><td>Tipo ping-pong</td><td>Cada bola a 0,095 g del promedio del juego</td><td>Cerca de ±3,5 % (cálculo propio, bola de 2,7 g)</td></tr>
+  <tr><td>Nueva Zelanda</td><td>Espuma, 11 a 13 g, 49,0 a 51,5 mm</td><td>Máximo 0,45 g entre la más pesada y la más liviana</td><td>Cerca de 3,75 % de rango (cálculo propio)</td></tr>
+  <tr><td>Washington</td><td>Sin detalle</td><td>Rango reducido de 2 g a 1 g en 1999</td><td>Sin masa publicada</td></tr>
+  <tr><td>Estándar WLA-SCS:2020</td><td>Cualquiera</td><td>Exige inspección y mantenimiento anual. <strong>No fija ninguna cifra.</strong></td><td>No aplica</td></tr>
+</table>
+</div>
+<div class="tension">
+  <strong>La pregunta que queda abierta.</strong> Las tolerancias públicas admiten diferencias de 1 a 4 % de la
+  masa, el mismo orden que el 1 % que bastó para un sesgo medible en la máquina tailandesa. Eso no demuestra
+  sesgo en máquinas reales, porque la dinámica es otra. Tampoco hay un estudio publicado que lo descarte.
+</div>
+
+<h2 id="pruebas">9 · Qué pruebas sirven y cuáles no (NIST)</h2>
+<p>Los documentos del NIST que se citan siempre en este tema fueron escritos para generadores de <em>bits</em>,
+no para bombos. Hay que separar qué se puede trasladar.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Documento</th><th>Qué pide</th><th>Qué tiene un sorteo</th><th>Veredicto</th></tr>
+  <tr><td><strong>SP 800-22 Rev. 1a</strong> (2010): 15 pruebas para secuencias de bits</td><td>De 100 a 1 000 000 de bits por secuencia, y al menos 55 secuencias</td><td>Un sorteo 6 de 41 da 22,1 bits. A 150 sorteos por año, 20 años son 66 301 bits. Una sola secuencia de un millón pide 302 años.</td><td>No aplicable como batería. NIST decidió revisarla en 2022 y rechaza su uso para evaluar generadores criptográficos; al 2026-10-09 no encontramos una Rev. 2.</td></tr>
+  <tr><td><strong>SP 800-90B</strong> (2018): cuánta entropía tiene una fuente física</td><td>1 000 000 de muestras seguidas y 1000 reinicios de 1000 muestras</td><td>Contando bolillas, 1111 años.</td><td>No aplicable por tamaño. Sus ideas sí.</td></tr>
+</table>
+</div>
+<h3>Lo que sí se traslada a un sorteo (inferencia nuestra)</h3>
+<ul>
+  <li><strong>Pruebas de permutación</strong> (800-90B, sección 5.1): barajar el orden de los <em>sorteos</em> miles de veces y ver si el orden real es raro. Detecta deriva o memoria sin suponer nada más.</li>
+  <li><strong>Prueba de reinicio</strong> (800-90B, sección 3.1.4): cada sorteo es un reinicio de la máquina. ¿La primera bolilla se distribuye igual que la sexta? Solo se puede hacer si se publica el orden real de salida.</li>
+  <li><strong>Estimador del valor más común</strong> (sección 6.3.1): cuál es la mayor probabilidad compatible con los datos para la bolilla más frecuente.</li>
+  <li><strong>Modelo de la fuente</strong> (sección 3.2.2, y la norma alemana AIS 31): sin un modelo físico del bombo, las pruebas de caja negra no certifican nada.</li>
+</ul>
+<div class="peligro">
+  <strong>El error más común en análisis caseros.</strong> En un sorteo las bolillas salen sin reposición, y el
+  chi-cuadrado de Pearson de los libros no vale tal cual. Hay que multiplicarlo por <code>(N − 1)/(N − k)</code>
+  (Joe 1993; Genest et al. 2002). En un 6 de 41 el factor es 40/35. Sin corregir, una prueba que crees al 5 %
+  trabaja en realidad al 1 % y pierde potencia (simulación propia: 0,92 %).
+</div>
+
+<h3>Calculadora: ¿alcanza la historia para ver ese sesgo?</h3>
+<div class="panel">
+  <div class="ctrl">
+    <div><label for="cJuego">Juego</label>
+      <select id="cJuego"><option value="41,6" selected>6 de 41</option><option value="25,14">14 de 25</option></select></div>
+    <div><label for="cDelta">Sesgo relativo de una bolilla: <output id="cDeltaO"></output></label>
+      <input type="range" id="cDelta" min="1" max="40" step="1" value="10"></div>
+    <div><label for="cAnos">Años de historia que tienes: <output id="cAnosO"></output></label>
+      <input type="range" id="cAnos" min="1" max="60" step="1" value="20"></div>
+  </div>
+  <div class="met" id="cMet"></div>
+  <div class="resultado" id="cTexto"></div>
+  <p class="pie">Potencia 0,8 y alfa 0,05 bilateral, aproximación normal, 150 sorteos por año (supuesto de tres
+  sorteos semanales). «Sabías cuál» es una bolilla fijada antes de mirar los datos; «no sabías cuál» corrige por
+  todas las bolillas con Bonferroni. Fórmulas y comprobación por simulación en <code>analisis/potencia.py</code>.</p>
+</div>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Historia (6 de 41)</th><th>Sabías cuál bolilla</th><th>No sabías cuál</th><th>Prueba global</th></tr>
+  <tr><td>1 año (150 sorteos)</td><td class="num">58,5 %</td><td class="num">84,6 %</td><td class="num">103,5 %</td></tr>
+  <tr><td>5 años</td><td class="num">25,4 %</td><td class="num">36,9 %</td><td class="num">46,3 %</td></tr>
+  <tr><td>10 años</td><td class="num">17,8 %</td><td class="num">25,9 %</td><td class="num">32,7 %</td></tr>
+  <tr><td>20 años</td><td class="num">12,5 %</td><td class="num">18,2 %</td><td class="num">23,1 %</td></tr>
+  <tr><td>40 años</td><td class="num">8,8 %</td><td class="num">12,8 %</td><td class="num">16,4 %</td></tr>
+</table>
+</div>
+<p class="pie">Sesgo relativo mínimo que se detecta con potencia 0,8. Cálculo propio.</p>
+
+<h3>Cómo se separa un patrón accidental de uno real</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Afirmación</th><th>Qué significa</th><th>Qué evidencia exige</th></tr>
+  <tr><td><strong>Correlación accidental</strong></td><td>Un patrón que aparece en la muestra y no vuelve.</td><td>Es la explicación por defecto.</td></tr>
+  <tr><td><strong>Sesgo persistente</strong></td><td>Probabilidades distintas y estables en el tiempo.</td><td>Prueba decidida antes de mirar, con corrección por comparaciones múltiples, y que se repita en datos posteriores con el mismo signo.</td></tr>
+  <tr><td><strong>Predicción genuina</strong></td><td>Una regla fijada antes de cada sorteo que pierde menos que apostar parejo.</td><td>Pronósticos registrados antes de cada sorteo y evaluados con una regla de puntuación propia (pérdida logarítmica) contra la línea base uniforme.</td></tr>
+</table>
+</div>
+<div class="nota">
+  <strong>El jardín de senderos.</strong> Qué juego, qué período, bolilla o par, frecuencia o racha, qué ventana:
+  diez decisiones de dos opciones dan 1024 análisis posibles. Con alfa 0,05 se esperan 51 «hallazgos» en un bombo
+  perfecto. Y aun con un sesgo de 20 % conocido de antemano, la ganancia es de 0,0047 bits por sorteo sobre 22,1
+  (cálculo propio): unos 950 sorteos solo para demostrar que existe.
+</div>
+
+<h2 id="ml">10 · Qué puede y qué no el aprendizaje automático</h2>
+<p>El horizonte de predicción en caos se mide en <strong>tiempos de Lyapunov</strong>: el tiempo en que un error
+crece unas 2,7 veces. Estos son los mejores horizontes publicados, todos en sistemas simulados, suaves y sin ruido.</p>
+<div class="panel">
+  <div class="lbl">Horizonte de predicción logrado, en tiempos de Lyapunov</div>
+  <div class="grafico" id="mGraf"></div>
+  <p class="pie">Pathak et al. 2018 (texto completo leído); Vlachas et al. 2020 (lectura parcial); Zhang y Gilpin
+  2025. Ninguno de estos sistemas tiene choques entre cuerpos rígidos.</p>
+</div>
+<ul>
+  <li><strong>Ver solo una parte del sistema baja el horizonte a menos de la mitad.</strong> Un bombo filmado es eso: las bolillas se tapan entre sí y su giro no se ve.</li>
+  <li><strong>Las redes informadas por la física (PINN) fallan incluso en problemas sin caos</strong> (Krishnapriyan et al. 2021), y en el péndulo doble convergen a otra trayectoria válida (Steger et al. 2022, trabajo de taller).</li>
+  <li><strong>Los modelos que escalan a muchas partículas lo logran renunciando a la trayectoria de cada una.</strong> Reproducen promedios. El resultado de un sorteo depende justamente de una trayectoria: qué bolilla entra al canal.</li>
+  <li><strong>Lo más cercano a un dado:</strong> un cubo real de 10 cm seguido con tres cámaras a 148 cuadros por segundo en 570 lanzamientos (Pfrommer et al. 2020). No evalúan en qué cara termina.</li>
+</ul>
+<div class="peligro">
+  <strong>No extrapolar.</strong> Que un modelo prediga un sistema simulado durante ocho tiempos de Lyapunov no
+  dice que prediga un bombo. Nadie ha medido el tiempo de Lyapunov de un bombo, así que ni siquiera se sabe
+  cuántos de esos tiempos dura un sorteo.
+</div>
+<p><strong>Sobre predecir con frecuencias históricas:</strong> no encontramos ningún trabajo revisado por pares
+que supere el azar. Lo que circula son repositorios, publicidad y una sátira declarada (Birk 2024). Hay además
+una razón cuantitativa: ajustar una probabilidad por bolilla cuesta más de lo que gana, salvo con miles de
+sorteos (unos 6000 para un sesgo de 20 %, cálculo propio).</p>
+<h3>Los instrumentos sí existen</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Instrumento</th><th>Qué entrega</th><th>Límite para un bombo</th></tr>
+  <tr><td>Cámaras sincronizadas y seguimiento en tres dimensiones</td><td>Posición, velocidad y aceleración de muchas partículas</td><td>Las bolillas son opacas y se tapan. No da el giro. La pared curva deforma la imagen.</td></tr>
+  <tr><td>Seguimiento por emisión de positrones (PEPT)</td><td>Un trazador localizado a 0,5 mm unas 250 veces por segundo, aun a través de acero</td><td>Uno o pocos trazadores a la vez.</td></tr>
+  <tr><td>Esfera instrumentada</td><td>Acelerómetro a 1000 Hz y giroscopio a 8000 Hz dentro de una esfera de 36 mm</td><td>Pesa 19,6 g: si no iguala la masa de la bolilla, altera lo que se quiere medir.</td></tr>
+  <tr><td>Simulación de elementos discretos con aire (CFD-DEM)</td><td>Cada bolilla y cada choque, con el flujo de aire</td><td>Dos corridas divergen entre sí: reproduce la estadística del sorteo, no «el» sorteo.</td></tr>
+</table>
+</div>
+<p class="fuente">Parker et al. 1993 y Positron Imaging Centre (Birmingham); Cabrera y Cobelli 2021; Fullmer et al. 2022; Kloss et al. 2012.</p>
+
+<h2 id="chile">11 · El caso chileno: Loto y Kino</h2>
+<p>En Chile hay dos operadores legales: <strong>Polla Chilena de Beneficencia</strong> (sociedad anónima del
+Estado) y <strong>Lotería de Concepción</strong> (de la Universidad de Concepción). No usan la misma tecnología,
+y ni siquiera un mismo juego la ha usado siempre.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Juego</th><th>Operador y matriz</th><th>Cómo se sortea</th><th>Certeza</th></tr>
+  <tr><td><strong>Loto</strong></td><td>Polla. 6 de 41 más comodín. Martes, jueves y domingo.</td><td><strong>Tómbola hoy.</strong> Entre los sorteos 5112 y 5301 (14 de mayo de 2024 a fines de julio de 2025) fue un <strong>generador electrónico</strong>. Volvió a tómbola en el 5302.</td><td>Alta: decreto y comunicados de Polla</td></tr>
+  <tr><td><strong>Kino</strong></td><td>Lotería. 14 de 25 (15 de 25 hasta enero de 2006). Miércoles, viernes y domingo.</td><td><strong>Tómbola</strong>, 14 bolillas sin reposición.</td><td>Media-alta: reglamento oficial; no se vio un acta</td></tr>
+  <tr><td>Loto 3, Loto 4, Racha</td><td>Polla. Varios sorteos diarios.</td><td><strong>Electrónico</strong>, con generador certificado por un laboratorio (GLI). Loto 3 y Loto 4 dejaron las tómbolas en 2011.</td><td>Alta</td></tr>
+  <tr><td>Boleto de Lotería</td><td>Lotería. Domingos.</td><td><strong>Electrónico</strong> desde septiembre de 2024.</td><td>Media: una nota de prensa</td></tr>
+</table>
+</div>
+<div class="peligro">
+  <strong>La trampa de la serie histórica del Loto.</strong> Quien descargue todos los resultados y los analice
+  como si vinieran de una misma máquina mezcla tres cosas: tómbola, 190 sorteos electrónicos y tómbola otra vez,
+  además de cambios de matriz anteriores cuya fecha no encontramos. Hay que partir la serie antes de probar nada.
+</div>
+<h3>Quién controla el sorteo</h3>
+<ul>
+  <li>Los decretos del Ministerio de Hacienda fijan <em>rangos</em> (Loto: 6 de entre 36 y 42 bolillas) y dejan al operador elegir la matriz y si usa tómbola o sistema informático.</li>
+  <li>El control del sorteo con tómbola es un notario como ministro de fe. No encontramos ninguna norma que fije tolerancias de masa o diámetro, rotación de bolillas, pruebas previas ni publicación del orden de salida.</li>
+  <li>La Superintendencia de Casinos de Juego no fiscaliza loterías; solo acredita a los laboratorios que validan los generadores electrónicos.</li>
+  <li>No encontramos publicados la marca ni el modelo de ninguna tómbola, ni protocolos de pesaje y custodia. Tampoco ningún sorteo anulado o repetido documentado por una fuente seria.</li>
+</ul>
+<h3>Qué permiten ver los datos públicos (cálculo propio)</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Serie</th><th>Sorteos</th><th>Sesgo mínimo detectable en una bolilla</th></tr>
+  <tr><td>Kino 14 de 25, matriz actual</td><td class="num">≈ 2 490</td><td class="num">≈ 7 %</td></tr>
+  <tr><td>Loto 6 de 41, toda la numeración (cota optimista)</td><td class="num">5 488</td><td class="num">≈ 13 %</td></tr>
+  <tr><td>Loto 6 de 41, lo que cubren los datos de terceros</td><td class="num">≈ 1 250</td><td class="num">≈ 28 %</td></tr>
+  <tr><td>Loto, tómbolas desde julio de 2025</td><td class="num">187</td><td class="num">≈ 72 %</td></tr>
+</table>
+</div>
+<p class="pie">Numeración al 9 de octubre de 2026. Potencia 0,8, alfa 0,05 con corrección de Bonferroni por el número de bolillas.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Con resultados históricos se puede</th><th>Sin mediciones físicas no se puede</th></tr>
+  <tr><td>Descartar un sesgo grosero por bolilla, tramo por tramo.</td><td>Probar si importa la posición de salida: ninguna fuente pública da el orden real de extracción.</td></tr>
+  <tr><td>Probar independencia entre sorteos (repeticiones, rachas), con la misma poca potencia.</td><td>Atribuir algo a una máquina o a un juego de bolillas: no se publica cuál se usó en cada sorteo.</td></tr>
+  <tr><td>Comparar el tramo electrónico con los de tómbola, aunque con 190 y 187 sorteos casi no hay potencia.</td><td>Identificar una causa: masa, diámetro, desgaste, tipo de mezcla, presión. Nada está publicado.</td></tr>
+  <tr><td>Revisar que las frecuencias publicadas cuadren.</td><td>Predecir un sorteo. Con lo público no hay base alguna.</td></tr>
+</table>
+</div>
+<div class="nota">
+  <strong>Datos disponibles.</strong> No hay nada en datos.gob.cl. En GitHub hay repositorios hechos por raspado
+  de sitios de terceros, con los números ordenados de menor a mayor. Polla no está sujeta a solicitudes de acceso
+  a la información y Lotería es privada; lo que se puede pedir está en Hacienda, Contraloría, Corfo y la
+  Superintendencia. El informe trae las solicitudes redactadas. Tampoco encontramos literatura académica chilena
+  sobre la aleatoriedad del Loto o el Kino.
+</div>
+<p class="fuente">Decretos de Hacienda leídos en LeyChile (DS 542 de 2011 para el Loto; DS 659 de 1990 para el Kino), comunicados y memorias de Polla. Las citas de decretos pasaron por un resumidor: cotejar antes de citar textual. Detalle en fuentes/05_caso_chile.md.</p>
+
+<h2 id="hipotesis">12 · Mapa de hipótesis</h2>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Hipótesis</th><th>Estado</th><th>En qué se apoya</th></tr>
+  <tr><td>Los aparatos mecánicos de azar tienen sesgos pequeños y medibles.</td><td><span class="estado e-si">Confirmada</span></td><td>Moneda (350 757 lanzamientos) y dado (26 306 tiradas). Un estudio grande por sistema, sin réplica del mismo tamaño.</td></tr>
+  <tr><td>Una mezcla física insuficiente deja un sesgo detectable.</td><td><span class="estado e-si">Confirmada</span></td><td>Sorteo militar de 1969; corregido en 1971.</td></tr>
+  <tr><td>Con instrumentos se puede anticipar una ruleta mejor que el azar, antes de los deflectores.</td><td><span class="estado e-si">Respaldada</span></td><td>Un experimento con 700 ensayos (Small y Tse 2012). Sin réplica publicada.</td></tr>
+  <tr><td>En una máquina de aire, una bola más liviana sale más.</td><td><span class="estado e-si">Respaldada</span></td><td>Un experimento, una corrida por condición, máquina casera.</td></tr>
+  <tr><td>Una bola más pesada sale menos.</td><td><span class="estado e-no">No observada</span></td><td>El mismo experimento no la distingue del azar (p = 0,075 y 0,361).</td></tr>
+  <tr><td>El sesgo del dado se debe al peso de los puntos.</td><td><span class="estado e-no">Refutada</span></td><td>Para los dados de Labby (p = 0,00005). La causa medida es geométrica.</td></tr>
+  <tr><td>Las frecuencias históricas permiten predecir el próximo sorteo.</td><td><span class="estado e-no">Sin respaldo</span></td><td>Ningún trabajo revisado por pares supera el azar; los historiales largos no rechazan uniformidad.</td></tr>
+  <tr><td>Las baterías NIST de bits sirven para auditar un sorteo de bolillas.</td><td><span class="estado e-no">Refutada</span></td><td>Por tamaño: piden entre cientos y cientos de miles de años de sorteos (cálculo propio).</td></tr>
+  <tr><td>Las tolerancias comerciales de masa (1 a 4 %) producen sesgo en máquinas comerciales.</td><td><span class="estado e-ab">Abierta</span></td><td>El orden de magnitud coincide con el experimento tailandés, pero no hay medición en máquina real.</td></tr>
+  <tr><td>Los rechazos de Melate e Italia son sesgo real.</td><td><span class="estado e-ab">Abierta</span></td><td>Períodos partidos, sin corrección, sin réplica y sin causa.</td></tr>
+  <tr><td>La incertidumbre cuántica domina tras unos 8 choques.</td><td><span class="estado e-ab">Abierta</span></td><td>Estimación teórica; sin experimento.</td></tr>
+  <tr><td>Algún bombo tiene una fase final lenta y regular, como el riel de la ruleta.</td><td><span class="estado e-ne">No estudiada</span></td><td>Sería la única vía realista a predecir una extracción.</td></tr>
+  <tr><td>Cuánto dura la memoria de un bombo (su tiempo de Lyapunov).</td><td><span class="estado e-ne">No estudiada</span></td><td>Ni experimento ni simulación.</td></tr>
+  <tr><td>Efecto del diámetro, la rugosidad, la tinta, la estática y la humedad de la bolilla.</td><td><span class="estado e-ne">No estudiada</span></td><td>El artículo tailandés sugiere que pesan tanto como la masa.</td></tr>
+  <tr><td>Predecir una extracción desde vídeo o sensores con aprendizaje automático.</td><td><span class="estado e-ne">No estudiada</span></td><td>Seis búsquedas sin un solo trabajo; tampoco hay datos públicos de trayectorias.</td></tr>
+  <tr><td>Análisis de sorteos separado por máquina y juego de bolas.</td><td><span class="estado e-ne">No estudiada</span></td><td>Los operadores no publican qué máquina y qué juego usaron en cada sorteo.</td></tr>
+</table>
+</div>
+
+<h2 id="experimento">13 · El experimento que falta</h2>
+<p>El vacío es claro, y se puede atacar con un bombo de laboratorio. Este es el diseño que proponemos; es una
+propuesta nuestra, no algo que ya exista.</p>
+<h3>Hipótesis que se pueden refutar</h3>
+<div class="tabla-scroll">
+<table>
+  <tr><th></th><th>Hipótesis</th><th>Se confirma si</th><th>Se rechaza si</th></tr>
+  <tr><td><strong>H1</strong> Sesgo por masa</td><td>Una bolilla con masa distinta, dentro de la tolerancia comercial, cambia su frecuencia de salida.</td><td>El efecto supera el umbral prerregistrado y repite el signo en una réplica con otra bolilla.</td><td>El intervalo de 95 % queda completo dentro de ±5 % relativo.</td></tr>
+  <tr><td><strong>H2</strong> Dosis</td><td>El efecto crece con la diferencia de masa.</td><td>Tendencia monótona en al menos cuatro niveles.</td><td>No hay tendencia con potencia 0,8 para la pendiente fijada.</td></tr>
+  <tr><td><strong>H3</strong> Memoria</td><td>La posición de carga influye en qué bolilla sale primero.</td><td>La distribución de la primera extracción depende de la posición de carga.</td><td>No depende, con el tiempo de mezcla habitual.</td></tr>
+  <tr><td><strong>H4</strong> Predicción</td><td>Con vídeo de los últimos instantes se acierta la bolilla más que por azar.</td><td>Pronósticos registrados antes de cada extracción, en ensayos nunca usados para entrenar, ganan a la línea base uniforme.</td><td>La ganancia en pérdida logarítmica incluye el cero tras el tamaño de muestra fijado.</td></tr>
+</table>
+</div>
+<p>Cualquier otro resultado se declara <strong>inconcluso</strong>, y se informa la potencia alcanzada.</p>
+
+<h3>Cuántas extracciones (cálculo propio)</h3>
+<div class="ecu">
+  <div class="f">n ≈ 7,85 · (1 − p₀) / (δ² · p₀)</div>
+  <p><strong>Qué resuelve:</strong> extracciones necesarias para detectar un sesgo relativo <code>δ</code> en una
+  bolilla fijada de antemano, con potencia 0,8 y alfa 0,05. <code>p₀</code> es la probabilidad sin sesgo
+  (1/10 con diez bolillas). El 7,85 es (1,96 + 0,84)².</p>
+</div>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Sesgo a detectar</th><th>Bombo de 10 bolillas</th><th>Bombo de 41 bolillas (primera extracción)</th></tr>
+  <tr><td>28 % (el tailandés)</td><td class="num">900</td><td class="num">4 000</td></tr>
+  <tr><td>10 %</td><td class="num">7 100</td><td class="num">31 400</td></tr>
+  <tr><td>5 %</td><td class="num">28 300</td><td class="num">125 600</td></tr>
+</table>
+</div>
+<p>Con una extracción automática cada 10 segundos, 30 000 extracciones son unas 83 horas de máquina. Por eso el
+bombo tiene que reponer la bolilla y registrar sin intervención humana.</p>
+
+<details>
+  <summary>Variables, instrumentos y controles</summary>
+  <div class="tabla-scroll">
+  <table>
+    <tr><th>Elemento</th><th>Definición</th></tr>
+    <tr><td>Variables que se manipulan</td><td>Masa de la bolilla (niveles dentro y fuera de tolerancia), diámetro, posición de carga, caudal de aire, tiempo de mezcla.</td></tr>
+    <tr><td>Variables que se miden</td><td>Bolilla extraída y orden; trayectoria en los últimos segundos; tiempo hasta la extracción.</td></tr>
+    <tr><td>Variables de confusión</td><td>Temperatura, humedad, carga estática, desgaste, la tinta del número, el operador, la bolilla concreta (por eso se rota cuál lleva la masa alterada).</td></tr>
+    <tr><td>Masa y diámetro</td><td>Balanza de 0,001 g y micrómetro de 0,01 mm; pesaje antes y después de cada bloque.</td></tr>
+    <tr><td>Cámaras</td><td>Tres o más, de obturador global, sincronizadas por disparo de hardware; 200 cuadros por segundo o más en la zona de extracción. Calibración con patrón plano (Zhang 2000) y corrección de la pared curva, que no tiene método publicado y hay que validar.</td></tr>
+    <tr><td>Ambiente y aire</td><td>Temperatura, humedad, presión y caudal del soplador, registrados con cada extracción.</td></tr>
+    <tr><td>Aleatorización</td><td>Orden de condiciones por bloques al azar; quien analiza no sabe qué bolilla está alterada hasta cerrar el análisis.</td></tr>
+    <tr><td>Controles</td><td>Bloques con bolillas iguales intercalados (deben rechazar cerca de 5 %); bloques con un sesgo grande conocido (deben detectarlo).</td></tr>
+    <tr><td>Datos mínimos por extracción</td><td>Identificador, hora, condición, bolilla, masas del juego, ambiente, caudal y ruta del vídeo.</td></tr>
+  </table>
+  </div>
+</details>
+<details>
+  <summary>Tres modelos que se comparan, y cómo se evita la fuga de información</summary>
+  <ol class="pasos">
+    <li><strong>Estadístico:</strong> frecuencias por bolilla con la corrección sin reposición, pruebas de permutación y modelo bayesiano. Es la línea base.</li>
+    <li><strong>Físico:</strong> simulación de elementos discretos con aire, calibrada con las trayectorias medidas. Debe predecir la frecuencia de salida según la masa, y dar el tiempo de Lyapunov del bombo con el protocolo de Fullmer et al. (2022).</li>
+    <li><strong>Aprendizaje automático:</strong> un modelo sobre el vídeo de los últimos instantes que entrega una probabilidad por bolilla.</li>
+  </ol>
+  <p><strong>Contra la fuga:</strong> la partición es por tiempo y por sesión, nunca al azar entre extracciones.
+  El conjunto de prueba se graba después de congelar el modelo. Hipótesis, estadístico, alfa y regla de parada se
+  registran con fecha antes de grabar. Se informa todo lo probado, no solo lo que resultó. Con varias hipótesis
+  se corrige con Holm.</p>
+</details>
+<details>
+  <summary>Recursos, presupuesto aproximado y cronograma</summary>
+  <p>Cifras de orden de magnitud estimadas por nosotros, <strong>sin cotizaciones</strong>. Sirven para dimensionar, no para comprometer.</p>
+  <div class="tabla-scroll">
+  <table>
+    <tr><th>Partida</th><th>Estimación (USD)</th></tr>
+    <tr><td>Bombo de ensayo transparente con soplador regulable y mecanismo de reposición automática</td><td class="num">3 000</td></tr>
+    <tr><td>Juegos de bolillas, balanza de 0,001 g y micrómetro</td><td class="num">1 500</td></tr>
+    <tr><td>Tres cámaras industriales con lentes, disparo sincronizado e iluminación</td><td class="num">7 000</td></tr>
+    <tr><td>Sensores de ambiente y caudal, microcontroladores y cableado</td><td class="num">500</td></tr>
+    <tr><td>Computador de adquisición y almacenamiento</td><td class="num">3 500</td></tr>
+    <tr><td>Cómputo para simulación y entrenamiento</td><td class="num">2 000</td></tr>
+    <tr><td><strong>Equipamiento, total aproximado</strong></td><td class="num"><strong>17 500</strong></td></tr>
+  </table>
+  </div>
+  <p>No incluye personas. El trabajo alcanza para una tesis de magíster de un año, con apoyo de un taller mecánico.</p>
+  <div class="tabla-scroll">
+  <table>
+    <tr><th>Meses</th><th>Etapa</th><th>Entrega</th></tr>
+    <tr><td>1 a 2</td><td>Prerregistro, diseño del bombo y solicitudes de información a los operadores</td><td>Protocolo fechado y público</td></tr>
+    <tr><td>3 a 4</td><td>Construcción, calibración de cámaras y controles con bolillas iguales</td><td>El control rechaza cerca de 5 %</td></tr>
+    <tr><td>5 a 7</td><td>Campañas de masa y diámetro (H1, H2, H3)</td><td>Datos abiertos y curva de dosis</td></tr>
+    <tr><td>6 a 9</td><td>Simulación calibrada y tiempo de Lyapunov</td><td>Primer valor publicado para un bombo</td></tr>
+    <tr><td>8 a 10</td><td>Modelo sobre vídeo y prueba prospectiva (H4)</td><td>Resultado contra la línea base, sea cual sea</td></tr>
+    <tr><td>11 a 12</td><td>Réplica independiente de H1 y escritura</td><td>Artículo, datos y código</td></tr>
+  </table>
+  </div>
+</details>
+
+<h2 id="sabemos">14 · Qué sabemos y qué no</h2>
+<div class="repreg">
+  <strong>La pregunta final.</strong> ¿Bajo qué condiciones un sistema de extracción puede tener una estructura
+  suficientemente estable y observable para predecir mejor que el azar?
+</div>
+<p>Según lo publicado, hacen falta tres condiciones a la vez.</p>
+<ol class="pasos">
+  <li><strong>Física:</strong> una diferencia estable entre las piezas (masa, forma) o una fase del movimiento
+      que sea lenta y regular antes de pocos choques.</li>
+  <li><strong>Instrumental:</strong> poder medir esa diferencia, o el estado en esa fase, con error menor que el
+      que el sistema amplifica hasta el desenlace.</li>
+  <li><strong>Estadística:</strong> suficientes repeticiones con el mismo equipo, hipótesis fijada antes de
+      mirar, y comprobación en datos nuevos.</li>
+</ol>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Grado de predicción</th><th>¿Respaldado?</th><th>Dónde</th></tr>
+  <tr><td>Sesgo estadístico pequeño por propiedades físicas</td><td><span class="estado e-si">Sí</span></td><td>Moneda, dado, y una máquina de aire de laboratorio.</td></tr>
+  <tr><td>Predicción de un resultado concreto, con instrumentos</td><td><span class="estado e-si">Sí, en un caso</span></td><td>Ruleta, antes de los deflectores. Un experimento.</td></tr>
+  <tr><td>Sesgo en una máquina de lotería comercial certificada</td><td><span class="estado e-ab">Hipótesis</span></td><td>Sin medición publicada. Plausible por el orden de las tolerancias.</td></tr>
+  <tr><td>Predicción de una extracción de un bombo</td><td><span class="estado e-ne">Sin evidencia</span></td><td>Nadie lo ha logrado ni intentado en una publicación. La física de muchos choques juega en contra.</td></tr>
+  <tr><td>Predicción desde resultados históricos</td><td><span class="estado e-no">No</span></td><td>Ningún trabajo revisado supera el azar.</td></tr>
+</table>
+</div>
+<div class="clave">
+  <strong>En una frase.</strong> Lo que la evidencia respalda es que un sistema de extracción puede estar
+  levemente cargado y que eso se puede detectar con miles de repeticiones controladas. Que se pueda decir qué
+  bolilla sale en un sorteo dado sigue siendo una hipótesis sin un solo experimento a favor.
+</div>
+
+<h2 id="papel">15 · Para resolver en papel</h2>
+<div class="bloque">
+  <p class="bloque-titulo">Pregunta 1</p>
+  <p>Un sitio web muestra que en los últimos 150 sorteos de un 6 de 41 la bolilla 17 salió 31 veces, y concluye
+  que «está caliente». ¿Qué le falta a esa conclusión?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> es compatible con el azar. Le faltan la comparación con lo esperado y la corrección por haber elegido la bolilla después de mirar.</p>
+    <p><strong>Resolución:</strong> lo esperado es 150 · 6/41 = 22 apariciones, con un vaivén normal de √(150 · 0,146 · 0,854) ≈ 4,3. Entonces 31 está a unas 2,1 desviaciones: raro para una bolilla elegida de antemano, pero entre 41 bolillas lo normal es que alguna llegue ahí. Con un año de datos el menor sesgo detectable para una bolilla fijada es 58,5 %.</p>
+    <p><strong>Error típico:</strong> tomar el máximo de 41 conteos y probarlo como si fuera el único.</p>
+    <p class="f fuente">[DATITO] Sección 9 de esta hoja · analisis/potencia.py</p>
+  </details>
+</div>
+<div class="bloque">
+  <p class="bloque-titulo">Pregunta 2</p>
+  <p>Con tu cámara mides la posición de las bolillas con 1 mm de error. Compras una diez veces mejor. En un
+  sistema donde cada choque multiplica el error por 9, ¿cuántos choques más de predicción ganaste?</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> cerca de un choque más.</p>
+    <p><strong>Resolución:</strong> cada factor 10 de precisión suma ln(10)/ln(9) = 2,30/2,20 ≈ 1,05 choques. Con radio de 25 mm y error de 1 mm tenías ln(25)/ln(9) ≈ 1,5 choques; con 0,1 mm tienes 2,5.</p>
+    <p><strong>Error típico:</strong> pensar que diez veces más precisión da diez veces más horizonte. Entra dentro de un logaritmo.</p>
+    <p class="f fuente">[DATITO] Sección 5 · fórmula de Albrecht y Phillips 2014</p>
+  </details>
+</div>
+<div class="bloque">
+  <p class="bloque-titulo">Pregunta 3</p>
+  <p>Alguien te muestra un modelo con «72 % de acierto» prediciendo una lotería. Nombra tres cosas que debes pedir antes de creerle.</p>
+  <details class="resp">
+    <summary>Respuesta correcta y cómo se resuelve</summary>
+    <p><strong>Respuesta:</strong> la línea base, la separación entre entrenamiento y evaluación, y el registro previo de los pronósticos.</p>
+    <p><strong>Resolución:</strong> (1) ¿acierto de qué, y cuánto acierta apostar parejo en esa misma tarea? (2) ¿los sorteos evaluados son posteriores a todo lo usado para ajustar, sin excepción? (3) ¿los pronósticos se publicaron antes de cada sorteo, y se informaron todos los modelos probados? Si falta una, el número no significa nada.</p>
+    <p><strong>Error típico:</strong> aceptar un porcentaje sin su línea base. El «72 %» es, de hecho, la cifra de una sátira publicada para enseñar estos errores (Birk 2024).</p>
+    <p class="f fuente">[DATITO] Sección 9 y 10 · fuentes/03_pruebas_aleatoriedad.md, sección 4</p>
+  </details>
+</div>
+
+<div class="peligro">
+  <strong>Errores que esta revisión castiga.</strong>
+  <ul>
+    <li>Llamar «predicción» a un sesgo.</li>
+    <li>Leer «no se rechaza» como «es perfectamente aleatorio» sin decir qué tamaño de sesgo se habría podido ver.</li>
+    <li>Citar un caso famoso (Thorp, Eudaemons, García-Pelayo) como si fuera un dato.</li>
+    <li>Extrapolar de un sistema simulado y suave a un bombo real.</li>
+    <li>Aplicar una batería de bits a un historial de sorteos.</li>
+  </ul>
+</div>
+
+<h2 id="matriz">16 · Matriz bibliográfica y herramientas</h2>
+<p>Las 27 fuentes que sostienen esta hoja. La última columna dice qué tipo de evidencia es y cuánto se leyó:
+<strong>TC</strong> texto completo, <strong>R</strong> resumen, <strong>M</strong> solo metadatos.</p>
+<div class="tabla-scroll">
+<table>
+  <tr><th>Referencia</th><th>Método</th><th>Resultado y límite</th><th>Evidencia · lectura</th></tr>
+  <tr><td>Keller (1986). The probability of heads. <em>Am. Math. Monthly</em> 93. <a href="https://doi.org/10.1080/00029890.1986.11971784">DOI</a></td><td>Teoría, moneda sin precesión</td><td>Probabilidad 1/2 en el límite de lanzamiento vigoroso. Sin rebote ni aire.</td><td>Teoría · M</td></tr>
+  <tr><td>Diaconis, Holmes y Montgomery (2007). Dynamical bias in the coin toss. <em>SIAM Review</em> 49. <a href="https://doi.org/10.1137/S0036144504446436">DOI</a></td><td>Teoría y cámara rápida</td><td>Predice 0,51 hacia el lado inicial. Solo 27 lanzamientos medidos.</td><td>Teoría y experimento único · TC</td></tr>
+  <tr><td>Bartoš et al. (2025). Fair coins tend to land on the same side they started. <em>JASA</em> 120. <a href="https://doi.org/10.1080/01621459.2025.2516210">DOI</a></td><td>350 757 lanzamientos, 48 personas</td><td>0,508 (0,506 a 0,509). Registro manual; no mide el mecanismo.</td><td>Experimento grande · TC</td></tr>
+  <tr><td>Labby (2009). Weldon's dice, automated. <em>Chance</em> 22. <a href="https://doi.org/10.1080/09332480.2009.10722977">DOI</a></td><td>26 306 tiradas automáticas de 12 dados</td><td>χ² = 25,0; p = 0,00014; causa geométrica. Un solo juego de dados baratos.</td><td>Experimento único · TC</td></tr>
+  <tr><td>Kapitaniak et al. (2012). The three-dimensional dynamics of the die throw. <em>Chaos</em> 22. <a href="https://doi.org/10.1063/1.4746038">DOI</a></td><td>Modelo 3D y cámara rápida</td><td>La cara más baja al inicio es la más probable. Sin cifras en el resumen.</td><td>Simulación · R</td></tr>
+  <tr><td>Small y Tse (2012). Predicting the outcome of roulette. <em>Chaos</em> 22. <a href="https://doi.org/10.1063/1.4753920">DOI</a></td><td>Modelo y rueda de casino con cámara</td><td>700 ensayos: la casilla predicha sale más que por azar. Sin réplica.</td><td>Experimento único · TC</td></tr>
+  <tr><td>Thorp (1998). The invention of the first wearable computer. <em>ISWC</em>. <a href="https://doi.org/10.1109/ISWC.1998.729523">DOI</a></td><td>Relato en primera persona</td><td>+44 % declarado. Sin datos brutos.</td><td>Relato · R</td></tr>
+  <tr><td>Albrecht y Phillips (2014). Origin of probabilities and their application to the multiverse. <em>Phys. Rev. D</em> 90. <a href="https://doi.org/10.1103/PhysRevD.90.123514">DOI</a></td><td>Estimación teórica</td><td>Factor (1 + 2ℓ/r) por choque; 8 choques en billar hasta el límite cuántico.</td><td>Teoría · TC</td></tr>
+  <tr><td>Shinbrot et al. (1992). Chaos in a double pendulum. <em>Am. J. Phys.</em> 60. <a href="https://doi.org/10.1119/1.16860">DOI</a></td><td>Experimento y simulación</td><td>Exponente de 7,5 ± 1,5 por segundo. Un aparato.</td><td>Experimento único · R</td></tr>
+  <tr><td>Dellago, Posch y Hoover (1996). Lyapunov instability in a system of hard disks. <em>Phys. Rev. E</em> 53. <a href="https://doi.org/10.1103/PhysRevE.53.1485">DOI</a></td><td>Simulación de discos duros</td><td>El exponente máximo sigue la frecuencia de choques. Discos ideales.</td><td>Simulación · R</td></tr>
+  <tr><td>Ottino y Khakhar (2000). Mixing and segregation of granular materials. <em>Annu. Rev. Fluid Mech.</em> 32. <a href="https://doi.org/10.1146/annurev.fluid.32.1.55">DOI</a></td><td>Revisión</td><td>Diferencias pequeñas de tamaño o densidad segregan. Muchos granos chicos, no decenas de esferas.</td><td>Revisión · R</td></tr>
+  <tr><td>Pinitsoontorn, Buathong y Srisodaphol (2014). Is it possible to cheat the lottery draw by weighing? <em>KKU Res. J.</em> 19(6). <a href="https://so01.tci-thaijo.org/index.php/APST/article/view/83061">URL</a></td><td>Máquina de aire propia, 7000 extracciones</td><td>Bola 1 % más liviana: 12,8 % en vez de 10 %. Una corrida por condición.</td><td>Experimento único · TC</td></tr>
+  <tr><td>Genest, Lockhart y Stephens (2002). χ² and the lottery. <em>The Statistician</em> 51. <a href="https://doi.org/10.1111/1467-9884.00315">DOI</a></td><td>1798 sorteos del 6/49 de Canadá</td><td>p = 0,104; no rechaza. No prueba dependencia entre sorteos.</td><td>Datos históricos · TC</td></tr>
+  <tr><td>Joe (1993). Tests of uniformity for sets of lotto numbers. <em>Stat. Probab. Lett.</em> 16. <a href="https://doi.org/10.1016/0167-7152(93)90141-5">DOI</a></td><td>Teoría estadística</td><td>Corrección (N − 1)/(N − k) para sorteos sin reposición.</td><td>Teoría · R</td></tr>
+  <tr><td>Haigh (1997). The statistics of the National Lottery. <em>J. R. Stat. Soc. A</em> 160. <a href="https://doi.org/10.1111/1467-985X.00056">DOI</a></td><td>96 sorteos del Reino Unido</td><td>Compatible con azar. Poca potencia.</td><td>Datos históricos · R</td></tr>
+  <tr><td>Coronel-Brizio et al. (2008). Statistical auditing and randomness test of lotto k/N-type games. <em>Physica A</em> 387. <a href="https://doi.org/10.1016/j.physa.2008.07.017">DOI</a></td><td>Melate e Italia por períodos</td><td>Dos de ocho períodos rechazan. Sin corrección ni causa.</td><td>Datos históricos · TC</td></tr>
+  <tr><td>Fienberg (1971). Randomization and social affairs: the 1970 draft lottery. <em>Science</em> 171. <a href="https://doi.org/10.1126/science.171.3968.255">DOI</a></td><td>Análisis del sorteo militar</td><td>Mezcla insuficiente de cápsulas. Cifras tomadas de Starr 1997.</td><td>Datos históricos · M</td></tr>
+  <tr><td>Starr (1997). Nonrandom risk: the 1970 draft lottery. <em>J. Stat. Educ.</em> 5. <a href="https://doi.org/10.1080/10691898.1997.11910534">DOI</a></td><td>Reanálisis con datos abiertos</td><td>Correlación −0,226; en 1971 ya no aparece.</td><td>Datos históricos · TC</td></tr>
+  <tr><td>World Lottery Association (2020). <em>WLA Security Control Standard</em> WLA-SCS:2020.</td><td>Norma del sector</td><td>Exige inspección de máquinas y bolas; no fija tolerancias.</td><td>Documento técnico · TC</td></tr>
+  <tr><td>Bassham, Rukhin et al. (2010). <em>NIST SP 800-22 Rev. 1a</em>. <a href="https://doi.org/10.6028/NIST.SP.800-22r1a">DOI</a></td><td>Batería de 15 pruebas para bits</td><td>Mínimos de 100 a 1 000 000 de bits. En revisión desde 2022.</td><td>Norma · TC</td></tr>
+  <tr><td>Turan et al. (2018). <em>NIST SP 800-90B</em>. <a href="https://doi.org/10.6028/NIST.SP.800-90B">DOI</a></td><td>Estimación de min-entropía</td><td>Pide 1 000 000 de muestras; exige justificar la fuente física.</td><td>Norma · TC</td></tr>
+  <tr><td>Pathak et al. (2018). Model-free prediction of large spatiotemporally chaotic systems. <em>Phys. Rev. Lett.</em> 120. <a href="https://doi.org/10.1103/PhysRevLett.120.024102">DOI</a></td><td>Reservorios sobre un sistema simulado</td><td>Cerca de 8 tiempos de Lyapunov. Estado completo, sin ruido.</td><td>Numérico · TC</td></tr>
+  <tr><td>Vlachas et al. (2020). Backpropagation algorithms and reservoir computing in recurrent neural networks. <em>Neural Networks</em> 126. <a href="https://doi.org/10.1016/j.neunet.2020.02.016">DOI</a></td><td>Comparación de tres tipos de red</td><td>De 0,5 a 4,8 tiempos de Lyapunov; cae con observación parcial.</td><td>Numérico · TC parcial</td></tr>
+  <tr><td>Zhang y Gilpin (2025). Zero-shot forecasting of chaotic systems. <em>ICLR</em>. <a href="https://arxiv.org/abs/2409.15771">arXiv</a></td><td>Modelo fundacional sin ajuste, 135 sistemas</td><td>Cerca de 1 tiempo de Lyapunov; después conserva la forma, no la trayectoria.</td><td>Numérico · TC</td></tr>
+  <tr><td>Krishnapriyan et al. (2021). Characterizing possible failure modes in physics-informed neural networks. <em>NeurIPS</em>. <a href="https://arxiv.org/abs/2109.01050">arXiv</a></td><td>Análisis de fallos</td><td>Las PINN fallan en problemas algo más complejos, sin caos.</td><td>Numérico · R</td></tr>
+  <tr><td>Pfrommer, Halm y Posa (2020). ContactNets. <em>CoRL</em>. <a href="https://arxiv.org/abs/2009.11193">arXiv</a></td><td>Cubo real, 570 lanzamientos, tres cámaras</td><td>Aprende el contacto con pocos datos. No evalúa la cara final.</td><td>Experimento · TC</td></tr>
+  <tr><td>Fullmer et al. (2022). The divergence of nearby trajectories in soft-sphere DEM. <em>Particuology</em> 63. <a href="https://doi.org/10.1016/j.partic.2021.06.008">DOI</a></td><td>Simulación de esferas blandas</td><td>Mide el exponente de Lyapunov. Es un gas granular, no un bombo.</td><td>Simulación · R</td></tr>
+</table>
+</div>
+
+<details>
+  <summary>Repositorios, datos y herramientas abiertas</summary>
+  <div class="tabla-scroll">
+  <table>
+    <tr><th>Para qué</th><th>Herramienta</th><th>Licencia</th></tr>
+    <tr><td>Datos de moneda (350 757 lanzamientos)</td><td><a href="https://osf.io/pxu6r/">osf.io/pxu6r</a></td><td>CC-BY 4.0</td></tr>
+    <tr><td>Estimar min-entropía según SP 800-90B</td><td><a href="https://github.com/usnistgov/SP800-90B_EntropyAssessment">usnistgov/SP800-90B_EntropyAssessment</a></td><td>Aviso de software NIST</td></tr>
+    <tr><td>Baterías de bits (para generadores, no para sorteos)</td><td><a href="https://github.com/umontreal-simul/TestU01-2009">TestU01</a>, <a href="https://github.com/dj-on-github/sp800_22_tests">sp800_22_tests</a></td><td>Apache-2.0, GPL-2.0</td></tr>
+    <tr><td>Simular bolillas con aire</td><td><a href="https://github.com/CFDEMproject/LIGGGHTS-PUBLIC">LIGGGHTS</a> con <a href="https://github.com/CFDEMproject/CFDEMcoupling-PUBLIC">CFDEMcoupling</a></td><td>GPL-2.0, GPL-3.0</td></tr>
+    <tr><td>Simular bombo de paletas</td><td><a href="https://gitlab.com/yade-dev/trunk">Yade</a>, <a href="https://github.com/projectchrono/chrono">Project Chrono</a></td><td>GPL-2.0, BSD-3</td></tr>
+    <tr><td>Seguir partículas en vídeo</td><td><a href="https://github.com/soft-matter/trackpy">trackpy</a>, <a href="https://github.com/OpenPTV/openptv">OpenPTV</a>, <a href="https://github.com/opencv/opencv">OpenCV</a></td><td>BSD-3, LGPL-3.0, Apache-2.0</td></tr>
+    <tr><td>Sistemas caóticos de referencia</td><td><a href="https://github.com/GilpinLab/dysts">dysts</a></td><td>Apache-2.0</td></tr>
+    <tr><td>Modelos para dinámica</td><td><a href="https://github.com/reservoirpy/reservoirpy">reservoirpy</a>, <a href="https://github.com/dynamicslab/pysindy">pysindy</a>, <a href="https://github.com/lululxvi/deepxde">DeepXDE</a></td><td>MIT, MIT, LGPL-2.1</td></tr>
+  </table>
+  </div>
+  <p>No encontramos ningún conjunto de datos público con vídeo o trayectorias de bolillas de un sorteo real.</p>
+</details>
+
+<div class="vecino">
+  <strong>El detalle completo está en los informes del concilio</strong>, con todas las fuentes, lo no verificado y los vacíos:
+  <a href="fuentes/01_fisica_caos.md">física y caos</a> ·
+  <a href="fuentes/02_loterias_sesgos.md">loterías y sesgos</a> ·
+  <a href="fuentes/03_pruebas_aleatoriedad.md">pruebas de aleatoriedad</a> ·
+  <a href="fuentes/04_ml_instrumentacion.md">aprendizaje automático e instrumentación</a> ·
+  <a href="fuentes/05_caso_chile.md">caso chileno</a>.
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de citar esta hoja.</strong>
+  <ul>
+    <li>□ ¿La cifra que vas a citar está marcada «cálculo propio»? Entonces cita el guion, no un artículo.</li>
+    <li>□ ¿La fuente dice TC, R o M? Con R o M, abre el original antes de citar una cifra.</li>
+    <li>□ ¿Estás afirmando un sesgo o una predicción? Di cuál.</li>
+  </ul>
+</div>
+
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+<div id="tip" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var AZUL='#2563eb', AMBAR='#d97706', GRIS='#6b7280', TINTA='#1a1a1a', LINEA='#e5e5e5', FRANJA='#eceae6';
+var NS='http://www.w3.org/2000/svg';
+function $(id){return document.getElementById(id);}
+function el(tag,attrs,texto){
+  var e=document.createElementNS(NS,tag);
+  for(var k in attrs){ if(Object.prototype.hasOwnProperty.call(attrs,k)) e.setAttribute(k,attrs[k]); }
+  if(texto!=null) e.textContent=texto;
+  return e;
+}
+function anchoDe(cont){ return Math.max(320,Math.min(640,cont.clientWidth||640)); }
+function nf(x,d){ return x.toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function entero(x){ return String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0'); }
+function parrafos(cont,lineas){
+  cont.textContent='';
+  lineas.forEach(function(partes){
+    var p=document.createElement('p');
+    partes.forEach(function(t){
+      if(typeof t==='string'){ p.appendChild(document.createTextNode(t)); }
+      else { var s=document.createElement('strong'); s.textContent=t.b; p.appendChild(s); }
+    });
+    cont.appendChild(p);
+  });
+}
+
+/* ---------- tooltip compartido ---------- */
+var tip=$('tip');
+function verTip(x,y,valor,etiqueta){
+  tip.textContent='';
+  var s=document.createElement('strong'); s.textContent=valor; tip.appendChild(s);
+  tip.appendChild(document.createTextNode(etiqueta));
+  tip.style.display='block';
+  var w=tip.offsetWidth, h=tip.offsetHeight;
+  var px=Math.min(Math.max(8,x+12), window.innerWidth-w-8);
+  var py=y-h-12; if(py<8) py=y+16;
+  tip.style.left=px+'px'; tip.style.top=py+'px';
+}
+function sinTip(){ tip.style.display='none'; }
+function conTip(nodo,valor,etiqueta){
+  nodo.setAttribute('tabindex','0');
+  nodo.setAttribute('aria-label',etiqueta+': '+valor);
+  nodo.addEventListener('pointermove',function(e){ verTip(e.clientX,e.clientY,valor,etiqueta); });
+  nodo.addEventListener('pointerleave',sinTip);
+  nodo.addEventListener('focus',function(){ var r=nodo.getBoundingClientRect(); verTip(r.left+r.width/2,r.top,valor,etiqueta); });
+  nodo.addEventListener('blur',sinTip);
+}
+
+/* ---------- estadística ---------- */
+function lgamma(z){
+  var c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  var y=z, t=z+5.5; t-=(z+0.5)*Math.log(t);
+  var s=1.000000000190015;
+  for(var j=0;j<6;j++){ y+=1; s+=c[j]/y; }
+  return -t+Math.log(2.5066282746310005*s/z);
+}
+function gammaQ(a,x){
+  if(x<=0) return 1;
+  var i;
+  if(x<a+1){
+    var ap=a, suma=1/a, d=suma;
+    for(i=0;i<500;i++){ ap+=1; d*=x/ap; suma+=d; if(Math.abs(d)<Math.abs(suma)*1e-13) break; }
+    return 1-suma*Math.exp(-x+a*Math.log(x)-lgamma(a));
+  }
+  var b=x+1-a, c=1e300, dd=1/b, h=dd;
+  for(i=1;i<500;i++){
+    var an=-i*(i-a); b+=2;
+    dd=an*dd+b; if(Math.abs(dd)<1e-300) dd=1e-300;
+    c=b+an/c; if(Math.abs(c)<1e-300) c=1e-300;
+    dd=1/dd; var del=dd*c; h*=del;
+    if(Math.abs(del-1)<1e-13) break;
+  }
+  return Math.exp(-x+a*Math.log(x)-lgamma(a))*h;
+}
+function pChi(x,gl){ return gammaQ(gl/2,x/2); }
+function fi(x){ // normal acumulada
+  var z=Math.abs(x)/Math.SQRT2, t=1/(1+0.5*z);
+  var e=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));
+  return x>=0 ? 1-e/2 : e/2;
+}
+function chi10(c,n){ var e=n/10, s=0; for(var i=0;i<10;i++){ s+=(c[i]-e)*(c[i]-e)/e; } return s; }
+function pTexto(p){ return p<0.001 ? 'menor que 0,001' : nf(p,3); }
+
+/* ---------- gráfico de barras verticales ---------- */
+function barras(cont,datos,o){
+  var W=anchoDe(cont);
+  cont.textContent='';
+  var H=270,ml=42,mr=14,mt=16,mb=34, pw=W-ml-mr, ph=H-mt-mb;
+  var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':o.aria});
+  function y(v){ return mt+ph-(v/o.ymax)*ph; }
+  for(var t=0;t<=o.ymax+1e-9;t+=o.paso){
+    svg.appendChild(el('line',{x1:ml,x2:W-mr,y1:y(t),y2:y(t),stroke:LINEA,'stroke-width':1}));
+    svg.appendChild(el('text',{x:ml-6,y:y(t)+4,'text-anchor':'end'},nf(t,0)+' %'));
+  }
+  if(o.banda){
+    var hi=Math.min(o.banda[1],o.ymax), lo=Math.max(o.banda[0],0);
+    svg.appendChild(el('rect',{x:ml,y:y(hi),width:pw,height:Math.max(0,y(lo)-y(hi)),fill:FRANJA}));
+  }
+  var ancho=pw/datos.length, bw=Math.min(38,ancho*0.6);
+  datos.forEach(function(d,i){
+    var x=ml+ancho*i+(ancho-bw)/2, y1=y(Math.min(d.v,o.ymax)), y0=y(0), r=Math.min(4,(y0-y1)/2);
+    var color=d.destacada?AMBAR:AZUL;
+    if(y0-y1>0.5){
+      svg.appendChild(el('path',{fill:color,d:'M'+x+','+y0+'V'+(y1+r)+'Q'+x+','+y1+' '+(x+r)+','+y1+'H'+(x+bw-r)+'Q'+(x+bw)+','+y1+' '+(x+bw)+','+(y1+r)+'V'+y0+'Z'}));
+    }
+    if(d.destacada){ svg.appendChild(el('text',{x:x+bw/2,y:y1-5,'text-anchor':'middle','class':'val'},nf(d.v,1)+' %')); }
+    svg.appendChild(el('text',{x:x+bw/2,y:H-mb+16,'text-anchor':'middle','class':'eje'},d.etq));
+    var hit=el('rect',{x:ml+ancho*i,y:mt,width:ancho,height:ph,'class':'hit'});
+    conTip(hit,nf(d.v,1)+' %',' '+d.tip);
+    svg.appendChild(hit);
+  });
+  svg.appendChild(el('line',{x1:ml,x2:W-mr,y1:y(o.esperado),y2:y(o.esperado),stroke:GRIS,'stroke-width':1.5,'stroke-dasharray':'5 4'}));
+  svg.appendChild(el('text',{x:ml+pw/2,y:H-4,'text-anchor':'middle'},o.ejeX));
+  cont.appendChild(svg);
+}
+function ejeY(maximo){
+  var ymax=Math.max(20,Math.ceil(maximo*1.12/5)*5);
+  return {ymax:ymax,paso:ymax>30?10:5};
+}
+
+/* ---------- 5 · horizonte ---------- */
+var RADIO=0.025;
+var UNIDADES=[[1,'m'],[1e-3,'mm'],[1e-6,'µm'],[1e-9,'nm'],[1e-12,'pm'],[1e-15,'fm'],[1e-18,'am']];
+function largo(m){
+  for(var i=0;i<UNIDADES.length;i++){ if(m>=UNIDADES[i][0]*0.9999) return nf(m/UNIDADES[i][0],m/UNIDADES[i][0]<10?1:0)+' '+UNIDADES[i][1]; }
+  return nf(m/1e-18,1)+' am';
+}
+var HITOS={10:' (tamaño de un átomo)',15:' (tamaño de un protón)'};
+function horizonte(){
+  var e=+$('hExp').value, k=+$('hLr').value;
+  var d0=Math.pow(10,-e), f=1+2*k;
+  var n=Math.log(RADIO/d0)/Math.log(f), extra=Math.log(10)/Math.log(f);
+  $('hExpO').textContent=largo(d0)+(HITOS[e]||'');
+  $('hLrO').textContent=nf(k,1);
+  var cont=$('hGraf'), W=anchoDe(cont); cont.textContent='';
+  var H=280,ml=58,mr=16,mt=16,mb=38, pw=W-ml-mr, ph=H-mt-mb;
+  var xmax=Math.min(24,Math.max(10,Math.ceil(n)+2));
+  var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Crecimiento del error de posición con cada choque'});
+  function x(i){ return ml+pw*i/xmax; }
+  function y(lg){ return mt+ph*(0-lg)/18; }
+  var marcas={'-18':'10⁻¹⁸ m','-15':'10⁻¹⁵ m','-12':'10⁻¹² m','-9':'1 nm','-6':'1 µm','-3':'1 mm','0':'1 m'};
+  for(var lg=-18;lg<=0;lg+=3){
+    svg.appendChild(el('line',{x1:ml,x2:W-mr,y1:y(lg),y2:y(lg),stroke:LINEA,'stroke-width':1}));
+    svg.appendChild(el('text',{x:ml-6,y:y(lg)+4,'text-anchor':'end'},marcas[String(lg)]));
+  }
+  var cada=xmax>12?2:1;
+  for(var i=0;i<=xmax;i+=cada){ svg.appendChild(el('text',{x:x(i),y:H-mb+16,'text-anchor':'middle','class':'eje'},String(i))); }
+  svg.appendChild(el('text',{x:ml+pw/2,y:H-4,'text-anchor':'middle'},'número de choques'));
+  var yr=y(Math.log10(RADIO));
+  svg.appendChild(el('line',{x1:ml,x2:W-mr,y1:yr,y2:yr,stroke:AMBAR,'stroke-width':2,'stroke-dasharray':'6 4'}));
+  var puntos=[], j;
+  for(j=0;j<=xmax;j++){
+    var err=d0*Math.pow(f,j);
+    puntos.push({i:j,err:err,lg:Math.min(0,Math.log10(err))});
+    if(err>=1) break;
+  }
+  svg.appendChild(el('polyline',{fill:'none',stroke:AZUL,'stroke-width':2,'stroke-linejoin':'round',
+    points:puntos.map(function(p){return x(p.i)+','+y(p.lg);}).join(' ')}));
+  puntos.forEach(function(p){
+    svg.appendChild(el('circle',{cx:x(p.i),cy:y(p.lg),r:4,fill:AZUL,stroke:'#fff','stroke-width':2}));
+    var hit=el('circle',{cx:x(p.i),cy:y(p.lg),r:13,'class':'hit'});
+    conTip(hit,p.err>=1?'más de 1 m':largo(p.err),' de error tras '+p.i+(p.i===1?' choque':' choques'));
+    svg.appendChild(hit);
+  });
+  cont.appendChild(svg);
+  parrafos($('hTexto'),[
+    ['Con un error inicial de ',{b:largo(d0)},', el error iguala el radio de la bolilla tras ',{b:nf(n,1)+' choques'},'. Cada choque multiplica el error por '+nf(f,0)+'.'],
+    ['Medir ',{b:'diez veces mejor'},' suma solo ',{b:nf(extra,1)+(extra<1.05&&extra>0.95?' choque':' choques')},' de predicción.']
+  ]);
+}
+$('hExp').addEventListener('input',horizonte);
+$('hLr').addEventListener('input',horizonte);
+$('hBombo').addEventListener('click',function(){ $('hExp').value=6; $('hLr').value=4; horizonte(); });
+$('hBillar').addEventListener('click',function(){ $('hExp').value=16; $('hLr').value=34.5; horizonte(); });
+
+/* ---------- 6 · datos del experimento tailandés (tablas 1 a 6 del artículo) ---------- */
+var TAI=[
+  {c:[105,92,105,98,101,111,105,110,92,81], pub:'Prueba global publicada: p = 0,544. No hay evidencia de sesgo.'},
+  {c:[91,93,100,91,111,87,105,104,90,128], pub:'Prueba dirigida a la bola 9, publicada: p = 0,003.'},
+  {c:[107,98,99,111,101,91,111,100,96,86], pub:'Prueba dirigida a la bola 9, publicada: p = 0,075. No se distingue del azar.'},
+  {c:[100,107,108,96,83,100,100,85,85,136], pub:'Prueba dirigida a la bola 9, publicada: p menor que 0,001.'},
+  {c:[103,110,90,107,111,92,95,108,88,96], pub:'Prueba dirigida a la bola 9, publicada: p = 0,361. No se distingue del azar.'},
+  {c:[70,115,95,109,115,107,89,117,75,108], pub:'Prueba global publicada: p = 0,002. Rechaza, pero sin relación con la masa: las dos bolas menos frecuentes (0 y 8) están en extremos opuestos de la escalera.'}
+];
+function tailandia(){
+  var k=+$('tCond').value, d=TAI[k], se=Math.sqrt(0.09/1000)*100;
+  barras($('tGraf'),d.c.map(function(v,i){
+    return {etq:String(i),v:v/10,destacada:i===9,tip:'bola '+i+' ('+v+' de 1000)'};
+  }),{ymax:20,paso:5,esperado:10,banda:[10-2*se,10+2*se],ejeX:'número de la bola',
+      aria:'Frecuencia de cada bola en 1000 extracciones del experimento tailandés'});
+  var x2=chi10(d.c,1000);
+  parrafos($('tTexto'),[
+    [d.pub],
+    ['Prueba global calculada aquí con esos mismos conteos: χ² = ',{b:nf(x2,2)},', p = ',{b:pTexto(pChi(x2,9))},'. La bola 9 salió ',{b:d.c[9]+' veces'},' de 1000.']
+  ]);
+}
+$('tCond').addEventListener('change',tailandia);
+
+/* ---------- 7 · simulador ---------- */
+function sortear(n,delta){
+  var p9=0.1*(1+delta), c=[0,0,0,0,0,0,0,0,0,0];
+  for(var i=0;i<n;i++){ if(Math.random()<p9) c[9]++; else c[Math.floor(Math.random()*9)]++; }
+  return c;
+}
+function pDirigida(c9,n){ return 1-fi((c9/n-0.1)/Math.sqrt(0.09/n)); }
+function leerSim(){
+  var delta=+$('sDelta').value/100;
+  $('sDeltaO').textContent=delta===0?'ninguno (10 % exacto)':'+'+nf(delta*100,0)+' % (sale '+nf(10*(1+delta),1)+' % de las veces)';
+  return {delta:delta,n:+$('sN').value};
+}
+var ultima=null;
+function simUna(){ var s=leerSim(); ultima={s:s,c:sortear(s.n,s.delta)}; pintaSim(); }
+function pintaSim(){
+  var s=ultima.s, c=ultima.c, se=Math.sqrt(0.09/s.n)*100;
+  var pct=c.map(function(v){return 100*v/s.n;}), eje=ejeY(Math.max.apply(null,pct));
+  barras($('sGraf'),pct.map(function(v,i){
+    return {etq:String(i),v:v,destacada:i===9,tip:'bolilla '+i+' ('+entero(c[i])+' de '+entero(s.n)+')'};
+  }),{ymax:eje.ymax,paso:eje.paso,esperado:10,banda:[10-2*se,10+2*se],ejeX:'número de la bolilla',
+      aria:'Frecuencia simulada de cada bolilla'});
+  var x2=chi10(c,s.n), pg=pChi(x2,9), pd=pDirigida(c[9],s.n);
+  parrafos($('sTexto'),[
+    [{b:'Prueba global'},' (no sabes cuál bolilla): p = '+pTexto(pg)+'. ',{b:pg<0.05?'Detecta algo.':'No detecta nada.'}],
+    [{b:'Prueba dirigida'},' a la bolilla 9 (lo sabías antes): p = '+pTexto(pd)+'. ',{b:pd<0.05?'Detecta el sesgo.':'No detecta nada.'}],
+    ['Si apuestas siempre a la bolilla 9: aciertas ',{b:entero(c[9])+' de '+entero(s.n)},' ('+nf(100*c[9]/s.n,1)+' %) y fallas el '+nf(100-100*c[9]/s.n,1)+' %.']
+  ]);
+}
+function simMuchas(){
+  var s=leerSim(), R=300, g=0, d=0;
+  for(var r=0;r<R;r++){
+    var c=sortear(s.n,s.delta);
+    if(pChi(chi10(c,s.n),9)<0.05) g++;
+    if(pDirigida(c[9],s.n)<0.05) d++;
+  }
+  var que=s.delta===0?'dieron una falsa alarma':'detectaron el sesgo';
+  parrafos($('sPot'),[
+    ['En 300 repeticiones de '+entero(s.n)+' extracciones, '+que+': la prueba global ',{b:nf(100*g/R,0)+' %'},' de las veces y la dirigida ',{b:nf(100*d/R,0)+' %'},'.'],
+    [s.delta===0?'Sin sesgo, ambas deben rondar 5 %: ese es el precio de usar alfa 0,05.':'Ese porcentaje es la potencia: la probabilidad de ver un sesgo que sí existe. Saber de antemano qué bolilla mirar la sube.']
+  ]);
+}
+$('sUna').addEventListener('click',simUna);
+$('sMuchas').addEventListener('click',simMuchas);
+$('sDelta').addEventListener('input',function(){ simUna(); $('sPot').textContent='Pulsa «Repetir 300 veces» para estimar la potencia con estos valores.'; });
+$('sN').addEventListener('change',function(){ simUna(); $('sPot').textContent='Pulsa «Repetir 300 veces» para estimar la potencia con estos valores.'; });
+
+/* ---------- 9 · calculadora ---------- */
+var Z_ALFA=1.959964, Z_POT=0.841621, Z_BONF={41:3.2336,25:3.0902};
+function nNecesario(p0,p1,z){
+  var a=z*Math.sqrt(p0*(1-p0))+Z_POT*Math.sqrt(p1*(1-p1));
+  return a*a/((p1-p0)*(p1-p0));
+}
+function potencia(p0,p1,n,z){
+  return fi((Math.abs(p1-p0)*Math.sqrt(n)-z*Math.sqrt(p0*(1-p0)))/Math.sqrt(p1*(1-p1)));
+}
+function calculadora(){
+  var jk=$('cJuego').value.split(','), N=+jk[0], k=+jk[1];
+  var delta=+$('cDelta').value/100, anos=+$('cAnos').value, n=anos*150;
+  var p0=k/N, p1=p0*(1+delta);
+  $('cDeltaO').textContent='+'+nf(delta*100,0)+' %';
+  $('cAnosO').textContent=anos+(anos===1?' año':' años')+' ('+entero(n)+' sorteos)';
+  var n1=nNecesario(p0,p1,Z_ALFA), n2=nNecesario(p0,p1,Z_BONF[N]);
+  var pot1=potencia(p0,p1,n,Z_ALFA), pot2=potencia(p0,p1,n,Z_BONF[N]);
+  var met=$('cMet'); met.textContent='';
+  [[entero(n1),'sorteos si sabías cuál ('+entero(n1/150)+' años)'],
+   [entero(n2),'sorteos si no sabías cuál ('+entero(n2/150)+' años)'],
+   [nf(100*pot1,0)+' %','potencia con tu historia, sabiendo cuál'],
+   [nf(100*pot2,0)+' %','potencia con tu historia, sin saber cuál']].forEach(function(f){
+    var d=document.createElement('div'), a=document.createElement('div'), b=document.createElement('div');
+    a.className='n'; a.textContent=f[0]; b.className='e'; b.textContent=f[1];
+    d.appendChild(a); d.appendChild(b); met.appendChild(d);
+  });
+  var veredicto=pot1>=0.8?'alcanza si la bolilla estaba fijada de antemano':(pot1>=0.5?'es una moneda al aire: la mitad de las veces no lo verías':'no alcanza: lo más probable es que no veas nada aunque el sesgo exista');
+  parrafos($('cTexto'),[
+    ['Para un sesgo de +'+nf(delta*100,0)+' % en un '+k+' de '+N+', una historia de '+anos+(anos===1?' año ':' años '),{b:veredicto},'.']
+  ]);
+}
+$('cJuego').addEventListener('change',calculadora);
+$('cDelta').addEventListener('input',calculadora);
+$('cAnos').addEventListener('input',calculadora);
+
+/* ---------- 10 · barras horizontales: horizonte de los modelos ---------- */
+function horizontales(){
+  var datos=[
+    ['Reservorios, sistema visto completo (Pathak 2018)',8],
+    ['Mejor red, mismo tipo de sistema (Vlachas 2020)',4.8],
+    ['Mejor red, Lorenz-96 visto completo (Vlachas 2020)',2.31],
+    ['Modelo fundacional sin ajuste (Zhang y Gilpin 2025)',1],
+    ['Lorenz-96 viendo 35 de 40 variables (Vlachas 2020)',0.98]
+  ];
+  var cont=$('mGraf'), W=anchoDe(cont); cont.textContent='';
+  var alto=46, mt=8, ml=10, mr=60, H=mt+alto*datos.length+6, pw=W-ml-mr;
+  var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Horizonte de predicción de modelos de aprendizaje automático en tiempos de Lyapunov'});
+  datos.forEach(function(d,i){
+    var y0=mt+alto*i, w=pw*d[1]/8, r=4;
+    svg.appendChild(el('text',{x:ml,y:y0+13,'class':'eje'},d[0]));
+    svg.appendChild(el('path',{fill:AZUL,d:'M'+ml+','+(y0+20)+'H'+(ml+w-r)+'Q'+(ml+w)+','+(y0+20)+' '+(ml+w)+','+(y0+24)+'V'+(y0+30)+'Q'+(ml+w)+','+(y0+34)+' '+(ml+w-r)+','+(y0+34)+'H'+ml+'Z'}));
+    svg.appendChild(el('text',{x:ml+w+7,y:y0+32,'class':'val'},nf(d[1],d[1]<3?2:1).replace(/,00$/,'')));
+    var hit=el('rect',{x:0,y:y0,width:W,height:alto-4,'class':'hit'});
+    conTip(hit,nf(d[1],2).replace(/,?0+$/,'')+' tiempos de Lyapunov',' '+d[0]);
+    svg.appendChild(hit);
+  });
+  cont.appendChild(svg);
+}
+
+/* ---------- preguntas de predicción ---------- */
+function pregunta(id,correcta,textos){
+  var caja=$(id), ver=$(id+'v');
+  Array.prototype.forEach.call(caja.querySelectorAll('button'),function(b){
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(caja.querySelectorAll('button'),function(o){o.classList.remove('elegida');});
+      b.classList.add('elegida');
+      var v=b.getAttribute('data-v');
+      ver.textContent=(v===correcta?'Correcto. ':'No. ')+textos[v];
+      ver.classList.add('on');
+    });
+  });
+}
+pregunta('q1','87',{
+  '13':'13 son los aciertos. Fallas las otras 87: un sesgo de tres puntos deja el resultado casi tan incierto como antes.',
+  '50':'Un sesgo no convierte el sorteo en una moneda. Aciertas 13 de 100 y fallas 87.',
+  '87':'Aciertas 13 de 100 en vez de 10. Es una ventaja real para quien la conoce, y aun así fallas 87 veces: eso es un sesgo, no una predicción.'
+});
+pregunta('q2','b',{
+  'a':'Con 200 extracciones cada bolilla debería salir 20 veces, pero el azar solo ya las mueve entre unas 12 y 28. Se ven barras claramente distintas sin que exista sesgo.',
+  'b':'Con 200 extracciones el azar solo mueve cada barra entre 6 % y 14 %. Por eso el control del experimento tailandés dio p = 0,076 a 200 extracciones con bolas iguales.'
+});
+
+horizonte(); tailandia(); simUna(); calculadora(); horizontales();
+var espera=null, anchoPrevio=window.innerWidth;
+window.addEventListener('resize',function(){
+  if(window.innerWidth===anchoPrevio) return;
+  anchoPrevio=window.innerWidth; clearTimeout(espera);
+  espera=setTimeout(function(){ horizonte(); tailandia(); pintaSim(); horizontales(); },150);
+});
+$('sPot').textContent='Pulsa «Repetir 300 veces» para estimar la potencia con estos valores.';
+})();
+</script>
+</body>
+</html>
