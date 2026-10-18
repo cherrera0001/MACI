@@ -1,6 +1,6 @@
-# Research: MACI 1.0 — Plataforma Termito
+# Research: MACI 1.0 — Plataforma Datito
 
-**Fecha**: 2026-10-17 · **Feature**: `specs/001-termito-platform` · **Estado**: completo
+**Fecha**: 2026-10-17 · **Feature**: `specs/001-datito-platform` · **Estado**: completo
 (sin marcadores NEEDS CLARIFICATION pendientes)
 
 Resolución de las decisiones técnicas abiertas del plan. Formato por decisión:
@@ -85,7 +85,7 @@ Decisión / Rationale / Alternativas consideradas.
   artefactos actuales (`07_DATITO/clases.yaml`, `grafo.yaml`, bitácoras, visuales y
   transcripciones) en una instancia `cursos/fundamentos-ciencia-datos/`. El sitio
   estático actual y `publicar_sitio.mjs` siguen intactos y operativos durante toda la
-  migración; el primer Termito real se construye sobre los mismos YAML.
+  migración; el primer Datito real se construye sobre los mismos YAML.
 - **Rationale**: la constitución prohíbe big-bang y exige que cada incremento deje el
   sistema operativo. SC-007 (cero regresiones en funcionalidades v0.0.1) se verifica
   corriendo la verificación existente (`verificar_todo.py`) antes y después.
@@ -144,7 +144,7 @@ Decisión / Rationale / Alternativas consideradas.
 | Calidad del modelo local pequeño en español | Elegir modelo con fuerte soporte es (evaluar en quickstart.md); nube opcional como válvula |
 | Recuperación de evidencia poco relevante | Top-k estricto, fragmentos pequeños, metadatos de tema; el estudiante verifica con un clic |
 | Latencia en CPU modesta | Modelo 3–4B cuantizado Q4; streaming de respuestas; objetivo <10 s primera respuesta |
-| Pérdida de portabilidad por artefactos derivados | Todo derivado se regenera con un comando (`termito reindexar`) |
+| Pérdida de portabilidad por artefactos derivados | Todo derivado se regenera con un comando (`datito reindexar`) |
 | Ollama no instalado | Modo degradado explícito de exploración de materiales + instrucciones de instalación |
 
 

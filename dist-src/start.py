@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""start.py — doble clic y a chatear con tu Termito.
+"""start.py — doble clic y a chatear con tu Datito.
 
 1. Verifica Python 3.12+  2. Crea el venv e instala dependencias (offline si
 hay wheels/)  3. Construye el indice del curso si falta  4. Levanta el
@@ -46,12 +46,12 @@ def crear_venv():
         return
     log("creando entorno virtual (solo la primera vez)…")
     subprocess.run([sys.executable, "-m", "venv", str(VENV)], check=True)
-    # hacer visible el paquete termito via .pth (sin pip install -e)
+    # hacer visible el paquete datito via .pth (sin pip install -e)
     proc = subprocess.run(
         [str(venv_python()), "-c", "import site; print(site.getsitepackages()[0])"],
         capture_output=True, text=True, check=True)
     site_packages = Path(proc.stdout.strip().splitlines()[-1])
-    (site_packages / "termito.pth").write_text(str(MOTOR / "src"), encoding="utf-8")
+    (site_packages / "datito.pth").write_text(str(MOTOR / "src"), encoding="utf-8")
 
 
 def instalar_dependencias():
@@ -79,7 +79,7 @@ def construir_curso_si_falta():
     if indice.exists():
         return
     log("construyendo el indice del curso (solo la primera vez, ~1 min)…")
-    subprocess.run([str(venv_python()), "-m", "termito.cli", "build", "fcd"],
+    subprocess.run([str(venv_python()), "-m", "datito.cli", "build", "fcd"],
                    cwd=str(MOTOR), check=True)
 
 
@@ -103,16 +103,16 @@ def main():
         falla(f"fallo la preparacion (codigo {e.returncode}). "
               "Revisa que tengas conexion la primera vez o que exista wheels/.")
     if _puerto_ocupado(PUERTO):
-        log(f"ya hay un Termito corriendo en {PUERTO}: abro el navegador.")
+        log(f"ya hay un Datito corriendo en {PUERTO}: abro el navegador.")
         webbrowser.open(f"http://localhost:{PUERTO}")
         return
-    log(f"levantando Termito en http://localhost:{PUERTO} …")
+    log(f"levantando Datito en http://localhost:{PUERTO} …")
     servidor = subprocess.Popen(
-        [str(venv_python()), "-m", "termito.servidor", "--puerto", str(PUERTO)],
+        [str(venv_python()), "-m", "datito.servidor", "--puerto", str(PUERTO)],
         cwd=str(MOTOR))
     time.sleep(1.2)
     webbrowser.open(f"http://localhost:{PUERTO}")
-    print("\nTermito esta corriendo. Deja esta ventana abierta; cierrala para salir.\n")
+    print("\nDatito esta corriendo. Deja esta ventana abierta; cierrala para salir.\n")
     try:
         servidor.wait()
     except KeyboardInterrupt:

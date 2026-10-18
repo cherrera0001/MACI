@@ -17,6 +17,7 @@ USO
 """
 import glob
 import os
+import subprocess
 import sys
 
 from playwright.sync_api import sync_playwright
@@ -94,13 +95,28 @@ def paginas_del_curso():
     return sorted(base) + sorted(extra)
 
 
+def lanzar(p):
+    """Navegador headless: msedge en la maquina de desarrollo (Windows),
+    chromium en servidores/CI. Si playwright se actualizo y el ejecutable
+    del cache no existe, se descarga una vez y se reintenta."""
+    try:
+        return p.chromium.launch(channel="msedge", headless=True)
+    except Exception:
+        pass
+    try:
+        return p.chromium.launch(headless=True)
+    except Exception:
+        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=False)
+        return p.chromium.launch(headless=True)
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--capturas=")]
     capturas = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--capturas=")), None)
     rutas = [a if os.path.isabs(a) else os.path.join(VISUAL, a) for a in args] or paginas_del_curso()
     malos = 0
     with sync_playwright() as p:
-        nav = p.chromium.launch(channel="msedge", headless=True)
+        nav = lanzar(p)
         ctx = nav.new_context(offline=True)
         for ruta in rutas:
             n = os.path.basename(ruta)

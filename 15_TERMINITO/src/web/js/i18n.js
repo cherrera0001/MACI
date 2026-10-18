@@ -1,6 +1,6 @@
 /* i18n.js — ES/EN del interfaz (FR-022). Diccionario + toggle que persiste.
 El cambio de idioma recarga la pagina: simple y sin estado fantasma. El
-contenido generado por el Termito respeta el idioma del estudiante por regla
+contenido generado por el Datito respeta el idioma del estudiante por regla
 del system prompt (identidad.py) y de la plantilla de generacion (tutor.py). */
 const I18N = {
   es: {
@@ -12,15 +12,15 @@ const I18N = {
     "cerrar": "Cerrar", "cargando": "cargando…",
     "lang_boton": "EN",
     /* index */
-    "ix_titulo": "Tus Termitos",
-    "ix_sub": "Un Termito por curso: diseñado por ti, con los materiales reales. Todo en tu máquina.",
-    "ix_crear": "＋ Crear Termito",
-    "ix_vacio": "Todavía no tienes Termitos. Crea el primero: toma menos de 10 minutos.",
+    "ix_titulo": "Tus Datitos",
+    "ix_sub": "Un Datito por curso: diseñado por ti, con los materiales reales. Todo en tu máquina.",
+    "ix_crear": "＋ Crear Datito",
+    "ix_vacio": "Todavía no tienes Datitos. Crea el primero: toma menos de 10 minutos.",
     "ix_chat": "Chatear",
-    "ix_caido": "El servidor local no responde. Arranca Termito con <code>start.py</code>.",
-    "ix_que_es": "<b>¿Qué es un Termito?</b> Un tutor que tú construyes: le entregas el programa, las clases y los certámenes de tu curso, defines quién es y cómo enseña, y conversa contigo citando la fuente de cada afirmación. Cuando el curso termina, desaparece; tu conocimiento se queda contigo.",
+    "ix_caido": "El servidor local no responde. Arranca Datito con <code>start.py</code>.",
+    "ix_que_es": "<b>¿Qué es un Datito?</b> Un tutor que tú construyes: le entregas el programa, las clases y los certámenes de tu curso, defines quién es y cómo enseña, y conversa contigo citando la fuente de cada afirmación. Cuando el curso termina, desaparece; tu conocimiento se queda contigo.",
     /* wizard */
-    "wz_h1": "Construyamos tu Termito",
+    "wz_h1": "Construyamos tu Datito",
     "wz_sub": "Una decisión por pantalla. Enter no existe aquí: tú eliges todo.",
     "wz_p0_h": "Primero: ¿qué curso vas a aprender?",
     "wz_p0_p1": "Escribe el nombre (el slug se genera solo).",
@@ -29,8 +29,8 @@ const I18N = {
     "wz_siguiente": "Siguiente →", "wz_atras": "Atrás", "wz_usarla": "usarla",
     "wz_sugerencia": "sugerencia:",
     "wz_tu_respuesta": "Tu respuesta…",
-    "wz_generar": "Generar mi Termito ✨",
-    "wz_final_h": "Así quedó tu Termito",
+    "wz_generar": "Generar mi Datito ✨",
+    "wz_final_h": "Así quedó tu Datito",
     "wz_final_p": "Este es el system prompt completo — tu agente, tu diseño, siempre editable en <code>prompt/actual.md</code> (cada cambio queda versionado).",
     "wz_confirmar": "✓ Confirmar y empezar", "wz_volver": "Volver",
     "wz_construyendo": "Construyendo: parseando materiales e indexando evidencia…",
@@ -88,15 +88,15 @@ const I18N = {
     "cerrar": "Close", "cargando": "loading…",
     "lang_boton": "ES",
     /* index */
-    "ix_titulo": "Your Termitos",
-    "ix_sub": "One Termito per course: designed by you, from the real course materials. Everything on your machine.",
-    "ix_crear": "＋ Create Termito",
-    "ix_vacio": "No Termitos yet. Create the first one: it takes under 10 minutes.",
+    "ix_titulo": "Your Datitos",
+    "ix_sub": "One Datito per course: designed by you, from the real course materials. Everything on your machine.",
+    "ix_crear": "＋ Create Datito",
+    "ix_vacio": "No Datitos yet. Create the first one: it takes under 10 minutes.",
     "ix_chat": "Chat",
-    "ix_caido": "The local server is not responding. Start Termito with <code>start.py</code>.",
-    "ix_que_es": "<b>What is a Termito?</b> A tutor you build: you give it your course syllabus, classes and past exams, define who it is and how it teaches, and it chats with you citing the source of every claim. When the course ends, it disappears; the knowledge stays with you.",
+    "ix_caido": "The local server is not responding. Start Datito with <code>start.py</code>.",
+    "ix_que_es": "<b>What is a Datito?</b> A tutor you build: you give it your course syllabus, classes and past exams, define who it is and how it teaches, and it chats with you citing the source of every claim. When the course ends, it disappears; the knowledge stays with you.",
     /* wizard */
-    "wz_h1": "Let's build your Termito",
+    "wz_h1": "Let's build your Datito",
     "wz_sub": "One decision per screen. No defaults here: you choose everything.",
     "wz_p0_h": "First: what course are you going to learn?",
     "wz_p0_p1": "Write the name (the slug is generated automatically).",
@@ -105,8 +105,8 @@ const I18N = {
     "wz_siguiente": "Next →", "wz_atras": "Back", "wz_usarla": "use it",
     "wz_sugerencia": "suggestion:",
     "wz_tu_respuesta": "Your answer…",
-    "wz_generar": "Generate my Termito ✨",
-    "wz_final_h": "This is your Termito",
+    "wz_generar": "Generate my Datito ✨",
+    "wz_final_h": "This is your Datito",
     "wz_final_p": "This is the full system prompt — your agent, your design, always editable in <code>prompt/actual.md</code> (every change is versioned).",
     "wz_confirmar": "✓ Confirm and start", "wz_volver": "Back",
     "wz_construyendo": "Building: parsing materials and indexing evidence…",
@@ -157,20 +157,20 @@ const I18N = {
   },
 };
 
-function langTermito() {
-  const g = localStorage.getItem("termito-lang");
+function langDatito() {
+  const g = localStorage.getItem("datito-lang");
   if (g === "es" || g === "en") return g;
   return (navigator.language || "es").toLowerCase().startsWith("en") ? "en" : "es";
 }
 
 function t(clave, vars) {
-  let s = (I18N[langTermito()] || {})[clave] ?? I18N.es[clave] ?? clave;
+  let s = (I18N[langDatito()] || {})[clave] ?? I18N.es[clave] ?? clave;
   if (vars) for (const k in vars) s = s.replace("{" + k + "}", vars[k]);
   return s;
 }
 
 function aplicarIdioma() {
-  const l = langTermito();
+  const l = langDatito();
   document.documentElement.lang = l;
   document.querySelectorAll("[data-i18n]").forEach(el => {
     el.textContent = t(el.dataset.i18n);
@@ -192,7 +192,7 @@ function insertarBotonIdioma() {
     b.textContent = t("lang_boton");
     b.title = "idioma / language";
     b.onclick = () => {
-      localStorage.setItem("termito-lang", langTermito() === "es" ? "en" : "es");
+      localStorage.setItem("datito-lang", langDatito() === "es" ? "en" : "es");
       location.reload();
     };
     top.insertBefore(b, top.querySelector(".estado-motor"));

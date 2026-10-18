@@ -3,11 +3,11 @@ from pathlib import Path
 
 import yaml
 
-from termito import config, evaluador, grafo, identidad, progreso
-from termito import dudas as dudas_mod
-from termito import fragmentos as frag
-from termito import tutor as tutor_mod
-from termito.indice import Indice
+from datito import config, evaluador, grafo, identidad, progreso
+from datito import dudas as dudas_mod
+from datito import fragmentos as frag
+from datito import tutor as tutor_mod
+from datito.indice import Indice
 
 from conftest import COMPONENTES_OK
 

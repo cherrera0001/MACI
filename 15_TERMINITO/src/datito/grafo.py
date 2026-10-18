@@ -110,5 +110,5 @@ def panel(curso, mapa_completo: bool = False, color: bool = True) -> str:
             reset = COLOR["fin"] if color else ""
             lineas.append(f"  {prefijo} {nombre} ({est}){reset}")
     if not mapa_completo:
-        lineas.append("\n(mostando solo lo desbloqueado; 'termito status --mapa' revela todo)")
+        lineas.append("\n(mostando solo lo desbloqueado; 'datito status --mapa' revela todo)")
     return "\n".join(lineas)

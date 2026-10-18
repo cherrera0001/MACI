@@ -24,7 +24,7 @@ import re
 import subprocess
 import sys
 
-RAIZ = r"F:\MACI"
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OK, FALLO, AVISO = "OK", "FALLO", "AVISO"
 
 

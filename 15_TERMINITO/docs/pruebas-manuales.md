@@ -8,7 +8,7 @@ pytest); este documento es lo que un humano hace con el navegador.
 ## Flujo 1 — De maci.c4a.cl al primer chat (5 minutos)
 
 1. Abrir `public/01_CONCEPTOS/visual/00_index.html` (o maci.c4a.cl en producción).
-2. Verificar: existe la sección **"Tu propio Termito"** con el botón
+2. Verificar: existe la sección **"Tu propio Datito"** con el botón
    "Descargar para tu curso" (si el ZIP no se construyó, el botón aparece como
    texto plano: es el comportamiento anti-404 esperado).
 3. Descargar el ZIP, descomprimir en una carpeta nueva.
@@ -26,16 +26,16 @@ pytest); este documento es lo que un humano hace con el navegador.
 paso 5 → la Home muestra "modo tutor · qwen2.5:3b" y las respuestas son
 explicaciones generadas con citas validadas.
 
-## Flujo 2 — Crear un Termito nuevo desde la web (10 minutos, sin terminal)
+## Flujo 2 — Crear un Datito nuevo desde la web (10 minutos, sin terminal)
 
-1. Con el servidor corriendo, Home → **＋ Crear Termito**.
+1. Con el servidor corriendo, Home → **＋ Crear Datito**.
 2. Paso 0: nombre del curso ("Álgebra I") + subir 1–2 archivos `.md`/`.pdf`.
 3. Pasos 1–8: responder o aceptar la sugerencia en cada pantalla (una decisión
    por pantalla; botón "usarla" copia la sugerencia).
 4. Final: se muestra el system prompt completo → **Confirmar y empezar**.
 5. Verificar: el chat responde citando SOLO los archivos subidos; una pregunta
    fuera de los materiales produce "No tengo fuente en los materiales…".
-6. `termito lista` (opcional, en terminal) muestra el curso nuevo.
+6. `datito lista` (opcional, en terminal) muestra el curso nuevo.
 
 ## Flujo 3 — Evaluación por distinciones y panel de dominio (5 minutos)
 
@@ -68,15 +68,15 @@ explicaciones generadas con citas validadas.
 
 ## Flujo 5 — Ciclo de vida: nota, cierre y portabilidad (5 minutos)
 
-1. CLI: `termito nota fcd "Certamen 2" 3.5 --observaciones "me faltó tiempo"` →
+1. CLI: `datito nota fcd "Certamen 2" 3.5 --observaciones "me faltó tiempo"` →
    imprime los ajustes derivados; `curso.yaml` ganó una línea de
    retroalimentación que el prompt verá desde la siguiente interacción.
-2. `termito exportar fcd` → crea `exportados/fcd-<fecha>.term.zip`.
-3. En otro directorio (otra "máquina"): copiar el ZIP, `termito importar <ruta>`
+2. `datito exportar fcd` → crea `exportados/fcd-<fecha>.term.zip`.
+3. En otro directorio (otra "máquina"): copiar el ZIP, `datito importar <ruta>`
    (o `POST /api/importar`) → el curso reaparece completo, materiales
    incluidos (los symlinks se materializan como archivos reales).
-4. `termito cerrar fcd` → "cerrado · registro integro: True". El chat responde
-   409 `termito_cerrado`; `termito status fcd` y `GET /registro` siguen
+4. `datito cerrar fcd` → "cerrado · registro integro: True". El chat responde
+   409 `datito_cerrado`; `datito status fcd` y `GET /registro` siguen
    mostrando dudas, notas y dominio.
 5. Home: el curso cerrado aparece con estado "cerrado" en la lista.
 
@@ -85,5 +85,5 @@ explicaciones generadas con citas validadas.
 1. En cualquier página, clic en el botón **EN** de la barra superior → la
    interfaz completa cambia a inglés y persiste tras refrescar.
 2. Clic en **ES** → vuelve al español.
-3. Con Ollama activo, escribir en inglés en el chat → el Termito responde en
+3. Con Ollama activo, escribir en inglés en el chat → el Datito responde en
    inglés (regla del system prompt, FR-022).

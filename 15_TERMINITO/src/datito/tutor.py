@@ -22,7 +22,7 @@ class Respuesta:
 
 
 def prompt_sistema(curso) -> str:
-    """System prompt del Termito + retroalimentacion derivada de notas reales."""
+    """System prompt del Datito + retroalimentacion derivada de notas reales."""
     try:
         system = curso.ruta("prompt", "actual.md").read_text(encoding="utf-8")
     except FileNotFoundError:
@@ -78,7 +78,7 @@ def responder(curso, pregunta: str, indice: Indice, k: int = 4) -> Respuesta:
             citas.append(fid)
             fuente, ref = indice.referencias[fid]
             lineas.append(f"\n«{indice.textos[fid][:500]}…»\n  → [{fid}] {fuente} · {ref}")
-        lineas.append(f"\nInstala Ollama para que el Termito genere explicaciones: {e}")
+        lineas.append(f"\nInstala Ollama para que el Datito genere explicaciones: {e}")
         return Respuesta("\n".join(lineas), citas=citas, modo="exploracion",
                          aviso="Esto es recuperacion, no una explicacion generada (R5).")
 

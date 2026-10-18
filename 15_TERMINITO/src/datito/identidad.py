@@ -1,4 +1,4 @@
-"""Constructor de identidad: 8 componentes del Termito (spec, descripcion usuario).
+"""Constructor de identidad: 8 componentes del Datito (spec, descripcion usuario).
 
 Wizard conversacional: una decision por pantalla, con defaults del curso
 (patrones Duolingo/Mathigon de la validacion REA). El system prompt se genera
@@ -15,7 +15,7 @@ from jinja2 import Template
 
 COMPONENTES = {
     "rol_dominio": "Rol y dominio: quien es el tutor y en que materia",
-    "mision": "Mision: para que existe este Termito en este curso",
+    "mision": "Mision: para que existe este Datito en este curso",
     "funciones": "Funciones: que hace (explicar, proponer ejercicios, corregir...)",
     "estilo_ensenanza": "Estilo de ensenanza (socratico, directo, con ejemplos...)",
     "contexto_curso": "Contexto del curso (resumen aprobado por el estudiante)",
@@ -24,7 +24,7 @@ COMPONENTES = {
     "relacion_temporal": "Relacion temporal (acompanar todo el ciclo, recibir notas)",
 }
 
-PLANTILLA = Template("""# System Prompt — Termito «{{ curso }}»
+PLANTILLA = Template("""# System Prompt — Datito «{{ curso }}»
 # Generado desde 8 componentes. Editable; cada cambio queda versionado.
 
 ## 1. Rol y dominio
@@ -80,7 +80,7 @@ def completos(componentes: dict) -> tuple[bool, list[str]]:
 
 def wizard(curso, defaults: dict | None = None, input_fn=input, print_fn=print) -> dict:
     """Asistente conversacional: una pregunta por pantalla, Enter = default."""
-    print_fn(f"\n== Construyamos tu Termito para «{curso.datos.get('nombre')}» ==")
+    print_fn(f"\n== Construyamos tu Datito para «{curso.datos.get('nombre')}» ==")
     print_fn("(Enter acepta la sugerencia; escribe para cambiarla)\n")
     datos = dict(defaults or cargar(curso))
     for clave, pregunta in COMPONENTES.items():

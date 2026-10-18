@@ -1,6 +1,6 @@
-"""CLI termito (contracts/cli.md): init, build, chat, eval, status, identidad.
+"""CLI datito (contracts/cli.md): init, build, chat, eval, status, identidad.
 
-El motor corre sin servidor web (principio VII). Uso: termito <comando> [opts]
+El motor corre sin servidor web (principio VII). Uso: datito <comando> [opts]
 """
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def cmd_build(args) -> int:
     rutas = [p for p in curso.ruta("materiales").iterdir()] \
         if curso.ruta("materiales").exists() else []
     if not rutas:
-        print("[error] sin materiales: usa termito init --materiales o enlaza en materiales/")
+        print("[error] sin materiales: usa datito init --materiales o enlaza en materiales/")
         return 1
     print("parseando materiales…")
     fuentes, frags = frag.parsear_materiales(rutas)
@@ -73,7 +73,7 @@ def cmd_build(args) -> int:
     print(f"fuentes: {len(fuentes)} · fragmentos: {len(frags)}")
     for a in advertencias:
         print(f"  [advertencia] sin fragmentos: {a}")
-    # prompt del Termito
+    # prompt del Datito
     componentes = identidad.cargar(curso)
     ok, faltantes = identidad.completos(componentes)
     if ok:
@@ -81,7 +81,7 @@ def cmd_build(args) -> int:
         print("system prompt generado: prompt/actual.md")
     else:
         print(f"componentes incompletos ({', '.join(faltantes)}): "
-              "ejecuta 'termito identidad build'")
+              "ejecuta 'datito identidad build'")
     if curso.estado == "configurando":
         curso.transicionar("listo")
     print("build completo.")
@@ -106,10 +106,10 @@ def cmd_identidad(args) -> int:
 def cmd_chat(args) -> int:
     curso = cargar(args.slug)
     if curso.estado == "configurando":
-        print("[error] curso sin construir: ejecuta 'termito build' primero")
+        print("[error] curso sin construir: ejecuta 'datito build' primero")
         return 1
     if curso.estado == "cerrado":
-        print("[error] curso cerrado: el Termito ya no conversa (ciclo de vida)")
+        print("[error] curso cerrado: el Datito ya no conversa (ciclo de vida)")
         return 1
     indice = Indice.cargar(curso.ruta(".indice"))
     progreso.iniciar_sesion(curso)
@@ -117,7 +117,7 @@ def cmd_chat(args) -> int:
         curso.transicionar("activo")
     modo = "tutor (LLM local)" if llm.disponible() else \
         "EXPLORACION (sin Ollama: recupera evidencia, no genera)"
-    print(f"== Chat con tu Termito · {curso.datos.get('nombre')} ==  [{modo}]")
+    print(f"== Chat con tu Datito · {curso.datos.get('nombre')} ==  [{modo}]")
     print("comandos: :salir · :duda <texto> · :status\n")
     while True:
         try:
@@ -147,7 +147,7 @@ def cmd_chat(args) -> int:
             continue
         resp = sesion_mod.conversar(curso, pregunta, indice)
         progreso.contar_mensaje(curso, 2)
-        print(f"termito> {resp['texto']}")
+        print(f"datito> {resp['texto']}")
         if resp["citas"]:
             print(evidencia.bloque_evidencia(resp["citas"], indice))
         if resp.get("aviso"):
@@ -208,7 +208,7 @@ def cmd_status(args) -> int:
 def cmd_lista(args) -> int:
     cursos = listar()
     if not cursos:
-        print("sin cursos todavia: termito init <slug> --materiales <ruta>")
+        print("sin cursos todavia: datito init <slug> --materiales <ruta>")
         return 0
     for c in cursos:
         print(f"  {c.slug:24} {c.estado:14} {c.datos.get('nombre', '')}")
@@ -242,7 +242,7 @@ def cmd_exportar(args) -> int:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(prog="termito",
+    parser = argparse.ArgumentParser(prog="datito",
                                      description="Tutores agenticos disenados por el estudiante.")
     sub = parser.add_subparsers(dest="comando", required=True)
 
@@ -257,13 +257,13 @@ def main(argv=None) -> int:
     p.add_argument("slug")
     p.set_defaults(fn=cmd_build)
 
-    p = sub.add_parser("identidad", help="constructor de identidad del Termito")
+    p = sub.add_parser("identidad", help="constructor de identidad del Datito")
     p.add_argument("slug")
     p.add_argument("accion", choices=["wizard", "ver", "revertir"])
     p.add_argument("--version", default="")
     p.set_defaults(fn=cmd_identidad)
 
-    p = sub.add_parser("chat", help="dialogo con el Termito")
+    p = sub.add_parser("chat", help="dialogo con el Datito")
     p.add_argument("slug")
     p.set_defaults(fn=cmd_chat)
 
@@ -286,7 +286,7 @@ def main(argv=None) -> int:
     p.add_argument("--observaciones", default="")
     p.set_defaults(fn=cmd_nota)
 
-    p = sub.add_parser("cerrar", help="cerrar el ciclo del Termito (FR-016)")
+    p = sub.add_parser("cerrar", help="cerrar el ciclo del Datito (FR-016)")
     p.add_argument("slug")
     p.set_defaults(fn=cmd_cerrar)
 

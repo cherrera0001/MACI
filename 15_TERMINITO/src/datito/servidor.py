@@ -47,7 +47,7 @@ def _datos_panel(curso, mapa_completo: bool = False) -> dict:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "termito/0.1"
+    server_version = "datito/0.1"
 
     # ---------- utilidades ----------
     def _json(self, payload: dict, status: int = 200):
@@ -192,8 +192,8 @@ class Handler(BaseHTTPRequestHandler):
             if recurso == "mensajes" and len(partes) == 4:
                 if curso.estado == "cerrado":
                     return self._error(
-                        "termito_cerrado",
-                        "El Termito esta cerrado (FR-016); su registro sigue "
+                        "datito_cerrado",
+                        "El Datito esta cerrado (FR-016); su registro sigue "
                         "disponible en GET /registro.", 409)
                 d = self._body_json()
                 indice = Indice.cargar(curso.ruta(".indice"))
@@ -203,8 +203,8 @@ class Handler(BaseHTTPRequestHandler):
             if recurso == "mensajes" and len(partes) == 6 \
                     and partes[5] == "revelar":
                 if curso.estado == "cerrado":
-                    return self._error("termito_cerrado",
-                                       "El Termito esta cerrado (FR-016).", 409)
+                    return self._error("datito_cerrado",
+                                       "El Datito esta cerrado (FR-016).", 409)
                 d = self._body_json()
                 indice = Indice.cargar(curso.ruta(".indice"))
                 try:
@@ -225,8 +225,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._error("ruta_desconocida", u.path, 404)
             if recurso == "dudas":
                 if curso.estado == "cerrado":
-                    return self._error("termito_cerrado",
-                                       "El Termito esta cerrado (FR-016).", 409)
+                    return self._error("datito_cerrado",
+                                       "El Datito esta cerrado (FR-016).", 409)
                 d = self._body_json()
                 indice = Indice.cargar(curso.ruta(".indice"))
                 resp = tutor_mod.responder(curso, d.get("texto", ""), indice)
@@ -326,7 +326,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def _build(curso, componentes: dict) -> dict:
-    """Parsea materiales + indice + prompt (equivalente a 'termito build')."""
+    """Parsea materiales + indice + prompt (equivalente a 'datito build')."""
     rutas = [p for p in curso.ruta("materiales").iterdir()] \
         if curso.ruta("materiales").exists() else []
     fuentes, frags = frag.parsear_materiales(rutas)
@@ -353,7 +353,7 @@ def _build(curso, componentes: dict) -> dict:
 def servir(puerto: int | None = None, abrir: bool = False) -> None:
     puerto = puerto or config.PUERTO
     httpd = ThreadingHTTPServer(("127.0.0.1", puerto), Handler)
-    print(f"Termito en http://127.0.0.1:{puerto}  (Ctrl+C para salir)")
+    print(f"Datito en http://127.0.0.1:{puerto}  (Ctrl+C para salir)")
     if abrir:
         webbrowser.open(f"http://127.0.0.1:{puerto}")
     try:

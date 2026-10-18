@@ -1,8 +1,8 @@
 """Tests: fragmentos e indice."""
 from pathlib import Path
 
-from termito import fragmentos as frag
-from termito.indice import Indice
+from datito import fragmentos as frag
+from datito.indice import Indice
 
 
 def test_parse_md_con_timestamps(tmp_path: Path):

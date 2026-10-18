@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Evaluación por distinciones</title>
-<link rel="stylesheet" href="/css/termito.css">
+<link rel="stylesheet" href="/css/datito.css">
 </head>
 <body>
 <main>
   <div class="top">
-    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span class="logo">🐜 <a href="/">Datito</a></span>
     <span>
       <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/chat.html" data-i18n="c_chat">Chat</a>
       <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/panel.html" data-i18n="c_dominio">Dominio</a>
@@ -31,7 +31,7 @@
 <script src="/js/api.js"></script>
 <script>
 const slug = new URLSearchParams(location.search).get("curso")
-  || localStorage.getItem("termito-ultimo");
+  || localStorage.getItem("datito-ultimo");
 let items = [], i = 0, sesion = { n: 0, logradas: 0 };
 
 function pintarMicro() {

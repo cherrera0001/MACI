@@ -1,4 +1,4 @@
-# Contrato API local — Plataforma Termito
+# Contrato API local — Plataforma Datito
 
 **Versión**: 1.0.0 · **Fecha**: 2026-10-18 · **Base URL**: `http://127.0.0.1:8377`
 · **Formato**: JSON UTF-8 · **Autenticación**: ninguna (solo escucha en localhost por
@@ -19,7 +19,7 @@ contra el curso real). Decisiones de refinamiento respecto al borrador:
   registrado o pasos agotados; si no, responde 409 `aun_no` con la próxima
   acción pedagógica. Toda revelación queda en `sesion.yaml` (auditable, SC-003).
 - Un curso en estado `cerrado` rechaza chat/dudas/revelar con 409
-  `termito_cerrado`; `GET /registro` sigue disponible (FR-016).
+  `datito_cerrado`; `GET /registro` sigue disponible (FR-016).
 
 Errores: cuerpo `{ "error": "<codigo>", "detalle": "..." }` con HTTP 4xx/5xx.
 `codigo` en snake_case estable (ej. `curso_no_encontrado`, `sin_modelo_local`,
@@ -115,6 +115,6 @@ GET  /api/salud → 200 { "modelo_local": bool, "version_modelo": "...", "modo":
 ## Notas de diseño
 
 - La API es una envoltura del dominio; toda regla de negocio vive en el paquete
-  `termito/` y es testeable sin HTTP (research.md R4).
+  `datito/` y es testeable sin HTTP (research.md R4).
 - Ningún endpoint realiza llamadas de red salvo al LLM/embeddings configurados por el
   usuario (FR-020); en modo "exploracion" la API lo declara en `/api/salud`.

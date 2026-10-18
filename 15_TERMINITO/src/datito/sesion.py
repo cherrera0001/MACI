@@ -284,7 +284,7 @@ def conversar(curso, texto: str, indice: Indice) -> dict:
         return _salida(_orientar(curso, ses, indice), estado="pista",
                        aviso="" if llm.disponible() else
                        "En modo exploracion no genero orientacion; con Ollama "
-                       "activo el Termito guia socraticamente.")
+                       "activo el Datito guia socraticamente.")
 
     # conceptual / confusion: con sesion abierta cuenta como intento
     if ses and ses.get("estado") in ("pista", "esperando_intento", "paso_mostrado"):

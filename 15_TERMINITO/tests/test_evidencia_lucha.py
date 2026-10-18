@@ -1,9 +1,9 @@
 """Tests: evidencia, lucha productiva, dudas."""
 import pytest
 
-from termito import evidencia
-from termito.indice import Indice
-from termito.lucha import LuchaProductiva
+from datito import evidencia
+from datito.indice import Indice
+from datito.lucha import LuchaProductiva
 
 
 def _indice_falso():
@@ -60,7 +60,7 @@ def test_lucha_intento_habilita_solucion():
 
 
 def test_duda_registro(tmp_path_curso):
-    from termito import dudas
+    from datito import dudas
     d = dudas.registrar(tmp_path_curso, "¿qué es el overfitting?",
                         "memoriza train", "pasos…", ["t1#1"], ["overfitting_underfitting"])
     assert d["estado"] == "resuelta"

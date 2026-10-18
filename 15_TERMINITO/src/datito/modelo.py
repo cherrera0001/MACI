@@ -1,4 +1,4 @@
-"""Modelo de Curso: curso.yaml con metadatos, identidad del Termito y estado."""
+"""Modelo de Curso: curso.yaml con metadatos, identidad del Datito y estado."""
 from __future__ import annotations
 
 import re
@@ -29,7 +29,7 @@ def norm_slug(texto: str) -> str:
 
 
 class Curso:
-    """Un curso/Termito = un directorio autocontenido (data-model.md)."""
+    """Un curso/Datito = un directorio autocontenido (data-model.md)."""
 
     def __init__(self, dir_curso: Path):
         self.dir = Path(dir_curso)

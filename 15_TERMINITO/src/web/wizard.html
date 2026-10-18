@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Crear Termito</title>
-<link rel="stylesheet" href="/css/termito.css">
+<title>Crear Datito</title>
+<link rel="stylesheet" href="/css/datito.css">
 </head>
 <body>
 <main>
   <div class="top">
-    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span class="logo">🐜 <a href="/">Datito</a></span>
     <span class="estado estado-motor"></span>
   </div>
-  <h1 data-i18n="wz_h1">Construyamos tu Termito</h1>
+  <h1 data-i18n="wz_h1">Construyamos tu Datito</h1>
   <p class="sub" data-i18n="wz_sub">Una decisión por pantalla. Enter no existe aquí: tú eliges todo.</p>
   <div class="progreso-puntos" id="puntos"></div>
   <div id="avisos"></div>
@@ -36,7 +36,7 @@
 
   <!-- Final: prompt generado -->
   <section class="paso" data-paso="final">
-    <h2 data-i18n="wz_final_h">Así quedó tu Termito</h2>
+    <h2 data-i18n="wz_final_h">Así quedó tu Datito</h2>
     <p data-i18n-html="wz_final_p">Este es el system prompt completo — tu agente, tu diseño, siempre editable
     en <code>prompt/actual.md</code> (cada cambio queda versionado).</p>
     <pre id="prompt-final" class="dist" style="white-space:pre-wrap;max-height:45vh;overflow:auto"></pre>
@@ -139,7 +139,7 @@ async function construir() {
 }
 
 document.getElementById("confirmar").addEventListener("click", () => {
-  localStorage.setItem("termito-ultimo", slug);
+  localStorage.setItem("datito-ultimo", slug);
   location.href = "/chat.html?curso=" + slug;
 });
 

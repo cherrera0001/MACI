@@ -1,4 +1,4 @@
-"""Ciclo de vida del Termito (US4): notas como retroalimentacion, cierre,
+"""Ciclo de vida del Datito (US4): notas como retroalimentacion, cierre,
 registro integral y portabilidad (FR-015, FR-016, FR-019, SC-005).
 
 Todo vive en archivos del curso (FR-021): notas.yaml, curso.yaml

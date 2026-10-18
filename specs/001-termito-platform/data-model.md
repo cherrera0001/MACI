@@ -1,4 +1,4 @@
-# Data Model: MACI 1.0 — Plataforma Termito
+# Data Model: MACI 1.0 — Plataforma Datito
 
 **Fecha**: 2026-10-17 · **Fuente**: spec.md (Key Entities), research.md (R6, R7)
 
@@ -55,7 +55,7 @@ cursos/<slug>/
   ≥1 `fid` existente, o la respuesta usa la plantilla "sin fuente". No hay evidencia
   sin fragmento.
 
-### Termito (componentes + prompt)
+### Datito (componentes + prompt)
 - **Campos** (`prompt/componentes.yaml`): `rol_dominio`, `mision`, `funciones`
   (lista), `estilo_ensenanza`, `contexto_curso` (resumen aprobado del estudiante),
   `estilo_aprendizaje`, `restricciones` (lista), `relacion_temporal`.
@@ -93,7 +93,7 @@ cursos/<slug>/
 
 ### Retroalimentación de nota
 - **Campos**: `fecha`, `evaluacion_real` (nombre), `nota`, `observaciones`,
-  `ajustes_derivados` (qué cambió en el estilo del Termito).
+  `ajustes_derivados` (qué cambió en el estilo del Datito).
 - **Reglas**: al guardarse, el sistema registra en `ajustes_derivados` cómo se
   incorporó (FR-015), manteniendo el rastro auditable.
 

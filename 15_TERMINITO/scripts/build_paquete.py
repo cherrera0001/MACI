@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Arma dist/termito.zip: engine + curso fcd resuelto + wheels + start.
+"""Arma dist/datito.zip: engine + curso fcd resuelto + wheels + start.
 
 Uso: python 15_TERMINITO/scripts/build_paquete.py
 Requiere red solo para descargar wheels la primera vez.
@@ -17,7 +17,7 @@ MOTOR = RAIZ / "15_TERMINITO"
 DIST_SRC = RAIZ / "dist-src"
 SALIDA = RAIZ / "dist"
 PAQUETE = SALIDA / "paquete"
-ZIP = SALIDA / "termito.zip"
+ZIP = SALIDA / "datito.zip"
 CURSO_REAL = MOTOR / "cursos" / "fcd"
 
 LIMITE_MB = 50
@@ -29,19 +29,24 @@ def _patrones_excluir_material(nombre: str) -> list[str]:
         p.append("*_plano.txt")      # duplican a los .md
     if nombre == "visual":
         p.append("_TEMPLATE_CANONICO.html")
-        p.append("termito")   # el ZIP distribuible no va dentro de sí mismo
+        p.append("datito")   # el ZIP distribuible no va dentro de sí mismo
     return p
 
 
 def descargar_wheels():
-    dest = PAQUETE / "wheels"
-    if dest.exists() and any(dest.iterdir()):
-        return
-    dest.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
-        [sys.executable, "-m", "pip", "download", "--only-binary=:all:",
-         "-d", str(dest), "pyyaml", "jinja2", "markdown", "pypdf"],
-        check=True)
+    # Cache persistente entre builds (dist/wheels): se descarga solo si falta.
+    cache = SALIDA / "wheels"
+    if not (cache.exists() and any(cache.iterdir())):
+        cache.mkdir(parents=True, exist_ok=True)
+        cmd = [sys.executable, "-m", "pip", "download", "--only-binary=:all:",
+               "-d", str(cache), "pyyaml", "jinja2", "markdown", "pypdf"]
+        r = subprocess.run(cmd)
+        if r.returncode != 0:
+            # los venvs de uv no traen pip: usar el pip del sistema
+            subprocess.run(["pip3", "download", "--only-binary=:all:",
+                            "-d", str(cache), "pyyaml", "jinja2", "markdown",
+                            "pypdf"], check=True)
+    shutil.copytree(cache, PAQUETE / "wheels")
 
 
 def copiar_motor():
@@ -65,9 +70,13 @@ def copiar_curso():
     datos.pop("cerrado_en", None)
     (dest / "curso.yaml").write_text(
         yaml.safe_dump(datos, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    for f in ("prompt/componentes.yaml", "prompt/actual.md",
-              "evaluaciones/distinciones.yaml"):
+    for f in ("prompt/componentes.yaml", "evaluaciones/distinciones.yaml"):
         shutil.copy2(CURSO_REAL / f, dest / f)
+    # actual.md solo si el curso ya fue construido localmente; en un clone
+    # fresco no existe y start.py lo regenera con `datito build` al primer uso.
+    actual = CURSO_REAL / "prompt" / "actual.md"
+    if actual.exists():
+        shutil.copy2(actual, dest / "prompt" / "actual.md")
     shutil.copy2((CURSO_REAL / "grafo" / "grafo.yaml").resolve(),
                  dest / "grafo" / "grafo.yaml")
     # materiales: copiar contenido real de los symlinks

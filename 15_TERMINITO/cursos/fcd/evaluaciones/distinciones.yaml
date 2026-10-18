@@ -1,0 +1,65 @@
+# Distinciones del curso real (Fundamentos de Ciencia de Datos, 2026-T2).
+# Formato: >=2 conceptos vecinos del grafo, criterios de rubrica derivados del
+# material, pasos para la lucha productiva (un paso por revelacion).
+items:
+  - id: d1-brecha-r2
+    conceptos: [overfitting_underfitting, generalizacion]
+    pregunta: >-
+      Tres modelos con su R2 (train / test): A = 0,98 / 0,54 · B = 0,72 / 0,70 ·
+      C = 0,60 / 0,58. ¿Cual sobreajusta, cual subajusta y cual generaliza bien?
+      Justifica cada uno con la brecha train-test (es el formato del profesor:
+      calcula la brecha ANTES de etiquetar).
+    criterios:
+      - calcula la brecha train-test de cada modelo
+      - identifica A como sobreajuste por brecha grande 0,44
+      - identifica C como subajuste por bajo rendimiento en ambos conjuntos
+      - identifica B como el que generaliza brecha pequena 0,02
+    pasos:
+      - "Paso 1: calcula la brecha de cada modelo restando R2 train - R2 test."
+      - "Paso 2: una brecha grande con train alto sugiere memorizacion: ¿cual modelo cumple?"
+      - "Paso 3: un modelo malo en AMBOS conjuntos no es ni memorizacion ni generalizacion: ¿cual?"
+    solucion: >-
+      A sobreajusta (brecha 0,44: memoriza train, falla test). C subajusta
+      (0,60/0,58: demasiado simple para ambos). B generaliza bien
+      (brecha 0,02 con buen rendimiento).
+
+  - id: d2-validacion-cruzada-vs-holdout
+    conceptos: [validacion_cruzada, train_validation_test]
+    pregunta: >-
+      Tu companiero dice "para elegir hiperparametros uso el mismo test que
+      para reportar el error final; total el split 80/20 ya separa datos".
+      Separa los dos conceptos en juego: ¿por que eso contamina la estimacion y
+      que tecnica del curso lo evita sin gastar datos nuevos?
+    criterios:
+      - explica que elegir hiperparametros con el test lo convierte en train de facto
+      - explica que la estimacion final queda optimista sesgada
+      - nombra la validacion cruzada como la tecnica que reutiliza pliegles
+      - distingue el rol del conjunto de validacion del de test
+    pasos:
+      - "Paso 1: si decides con el test, ¿que datos estas usando al entrenar indirectamente?"
+      - "Paso 2: la validacion cruzada divide el train en pliegues: ¿que se rota en cada pliegue?"
+    solucion: >-
+      Elegir hiperparametros con el test lo convierte en parte del entrenamiento
+      y el error reportado queda optimista. La validacion cruzada estima el
+      error en K pliegues del train sin tocar el test; el test solo se usa al
+      final para reportar.
+
+  - id: d3-memorizar-vs-generalizar
+    conceptos: [overfitting_underfitting, regresion]
+    pregunta: >-
+      "Mi modelo de regresion tiene MAE 2.100 en train y 2.400 en test; el de
+      mi companiera tiene MAE 9.800 en train y 9.900 en test. ¿Cual de los dos
+      modelos esta mejor y cual necesita que cambiemos su complejidad, en que
+      direccion?"
+    criterios:
+      - reconoce que el primer modelo esta bien ajustado brecha pequena
+      - reconoce que el segundo subajusta
+      - indica aumentar complejidad para el que subajusta
+      - usa la brecha y no el MAE absoluto para decidir
+    pasos:
+      - "Paso 1: en MAE, ¿menor es mejor o peor?"
+      - "Paso 2: compara la brecha de cada modelo antes de comparar los MAE entre si."
+    solucion: >-
+      El primer modelo esta bien (brecha 300 en MAE bajo). El segundo subajusta
+      (brecha 100 pero MAE altisimo en ambos): hay que aumentar complejidad o
+      mejorar features. Decidir por la brecha, no por el MAE aislado.

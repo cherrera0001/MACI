@@ -16,7 +16,7 @@ SYNC IMPACT REPORT — 2026-10-17
 ### I. El estudiante diseña el agente (soberanía del diseño)
 El sistema facilita la construcción del tutor; NUNCA impone un agente genérico. El
 estudiante define rol, misión, funciones, estilo, contexto, restricciones y relación
-temporal de su Termito, y puede editar cualquiera de estos componentes en cualquier
+temporal de su Datito, y puede editar cualquiera de estos componentes en cualquier
 momento. Rationale: según Víctor Parada, el estudiante diseña su propio proceso de
 aprendizaje; un agente impuesto por plataforma convierte al estudiante en consumidor.
 
@@ -35,7 +35,7 @@ exija de manera explícita e informada. Rationale: el aprendizaje profundo exige
 desirable; el tutor que resuelve por el estudiante lo deshabilita.
 
 ### IV. Ciclo de vida del agente (nacimiento, evolución, desaparición)
-Todo Termito nace al iniciarse el aprendizaje de un curso, evoluciona con la
+Todo Datito nace al iniciarse el aprendizaje de un curso, evoluciona con la
 retroalimentación continua del estudiante (notas de evaluaciones, dudas, preferencias) y
 desaparece cuando el curso termina. Al desaparecer, el estudiante conserva su conocimiento
 y su registro de progreso y dudas resueltas. Rationale: el agente es un andamiaje temporal
@@ -53,7 +53,7 @@ Los materiales reales del curso (programa, presentaciones, evaluaciones pasadas,
 bibliografía, videos) son la única fuente de verdad. El modelo de lenguaje NUNCA inventa
 información sobre el curso: si algo no está en los materiales, el tutor lo dice. Rationale:
 la alucinación en contexto educativo es dañina y erosiona la confianza; el contrato es
-que el Termito solo sabe lo que los materiales sostienen.
+que el Datito solo sabe lo que los materiales sostienen.
 
 ### VII. Offline-first y soberanía de datos
 Todo el ciclo de aprendizaje debe funcionar sin conexión: diálogo, evaluación, grafo y
@@ -69,8 +69,8 @@ idioma primero del producto. Rationale: el mercado de tutores IA está dominado 
 inglés; multilenguaje nativo es ventaja estructural, no cosmética.
 
 ### IX. Familia de agentes independientes
-El estudiante puede tener múltiples Termitos (uno por curso o materia), cada uno con su
-propia identidad, materiales, grafo, progreso y ciclo de vida. Ningún Termito comparte
+El estudiante puede tener múltiples Datitos (uno por curso o materia), cada uno con su
+propia identidad, materiales, grafo, progreso y ciclo de vida. Ningún Datito comparte
 estado con otro salvo decisión explícita del estudiante. Rationale: el conocimiento está
 compartimentado por disciplina; un tutor monolítico mezcla contextos y degrada la
 precisión de la evidencia.
@@ -121,4 +121,11 @@ debe verificar el cumplimiento de los principios I–X y de las restricciones t�
 duda se resuelve a favor de la constitución. El compliance se revisa al inicio de cada
 fase del flujo Spec Kit y al cierre de cada MVP.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-17 | **Last Amended**: 2026-10-17
+**Version**: 1.0.1 | **Ratified**: 2026-10-17 | **Last Amended**: 2026-10-18
+
+> **Nota de nombre (2026-10-18)**: "Datito" es el nombre oficial del producto,
+> heredado de la v0.0.1 del curso. "Termito" fue solo el nombre del prototipo
+> tomado del ejemplo del profesor Parada Daza (termodinámica); el MVP lo adoptó
+> provisionalmente y hoy se unifica todo a "Datito". Quedan con el nombre viejo,
+> por no romper rutas ni historial: el directorio `15_TERMINITO/`, la rama
+> `001-termito-platform` y los reportes históricos.

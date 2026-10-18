@@ -1,9 +1,9 @@
 """Tests de la sesion de lucha productiva (FR-008, SC-003) y clasificador."""
 import pytest
 
-from termito import sesion
-from termito import fragmentos as frag
-from termito.indice import Indice
+from datito import sesion
+from datito import fragmentos as frag
+from datito.indice import Indice
 
 EJERCICIO = ("Ejercicio: un modelo tiene R2 de 0.99 en entrenamiento y 0.40 "
              "en prueba. ¿Qué le pasa y qué harías?")
@@ -89,7 +89,7 @@ def test_intento_habilita_revision_y_revelar(curso_con_indice):
 
 def test_revelar_exige_sesion_y_consentimiento(curso_con_indice):
     curso, indice = curso_con_indice
-    from termito.modelo import ErrorCurso
+    from datito.modelo import ErrorCurso
     with pytest.raises(ErrorCurso):
         sesion.revelar(curso, consentimiento=True, indice=indice)
     sesion.conversar(curso, EJERCICIO, indice)
