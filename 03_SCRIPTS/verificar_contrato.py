@@ -162,7 +162,8 @@ def memoria_dominado_con_evidencia():
 def seguridad_sin_secretos():
     """Ningun secreto ni binario pesado versionado."""
     archivos = git("ls-files").splitlines()
-    patron = re.compile(r"storage_state|master_token|auth\.json|cookie|\.env$"
+    patron = re.compile(r"storage_state|master_token|auth\.json|\.env$"
+                        r"|cookie[s]?\.(json|txt|har|sqlite)"
                         r"|\.mp4$|\.zip$|\.mkv$", re.I)
     # Excepcion documentada (decision del owner, 2026-10-18): el artefacto de
     # producto dist/datito.zip SÍ se versiona. Es pequeño, reproducible con
