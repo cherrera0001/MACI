@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chat con tu Termito</title>
-<link rel="stylesheet" href="/css/termito.css">
+<title>Chat con tu Datito</title>
+<link rel="stylesheet" href="/css/datito.css">
 </head>
 <body>
 <main>
   <div class="top">
-    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span class="logo">🐜 <a href="/">Datito</a></span>
     <span>
       <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/eval.html" data-i18n="c_eval">Evaluarme</a>
       <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/panel.html" data-i18n="c_dominio">Dominio</a>
@@ -41,7 +41,7 @@
 <script src="/js/api.js"></script>
 <script>
 const slug = new URLSearchParams(location.search).get("curso")
-  || localStorage.getItem("termito-ultimo");
+  || localStorage.getItem("datito-ultimo");
 const caja = document.getElementById("mensajes");
 const texto = document.getElementById("texto");
 
@@ -135,7 +135,7 @@ caja.addEventListener("click", async (e) => {
   try {
     const c = await get(`/api/cursos/${slug}`);
     document.getElementById("titulo").textContent = c.curso.nombre;
-    document.title = "Termito · " + c.curso.nombre;
+    document.title = "Datito · " + c.curso.nombre;
   } catch {
     burbuja("tutor", t("ch_no_curso"));
   }

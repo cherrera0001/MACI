@@ -127,7 +127,7 @@ Todo lo que ves en las páginas se genera desde estos archivos. No hay otra copi
 13_KAGGLE/caso_kaggle_gemma4/ caso Gemma 4: análisis, recorrido, bitácora, registro de pruebas y página visual
 docs/                        despliegue, ADR, gestión (backlog e histórico) y fuente de la wiki
 .agents/skills/              copia de las skills de .claude/skills/ para otros agentes
-15_TERMINITO/               motor del Termito: tutores diseñados por el estudiante (offline; `dist/termito.zip`)
+15_TERMINITO/               motor del Datito: tutores diseñados por el estudiante (offline; `dist/datito.zip`)
 ```
 
 ## Mantener

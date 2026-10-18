@@ -1,10 +1,16 @@
-# Termito — MACI 1.0 (MVP)
+# Datito — MACI 1.0 (MVP)
 
 Motor de tutores agenticos **diseñados por el estudiante** a partir de los materiales
 reales de su curso. Offline-first, sin frameworks pesados, datos en archivos legibles.
 
 Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
 `.specify/memory/constitution.md`.
+
+> **¿Por qué `15_TERMINITO/` si el producto es Datito?** "Termito" fue el nombre
+> provisional del MVP (ejemplo del artículo de Parada Daza); la unificación de marca
+> a "Datito" es de producto, no de estructura de disco: renombrar el directorio
+> rompería rutas e historial sin beneficio. El paquete Python sí es `src/datito/`
+> y el CLI es `datito`.
 
 ## Estado del MVP
 
@@ -17,10 +23,10 @@ Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
 - ✅ **Interfaz web** (5 pantallas, vanilla, responsive): home, constructor
   conversacional, chat con citas clickeables, evaluación, panel de dominio.
 - ✅ **Paquete distribuible**: `python 15_TERMINITO/scripts/build_paquete.py`
-  genera `dist/termito.zip` (~2.5 MB); doble clic en `start.py` y a chatear.
+  genera `dist/datito.zip` (~2.5 MB); doble clic en `start.py` y a chatear.
   Pruebas manuales: `docs/pruebas-manuales.md`.
 - ⏳ Pendiente: instalar **Ollama** para el modo tutor (generación con LLM local).
-- ⏳ Post-MVP (spec): familia de Termitos, exportación portable.
+- ⏳ Post-MVP (spec): familia de Datitos, exportación portable.
 
 ## Instalación
 
@@ -35,13 +41,13 @@ uv venv .venv && uv pip install -e ".[dev]"
 
 ```bash
 source .venv/bin/activate
-termito lista                          # cursos existentes
-termito init fcd --materiales <rutas>  # crear curso (symlinks, no copia)
-termito identidad fcd wizard           # definir los 8 componentes (conversación)
-termito build fcd                      # parsear + índice + system prompt
-termito chat fcd                       # diálogo con citas [:duda :status :salir]
-termito eval fcd                       # distinciones con micro-progreso
-termito status fcd [--mapa]            # dominio, métricas, dudas
+datito lista                          # cursos existentes
+datito init fcd --materiales <rutas>  # crear curso (symlinks, no copia)
+datito identidad fcd wizard           # definir los 8 componentes (conversación)
+datito build fcd                      # parsear + índice + system prompt
+datito chat fcd                       # diálogo con citas [:duda :status :salir]
+datito eval fcd                       # distinciones con micro-progreso
+datito status fcd [--mapa]            # dominio, métricas, dudas
 ```
 
 Sin Ollama, `chat` opera en **modo exploración**: recupera y cita los fragmentos
@@ -56,7 +62,7 @@ más relevantes sin generar explicaciones. Todo lo demás funciona igual.
 ## Layout
 
 ```
-src/termito/    motor (fragmentos, índice TF-IDF, evidencia, llm, identidad,
+src/datito/    motor (fragmentos, índice TF-IDF, evidencia, llm, identidad,
                 tutor, lucha, dudas, evaluador, grafo, progreso, cli)
 src/web/        placeholder (UI en post-MVP)
 tests/          pytest
@@ -64,5 +70,5 @@ cursos/<slug>/  un curso = un directorio autocontenido (data-model.md)
 docs/USO.md     documentación de uso del engine
 ```
 
-Decisiones de diseño: `specs/001-termito-platform/research.md` (R1–R10) y
+Decisiones de diseño: `specs/001-datito-platform/research.md` (R1–R10) y
 `docs/investigacion/rea-evidencia/sintesis-arquitectura.md`.

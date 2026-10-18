@@ -1,8 +1,8 @@
 """Fixtures: cursos en directorio temporal aislado (nunca toca cursos/ reales)."""
 import pytest
 
-from termito import config
-from termito.modelo import crear
+from datito import config
+from datito.modelo import crear
 
 
 @pytest.fixture

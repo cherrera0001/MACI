@@ -1,0 +1,190 @@
+potencia.py - tamano muestral y potencia para sesgo en sorteos sin reposicion
+python 3.14.7, numpy 2.5.2, scipy 1.18.1
+============================================================================================
+A. BITS EQUIVALENTES DE UNA HISTORIA DE SORTEOS
+============================================================================================
+Entropia maxima por sorteo (azar ideal): log2 C(N,k) si solo se registra el conjunto;
+log2 N!/(N-k)! si se registra el orden de salida.
+
+Juego 6 de 41: C(N,k) = 4 496 388 combinaciones
+  bits por sorteo sin orden = 22.100   con orden = 31.592
+   anios  sorteos  bolillas  bits sin orden  bits con orden
+       1      150       900           3 315           4 739
+       5      750     4 500          16 575          23 694
+      10    1 500     9 000          33 151          47 388
+      20    3 000    18 000          66 301          94 777
+      40    6 000    36 000         132 602         189 553
+
+Juego 14 de 25: C(N,k) = 4 457 400 combinaciones
+  bits por sorteo sin orden = 22.088   con orden = 58.431
+   anios  sorteos  bolillas  bits sin orden  bits con orden
+       1      150     2 100           3 313           8 765
+       5      750    10 500          16 566          43 823
+      10    1 500    21 000          33 132          87 647
+      20    3 000    42 000          66 263         175 293
+      40    6 000    84 000         132 527         350 586
+
+Minimos de longitud de secuencia de NIST SP 800-22 Rev. 1a (seccion 2.x.7 de cada prueba)
+frente a un juego 6 de 41 con 150 sorteos al anio (anios necesarios para UNA secuencia):
+  prueba                                                                         n min bits anios s/orden anios c/orden
+  Frecuencia (monobit), Rachas, Sumas acumuladas, Frecuencia en bloque                  100           0.0           0.0
+  Racha mas larga de unos (M=8)                                                         128           0.0           0.0
+  Transformada discreta de Fourier (espectral)                                        1 000           0.3           0.2
+  Racha mas larga de unos (M=128)                                                     6 272           1.9           1.3
+  Rango de matrices binarias (38 matrices 32x32)                                     38 912          11.7           8.2
+  Estadistico universal de Maurer (L=6)                                             387 840         117.0          81.8
+  Racha mas larga (M=10^4)                                                          750 000         226.2         158.3
+  Plantillas solapadas, Complejidad lineal, Excursiones aleatorias (y variante)   1 000 000         301.7         211.0
+
+Estrategia de SP 800-22 seccion 4.2: al menos 55 secuencias para la prueba de uniformidad
+de valores p; el ejemplo de la norma usa del orden de 10^3 secuencias de 10^6 bits.
+  55 secuencias x 10^6 bits        = 5.50e+07 bits -> 16591 anios (sin orden), 11606 anios (con orden)
+  1000 secuencias x 10^6 bits      = 1.00e+09 bits -> 301655 anios (sin orden), 211023 anios (con orden)
+
+NIST SP 800-90B seccion 3.1.1: 1.000.000 de muestras consecutivas de la fuente de ruido,
+mas 1000 reinicios x 1000 muestras.
+  si la muestra es la bolilla (900 al anio): 1111 anios
+  si la muestra es el sorteo  (150 al anio): 6667 anios
+
+Nota: C(41,6) no es potencia de 2; para obtener bits insesgados hay que numerar la
+combinacion (sistema combinatorio) y rechazar los indices >= 2^22:
+  2^22 / C(41,6) = 0.9328 de los sorteos aprovechables, 22 bits cada uno.
+
+============================================================================================
+B. UNA BOLILLA, JUEGO 6 DE 41: p0 = k/N = 0.14634
+============================================================================================
+Formula: n = [ z_(1-alfa/2) sqrt(p0 q0) + z_(pot) sqrt(p1 q1) ]^2 / (p1 - p0)^2,  p1 = p0 (1+delta)
+n en SORTEOS. Anios a 150 sorteos/anio. Potencia objetivo 0,80. Prueba bilateral.
+
+  alfa 0,05 (bolilla prerregistrada)
+   delta       p1    p1-p0   n sorteos     anios  nivel exacto  pot. exacta
+      1%  0.14780  0.00146     458 987    3059.9       0.04991        0.800
+      5%  0.15366  0.00732      18 539     123.6       0.04837        0.793
+     10%  0.16098  0.01463       4 689      31.3       0.04731        0.790
+     20%  0.17561  0.02927       1 198       8.0       0.04529        0.772
+
+  Bonferroni 41 bolillas (alfa=0.00122)
+   delta       p1    p1-p0   n sorteos     anios  nivel exacto  pot. exacta
+      1%  0.14780  0.00146     970 741    6471.6       0.00121        0.799
+      5%  0.15366  0.00732      39 090     260.6       0.00119        0.792
+     10%  0.16098  0.01463       9 851      65.7       0.00115        0.789
+     20%  0.17561  0.02927       2 500      16.7       0.00113        0.777
+
+  Bonferroni 1000 hipotesis (alfa=5e-05)
+   delta       p1    p1-p0   n sorteos     anios  nivel exacto  pot. exacta
+      1%  0.14780  0.00146   1 400 996    9340.0       0.00005        0.799
+      5%  0.15366  0.00732      56 352     375.7       0.00005        0.791
+     10%  0.16098  0.01463      14 183      94.5       0.00005        0.785
+     20%  0.17561  0.02927       3 591      23.9       0.00004        0.773
+
+  Referencia unilateral (H1: la bolilla sale DE MAS), alfa 0,05:
+  delta   1%: n =   361 658 sorteos =  2411.0 anios
+  delta   5%: n =    14 625 sorteos =    97.5 anios
+  delta  10%: n =     3 705 sorteos =    24.7 anios
+  delta  20%: n =       949 sorteos =     6.3 anios
+
+============================================================================================
+C. OMNIBUS CHI-CUADRADO DE FRECUENCIAS, JUEGO 6 DE 41 (gl = 40)
+============================================================================================
+X^2 = sum (O_i - n k/N)^2 / (n k/N). Sin reposicion X^2 NO es chi2(N-1): X^2 ~ ((N-k)/(N-1)) chi2(N-1).
+Factor (N-k)/(N-1) = 0.8750. Estadistico corregido J = (N-1) X^2/(N-k) ~ chi2(N-1).
+Si se usa X^2 sin corregir contra chi2(40) al 5 %, el nivel real es 0.0099 (prueba conservadora, pierde potencia).
+
+Efecto w de Cohen sobre la distribucion por bolilla extraida (pi_i/k frente a 1/N):
+  w^2 = sum (pi_i/k - 1/N)^2 / (1/N) = (N/k^2) sum (pi_i - k/N)^2
+No centralidad (derivacion propia, alternativa local): lambda = n k w^2 (N-1)/(N-k)
+  => n = lambda(gl, alfa, potencia) (N-k) / [ (N-1) k w^2 ]   (n en sorteos)
+  lambda necesaria, gl=40, alfa=0.05, potencia 0,8: 27.557
+  lambda necesaria, gl=40, alfa=0.005, potencia 0,8: 40.011
+  lambda necesaria, gl=40, alfa=5e-05, potencia 0,8: 59.787
+
+  C.1 Una sola bolilla sesgada, las otras compensan: w = delta / sqrt(N-1)
+   delta        w  n (alfa 0,05)    anios  n (alfa 0,005)    anios  n 1 bolilla prerreg.
+      1%  0.00158      1 607 505  10716.7       2 333 952  15559.7               458 987
+      5%  0.00791         64 301    428.7          93 359    622.4                18 539
+     10%  0.01581         16 076    107.2          23 340    155.6                 4 689
+     20%  0.03162          4 019     26.8           5 835     38.9                 1 198
+
+  C.2 Sesgo difuso: 20 bolillas con +delta y 20 con -delta (w = delta sqrt(40/41))
+   delta        w  n (alfa 0,05)    anios
+      1%  0.00988         41 193    274.6
+      5%  0.04939          1 648     11.0
+     10%  0.09877            412      2.7
+     20%  0.19755            103      0.7
+
+  C.3 Convenciones de Cohen (w pequeno 0,1; mediano 0,3; grande 0,5), alfa 0,05:
+       w  n sorteos  bolillas   anios
+    0.02     10 047    60 282    67.0
+    0.05      1 608     9 648    10.7
+    0.10        402     2 412     2.7
+    0.30         45       270     0.3
+    0.50         17       102     0.1
+
+============================================================================================
+D. POTENCIA ALCANZABLE CON HISTORIAS REALISTAS, JUEGO 6 DE 41
+============================================================================================
+  Potencia de la prueba de UNA bolilla prerregistrada (alfa 0,05 bilateral) / Bonferroni 41 /
+  omnibus J (alfa 0,05), para una sola bolilla sesgada:
+   sorteos  anios | delta   1%: 1bol  Bonf  omni | delta   5%: 1bol  Bonf  omni | delta  10%: 1bol  Bonf  omni | delta  20%: 1bol  Bonf  omni
+       150      1 |             0.029 0.001 0.050 |             0.047 0.002 0.051 |             0.081 0.004 0.053 |             0.190 0.020 0.064
+       750      5 |             0.033 0.001 0.050 |             0.086 0.004 0.054 |             0.213 0.022 0.068 |             0.613 0.185 0.145
+     1 500     10 |             0.037 0.001 0.050 |             0.128 0.009 0.059 |             0.366 0.058 0.090 |             0.877 0.490 0.291
+     3 000     20 |             0.042 0.001 0.051 |             0.209 0.020 0.068 |             0.616 0.176 0.145 |             0.992 0.887 0.626
+     6 000     40 |             0.051 0.002 0.051 |             0.363 0.055 0.090 |             0.885 0.490 0.291 |             1.000 0.998 0.960
+
+  Sesgo relativo minimo detectable (potencia 0,8):
+   sorteos  anios  1 bolilla a=0,05  Bonferroni 41  omnibus J a=0,05
+       150      1             58.5%          84.6%            103.5%
+       750      5             25.4%          36.9%             46.3%
+     1 500     10             17.8%          25.9%             32.7%
+     3 000     20             12.5%          18.2%             23.1%
+     6 000     40              8.8%          12.8%             16.4%
+  (un sesgo relativo del 10 % equivale a pasar de 14,63 % a 16,10 % de aparicion por sorteo)
+
+============================================================================================
+E. PREDICTIBILIDAD FRENTE A LA LINEA BASE UNIFORME, JUEGO 6 DE 41
+============================================================================================
+Pronosticador ORACULO: conoce cual bolilla esta sesgada y cuanto (cota superior de lo lograble).
+Evento pronosticado: la bolilla aparece o no en el sorteo. Ganancia esperada de log-verosimilitud
+por sorteo = divergencia KL( Bernoulli(p1) || Bernoulli(p0) ).
+  n_LR  : sorteos para rechazar H0 'el azar es uniforme' con la razon de verosimilitud (unilateral,
+          alfa 0,05, potencia 0,8); coincide con la binomial unilateral.
+  n_DM  : sorteos para que una prueba tipo Diebold-Mariano rechace H0 'igual perdida esperada'
+          n = (z_a + z_b)^2 Var(d) / E(d)^2, con d = diferencia de log-loss por sorteo.
+  n_e   : tiempo esperado de parada de la martingala de prueba (e-proceso) al umbral 1/alfa = 20:
+          ln(20)/KL (aproximacion de Wald; valida en cualquier momento, sin n fijo).
+   delta    KL nats  bits/sorteo  % de entropia      n_LR       n_DM       n_e  Brier skill
+      1%  8.548e-06    1.233e-05       5.58e-07   361 658  1 450 541   350 466     1.70e-05
+      5%  2.114e-04    3.050e-04       1.38e-05    14 625     59 274    14 171     4.12e-04
+     10%  8.346e-04    1.204e-03       5.45e-05     3 705     15 199     3 590     1.58e-03
+     20%  3.257e-03    4.698e-03       2.13e-04       949      3 982       920     5.88e-03
+  (entropia de un sorteo 6 de 41 sin orden: 22.10 bits; '% de entropia' = bits ganados / entropia)
+  n_DM ~ 4 n_LR: la prueba de 'igual precision' es mas exigente porque, si el azar fuera uniforme,
+  el modelo sesgado PIERDE KL por sorteo; la distancia entre hipotesis es 2 KL, no KL.
+
+============================================================================================
+F. COMPROBACION MONTE CARLO, JUEGO 6 DE 41 (semilla 20261009)
+============================================================================================
+  H0 cierta, n = 1500 sorteos, 4000 replicas (error estandar MC ~ 0.0034):
+    media de X^2 = 34.89 (teoria 35.00; chi2 ingenua esperaria 40)
+    rechazo de X^2 sin corregir al 5 % = 0.0092 (teoria 0.0099)
+    rechazo de J corregido al 5 %      = 0.0473 (teoria 0,0500)
+    rechazo binomial de la bolilla 1   = 0.0435 (teoria 0,0500)
+  H1: bolilla 1 con sesgo de inclusion +20% (peso de extraccion 1.2241), 2000 replicas:
+    una bolilla, n = 1 198: potencia simulada 0.794 (objetivo 0,80)
+    omnibus J,   n = 4 019: potencia simulada 0.796 (objetivo 0,80)
+    frecuencia observada de la bolilla 1: 0.17581 (objetivo 0.17561)
+  H1: bolilla 1 con sesgo de inclusion +10% (peso de extraccion 1.1109), 2000 replicas:
+    una bolilla, n = 4 689: potencia simulada 0.826 (objetivo 0,80)
+    omnibus J,   n = 16 076: potencia simulada 0.799 (objetivo 0,80)
+    frecuencia observada de la bolilla 1: 0.16099 (objetivo 0.16098)
+
+============================================================================================
+ANEXO: mismo calculo de una bolilla y omnibus para el juego 14 de 25
+============================================================================================
+p0 = 0.560; factor de correccion (N-k)/(N-1) = 0.4583
+   delta  n 1 bolilla a=0,05   anios  n Bonferroni 25   anios  n omnibus J   anios
+      1%              61 617   410.8          121 394   809.3      176 677  1177.8
+      5%               2 455    16.4            4 842    32.3        7 068    47.1
+     10%                 610     4.1            1 205     8.0        1 767    11.8
+     20%                 150     1.0              297     2.0          442     2.9

@@ -8,10 +8,10 @@ from http.server import ThreadingHTTPServer
 import pytest
 import yaml
 
-from termito import servidor
-from termito.indice import Indice
-from termito import fragmentos as frag
-from termito import identidad, progreso
+from datito import servidor
+from datito.indice import Indice
+from datito import fragmentos as frag
+from datito import identidad, progreso
 
 from conftest import COMPONENTES_OK
 
@@ -111,7 +111,7 @@ def test_fragmento_y_evaluacion(httpd):
 def test_estaticos(httpd):
     with urllib.request.urlopen(httpd + "/", timeout=10) as r:
         html = r.read().decode()
-    assert "Termito" in html and "chat.html" in html
+    assert "Datito" in html and "chat.html" in html
 
 
 def _post_raw(url, datos=None):
@@ -204,14 +204,14 @@ def test_cerrar_bloquea_chat_mantiene_registro(httpd):
     s, r = _post(base + "/cerrar", {})
     assert s == 200 and r["estado"] == "cerrado" and r["registro_integro"]
     s, e = _post_raw(base + "/mensajes", {"texto": "hola"})
-    assert s == 409 and e["error"] == "termito_cerrado"
+    assert s == 409 and e["error"] == "datito_cerrado"
     s, r = _get(base + "/registro")
     assert s == 200
 
 
 def test_importar_endpoint(httpd):
     import shutil
-    from termito import config
+    from datito import config
     base = httpd + "/api/cursos/testcurso"
     s, r = _post(base + "/exportar", {})
     s, e = _post_raw(httpd + "/api/importar", {"ruta": r["ruta"]})

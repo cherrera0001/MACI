@@ -1,4 +1,4 @@
-# Uso del engine Termito
+# Uso del engine Datito
 
 ## Conceptos
 
@@ -18,14 +18,14 @@
 
 | Comando | Qué hace |
 |---|---|
-| `termito init <slug> [--nombre --periodo] --materiales <rutas>` | Crea el curso; los materiales se **enlazan** (symlinks), no se copian. |
-| `termito identidad <slug> wizard` | Conversación de 8 componentes (una decisión por pantalla). Genera y versiona `prompt/actual.md`. |
-| `termito identidad <slug> ver` | Muestra el system prompt completo (siempre visible, principio I). |
-| `termito identidad <slug> revertir --version <ts>` | Vuelve a una versión anterior. |
-| `termito build <slug>` | Parsea materiales → fragmentos → índice TF-IDF; genera el prompt si la identidad está completa. |
-| `termito chat <slug>` | Diálogo. `:duda <texto>` registra una duda con evidencia; `:status` muestra dominio. |
-| `termito eval <slug>` | Sesión de distinciones: pregunta → respuesta abierta → rúbrica → feedback con frontera conceptual → actualización de dominio. |
-| `termito status <slug> [--mapa]` | Métricas, panel de dominio con gating, conteo de dudas. |
+| `datito init <slug> [--nombre --periodo] --materiales <rutas>` | Crea el curso; los materiales se **enlazan** (symlinks), no se copian. |
+| `datito identidad <slug> wizard` | Conversación de 8 componentes (una decisión por pantalla). Genera y versiona `prompt/actual.md`. |
+| `datito identidad <slug> ver` | Muestra el system prompt completo (siempre visible, principio I). |
+| `datito identidad <slug> revertir --version <ts>` | Vuelve a una versión anterior. |
+| `datito build <slug>` | Parsea materiales → fragmentos → índice TF-IDF; genera el prompt si la identidad está completa. |
+| `datito chat <slug>` | Diálogo. `:duda <texto>` registra una duda con evidencia; `:status` muestra dominio. |
+| `datito eval <slug>` | Sesión de distinciones: pregunta → respuesta abierta → rúbrica → feedback con frontera conceptual → actualización de dominio. |
+| `datito status <slug> [--mapa]` | Métricas, panel de dominio con gating, conteo de dudas. |
 
 ## Modo exploración vs modo tutor
 
@@ -41,7 +41,7 @@ modelo `TERMITO_MODELO`, default `qwen2.5:3b`).
 
 ## Añadir materiales o ítems
 
-- Materiales: symlink en `cursos/<slug>/materiales/` y `termito build <slug>`.
+- Materiales: symlink en `cursos/<slug>/materiales/` y `datito build <slug>`.
 - Ítems de distinción: YAML en `cursos/<slug>/evaluaciones/*.yaml` con
   `conceptos` (≥2 vecinos del grafo), `pregunta`, `criterios`, `pasos`,
   `solucion`. Sin ≥2 conceptos no es distinción (se rechaza).

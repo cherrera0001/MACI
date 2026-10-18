@@ -21,7 +21,7 @@ const putBlob = (ruta, blob) => api(ruta, { method: "PUT", body: blob });
 function slugDe(texto) {
   return texto.normalize("NFD").replace(/[̀-ͯ]/g, "")
     .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
-    .slice(0, 40).replace(/-$/, "") || "mi-termito";
+    .slice(0, 40).replace(/-$/, "") || "mi-datito";
 }
 
 /* barra superior con estado del motor */

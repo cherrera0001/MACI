@@ -3,11 +3,11 @@ import zipfile
 
 import pytest
 
-from termito import ciclo, config, dudas
-from termito import fragmentos as frag
-from termito.evaluador import ResultadoItem, Item, guardar_resultado
-from termito.indice import Indice
-from termito.modelo import ErrorCurso
+from datito import ciclo, config, dudas
+from datito import fragmentos as frag
+from datito.evaluador import ResultadoItem, Item, guardar_resultado
+from datito.indice import Indice
+from datito.modelo import ErrorCurso
 
 
 @pytest.fixture
@@ -100,7 +100,7 @@ def test_importar_rechaza_duplicado(curso_completo):
 
 def test_versionar_recrea_directorio(tmp_path_curso):
     """El dir prompt/versions puede no sobrevivir al ZIP del paquete."""
-    from termito import identidad
+    from datito import identidad
     tmp_path_curso.ruta("prompt").mkdir(exist_ok=True)
     (tmp_path_curso.ruta("prompt", "actual.md")).write_text("v1", encoding="utf-8")
     import shutil
