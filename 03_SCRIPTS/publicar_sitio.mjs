@@ -106,6 +106,13 @@ for (const archivo of paginas(SALIDA)) {
 // convierte en texto por la pasada de enlaces rotos: sin ZIP, sin botón.
 const ZIP = path.join(RAIZ, "dist", "datito.zip");
 if (!fs.existsSync(ZIP)) {
+  // python3 en la imagen de build de Vercel no siempre trae pip: se
+  // bootstrapea con get-pip antes de instalar las deps del motor.
+  const pip = spawnSync("python3", ["-m", "pip", "--version"], { cwd: RAIZ });
+  if (pip.status !== 0) {
+    spawnSync("curl", ["-sSL", "https://bootstrap.pypa.io/get-pip.py", "-o", "/tmp/get-pip.py"], { cwd: RAIZ });
+    spawnSync("python3", ["/tmp/get-pip.py", "--user"], { cwd: RAIZ });
+  }
   spawnSync("python3", ["-m", "pip", "install", "--user", "-q",
     "pyyaml", "jinja2", "markdown", "pypdf"], { cwd: RAIZ });
   const r = spawnSync("python3",
