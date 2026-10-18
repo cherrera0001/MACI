@@ -66,3 +66,13 @@ repair_piel.py
 
 # salida de 03_SCRIPTS/publicar_sitio.mjs (se arma en Vercel)
 public/
+
+# Termito: datos de ejecucion (cursos del estudiante, exportaciones) y
+# staging del paquete descargable (solo se versiona el ZIP final)
+15_TERMINITO/cursos/
+15_TERMINITO/exportados/
+dist/paquete/
+
+# Capturas crudas REA (decenas de MB): la evidencia versionada son los
+# informes .md; los JSON en crudo permanecen locales
+docs/investigacion/rea-evidencia/**/*.json

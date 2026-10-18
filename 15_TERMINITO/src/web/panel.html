@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de dominio</title>
+<link rel="stylesheet" href="/css/termito.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/chat.html" data-i18n="c_chat">Chat</a>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/eval.html" data-i18n="c_eval">Evaluarme</a>
+    </span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 id="titulo" data-i18n="pn_h1">Dominio del curso</h1>
+  <p class="sub" data-i18n="pn_sub">Cada cadena es un camino de prerrequisitos. Los nodos se revelan
+  conforme estudias (patrón de los mejores cursos adaptativos).</p>
+  <label class="toggle">
+    <input type="checkbox" id="mapa"> <span data-i18n="pn_toggle">Mostrar todo el mapa (incluye lo no desbloqueado)</span>
+  </label>
+  <div id="panel"></div>
+  <div class="nota" style="margin-top:1.2rem" data-i18n-html="pn_leyenda">
+    <b>Leyenda:</b> ● dominado · ◑ comprendido · ◐ en estudio · ○ no estudiado.
+    El estado sale de tus respuestas en la evaluación por distinciones
+    (<code>grafo/dominio.yaml</code>).
+  </div>
+</main>
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get("curso")
+  || localStorage.getItem("termito-ultimo");
+const SIMBOLO = { no_estudiado: "○", en_estudio: "◐", comprendido: "◑", dominado: "●" };
+
+async function cargar(mapa) {
+  const r = await get(`/api/cursos/${slug}/grafo` + (mapa ? "?mapa=1" : ""));
+  document.getElementById("titulo").textContent = t("pn_h1") + " · " + r.nombre;
+  document.getElementById("panel").innerHTML = r.cadenas.map(c => `
+    <div class="cadena">
+      <h3>${esc(c.cadena)}</h3>
+      ${c.nodos.map(n => `
+        <div class="nodo ${esc(n.estado)}${n.visible ? "" : " oculto"}">
+          <span class="punto">${SIMBOLO[n.estado] || "?"}</span>
+          <span>${esc(n.nombre)}</span>
+        </div>`).join("")}
+    </div>`).join("");
+}
+document.getElementById("mapa").addEventListener("change", e => cargar(e.target.checked));
+pintarEstado();
+cargar(false).catch(e => document.getElementById("panel").innerHTML =
+  `<div class="peligro">${esc(e.message)}</div>`);
+</script>
+</body>
+</html>

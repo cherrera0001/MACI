@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación por distinciones</title>
+<link rel="stylesheet" href="/css/termito.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/chat.html" data-i18n="c_chat">Chat</a>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/panel.html" data-i18n="c_dominio">Dominio</a>
+    </span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 data-i18n="ev_h1">Evaluación por distinciones</h1>
+  <p class="sub" data-i18n="ev_sub">Separar conceptos vecinos, no recitar definiciones. Responde con tus
+  palabras; el tutor evalúa con la rúbrica del curso.</p>
+  <p class="microprogreso" id="micro"></p>
+  <div id="avisos"></div>
+  <div id="item"></div>
+  <p id="nav-eval" style="display:none">
+    <button class="boton" id="siguiente" data-i18n="ev_siguiente">Siguiente distinción →</button>
+    <a class="boton alt" href="/panel.html" data-i18n="ev_ver_dominio">Ver mi dominio</a>
+  </p>
+</main>
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get("curso")
+  || localStorage.getItem("termito-ultimo");
+let items = [], i = 0, sesion = { n: 0, logradas: 0 };
+
+function pintarMicro() {
+  document.getElementById("micro").textContent =
+    t("ev_micro", { l: sesion.logradas, n: sesion.n });
+}
+
+async function iniciar() {
+  pintarEstado();
+  pintarMicro();
+  const r = await get(`/api/cursos/${slug}/evaluacion`);
+  items = r.items;
+  if (!items.length) {
+    document.getElementById("item").innerHTML =
+      `<div class="nota">${t("ev_vacio")}</div>`;
+    return;
+  }
+  pintarItem();
+}
+
+function pintarItem() {
+  const it = items[i];
+  document.getElementById("nav-eval").style.display = "none";
+  document.getElementById("item").innerHTML = `
+    <div class="dist">
+      <b>${i + 1} ${t("ev_de")} ${items.length}.</b>
+      <p style="margin:.6rem 0">${esc(it.pregunta)}</p>
+      <p class="sub" style="margin:0">${t("ev_conceptos")} <b>${esc(it.conceptos.join(" vs "))}</b></p>
+      <textarea class="grande" id="respuesta" rows="5" placeholder="${esc(t("ev_ph"))}"></textarea>
+      <p><button class="boton" id="responder">${esc(t("ev_responder"))}</button></p>
+    </div>
+    <div id="feedback"></div>`;
+  document.getElementById("responder").onclick = responder;
+  document.getElementById("respuesta").focus();
+}
+
+async function responder() {
+  const respuesta = document.getElementById("respuesta").value.trim();
+  if (!respuesta) return;
+  const it = items[i];
+  try {
+    const r = await post(`/api/cursos/${slug}/evaluacion`,
+      { item_id: it.id, respuesta });
+    sesion = r.sesion;
+    pintarMicro();
+    const color = r.resultado === "logrado" ? "var(--verde)"
+      : r.resultado === "parcial" ? "var(--ambar)" : "var(--rojo)";
+    document.getElementById("feedback").innerHTML = `
+      <div class="tarjeta">
+        <b style="color:${color};text-transform:uppercase">${esc(r.resultado)}</b>
+        <p style="margin:.4rem 0">${esc(r.retroalimentacion)}</p>
+        ${r.criterios && r.criterios.length ? `<ul class="criterios">${r.criterios.map(c =>
+          `<li class="${c.logrado ? "ok" : "ko"}">${esc(c.criterio)}</li>`).join("")}</ul>` : ""}
+      </div>`;
+    document.getElementById("respuesta").disabled = true;
+    document.getElementById("responder").disabled = true;
+    document.getElementById("nav-eval").style.display = "block";
+  } catch (e) {
+    document.getElementById("avisos").innerHTML =
+      `<div class="peligro">${esc(e.message)}</div>`;
+  }
+}
+
+document.getElementById("siguiente").addEventListener("click", () => {
+  i = (i + 1) % items.length;
+  pintarItem();
+});
+iniciar().catch(e => document.getElementById("avisos").innerHTML =
+  `<div class="peligro">${esc(e.message)}</div>`);
+</script>
+</body>
+</html>

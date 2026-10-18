@@ -55,6 +55,17 @@ function existe(archivo, href) {
 fs.rmSync(SALIDA, { recursive: true, force: true });
 for (const [rel, filtro] of PUBLICAR) copiarCarpeta(rel, filtro);
 
+// El paquete descargable de Termito (se construye con
+// 15_TERMINITO/scripts/build_paquete.py), junto a la portada para que el
+// enlace relativo "termito/termito.zip" resuelva. Si no existe, el enlace se
+// convierte en texto por la pasada de enlaces rotos: sin ZIP, sin boton.
+const ZIP = path.join(RAIZ, "dist", "termito.zip");
+if (fs.existsSync(ZIP)) {
+  const destinoZip = path.join(SALIDA, "01_CONCEPTOS", "visual", "termito", "termito.zip");
+  fs.mkdirSync(path.dirname(destinoZip), { recursive: true });
+  fs.copyFileSync(ZIP, destinoZip);
+}
+
 let convertidos = 0;
 const ENLACE = /<a\b([^>]*?)\bhref="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g;
 for (const archivo of paginas(SALIDA)) {
