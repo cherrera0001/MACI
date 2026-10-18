@@ -901,6 +901,13 @@ En cada visual, <b>predice antes de mover</b> un control, resuelve los ejercicio
 las soluciones (<code>&lt;details&gt;</code>) y termina con la tarea de producción: explícaselo a Datito.
 Leer sin responder no es estudiar.</div>
 
+<h2 id="termito">Tu propio Termito</h2>
+<div class="dist"><b>El curso te enseña; tu Termito te acompaña.</b> Es un tutor que tú
+diseñas: le entregas los materiales reales de tu curso, defines quién es y cómo enseña,
+y conversa contigo con la fuente citada en cada respuesta. Evalúa por distinciones,
+funciona sin conexión y tus datos jamás salen de tu máquina.
+<a class="boton" href="termito/termito.zip">Descargar para tu curso</a></div>
+
 <h2 id="curso-clases">0 · El curso, clase por clase</h2>
 <p>El orden sigue los prerrequisitos del currículum y la secuencia real de las clases del profesor, y sube de
 comprender a aplicar, analizar, evaluar y crear [FUENTE · Repo: 07_DATITO/clases.yaml]. Cada clase abre con

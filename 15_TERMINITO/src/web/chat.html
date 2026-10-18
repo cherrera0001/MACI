@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat con tu Termito</title>
+<link rel="stylesheet" href="/css/termito.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 <a href="/">Termito</a></span>
+    <span>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/eval.html" data-i18n="c_eval">Evaluarme</a>
+      <a class="boton alt" style="padding:.35rem .7rem;font-size:.82rem" href="/panel.html" data-i18n="c_dominio">Dominio</a>
+    </span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 id="titulo">…</h1>
+  <p class="sub" data-i18n="ch_sub">Cada afirmación del tutor lleva su fuente: tócala para ver el fragmento.</p>
+
+  <div id="mensajes"></div>
+
+  <div class="entrada">
+    <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
+    <button class="boton" id="enviar" data-i18n="ch_enviar">Enviar</button>
+  </div>
+  <p style="font-size:.82rem;color:var(--suave)" data-i18n-html="ch_ayuda">
+    <b>Registrar duda:</b> escríbela y usa el botón ✏️ que aparece junto a cada
+    respuesta con fuente. Las dudas quedan en <code>dudas.yaml</code> con su procedimiento.
+  </p>
+</main>
+
+<dialog id="visor">
+  <div class="ref" id="visor-ref"></div>
+  <pre id="visor-texto"></pre>
+  <p><button class="boton alt" onclick="document.getElementById('visor').close()" data-i18n="cerrar">Cerrar</button></p>
+</dialog>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+const slug = new URLSearchParams(location.search).get("curso")
+  || localStorage.getItem("termito-ultimo");
+const caja = document.getElementById("mensajes");
+const texto = document.getElementById("texto");
+
+function burbuja(quien, html, extra = "") {
+  const div = document.createElement("div");
+  div.className = "msg " + quien;
+  div.innerHTML = html + extra;
+  caja.appendChild(div);
+  div.scrollIntoView({ block: "end", behavior: "smooth" });
+  return div;
+}
+
+function chipsDeEvidencia(evidencia) {
+  if (!evidencia || !evidencia.length) return "";
+  return '<div class="citas">' + evidencia.map(e =>
+    `<button class="chip" data-fid="${esc(e.fid)}">[${esc(e.fid)}] ${esc(e.referencia)}</button>`
+  ).join("") + "</div>";
+}
+
+async function enviar() {
+  const pregunta = texto.value.trim();
+  if (!pregunta) return;
+  texto.value = "";
+  burbuja("estudiante", esc(pregunta));
+  const espera = burbuja("tutor", "<i>" + t("ch_pensando") + "</i>");
+  try {
+    const r = await post(`/api/cursos/${slug}/mensajes`, { texto: pregunta });
+    espera.remove();
+    const div = burbuja("tutor", esc(r.respuesta), chipsDeEvidencia(r.evidencia));
+    if (r.aviso) {
+      const a = document.createElement("div");
+      a.className = "aviso";
+      a.textContent = r.aviso;
+      div.appendChild(a);
+    }
+    const EJERCICIO = ["pista", "esperando_intento", "paso_mostrado"];
+    if (EJERCICIO.includes(r.estado_interaccion)) {
+      const s = document.createElement("div");
+      s.className = "aviso";
+      s.style.borderColor = "var(--azul)";
+      s.style.color = "var(--azul)";
+      s.textContent = "⟡ " + r.estado_interaccion +
+        (r.paso ? ` · paso ${r.paso.numero}/${r.paso.total}` : "");
+      div.appendChild(s);
+    }
+    if (r.evidencia && r.evidencia.length) {
+      const b = document.createElement("button");
+      b.className = "chip";
+      b.style.borderColor = "var(--ambar)";
+      b.style.color = "var(--ambar)";
+      b.textContent = t("ch_duda");
+      b.onclick = async () => {
+        b.disabled = true;
+        try {
+          await post(`/api/cursos/${slug}/dudas`, { texto: pregunta });
+          b.textContent = t("ch_duda_ok");
+        } catch (e2) { b.textContent = "✗ " + e2.message; }
+      };
+      div.querySelector(".citas")?.appendChild(b);
+    }
+  } catch (e) {
+    espera.remove();
+    burbuja("tutor", "⚠ " + esc(e.message));
+  }
+}
+
+document.getElementById("enviar").addEventListener("click", enviar);
+texto.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); }
+});
+
+caja.addEventListener("click", async (e) => {
+  const fid = e.target.dataset && e.target.dataset.fid;
+  if (!fid) return;
+  const d = document.getElementById("visor");
+  document.getElementById("visor-ref").textContent = fid;
+  document.getElementById("visor-texto").textContent = t("cargando");
+  d.showModal();
+  try {
+    const f = await get(`/api/cursos/${slug}/fragmento?fid=${encodeURIComponent(fid)}`);
+    document.getElementById("visor-ref").textContent =
+      `[${f.fid}] ${f.fuente} · ${f.referencia}`;
+    document.getElementById("visor-texto").textContent = f.texto;
+  } catch (err) {
+    document.getElementById("visor-texto").textContent = err.message;
+  }
+});
+
+(async () => {
+  pintarEstado();
+  try {
+    const c = await get(`/api/cursos/${slug}`);
+    document.getElementById("titulo").textContent = c.curso.nombre;
+    document.title = "Termito · " + c.curso.nombre;
+  } catch {
+    burbuja("tutor", t("ch_no_curso"));
+  }
+  texto.focus();
+})();
+</script>
+</body>
+</html>
