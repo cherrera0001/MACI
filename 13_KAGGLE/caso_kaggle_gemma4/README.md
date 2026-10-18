@@ -8,7 +8,8 @@ y, sobre ese caso, el flujo paso a paso para enfrentar un desafío de este tipo.
   [recorrido paso a paso](RECORRIDO_PASO_A_PASO.md) de cada prueba.
 - **Fechas:** primera evaluación el 2026-10-03 (día 11 de la competencia); segunda el
   2026-10-04 a las 00:10 UTC; estado actualizado el 2026-10-04 a las 21:33 UTC (sección 1.6) y el
-  2026-10-05 a las 02:25 UTC (sección 1.7).
+  2026-10-05 a las 02:25 UTC (sección 1.7); la última actualización es del 2026-10-09 a las 18:20 UTC
+  (sección 1.10).
 - **Qué se leyó:** el `README.md` del experimento, los dos pre-registros, los registros de
   corridas (`data/test_results_*`, `artifacts/control-vacio-*`, `calibracion/`), la configuración
   del kit, las páginas oficiales guardadas en `data/pages/`, el `HARNESS_README`, y por API de
@@ -70,7 +71,7 @@ estimador «mayoría estricta» y la predicción de que H(C, A) no quedaría apo
 
 ## 1. Estado y veredicto al 2026-10-04 00:10 UTC
 
-> **Lo vigente está en la sección 1.8 (2026-10-07).** Las secciones 1.1 a 1.7 son historia fechada.
+> **Lo vigente está en la sección 1.10 (2026-10-09).** Las secciones 1.1 a 1.9 son historia fechada.
 
 ### 1.1 Qué cambió desde la primera evaluación
 
@@ -295,6 +296,130 @@ los 4,5 minutos. Detalle en la vuelta 37.
 **Veredicto actualizado.** El proyecto mide bien, sabe dónde se pierde el agente y tiene su primera señal de
 mejora, todavía sin confirmar. La confirma o la desmiente la nota del envío pendiente, que lleva esa misma
 condición.
+
+### 1.9 Estado al 2026-10-07 16:00 UTC
+
+Superado por la 1.10. Ningún resultado nuevo de Kaggle: un concilio de seis roles releyó `iteracion-06` y corrige tres
+lecturas de la 1.8. Detalle en la vuelta 38 de la bitácora.
+
+| Qué | A las 02:35 UTC | A las 16:00 UTC |
+|---|---|---|
+| Envío 56895202 | Pendiente | **Terminó en error, sin nota** (leído a las 15:55 UTC). La API no da la causa; el texto del error está en la página de envíos |
+| Cuota de GPU | Unas 2 h libres (estimado) | 2,36 h libres (leído por la API); reinicio el 2026-10-10 |
+| Tabla pública | 1 935 equipos, mediana 6 tareas | 1 981 equipos; mediana 6, percentil 75 en 7, percentil 90 en 8; nosotros 4, puesto 1 559 |
+| Siguiente corrida | Sin armar | `iteracion-07` armada y ensayada sin GPU; no subida |
+| README del repositorio de ALL | Decían que el modelo nunca corrió | Corregidos en un PR, con cada cifra referida al manuscrito |
+
+**Lo que se corrigió de la 1.8.**
+
+- «El freno pasó de las llamadas al tiempo»: es el desenlace, no la palanca. De las 6 sesiones cortadas por
+  tiempo con parche, ninguna había acertado y 5 solo tenían guiones propios. Más tiempo recuperaría 2 tareas
+  como máximo.
+- «La edición llega antes»: contaba guiones. El razonamiento no cambió cuántas tareas resolubles editan el
+  archivo correcto (3 de 12 en las cuatro pasadas).
+- Lo que el razonamiento sí cambió: las 12 resolubles leen el archivo de la corrección (antes 6 o 7) y las
+  llamadas repetidas bajan del 40 a 50 % al 7 %.
+
+**Lo que se aprendió.** El agente con razonamiento encuentra el archivo, escribe guiones en vez de editarlo
+y agota el reloj esperando al modelo. El subagente no resolvió nada en 6 sesiones y le costó una tarea ya
+resuelta. Bajar el presupuesto de razonamiento casi no ahorra tiempo.
+
+**Sobre el principio de ALL.** El ciclo de mejora no pasó por el bucle: ninguna vuelta consultó la memoria
+antes de actuar, ninguna corrida tiene episodio y ningún envío lleva una lección consolidada. La primera
+condición que lo pondría a prueba (una skill con una lección medida, contra un texto de relleno) queda tercera
+en el orden de medición.
+
+**El envío con razonamiento dio error.** P39 (termina dentro de las 12 h) queda refutada y P38 no se puede
+leer. La condición no se conserva para enviar; la señal de 9 de 19 en notebook sigue como dato. El reenvío
+del mismo zip queda retirado.
+
+**Decisiones que esperan al dueño.** Leer en la página de envíos el texto del error del 56895202: sin él no
+se sabe si fue el plazo de 12 h. Con ese dato, qué medir con las 2,36 h que se pierden el día 10
+(`iteracion-07` tal como está, o el razonamiento con un tope menor). Qué hacer con el issue #103 del repositorio: reformularlo o cerrarlo.
+
+### 1.10 Estado al 2026-10-09 18:20 UTC
+
+Lo vigente; sustituye a la 1.9. Detalle en las vueltas 38 a 42 de la bitácora. Desde el 2026-10-07 16:26 UTC
+no se subió ni se envió nada a Kaggle: lo nuevo son notas que Kaggle puso por su cuenta y trabajo local.
+
+| Qué | El 2026-10-07 a las 16:00 UTC | El 2026-10-09 a las 18:20 UTC |
+|---|---|---|
+| Envío 56895202 (`i_razona`) | Error, sin nota | **0,08: 5 de 58.** Kaggle lo volvió a puntuar solo (leído el 2026-10-08 a las 21:37 UTC) |
+| Envío 56916129 (el mismo zip) | Sin enviar | Enviado el 2026-10-07 a las 16:25 por orden del dueño; en error hasta el 2026-10-08 a las 22:31; **0,13: 8 de 58** (leído el 2026-10-09 a las 13:42) |
+| Notas del equipo | 0,06 y 0,05 | Sin razonamiento, 40 llamadas y 4 min: 4 y 3 de 58. Con razonamiento, 60 llamadas y 4,5 min: 5 y 8 de 58 |
+| Tabla pública | 1 981 equipos; nosotros 4 tareas, puesto 1 559 | 2 188 equipos; 8 tareas, puesto oficial 544; 277 equipos con más nota. Mediana 0,10 y máximo 0,24 (14 tareas, 2 equipos) |
+| `iteracion-07` | Armada, sin subir | Corrió: 9 de 10. Las diez se eligieron por haberse resuelto antes, así que no se compara con los 9 de 19; las 3 nuevas de la 06 se repiten (3 de 3) |
+| Kit K «interfaz limpia» | No existía | Armado y registrado como `sub-004`, **no enviado**: la base sin subagente, sin las tres herramientas de grafo y sin la línea que ordenaba la búsqueda |
+| Iteración 08 | No existía | Diseñada (la base dos veces sobre 60 tareas, con registro nuevo) y armada; **no lista para lanzar** |
+| Cuota de GPU | 2,36 h libres | 29,53 h usadas de 30 (leído a las 21:55 UTC); se repone el 2026-10-10 a las 00:00 UTC |
+
+**Lo que se aprendió en estas vueltas.**
+
+- **Un `error` de Kaggle no es un estado final.** Los dos envíos con razonamiento estuvieron en error de
+  sistema y después recibieron nota sin que hiciéramos nada. El organizador repuntúa los envíos que marcó con
+  error tras más de 15 h de cola. Desde ahora cada lectura de envíos se guarda con su hora.
+- **El mismo zip dio 5 y 8 tareas; el otro, 4 y 3.** Con dos notas por variante no se puede decir que el
+  razonamiento mejora: no lo refuta ni lo prueba.
+- **La tabla premia el número de envíos.** Con un envío el 10 % de los equipos llega a 0,13 o más; con 10, el
+  53 %. La nota que se ve es la mejor de varias tiradas ruidosas. Nosotros llevamos 4 envíos en 6 días.
+- **Cerca del 45 % de las llamadas no trae información nueva** (1 822 de 4 086 contadas, en 145 sesiones):
+  repeticiones idénticas, lecturas con el argumento mal formado que devuelven el principio del archivo,
+  búsquedas por similitud vacías (300 de 300) y llamadas del subagente (0 de 7 sesiones resueltas). Dos
+  líneas independientes llegaron a la misma cifra sin leerse. Con tope de 60 llamadas y razonamiento el gasto
+  sin avance baja a 14,5 %, en una comparación confundida.
+- **Nadie juzga una llamada.** Ni el arnés ni el marco detectan repeticiones, bucles o resultados vacíos; solo
+  hay un contador total, el reloj y los turnos. Lo único que el envío puede imponer es la lista de
+  herramientas y los cuatro totales de `eval_config.yaml`. De ahí sale el kit K, que retira 324 llamadas
+  contadas (7,9 %): se juzgará por criterio mecánico, no por tareas resueltas.
+- **Los 4 minutos y 40 llamadas son nuestros, no del concurso.** Lo oficial son 12 h para unas 120 tareas,
+  unos 6 minutos de media. Los participantes que declaran más nota (0,17 y 0,18, sin medir por nosotros) usan
+  de 5 a 8 minutos. Ningún notebook público declara más de 0,18; los diez equipos con 0,20 o más no tienen
+  método público.
+- **Ninguna de las siete iteraciones era una corrida válida:** los 145 logs por tarea tenían 0 bytes y el
+  rescate no lo decía. Ahora un archivo exigido vacío cuenta como faltante.
+- **Con 19 tareas y una pasada no se decide nada:** una mejora real de 2 tareas se detectaría 1 o 2 veces de
+  cada 100.
+
+**Criterio vigente, aprobado por el dueño el 2026-10-08.** *Corrida válida:* cada tarea deja en disco, con
+bytes, traza, parche, salida de pruebas y motivo de fin. *Decisión válida:* predicción previa con umbral, las
+mismas tareas en los dos brazos, 60 tareas o más por brazo o 6 discordantes a favor, prueba exacta y una
+repetición de la base en la misma semana. Con menos, el resultado es exploratorio y no cambia lo enviado.
+
+**Fallos nuestros de estas vueltas.** El gasto sin avance se midió cuatro veces en cinco días (vueltas 12,
+32, 38 y 42) y no se convirtió en acción hasta que el dueño preguntó por él. Se afirmó «refutada» sobre un
+error que no era final. El concilio trabajó dos vueltas sin que un rol leyera a otro; desde la 42 hay segunda
+ronda cruzada. Los documentos de entrada (este, el registro y el recorrido) estuvieron dos días sin las notas
+0,08 y 0,13.
+
+**Vetado por el concilio 42 como brazo de medición:** exigir una ejecución antes de entregar, el reproductor
+antes de editar, el guion-mapa, un tope de exploración (rompería 9 de 39 resueltas) y la regla de no repetir.
+
+**Qué falta para lanzar la iteración 08.** Repetir el ensayo local con la versión de `ipykernel` de Kaggle,
+que no está medida; un análisis de la pasada 1 contra la 2 que excluya los pares faltantes; primera subida en
+serie; cuota de 14,6 h o más; y la orden del dueño.
+
+**Medición de Datito del 2026-10-09 a las 22:50 UTC, pendiente de cruce por el concilio 43.** Sobre la tabla
+pública de las 17:41 UTC (2 188 equipos, 9 526 envíos), con [`instrumentos/tabla_ruido.py`](instrumentos/tabla_ruido.py):
+
+| Pregunta | Respuesta | Tipo |
+|---|---|---|
+| ¿La tabla es solo suerte? | No. Entre los equipos de un envío la varianza es 6,84 y el puro azar daría 3,89; un modelo de tasa única espera 51 equipos con 10 tareas o más y hay 122 | Medido |
+| ¿Se distinguen nuestros dos archivos? | No: 7 de 116 frente a 13 de 116, prueba exacta p = 0,24 | Medido |
+| ¿Cuánto sube la nota pública por enviar más veces el mismo archivo? | Un archivo de 6,5 tareas reales da, como mejor nota esperada, 9,0 con 4 envíos, 10,4 con 10 y 12,5 con 54 | Calculado, con ruido binomial |
+| ¿Eso mejora el resultado final? | No. Decide la tabla privada con 2 envíos finales: su nota esperada es de unas 8,1 tareas de 60 con 4, 10 o 54 envíos. Solo la sube una tasa real mayor | Simulado; supone que cuenta el mejor de los dos finales |
+| ¿Sirve el envío diario para medir? | Sí, y no gasta cuota: 58 tareas del conjunto oculto por día. Alternando dos archivos se detecta, 8 de cada 10 veces, una diferencia de 5,0 tareas con 10 días, de 3,5 con 20 y de 2,0 con los 54 que quedan | Calculado |
+
+Qué significa: parte de la ventaja de los primeros puestos es paciencia y parte es real. Para nosotros, cada día
+sin envío es una medición perdida sobre el conjunto que puntúa; un calendario de envíos alternados, fechado
+antes de empezar, mediría lo que 19 tareas en un notebook no pueden. Qué archivos alternar y si se hace es
+decisión del dueño, después del concilio.
+
+**En curso al escribir esto:** el concilio de la vuelta 43, con la pregunta de cuál es el siguiente paso con
+más respaldo, y entre sus dudas los minutos por tarea y qué hacer con el envío diario. Sus resultados irán en
+la bitácora y aquí.
+
+**Decisiones que esperan al dueño.** La orden de subir la iteración 08 o de enviar un zip (el kit K u otro):
+nada se sube sin ella. El texto para LinkedIn está revisado y sin publicar.
 
 ---
 
