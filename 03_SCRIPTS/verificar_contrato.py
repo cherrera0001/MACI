@@ -311,6 +311,34 @@ def g14_el_material_es_un_curso():
     return OK, f"{len(clases)} clases en orden; {pendientes} pendiente(s) declarada(s) en la portada"
 
 
+def metricas_bitacora():
+    """Las bitacoras nuevas declaran las 3 metricas de sesion (REQ-TUT-002).
+
+    % de preguntas con espera real, % de respuestas antes de 2 intentos y
+    dudas registradas con ids. Rige para bitacoras con fecha en el nombre
+    >= 2026-10-27 (las anteriores son legacy sin metricas)."""
+    MARCAS = ("**Preguntas con espera real:**", "**Respuestas antes de 2 intentos:**",
+              "**Dudas registradas:**")
+    DESDE = "2026-10-27"
+    nuevas = legacy = 0
+    problemas = []
+    for f in sorted(glob.glob(os.path.join(RAIZ, "07_DATITO", "07_BITACORA", "*.md"))):
+        nombre = os.path.basename(f)
+        if not re.match(r"\d{4}-\d{2}-\d{2}-", nombre):
+            continue  # plantillas y notas sueltas: no son sesiones
+        if nombre[:10] < DESDE:
+            legacy += 1
+            continue
+        nuevas += 1
+        t = open(f, encoding="utf-8", errors="replace").read()
+        for marca in MARCAS:
+            if marca not in t:
+                problemas.append(f"{nombre} sin «{marca.strip('*')}»")
+    if problemas:
+        return FALLO, "; ".join(problemas[:3])
+    return OK, f"{nuevas} bitacora(s) nuevas con metricas · {legacy} legacy sin exigir"
+
+
 COMPROBACIONES = [
     ("G1  no simula respuestas",      g1_no_simula_respuestas),
     ("G8  reglas donde se leen",      g8_reglas_donde_se_leen),
@@ -321,6 +349,7 @@ COMPROBACIONES = [
     ("G14 el material es un curso",   g14_el_material_es_un_curso),
     ("G13 sin deficiencia inferida",  g13_sin_deficiencia_inferida),
     ("Memoria  DOMINADO con evidencia", memoria_dominado_con_evidencia),
+    ("Metricas  de sesion en bitacora", metricas_bitacora),
     ("Seguridad  sin secretos",       seguridad_sin_secretos),
     ("Estado  resumen al dia",        estado_al_dia),
     ("Curriculum  rutas existen",     rutas_declaradas_existen),
