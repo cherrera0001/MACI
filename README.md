@@ -8,7 +8,7 @@ Repositorio de trabajo de **Fundamentos de Ciencia de Datos** (FCD), Universidad
 
 MACI reúne tres productos y la plataforma que los sostiene:
 
-1. **El curso**: 23 clases en 6 unidades, en HTML interactivo que funciona sin conexión. 22 están construidas; la clase 19 (repaso integrado Melbourne) está pendiente. Incluye 3 certámenes con su resolución.
+1. **El curso**: 23 clases en 6 unidades, en HTML interactivo que funciona sin conexión. Las 23 están construidas, incluida la clase 19 (repaso integrado Melbourne). Incluye 3 certámenes con su resolución.
 2. **Datito**: tutor personal socrático (skill `.claude/skills/datito/`). Registra el progreso, los errores y las dudas resueltas.
 3. **El proyecto semestral**: predicción de precios en Melbourne y desafío Galaxy Zoo (`08_PROYECTO_FCD/`, `09_RESULTADOS/`).
 4. **Un desafío aplicado**: el caso de la competencia Gemma 4 de Kaggle, documentado prueba por prueba, con sus predicciones, resultados y correcciones (`13_KAGGLE/`).
