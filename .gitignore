@@ -66,3 +66,25 @@ repair_piel.py
 
 # salida de 03_SCRIPTS/publicar_sitio.mjs (se arma en Vercel)
 public/
+
+# Termito: datos de ejecucion por estudiante (sesiones, progreso, dudas,
+# indice construido). La SEMILLA del curso (curso.yaml, componentes de
+# identidad, distinciones, grafo, symlinks de materiales) SÍ se versiona:
+# asi el ZIP se puede reconstruir en el build desde un clone fresco.
+15_TERMINITO/cursos/*/sesion*.yaml
+15_TERMINITO/cursos/*/progreso.yaml
+15_TERMINITO/cursos/*/dudas.yaml
+15_TERMINITO/cursos/*/evaluaciones/resultados.yaml
+15_TERMINITO/cursos/*/grafo/dominio.yaml
+15_TERMINITO/cursos/*/.indice/
+15_TERMINITO/cursos/*/fuentes/
+15_TERMINITO/cursos/*/prompt/actual.md
+15_TERMINITO/cursos/*/prompt/versions/
+15_TERMINITO/exportados/
+dist/paquete/
+dist/termito.zip
+
+# Capturas crudas REA (decenas de MB): la evidencia versionada son los
+# informes .md; los JSON en crudo permanecen locales
+docs/investigacion/rea-evidencia/**/*.json
+dist/wheels/

@@ -1,0 +1,18 @@
+TERMITO — tu tutor, disenado por ti
+==================================
+
+1. Descomprime este ZIP.
+2. Doble clic en "start" (start.py / start.sh / start.bat segun tu sistema).
+3. Espera ~30 segundos la primera vez (crea su entorno; la siguiente es inmediata).
+4. Tu navegador se abre en http://localhost:8377: empieza a chatear.
+
+Requisitos: Python 3.12 o superior (https://python.org). Sin conexion a
+Internet despues de la primera preparacion. Opcional: instala Ollama
+(https://ollama.com) y ejecuta "ollama pull qwen2.5:3b" para que el Datito
+genere explicaciones; sin ello funciona en modo exploracion (recupera y cita
+evidencia, sin generar).
+
+Incluye el curso "Fundamentos de Ciencia de Datos" ya construido. Para crear
+un Datito de OTRO curso: abre la web, "Crear Datito", y sube tus materiales.
+
+Todo vive en tu maquina. Nada se envia a ningun servidor.

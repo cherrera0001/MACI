@@ -6,6 +6,7 @@
 //   node 03_SCRIPTS/publicar_sitio.mjs
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -96,6 +97,34 @@ for (const archivo of paginas(SALIDA)) {
     }
   }
   if (cambio) fs.writeFileSync(archivo, html);
+}
+
+// El paquete descargable de Datito. El gobierno del repo prohíbe versionar
+// ZIPs (verificar_contrato.py, "sin secretos"), así que si dist/datito.zip
+// no existe se genera aquí mismo (Vercel trae python3): pip --user trae las
+// deps del motor y build_paquete.py arma el ZIP desde las fuentes trackeadas
+// (semilla del curso fcd + dist-src + motor). Si ni así existe, el enlace se
+// convierte en texto por la pasada de enlaces rotos: sin ZIP, sin botón.
+const ZIP = path.join(RAIZ, "dist", "datito.zip");
+if (!fs.existsSync(ZIP)) {
+  // python3 en la imagen de build de Vercel no siempre trae pip: se
+  // bootstrapea con get-pip antes de instalar las deps del motor.
+  const pip = spawnSync("python3", ["-m", "pip", "--version"], { cwd: RAIZ });
+  if (pip.status !== 0) {
+    spawnSync("curl", ["-sSL", "https://bootstrap.pypa.io/get-pip.py", "-o", "/tmp/get-pip.py"], { cwd: RAIZ });
+    spawnSync("python3", ["/tmp/get-pip.py", "--user"], { cwd: RAIZ });
+  }
+  spawnSync("python3", ["-m", "pip", "install", "--user", "-q",
+    "pyyaml", "jinja2", "markdown", "pypdf"], { cwd: RAIZ });
+  const r = spawnSync("python3",
+    [path.join(RAIZ, "15_TERMINITO", "scripts", "build_paquete.py")],
+    { cwd: RAIZ, stdio: "inherit" });
+  if (r.status !== 0) console.warn("⚠ no se pudo construir dist/datito.zip");
+}
+if (fs.existsSync(ZIP)) {
+  const destinoZip = path.join(SALIDA, "01_CONCEPTOS", "visual", "datito", "datito.zip");
+  fs.mkdirSync(path.dirname(destinoZip), { recursive: true });
+  fs.copyFileSync(ZIP, destinoZip);
 }
 
 let convertidos = 0;

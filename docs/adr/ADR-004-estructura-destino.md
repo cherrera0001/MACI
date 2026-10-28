@@ -129,6 +129,6 @@ El agente recomendó la opción A. Esa recomendación no es una decisión del ma
 ---
 
 **Referencias:**
-- Auditoría: `docs/gestion/AUDITORIA_F0.md` (hallazgos H-01 a H-18)
-- Plan detallado: `docs/gestion/PLAN_MIGRACION.md`
+- Auditoría: `docs/gestion/historico/AUDITORIA_F0.md` (hallazgos H-01 a H-18)
+- Plan detallado: `docs/gestion/historico/PLAN_MIGRACION.md`
 - Taxonomía: Prompt Maestro v2, sección 4

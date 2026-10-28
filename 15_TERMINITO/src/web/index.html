@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datito · tus cursos</title>
+<link rel="stylesheet" href="/css/datito.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 Datito</span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 data-i18n="ix_titulo">Tus Datitos</h1>
+  <p class="sub" data-i18n="ix_sub">Un Datito por curso: diseñado por ti, con los materiales reales. Todo en tu máquina.</p>
+
+  <div id="avisos"></div>
+  <div id="cursos"></div>
+
+  <p style="margin-top:1.4rem">
+    <a class="boton" href="/wizard.html" data-i18n="ix_crear">＋ Crear Datito</a>
+  </p>
+
+  <div class="clave" style="margin-top:2rem" data-i18n-html="ix_que_es">
+    <b>¿Qué es un Datito?</b> Un tutor que tú construyes: le entregas el programa, las
+    clases y los certámenes de tu curso, defines quién es y cómo enseña, y conversa
+    contigo citando la fuente de cada afirmación. Cuando el curso termina, desaparece;
+    tu conocimiento se queda contigo.
+  </div>
+</main>
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+async function cargar() {
+  const salud = await pintarEstado();
+  const cont = document.getElementById("cursos");
+  if (!salud) {
+    cont.innerHTML = `<div class="peligro">${t("ix_caido")}</div>`;
+    return;
+  }
+  const { cursos } = await get("/api/cursos");
+  if (!cursos.length) {
+    cont.innerHTML = `<div class="nota">${t("ix_vacio")}</div>`;
+    return;
+  }
+  cont.innerHTML = cursos.map(c => `
+    <div class="tarjeta">
+      <b>${esc(c.nombre)}</b>
+      <span class="sub" style="margin:0 0 0 .5rem">${esc(c.slug)} · ${esc(c.estado)}</span>
+      <div style="margin-top:.6rem">
+        <a class="boton" href="/chat.html?curso=${c.slug}">${t("ix_chat")}</a>
+        <a class="boton alt" href="/eval.html?curso=${c.slug}">${t("c_eval")}</a>
+        <a class="boton alt" href="/panel.html?curso=${c.slug}">${t("c_dominio")}</a>
+      </div>
+    </div>`).join("");
+  localStorage.setItem("datito-ultimo", cursos[0].slug);
+}
+cargar().catch(e => document.getElementById("avisos").innerHTML =
+  `<div class="peligro">${esc(e.message)}</div>`);
+</script>
+</body>
+</html>

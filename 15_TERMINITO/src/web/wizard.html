@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crear Datito</title>
+<link rel="stylesheet" href="/css/datito.css">
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 <a href="/">Datito</a></span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 data-i18n="wz_h1">Construyamos tu Datito</h1>
+  <p class="sub" data-i18n="wz_sub">Una decisión por pantalla. Enter no existe aquí: tú eliges todo.</p>
+  <div class="progreso-puntos" id="puntos"></div>
+  <div id="avisos"></div>
+
+  <!-- Paso 0: identidad del curso + materiales -->
+  <section class="paso on" data-paso="0">
+    <h2 data-i18n="wz_p0_h">Primero: ¿qué curso vas a aprender?</h2>
+    <p data-i18n="wz_p0_p1">Escribe el nombre (el slug se genera solo).</p>
+    <input class="grande" id="nombre" data-i18n-ph="wz_nombre_ph" placeholder="Fundamentos de Ciencia de Datos">
+    <p style="margin-top:1.2rem" data-i18n-html="wz_p0_p2">Ahora <b>los materiales reales</b>: programa, presentaciones,
+    transcripciones, certámenes pasados, PDF de clases. Puedes subirlos ahora o después
+    (desde la carpeta <code>materiales/</code> del curso).</p>
+    <input type="file" id="archivos" multiple
+           accept=".md,.txt,.pdf,.html,.htm" style="margin:.5rem 0">
+    <div id="subidos" class="sub"></div>
+    <p><button class="boton" id="avanzar0" data-i18n="wz_siguiente">Siguiente →</button></p>
+  </section>
+
+  <!-- Pasos 1-8: componentes (se generan desde COMPONENTES) -->
+  <div id="pasos-componentes"></div>
+
+  <!-- Final: prompt generado -->
+  <section class="paso" data-paso="final">
+    <h2 data-i18n="wz_final_h">Así quedó tu Datito</h2>
+    <p data-i18n-html="wz_final_p">Este es el system prompt completo — tu agente, tu diseño, siempre editable
+    en <code>prompt/actual.md</code> (cada cambio queda versionado).</p>
+    <pre id="prompt-final" class="dist" style="white-space:pre-wrap;max-height:45vh;overflow:auto"></pre>
+    <p>
+      <button class="boton" id="confirmar" data-i18n="wz_confirmar">✓ Confirmar y empezar</button>
+      <a class="boton alt" href="/" data-i18n="wz_volver">Volver</a>
+    </p>
+  </section>
+</main>
+
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+const CLAVES_COMPONENTES = [
+  "rol_dominio", "mision", "funciones", "estilo_ensenanza",
+  "contexto_curso", "estilo_aprendizaje", "restricciones", "relacion_temporal",
+];
+const COMPONENTES = CLAVES_COMPONENTES.map((clave, i) =>
+  [clave, t(`w_c${i + 1}p`), t(`w_c${i + 1}s`)]);
+let paso = 0, slug = null;
+const TOTAL = 1 + COMPONENTES.length; // 0 + 8
+
+function pintarPuntos() {
+  document.getElementById("puntos").innerHTML =
+    Array.from({length: TOTAL}, (_, i) => `<i class="${i <= paso ? "on" : ""}"></i>`).join("");
+}
+function mostrar(n) {
+  document.querySelectorAll(".paso").forEach(s =>
+    s.classList.toggle("on", s.dataset.paso == n));
+  paso = typeof n === "number" ? n : paso;
+  pintarPuntos();
+  window.scrollTo(0, 0);
+}
+
+const cont = document.getElementById("pasos-componentes");
+COMPONENTES.forEach(([clave, pregunta, sugerencia], i) => {
+  const sec = document.createElement("section");
+  sec.className = "paso";
+  sec.dataset.paso = i + 1;
+  sec.innerHTML = `
+    <h2>${esc(pregunta)}</h2>
+    <p class="sugerencia">${t("wz_sugerencia")} ${esc(sugerencia)}
+      <button type="button" data-usar="${i}">${t("wz_usarla")}</button></p>
+    <textarea class="grande" rows="3" id="campo-${clave}" placeholder="${esc(t("wz_tu_respuesta"))}"></textarea>
+    <p>
+      <button class="boton" data-sig="${i + 1}">${i + 1 === COMPONENTES.length ? esc(t("wz_generar")) : esc(t("wz_siguiente"))}</button>
+      <button class="boton alt" data-atras>${esc(t("wz_atras"))}</button>
+    </p>`;
+  cont.appendChild(sec);
+});
+
+document.addEventListener("click", async (e) => {
+  if (e.target.dataset.usar !== undefined) {
+    const i = +e.target.dataset.usar;
+    document.getElementById("campo-" + COMPONENTES[i][0]).value = COMPONENTES[i][2];
+  }
+  if (e.target.dataset.atras !== undefined) mostrar(paso - 1);
+  if (e.target.dataset.sig !== undefined) {
+    const i = +e.target.dataset.sig;
+    const clave = COMPONENTES[i - 1][0];
+    const valor = document.getElementById("campo-" + clave).value.trim() || COMPONENTES[i - 1][2];
+    await post(`/api/cursos/${slug}/componentes`, { [clave]: valor });
+    if (i === COMPONENTES.length) return construir();
+    mostrar(i);
+  }
+});
+
+document.getElementById("avanzar0").addEventListener("click", async () => {
+  const nombre = document.getElementById("nombre").value.trim();
+  if (!nombre) return aviso(t("wz_nombre_falta"));
+  const archivos = document.getElementById("archivos").files;
+  slug = slugDe(nombre);
+  try {
+    await post("/api/cursos", { slug, nombre });
+  } catch (e) {
+    if (e.status !== 409) return aviso(e.message);
+    slug = slug + "-" + Math.floor(Math.random() * 90 + 10);
+    await post("/api/cursos", { slug, nombre });
+  }
+  for (const f of archivos) {
+    await putBlob(`/api/cursos/${slug}/materiales?nombre=${encodeURIComponent(f.name)}`, f);
+  }
+  if (archivos.length)
+    document.getElementById("subidos").textContent = t("wz_subidos", { n: archivos.length });
+  mostrar(1);
+});
+
+async function construir() {
+  aviso(t("wz_construyendo"), "clave");
+  try {
+    const r = await post(`/api/cursos/${slug}/construir`);
+    document.getElementById("prompt-final").textContent = r.prompt;
+    document.getElementById("avisos").innerHTML =
+      `<div class="clave">${esc(t("wz_listo", { f: r.fuentes, fr: r.fragmentos }))}</div>`;
+    mostrar("final");
+  } catch (e) {
+    aviso(e.message, "peligro");
+    mostrar(1);
+  }
+}
+
+document.getElementById("confirmar").addEventListener("click", () => {
+  localStorage.setItem("datito-ultimo", slug);
+  location.href = "/chat.html?curso=" + slug;
+});
+
+function aviso(texto, tipo = "nota") {
+  document.getElementById("avisos").innerHTML = `<div class="${tipo}">${esc(texto)}</div>`;
+}
+pintarEstado();
+pintarPuntos();
+</script>
+</body>
+</html>

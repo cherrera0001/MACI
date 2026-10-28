@@ -1673,3 +1673,3676 @@ subir el tope de tiempo con el razonamiento encendido, o bajar el presupuesto de
 menos tiempo por turno. El límite de 12 h del envío acota la primera: 5,5 min por tarea son unas 11 h.
 
 **Qué sigue sin verse.** La nota del envío. Y si las tres tareas nuevas se repiten en una segunda pasada.
+
+## Vuelta 38 — 2026-10-07, 15:15 a 16:00 UTC
+
+**Sin subidas a Kaggle, sin GPU.** Orden del dueño: revisar el proceso, actualizar los README del repositorio,
+evaluar si el concurso valida el principio de ALL y seguir iterando «con el equipo multidisciplinario, incluso
+Datito». Concilio de seis roles en paralelo y en solo lectura sobre `iteracion-06` y sus tres bases. Tablas por
+tarea, guiones y fuentes en `instrumentos/concilio_38/` (ignorada por git); aquí solo conteos.
+
+**Antes de empezar: `devlog recall`** (primera vuelta que lo ejecuta). Tres consultas de operador devolvieron
+1 de 5 lecciones que este ciclo ya había pagado (la imagen con Python 3.13). No aparecen la ruta fija de
+`/kaggle/input`, las cuatro resubidas, el razonamiento con 4 minutos ni la línea de `edit_file`: ninguna
+corrida de esta bitácora tiene episodio en el repositorio.
+
+**Estado leído por la API a las 15:15 UTC.** Envío 56895202: `PENDING`, sin nota. Cuota de GPU: 27,64 h
+usadas, 2,36 h libres, reinicio el 2026-10-10 00:00 UTC. Tabla pública (15:17): 1 981 equipos; mediana 0,10
+(6 tareas), percentil 75 0,12 (7), percentil 90 0,13 (8), máximo 0,24 (14); nosotros 0,06, puesto 1 559.
+El último envío puntuado de toda la tabla se hizo el 2026-10-06 a las 16:01 UTC: la cola de puntuación lleva
+cerca de un día, así que el nuestro no está atrasado (inferencia; el organizador no lo ha dicho).
+
+**1. Datito: adónde se va el tiempo** (mismas 19 tareas; recuento independiente: coincide con la vuelta 37).
+
+| Media por sesión | 03 | 04 | 05 | 06 (`i_razona`) |
+|---|---|---|---|---|
+| Espera del modelo, s | 72 | 77 | 74 | 218 |
+| Herramientas, s | 5 | 3 | 8 | 3 |
+| Turnos del modelo | 31 | 32 | 29 | 27 |
+| Segundos por turno, media | 2,4 | 2,4 | 2,6 | 8,1 |
+| Tokens de salida por turno | 62 | 58 | 64 | 247 |
+
+- El tiempo extra es más segundos por turno, no más turnos; la velocidad no cambió (unos 35 tokens por segundo).
+- Las 9 sesiones cortadas por tiempo esperaban al modelo; ninguna ejecutaba una herramienta ni pruebas.
+- Las 9 resueltas terminan en 60 a 267 s: 3 antes de 180 s, 7 antes de 240 s, 2 a 3 s del tope.
+- Bajar el presupuesto de razonamiento a 2 048 ahorra como máximo 11 s por sesión: solo 7 de 509 turnos pasan
+  de 2 048 tokens de salida (cálculo, cota superior).
+- Cuenta de las 12 h con 120 tareas (cálculo): con 4,5 min, 8,5 h con la mezcla medida y 10,3 h si todas llegan
+  al tope; con 5,0 min, 9,0 y 11,3 h; con 5,5 min, 9,5 y 12,3 h. La carga del modelo midió 390, 652 y 828 s.
+
+**2. QA: qué tan cerca quedaron las 10 no resueltas.**
+
+| Clase de la sesión no resuelta | Sesiones |
+|---|---|
+| Sin parche | 4 (3 por tiempo, 1 por rechazo de contexto) |
+| Parche inerte: solo guiones propios | 5 |
+| Cambio real en otro archivo fuente | 1 |
+| Región correcta que no pasa, o sintaxis rota | 0 |
+
+- De las 6 cortadas por tiempo con parche, ninguna había acertado (juicio): 0 de 6. Cota de «más tiempo»:
+  0 por el parche tal como quedó, 2 como máximo por trayectoria.
+- Las 10 leyeron el archivo de la corrección; 8 nunca intentaron editarlo.
+- La tarea perdida tenía el parche de referencia ya escrito (llamada 7); después delegó en el subagente, que
+  hizo 25 llamadas, y la petición 37 excedió el contexto. El arnés descartó el parche.
+- El subagente: lo usaron 6 sesiones en las cuatro pasadas y se resolvieron 0; en la 06, 2 de 2 perdidas.
+
+| Fallo mecánico, mismas 19 tareas | 03 | 04 | 05 | 06 |
+|---|---|---|---|---|
+| `read_file` con el parámetro roto | 58 de 161 | 76 de 195 | 81 de 167 | 6 de 174 |
+| Llamadas idénticas repetidas | 50 % | 47 % | 40 % | 7 % |
+| Ediciones rechazadas | 14 de 35 | 14 de 44 | 1 de 27 | 4 de 55 |
+| Búsquedas por similitud vacías | 78 de 78 | 56 de 56 | 14 de 14 | 54 de 54 |
+| Escrituras de guiones propios | 6 | 16 | 8 | 29 |
+| Resolubles (12) que leen el archivo de la corrección | 6 | 6 | 7 | 12 |
+| Resolubles con edición aceptada en ese archivo | 3 | 3 | 3 | 3 |
+
+**3. Ingeniero del arnés: qué palancas existen en el código** (swegemma 0.2.7, leído; sin ejecutar).
+
+- Al agotar el tiempo, el arnés toma el diff del repositorio, con los guiones sueltos incluidos; no depende
+  de `submit_patch`. Cualquier otra excepción (el rechazo por contexto) entrega parche vacío.
+- El subagente comparte reloj y contador de llamadas con el principal, razona con el mismo presupuesto y
+  corre sin compactación. Se puede quitar o darle su propio `sampling.yaml` desde el envío.
+- `read_file`: el arnés descarta en silencio todo argumento que no esté en la firma; por eso no falla. No
+  hay nada configurable; solo queda la instrucción.
+- La búsqueda «por similitud» es una coincidencia exacta de nombre de nodo: por eso devuelve vacío. Se puede
+  no declarar, pero el mensaje de tarea la anuncia igual y llamar a una herramienta no declarada termina la
+  tarea con parche vacío. No se recomienda quitarla.
+- Skills: se cargan bajo demanda con cuatro herramientas más; el modelo gasta al menos dos turnos en listar
+  y cargar. No están siempre en contexto.
+- En esta versión la verificación usa nuestro `timeout_seconds` (60 s). No se sabe si el guion de puntuación
+  hace lo mismo; en las públicas el máximo medido con parche fue 7,6 s.
+
+**4. Inteligencia pública.** Ningún notebook declara una nota con razonamiento encendido. Los diez diseños
+con nota declarada llevan instrucción propia y corta; dos de los que superan 0,12 no dan herramientas de
+grafo al que edita; cinco usan 120 a 300 s por comando. Un único barrido ajeno de presupuestos de
+razonamiento (129 tareas locales, una corrida por celda): 23 apagado, 50, 48 y 48 con 2 048, 4 096 y 6 144;
+su repetición de una misma celda dio 55 y 48. Varios envíos ajenos con razonamiento y tope de 60 min
+agotaron las 12 h. Nada nuevo del organizador desde el 2026-10-05.
+
+**5. Auditor del método: ¿el ciclo pasa por el bucle de ALL?** No, en ninguno de los dos niveles.
+
+| Etapa | Operación | Envío |
+|---|---|---|
+| Estimar | Sí, fuera del repositorio: 40 predicciones, sin sello | Sí, fuera: regla de conservar o descartar |
+| Recuperar | No: ninguna vuelta anterior ejecutó `recall` | No: 9 de 9 paquetes propios sin carpeta `skills/` |
+| Actuar | 14 corridas y 3 envíos | 3 envíos de 2 zips: el kit con parámetros cambiados |
+| Observar | Sí, fuera: bitácora y registro; 0 episodios por corrida | Sí, fuera: trazas en datos que git ignora |
+| Consolidar | Lateral: 2 episodios (un guion y el manuscrito); 0 skills para operar Kaggle | 2 candidatos de instrucción; 0 skills; la palanca 5 no empezó |
+| Confirmar | El ciclo no tiene tarjeta propia | P38 pendiente |
+
+- Errores repetidos después de anotados: 4. Uno, enviar una condición que no había corrido con el modelo
+  (vuelta 33, por orden del dueño). Tres, afirmar más de lo medido (vueltas 28, 32 y 36).
+- No repetidos: más de una subida por resultado (5 subidas, 5 resultados desde `iteracion-02`).
+- ZorzALL hoy es un medidor de trazas en un PR en borrador (#145). No existe como configuración de envío ni
+  como arnés de operación. `z_oido` arregla el entorno; no enseña una lección y no corrió con Gemma.
+
+**6. Gestor.** `devlog board --since 100`: 6 hallazgos. Resueltos en esta vuelta los 4 de #146 y #148
+(campos del tablero y comentario de evidencia). Queda uno real: #101 sin episodio en `main` (está en el PR
+#130, sin fusionar). #103 exige una decisión del dueño: reformularlo como medición exploratoria o cerrarlo
+como no ejecutado.
+
+**Correcciones a esta bitácora (vuelta 37).**
+
+- «El tiempo ata» es el desenlace, no la palanca: 9 de 10 fallos agotan el tiempo, pero ninguno de los 6
+  parches cortados era correcto y 5 eran solo guiones.
+- «La edición llega antes (llamadas 1, 6, 8, 10, 12, 13, 14 y 36)» contaba la escritura de guiones propios.
+  Ediciones aceptadas en el archivo de la corrección entre las resolubles: 3 (llamadas 8, 12 y 14).
+- «Resolubles que editan el archivo de la corrección: 4 de 12»: 4 lo intentan; 3 con edición aceptada, igual
+  que en las tres bases.
+- «Siguiente medición: subir el tiempo o bajar el presupuesto de razonamiento»: ninguna tiene respaldo.
+  Bajar el presupuesto devuelve como máximo 11 s por sesión; subir a 5,0 min recupera como máximo 2 tareas
+  (juicio) y 5,5 min no cabe en el peor caso de las 12 h.
+
+**Desacuerdos del concilio, y cómo quedan.**
+
+- Datito propuso subir el tope a 5,0 min; QA mostró que el tiempo extra no habría recuperado ningún parche.
+  Queda la lectura de QA: responde justo lo que Datito dejó como «sin verse».
+- QA propone quitar el subagente; el ingeniero, darle un `sampling.yaml` sin razonamiento. Las dos atacan
+  lo mismo (reloj compartido y contexto sin compactar). Quitarlo es el cambio más simple de leer: 0 de 6.
+
+**Lo que el conjunto dice.** El razonamiento arregló lo que las instrucciones no pudieron: localizar (12 de
+12 resolubles leen el archivo, antes 6 o 7) y dejar de repetir (7 % de llamadas idénticas, antes 40 a 50 %).
+No cambió la decisión de editar: 3 de 12 en las cuatro pasadas. Lo que queda es un agente que encuentra el
+archivo, escribe guiones de reproducción en vez de editarlo y agota el reloj esperando al modelo.
+
+**Orden de medición propuesto. Primero el ruido; después un cambio por corrida.**
+
+1. `iteracion-07`: segunda pasada de `i_razona`, recortada a la cuota que queda. **Armada y ensayada; no
+   subida.** Espera el «súbela» del dueño.
+2. Tras el reinicio del 2026-10-10: `i_razona` sin subagente, sobre las 19.
+3. Después: la primera condición con una lección consolidada (editar el archivo antes de escribir guiones),
+   contra un texto de relleno del mismo largo. Es la palanca 5 de la instrucción y la primera prueba real del
+   bucle de ALL en el envío.
+
+**`iteracion-07`, lista para subir.**
+
+| Campo | Valor |
+|---|---|
+| Qué cambia respecto de la 06 | Nada en el agente: la misma condición (huella `0f52de0b84cb`) |
+| Tareas | 10 de las 19: las 7 ya resueltas antes de la 06 y las 3 que la 06 resolvió por primera vez (7 de fastapi, 3 de rich) |
+| Orden | fastapi primero: ahí están las 3 nuevas, y un corte por sesión no debe dejarlas fuera |
+| Tope de sesión | 60 min desde el arranque, 5 de margen; tope del notebook 64 min |
+| Costo | Hasta 64 min de sesión: 2,13 h de las 2,36 h libres, que se pierden el 2026-10-10 |
+| Huella del notebook | `28bfe9f2b18163cc…`, 54 503 bytes; nueve celdas byte a byte con la 03 |
+| Chequeo previo | Se puede subir, 19 comprobaciones |
+| Ensayo completo en Docker, arnés real y parche de referencia | 10 de 10 validadas, 0 problemas, 190 s; el modelo recibió razonamiento encendido, 4 096 y 8 192 |
+| El notebook no existe en Kaggle | Comprobado por API |
+
+Mi primer ensayo salió «no pasa»: el error estaba en mi guion de ensayo, que esperaba los archivos de salida
+en otro orden, no en el notebook. Corregido el guion, pasa.
+
+Si la carga del modelo tarda lo peor visto (947 s antes de la primera tarea), alcanzan a empezar 8 o 9 tareas.
+
+| Id | Predicción, escrita antes de subir | Se sostiene | No decide | Fue ruido |
+|---|---|---|---|---|
+| P41 | De las 3 tareas resueltas por primera vez en la 06, se resuelven otra vez | 2 o 3 | 1 | 0 |
+| P42 | De las 7 ya resueltas se mantienen (en cuatro pasadas: 6, 7, 7 y 6) | 6 o 7 | — | 5 o menos |
+| P43 | Sesiones que terminan con rechazo por contexto (en la 06: 1 de 19) | 0 o 1 | — | 2 o más: el fallo es sistemático con razonamiento |
+
+Mi probabilidad de que P41 se sostenga: cerca de 3 en 5. A favor: en las tres el razonamiento cambió la
+localización (antes no leían el archivo; ahora lo leen en las llamadas 4, 5 y 9). En contra: una sola pasada.
+
+**El cupo de envío del 2026-10-08.** Sin nota del 56895202 no decide nada. Regla ya fijada (P38): con 6
+tareas o más se conserva; con 5 se reenvía el mismo zip; con 4 o menos se descarta. En dos de los tres casos
+lo que toca es reenviar el mismo zip, que además da la segunda nota de esta condición (el ruido de la tabla
+con razonamiento). Requiere la aprobación del dueño con la orden a la vista. `i_razona` ya corrió con el
+modelo en `iteracion-06`.
+
+**Qué sigue sin verse.** La nota del envío. Los tokens de razonamiento reales por turno. Si el rechazo por
+contexto ocurrió en el agente principal o en el subagente. El método de los equipos con 0,17 o más.
+
+### Resultado del envío 56895202, leído a las 15:55 UTC: `ERROR`, sin nota
+
+A las 15:15 UTC seguía `PENDING`; a las 15:55 la API lo da como `ERROR`, sin nota pública. La API no entrega
+el texto del error: solo se ve en la página de envíos, con la sesión web del dueño.
+
+| Id | Predicción | Salió | Veredicto |
+|---|---|---|---|
+| P39 | El envío termina dentro de las 12 h, con nota | Error, 15 h y media después de enviar | **Refutada** |
+| P38 | 6 tareas o más de 58 | Sin nota | No se puede leer |
+
+**Lo que no sé.** La causa. Dos lecturas caben y no las puedo separar sin el texto del error: que la corrida
+pasó de las 12 h, o un fallo de otro tipo. A favor de la primera: envíos ajenos con razonamiento agotaron el
+plazo (foro, 2026-10-06) y mi cuenta daba 10,3 h en el peor caso, con poco margen si las tareas ocultas
+montan más lento o si todas llegan al tope. En contra: nada medido.
+
+**Fallo mío de cálculo, si la causa es el plazo.** La vuelta 37 dijo «P39 es probable» con 8,3 h de agente
+calculadas sobre 19 tareas públicas elegidas, de las que 9 terminaron antes del tope. En el conjunto oculto
+nada garantiza esa fracción.
+
+**Lo que esto cambia, ya.**
+
+- El reenvío del mismo zip el 2026-10-08 queda **retirado**. No se reenvía una configuración que dio error.
+- `i_razona` no se conserva como condición de envío, por la regla fijada (P39: error o tiempo excedido).
+  La señal medida en notebook (9 de 19) sigue en pie como dato; lo que falla es que quepa en el envío.
+- `iteracion-07` sigue armada, pero su valor depende de la causa: si fue el plazo, lo que hay que medir con
+  las 2,36 h es el razonamiento con un tope que quepa con holgura, no la misma condición otra vez. No la
+  rearmo sin el texto del error.
+
+**El único dato que falta y quién lo tiene.** El mensaje de error del envío 56895202 en la página
+«Submissions» del concurso. Lo ve el dueño con su sesión.
+
+### El texto del error, leído por la API a las 16:25 UTC
+
+Corrección: la API sí lo entrega. El listado en tabla no lo muestra, pero el objeto del envío trae el campo
+`errorDescription`: «A system error. Please try resubmitting to resolve the error and contact Kaggle Support
+if it persists.» Y `totalBytes = 0`; los dos envíos anteriores guardaron 86 883 y 72 047 bytes.
+
+**Lo que cambia.**
+
+- Es un error genérico de sistema, no un mensaje de plazo excedido. No dice nada de la condición.
+- Con 0 bytes guardados, cabe que el archivo ni siquiera llegara a puntuarse. Es inferencia, no dato.
+- Me precipité arriba: «P39 refutada», «la condición no se conserva» y «el reenvío queda retirado» daban por
+  hecho que el fallo era de la configuración. P39 y P38 quedan **sin poder leerse**; la condición ni se
+  conserva ni se descarta; y reenviar el mismo zip vuelve a ser lo indicado, que además es lo que pide Kaggle.
+- No sé si un envío con error consume el cupo del día.
+
+**Decisión que espera al dueño.** Reenviar `submission_i_razona.zip` (huella `65a0216007e19bf6…`), con la
+orden a la vista. Sigue en pie el riesgo del plazo: 10,3 h en el peor caso calculado.
+
+### Reenvío y subida de `iteracion-07`, 16:25 y 16:26 UTC
+
+**Orden del dueño:** «Sí, reenvía el mismo zip y sube iteracion-07».
+
+- **Envío 56916129**, 16:25:34 UTC: el mismo zip, huella `65a0216007e19bf6…` comprobada antes de enviar, 3 494
+  bytes. Estado `PENDING`. Kaggle informa 0 envíos restantes hoy: el envío con error sí consumió cupo, o el
+  cupo es de dos al día; no lo sé. Predicciones: las mismas P38 y P39 de la vuelta 33.
+- **`cs4all/iteracion-07`**, versión 1, 16:26 UTC: una sola subida, encadenada al chequeo previo (19
+  comprobaciones). Cuota leída justo antes: 2,36 h libres. El contenido remoto se bajó y coincide con el
+  validado en las 11 celdas; privado, GPU, sin Internet, imagen fijada, `NvidiaL4`. Estado: en cola.
+  Tope del notebook 64 min. Predicciones P41 a P43, fechadas en el issue #103 antes de subir.
+
+## Vuelta 39 — 2026-10-08, 17:45 a 21:45 UTC
+
+**Nada se subió, se envió ni se contrató en esta vuelta.** Dos rescates de solo lectura y siete roles en solo
+lectura. Informes completos y guiones en `data\rescate_kaggle\instrumentos\concilio_39\` y
+`data\rastreo_2608_05643\` (ignorados por git).
+
+### Qué se leyó
+
+| Qué | 21:13 UTC (`2026-10-08T2113Z`) | 21:37 UTC (`2026-10-08T2137Z`) |
+|---|---|---|
+| Envío 56895202 (`i_razona`, 65a02160…) | `error`, 0 bytes, sin mensaje | **`complete`, nota 0,08 (5 de 58), 79 355 bytes** |
+| Envío 56916129 (el mismo zip) | `error`, 0 bytes, «A system error…» | igual |
+| Envíos contados en la tabla pública | 8 472 | 8 660, sin moverse la fecha del último puntuado |
+| `iteracion-07` | completa | completa |
+
+Kaggle volvió a puntuar el 56895202 sin que hiciéramos nada. Un `error` genérico no es un estado final.
+
+**`iteracion-07`** (10 tareas, condición `i_razona`): 9 de 10.
+
+| Id | Predicción | Salió | Veredicto |
+|---|---|---|---|
+| P41 | Las 3 tareas nuevas de la 06 se repiten (2 o 3) | 3 de 3 | Se sostiene |
+| P42 | De las 7 ya resueltas se mantienen 6 o 7 | 6 de 7 | Se sostiene |
+| P43 | Rechazos por contexto, 0 o 1 | 0 | Se sostiene |
+| P39 | El envío termina dentro de las 12 h, con nota | Nota 0,08 tras una repuntuación; el plazo no se puede leer | Sin poder leerse |
+| P38 | 6 tareas o más de 58 | 5 | No decide (regla escrita en la vuelta 33) |
+
+El 9 de 10 no se compara con los 9 de 19: las diez se eligieron por haberse resuelto. Solo informa la réplica
+de las 3 nuevas (0 de 9 sesiones antes, 3 de 3 ahora), y es efecto de tres cambios juntos.
+
+Notas del equipo a la fecha: 0,06 y 0,05 (sin razonamiento), 0,08 (con razonamiento, 60 llamadas, 4,5 min).
+Son 4, 3 y 5 tareas de 58. No hay diferencia medible.
+
+### Fallos de esta vuelta, del orquestador
+
+1. Afirmé «el zip con razonamiento dio error dos veces» con una sola lectura del estado. A los 24 minutos era
+   falso.
+2. Afirmé «las iteraciones 03 a 07 traen dos logs por tarea» mirando que los archivos existían. Los
+   `logs/<tarea>.log` pesan 0 bytes: 155 de los 290 `.log` de los zips «crudo» están vacíos. Tres roles
+   repitieron el mismo error.
+3. Fijé como «presupuesto del envío» el del zip `a_ajustado` sin leer la bitácora: el último enviado era
+   `i_razona`.
+4. Di una estimación de costo de GPU de memoria y repetí un piso de US$0,33 que no tenía URL abierta.
+
+### Lo que el concilio midió
+
+- **Potencia** (Datito, recalculada por el auditor): con 19 tareas y una pasada, una mejora real de +2 se
+  detecta 1 a 2 veces de cada 100. El suelo de `analisis_replicas.md` (6 discordantes a favor) no se alcanza.
+  Ninguna decisión de conservar o descartar tomada hasta hoy pasa ese suelo.
+- **Cortes** (forense, sobre 145 sesiones de 03 a 07): 22 por tiempo, todas esperando al modelo; 2 por tope de
+  llamadas con corte del arnés; 1 por contexto. El parche se conserva tras el corte por tiempo y se pierde
+  tras el rechazo por contexto. QA cuenta 61 «cortadas» porque incluye las que entregaron al borde del tope de
+  llamadas sin corte del arnés: falta una sola definición.
+- **Causa del corte en disco** (QA): escrita en `task_results.jsonl` en 21 de 61; solo en el log del notebook
+  en 4; en ningún archivo, solo deducible, en 36. En las 22 de tiempo no queda la petición en vuelo.
+- **Huecos de registro** (forense): el motivo del corte se borra cuando la tarea se resuelve; la petición solo
+  se registra si termina bien; no hay log de vLLM ni memoria de GPU; 01, 02 y `sesion-unica-a` no tienen nada
+  por tarea; los envíos no dejan log.
+- **Parches que no pasan** (QA, 14 en 03 a 05): en 13 lo único que falla es una prueba que el agente no ve o
+  que el evaluador reescribe. 8 de 38 resueltas vieron rojo sobre un parche ya correcto.
+- **Paper de Bilal et al., arXiv:2608.05643v1**: el método (N=8, D=4, 104 generaciones por tarea) no cabe; sin
+  voto, la corrección sola da beneficio neto negativo en tres de sus cuatro modelos (su Fig. 4b). Su derivado
+  «ejecuta una prueba y edita solo si falla» queda sin señal de dónde recuperar, por lo anterior.
+- **Público** (hasta el 2026-10-06; después, no medido): el mismo «system error» lo reportan otros tres
+  participantes sin respuesta; 767 equipos con 7 tareas o más; el zip público de dos etapas (0,13 declarado)
+  es reproducible byte a byte, huella `6b3ebb33…`; no hay forma de sacar logs de un envío.
+- **Cómputo** (DevOps, con URL abierta): el checkpoint pesa 23,27 GB, no 16 a 18; no cabe en 24 GB. GPU de
+  48 GB entre US$0,49 y 1,09 por hora. La factura total no está medida: depende de una velocidad que nadie
+  midió.
+
+### Lo que cada rol retiró tras la nota 0,08 y los logs vacíos
+
+- **Forense:** «dio error las dos veces»; sus ramas de plazo, caída propia y rechazo al cargar para ese envío;
+  y reenviar `a_ajustado` como control.
+- **Datito:** «31 nunca resueltas en 250 sesiones» (son 166); los contrastes con p ≈ 0,05 (no sobreviven a 6
+  comparaciones); «3 veces menos en lo oculto»; «6 resueltas cortadas» (son 4); la vara «12 de 14 estables».
+- **Inteligencia pública:** «dejar de enviar la condición con razonamiento» y gastar el próximo cupo en el zip
+  público.
+- **Auditor:** «con rastro suficiente: 03 a 07»; con el criterio corregido ninguna de las 7 iteraciones es una
+  corrida válida.
+- **zorzALL:** su borrador de H-Z2 v2.
+- **DevOps:** la factura en dólares y los precios sin URL propia.
+- **QA:** «leí logs»: trabajó con trazas; su guion mostró los 145 vacíos y no lo informó.
+
+### Pareceres, copiados tal cual (escritos antes de conocerse la nota 0,08)
+
+**Forense.**
+1. Afirmo que (a) y (b) difieren en las tres cosas declaradas y en la fecha interna del zip, que juzgo inocua.
+2. Afirmo que los dos zips pasan igual el validador publicado del arnés; `4.5` es un tipo admitido.
+3. Afirmo que `totalBytes` 0 significa que la etapa 1 no entregó su parquet de parches; la salida con
+   pensamientos no puede ser la causa.
+4. Afirmo que (b) 1 tardó entre 14,8 y 15,5 h en dar error: no fue un rechazo al cargar.
+5. Afirmo, con la tabla pública, que los dos errores cayeron en ventanas de puntuación degradada: 23 h sin
+   ninguna nota nueva el 10-07, y 13 notas donde suele haber unas 400 el 10-08.
+6. Mi causa más probable es la plataforma (≈60 %); plazo ≈15 %, caída propia de la condición ≈20 %, rechazo al
+   cargar ≈5 %.
+7. No sé el motivo exacto: los envíos no dejan log y `inference.py` no está publicado.
+8. Sobre los cortes: 22 de 145 sesiones por tiempo, todas esperando al modelo; el diff se salva salvo en el
+   rechazo por contexto.
+9. Hallé que los 145 logs por tarea están vacíos y que el motivo del corte se borra cuando la tarea se
+   resuelve.
+10. Propongo no probar más condiciones: vigilar la tabla pública, reenviar (a) como control cuando el flujo
+    esté sano, y antes arreglar el registro.
+
+**QA de parches.**
+1. Afirmo que la ganancia del razonamiento es de pensar y no de presupuesto: las 6 sesiones nuevas usan 34
+   llamadas o menos y dejan su última edición antes de los 240 s; 17 de 18 resueltas caben en los topes
+   viejos.
+2. Afirmo que la tarea perdida se pierde por tomar en serio una prueba visible que afirma el defecto: en la 06
+   editó bien y la vio fallar; en la 07 la vio pasar y no editó.
+3. Afirmo que «ejecuta una prueba y edita solo si falla» no tiene de dónde recuperar: en 13 de 14 parches
+   malos lo único que falla es una prueba que el agente no ve, o una que el evaluador reescribe.
+4. Las dos sesiones que corrieron pytest probaron su propio archivo: una prueba pasaba sin arreglo y la otra
+   se corrigió a sí misma hasta dar verde.
+5. El riesgo es simétrico o peor: 8 de 38 resueltas vieron rojo sobre un parche ya correcto, y el parche
+   oculto reescribe una prueba existente en 28 de 129 tareas públicas.
+6. De 61 sesiones cortadas, 48 son de tareas que nunca se resolvieron en 250 sesiones, 8 se evitaban con otra
+   conducta, 1 con otra regla del arnés y 4 se resolvieron igual. Subir topes no recupera ninguna.
+7. No sé qué dice el resto de la suite visible con cada parche, ni si algún estado intermedio correcto fue
+   sobrescrito.
+8. Propongo, antes de otra condición con GPU, medir en `aal-ensayo:local` los 14 parches malos y los 38 buenos
+   contra las pruebas visibles: es gratis y decide si la señal existe.
+9. Lo único con respaldo hoy es una comprobación de sintaxis antes de entregar: no puede dar falsa alarma
+   sobre un parche correcto, y recupera a lo sumo 1 de 14 aquí.
+10. Mi veredicto se cae si esa tabla da rojo en 5 o más de los 14 malos y en 1 o menos de los 38 buenos.
+
+**Inteligencia pública.**
+1. Afirmo que nuestro «system error» con 0 bytes es una clase que otros tres participantes reportaron sin
+   respuesta del organizador.
+2. Afirmo que no es el mensaje que el foro asocia al plazo de 12 h, que se describe como «notebook timed out».
+3. Afirmo que el primer error no nos costó cupo: dos envíos aceptados el mismo día UTC con tope de uno.
+4. Afirmo que nadie en público declara nota con `include_thoughts: true`; los paquetes de 0,10 o más llevan el
+   razonamiento apagado.
+5. Afirmo que el zip público de 0,13 es reproducible byte a byte desde lo guardado: 4 667 bytes, SHA-256
+   `6b3ebb33…a92f6`.
+6. Afirmo que el techo sigue en 0,24 con un solo equipo y que el grueso subió: 767 equipos con 7 tareas o más,
+   contra nuestras 3 a 4.
+7. Afirmo que no existe vía pública para sacar logs de un envío puntuado; el log por tarea solo existe en
+   corridas propias.
+8. No sé la causa del error, cuánto tardó el segundo, qué pasó en el foro desde el 10-06 ni el método de los
+   equipos de 0,17 o más.
+9. Propongo reabrir el descarte de las dos etapas midiéndolo donde importa: enviar ese zip tal cual, con
+   predicción escrita antes.
+10. Propongo que toda condición con razonamiento pase primero por una corrida propia con `task_results.jsonl`
+    completo antes de gastar otro cupo.
+
+**Auditor del método.**
+1. Afirmo que con 19 tareas y una pasada no puedo decidir nada sobre resueltas: el suelo es de 6 discordantes
+   y una mejora de +2 se detecta 1 vez de cada 100.
+2. Afirmo que el caso usa el vocabulario de ALL y no su bucle: 0 episodios por corrida, `recall` en 1 de 38
+   vueltas, 5 fallos repetidos después de anotados.
+3. Afirmo que 105 de 250 sesiones (01 y 02) y los 4 envíos no dejaron rastro por tarea, y que sobre ellos se
+   tomaron cinco descartes y un envío.
+4. Corrijo a Datito: «3 veces menos en lo oculto» y los dos contrastes con p cercano a 0,05 no se sostienen;
+   «31 nunca resueltas» son 166 sesiones, no 250.
+5. Confirmo su tabla de potencia y la réplica de las 3 tareas nuevas (0 de 9 contra 3 de 3, p = 0,0045), que
+   es efecto de tres cambios juntos.
+6. Sobre los cortes: se anotaron como clase; la causa del corte por tiempo se midió en la vuelta 38, después
+   de mover el tope en la 33.
+7. No sé por qué el zip con razonamiento da error con 0 bytes, ni cuánto rinde Gemma en código no visto, ni si
+   `recall` cambiaría una decisión.
+8. Propongo, en vez de otra condición: adoptar «corrida válida» y «decisión válida», escribir un episodio por
+   vuelta con sus fallos, y no enviar nada que no tenga una corrida válida.
+9. Propongo una regla de parada: 60 tareas no vistas por brazo, McNemar exacto, un contraste por semana, y
+   fecha límite el 2026-10-22 para tener el instrumento externo calibrado.
+
+**zorzALL.**
+1. Afirmo que H-Z1, leída como manda el guion congelado (tareas válidas, por condición, perfil primario), sale
+   «apoyada» en A, H e I: 6 de 15 contra 7 de 45, 5 de 12 contra 2 de 18, y 5 de 7 contra 13 de 22.
+2. Afirmo que eso vale poco: la regla no usa p, el perfil completo es no evaluable en las tres condiciones, y
+   la revisión ya dijo que saldría «apoyada» casi siempre.
+3. Controlando por tarea queda una señal débil del perfil primario (6 contra 3,9 esperadas, p = 0,06) y
+   ninguna de «oye» (4 contra 4,2).
+4. Afirmo que «acierta una vez» describe al agente sin razonamiento (19 de 21 resueltas) y no al que razona (7
+   de 18; 8 entregan más de una vez).
+5. Sobre «probar antes de entregar»: 15 de 145 sesiones prueban tras la última edición, y 3 de ellas
+   entregaron igual un parche que no pasa. Los datos no deciden; son observación.
+6. No sé si obligar a probar ayuda o rompe: nunca se intervino, y TDAD advierte que la instrucción sola puede
+   empeorar.
+7. Propongo registrar una v2 en archivo nuevo, con las 145 sesiones declaradas exploratorias y los umbrales
+   congelados antes de leer tareas no vistas.
+8. Propongo una sola prueba de H-Z2 v2: prueba tras la última edición contra relleno del mismo largo, 60
+   tareas no vistas o más, conteo pareado de rotos y recuperados.
+9. Es mejor que seguir probando condiciones porque ataca una conducta medible y tiene una refutación escrita
+   antes de gastar.
+
+**Datito** (no dejó bloque de parecer; su voto en la convocatoria): cerrar las puertas 1 y 2 con un solo agente
+limpio sobre el rescate `2137Z`, arreglar y ensayar en local el registro de causa por tarea, y no subir, enviar
+ni contratar nada hasta que ese ensayo pase.
+
+**DevOps** (ídem): no contratar nada; primero contrato de registro, manifiesto con bytes y ensayo local de los
+tres cortes, y las puertas 1 y 2 las hace un agente nuevo que no herede este relato.
+
+### Decisión del concilio (seis votos de seis, tras la nota 0,08)
+
+**Se deja de probar condiciones. Primero se arregla el instrumento.** En este orden:
+
+1. **Puertas 1 y 2 del encargo del dueño** (`prompt-reflexion-recursiva-rescate.md`), por un solo agente nuevo
+   que no hereda este relato: recibe el encargo, el rescate, la lista de la puerta 0 y las afirmaciones como
+   frases sin cifras (`concilio_39\afirmaciones_a_verificar.md`). Los informes de los roles se contrastan al
+   final. Si su recuento difiere, vale el suyo y se anota la diferencia.
+2. **Contrato de registro.** Por tarea y con bytes mayores que 0: traza, parche, salida de pruebas, motivo de
+   fin en campo propio aunque se resuelva, reloj del agente sin montaje, y la petición registrada al iniciar,
+   no solo al terminar. Por corrida: log de vLLM, memoria de GPU, y un manifiesto con bytes y huella de cada
+   archivo, escrito también si la corrida muere. La celda final falla si hay un archivo vacío.
+3. **Rescate.** Un archivo exigido de 0 bytes va a `faltantes.json` y el código es 4, nunca 0, con una prueba
+   que falle sin el cambio. Cada lectura de `envios.json` se guarda con su hora; un `error` genérico se anota
+   «sin lectura» y se relee.
+4. **Ensayo local** en `aal-ensayo:local` con el modelo falso: un corte por tiempo, uno por llamadas y un
+   rechazo por contexto, forzados. Pasa cuando los tres dejan causa y petición en vuelo en disco, y cuando
+   vaciar un log a propósito hace salir el rescate con 4. Docker estaba apagado a las 21:40 UTC.
+5. **Medición gratis de QA**: los 14 parches que no pasan y los 38 que pasan contra las pruebas visibles, en
+   local. Decide si «probar antes de entregar» tiene señal. Antes de eso no se registra H-Z2 v2.
+6. **Episodio de esta vuelta** en `learning/episodes/`, con tres lecciones: no afirmar el estado de un envío
+   con una sola lectura; no decir «hay logs» sin mirar bytes; no decidir con 19 tareas.
+
+**Criterio adoptado, pendiente de la aprobación del dueño.**
+
+> **Corrida válida.** Cuenta solo si cada tarea deja en disco, con bytes mayores que 0 y con huella: traza,
+> parche, salida de pruebas y una fila con el motivo de fin aunque se resuelva, más la última petición en
+> vuelo; y si quedan el notebook o zip exacto, el log completo de la sesión y las predicciones fechadas antes
+> de subir. Un envío a la tabla no es una corrida válida: es una nota.
+>
+> **Decisión válida.** Conservar o descartar exige predicción previa con umbral, el mismo conjunto de tareas
+> en los dos brazos, 60 tareas o más por brazo o 6 discordantes a favor, McNemar exacto con p ≤ 0,05 y una
+> repetición de la base en la misma semana. Con menos, el resultado es «exploratorio» y no cambia lo enviado.
+
+**Qué no se hace todavía, y qué lo desbloquea.**
+
+| No se hace | Lo desbloquea |
+|---|---|
+| Subir un notebook o enviar un zip | El ensayo local del paso 4 en verde |
+| Contratar una GPU | El paso 4 en verde, la puerta 2 cerrada y la orden del dueño |
+| Conservar o descartar `i_razona` | Una segunda nota del mismo zip (el 56916129 puede repuntuarse solo) o 60 tareas por brazo |
+| Probar «ejecuta una prueba antes de entregar» | La tabla del paso 5 |
+| Subir topes de tiempo o de llamadas | Nada medido lo justifica |
+
+**Desacuerdos que quedan abiertos, con el dato que los cierra.**
+
+- Qué es un «corte»: 25 (forense) o 61 (QA). Lo cierra una definición única y el recuento de la puerta 2.
+- Si la ganancia del razonamiento cabe en el presupuesto viejo: en llamadas sí (QA); en reloj no se sabe
+  (Datito). Lo cierra el reloj del agente sin montaje, que hoy no se guarda.
+- GPU externa: Datito la propone como salida; auditor, QA y DevOps la ponen después del registro («un
+  instrumento más rápido con logs vacíos pierde más rápido»); inteligencia pública pide antes correr una vez
+  las 9 tareas propias en Kaggle, porque si Gemma resuelve 0 el instrumento externo no tiene señal.
+
+**Lo que no sé.** La causa del error del 56916129. Cuánto rinde Gemma en código que no vio. Qué pasó en el foro
+desde el 2026-10-06. Si el modelo carga con el contexto completo en una GPU de 48 GB.
+
+### Después del concilio, 21:47 UTC
+
+- **Criterio aprobado por el dueño:** «Apruebo el criterio». «Corrida válida» y «decisión válida» quedan vigentes desde hoy.
+- **Episodio de la vuelta:** `learning/episodes/065-issue-103-vuelta-39-concilio-y-registro.json`, en el PR #153 del repositorio (sin fusionar; en revisión independiente). `devlog recall "leer el estado de un envío a Kaggle"` devuelve la lección nueva en una copia local.
+- **Docker encendido por el dueño.** Con eso arrancó el paso 5 del plan: QA mide en local los 14 parches que no pasan y los 38 que pasan contra las pruebas visibles. Sin resultado todavía.
+- **Paso 1 en curso:** un agente nuevo, sin el relato, ejecuta las puertas 0 a 2 del encargo. Sin resultado todavía.
+- Nada se subió, se envió ni se contrató.
+
+### Puertas 0 a 2, por un verificador que no heredó el relato (rescate `2026-10-08T2141Z`, código 0)
+
+Informe completo: `instrumentos\puertas_2026-10-08\informe_puertas.md`. Recibió las afirmaciones como frases
+sin cifras y abrió esta vuelta solo después de dejar sus medidas en disco. Donde difiere, vale su recuento.
+
+| Afirmación del relato | Marca | Su medida |
+|---|---|---|
+| Estado de los envíos; cambió entre rescates | Se sostiene | 56895202 pasó de `error` a `complete`, 0,08; 56916129 sigue en `error`, 0 bytes, sin causa |
+| Qué zip se envió | No medido desde la bajada | Kaggle no deja bajar el zip; el vínculo es la descripción del envío. Los zips locales coinciden |
+| `iteracion-07`, 9 de 10 | Se sostiene | Las 10 ya se habían resuelto alguna vez; ninguna es nueva |
+| «76 corridas y 47 fallos» en 03 a 06 | **Se cae** | Son **135 sesiones** (43, 43, 30 y 19): 30 resueltas y 105 no. El 76 contaba solo las 19 tareas elegidas, sin decirlo |
+| Sesiones que prueban antes de entregar | **Se cae** la cifra | 22 de 135 antes de la primera entrega; 9 de 58 entre los parches que no pasan |
+| El razonamiento alarga la sesión | Se sostiene, confundido | Mediana 81 s sin él y 224 s con él; la condición cambia a la vez el tope de tiempo y el de llamadas |
+| Los logs por tarea tienen contenido | **Se cae** | 145 de 145 `logs\<tarea>.log` con 0 bytes; 155 de 290 `.log` vacíos |
+| Cortes por clase | Se sostiene | 25 en 03 a 07: 22 por tiempo, 2 por llamadas, 1 por contexto. «Esperando al modelo» es inferencia: la petición en vuelo no está en ningún archivo |
+| El parche se conserva tras el tiempo y se pierde tras el contexto | Se sostiene (contexto: n = 1) | `agent_runner.py:758-776` y `:799` |
+| Las resueltas con razonamiento caben en los topes viejos | Se sostiene en llamadas, **se cae en reloj** | 17 de 18 con 40 llamadas o menos; 12 de 18 con 240 s o menos |
+| «13 de 14» parches fallan por una prueba que el agente no ve | **Se cae** la cifra | 69 parches que no pasan; archivo de prueba identificable en 55: nunca aparece en la traza en 41, aparece sin correrse en 12, el agente lo corrió en 2 |
+| Siempre, nunca, a veces (03 a 06) | Se sostiene con otro alcance | 43 tareas: 5 siempre, 32 nunca, 6 a veces |
+| Tanda de repuntuación el 10-08 | Se sostiene | 8 472, 8 660 y 8 703 envíos contados sin moverse el último puntuado. «Puntuación degradada» queda no medido |
+| Precios de GPU y peso del checkpoint | No medido | No abrió ninguna URL; salen de la conclusión hasta que alguien las abra |
+
+**Los dos desacuerdos del concilio, cerrados.**
+
+- «25 cortes o 61»: son 25. La etiqueta `llamadas_agotadas` del notebook no es un corte: es una inferencia
+  por conteo. De 39 sesiones así etiquetadas, 37 terminaron con un `submit_patch` del propio agente.
+- «Cabe en el presupuesto viejo»: en llamadas sí; en reloj, 6 de 18 resueltas con razonamiento pasan de 240 s.
+  La ganancia del razonamiento sí depende del tiempo extra, contra lo que afirmó QA.
+
+**Puerta 2. ¿El log contiene la causa del corte?** Se trunca antes de la causa en **22 de 25** cortes, los 22
+de tiempo: están el límite y la última acción terminada, y no está lo que el modelo generaba al corte. El
+tramo sin registro es de 10 s o menos en 15, de 10 a 60 s en 5 y de más de 160 s en 2. En esos dos el agente
+entregó un parche vacío hacia el segundo 70 y el arnés esperó hasta el tope sin dejar un solo evento. En 4
+cortes (los de tareas que resolvieron) el motivo solo está en el log del notebook. Las 27 sesiones «sin
+parche» entregaron un parche vacío por decisión del agente: no son cortes.
+
+**Fallo del orquestador que esto destapa.** El «76 corridas y 47 fallos» con que abrí la vuelta venía de un
+resumen por tarea de las 19 elegidas, presentado como la clasificación de las iteraciones. El universo real
+es de 135 sesiones. Es el mismo fallo que la vuelta le corrigió a otros: no declarar el universo del conteo.
+
+**Qué cambiar, en una frase del verificador.** Que el notebook escriba por tarea, al enviar cada petición y no
+solo al terminarla, la petición en vuelo y el motivo de fin en un campo que no se borre cuando la tarea
+resuelve, y que `scripts/kaggle_rescate.py` abra los zips «crudo» y mande a `faltantes.json`, con código 4,
+todo log por tarea de 0 bytes en vez de salir con 0.
+
+## Vuelta 40 — 2026-10-08, desde las 22:05 UTC
+
+**Pregunta de la vuelta** (fijada por el dueño): ¿qué corrida debe ser la iteración 08 para que sea la primera
+corrida válida, y qué puede decidir con una semana de cuota?
+
+**Nada se subió, se envió ni se contrató.** Roles con definición escrita desde hoy (`.claude/agents/`, PR #155
+fusionado a las 22:13 UTC). En esta sesión corrieron como agentes genéricos leyendo su definición: una sesión
+no carga las definiciones creadas durante ella.
+
+### Puerta 0
+
+- **Recall** desde `main` al día: 5 lecciones; aplican «una subida a Kaggle por resultado», «no mover el tope
+  de tiempo ni el presupuesto de razonamiento sin mirar los parches cortados» y «leer el zip que de verdad se
+  envió antes de fijar el presupuesto».
+- **Rescate:** valió el de las 21:41 UTC (código 0), hecho por el verificador y no por el orquestador.
+- **Envíos, tres lecturas iguales** (21:37, 21:41 y 22:17 UTC): 0,06 y 0,05 sin razonamiento; 0,08 con
+  razonamiento; el reenvío 56916129 sigue en `error`, 0 bytes, mensaje genérico: «sin lectura».
+
+### Lo que el concilio midió
+
+- **Por qué los logs por tarea pesan 0 bytes** (forense, reproducido en local): `event_display.py:281` del
+  arnés no escribe cuando el proceso es un núcleo Jupyter. 0 bytes frente a 152 en proceso normal; con una
+  línea en el notebook vuelven los 152.
+- **El ensayo local no podía verlo:** corre como programa normal y deja logs de 715 bytes. Su «pasa» en las
+  iteraciones 06 y 07 no validaba el registro. El modelo falso actual no fuerza ningún corte.
+- **Dónde se va el tiempo** (arquitecto): 94 a 99 % del reloj del agente es espera al modelo, que genera a 37
+  a 40 tokens por segundo con y sin razonamiento. El razonamiento cuadruplica los tokens de salida por turno
+  (65 frente a 266) y lleva la tarea de unos 110 a unos 246 s.
+- **`include_thoughts` enciende o apaga el razonamiento;** no lo «muestra». Los dos zips difieren en tres
+  líneas.
+- **El rechazo por contexto ocurrió en el subagente,** que no tiene compactación (851 a 23 527 tokens de
+  entrada en 25 turnos); al fallar se pierde el parche del agente principal.
+- **Las dos entregas vacías colgadas:** el arnés pide un turno más tras `submit_patch` y el servidor siguió
+  generando. Unos 6 min en un envío de 120 tareas.
+- **Potencia** (auditor, con la mezcla correcta): 60 tareas detectan +20 puntos 76 a 94 % de las veces y +10
+  puntos solo 26 a 35 %. El efecto visto del razonamiento es de unos 8 puntos.
+- **«6 pares a favor» solo no basta** (analista): con 103 tareas y sin efecto real sale por azar 13 de cada
+  100 veces.
+- **Solo 30 de las 43 tareas ya corridas son válidas** (auditor).
+
+### Auditoría de la propuesta externa (otro asistente, traída por el dueño)
+
+Los cuatro roles que entregaron coinciden: **acierta en la disciplina y su experimento no decide.**
+
+- Acierta: parar las condiciones nuevas, un cambio por corrida, no repetir tareas ya resueltas, partir del zip
+  barato y «sin registro no hay iteración», dicho con más filo que el concilio.
+- Se cae: «el zip con razonamiento volvió con error y 0 bytes» (puntuó 0,08; lo que está en error es su
+  reenvío); «el zip que sí puntuó» como si fuera solo el de sin razonamiento; «hasta que el mensaje esté
+  copiado» (ya está en `envios.json`; es genérico); `completo: true` leído como «ninguna sesión cortada» (la
+  07 tuvo 3 cortes).
+- La regla «ejecutar las pruebas antes de `submit_patch`» ya está en el `system.md` del zip y el agente la
+  cumple en 22 de 135 sesiones. Las pruebas con que se puntúa no existen para el agente.
+- Correr solo sobre las «nunca resueltas» no tiene control: 0, 1 o 2 resueltas serían indistinguibles de «la
+  regla no hace nada», y no mide lo que la regla rompe.
+- Su puerta de registro (`log.txt` más el JSON de salida) es la de las iteraciones 01 y 02.
+- Falta la medición de QA en Docker, que es el dato que decide la regla.
+
+### Pareceres, copiados tal cual
+
+**Auditor del método.**
+1. Confirmo el universo del verificador: 135 sesiones, 43 tareas (5 siempre, 32 nunca, 6 a veces); solo 30 son
+   válidas.
+2. Retiro tres cifras mías: «15 de 145» (son 17), «3 con parche que no pasa» (son 9) y «43 parches que no
+   pasan» (son 58). Mi recuento de pruebas copió la definición de Datito.
+3. Afirmo que la potencia con la mezcla correcta no cambia la conclusión: 60 tareas detectan +20 puntos 76 a
+   94 % de las veces y +10 puntos solo 26 a 35 %.
+4. Entrego la derivación de las 60 tareas para versionar; el criterio se aprobó antes de tenerla, y esa falta
+   es mía.
+5. Propongo la 08: base, base repetida y base con solo el razonamiento encendido, sobre las 71 válidas sin
+   elegir, McNemar exacto, unas 21 h de cuota (inferido).
+6. Digo sin rodeos: es confirmatoria solo para efectos de 15 puntos o más; con los 8 vistos saldrá «no
+   concluyente» 2 de cada 3 veces, y eso se escribe antes.
+7. Sobre la propuesta externa: acierta en la disciplina; su experimento no tiene control, su regla ya está en
+   el zip y su criterio de registro es el de 01 y 02.
+8. No sé si el contrato de registro y el ensayo local ya están hechos, ni las horas reales de cuota con
+   razonamiento.
+9. Señalo que el criterio «vigente» vive en una rama sin fusionar y que siete afirmaciones de la vuelta 39
+   siguen sin segundo recuento.
+10. Como zorzALL propongo una sola hipótesis nueva, en archivo aparte: edición aceptada en archivo fuente
+    antes de la mitad de las llamadas, leída por tarea.
+
+**Analista de datos.**
+1. Mis cifras de «presupuesto agotado» (57) y «6 resueltas cortadas» se caen; valen 25 cortes y 4. «31 nunca
+   en 250 sesiones» era otro universo: son 32 nunca en 03 a 06, con 93 sesiones.
+2. Reloj todo incluido: 109 s por tarea sin razonamiento y 246 s con él. En 30 h de cuota caben unas 470 a 490
+   tareas-corrida, o unas 210 a 217.
+3. Una decisión válida sobre el razonamiento no cabe con confianza en una semana: 12 % con 60 tareas y 24 %
+   con 103, si el efecto es el medido.
+4. «6 pares a favor» solo no basta: con 103 tareas sale por azar 13 de cada 100 veces.
+5. La 08 que más informa: 60 tareas (30 corridas y 30 válidas nuevas, fastapi primero), dos brazos, más las 9
+   propias. 14,5 h de cuota; 17,8 h con base repetida. Se anota exploratoria.
+6. Las esperas finales cuestan 22 a 29 min en 120 tareas: no son la palanca, pero no dejan evento.
+7. La propuesta externa acierta en parar y registrar. Su corrida no informa: las pruebas de la tarea no
+   existen para el agente, la regla ya está en el zip y 0 de 34 no distinguiría nada.
+8. Sigue sin medirse: Gemma sobre código no visto y el límite de sesión de Kaggle.
+
+**Forense del arnés.**
+1. Afirmo que los logs por tarea salen vacíos por `event_display.py:281`, que no escribe bajo Jupyter; lo
+   reproduje: 0 bytes frente a 152.
+2. Afirmo que el ensayo local de la 07 corre (código 0, 10 tareas) y deja logs de 715 bytes: no reproduce el
+   fallo de Kaggle porque no es un notebook.
+3. Afirmo que `completo: true` y `cortado_por: null` hablan del notebook, no de las sesiones: la 07 tuvo 3
+   cortes por tiempo.
+4. Afirmo que el modelo falso actual no fuerza ningún corte; llamadas, tope del notebook y servidor caído
+   existen solo para la 03.
+5. Propongo seis enganches en el notebook: inicio y fin de petición, motivo de fin, latido con GPU, log entero
+   del servidor, diff al cierre y parche de rich.
+6. Propongo que el rescate abra los zips y mande a faltantes, con código 4, todo log exigido de 0 bytes.
+7. No sé si los enganches de litellm se disparan en la ruta del arnés ni ante una cancelación; lo decide el
+   ensayo.
+8. No sé la causa del 56916129, y un estado de envío no es un desenlace.
+9. Sobre la propuesta externa: acierta en parar y exigir registro; su regla ya está en el zip y su criterio de
+   registro no explica un corte.
+10. Mejor que otra condición: ensayo con cuatro cortes forzados bajo un núcleo real, y no subir la 08 hasta
+    que cada uno deje su causa en disco.
+
+**Arquitecto de IA.**
+1. `include_thoughts` enciende o apaga el razonamiento; el zip A lleva un `thinking_budget` muerto. Los zips
+   difieren en tres líneas.
+2. El modelo decodifica a 37–40 tokens por segundo en 4 × L4; del 94 al 99 % del reloj del agente es espera al
+   modelo. El razonamiento cuadruplica la salida (65 → 266 tokens por turno) y lleva la tarea de 110 a 246 s.
+3. El rechazo por contexto ocurrió en el subagente, que no tiene compactación (851 → 23 527 tokens en 25
+   turnos). «24 577» es un piso, no una medida.
+4. Las dos entregas vacías colgadas: el arnés pide un turno más tras `submit_patch` y el servidor generó sin
+   terminar. Costo: unos 6 min en 120 tareas.
+5. Registro: envolver `LiteLLMClient.acompletion` (`lite_llm.py:497`) y `_run_agent_sandbox`
+   (`evaluate.py:194`), copiar el log del servidor y sondear `/metrics`. El texto parcial no se obtiene sin
+   streaming.
+6. Concurrencia: el arnés la soporta y el notebook no; cambia una condición atada al reloj. No va en la 08.
+7. Iteración 08: A y A′, 60 tareas sorteadas de 129, en serie, 3,9 h, tope de sesión 5 h.
+8. Después, en la misma semana: B (solo razonamiento), T (+30 s) e I (+20 llamadas); 17 a 19 h en total.
+9. Propuesta externa: no adoptarla tal cual. La regla ya está en `system.md`, las pruebas de la tarea no
+   existen para el agente y el conjunto «nunca resueltas» no puede medir daño.
+10. Sin medir: cuota por sesión, compactación del evaluador (5 o 15) y la fecha `lastRunTime` de la 07.
+
+### Desacuerdos abiertos, con el dato que los cierra
+
+1. **Cómo se descuenta la cuota.** Una lectura dice al doble del reloj de sesión; el arquitecto supuso que al
+   reloj. Lo cierra leer la cuota antes y después de la próxima sesión.
+2. **Qué tareas.** Las 71 válidas (auditor); 30 corridas, 30 válidas nuevas y las 9 propias (analista); 60
+   sorteadas de las 129 (arquitecto, aunque 58 de las 129 no discriminan en el sandbox).
+3. **Qué brazos.** Base y repetición primero (arquitecto); base, repetición y solo razonamiento (auditor); el
+   zip con los tres cambios (analista).
+4. **Enganche del registro.** Callbacks (forense) o envoltorio de la llamada (arquitecto, porque los callbacks
+   no ven una cancelación). Lo cierra el ensayo local con un corte forzado.
+5. **Criterio «60 tareas o 6 pares».** Los 6 pares solos no bastan. Decisión del dueño.
+
+### Fallos del orquestador en esta vuelta
+
+- La convocatoria dio a los roles una cifra equivocada: «10 a 24 mil tokens por turno». Medido: 8,7 a 17,7 mil.
+- Llamó «razonamiento visible» a un cambio que enciende o apaga el razonamiento.
+- Dio por vigente un criterio que aún no estaba en `main`.
+- Puso a diseñar la 08 sobre un plan cuyos pasos de registro y ensayo no estaban hechos.
+- La convocatoria llevó cifras del verificador, no «solo archivos».
+
+*Pendiente al escribir esto: la medición de QA en Docker y el verificador limpio del concilio 40. La decisión
+va en la parte siguiente.*
+
+### Cierre del concilio 40 (QA y verificador limpio)
+
+**El dueño detuvo la medición de QA en Docker** («ha demorado mucho»): iba en la tarea 19 de 29 de su segunda
+pasada. QA entregó con lo que había en disco; la pasada del parche de referencia no corrió.
+
+**QA de trayectorias, medido en local** (parches contra las pruebas visibles, comparando con la base):
+
+| Universo | Parches malos en rojo | Parches buenos en rojo (falsa alarma) |
+|---|---|---|
+| Las 19 tareas elegidas (14 malos, 38 buenos) | 5 de 14 | 3 de 38 (2 sin medir por tope de tiempo) |
+| Resto, parcial (fastapi) | 6 de 20 | — |
+| Suma fiable | 11 de 34 | — |
+
+- Quedan sin medir 35 de los 69 parches que no pasan: 21 por la detención y 14 de un repositorio cuyo control
+  no es fiable (falla en 5 de 15).
+- El control local coincide con Kaggle en 72 de 72 sesiones de los otros dos repositorios.
+- La señal sale casi solo de la **suite completa comparada con la base**, que la instrucción del zip prohíbe.
+  El archivo de prueba «de la tarea» no existe para el agente en 24 de 48 parches malos medidos.
+- La suite ya viene roja en la base en 33 de 33 tareas: sin comparar, alarma siempre.
+- Punto ciego: 9 a 18 % de las pruebas visibles dan error de entorno en la base; causa no medida.
+
+**Parecer de QA, copiado tal cual.**
+1. Medí en Docker 52 sesiones de las 19 tareas elegidas y 35 más del resto; el control coincide con Kaggle en
+   72 de 72 de rich y fastapi, y falla en 5 de 15 de requests, que dejo fuera.
+2. Retiro mi frase de la vuelta 39: las pruebas visibles sí delatan parches malos, 5 de 14 en las 19 tareas y
+   11 de 34 en lo medido.
+3. Falsa alarma sobre parches buenos: 3 de 38; sin razonamiento, 1 de 20.
+4. La señal sale casi solo de la suite completa comparada contra la base; el archivo «de la tarea» no existe
+   para el agente en 24 de 48 parches malos.
+5. La suite ya viene roja en la base en 33 de 33 tareas: la regla externa, leída literal, alarma siempre o no
+   ve nada.
+6. Punto ciego: 9 a 18 % de las pruebas dan error de entorno en la base (0 % rich, 13 % fastapi, 32 %
+   requests); causa no medida.
+7. Quedan sin medir 35 de los 69 parches malos y la pasada del parche de referencia.
+8. Una señal roja no es un arreglo: no sé si Gemma corrige al verla.
+9. Mi veredicto: no decide; no probar la regla como está escrita.
+10. Propongo terminar en local las 21 sesiones pendientes y la pasada de referencia antes de gastar cuota, y
+    solo entonces ensayar «suite antes y después» como exploratoria.
+
+**Verificador limpio** (rescate propio `2026-10-08T2231Z`, código 0; 16 afirmaciones sin cifras; informe en
+`concilio_40\verificador-limpio\informe_verificador.md`). Donde difiere, vale su recuento.
+
+| Afirmación | Marca | Su medida |
+|---|---|---|
+| La cuota se descuenta al doble del reloj | Se sostiene el factor | 2,00 con el par de lecturas alrededor de una sesión; 1,73 a 1,79 con otra lectura. Ninguna lectura cubre una sesión con razonamiento. El «al reloj» del arquitecto se cae |
+| Segundos por tarea-corrida | Se sostiene | 109,4 sin razonamiento (99,8 en tareas válidas) y 246,0 con él. Antes de la primera tarea: 479 a 1 337 s |
+| Velocidad del modelo | Se sostiene | 36,6 a 39,8 tokens por segundo; 64 y 256 tokens de salida por turno |
+| «94 a 99 % del reloj es espera al modelo» | Se cae la cifra | 90 a 92 % sin razonamiento y 98 % con él, sobre el bucle del agente |
+| El rechazo por contexto ocurrió en el subagente | Se sostiene | 851 a 23 527 tokens en 25 turnos. No es el único: hay otro en la iteración 02 |
+| El arnés pide otro turno tras `submit_patch` | Se sostiene | 121 de 123 entregas tienen un turno posterior. «El servidor siguió generando» queda no medido |
+| Causa de los logs por tarea de 0 bytes | Se sostiene, reproducida | 145 de 145; 169 bytes en proceso normal y 0 bajo la detección de Jupyter. Ya son dos mediciones |
+| El ensayo local no corre como notebook | Se sostiene | Ejecuta las celdas con `exec` en un proceso normal |
+| El zip ya ordena verificar con una prueba | Se sostiene | `prompts/system.md`, líneas 4 y 26 |
+| Las pruebas que puntúan no existen para el agente | Se sostiene con matiz | Faltan los casos con que se puntúa; en 85 de las 129 tareas el archivo de prueba sí está, sin esos casos |
+| «41 de 55» | Se sostiene con su definición | Con el archivo del parche de pruebas: 69 parches, aparece en 18 y el agente lo ejecutó en 7 |
+| Tareas válidas | Se sostiene | 129 públicas; válidas 103 según un archivo de validez y 71 según el otro; corridas 43, de ellas 30 válidas |
+| Un registro por callbacks no ve una cancelación | Se cae como frase general | El callback de antes de la llamada sí se dispara; los de éxito y de fallo, no |
+| Los dos zips difieren en tres líneas | Se sostiene | — |
+
+**Su cuenta.** En 30 h de cuota caben 465 a 535 tareas-corrida sin razonamiento y 213 a 215 con él (factor 2).
+Una corrida de 60 tareas en dos brazos sin razonamiento cuesta **6,9 a 9,0 h de cuota**, caso central 7,5 h, y
+necesita dos sesiones: 120 tareas no caben en el tope de 9 000 s que usan los notebooks.
+
+### Desacuerdos, cerrados o no
+
+1. **Cuota:** cerrado a favor del doble (o 1,76). Las 3,9 h del arquitecto eran reloj, no cuota.
+2. **Enganche del registro:** cerrado a medias. El diseño del forense (emparejar inicio y fin; un inicio sin
+   fin es la petición cortada) funciona con el callback de antes de la llamada. El texto parcial sigue sin
+   poder guardarse.
+3. **Qué tareas:** abierto en un punto nuevo: hay dos archivos de validez (103 y 71 tareas). Se sortea dentro
+   del más estricto, las 71, con semilla fechada.
+4. **Qué brazos:** se adopta el orden del arquitecto con el brazo del auditor: primero base y repetición;
+   después solo el razonamiento.
+5. **«60 tareas o 6 pares»:** sigue abierto; es del dueño.
+
+### Decisión (aprobada por el dueño: «De acuerdo, empieza por el cambio al rescate»)
+
+**Iteración 08: la base y su repetición, sin ningún cambio en el agente, con el registro nuevo.**
+
+| Campo | Valor |
+|---|---|
+| Condición | Zip sin razonamiento (`d8a3e1d3…`), dos pasadas sobre las mismas tareas |
+| Tareas | 60, sorteadas con semilla fechada dentro de las 71 válidas |
+| Qué es | Exploratoria en resueltas; válida en su registro. Mide el ruido entre dos pasadas idénticas |
+| Costo | 6,9 a 9,0 h de cuota (central 7,5 h), en dos sesiones. Se lee la cuota antes y después de cada una |
+| A fechar antes de subir | Resueltas por brazo, discordantes entre pasadas, cortes por tiempo, y que todo corte deje su petición en vuelo |
+| La refuta | 6 o más discordantes entre las dos pasadas, o un corte sin causa en disco |
+| Brazo siguiente, misma semana | Solo el razonamiento encendido, con 4 minutos y 40 llamadas |
+
+**Antes de subir nada:** (1) el rescate abre los zips y un log exigido de 0 bytes es un faltante con código 4
+(issue #156, en curso); (2) el notebook con los seis enganches de registro y la línea que devuelve los logs
+por tarea; (3) el ensayo local bajo un núcleo Jupyter real con cuatro cortes forzados.
+
+**No se hace:** la propuesta externa tal cual; contratar GPU; concurrencia; reenviar o enviar.
+
+**Queda para después, en local y gratis:** las 21 sesiones que QA no midió y la pasada del parche de
+referencia. Con eso se sabrá si «suite antes y después» merece un brazo exploratorio.
+
+### Fallos del orquestador, añadidos
+
+- Dejé correr casi una hora una medición que no bloqueaba la decisión, y avisé al dueño una y otra vez que
+  «todavía no llega» en vez de entregar la recomendación con lo que había.
+- Repetí el costo del arquitecto (3,9 h) sin decir que era reloj y no cuota.
+
+### Estado al cierre y cómo retomar (2026-10-08, hacia las 22:50 UTC)
+
+El dueño cerró la sesión: «Cierra por ahora, documenta todo. Próxima sesión sigo».
+
+**Hecho y verificado.**
+- PR #153 (episodio 065, vuelta 39) fusionado a las 22:01 UTC; PR #155 (staff de experimento) fusionado a las
+  22:13 UTC. En `main`: siete definiciones nuevas en `.claude/agents/`, el procedimiento de una vuelta y el
+  criterio de corrida válida y decisión válida en `CONTRIBUTING.md`, y las skills `corrida-valida` y
+  `concilio-de-experimento`.
+- Decisión sobre la iteración 08 tomada y registrada arriba.
+
+**A medias.**
+- **Issue #156** (el rescate abre los zips; un log exigido de 0 bytes es un faltante con código 4): lo
+  implementaba un agente con Sonnet en `F:\Code\ALL-wt-rescate-bytes`, rama `issue-156-rescate-bytes`. Al
+  cerrar tenía cambios sin commit en el guion, su prueba, el documento del rescate y el registro de cambios.
+  Comprobar si llegó a abrir PR; si no, retomar en ese árbol. Episodio reservado: 067.
+  *Actualización, misma noche:* terminó y abrió el **PR #158** (sin fusionar). Las pruebas nuevas fallan sin el
+  cambio; sobre el rescate `2026-10-08T2217Z` el guion sale ahora con 4 y lista 145 miembros exigidos de 0
+  bytes. Pasó a revisión de código independiente; falta su dictamen, la CI y la palabra del dueño para fusionar.
+- **PR #157** (episodio 068, esta vuelta): abierto, sin revisión independiente y sin fusionar.
+- **Issue #154:** cerrado por la fusión pero sin confirmar. Falta ver las siete definiciones cargadas en una
+  sesión nueva.
+- **Medición de QA en Docker:** detenida. Faltan 21 sesiones y la pasada del parche de referencia. Datos en
+  `instrumentos\concilio_39\qa\`.
+
+**Sin empezar.**
+- Los seis enganches de registro del notebook y la línea que devuelve los logs por tarea.
+- El ensayo local bajo un núcleo Jupyter real con cuatro cortes forzados (a la imagen le faltan dos paquetes).
+- El sorteo fechado de las 60 tareas y las predicciones de la iteración 08.
+
+**Pendiente del dueño.** Si el criterio exige siempre la prueba exacta además de los «6 pares».
+
+**Para retomar.** Sesión nueva en el repositorio; `devlog recall`; leer esta vuelta; mirar el estado de #156
+y #157; seguir con el registro del notebook. La instrucción para orquestar una vuelta está en
+`prompt-concilio-de-experimento.md`, en la raíz del repositorio y sin versionar.
+
+Nada se subió, se envió ni se contrató en las vueltas 39 y 40. No quedó ningún contenedor corriendo.
+
+### Sesiones de continuación (2026-10-08, 23:43 UTC, y 2026-10-09, desde las 00:05 UTC)
+
+**Sesión de las 23:43 UTC: se cortó a las 23:49 UTC sin registrar nada.** Reconstruida desde su transcripción
+y desde GitHub:
+
+- Pasó el PR #157 por `revisor-docs`: aprobado con ocho observaciones de redacción, ninguna cifra retirada.
+  Siete se aplicaron en el commit `b354488`; la octava (la regla de leer la cuota «sin otra sesión entre
+  medias») el revisor la dio por aceptable como práctica.
+- Abrió el issue #160 (notebook de la iteración 08 con registro y ensayo bajo núcleo real), talla L, con su
+  tarjeta, y fijó en un comentario la semilla del sorteo: `ALL-kaggle-iteracion-08-2026-10-08`. El comentario
+  dice «23:55 UTC» pero GitHub lo fecha a las 23:48:54 UTC: vale la hora de GitHub.
+- El #159 es el mismo issue creado por error con la cuenta `vinculaterritorio`; quedó cerrado como «no
+  planeado» y sin tarjeta.
+- Lanzó el revisor de código del PR #158 y el implementador del #160. Los dos murieron con la sesión: el
+  revisor sin dictamen, el implementador a los 20 segundos, sin rama ni archivos.
+
+**Sesión de las 00:05 UTC.**
+
+- PR #157 fusionado: `mergedAt` 2026-10-09T00:10:57Z, commit `49294a5`, 12 de 12 comprobaciones en verde. El
+  episodio 068 está en `main`.
+- Issue #154 confirmado: las siete definiciones del staff de experimento aparecen en la lista de agentes de
+  una sesión nueva; comentario de evidencia en el issue y tarjeta en *Verificada*. Ninguno de los siete roles
+  se convocó aún con la definición cargada.
+- Relanzados, con el mismo encargo: `revisor-codigo` sobre el PR #158 e `implementador-opus` sobre el #160
+  (árbol `F:\Code\ALL-wt-registro-08`, rama `issue-160-registro-notebook-08`, instrumentos en
+  `instrumentos\iteracion_08\`).
+
+**PR #158 (rescate que mira bytes): tres revisiones y dos recuentos antes de fusionar.**
+
+- Primera revisión (`d0f5051`): aprobado con observaciones. Los ocho criterios cumplen; 7 de 26 defectos
+  inyectados no los detectaba ninguna prueba.
+- **Fallo del orquestador.** Al corregir añadí pruebas y, sin que nadie lo pidiera, cambié la regla (decidía
+  la carpeta conocida más externa). Lo subí (`578de13`) y avisé al dueño de que «ese trozo no pasó por el
+  revisor» mientras esperaba la CI para fusionar. El dueño: «si no pasó por el revisor debes pasarlo siempre
+  por ese ciclo, claude y datito, esto no es un juego».
+- Segunda revisión (`578de13`) y primer recuento de Datito. El revisor midió que el cambio aflojaba la
+  detección: un log vacío bajo `test_outputs/<tarea>/logs/` dejaba de dar código 4. Datito, contando desde los
+  zips crudos con código propio: 93 zips de salida en 11 rescates, 5 043 miembros, 1 574 de 0 bytes (1 191 en
+  `logs/`, 311 en `patches/`, 72 en `test_outputs/`); 0 cambian de clasificación entre versiones; ninguna ruta
+  real trae dos carpetas conocidas; el tamaño declarado coincide con el real en todos.
+- Retiré el cambio (`bde8104`): la revisión de zips vuelve a ser la de `d0f5051`. Única línea de código
+  distinta: `--sin-red` busca los zips sin distinguir mayúsculas en la extensión, como la bajada (hallazgo de
+  la segunda revisión).
+- Tercera revisión (`bde8104`): apto para fusionar, observaciones menores. 38 defectos inyectados, 32
+  detectados; de los 6 que sobreviven, dos solo sobreviven en Windows y ninguno cambia el código de salida
+  hacia el silencio. Segundo recuento de Datito: salida idéntica byte a byte entre `d0f5051` y `bde8104` en
+  las 14 carpetas con fecha; su cuenta coincide con el guion (43, 43, 86, 116, 135 y 145 cinco veces).
+- Fusionado: `mergedAt` 2026-10-09T01:10:20Z, commit `d8b95f7`. Desde `main`, `--sin-red` sobre una copia de
+  `2026-10-08T2217Z` sale con 4 y lista 145 (43, 43, 30, 19, 10).
+- Lo que Datito encontró y nadie había mirado: el rescate `2026-10-06T185453Z` está anidado un nivel de más;
+  apuntando a la carpeta externa el guion sale con 2 (entrada inválida) sin mirar sus zips, y apuntando a la
+  subcarpeta da 4 y 43. Ni el arreglo de las mayúsculas ni el filtro de carpetas los ejerce ningún dato real.
+- Observaciones que quedan sin atender (no bloquean): faltan casos negativos para `x_task_results.jsonl` y
+  `mypatches/`; ni el prefijo `salida__` ni el orden de revisión están fijados por una prueba; un zip sin
+  ningún log sale con 0 (fuera del alcance del #156); el episodio 067 narra la segunda revisión dentro de un
+  `error` y no como paso propio.
+
+**PR #161 (issue #160: notebook de la iteración 08 con registro, y ensayo bajo núcleo real).** Abierto por el
+implementador hacia las 01:45 UTC, CI en verde. Declara 8 de 10 criterios cumplidos; el 3 en parte (el tope
+de llamadas y el tope de sesión del notebook cortan sin petición en vuelo; una sesión muerta desde fuera no
+deja diff al cierre, solo el del último latido). Tres decisiones suyas fuera del issue: parche de `rich`
+estrecho en vez de la línea global (que multiplicaba por 96 la salida de la celda), un séptimo enganche
+`agente_fin`, y tope de sesión a 150 min sin medir si caben 60 tareas. En revisión de código.
+
+**Recuento de Datito sobre el ensayo (parecer, resumido; su informe completo está en la sesión).**
+- Reproduce todas las cifras del implementador: 6 de 6 logs en 0 bytes sin parche y 26 de 26 con 721 a 722
+  bytes con él; 78 inicios y 78 fines sin huérfanos; `registro/` de 273 337 bytes; 246 latidos sin huecos; los
+  cinco cortes; el sorteo exacto (71 con `clase == "discrimina"`, 60 sorteadas: 33 de rich y 27 de fastapi);
+  las 194 huellas.
+- Matiz: en la sesión muerta desde fuera, el zip se empaqueta antes de la muerte y no muestra el corte; la
+  evidencia está en los archivos sueltos de `working/`.
+- **Hallazgo nuevo, medido en las corridas reales** (12 zips distintos, iteraciones 03 a 07, 145 sesiones): 4
+  sesiones figuran como resueltas y fueron cortadas por tiempo en mitad de una acción, sin `error_message`
+  (2 en la 06 y 2 en la 07): 4 de 39 resueltas; en 06 y 07, 4 de 18. Otras 4 pasaron el tope y sí cerraron la
+  traza (2 resueltas). Ninguna cortada por llamadas figura como resuelta. Las 145 filas dicen `SUCCESS`; solo
+  21 llevan `error_message`. Señal usada: duración mayor o igual al tope y traza sin mensaje final.
+- Lo que el ensayo no cubre: usa las 26 tareas ya corridas (las únicas con snapshot local); las 34 nuevas del
+  sorteo no las ha visto. El modelo falso repite una forma de 3 peticiones, sin peticiones de resumen.
+- Costo del registro: unos 38 ms por petición; 0,7 % del tope de 4 min en una tarea de 40 llamadas
+  (extrapolado). La comparación con y sin enganches es de 3 corridas contra 3: p mínimo posible 0,10.
+- Inferido, sin medir: a ~245 s por tarea (iteraciones 06 y 07), dos pasadas de 7 200 s dan unas 58 tareas,
+  menos que 60.
+- Otra lectura del universo: «el dorado resuelve» da 74 y no 71; el sorteo usa 71.
+
+**Preguntas que esto abre para el concilio y el dueño, antes de leer la iteración 08:** si una sesión cortada
+cuyo parche pasa cuenta como resuelta; y si los topes dejan caber 30 tareas por pasada.
+
+**Dictamen del revisor de código sobre el PR #161 (`1c0b7dc`): aprobado con observaciones.** Ningún enganche
+cambia lo que el arnés devuelve; el notebook difiere del de la 07 solo en lo declarado (comparado celda a
+celda sin `armar.py`); el sorteo se reproduce. Defectos devueltos al implementador antes de fusionar:
+`diagnosticar` da por «completa» una sesión con los enganches fallados y 0 peticiones; marca como «en vuelo»
+una petición que falló y se recuperó; pisa los datos de una tarea repetida; confunde un archivo ilegible con
+«difiere»; el notebook no se detiene si un enganche falla; 13 de 56 defectos inyectados sobreviven; el
+episodio dice 2381 pruebas y son 2409. Sin verificar para subir: que el arnés de las ruedas de Kaggle tenga
+`agent_runner.Console` como el de la imagen local, de lo que depende el parche de `rich`.
+
+**Decisiones del dueño (2026-10-09, hacia las 02:20 UTC):** «Acepto tu recomendación, y en la 2 fijarlos».
+1. El criterio 3 del #160 se acepta como cumplido con su límite: el tope de llamadas y el tope de sesión del
+   notebook cortan entre peticiones y no tienen petición en vuelo; la sesión muerta desde fuera no deja diff
+   al cierre. Comentario en el issue #160.
+2. Se fija antes de leer la iteración 08 cómo cuenta una sesión cortada cuyo parche pasa. La redacción es del
+   orquestador (comentario en el issue #103): la cifra principal es `resolved` del arnés, como en 03 a 07;
+   cada sesión lleva su marca de corte; todo informe da las dos cifras juntas; los criterios fechados se leen
+   con la principal y se dice cuántas discordancias tienen una sesión cortada; hacia atrás no se reescribe.
+   El dueño puede corregir la redacción antes de subir.
+
+**PR #161, segunda ronda (commits `41ec1c5` y `34a0b7c`; hacia las 03:40 UTC).** El implementador corrigió el
+diagnóstico (códigos 0 completa, 2 ilegible, 3 cortada por el notebook, 4 registro no fiable, 5 muerta desde
+fuera), añadió dos guardias al notebook y la orden `comprobar` (rescate más diagnóstico), y repitió la batería
+entera (16 escenarios; la anterior se sobrescribió).
+
+- Segundo recuento de Datito: el notebook en disco lleva el código de enganches de `34a0b7c` byte a byte; los
+  16 escenarios dan el código que predijo antes de ejecutar; cortes, logs, latidos, sorteo y 236 huellas se
+  reproducen. Hallazgos: `diagnosticar` solo da 0 sobre una corrida con los 6 logs vacíos (solo `comprobar` la
+  ve); en la guardia del log el zip se empaqueta antes de la guardia y, leído solo, da 5 en vez de 4; un
+  veredicto dice «registro no fiable» y «sesión completa» a la vez; el ensayo late cada 2 s y el notebook real
+  cada 30 s; el notebook de la segunda pasada nunca se ejecutó; `armar.py` y los notebooks no están
+  versionados; nueve escenarios corrieron en paralelo; el «1,35 veces» del parche de `rich` solo sale con una
+  medida no declarada; la sincronización a disco subió de 16–36 a 47–86 ms entre baterías, sin causa medida.
+- Segunda revisión de código: **cambios requeridos antes de fusionar**, uno: `comprobar` salta en silencio un
+  notebook sin registro y sale con 0. No bloquean: la guardia tras la primera tarea no mira `diff_cierre` ni
+  `agente_fin`; `comprobar` pierde el resultado del rescate si ningún notebook trae registro; tipos
+  equivocados dan código 1; textos inexactos. De 78 defectos inyectados sobreviven 5; uno toca el arnés (la
+  parada del sandbox fuera del `finally`, sin prueba con cancelación).
+- Devuelto al implementador con una lista de diez puntos; después, tercera revisión y tercer recuento.
+
+**PR #161, tercera ronda (commits `20b6136` y `f89a375`; hacia las 04:10 UTC).** El implementador arregló
+`comprobar` (lista los notebooks omitidos), añadió a la guardia la exigencia de `agente_fin` y `diff_cierre`,
+ejecutó la pasada 2, reempaquetó el zip tras la guardia y repitió la batería (18 corridas válidas).
+
+- Tercer recuento de Datito: todas las cifras se reproducen; los 19 escenarios dan el código predicho; el
+  registro del zip y el suelto son idénticos en las guardias; 49 de 49 defectos detectados, repetido por él.
+  Señala: una sesión colgada sale con 5 («muerta desde fuera») aunque su latido siga; un tope de tarea no
+  cambia el código de salida; los instrumentos no están versionados; no se ensayó la cadencia real (latido de
+  2 s y tope de 45 s contra 30 s y 150 min). Cero cuelgues en 60 tareas en modo `archivo`: acota la tasa por
+  debajo del 5 % por tarea, nada más.
+- Tercera revisión de código: **cambios requeridos, uno**: `comprobar` sale con 0 si una pasada muere antes de
+  instalar el registro (el servidor no arranca en la celda 7 y el registro nace en la 8) y la otra sale bien.
+  Los otros nueve puntos, resueltos. De 50 defectos inyectados sobreviven 6. Sin interbloqueo visible en los
+  enganches.
+- Devuelta una cuarta ronda mínima (05:00 UTC): la orden recibe la lista de pasadas esperadas y exige registro
+  en cada una. Sin tocar el notebook ni los enganches.
+
+**Una corrida del ensayo se colgó: parecer del forense del arnés (05:10 UTC), resumido.**
+- Hecho medido: el escenario `parche_global` se paró a las 03:41:16 UTC entre `tarea_inicio` de su tercera
+  tarea y la primera petición. Arranque del sandbox terminado, log por tarea en 0 bytes, ninguna petición al
+  servidor, latido vivo 16 minutos. Lo mató el implementador.
+- Causa más probable (cerca del 75 %, inferida; el cuelgue no se reprodujo en 9 corridas): bucle infinito en
+  `ipykernel 6.29.5`, `iostream.py:516`. El núcleo guarda un mapa de hilo a padre por identificador de hilo,
+  los identificadores se reutilizan, y `run_sync` crea un hilo nuevo por tarea: bajo carga el mapa puede
+  cerrar un ciclo y la primera escritura a stdout desde ese hilo no vuelve.
+- Medido en la imagen: el ciclo construido a mano bloquea la escritura con la CPU girando; la carrera natural
+  da 4 a 7 ciclos en 1 000 a 1 500 fronteras con la máquina cargada y 0 de 3 000 sin carga.
+- Descartado: interbloqueo en el registro (el latido tomó el candado unas 450 veces tras el paro) y el
+  servidor falso.
+- **Puede ocurrir en el modo `archivo`, el que iría a Kaggle** (certeza del forense, cerca del 90 % en esta
+  imagen): el arnés escribe a stdout desde el hilo de la tarea cuando salta un tope, y los logs reales traen
+  cientos de avisos. En contra de una tasa alta: 310 tareas en 8 sesiones reales sin un cuelgue así.
+- **Ningún tope lo corta:** el tope de 4 min no interrumpe un bucle síncrono, el de sesión solo se mira entre
+  tareas y `run_sync` espera sin tope. Giraría hasta que Kaggle mate la sesión.
+- Arreglo que propone, sin aplicar: vaciar ese mapa antes de cada tarea o usar un único grupo de hilos para
+  toda la sesión; y esperar cada tarea con tope, volcando la pila y cerrando el registro si vence.
+- Sin medir: la versión de ipykernel de Kaggle y la pila del proceso colgado.
+
+**Condición nueva antes de subir** (no bloquea fusionar el #161, porque el arreglo es del notebook): tope por
+tarea y vaciado del mapa de hilos en la celda 10, ensayados bajo el núcleo. Es un issue aparte.
+
+**Experimento nuevo, pedido por el dueño (04:50 a 05:10 UTC): caja `experiments/azar/`.** Issue #162, PR #163.
+Pregunta general: si un sistema físico hecho para dar azar tiene estructura predecible. Pregunta con que
+arranca, fijada por el dueño: «¿podemos predecir el error antes que ocurra?», aplicada al propio proceso.
+Contiene el documento de entrada, un estado del arte verificado por `investigador-papers` (corrigió cinco
+datos que el orquestador había dicho de memoria) y un pre-registro con seis predicciones fechadas, cuatro de
+ellas sobre los PR #161 y #163. Al añadir su episodio falló una prueba de la bitácora que en `main` pasaba
+con un margen de 0,01; se arregló en el mismo PR. En revisión: `revisor-docs`, `revisor-codigo` y Datito.
+
+**PR #161 fusionado (05:27 UTC), tras cuatro revisiones de código y cuatro recuentos.**
+- Cuarta ronda (`f5c1e62`, cabeza `90e6b31`): `comprobar` recibe las pasadas esperadas con `--notebook`
+  repetible y exige registro en cada una; sin pasadas nombradas nunca sale con 0. Sin tocar el notebook ni
+  los enganches.
+- Cuarto recuento de Datito: todas las cifras se reproducen; los 8 casos nuevos y los 18 escenarios dan el
+  código que predijo. Encontró que `comprobar` da 0 sobre corridas incompletas fabricadas a mano (un registro
+  con 1 de 3 tareas o con ninguna, la pasada 2 copiada de la 1, tareas fuera del sorteo): la orden no lee el
+  sorteo ni cuenta tareas.
+- Cuarta revisión: **apto con observaciones no bloqueantes**. Ocho entradas sintéticas salen con 0 sin
+  merecerlo y ninguna la produce el notebook armado (inferido leyendo las celdas 8, 10 y 11, no ejecutado):
+  todo corte del notebook deja un evento `corte`. De 48 defectos inyectados sobreviven 9, dos equivalentes.
+- Observaciones que quedan sin atender (no se editó nada entre el dictamen y la fusión): el nombre de una
+  pasada lo decide el sistema de archivos y dos alias de la misma carpeta dan 0 con dos pasadas en el JSON;
+  con dos registros en una carpeta se lee el primero en silencio; no se comprueba que el registro sea de la
+  pasada nombrada, cuántas tareas corrió ni que exista su zip; la salida redirigida en Windows no es UTF-8.
+  Conviene cerrarlas antes de dar por bueno el 0 de una corrida real.
+- Sin verificar: qué devuelve Kaggle como salida de un notebook con una versión anterior completa y la última
+  fallida; `comprobar` no ata el registro a una versión ni a una fecha.
+- `mergedAt` 2026-10-09T05:27:08Z, commit `e6b8f66`. Con esto, dos de las tres condiciones para subir están
+  en `main` (rescate que mira bytes; notebook con registro y ensayo bajo núcleo real). Se suma una cuarta
+  condición, la del forense: issue #164.
+
+**Predicciones del experimento azar con desenlace** (pre-registro en el PR #163): la 1 (la cuarta revisión
+exige un cambio, 0,45) no ocurrió; la 2 (encuentra otro «da por bueno» alcanzable, 0,35; la historia decía 3
+de 3) no ocurrió; la 3 (el recuento contradice una cifra, 0,10) no ocurrió, marcada por Datito; la 4 (la
+revisión de documentos halla una frase que dice más que la fuente, 0,65) ocurrió; la 5 (CI del primer commit
+en verde, 0,80) ocurrió. Cinco casos: no se lee nada con menos de 100.
+
+**PR #163 (caja azar), revisiones.** Documentos: aprobado con observaciones (hora del pre-registro
+equivocada, predicciones no comprobables por un tercero). Datito: tres de seis líneas base mal o sin contar;
+con 30 predicciones el diseño no decide; faltaba una clase de fallo. Código: apto con observaciones, y dos
+afirmaciones del orquestador eran falsas (la causa del fallo de la prueba era el decaimiento de las aristas,
+no `update_docs`; `main` no habría fallado al fusionar los dos PR). Corregido en `f7af948` y `d929b25`; en
+segunda revisión.
+
+**Issues abiertos con estimación:** #164 (tope por tarea y mapa de hilos), #165 (roles del lazo de
+predicción), #166 (skill «predecir-e-investigar»), #167 (`devlog base-rates`).
+
+**Cierre del avance (06:05 UTC).**
+- Issue #160 confirmado: CI de `main` en `e6b8f66` con 12 de 12 en verde, sorteo reproducido desde `main`,
+  comentario de evidencia con lo que el cierre no cubre, tarjeta en *Verificada*.
+- PR #163 fusionado tras cuatro revisiones de documentos, una de código y un recuento (`mergedAt`
+  2026-10-09T05:48:58Z, commit `3a55b08`). Issue #162 confirmado: CI de `main` con 12 de 12 en verde.
+- Predicción 6 del experimento azar (que `main` quede en verde tras fusionar los dos PR sin commit de arreglo,
+  0,75; la historia da 0,97): ocurrió. Seis predicciones cerradas: tres «no ocurrió» con probabilidades de
+  0,45, 0,35 y 0,10, y tres «ocurrió» con 0,65, 0,80 y 0,75. No se calcula nada con seis.
+- Lo que las revisiones corrigieron al orquestador en el PR #163: cinco de unas veinte obras citadas de
+  memoria, tres de seis líneas base, la causa de un fallo de prueba, una CI dada por «en curso» que ya había
+  terminado y una regla de lectura que afirmaba y refutaba a la vez.
+
+### Estado al cierre y cómo retomar (2026-10-09, 06:10 UTC, sin agentes en curso)
+
+**Hecho y verificado.** PR #153, #155, #157, #158, #161 y #163 fusionados. Issues #154, #156, #160 y #162
+confirmados, con evidencia y tarjeta en *Verificada*. `experiments/azar/` está en `main`.
+
+**Condiciones para subir la iteración 08.** En `main`: rescate que mira bytes; notebook con registro y ensayo
+bajo núcleo real. Faltan: el tope por tarea y el arreglo del cuelgue (#164); las predicciones fechadas de la
+corrida, que escribe el concilio; medir si caben 60 tareas en 7 200 s por pasada. Subir necesita la orden del
+dueño.
+
+**Abierto, con estimación, sin empezar** (cada uno lleva predicción previa en el pre-registro del
+experimento azar):
+- #164 (M, Opus): tope por tarea y vaciado del mapa de hilos en el notebook de la 08.
+- #165 (M, Opus): roles del lazo de predicción (pronosticador, marcador de desenlaces, probador adversarial,
+  custodio del pre-registro).
+- #166 (S, Sonnet): skill «predecir-e-investigar».
+- #167 (S, Sonnet): `devlog base-rates`, líneas base contadas desde los episodios.
+
+**Sin issue todavía.**
+- Fijar los episodios dentro de las pruebas de recall (tres pruebas dependen de los episodios reales).
+- Endurecer `comprobar`: que ate el registro a su pasada, cuente tareas y exija el zip.
+- Anotar en el pre-registro el desenlace de la predicción 6 y la remisión de la sección 4 a la 8.4.
+
+**Pendiente del dueño.**
+- Si el criterio exige siempre la prueba exacta además de los «6 pares».
+- Leer y, si no es la que quiere, corregir la regla de las sesiones cortadas (comentario en el issue #103).
+- Qué hacer con el #159 (duplicado «no planeado»): el guardián salta por las reglas 2 y 3.
+- Qué probabilidad de cuelgue por sesión acepta para lanzar.
+
+**En local y gratis, sin hacer.** Las 21 sesiones que QA no midió y la pasada del parche de referencia.
+
+**Para retomar.** Sesión nueva en el repositorio; `git worktree list`; `gh pr list`; leer esta sección y
+`experiments/azar/preregistro/prediccion_de_fallos.md`. Antes de empezar un issue: escribir su predicción.
+Antes de relanzar un agente: mirar qué dejó el anterior en disco.
+
+Nada se subió, se envió ni se contrató. No queda ningún agente ni contenedor corriendo.
+
+## Vuelta 41 — 2026-10-09, desde las 12:15 UTC
+
+**Preguntas de la vuelta** (del dueño, que las pasó al concilio): qué se hace con el issue #159, y qué
+probabilidad de que una sesión se cuelgue se acepta para lanzar una corrida.
+
+**Nada se subió, se envió ni se contrató.** Esta vuelta no baja datos nuevos: las dos preguntas se responden
+con los rescates ya bajados y con el repositorio. Recall hecho desde `main` al día (lección aplicable: el
+ensayo del tope de llamadas ya mostró que el arnés no corta donde se espera).
+
+**Decisiones del dueño antes del concilio** (comentario en el issue #103):
+1. La prueba exacta se exige siempre, además de los «6 pares»: «Sí, por favor. Realizar esto; la intención
+   es poder, antes de enviar, lograr determinar una solución».
+2. La regla de las sesiones cortadas queda aprobada como estaba redactada: «Adelante, aplicar esto».
+3. El #159 y la probabilidad de cuelgue aceptable: «Llama al concilio… pide ayuda y consejo a los expertos».
+4. Empezar por el issue #164.
+
+**Issue #164 en curso:** seis predicciones fechadas en el commit `44e9e3f` de la rama
+`issue-164-tope-por-tarea` (12:16 UTC), antes de lanzar al implementador (`implementador-opus`, árbol
+`F:\Code\ALL-wt-tope-tarea`).
+
+### Parecer del gestor del proyecto sobre el #159, copiado tal cual
+
+1. El #159 es un duplicado sin trabajo, cerrado `NOT_PLANNED`. Es el segundo de este tipo, después del #104,
+   y solo el #159 salta, porque el #104 está fuera del `--since` y completo.
+2. El fallo es de la regla, no del issue. Las reglas 2, 3 y 9 de `scripts/board_check.py` no miran
+   `stateReason`, y la regla 4 y `pilot_metrics.py` sí.
+3. No hay política escrita para cerrados sin trabajo. Solo `docs/piloto-estimacion.md:17` los excluye del
+   piloto.
+4. Se descarta rellenar el #159 como *Verificada*. Sería un cierre confirmado falso y duplicaría la talla L y
+   los 5 puntos del #160 en el tablero.
+5. Se descarta quitar la tarjeta y aceptar la regla 9. Un guardián que salta siempre se deja de leer.
+6. Se recomienda un issue XS o S: un cerrado distinto de `COMPLETED` queda fuera de las reglas 2, 3 y 9. Las
+   reglas 1, 5, 7 y 8 no cambian y las pruebas incluyen controles `COMPLETED` y `OPEN` que siguen saltando.
+7. Mientras tanto, la tarjeta del #159 se queda como está y R2 y R3 del #159 son un falso positivo conocido.
+   No se rellena ningún campo.
+8. Problema de fondo: ningún control avisa de issues creados con una cuenta distinta de `cherrera0001`.
+
+Riesgo que el propio gestor anota: que alguien cierre trabajo real como «no planeado» para eludir la
+verificación.
+
+### Parecer del analista de datos sobre el cuelgue, copiado tal cual
+
+1. Analista de datos, concilio 41. Los 310 inicios de tarea y las 8 sesiones reales de GPU del rescate
+   `2026-10-08T2231Z` no tienen ningún cuelgue; cota al 95 %: menos de 0,96 % por frontera y menos de 44 % por
+   sesión de 60 tareas.
+2. Ninguna tarea real pasó de 304 s; un cuelgue de 16 min habría quedado dentro de alguna tarea y hay 0 de
+   310. Para pausas cortas, solo se puede ver la distancia inicio a primera petición en 145 tareas: máximo
+   42 s.
+3. El forense midió 0 de 4 500 fronteras sin carga y 16 de 4 000 con carga artificial (0,4 %, cerca de 21 %
+   por sesión de 60). Los datos reales no lo descartan: P(0 de 310) = 0,29.
+4. Sin tope, un cuelgue quema unas 24 h de cuota (supuesto de kill a 12 h, factor 2), 20 h sobre lo planeado;
+   con 7,9 h de plan, dos cuelgues superan las 30 h semanales.
+5. El #164 tal como está termina la sesión al vencer el tope. Arregla la cuota, no el resultado: se pierden
+   las tareas de k en adelante. Hay que quitar la causa (vaciar el mapa) o seguir tras el corte para perder
+   solo una.
+6. Curva (2 pasadas): extra de cuota esperado sin tope = 40 h × p. Con p = 1 %, 0,4 h; con 5 %, 2 h y 8 % de
+   corridas inservibles; con 25 %, 10 h y 37 %.
+7. Para acotar p < 5 % por sesión hacen falta 3 540 fronteras sin cuelgue (24 h a 150/h en local; 6 min con el
+   bucle sintético); 17 940 para < 1 %. En Kaggle son unas 216 h de cuota: imposible.
+8. El diseño de ruido (6 o más discordantes de 60) detecta con 80 % de potencia un ruido de 13 %, no uno de 5
+   a 8 %; perder tareas lo debilita más.
+9. No se fija una probabilidad: se fija la pérdida máxima por cuelgue (una tarea y 0,5 h de cuota) y se exige
+   que el notebook la garantice.
+10. Regla propuesta: lanzar la 08 con #164 fusionado, sus dos escenarios verdes y 3 540 fronteras con carga
+    con 0 ciclos. Sin medir: ipykernel de Kaggle, límite de sesión, cuota restante, carga real y si se puede
+    parar una sesión.
+
+Lo que el analista deja como supuesto y no como dato: que Kaggle corta una sesión a las 12 h (las «12 horas»
+que aparecen en los documentos del caso son el límite del envío al concurso, no el de un notebook). Pregunta
+suya al forense, sin responder: si «ciclo en el mapa» (1 554 de 4 000 sin carga) y «escritura que no
+terminaría» (0 de 4 500) miden lo mismo.
+
+**Efecto inmediato sobre el #164:** el orquestador pasó al implementador las líneas 5 y 10 (perder una sola
+tarea si se puede demostrar, y registrar carga del sistema, hilos vivos y versiones en el latido).
+
+### Parecer del arquitecto de IA sobre el cuelgue, copiado tal cual
+
+1. La versión de `ipykernel` de Kaggle no está medida; el 6.29.5 del ensayo lo eligió el `Dockerfile` local.
+   Kaggle corre Python 3.12.13 con papermill.
+2. El bucle `iostream.py:516` existe de la 6.29.0 a la 7.0.1; no existe hasta la 6.28.0 ni desde la 7.1.0. La
+   imagen base pública de Colab trae hoy 6.17.1 (inferencia para la imagen fijada).
+3. Kaggle L4×4 tiene 48 CPU (medido); la carga se estima en 0,35 ejecutables por CPU o menos, contra 2,3 a
+   3,3 en el ensayo que vio la carrera. Se parece al brazo sin carga: 0 ciclos en 4 500 fronteras.
+4. Si el mecanismo existe allí, la probabilidad por corrida (118 fronteras) es de 7,6 % o menos sin carga y de
+   27 a 56 % con carga. Las 310 tareas reales sin cuelgue no acotan nada por sí solas.
+5. Un cuelgue sin vigilancia gira hasta el tope de Kaggle: 12 h (fuente no oficial) × 2 = 24 h de cuota, 80 %
+   de la semana, y la repetición no cabe.
+6. Con tope por tarea de 15 min (3 veces el máximo medido de 303,6 s) un cuelgue cuesta 0,76 a 1,03 h;
+   vigilado a mano, 5,3 h como máximo.
+7. Regla: se lanza si la pérdida esperada por cuelgue es de 1 h de cuota o menos y un cuelgue deja repetir la
+   pasada dentro de las 30 h. Sin vigilancia ni tope no se lanza.
+8. El #164 debe llevar vaciado del mapa con `getattr` (en 6.17.1 el atributo no existe) y tope por tarea sin
+   `with`, que termine la sesión con excepción. No conviene el grupo único de hilos ni partir las pasadas.
+9. Si el #164 tarda: lanzar vigilado, con 14,3 h o más de cuota libre, las dos pasadas en paralelo y corte a
+   los 10 min sin línea `TAREA`.
+10. Antes de lanzar, y con aprobación del dueño: una sesión de CPU sobre la misma imagen que imprima
+    `ipykernel.__version__` y la carga. No gasta cuota de GPU.
+
+Fuentes que el arquitecto abrió: el código de `iostream.py` de ipykernel por etiquetas y su registro de
+cambios (PR #1186 y #1451), el `Dockerfile.tmpl` y los requisitos de la imagen pública de Kaggle, y la lista
+de paquetes de Colab. El tope de 12 h sale de dos fuentes no oficiales; la página oficial de Kaggle no le
+abrió.
+
+**Desacuerdos abiertos, con el dato que los cierra.**
+1. Al vencer el tope por tarea: seguir con la siguiente (analista) o terminar la sesión (arquitecto: el hilo
+   que gira altera el reloj de las demás). Lo cierra el ensayo del #164: si tras vaciar el mapa el hilo viejo
+   termina o sigue vivo. Regla pasada al implementador: seguir solo si se comprueba que terminó; si no,
+   terminar; nunca dos tareas a la vez.
+2. Umbral: «una tarea y 0,5 h por cuelgue» (analista) o «pérdida esperada de 1 h o menos y que quepa repetir
+   la pasada» (arquitecto).
+3. Si el #164 tarda: lanzar vigilado a mano (arquitecto) o esperar (analista).
+4. Si el mecanismo existe en Kaggle. Lo cierra leer la versión de ipykernel allí.
+
+**Efecto inmediato sobre el #164:** se pidió al implementador ensayar también bajo un núcleo con
+`ipykernel 6.17.1`, donde el atributo no existe, y registrar la versión al instalar.
+
+### Parecer del auditor del método, copiado tal cual
+
+1. Auditor del método, concilio 41. #159: enmiendo al gestor. Exento de las reglas 2, 3 y 9 solo si está
+   `CLOSED`, su `stateReason` es `NOT_PLANNED` o `DUPLICATE` y ningún episodio lo cita; el vacío no exime;
+   cada exento sale como aviso.
+2. El #104 no es «del mismo tipo»: es `NOT_PLANNED` con 6 PR fusionados que lo referencian y dos episodios
+   (048 y 053). La condición del gestor lo habría eximido; el hueco vale 1 de 2 casos.
+3. Se reproducen: 310 tareas en 8 sesiones sin cuelgue, máximo de 303,6 s, 16 de 4 000 con carga, 2 de 43
+   discordantes entre 03 y 04, y el `Dockerfile` que fija `ipykernel==6.29.5`.
+4. 44 % por sesión y 69 % por corrida son la misma cuenta (0 de 302 fronteras). No acota nada útil.
+5. Corregido: «0 de 4 500 sin carga» omite una corrida sin carga con un ciclo formado en la iteración 2 446 de
+   4 000. «Ciclos 1 554» cuenta iteraciones con el ciclo presente, no eventos. La tasa del laboratorio va de
+   0,03 % a 29 % según la configuración.
+6. La versión de `ipykernel` de Kaggle no está en ningún log; 6.17.1 es inferencia. El bucle existe en 6.29.5
+   a 7.0.1 y no en 6.28.0 ni en 7.1.0 (medido en el código).
+7. Veto toda condición de lanzamiento expresada como probabilidad de cuelgue en Kaggle, y leer las 3 540
+   fronteras como cota de Kaggle: cae dentro de lo no medido.
+8. Regla: se lanza cuando el ensayo demuestra que un cuelgue de cualquier causa cuesta 1,1 h de cuota como
+   máximo (tope de 900 s y cierre con excepción) y la cuota leída ese día es de 14,6 h o más. Hoy no se
+   cumple: faltan el #164, la versión de Kaggle y la lectura de cuota.
+9. No se lanza vigilado a mano. Una tarea cortada por `tarea_colgada` es un par faltante, fechado antes de
+   subir. La primera subida va en serie, pasada 1 y luego pasada 2.
+10. La sesión de CPU vale para la versión (mismo digest) y no para la carga (4 CPU frente a 48). Decide qué
+    versión fija el ensayo local, no cuándo se lanza, y necesita la orden del dueño.
+
+**Lo que cada rol retira o queda corregido tras el cruce.**
+- Gestor: «segundo de este tipo, después del #104» (el #104 tuvo trabajo).
+- Forense: «0 de 4 500 sin carga» como cuadro completo; su reparto 75 % y 25 % es un juicio.
+- Analista: las 3 540 fronteras miden el laboratorio, no Kaggle; «una tarea y 0,5 h» solo vale si se sigue.
+- Arquitecto: «3 a 1 a favor de 6.17.1» y «0,35 por CPU» son juicio; lanzar vigilado a mano contradice su
+  propio umbral; «la repetición no cabe» depende del factor de cuota.
+
+### Decisiones del concilio 41
+
+**A. Issue #159.** Se cambia la regla, no el issue: exento de las reglas 2, 3 y 9 si está cerrado como «no
+planeado» o «duplicado» y ningún episodio lo cita. La tarjeta del #159 se queda como está y no se rellena.
+Issue #169 abierto con la regla exacta del auditor (S, Sonnet).
+
+**B. Cuelgue.** No se fija una probabilidad (vetado). Regla de lanzamiento con ocho condiciones, en un
+comentario del issue #103: pérdida máxima de 1,1 h de cuota por cuelgue, demostrada en el ensayo; tope por
+tarea de 900 s; ensayo con la misma versión de `ipykernel` que Kaggle; el notebook imprime versión y carga;
+cuota leída de 14,6 h o más; primera subida en serie; orden del dueño. No se lanza vigilado a mano. Cláusula
+fechada: una tarea cortada por `tarea_colgada` es un par faltante.
+
+**Lo que el auditor señala sin vetar:** el criterio «6 o más discordantes de 60» de la iteración 08 casi no
+puede refutar con el ruido observado (lo alcanzaría unas 6 veces de 100). La corrida entregará una cota del
+ruido. Conviene fechar, antes de subir, qué ruido haría indecidible el brazo de razonamiento.
+
+### Fallos del orquestador en esta vuelta
+
+- Pasó al implementador del #164 «ensayar bajo `ipykernel 6.17.1`» antes del dictamen: esa versión era una
+  inferencia del arquitecto. Corregido en un mensaje posterior (ensayar donde el atributo no existe; no
+  afirmar qué trae Kaggle).
+- La convocatoria del analista y del arquitecto llevaba el resumen del forense con «0 de 3 000 sin carga»
+  como dato; el auditor mostró que el cuadro omitía una corrida. Otra vez una cifra en el encargo.
+- Escribió «recall hecho desde `main`» sin anotar cuántas veces ni con qué consulta.
+
+- Tras el concilio volvió a preguntar al dueño tres cosas que ya estaban delegadas o que podía resolver solo
+  (el 1,1 h, la cuota y la sesión de CPU). El dueño: «te pedí resolver junto al concilio, ¿por qué vuelves a
+  preguntar?».
+
+**Resuelto sin preguntar (12:45 UTC).**
+- El 1,1 h queda fijado: es la cifra del concilio.
+- Cuota leída por API (`uvx kaggle quota`, 12:43 UTC): GPU 29,53 h usadas, **0,47 h libres** de 30,00; se
+  repone el 2026-10-10 a las 00:00 UTC. La condición 6 de la regla (14,6 h libres) no se cumple hoy y sí
+  podrá cumplirse desde mañana.
+- Sonda del núcleo armada y ensayada en local: `instrumentos\sonda_nucleo\` (`armar_sonda.py`,
+  `kernel_sonda\sonda.ipynb` con SHA-256 `7d10c9b3…`, `kernel-metadata.json` con el mismo `docker_image` de las
+  corridas, sin GPU, sin internet y sin fuentes de datos). Una celda: versión de `ipykernel` y de otros once
+  paquetes, si stdout tiene el mapa de hilos, CPU, afinidad, carga, y la lista entera de paquetes a
+  `sonda_nucleo.json`. Ensayada bajo núcleo real con `ipykernel` 6.29.5, 6.17.1 y 7.1.0: las tres terminan y
+  la sonda distingue las versiones (mapa de hilos presente solo en la 6.29.5).
+- **La sonda no se subió.** Es una ejecución en Kaggle, y la regla del dueño del 2026-10-04 dice que ninguna
+  subida, tampoco en CPU ni en privado, se hace sin su palabra. El propio concilio lo dijo: «necesita la orden
+  del dueño». Queda lista: `uvx kaggle kernels push -p <carpeta kernel_sonda>`.
+
+**Único pendiente del dueño tras el concilio:** la palabra para subir la sonda de CPU.
+
+**La regla del concilio para el #159 falló en su propio control (13:10 UTC).** El implementador del #169 (PR
+#170) midió que, con la regla tal como la escribió el auditor, el #104 sale exento: ningún episodio lo cita
+como `#104` en su `ref` (los episodios de ese trabajo citan `#100` y `#103`). El auditor había afirmado que lo
+citaban dos episodios; lo citan en su texto, no en la referencia que la regla mira. Se aplicó la salida que el
+propio auditor dejó prevista: añadir «y que ningún PR fusionado lo referencie». Devuelto al implementador con
+esa enmienda, sin preguntar al dueño. Además el implementador encontró que el guardián de inicio de sesión
+(`scripts/session_guard.py`) llamaba a la regla 9 por su cuenta y habría seguido avisando; lo arregló.
+
+## Vuelta 42 — 2026-10-09, desde las 13:20 UTC
+
+**Pregunta de la vuelta** (del dueño): Anthropic publicó `anthropics/oss-scanner`, la inscripción a un
+servicio que busca y corrige vulnerabilidades en proyectos de código abierto con agentes. «Datito, y el
+concilio: ¿qué podemos aprender de él para nuestro desafío?»
+
+**Nada se subió, se envió ni se contrató.** Esta vuelta no baja datos nuevos: usa el rescate
+`2026-10-08T2231Z` y una copia local del repositorio del servicio (un día de vida, un commit, sin el código
+del escáner: solo la inscripción, tres plantillas y tres guiones que construyen la imagen de prueba).
+
+**Lo que el orquestador leyó antes de convocar** (repositorio, página y términos; estas dos últimas a través
+de un resumen automático): servicio alojado y gratuito para proyectos con «impacto crítico en infraestructura
+y seguridad»; el proyecto se construye con red y se audita sin ella; el dueño aporta un `threat_model.md`;
+cada hallazgo lleva reproductor y parche propuesto; otros agentes vuelven a comprobar y analizan la causa; los
+informes no los revisa una persona y pueden traer falsos positivos. Nuestro repositorio no califica y el
+servicio busca vulnerabilidades, no fallos de lógica.
+
+**Convocados en paralelo, con la pregunta y las rutas, sin conclusión:** analista de datos (qué dicen las
+trayectorias sobre reproducir, localizar, volver a comprobar y gastar presupuesto), QA de trayectorias (qué
+hace de verdad el agente frente a ese método), arquitecto de IA (qué cabe en Gemma con 4 minutos y 40
+llamadas, y qué permiten las reglas precomputar) e inteligencia pública (qué hay publicado sobre el método y
+sobre arneses comparables, y el estado de la competencia). Después cruza el auditor del método.
+
+Lo que esta vuelta no cambia: la iteración 08 sigue siendo la base y su repetición, sin tocar el agente.
+
+### Parecer de inteligencia pública, copiado tal cual
+
+1. Lo publicado por Anthropic describe el método (contenedor sin red, ranking de archivos, oráculo de fallos,
+   segundo agente), pero ningún post mide qué pieza aporta más; no hay ablación de ese escáner.
+2. Lo transferible del escáner a nosotros es una disciplina de entrega, "no entregues sin demostrar", no una
+   técnica de modelo pequeño.
+3. La evidencia más fuerte de que un reproductor ayuda viene de Agentless, que lo usa como filtro sobre 40
+   muestras con modelos fuertes; con un modelo pequeño y 40 llamadas no hay evidencia publicada.
+4. Las pruebas generadas discriminan poco (<20 % de señal en R2E-Gym), así que un reproductor que el propio
+   modelo escribe puede validar parches malos.
+5. Las ablaciones de SWE-agent (visor de ~100 líneas, edición con lint, historial recortado) son las de mayor
+   efecto medido, y están cerca de lo que ya vemos: lecturas que pierden rango y ~50 % de llamadas repetidas.
+6. Los modelos abiertos pequeños fallan sobre todo por bucles, parches vacíos y topes de pasos, no por el
+   contenido del parche, igual que lo medido en nuestras trazas.
+7. Ninguna regla de la competencia prohíbe un reproductor, un verificador como subagente o varios candidatos
+   dentro del presupuesto; la pregunta sobre metadatos precomputados (tema 743751) sigue sin respuesta oficial
+   en lo que leímos.
+8. Notas o índices por repositorio probablemente no transfieren, porque la respuesta del staff (744951) dice
+   que el conjunto oculto sale de repositorios privados; eso es inferencia, no regla.
+9. El estado de la tabla y el foro después del 2026-10-07 no está medido; este informe no cubre cambios
+   recientes de la competencia.
+10. Nada de esto justifica subir o enviar; cualquier cambio sigue necesitando ensayo local y más de 19 tareas
+    por brazo para distinguirse del ruido.
+
+Cifras que trae, con su fuente (leídas a través de un resumidor automático; releer la página si una cifra
+decide algo): anuncio de Anthropic del 2026-10-08: 97 vulnerabilidades críticas o altas en 48 proyectos
+validadas por personas, 85 válidas (88 %), 11 duplicadas y 1 inválida. Agentless (arXiv 2407.01489, tabla 4,
+300 tareas): 77 arreglos con voto solo, 81 con pruebas de regresión, 96 con pruebas de reproducción generadas.
+SWE-agent (arXiv 2405.15793): 18,0 % de base; 10,3 % sin editor; 15,0 % sin lint; visor de 100 líneas 18,0 %
+contra 12,7 % con el archivo entero; conservar las últimas 5 observaciones 18,0 % contra 15,0 % con todo el
+historial. R2E-Gym (arXiv 2504.07164): menos del 20 % de las pruebas generadas discriminan. SWE-smith (arXiv
+2504.21798): más del 25 % de las trayectorias de un modelo de 32B tienen una secuencia repetida de 10 o más
+acciones, y las intervenciones simples contra la repetición no mejoran la resolución.
+
+Reglas de la competencia que cita: el envío solo puede pedir herramientas del arnés o subagentes propios; el
+mismo modelo para todo agente y subagente; no se pueden mandar las tareas a una API ajena (2.4.b). Sin
+respuesta oficial: si una skill puede llevar metadatos precomputados por repositorio.
+
+No pudo refrescar el estado de la competencia sin iniciar sesión: tabla, foro y notebooks quedan al
+2026-10-06/07. No leyó el final del post que describe el arnés ni el código de los finalistas de AIxCC.
+
+### Parecer del arquitecto de IA, copiado tal cual
+
+1. Del escáner solo es código la inscripción: construcción de 45 min en 16 CPU y 64 GB, agente en 2 CPU y 8 GB
+   sin red, capa con Claude Code y depuradores, y un documento del dueño que el escáner lee antes de empezar.
+   Lo de «agentes que recomprueban, causa raíz y parches» es declaración.
+2. Su recomprobación funciona porque tiene oráculo ejecutable (reproductor, AddressSanitizer) y modelos de
+   frontera con cientos de corridas por proyecto; nada de eso existe aquí.
+3. Corrijo dos premisas: los repositorios que puntúan son privados, así que no hay notas por repositorio que
+   valgan; y los 4 minutos y 40 llamadas son nuestros, lo oficial son 12 h.
+4. Medido en 116 sesiones sin razonamiento: mediana de 35 de 40 llamadas y 96 de 240 s; 21 tocan el tope de
+   llamadas. Sin razonamiento muerde el tope de llamadas; con razonamiento, el reloj (21 de 29 en 235 s o
+   más).
+5. Un reproductor cuesta 5 a 7 llamadas y 25 a 45 s: cabe en reloj y no en llamadas, salvo que se recorte
+   exploración. Con razonamiento no cabe.
+6. Leído en el arnés: `submit_patch` hace `git add -N .`, así que el reproductor va en `/tmp`; y `run_command`
+   devuelve la cabeza de la salida, así que las pruebas se leen con `tail`.
+7. Lo trasladable del documento del dueño es «cómo ejercitarlo», generado en el reloj por un guion de skill: 1
+   llamada, 3 a 5 s, hasta 1 250 tokens. En el sistema, no más de 300 a 500 tokens.
+8. Brazos limpios: guion-mapa (con relleno de control), salida con `tail`, línea de causa. El reproductor es
+   limpio solo con topes fijos. Segundo agente, causa raíz por subagente y varias pasadas arrastran tres
+   cambios.
+9. Orden, después del brazo de razonamiento: primero el guion-mapa (útil si la mediana de llamadas baja a 30 o
+   menos y las sesiones con prueba pasan de 15 % a 40 %); después el reproductor (útil si «falla antes, pasa
+   después» predice pasar las ocultas).
+10. Descarto el segundo agente que aprueba: mismo modelo, sin oráculo, sin compactación y con un fallo que ya
+    hizo perder el parche. No abrí las reglas de Kaggle de primera mano; `z_oido` no corrió con Gemma.
+
+**Fallo del orquestador en la convocatoria:** el encargo decía «el concurso da pocos repositorios, conocidos
+de antemano» y trataba los 4 minutos y 40 llamadas como regla. El arquitecto corrigió las dos: las tareas que
+puntúan salen de repositorios privados, y esos topes son de nuestro `eval_config.yaml`; lo oficial son 12
+horas para todo el envío (techo de unos 349 s por tarea con 120 tareas).
+
+**Dos hallazgos de código del arquitecto que valen con independencia de lo demás** (leídos en
+`swegemma/tools/execution.py`, sin ejecutar): `run_command` devuelve los primeros 5 000 caracteres de la
+salida, de modo que en una salida larga de pruebas el resumen del fallo, que va al final, queda fuera; y
+`submit_patch` añade al parche todo archivo nuevo del espacio de trabajo, así que un guion de reproducción
+creado ahí entraría en la entrega.
+
+Coincidencias entre los dos roles que ya entregaron: el segundo agente del escáner funciona porque tiene un
+oráculo ejecutable y aquí no lo hay; las notas por repositorio no transfieren; el reproductor no tiene
+evidencia publicada con un modelo pequeño.
+
+### Parecer de QA de trayectorias, copiado tal cual
+
+1. Leí 14 trayectorias sorteadas con semilla 4242 y medí 145 con reglas automáticas; el recorrido típico es
+   explorar con grep, editar hacia la llamada 12 y entregar, sin comprobar en 22 de 110 sesiones que editan.
+2. El entorno funciona desde la primera llamada: unas 29 llamadas de 4246 se pierden por entorno.
+3. `search_similar_code` devolvió vacío en 300 de 300 llamadas y el subagente gastó 198 llamadas del tope
+   compartido sin resolver ninguna de sus 7 sesiones.
+4. En 507 lecturas de archivo (11,9 % de las llamadas) la clave rota del argumento hace que el arnés devuelva
+   las líneas 1 a 150 en silencio, y 359 se repiten sin que el agente lo note.
+5. De 43 parches que no pasan, 30 están en el archivo y la zona correctos con lógica incompleta; 6 tienen
+   sintaxis rota por comillas escapadas, y en esos 6 no se ejecutó nada tras la última edición.
+6. Un reproductor existe en muchas sesiones, pero en 16 de 23 malos con ejecución previa nunca falló antes de
+   editar: el enunciado no siempre da la entrada que falla.
+7. La comprobación propia posterior sale verde en 20 de 23 malos y en 27 de 32 buenos, así que "ejecuta y
+   corrige si falla" casi no discrimina.
+8. Cambio con más apoyo: tras la última edición, una sola comprobación de sintaxis o importación; delata 6 de
+   6 rotos y 0 de 39 buenos; techo de recuperación 1 a 3 sesiones, inferido.
+9. Del método del escáner no se traslada el tiempo sin tope, el modelo más capaz ni los depuradores; sí se
+   traslada, barato, el reproductor del parche, con el límite de que el enunciado no siempre lo permite.
+10. No medido: si Gemma corrige tras una alarma, y cuántos malos delataría un reproductor de dos líneas.
+
+Otras cifras de su informe (145 sesiones, 4 246 llamadas del agente principal, iteraciones 03 a 07; las reglas
+son automáticas y las declara): 53 sesiones nunca editan código fuente; entre las 110 que editan, resuelven 5
+de 22 las que no ejecutan nada y 34 de 70 las que ejecutan algo (no es causal: las tareas fáciles explican las
+dos cosas); reproductor «roja antes, verde después con el mismo comando»: 8 resueltas contra 2 que no pasan;
+1 336 de 4 246 llamadas son repeticiones idénticas (31 %); 131 `edit_file` fallan por esquema con la clave
+rota; 61 de 139 ediciones aceptadas pasaron por el desescapado de comillas del arnés; la salida de pruebas
+quedó truncada sin su resumen en 6 de 69 corridas de pytest; 22 de las 23 sesiones cortadas por llamadas sin
+parche nunca editaron nada, y en 14 de ellas el gasto es un bucle de la misma orden; en 14 de 26 cortadas con
+parche, lo entregado son los archivos de reproducción del propio agente.
+
+**Discrepancia que QA no pudo reconciliar:** cuenta 56 cortes con la clase del instrumento (39 por llamadas,
+17 por tiempo, más 1 por contexto); en la vuelta 40 se contaron 25 (22 por tiempo, 2 por llamadas, 1 por
+contexto). Es otro criterio de corte. Queda para el auditor.
+
+**Desacuerdo abierto entre roles:** el arquitecto propone el reproductor como segundo brazo; QA lo desmiente
+con las trayectorias (el reproductor que el agente escribe sale verde antes de editar en 16 de 23 parches
+malos, y su comprobación posterior sale verde en 20 de 23). Dato que lo cerraría: cuántos de los parches
+malos delataría un reproductor construido con la entrada que de verdad falla, que el enunciado no siempre da.
+
+### Parecer del analista de datos, copiado tal cual
+
+1. Universo: 145 sesiones de 43 tareas (A dos pasadas, H, I), 39 resueltas; el diseño distingue unos 30 a 50
+   puntos de diferencia entre prácticas, así que todo lo que sigue es asociación exploratoria (unas 45 a 50
+   comparaciones), no efecto.
+2. Re-comprobar tras la última edición es la señal más fuerte: entre las editadas que entregan 30/55 con
+   ejecución posterior contra 6/33 sin ella, 20 contra 2 pares dentro de la misma tarea (6 tareas «a veces»),
+   y se mantiene sin las sesiones cortadas.
+3. El 60 % de las editadas ya ejecuta algo tras la última edición aunque el `system.md` de A y H lo pide; el
+   brazo no sería pedirlo sino exigirlo (no aceptar `submit_patch` sin ejecución posterior).
+4. Reproducir antes de arreglar no se sostiene dentro de la tarea (3 pares a favor, 4 en contra) y solo 14 de
+   20 «reproducciones en rojo» revisadas eran fallos del defecto; se prueba, a lo sumo, junto con la anterior.
+5. El análogo del `threat_model.md` no tiene señal: descubrir cómo correr las pruebas cuesta 0,7 llamadas por
+   sesión (2,2 % de las llamadas) y solo 17 % de las sesiones corre alguna vez un ejecutor de pruebas.
+6. Localizar es necesario (38 de 39 resueltas tocan un archivo de referencia; 0 de 31 sin abrirlo resuelven)
+   pero no suficiente: 79 % lo abre en una mediana de 3,5 llamadas.
+7. El mayor lastre es no llegar a editar: 53 de 106 no resueltas no tienen parche de fuente, 27 de ellas con
+   39 o 40 llamadas y entrega vacía, y el 69 % de las no resueltas gasta 20 o más llamadas antes de editar
+   contra 23 % de las resueltas.
+8. Con una pasada sobre 43 tareas un efecto de OR 3 (+8 puntos sobre 20 %) cumple «6 pares + McNemar exacto»
+   solo 13 veces de 100; con 150 tareas 63 de 100, con 300 94 de 100.
+9. El segundo agente que re-comprueba del escáner no se puede juzgar con estos datos (no hay segundo lector) y
+   4 minutos no lo permiten sin recortar al primero.
+10. Orden de brazos con señal: 1) exigir ejecución tras la última edición, 2) editar antes o ahorrar lectura y
+    búsqueda, 3) reproducir primero como complemento; sin señal: contexto de cómo correr las pruebas.
+
+Lo que el analista no pudo reproducir: las «4 resueltas cortadas» del concilio 41 (con el campo de error de
+las trazas cuenta 0; con duración de 270 s o más cuenta 6, todas de la condición I). Pide la definición.
+
+**Desacuerdos entre roles, con el dato que los cierra.**
+1. **Volver a ejecutar tras la última edición.** El analista: es la señal más fuerte (30 de 55 contra 6 de 33).
+   QA: la comprobación propia sale verde en 20 de 23 parches malos, casi no discrimina. No se contradicen si
+   lo que se asocia con resolver es ejecutar algo (y ver un error de sintaxis o de importación), no acertar
+   con la prueba. Lo cierra separar, en las mismas sesiones, qué delató la ejecución posterior.
+2. **Reproductor.** El arquitecto lo propone como segundo brazo; QA y el analista no le ven señal dentro de la
+   misma tarea.
+3. **Guion-mapa de cómo correr las pruebas.** El arquitecto lo propone como primer brazo; el analista mide que
+   ese descubrimiento cuesta 0,7 llamadas por sesión.
+4. **Conteos que no cuadran entre roles:** sesiones que nunca editan fuente (53 según QA, 47 según el
+   analista); cortes (56 según QA con la clase del instrumento; 21 con marca según el analista; 25 en la vuelta
+   40); resueltas cortadas (4 en el concilio 41; 0 o 6 según el analista).
+
+Coincidencia de tres roles: el lastre principal es no llegar a editar y gastar llamadas en repeticiones y
+herramientas que no devuelven nada, no la falta de un reproductor. Pendiente: el auditor del método.
+
+### El dueño corrige el procedimiento (14:30 UTC)
+
+Dijo: «¿Realmente se debe iterar en 31 llamadas? … si tenemos un total de 40 llamados no podemos iterar 31
+solo intentando resolver una tarea. ¿Te parece coherente? ¿Qué dice el concilio ante esto? … no están haciendo
+bien su ciclo de consulta o discusión. Creo que hoy no están funcionando realmente como un concilio», y pidió
+revisar `karpathy/llm-council`.
+
+**Tiene razón en las dos cosas, y el fallo es del orquestador.**
+- Sobre el tope: los informes midieron el problema (31 % de llamadas repetidas; el subagente con 31, 27, 39,
+  27, 9, 25 y 40 llamadas del tope compartido; 27 sesiones con 39 o 40 llamadas y entrega vacía) y ninguno
+  propuso limitarlo. Cada rol contestó su parte y la pregunta obvia quedó sin dueño.
+- Sobre el concilio: los roles se convocaron en paralelo con sub-preguntas distintas, ninguno leyó a otro y
+  solo el auditor veía todo al final. El paso 5 de la skill `concilio-de-experimento` ya mandaba volver a
+  preguntar a cada rol qué afirmación suya se cae, y no se hizo en las vueltas 41 ni 42.
+
+**Lo leído en `karpathy/llm-council`** (un commit, unas 1 600 líneas; el autor lo describe como un experimento
+de un sábado, sin evaluación de que dé mejores respuestas): tres etapas. (1) La misma pregunta va a todos los
+modelos por separado. (2) Cada modelo recibe las respuestas de los demás anonimizadas («Response A, B, C»),
+dice qué hace bien y mal cada una y entrega un orden con formato fijo («FINAL RANKING:»); se calcula la
+posición media. (3) Un presidente sintetiza con las respuestas y las evaluaciones. La diversidad viene de usar
+modelos de proveedores distintos.
+
+**Qué se adopta:** la etapa 2, que es la que faltaba, con el orden por respaldo en datos y no por opinión; la
+misma pregunta para todos; el formato fijo del orden. **Qué no se traslada:** la diversidad de modelos (todos
+los roles son el mismo modelo; el anonimato evita deferencia al rol, nada más), y el voto como sustituto de una
+medición.
+
+**Hechos del arnés leídos por el orquestador para la pregunta del tope** (`swegemma/budget.py`, `config.py`,
+`agent.yaml` del envío): no hay guardia contra llamadas repetidas ni tope por herramienta; los presupuestos son
+totales (tiempo, llamadas, turnos); la lista de herramientas del agente sí es nuestra, y hoy incluye la
+búsqueda que devolvió vacío 300 de 300 veces y el subagente. Quitar una herramienta es una garantía; una regla
+en la instrucción es una petición.
+
+### Ronda 2: revisión cruzada (15:00 a 15:20 UTC)
+
+Los cuatro roles leyeron los cuatro informes anonimizados y respondieron con formato fijo.
+
+**Orden de las once acciones candidatas** (posición en el orden de cada rol; A arquitecto, B QA, C inteligencia
+pública, D analista de datos):
+
+| Candidata | A | B | C | D | Media |
+|---|---|---|---|---|---|
+| P2 quitar la búsqueda y las herramientas de grafo que no devuelven nada | 2 | 1 | 1 | 1 | 1,25 |
+| P1 quitar el subagente | 1 | 2 | 2 | 2 | 1,75 |
+| P4 comprobar sintaxis o importación tras la última edición | 3 | 3 | 4 | 6 | 4,00 |
+| P5 exigir una ejecución tras la última edición | 5 | 5 | 5 | 3 | 4,50 |
+| P9 corregir la llamada mal formada de lectura y edición | 4 | 6 | 3 | 5 | 4,50 |
+| P3 regla contra repetir la misma llamada | 7 | 4 | 7 | 7 | 6,25 |
+| P11 tope de exploración antes de la primera edición | 6 | 11 | 6 | 4 | 6,75 |
+| P8 leer la salida de pruebas por la cola | 8 | 7 | 9 | 8 | 8,00 |
+| P6 reproductor antes de editar | 9 | 8 | 8 | 9 | 8,50 |
+| P7 guion-mapa al inicio | 10 | 9 | 10 | 10 | 9,75 |
+| P10 subir los topes | 11 | 10 | 11 | 11 | 10,75 |
+
+Los cuatro son el mismo modelo leyendo los mismos datos: el acuerdo no es una medición.
+
+**Respuesta de los cuatro a la pregunta del dueño:** no es coherente gastar 31 de 40 llamadas así, y hace
+falta un tope. Lo único que el envío puede imponer es la lista de herramientas y los totales; «no repitas»,
+«edita antes de la llamada N» y «ejecuta antes de entregar» solo se pueden pedir en la instrucción.
+
+**Lo que cada rol retiró.**
+- Arquitecto: el guion-mapa como primera pieza y el reproductor como segundo brazo; y que «el tope que muerde
+  son las llamadas» (lo llama síntoma: 45 de 116 sesiones llegan a 39 o más llamadas, no 21).
+- QA: «el agente localiza bien» como frase general; matiza «ejecutar y corregir no discrimina».
+- Inteligencia pública: «unos 50 % de llamadas repetidas» (lo medido es 31 %) y «varios candidatos es
+  impensable».
+- Analista: el reproductor como tercer brazo; rebaja «exigir ejecución» a asociación con 6 tareas
+  informativas.
+
+**Hechos nuevos de la ronda 2** (pendientes de que el auditor los verifique):
+- El subagente no admite un tope propio: el esquema del envío rechaza campos de presupuesto en su archivo. La
+  herramienta de entrega no admite precondiciones.
+- La línea 11 de `prompts/system.md` del envío ordena usar la búsqueda que devuelve vacío; 60 sesiones
+  empiezan por ella.
+- El arnés avisa «termina y entrega» cuando quedan 10 llamadas, en la llamada 30. Entre quienes editan y
+  entregan, los que no ejecutan después tienen su última edición en la llamada 30 a 32 de mediana; con margen,
+  solo 8 sesiones no verifican. La señal de «volver a ejecutar» sería en buena parte presupuesto agotado.
+- Regla de no repetir con un máximo de 2: liberaría 989 llamadas en 59 sesiones no resueltas. Sin evidencia de
+  que cambie el resultado: esas sesiones no habían editado, y un estudio con un modelo de 32B no vio mejora al
+  suprimir la repetición.
+- Obligar a editar antes de la llamada 20 rompería 9 de 39 resueltas.
+- Resuelven 12 de 30 sesiones con 20 llamadas o menos, 5 de 26 con 21 a 34 y 4 de 60 con 35 o más (116
+  sesiones sin razonamiento; asociación).
+
+**Qué dio la ronda 2 que la ronda 1 no había dado:** dos propuestas retiradas por su propio autor, un hecho
+que explica el desacuerdo sobre «volver a ejecutar», la respuesta a la pregunta del tope con lo que se puede
+imponer, y un orden común. Enviado al auditor como presidente, con las cuatro mediciones locales que los roles
+proponen.
+
+### Parecer del auditor del método (presidente, con la ronda 2 integrada), copiado tal cual
+
+1. Recalculé desde los 12 zips: 145 sesiones, 4 246 llamadas del principal y 198 del subagente; se reproducen
+   300 de 300 búsquedas vacías, 507 lecturas con clave rota (359 repetidas), 61 de 139 ediciones
+   desescapadas, 6 parches con sintaxis rota y 14 de 26 «cortadas con parche» que solo llevan archivos
+   auxiliares.
+2. La búsqueda vacía no es un índice ausente: la herramienta busca por nombre exacto de nodo y no embebe texto
+   libre; 0 de 300 consultas tenían esa forma y la línea 11 de la instrucción ordena usarla con palabras del
+   error.
+3. Corregidos: las ediciones rechazadas por parámetro son 211 (no 131 ni 234) y no cuentan contra el tope; los
+   «56 cortes» son la clase «39 o más llamadas» (37 de 39 entregaron solas); los cortes reales son 21 con
+   marca más 6 resueltas sobre el límite, cuya marca borra el arnés.
+4. Volver a ejecutar tras editar es asociación sin mecanismo: 0 sesiones vieron sintaxis o importación como
+   última salida y solo 8 de 27 corrigieron tras un rojo; con margen de presupuesto 32 de 54 contra 1 de 10, y
+   dentro de la tarea quedan 2 tareas informativas. No se puede imponer desde el envío.
+5. Reproductor y guion-mapa quedan retirados por sus autores y por los datos (verde antes de editar en 18 de 27
+   malos; 0,3 a 0,7 llamadas por sesión de descubrimiento).
+6. Tope: el envío solo impone la lista de herramientas y los totales; quitar subagente y grafo libera 324
+   llamadas (2,2 por sesión); «no repitas más de 2» liberaría 1 145 pero solo se puede pedir.
+7. Liberar llamadas cambia sobre todo el gasto: de 41 sesiones no resueltas con 39 o más llamadas, 28 no
+   dejaron fuente en el parche y solo 5 tenían la referencia abierta, fuente editada y 10 o más llamadas
+   liberables.
+8. Potencia confirmada: con 43 tareas y una pasada, OR 3 se detecta 8 a 13 veces de 100; con 71 tareas y 2
+   pasadas por brazo, 52; ningún arreglo de interfaz llega a OR 3, así que se decide por criterio mecánico y no
+   por resolución.
+9. Plan: kit «interfaz limpia» (sin subagente, sin grafo, sin línea 11) ensayado en local; base 08 y
+   razonamiento como estaba; después «interfaz limpia» a 71 tareas por 2 pasadas con criterios mecánicos y de
+   no daño fechados; una petición de lectura con `sed -n` solo exploratoria; verificador limpio antes de pedir
+   la subida.
+10. Veto: exigir ejecución, reproductor, guion-mapa, tope de exploración (rompería 9 de 39 resueltas), subir
+    topes en este paquete y cualquier afirmación de eficacia de un arreglo de interfaz con una pasada.
+11. Del escáner solo es código la inscripción; el segundo agente y sus cifras están en la página, leídas por
+    resumidor; ninguna recomendación avalada depende de ellas.
+12. Procedimiento: faltaron el forense, el recall anotado y el cruce del paso 5 en las vueltas 41 y 42; la
+    ronda 2 sí cambió el resultado (dos brazos retirados, el aviso de la llamada 30), pero su orden es acuerdo
+    de un mismo modelo, no una medición.
+
+**Respuesta del auditor a la pregunta del dueño sobre el tope:** «No es coherente, pero lo que el envío puede
+imponer libera 2,2 llamadas por sesión, y lo que liberaría más solo se puede pedir; las trazas dicen que
+liberarlas cambiaría el resultado en 5 a 7 de 145 sesiones como mucho.»
+
+**Su respuesta a la pregunta de la vuelta:** del escáner no se aprende una técnica sino una disciplina: no dar
+al agente nada que no pueda devolver algo y no afirmar nada sin un oráculo. Aquí significa limpiar la interfaz
+del envío antes de añadirle pasos.
+
+**Decisiones del concilio 42** (el dueño delegó en el concilio; subir sigue necesitando su orden):
+1. Se arma y se ensaya en local, con el modelo falso y sin cuota, el kit «interfaz limpia»: sin subagente, sin
+   las tres herramientas de grafo y sin la línea 11 de la instrucción. Es una sola supresión de configuración,
+   definida por una regla: quitar del envío lo que no puede devolver nada.
+2. La iteración 08 (base y repetición) y el brazo de razonamiento siguen como estaban. Se añade como criterio
+   secundario, gratis, la fracción de lecturas con clave rota.
+3. «Interfaz limpia» contra la base se decide por criterio mecánico y de no daño, no por resolución: no se
+   afirmará que mejora la tasa de resueltas.
+4. Vetado como brazo: exigir ejecución antes de entregar, reproductor, guion-mapa, tope de exploración, subir
+   topes en este paquete, y la regla de no repetir como brazo de resolución.
+5. Definiciones del proyecto desde hoy: «sin edición de fuente» se cuenta por el parche final; «corte» es
+   marca del arnés, o duración mayor que el límite, o 40 llamadas sin entrega (hoy son 27).
+
+**Fallos del orquestador que el auditor señala en la vuelta 42:** las dos premisas falsas de la convocatoria;
+la hipótesis «ejecutar ayuda porque delata la sintaxis», refutada (ninguna sesión vio un error de sintaxis como
+última salida); no convocó al forense en la vuelta cuyos hallazgos eran del arnés; redactó una candidata como
+«corregir» cuando solo se puede pedir; calculó una media de posiciones, que es un promedio de opiniones; y no
+anotó el recall. Cambios que propone a la skill: la revisión cruzada como entrega obligatoria de cada rol; el
+orquestador no escribe decisiones si falta; el auditor entra después de la ronda 2; la misma pregunta para
+todos y sin cifras; prohibido promediar órdenes; y un rol responsable de «la pregunta obvia del dueño».
+
+**Lo que el auditor no tenía al dictaminar:** el rescate de las 13:42 UTC (abajo), con el reenvío puntuado.
+
+### Rescate del 2026-10-09 a las 13:42 UTC: el reenvío puntuó y cambió el puesto
+
+Rescate por la API (`scripts/kaggle_rescate.py`, carpeta `2026-10-09T1342Z`; sale con 4 por los logs por tarea
+de 0 bytes de las iteraciones viejas, que ahora sí cuenta como faltantes).
+
+- **El reenvío 56916129, que estaba en `error`, figura ahora `complete` con nota 0,13: 8 tareas de 58.** Es el
+  mismo zip con razonamiento que el 56895202, que dio 0,08 (5 tareas). El mismo zip, dos envíos: 5 y 8
+  tareas. Los dos envíos del zip sin razonamiento dieron 4 y 3.
+- **Tabla pública:** 2 177 equipos; nosotros, 8 tareas con 4 envíos; 269 equipos tienen más tareas y 290
+  tienen 8. Mediana 6 tareas, máximo 14 (2 equipos); 12 o más, 10 equipos; 10 o más, 115.
+- **La tabla premia el número de envíos:** la media de tareas sube de 4,19 con un envío a 7 u 8 con diez o
+  más. El mejor de m envíos iguales esperado, según el propio guion: 4,19 con uno, 6,27 con cuatro, 6,99 con
+  siete.
+- El 2026-10-07 la lectura era 4 tareas y puesto 1 559 de 1 981.
+
+### El dueño pregunta por qué Datito no lo vio (15:30 UTC)
+
+«Datito, este es un error grave. ¿Por qué en tu análisis no habías logrado identificar este problema?
+necesito que sea investigado en otra línea, de forma independiente. ¿Cómo se puede medir esto usando zorzALL?
+¿Quién controla cada llamada que hace un agente? ¿Dónde se mide o se registra?»
+
+**Respuesta de Datito, resumida de su informe.** No lo identificó porque en las vueltas 39, 40 y 41 respondía
+preguntas de potencia y de qué tareas elegir, y nunca abrió qué devolvió cada llamada: clasificó las llamadas
+por su nombre, no por su salida. Cuando la cifra pasó delante («llamadas agotadas») la trató como contexto o
+como tautología. Lo asume como suyo: su propia regla pedía mirar adónde se va el presupuesto.
+
+**El dato estaba en disco desde antes de su primera vuelta**, con ruta en esta misma bitácora:
+- Repeticiones: rasgo «observa» de ZorzALL, 2026-10-04 (vuelta 7); medido el 2026-10-05 (vuelta 12) y el
+  2026-10-06 (vuelta 32): «50 % (1 267 de 2 532)».
+- Tope agotado sin editar: vueltas 11, 12, 25 y 32.
+- Lectura con argumento mal formado: vuelta 32, 344 llamadas; se concluyó que «no separa resueltas de no
+  resueltas» y se dejó.
+- Búsqueda vacía y subagente: vuelta 38 (2026-10-07): «búsquedas por similitud vacías 78 de 78, 56 de 56, 14
+  de 14, 54 de 54» y «subagente: 6 sesiones, 0 resueltas».
+Es decir: el problema se midió cuatro veces en cinco días y nunca se convirtió en una acción. El fallo es del
+ciclo y del orquestador tanto como del analista.
+
+**Lo que Datito dice que sigue sin mirar:** qué devuelve cada llamada en todo el universo (su primer recuento:
+de 4 444 llamadas, 2 503 con contenido, 805 lecturas truncadas, 439 errores, 309 búsquedas vacías, 211
+rechazadas por esquema y 177 órdenes sin salida); las ediciones rechazadas en cadena (8 sesiones con 5 o más
+seguidas, 0 resueltas); y qué se pierde en la compactación del contexto.
+
+**Frase que propone añadir a su definición:** «Antes de agrupar las llamadas por herramienta, cuenta qué
+devolvió cada una (vacío, error, repetida, truncada) y qué parte del presupuesto se fue en llamadas sin
+información nueva. Cualquier tope agotado se explica con trayectoria, no con una etiqueta.»
+
+**Línea independiente abierta, dos roles que no heredan el relato:** el verificador limpio mide el gasto sin
+avance con el instrumento ZorzALL (`scripts/zorzal_perfil.py`, rama `zorzal/hipotesis-y-criterios`, PR #145 en
+borrador) y dice qué ve y qué no ve ese instrumento; el forense del arnés reconstruye, con el código, por
+dónde pasa una llamada, quién la cuenta, quién la registra y dónde se puede medir o frenar. En curso además:
+bajada por la API de los notebooks públicos y del foro al 2026-10-09.
+
+### Línea independiente, forense del arnés: quién controla cada llamada (16:20 UTC)
+
+Leyó el código del arnés y del marco y contó sobre las trazas; no ejecutó nada.
+
+**Sus dos respuestas, copiadas tal cual.**
+- «¿Quién controla cada llamada? Nadie la juzga: el servidor del modelo la convierte en llamada, el marco ADK
+  la ejecuta descartando en silencio los argumentos que no reconoce, y el arnés solo comprueba un contador
+  compartido, el reloj y los turnos. No existe, ni en el arnés ni en el marco, detector de repetición, de
+  bucle, de resultado vacío, ni límite por herramienta o por subagente.»
+- «¿Dónde se mide o se registra? Cada llamada queda solo en la traza por tarea, que vive en memoria y se
+  escribe al terminar la tarea. El contador queda como un único número por tarea, y hoy nada escribe en vivo
+  si la llamada contó, si era repetida o si un argumento fue ignorado.»
+
+**Medido** (145 sesiones, 4 444 llamadas en traza, 4 086 contadas por el arnés; su modelo de conteo, sacado
+del código, coincide con el contador en 145 de 145 sesiones): 1 822 llamadas contadas (45 %) caen en alguna de
+cuatro clases de gasto sin avance: repetidas sin edición de por medio (1 438), lecturas con el argumento mal
+formado (506, las 506 devueltas desde la línea 1), búsquedas vacías (300 de 300) y llamadas del subagente
+(198). En 51 sesiones son más de la mitad de lo contado. 211 ediciones las rechaza el marco y no cuentan.
+`BudgetExceeded` apareció 5 veces en 4 sesiones: seguir tras el tope fue raro.
+
+**El camino de una llamada**, con archivo y línea en su informe: el servidor vLLM convierte el texto en
+llamada (código no disponible: no se sabe si la comilla de más la pone el modelo o ese analizador); ADK no
+valida los argumentos contra el esquema y `function_tool.py:172` descarta sin aviso toda clave que no
+reconoce; el contador vive en `swegemma/context.py:467-550` y suma antes de ejecutar; no cuentan la entrega,
+el estado, la llamada al subagente ni los rechazos; sí cuentan las llamadas del subagente, las fallidas y las
+vacías; el aviso de presupuesto se pega a la respuesta cuando quedan 10 o menos; la traza se guarda al
+terminar la tarea.
+
+**Por qué la búsqueda devuelve vacío** (coincide con el auditor, por otra vía): no codifica texto; consulta
+una tabla por nombre exacto de nodo. El índice sí está montado. `log.txt` tiene 600 avisos «Could not obtain
+embedding» para las 300 llamadas: el aviso llegó a la consola y nunca al agente. La instrucción del envío
+(`system.md:11`) y el propio arnés mandan usarla con palabras clave.
+
+**Lo que no queda registrado en ningún sitio:** el texto crudo del modelo; los argumentos descartados; si una
+llamada contó o era repetida, en vivo; ninguna llamada de la tarea en curso si la sesión muere; el motivo de
+fin cuando hay parche. El registro nuevo del equipo engancha las peticiones al modelo, no las herramientas.
+
+**Tres niveles.**
+- Medir después: ya se puede, desde la traza (issue #171).
+- Medir en vivo sin tocar al agente: posible y sin ejecutar. Un plugin del marco con retrollamadas de
+  herramienta que siempre devuelvan `None`, añadido desde el notebook; ve los argumentos crudos antes del
+  descarte, el autor y los rechazos. Debe tragarse sus errores y no tocar los argumentos. Prueba: el ensayo
+  local con y sin el plugin, y que contador, turnos y traza sean idénticos.
+- Frenar desde el zip: casi nada. Quitar herramientas de la lista es el único freno real. Las retrollamadas
+  declaradas en el YAML no se rechazan: se ignoran en silencio. No hay campo de presupuesto.
+
+**Advertencia suya que queda como regla:** los enganches del notebook propio deben medir, nunca frenar; un
+freno ahí haría que las corridas propias dejaran de predecir la corrida que puntúa el organizador.
+
+**Sin determinar:** quién pone la comilla en el nombre del argumento, y si la corrida de puntuación del
+organizador usa la misma versión del arnés.
+
+### Línea independiente, verificador limpio: medir con ZorzALL (16:40 UTC)
+
+Trabajó con rescate propio (13:42 UTC, código 4 por los 145 logs por sesión de 0 bytes; los zips tienen el
+mismo SHA-256 que los del rescate del día 8) y sin abrir la bitácora ni los informes de otros roles.
+
+| Afirmación, dada sin cifras | Marca | Su medida |
+|---|---|---|
+| Una parte grande de las llamadas repite una anterior | Se sostiene con tope 40; se cae con tope 60 | 1 783 de 4 444 (40,1 %); 46,1 % con tope 40 y 9,4 % con tope 60 |
+| Una búsqueda casi nunca devuelve resultado | Se sostiene, más fuerte | 300 de 300 vacías: nunca |
+| Un subagente consume gran parte del tope sin resolver | Se sostiene, con 7 sesiones | 0 de 7 resueltas; mediana del 65 % del tope |
+| Lecturas con argumento mal formado devuelven otra cosa | Se sostiene con tope 40; se cae con tope 60 | 507 de 1 371 lecturas; 505 devueltas desde la línea 1; 10 de 243 en las iteraciones 06 y 07 |
+| Muchas no resueltas agotan el tope sin editar | Se sostiene por poco | 29 de 106 no resueltas sin ninguna edición ejecutada y al tope; 25 con parche de 0 bytes |
+| Las resueltas usan muchas menos llamadas y casi no repiten | Se cae como está escrita | Mediana 21 contra 37; las resueltas sí repiten (mediana 3; solo 8 de 39 sin ninguna) |
+| El arnés no cuenta algunas llamadas que la traza registra | Se sostiene, con cuadre exacto | 4 444 en traza, 4 086 contadas; la diferencia de 358 cuadra en 145 de 145 sesiones |
+
+**Lo que el relato no había separado:** el tope fue de 40 llamadas y 4 minutos en las iteraciones 03 a 05 y de
+60 llamadas y 4,5 minutos en la 06 y la 07, que además llevan el razonamiento encendido. El gasto sin avance es
+de 51,9 % con tope 40 y de 14,5 % con tope 60. Es una comparación confundida (otras tareas, otro tope y el
+razonamiento a la vez), pero dice que la condición con razonamiento casi no repite ni rompe el argumento de
+lectura.
+
+**¿ZorzALL mide el gasto sin avance? No, tal como está.** Sin avance, por su definición: 2 037 de 4 444
+llamadas (45,8 %). El rasgo «observa» ve 172 de esas (8,4 %): solo cuenta una repetición si la llamada anterior
+falló, y una búsqueda vacía, una lectura mal formada o una edición rechazada no son «fallo» para el instrumento.
+La anatomía no guarda el autor, así que el subagente no aparece. «Espera» sí separa (50 sesiones lo incumplen,
+2 resueltas), pero es una señal del final y no dice en qué se fue el gasto.
+
+**La regla H-Z1 da «apoyada» y no es fiable:** 16 de 34 con perfil contra 22 de 85 sin perfil; pero 37
+sesiones sin ninguna edición caen en «sin perfil» por construcción, y entre las 82 que editaron la diferencia
+desaparece (16 de 32 contra 22 de 50; Fisher p = 0,65). El perfil cambia en 13 de 43 tareas entre dos pasadas
+idénticas, mientras el resultado cambia en 2. «Observa» va al revés de lo esperado: lo cumplen 23 de 39
+resueltas y 76 de 106 no resueltas, porque volver a correr un comando fallido después de editar es el ciclo
+normal de probar.
+
+**Tres defectos de medida del instrumento, sin tocar umbrales:** «espera» suma las llamadas de la traza y no
+las que cuenta el arnés (cambia 9 sesiones); «acierta» cuenta como edición las 211 rechazadas (cambia 8);
+«busca» toma como primera edición una que no se ejecutó (13 sesiones).
+
+**Contadores que propone añadir**, sin tocar `umbrales.json`: contadas por el arnés, rechazadas sin ejecutar,
+vacías, repetidas sin cambio, mal formadas, del subagente, ediciones ejecutadas y posición de la primera, y
+llamadas tras el aviso de presupuesto (718 en 79 sesiones; de esas sesiones se resolvieron 8). Pasados al
+implementador del issue #171. Corregir qué es «fallo» o qué cuenta como edición sería una versión 2 de ZorzALL,
+que necesita la aprobación del dueño.
+
+**Potencia, por su cuenta:** dos pasadas idénticas difieren en 2 de 43 tareas; con una pasada por brazo sobre
+esas 43 tareas solo se distinguiría, ocho de cada diez veces, una mejora de unas 8 tareas.
+
+**Coincidencia de las dos líneas independientes con el concilio**, sin haberse leído: las 300 búsquedas vacías,
+el cuadre de 4 444 frente a 4 086, las 211 ediciones rechazadas, y cerca del 45 % de gasto sin avance (2 037
+de 4 444 en traza; 1 822 de 4 086 contadas).
+
+### Inteligencia pública: qué hacen los demás equipos (lectura del 2026-10-09, 17:30 UTC)
+
+Leído en los archivos bajados hoy por la API (142 notebooks, 161 hilos del foro, tabla de 2 177 equipos).
+Límite del material: de los 34 notebooks nuevos desde el día 4 solo hay log de ejecución, no código.
+
+**Su respuesta en una línea, copiada:** «ningún notebook público declara una nota medida mayor que 0,18, y el
+0,18 es una sola autodeclaración dentro del log de otro notebook. La parte alta de la tabla (0,20 a 0,24, 10
+equipos) no tiene método público.»
+
+**Tabla pública, en tareas de 58:** 14: 2 equipos; 13: 1; 12: 7; 11: 23; 10: 82; 9: 154; 8: 290 (nosotros,
+puestos 270 a 559); 7: 393; 6: 359; 5: 283; 4: 181; 3: 140; 2: 77; 1: 50; 0: 135. Con un envío, el 10 % de los
+equipos llega a 0,13 o más; con 5, el 32 %; con 10, el 53 %; con 14, el 77 %. El último salto de la tabla (de
+150 a 269 equipos con 0,15 o más entre el día 8 y el 9) es una tanda de repuntuación: 214 equipos subieron y
+ninguno bajó; coincide con el aviso fijado del organizador de que repuntúa los envíos que marcó «Kaggle Error»
+tras más de 15 h de cola. Nuestro paso de «error» a 0,13 encaja en esa tanda (inferencia).
+
+**Lo que hacen los que declaran más nota, con una lectura cada uno y ninguna medida por nosotros:**
+- Familia «Budget-Fit» (el mismo paquete impreso en 8 logs; 0,18 por autodeclaración ajena): un solo agente,
+  sin subagente ni herramientas de grafo, 28 llamadas, 8 minutos por tarea, 80 turnos, 240 s por orden;
+  razonamiento encendido (inferido por el tamaño del archivo de muestreo). Su instrucción no está en disco.
+- «v19» (0,17, dicho por su autor en el foro): analizador y programador, 100 llamadas, 7,5 minutos,
+  razonamiento apagado. Sus otras versiones dieron 0,13, 0,08, 0,13, 0,13, 0,10 y 0,17.
+- «0.13 Submission»: explorador de solo lectura y después programador, 60 llamadas, 5 minutos, sin la
+  búsqueda por similitud; la instrucción manda una sola búsqueda acotada, primera edición mínima y «no
+  vuelvas a buscar».
+- Paquete más votado (0,12 y 0,15 con el mismo zip): reproduce antes de editar, comprueba la compilación tras
+  cada edición, sin topes declarados.
+
+**Lo que dice el organizador en el foro** (citas con número de hilo en el informe): el puntuador lee del
+`eval_config.yaml` cuatro campos y solo esos (segundos por orden, llamadas, minutos, turnos); el valor por
+defecto es sin límite; las tareas corren en serie con un tope global de 12 h para unas 120 tareas (públicas y
+privadas en la misma corrida, con el arranque del servidor dentro); si se pasa de 12 h, el envío entero da
+error. Sobre la lectura con el argumento mal formado: «Fix incoming» el 2026-09-30, sin versión confirmada. No
+hay respuesta sobre qué versión del arnés usa hoy el puntuador.
+
+**Lo que dicen participantes, sin notebook que lo respalde:** el razonamiento encendido resolvió de 48 a 51
+de 129 tareas en local frente a 23 con él apagado (una corrida); bajar el tope de 50 a 25 llamadas costó 14
+tareas en local; las herramientas de grafo no ayudan (21 búsquedas, 21 vacías; otro hilo, 140 de 142); el
+mismo comando repetido hasta 69 veces; un mismo zip dio 0,12 y 0,15.
+
+**Coincidencias con lo nuestro, halladas por otros sin conocernos:** la búsqueda vacía por nombre exacto, las
+repeticiones, el ruido entre envíos idénticos, y que el analizador no aporta.
+
+**Lo que no hemos probado y otros sí:** más minutos por tarea. Nuestro tope de 4 minutos y 40 llamadas es
+nuestro, no del concurso: 12 h para unas 120 tareas dan unos 6 minutos de media por tarea, y los que declaran
+más nota usan de 5 a 8. Nuestra condición con razonamiento, 60 llamadas y 4,5 minutos dio 0,08 y 0,13; la de
+40 llamadas y 4 minutos, 0,06 y 0,05. Dos lecturas por variante: no refuta ni prueba.
+
+**Lo que no se puede saber con lo público:** el método de los diez equipos con 0,20 o más; si algún envío
+puntuado usa adaptadores; qué versión del arnés puntúa.
+
+**Reglas que miró antes de proponer nada:** una sola cuenta por participante; datos externos solo si son
+públicos y accesibles para todos sin costo; prohibido entregar los datos de la competencia a terceros. Nada de
+lo adoptable usa red ni cómputo externo.
+
+**Ronda 2, cómo se hizo:** expediente con los cuatro informes anonimizados (A a D) en
+`C:\Users\herre\AppData\Local\Temp\concilio_42_ronda2\`; cada rol, reanudado con su contexto, responde qué
+refuta de los otros con sus datos, qué retira, la pregunta del tope, y ordena once acciones candidatas (P1 a
+P11). El auditor recibió la pregunta del dueño y el encargo de auditar el propio procedimiento.
+
+### (Sección anterior, superada) Estado a las 05:35 UTC
+
+**Hecho y verificado.** PR #153, #155, #157 y #158 fusionados. Issues #154 y #156 confirmados. Decisión de la
+iteración 08 tomada (arriba). De las tres condiciones para subir, la primera (rescate que mira bytes) está en
+`main`.
+
+**En curso al escribir esto** (si la sesión se corta, muere y no deja informe):
+- Segunda revisión de documentos del PR #163 (árbol `F:\Code\ALL-wt-azar`, commit `d929b25`).
+- CI de `main` en `e6b8f66` (fusión del PR #161).
+
+**Falta.**
+- #160: confirmar el cierre cuando la CI de `main` termine en verde (comentario de evidencia, tarjeta en
+  *Verificada*, Modelo usado Opus 5.5, Escaló No).
+- #162: tras la segunda revisión, traer `main` a la rama (el `CHANGELOG` chocará), fusionar y confirmar; que
+  un rol distinto del orquestador registre los desenlaces de las predicciones en el pre-registro.
+- #164 a #167: sin empezar. Cada uno lleva predicción previa.
+- Issue por abrir: fijar los episodios dentro de las pruebas de recall (tres pruebas dependen de los episodios
+  reales y de un umbral al límite).
+- (Hecho a las 01:20 UTC) #156 confirmado: CI de `main` en `d8b95f7` con 12 de 12 en verde, comentario de
+  evidencia en el issue y tarjeta en *Verificada*.
+- Guardián: el #159 tiene tarjeta desde las 00:25 UTC por orden del dueño y ahora salta por las reglas 2 y 3
+  (tarjeta en *Done* sin estimación ni verificación). Falta decidir: ajustar las reglas para los «no
+  planeados» o rellenar los campos.
+- #160: los diez criterios, PR, revisión de código **y recuento de Datito**, fusión y confirmación. Toda
+  corrección posterior a un dictamen vuelve al revisor antes de fusionar.
+- Las predicciones fechadas de la iteración 08 (las escribe el concilio, antes de subir).
+- En local y gratis: las 21 sesiones que QA no midió y la pasada del parche de referencia.
+- Guardián del tablero: el #159 (duplicado erróneo, cerrado como «no planeado») salta por la regla 9 al no
+  tener tarjeta. La regla no exceptúa los «no planeados»; decidir si se le pone tarjeta o se ajusta la regla.
+
+**Pendiente del dueño.** Si el criterio exige siempre la prueba exacta además de los «6 pares». Y la orden de
+subir: nada se sube a Kaggle sin ella.
+
+**Para retomar.** `git worktree list`; `gh pr list`; leer esta sección; no relanzar un agente sin mirar antes
+qué dejó el anterior en disco.
+
+Nada se subió, se envió ni se contrató. Todo lo de esta sesión es local o de GitHub.
+
+
+### Estado al cierre y cómo retomar (2026-10-09 16:10 UTC)
+
+**Nada se subió ni se envió a Kaggle.** Todos los agentes de la sesión quedaron detenidos. Cierre pedido por el
+dueño al terminar su jornada.
+
+**Fusionado hoy en `main`:** PR #172 (episodio 073, lecciones de las vueltas 41 y 42) y PR #170 (regla del
+guardián). Issue #169 confirmado (Verificada).
+
+**Abierto, con lo que falta a cada uno:**
+- **PR #175 / issue #173 (kit K «interfaz limpia»): cambios requeridos.** El kit está armado, compila y
+  quedó registrado como `prepared`, no enviado. El revisor pide: (1) resolver el conflicto con `main` en
+  `prediccion_de_fallos.md` para que corra la CI (hoy no tiene); (2) la comprobación lee el YAML con expresiones
+  regulares y deja pasar diez formas que el compilador real acepta: cargar con PyYAML y un constructor
+  `!include`, o fallar cerrado; (3) once falsos positivos; (4) seis huecos de prueba. Datito: la cifra «12
+  carpetas, 0 errores» no se reproduce (la réplica pública da 1 error por una mención en negativo); K retira
+  324 llamadas contadas (7,9 %); una pasada por brazo no distingue K de A. Predicciones 21 y 22 cumplidas, 23 y
+  24 no.
+- **PR #174 / issue #171 (vigía, cuenta por llamada, registro de hallazgos): entregado, sin revisar.** Falta
+  `revisor-codigo` y Datito. Añade un gancho de inicio de sesión en `.claude/settings.json`: enseñárselo al
+  dueño antes de fusionar. El implementador pide confirmar las razones con que sembró `hallazgos.json`.
+- **Issue #164 (tope por tarea): a medias.** Rama `issue-164-tope-por-tarea`, árbol `F:\Code\ALL-wt-tope-tarea`,
+  commit de código `2e57468`; sin confirmar quedaron `CHANGELOG.md`, `docs/ensayo_nucleo_jupyter.md` y el
+  episodio 071. No hay PR ni informe final del implementador (se detuvo al cierre): leer el diff antes de seguir.
+- Sin empezar: #165, #166, #167; issue de seguimiento de las observaciones no bloqueantes del PR #170; marcar
+  en el pre-registro los desenlaces de las predicciones 13 a 16 y 21 a 24; actualizar la skill
+  `concilio-de-experimento` con los seis cambios del auditor.
+
+**Decisiones vigentes:** iteración 08 sin cambios (base A más el brazo que enciende solo el razonamiento);
+kit K se juzga por criterio mecánico; el tiempo por tarea vuelve al concilio con revisión cruzada (los que
+declaran más nota usan de 5 a 8 minutos; el presupuesto real es de unos 6); la sonda de CPU
+`cs4all/sonda-nucleo-08` espera solo la palabra del dueño.
+
+**Hechos de hoy:** 8 tareas de 58 (0,13), puestos 270 a 559 de 2 177; cuota de GPU repuesta el 2026-10-10
+00:00 UTC.
+
+**Regla nueva de operación:** no correr suites completas ni varios agentes pesados en paralelo en el equipo del
+dueño: hoy saturaron la memoria y contaminaron un diagnóstico. La suite completa se lee en la CI.
+
+**Fuera de Kaggle, el mismo día:** caso forense `D:\SandboxConfigs\SandboxTransfer\DFIR_IA_STREAM_20261009_124500`
+(respuestas de IA que no cargan en el navegador), skill de usuario `forense-endpoint` y limpieza del equipo
+autorizada por el dueño. Pendiente de él: reiniciar y repetir la consulta.
+
+**Cómo retomar:** `python -m scripts.devlog board --since 150`; corregir el PR #175; revisar el #174 con los dos
+roles, de a uno; leer el diff del #164 y terminarlo.
+
+
+### Estado al cierre y cómo retomar (2026-10-09 17:10 UTC)
+
+Sustituye al cierre de las 16:10 UTC: el dueño pidió seguir con lo pendiente. **Nada se subió ni se envió a
+Kaggle.**
+
+**En `main` hoy:** PR #172 (episodio 073), #170 (guardián; issue #169 confirmado) y #175 (kit K y comprobación
+de la instrucción; issue #173 confirmado, `mergedAt` 16:28:30Z, commit `8ed4763`).
+
+**Kit K «interfaz limpia»:** registrado como `sub-004`, `prepared`, no enviado. SHA-256 `3346af0e…c8b1`. Es el
+kit A sin subagente, sin las tres herramientas de grafo y sin la línea que ordenaba la búsqueda. Retira 324
+llamadas contadas de 4 086 (7,9 %; mediana 1 por sesión). Una pasada por brazo no distingue K de A (diferencia
+mínima detectable de 30 a 56 puntos). Seguimiento: issue #177 (la opción `--permitir-mencion` puede tapar una
+orden real).
+
+**PR #174 / issue #171 (vigía, cuenta por llamada, registro de hallazgos):** segunda revisión de código,
+«aprobado con observaciones no bloqueantes»; CI de `605e3ba` 12 de 12. Corrigió: el vigía podía imprimir el
+token con un salto de línea interior; un rescate incompleto apagaba el aviso; 13 contadores sin prueba. Falta
+el recuento de Datito (en curso) y **que el dueño vea el gancho de `SessionStart`** que añade a
+`.claude/settings.json` (una orden: `python "$CLAUDE_PROJECT_DIR/scripts/kaggle_vigia.py"`, tope 30 s; solo
+lee). Tras fusionar #175 la rama vuelve a chocar con `main` en el pre-registro y el `CHANGELOG`: fusionar
+`main` conservando su sección 12.
+
+**PR #176 / issue #164 (tope por tarea):** primera revisión, «cambios requeridos» y «no listo para lanzar»;
+corregido en `43c93ca` sin tocar el texto del notebook (p1 `30aa9b31…`, p2 `0351fd80…`, sin repetir ensayo);
+segunda revisión en curso; falta Datito. Medido: el tope corta a 90,0 y 900,0 s; vaciar el mapa de hilos
+quita la carrera en la sonda (60 de 1 500 frente a 0 de 1 500); 20 de 26 corridas pasan su validación; tarea
+legítima más larga con tope 900: 269,1 s.
+
+**Condiciones de lanzamiento de la iteración 08, escritas en `ensayo_nucleo_jupyter.md`:** PR #176 fusionado
+con CI en verde; ensayo repetido con la versión de `ipykernel` de Kaggle (sin medir); el análisis de p1 contra
+p2 debe excluir los pares con `par_faltante` (no existe guion versionado que compare las dos pasadas); primera
+subida en serie; orden del dueño con la orden a la vista; cuota de al menos 14,6 h.
+
+**Para el concilio de la próxima vuelta, con revisión cruzada:** tiempo por tarea (los que declaran más nota
+usan de 5 a 8 minutos; presupuesto real de unos 6); no hay tope al total de tareas colgadas, solo a dos
+seguidas; el margen de 30 s tras el corte queda justo.
+
+**PR #178:** desenlaces de las predicciones 13 a 16 y 21 a 24 (seis de ocho ocurrieron); en revisión de
+documentos.
+
+**Sin empezar:** #165, #166, #167, #177; seguimiento de las observaciones no bloqueantes de los PR #170 y
+#174; cambios de la skill del concilio.
+
+**Operación:** suites completas y mutaciones solo en la CI; agentes de a pocos, con esa restricción en el
+encargo.
+
+**Cómo retomar:** leer los informes pendientes (segunda revisión del #176, Datito del #174, revisor del #178);
+fusionar `main` en las ramas de #174 y #176 antes de fusionarlas; pasar #176 por Datito; enseñar el gancho al
+dueño.
+
+
+### Estado al cierre y cómo retomar (2026-10-09 17:40 UTC)
+
+Sustituye a los cierres anteriores del día. **Nada se subió ni se envió a Kaggle.** Ningún agente ni proceso
+queda corriendo. No queda ningún PR abierto de esta jornada.
+
+**En `main` (cabeza `acc9a0a`):**
+- #172: episodio 073, lecciones de las vueltas 41 y 42.
+- #170: el guardián exime al issue cerrado sin trabajo (#169 confirmado).
+- #175: kit K «interfaz limpia», `sub-004`, `prepared`, no enviado, y la comprobación de que la instrucción no
+  ordena herramientas ausentes (#173 confirmado).
+- #178: desenlaces de las predicciones 13 a 16 y 21 a 24 (seis de ocho ocurrieron).
+- #176: tope de 900 s por tarea, vaciado del mapa de hilos, códigos 6 y 7 del diagnóstico (#164 confirmado).
+- #174: vigía de envíos al iniciar sesión, cuenta por llamada, registro de hallazgos con 19 filas
+  (#171 confirmado). El gancho de `SessionStart` lo aprobó el dueño. Ejecutado a mano tras fusionar: «envíos
+  sin cambios desde esa lectura» y siete hallazgos que siguen en `medido`.
+
+**Abiertos, con estimación:** #177 (la opción `--permitir-mencion`), #179 (seguimiento del vigía y del tope:
+doce puntos, entre ellos el guion que compare las dos pasadas excluyendo pares faltantes, y probar el gancho
+en un arranque real), #165, #166, #167.
+
+**La iteración 08 no está lista para lanzar.** Condiciones, en `ensayo_nucleo_jupyter.md`: ensayo repetido
+con la versión de `ipykernel` de Kaggle (sin medir); análisis de p1 contra p2 que excluya los pares con
+`par_faltante` (#179, punto 11); primera subida en serie; orden del dueño con la orden a la vista; cuota de
+al menos 14,6 h. Notebooks armados: p1 `30aa9b31…14fa`, p2 `0351fd80…14c5`.
+
+**Para el concilio de la próxima vuelta, con revisión cruzada** (el dueño: «cada duda debes resolverla en loop
+junto al concilio»): tiempo por tarea (los que declaran más nota usan de 5 a 8 minutos; presupuesto real de
+unos 6; el tope propio es de 4); tope al total de tareas colgadas (hoy solo dos seguidas; con colgadas
+alternas se irían unas 2 de las 2,5 h, por aritmética); margen de 30 s tras el corte; si `hallazgos.json`
+cuenta como «cuenta por llamada» para la predicción 19; y los siete hallazgos que el vigía lista en `medido`:
+cada uno pasa a decidido o descartado, o se dice por qué sigue abierto.
+
+**Predicciones sin marcar en el pre-registro:** 7 a 12 (#164) y 17 a 20 (#171). Datos: 17, 18 y 20
+ocurrieron; 19 pendiente del concilio; 7 a 12 sin recontar (el analista no llegó a ese punto).
+
+**Repositorio:** los archivos sueltos de la raíz pasaron a `.scratch/` (ignorada), con un `LEEME.md`. Quedan
+sin versionar `.codex/` y un borrador del manuscrito.
+
+**Operación:** suite completa y mutaciones solo en la CI; pocos agentes a la vez. Tras cada fusión, las ramas
+abiertas chocan en `CHANGELOG.md` y en el pre-registro: fusionar `main` y conservar los dos lados.
+
+**Cómo retomar:** al abrir sesión el vigía dirá si algún envío cambió. Después, `python -m scripts.devlog
+board --since 150`; convocar el concilio con las cinco dudas de arriba; #179.
+
+
+**Lectura final por la API, 2026-10-09 17:41 UTC** (rescate `2026-10-09T1741Z`, salida 4 por los logs por
+sesión de 0 bytes ya conocidos). Envíos: los mismos cuatro, sin cambios de estado ni de nota desde las 13:42
+(0,13, 0,08, 0,05 y 0,06; el último es del 2026-10-07 16:25). Ningún envío nuevo. Notebooks propios: 15; la
+última ejecución es la de `iteracion-07`, del 2026-10-07 16:48: hoy no corrió ninguno. Tabla pública: 2 188
+equipos (eran 2 177); CS4ALL en el puesto oficial 544 con 0,13 (8 tareas de 58) y 4 envíos; 277 equipos con
+más nota (eran 269) y 293 empatados (puestos 278 a 570). Máximo 0,24 y mediana 0,10, sin cambio. En cuatro
+horas, sin enviar nada, ocho equipos más nos pasaron y el puesto oficial bajó de 540 a 544.
+
+
+**Cierre definitivo del 2026-10-09 (18:20 UTC).** PR #181 fusionado (issue #180 confirmado): el manuscrito, en
+castellano y en inglés, añade como nota posterior a su fecha de corte el segundo par de envíos del mismo
+archivo, 0,08 y 0,13; los PDF no se regeneraron. Texto para LinkedIn revisado por el redactor y por el
+validador estadístico, guardado en `.scratch\linkedin_2026-10-09_final.md`: **no se publicó**; lo publica el
+dueño. Dos correcciones del validador a lo dicho durante el día: (1) los 293 equipos con 0,13 no están
+«empatados»: tienen puestos del 278 al 570 y la nota está truncada; (2) el reenvío no llevaba «dos días
+puntuado»: el 2026-10-08 22:31 UTC seguía en error y recibió la nota en las 15 horas siguientes; corregido con
+un comentario en el #171 y anotado en el #179 para el episodio 073. Enlaces: tabla
+`https://www.kaggle.com/competitions/gemma-4-developer-agent/leaderboard`, envíos `…/submissions`.
+
+
+## Vuelta 43 — 2026-10-09, desde las 21:45 UTC
+
+**Pregunta de la vuelta** (del dueño): «retomar dónde quedaste la última vez, revisa el detalle de toda la
+información documental, y foco junto al concilio de seguir mejorando».
+
+**Nada se subió, se envió ni se contrató.** La vuelta no baja datos nuevos: usa el rescate `2026-10-09T1741Z`.
+Lecturas del orquestador por la API a las 21:55 UTC: los mismos cuatro envíos, sin cambio de estado ni de
+nota (0,13, 0,08, 0,05 y 0,06); cuota de GPU, 29,53 h usadas de 30,00, con reposición el 2026-10-10 a las
+00:00 UTC. Recall anotado: sin lecciones propias de la pregunta; los issues parecidos que devolvió son #171,
+#164 y el episodio de las vueltas 41 y 42.
+
+**Leído antes de convocar:** la memoria de reanudación, la vuelta 42 entera y sus tres cierres, los issues
+#177 y #179, la skill del concilio, `hallazgos.json`, el pre-registro de predicciones y
+`ensayo_nucleo_jupyter.md` (topes, ramas del corte, condiciones de lanzamiento y límites).
+
+**Convocatoria.** La misma pregunta para los cinco roles, sin conclusiones ni cifras del orquestador
+(`…\instrumentos\concilio_43\encargo.md`): P0, cuál es el siguiente paso con más respaldo para subir la
+nota y qué hacer con la cuota semanal y con el envío diario; y siete dudas (D1 los cuatro campos de
+`eval_config.yaml`; D2 tope al total de colgadas; D3 margen tras el corte y ventana final; D4 predicción 19;
+D5 los siete hallazgos en `medido`; D6 si la iteración 08 sigue siendo el mejor primer uso de la cuota; D7 la
+pregunta obvia que nadie contesta). El auditor del método entra después de la ronda 2.
+
+**Incidente de la ronda 1.** A las 22:12 UTC tres roles (analista, forense y QA) se cortaron a la vez por un
+fallo de conexión del equipo, no por su trabajo. El forense ya había dejado su informe completo en disco; los
+otros dos se reanudaron con su contexto y entregaron a las 23:00 y 23:05 UTC. Los cinco informes pasan del
+tope de 900 palabras del encargo. Informes completos y guiones: `…\instrumentos\concilio_43\<rol>\`.
+
+**Reparto con otra sesión.** La sesión `maci-6a`, con el mismo encargo del dueño, pone al día el README del
+caso, el registro de pruebas y el recorrido; esta sesión lleva el concilio, el repositorio y esta bitácora.
+Su medición de la tabla pública entró a la ronda 2 como informe F, sin firma y marcada «sin recontar».
+
+### Primer paso que propone cada rol en la ronda 1, copiado tal cual
+
+**Forense del arnés:**
+
+1. Siguiente paso: enviar el kit K con su `eval_config.yaml` intacto (un envío, 0 h de cuota), y antes leer la versión de `ipykernel` de Kaggle con la sonda de CPU ya armada (0 h de GPU).
+2. Por qué: en las 131 filas propias de la condición A el tope que corta es el de llamadas (46 filas, 31 sin parche), no el de tiempo (7); el peor caso de reloj lo fija `max_time_minutes`, y con 4 min quedan unas 2 h de holgura bajo las 12 h.
+3. Lo refutaría: que el organizador corra más lento que nuestras sesiones (no medido: ningún rescate guarda la duración de un envío) o que K sin grafos pase a agotar el tiempo.
+
+**Analista de datos:**
+
+1. Siguiente paso: gastar la cuota nueva en medir la condicion I (la de mejor nota en la tabla: 5 y 8 de 58, frente a 3 y 4 de A) sobre tareas sorteadas sin elegir, antes que repetir A. La duracion media de I (246 s) sale de tareas elegidas y de ella dependen el tope de D1 y el riesgo del limite global. Orden: I sobre el sorteo de 60 (unas 4,6 h de reloj, 2 sesiones, unas 10 h de cuota), luego A sobre las mismas 60 (2,0 h de reloj, unas 4,5 h de cuota). El envio diario va a repetir el zip mejor, no a probar cambios pequenos.
+2. Por que: es el unico cambio con senal en el mismo sentido en tabla y en local (3 tareas de fastapi pasan de 0/3 a 2/2; en rich no gana y pierde una). Ningun diseno detecta menos de 6 a 8 tareas.
+3. Lo refutaria: media de I sobre tareas sin elegir mayor de 300 s (mas de 10 h en 120 tareas), I no mejor que A sobre las mismas tareas, o un nuevo «system error» sin relacion con el tiempo.
+
+**Inteligencia pública:**
+
+1. Paso: usar el envío diario en el kit I (razonamiento encendido) cambiando timeout_seconds de 60 a 240 y subiendo max_time_minutes solo hasta donde el tiempo medio por tarea, leído de logs ya bajados, lo permita; la cuota nueva, a la iteración 08 solo si D6 se cumple.
+2. Por qué: una lectura tiene ruido de 2 a 3 tareas, así que un envío aislado no separa nada. Lo público respalda (a) razonamiento encendido y (b) más de 4 minutos, ambos declarados por otros en corridas únicas. Nuestro timeout_seconds de 60 es además el valor que el código 0.2.7 aplica a la verificación del parche.
+3. Lo refutaría: que el tiempo medio por tarea con razonamiento y tope de 6 a 8 minutos pase de unos 5 minutos (se pasa de 12 h), o que dos envíos del kit cambiado no se separen de los dos del kit I (0,08 y 0,13).
+
+**QA de trayectorias:**
+
+Siguiente paso con más respaldo en trayectorias: razonamiento encendido con 60/4,5 y limpiar la interfaz (argumentos, sintaxis) antes de tocar topes. Por qué: en las 19 tareas comunes resuelven 18 de 29 sesiones encendidas contra 20 de 57 apagadas, y los argumentos mal formados bajan de 44 % a 4 % de las lecturas (comparación confundida por tres cambios). Lo refutaría: un brazo sin razonamiento con interfaz limpia (kit K) que llegue a 0,5 o más de resueltas en esas 19 tareas, o un brazo con razonamiento y 40/4 que no pase de 0,35.
+
+**Arquitecto de IA:**
+
+1. Siguiente paso: la pasada 1 de la iteración 08, sola y en serie (hasta 5,0 h de cuota); después la pasada 2 y, tercero, el brazo «solo razonamiento encendido» con los mismos topes.
+2. Por qué: es la única comparación que separa «razona mejor» de «tuvo más presupuesto»; hoy tareas, llamadas, minutos y razonamiento cambian juntos.
+3. Lo refutaría: que la pasada 1 no complete 60 tareas en sus 7 200 s (media por tarea sobre 120 s), o que el montaje por tarea del puntuador pase de unos 30 s.
+
+### Parecer de forense del arnés, copiado tal cual
+
+1. El archivo de topes del envío no lo lee el código que tenemos; lo lee un guion del organizador que no está en disco.
+2. El organizador escribió que lee cuatro campos y solo esos, y que corre las tareas una tras otra.
+3. Con el kit A, lo que corta las tareas es el tope de 40 llamadas, no los 4 minutos.
+4. Cuando se acaba el tiempo o las llamadas, lo editado en disco se entrega igual como parche.
+5. Con 4 minutos por tarea, el peor caso medido da unas 10 horas para 120 tareas; el límite es 12.
+6. No sabemos cuánto tardó ninguno de nuestros envíos.
+7. Dos envíos marcados con error terminaron con nota sin que hiciéramos nada: un estado no es un desenlace.
+8. El mismo archivo sacó 0,08 y 0,13: un solo envío por kit no distingue kits.
+9. La iteración 08 está armada con el kit A, no con el K.
+10. La versión de `ipykernel` de Kaggle sigue sin leerse; hay una sonda sin GPU lista para leerla.
+
+### Parecer de analista de datos, copiado tal cual
+
+1. Las cifras de duracion y llamadas se reproducen desde los archivos crudos (4 086, 4 444, 145 sesiones).
+2. Con 4 min y 40 llamadas, un tercio de las sesiones se acaba por llamadas y ninguna de esas se resuelve.
+3. Con razonamiento cada llamada tarda tres veces mas y manda el tiempo: un tercio termina por tiempo.
+4. Evaluar 120 tareas con razonamiento ocuparia de 8 a 10 horas; 6 minutos o mas puede pasar las 12.
+5. Los dos envios con razonamiento dieron error de sistema al principio y los otros dos no; no sabemos si fue el tiempo.
+6. Un envio solo distingue diferencias de 6 a 9 tareas; mejoras de 1 o 2 tareas no se ven.
+7. La tabla premia reintentar: mas envios, mejor nota, sin que el agente mejore.
+8. La iteracion 08 tal como esta mide ruido de A, no un cambio; conviene medir antes la condicion con razonamiento.
+9. Las ediciones que el marco rechaza (57 % de las ediciones) estan en 11 sesiones: arreglarlas vale a lo sumo una tarea de 58.
+10. Falta la duracion real en la maquina del organizador y la media de la condicion con razonamiento sin tareas elegidas.
+
+### Parecer de inteligencia pública, copiado tal cual
+
+1. Una nota sola no vale: el mismo zip dio 0,08 y 0,13.
+2. La tabla muestra la mejor nota de cada equipo y nunca baja.
+3. Quien envía más puntúa más, y el ruido casi basta para explicarlo.
+4. El organizador confirmó cuatro campos y que no hay tope por defecto.
+5. Nuestros 60 s por orden son lo más bajo de lo público y pueden cortar la verificación.
+6. Hay un límite nuevo de envíos pendientes.
+7. La versión que puntúa sigue sin respuesta.
+8. Elegir finales por la nota pública máxima es mala idea.
+
+### Parecer de QA de trayectorias, copiado tal cual
+
+1. En 145 sesiones, 21 se cortaron por tope.
+2. Sin razonamiento, 9 de 10 cortes giraban en bucles; más tiempo no los habría salvado.
+3. Con razonamiento el tiempo sí aprieta, y 4 de 11 cortes avanzaban.
+4. Las llamadas nunca son el límite con tope 60.
+5. Los argumentos mal formados son 44 % sin razonamiento y 4 % con él.
+6. Cuatro entregas rotas de sintaxis, todas sin razonamiento y sin ejecutar nada tras editar.
+7. Tras compactar, el enunciado literal desaparece siempre.
+8. No se puede decir si la mejora viene del razonamiento o de los topes.
+9. Falta medir el límite global y la iteración 08; no los vi.
+
+### Parecer de arquitecto de IA, copiado tal cual
+
+1. El kit A usa unas 4 de las 12 horas; el kit con razonamiento, unas 8,5.
+2. Con razonamiento, 16 de 29 tareas se cortan por tiempo y ninguna por llamadas.
+3. El modelo escribe 34 tokens por segundo: un minuto son unos 2 000 tokens.
+4. Defiendo hasta 4,5 minutos por tarea; con 5, el peor caso da 12,0 horas, sin margen.
+5. Pasar las 12 horas da error del envío entero, según el organizador; el arreglo no está confirmado.
+6. El montaje por tarea del puntuador no está medido.
+7. El notebook propio difiere del puntuador en compactación, memoria y sandbox.
+8. Las dos pasadas de la 08 cuestan hasta 10 horas de cuota; con el brazo de razonamiento, unas 20.
+9. Una tarea colgada puede dejar una pasada sin sus 60 tareas.
+10. No cambiaría el notebook armado.
+
+### Ronda 2: revisión cruzada (2026-10-09, 23:08 a 23:40 UTC)
+
+Expediente con seis informes sin firma (A forense, B analista, C inteligencia pública, D QA, E arquitecto;
+F, la medición de la tabla pública que llegó de la sesión `maci-6a`) en `…\instrumentos\concilio_43\ronda2\`.
+Cada rol, reanudado con su contexto, respondió con formato fijo: qué mide bien cada otro informe, qué refuta
+con su número, qué se le pasó, qué retira, ocho puntos donde los informes no cuadraban, vetos y orden final de
+dieciséis candidatas (C1 a C16, listadas en `encargo_ronda2.md`). Los órdenes no se promedian. Las cinco
+respuestas pasan del tope de 600 palabras. Lo que sigue está copiado tal cual de cada `ronda2.md`.
+
+**Forense del arnés (informe A). Qué retira:**
+
+Mi primer paso (enviar K): K no razona y parte de la base más baja; un envío no lo separa de A. Retiro también «46 de 131» como cifra de decisión: mezcla iteraciones 01 y 02.
+
+**Vetos:**
+
+- C8: a 5 min el peor caso es 10,8 a 12,0 h (B, E) y pasar las 12 h anula el envío entero.
+- C13: ningún dato pide otros márgenes e invalida el ensayo.
+
+**Orden final:**
+
+1. C11
+2. C15
+3. C9 (orden del dueño; el mismo día que 4)
+4. C4, que sigue como C7 cuando haya segundo zip
+5. C10
+6. C1, solo la pasada 1: base de A en las 60 tareas y estreno de los enganches con el brazo barato (hasta 5 h)
+7. C2 (es C14 con el kit de razonamiento; unas 10 h)
+8. C3 (unas 10 h; total de cuota, 25 de 30)
+9. C16, como segundo zip de C7
+
+Fuera: la pasada 2 de C1, C5, C6, C12.
+
+**Analista de datos (informe B). Qué retira:**
+
+- «El unico cambio con senal en tabla y en local» (P0 de B): I contra A tiene Fisher 0,24; las tareas de I fueron elegidas; los dos zips I fueron repuntuados tras error de sistema. Queda como hipotesis.
+- Que repetir el zip I sea el uso del envio diario: sube el maximo publico, no la privada (F).
+
+**Vetos:**
+
+- C8 (subir minutos): peor caso 11,8 h a 5,5 min y 12,8 h a 6 (E: 12,0 h a 5 con carga de 1 142 s). Sin media de I sin elegir, no.
+- C12 y C16 (kits nuevos): techo 1 tarea de 58, indetectable.
+- C14 (rearmar 08 con K): K contra A no se detecta; obliga a repetir el ensayo.
+- C13: solo si se rearma por otra causa.
+- C5 (K al envio diario): sin potencia.
+
+**Orden final:**
+
+1. C10 (local, mismo dia que la subida)
+2. C11 (local)
+3. C15 (regla, local)
+4. C1 (cuota, pasada 1) junto con C4 el mismo dia (envio: el zip I, control)
+5. C2 (tras construir y ensayar el notebook)
+6. C3
+7. C7 con C6 (alternar I e I con timeout_seconds 240, una variable)
+
+Fuera: C5, C8, C9 (la pasada 1 ya lee la version, segun E), C12, C13, C14, C16.
+
+**Inteligencia pública (informe C). Qué retira:**
+
+- «Casi basta el ruido» (D7 y parecer 3). F tiene razón: la varianza con 1 envío es 6,9 frente a 3,8 binomial (mi recuento, redondeando; F da 6,84), hay 135 ceros y 122 con 10 o más. Hay heterogeneidad de equipos.
+- «`timeout_seconds` es lo que aplica la verificación del puntuador» pasa a hipótesis. Nota: el organizador dijo el 10-07 que la validación «generally shouldn't timeout», sin ligarlo a esa pregunta.
+- La prioridad de C6 como primer paso.
+
+**Vetos:**
+
+- C8 por encima de 5 min: el peor caso de E llega a 12,0 h sin margen.
+- C15 no es veto, pero C4 como único plan: 54 envíos de un mismo zip suben la nota pública y no la privada (F, supuestos sin verificar).
+- C9 sin orden del dueño.
+
+**Orden final:**
+
+1. C11 (registro, hora de estado, límite de pendientes; local)
+2. C15 (regla de finales por varias lecturas)
+3. C4 (envío diario, mismo día que lo que haga la cuota)
+4. C14 o C2 (el notebook del kit que se quiere enviar, tras ensayo local)
+5. C7 (alternar dos zips con calendario)
+6. C5
+Fuera: C1 tal como está, C6, C8, C13, C16, C12 y C3 hasta tener C14. C9 y C10 si el dueño decide.
+
+**QA de trayectorias (informe D). Qué retira:**
+
+- Mi «decidido» para `argumento_mal_formado`: pasa a abierto. No separé interfaz de razonamiento, y el techo en tareas es pequeño (B).
+- Mi P0 como paso único: era «razonamiento más interfaz limpia», dos cambios juntos. No se sostiene sin C3.
+- Mi «4 sintaxis rotas» es cota inferior: 66 archivos no se pudieron verificar.
+
+**Vetos:**
+
+- C1 como primer uso: A ya tiene 116 sesiones y 9 de 10 cortes son bucles; añade ruido, no causa.
+- C8: sin dato mío a favor. El peor caso con 5 min es 10,8 h (B) o 12,0 h (E).
+- C12 como kit aislado: con razonamiento 0 de 20 parches rotos; el techo es 4 de 116 sin razonamiento.
+- C6 sin aislar: mezclaría un campo no medido con el kit de razonamiento.
+
+**Orden final:**
+
+1. C3 (cuota, notebook; separa razonamiento de topes sobre las 19 tareas comunes).
+2. C5 (envío del mismo día que C3, 0 cuota).
+3. C16 (interfaz limpia más razonamiento).
+4. C4.
+5. C10.
+6. C11.
+7. C15.
+Fuera: C1, C2, C6, C7, C8, C9, C12, C13, C14.
+
+**Arquitecto de IA (informe E). Qué retira:**
+
+- «12 al tope de llamadas»: conté 40 o más y el tope ata en 39. Vale 39 de 116.
+- «16 se cortan por tiempo»: son 16 sobre 270 s de reloj con montaje; cortadas por mensaje, 10 (B, D).
+- El factor 2 para planificar: uso el 2,25 de B, que no reconté. Una pasada, hasta 5,6 h; las dos, 11,3 h.
+- La pasada 2 como segundo paso.
+
+**Vetos:**
+
+- C8: a 5 min el peor caso es 12,0 h y pasarse da error del envío entero.
+- C13 y C14 antes de la pasada 1: invalidan el ensayo y hoy no hay Docker.
+- C16: dos cambios a la vez, sin corrida propia.
+- C6: un campo no medido en el puntuador, con ruido de 2 tareas por envío.
+
+**Orden final:**
+
+1. C11
+2. C15
+3. C9
+4. C1 (solo la pasada 1), el mismo día que C4
+5. C4
+6. C10
+7. C3 (unas 11 h; con la pasada 1, unas 17 de 24)
+8. C7, cuando C3 dé un candidato
+
+Fuera: C2 (difiere de C3 en 30 s y cambia tres cosas), la pasada 2 de C1, C5, C12 y las vetadas.
+
+### Parecer del auditor del método (presidente, con la ronda 2 a la vista), copiado tal cual
+
+Entregado el 2026-10-10 a las 00:10 UTC. Recontó con código propio desde los 12 zips, la tabla pública y los
+envíos. No escribió su archivo de informe; el orquestador lo guardó desde su respuesta, sin cambios de
+contenido, en `concilio_43/auditor/informe.md` (carpeta de instrumentos, ignorada por git), junto a sus guiones.
+
+1. Las cifras de duración y de la tabla se reproducen.
+2. Con tope 40, 41 de 116 sesiones acaban empujadas por el tope; solo 2 por corte duro.
+3. Con razonamiento, 10 de 29 se cortan por tiempo.
+4. Cinco minutos por tarea deja el peor caso entre 11 y 12,4 horas: vetado.
+5. El factor de cuota medido es 2,0; 2,25 es un techo.
+6. Las 14,6 horas no tienen derivación.
+7. Una colgada deja la pasada sin sus 60 tareas.
+8. Nuestra verificación local corta a 60 s en 16 sesiones de un repositorio.
+9. Reenviar sube la nota pública, no la privada.
+10. La cuota elige al candidato; los envíos lo confirman.
+11. Faltan las predicciones fechadas antes de subir.
+12. Siete hallazgos: cuatro decididos, dos descartados, uno abierto.
+
+**Lo que recontó y corrigió, copiado tal cual:**
+
+Universo: 12 zips de `iteracion-03` a `-07`, 145 filas (116 sin razonamiento, 29 con él).
+
+| Cifra | Marca | Número del auditor |
+|---|---|---|
+| Sin razonamiento, fin por tope de llamadas | Cuatro definiciones | 2 por mensaje del arnés; 12 con contador 40; 41 con 39 o más (2 resueltas); 39 con 39 o más y no resueltas |
+| «15, cuenta de trazas» (inteligencia) | Refutada | 15 = 12 sin razonamiento + 3 con tope 60; el contador es del arnés |
+| «46 de 131» (forense) | No recontada | mezcla iteraciones 01 y 02 |
+| Con razonamiento, fin por tiempo | Confirmada | 10 por mensaje, 1 por contexto; 16 duran 270 s o más, 6 de ellas resueltas |
+| Duración por tarea | Confirmada | 109,4 s (mediana 95,2; máx. 303,6) y 245,9 s (mediana 276,2; máx. 294,8) |
+| 120 tareas, media | Confirmada | 3,65 h y 8,20 h |
+| 120 tareas, peor caso con carga de 1 142 s | Corregida a rango | 4 min: 9,1 a 10,4 h; 4,5: 10,1 a 11,4; 5: 11,1 a 12,4 |
+| Código 124 en la verificación local | Corregida (analista: 5) | 16 de 116, todas en un grupo de repositorio (16 de 26); 3 sin parche; 0 de 29 con razonamiento |
+| Parche vacío | Confirmada | 37 (32 y 5), 0 resueltas |
+| Factor 2,25 | Cota superior | 29,53/13,14 se reproduce, pero el reloj solo suma la última versión de cada notebook; el analista escribió «mínimo», y es al revés |
+| Factor 2,00 | Vale para estimar | bitácora 2419, lectura a ambos lados de una sesión |
+| 14,6 h | No reproducible | bitácora 2913, sin derivación; el propio documento dice «no se comprobó» |
+| Informe F | Confirmado | 2 188 equipos, 9 526 envíos, 511 con un envío (media 4,19; varianza 6,84 contra 3,89), 122 con 10 o más, 135 con cero; Fisher 0,242 |
+| F, diferencia detectable | Corregida, F es prudente | 5 envíos por zip, 4,3 tareas; 10, 3,0; 27, 1,8 (normal, dos colas) |
+| Holgura de una pasada | Arquitecto confirmado | manda `TOPE_SEGUNDOS = 7200` desde el inicio de tareas (celda 10); el tope de sesión solo ata si la carga pasa de 1 200 s; holgura 360 a 1 260 s; una colgada cuesta 930 s |
+
+- **Cuál vale para D1:** 41 de 116. El código deja pasar 40 llamadas y rechaza la 41; el histograma tiene 29
+  filas en 39 frente a 2 a 8 en cada valor de 31 a 38. Mide cuántas sesiones acaban empujadas por el tope, no
+  que más llamadas resuelvan.
+- **No recontó:** sintaxis rota, las 58 sin fuente, los 46 de las trazas (su conteo de trazas falló).
+
+**Los siete hallazgos, copiado tal cual:**
+
+1. `argumento_mal_formado`: **decidido**. «Sin kit ni envío propio; se recuenta en C3.»
+2. `aviso_de_presupuesto_en_la_llamada_30`: **decidido**. «No actuar: 41 de 116 acaban en 39 a 40 llamadas y 2
+   resuelven; con razonamiento, máximo 53 de 60.»
+3. `ruido_entre_dos_envios_del_mismo_zip`: **decidido**. «Ninguna nota única decide; comparar zips pide 5
+   envíos por zip; finales por media.»
+4. `sesiones_sin_edicion_de_fuente`: **descartado**. Es consecuencia, no palanca; 0 resueltas en las tres
+   definiciones.
+5. `compactacion_del_contexto`: **abierto**. Falta el intervalo del puntuador (5 o 15); lectura local.
+6. `minutos_por_tarea_frente_al_presupuesto`: **decidido**. «4 y 4,5 no se suben; 5 o más, vetado; se revisa
+   con C3.»
+7. `sintaxis_rota_por_comillas_escapadas`: **descartado** como palanca (techo 4 de 116, 0 de 20 con
+   razonamiento); cifra de QA.
+
+Nuevos al registro: verificación local cortada a 60 s; el tope de 7 200 s fija la holgura; límite de envíos
+pendientes; la tabla guarda el máximo.
+
+**Vetos, copiado tal cual:**
+
+- **C8:** peor caso de 11,1 a 12,4 h.
+- **C13 y C14:** sin dato, e invalidan el ensayo.
+- **C5:** un envío no separa K de A.
+- **C12:** techo de una tarea.
+- **C2:** tres variables; lo desplaza C3.
+- **C6 y C16:** aplazadas, no vetadas. Hoy serían exploratorias.
+
+**Plan, copiado tal cual:**
+
+**Local, sin preguntar:** C11, antes de cualquier envío; C10; C15; predicciones fechadas de la 08; armar y
+ensayar el notebook de C3; reverificación a 240 s.
+
+**Lo decide el dueño:**
+1. **C9** (0 h de GPU). Después, ensayo local con esa versión.
+2. **C4:** reenviar el zip con razonamiento hasta 5 lecturas (3 envíos, hacia el 13-10). Abandono: dos errores
+   sin repuntuar.
+3. **Pasada 1** (5,0 a 5,6 h). Abandono: una colgada, menos de 55 tareas o registros de 0 bytes.
+4. **Pasada 2** (igual). Abandono de C3: más de 6 discordantes de 60.
+5. **C3** (10 a 11,3 h; total 22,5 de 30). Decide: 6 pares netos a favor y McNemar de 0,05 o menos; si no,
+   exploratorio y nada cambia.
+6. **C7** con el zip que salga: 5 por zip, calendario escrito antes.
+
+**Su auditoría del procedimiento, copiada tal cual:**
+
+- La ronda 2 sí cambió algo: los cinco retiraron su primer paso o una cifra. No cerró el punto 2, y el
+  arquitecto adoptó 2,25 sin recontarlo.
+- El expediente no era anónimo: cada informe cita su carpeta.
+- Todos pasaron el tope de palabras.
+- Faltó un verificador limpio y alguien que escribiera las predicciones.
+- El corte no dañó informes; el analista quedó armado por trozos.
+- Aceptar F fue correcto: marcado sin recontar, y se reproduce.
+- Orquestador: dejó 14,6 h como condición sin derivación, «17, 18 y 20 ocurrieron» sin enlace y «5 a 8
+  minutos» sin verificar.
+- Del propio auditor: su primer recuento de la tabla redondeaba mal (4,08); corregido. Un guion suyo imprimió
+  nombres de registro en su consola, no en disco.
+
+**Su frase para el dueño:** «Poner el registro al día y, con tu orden, leer la versión de `ipykernel`, reenviar a diario el zip con razonamiento y gastar la cuota en base, base repetida y solo razonamiento, sin tocar los topes.»
+
+### Decisiones del concilio 43
+
+El dueño delegó en el concilio y ordenó aplicar lo que decida; subir y enviar siguen necesitando su orden.
+
+1. **Topes.** Los cuatro campos de `eval_config.yaml` se mantienen en cada kit. Subir los minutos a 5 o más
+   queda vetado: el peor caso de 120 tareas da de 11,1 a 12,4 h frente al límite de 12.
+2. **Notebook.** Sin tope al total de tareas colgadas y sin cambiar el margen de 30 s ni la ventana final.
+   Regla de lectura: una pasada con una tarea colgada no cuenta como completa.
+3. **Cuota semanal** (30 h desde las 00:00 UTC): base (pasada 1), base repetida (pasada 2) y un brazo que
+   solo enciende el razonamiento, con los mismos topes y las mismas 60 tareas. Costo previsto: 5,0 a 5,6 h
+   por pasada y 10 a 11,3 h el brazo; en total unas 22,5 h. Decide el brazo: 6 pares netos a favor y McNemar
+   exacto de 0,05 o menos; si no, es exploratorio y nada cambia.
+4. **Envío diario:** reenviar el zip con razonamiento, sin cambios, hasta tener cinco lecturas; después,
+   alternar dos zips con calendario escrito antes. Los dos envíos finales se eligen por la media de varias
+   lecturas, no por la nota pública máxima.
+5. **Vetado:** subir minutos; rearmar el notebook con otros márgenes u otro kit; enviar el kit K solo; un kit
+   que pida comprobar la sintaxis; medir el kit de 4,5 minutos y 60 llamadas en notebook (cambia tres cosas).
+   Aplazado: cambiar los segundos por orden y el kit de interfaz limpia con razonamiento.
+6. **Hallazgos:** cuatro decididos, dos descartados y uno abierto, como los dejó el auditor; entran cuatro
+   nuevos al registro.
+7. **Predicciones:** la 19 no ocurrió; la 7 y la 12 ocurrieron; la 11 no ocurrió; 8, 9 y 10 no se pueden
+   marcar porque los informes de revisión no se publicaron; 17, 18 y 20 quedan sin marcar hasta que conste
+   el enlace.
+
+**Aplicación, en curso al escribir esto (00:30 UTC del 2026-10-10).** Issue #182: notebook del brazo «solo
+razonamiento», armado y ensayado en Docker por un implementador, sin tocar los notebooks de las pasadas 1 y
+2. Issue #179, ampliado con los puntos 15 a 19: guion que compara pasadas excluyendo pares faltantes, los dos
+envíos que faltan en el registro, el vigía con la hora de cada cambio de estado y el aviso de envío
+pendiente, la regla de los envíos finales y la corrección de la condición de las 14,6 h. Pendiente de
+lanzar, de a uno: reverificación local a 240 s de los parches cortados a 60 s; predicciones fechadas de la
+iteración 08, escritas por un rol y no por el orquestador; actualización de `hallazgos.json` y del
+pre-registro; verificador limpio antes de pedir la primera subida.
+
+**Fallos del orquestador en esta vuelta.** El expediente de la ronda 2 no era anónimo: cada informe cita su
+carpeta. No convocó a un verificador limpio ni a nadie que escribiera las predicciones. Dejó pasar tres
+afirmaciones heredadas sin fuente: la condición de 14,6 h, «17, 18 y 20 ocurrieron» y «los que declaran más
+nota usan de 5 a 8 minutos». No hizo cumplir el tope de palabras: los diez textos lo pasaron. Su guion de
+copia a la bitácora metió un retorno de carro en una ruta, corregido en el acto. Ningún rol propuso por sí
+solo mirar el envío diario como instrumento de medida: llegó de otra sesión.
+
+**Corrección a la decisión 7 (2026-10-10, 01:20 UTC), tras la revisión de documentos del PR #183.** El revisor
+señaló que la sección de desenlaces marcaba las predicciones 7, 11 y 19 con un criterio distinto del que
+aplicaba a otras seis: dos con una fuente sin publicar y una sobre un hecho que no llegó a existir (el primer
+commit con código no tuvo CI). Queda un solo criterio: no se marca una predicción sobre un informe que no está
+publicado. Resultado: una marcada (la 12, ocurrió) y nueve sin marcar. Desde el PR #183 los informes del
+revisor y del analista se publican como comentario del PR.
+
+**Recuento de Datito sobre las cifras del PR #183 (00:55 UTC):** se reproducen desde los zips las llamadas,
+las duraciones, las verificaciones cortadas, la compactación y la tabla pública. Tres textos pasan de «medido»
+a «calculado» (peor caso frente a las 12 h, holgura de una pasada, diferencia detectable por envío). Matiz: el
+enunciado también falta en 204 de 3 042 peticiones sin compactación previa. Retira dos cifras suyas de la
+ronda 1: 5 verificaciones cortadas (vale 16; había filtrado solo una parte de las filas) y la holgura de 1 300
+a 1 800 s (manda el tope de 7 200 s).
+
+### Predicciones fechadas 25 a 37 (auditor del método; selladas en el issue #182 el 2026-10-10)
+
+**Predicciones 25 a 37: iteración 08, sonda de CPU y reenvíos.** Autor: auditor del método, concilio 43 (un rol, no el orquestador). Escritas sin que exista ningún resultado: nada se ha subido ni enviado. Copiadas tal cual por el orquestador; la hora la sella este comentario.
+
+Plazo común: cada una se marca al leer la salida de su corrida. Si la corrida no existe el 2026-10-17 a las 00:00 UTC (fin de la semana de cuota), queda sin desenlace. Las de envíos vencen el 2026-10-16.
+
+| # | Hecho | Prob. | Línea base | Qué la marca |
+|---|---|---|---|---|
+| 25 | La sonda de CPU informa una versión de `ipykernel` de la serie 6 | 0,80 | Sin historia contada (0,5). Ningún log propio trae la versión | La línea de versión en el log de la sonda |
+| 26 | En esa versión existe el mapa de hilos `_thread_to_parent` | 0,65 | Sin historia contada (0,5). `ensayo_nucleo_jupyter.md` lo sitúa en 6.29.5 a 7.0.1 y no en 6.28.0 ni 7.1.0; no recontado | La sonda, o el primer evento del registro de la pasada 1 |
+| 27 | La pasada 1 termina las 60 tareas sin ningún `CORTE` (tareas, sesión o servidor) | 0,60 | Recuento del auditor: 60 × 109,4 s = 6 564 s contra un tope de 7 200 s; holgura de 360 a 1 260 s según la iteración | El log no contiene `CORTE por` y la salida trae 60 filas |
+| 28 | Al menos una tarea de la pasada 1 se corta por `tarea_colgada` | 0,10 | 0 de 145 filas pasan de 303,6 s; el tope es 900 s | `tareas_colgadas` ≥ 1 en el registro |
+| 29 | Los registros por tarea de la pasada 1 salen con contenido: ninguno de 0 bytes | 0,55 | 145 de 145 fueron de 0 bytes en las iteraciones 03 a 07 (cifra del forense, no recontada). Los enganches nuevos no han corrido en Kaggle | Tamaño de cada archivo de registro en la salida bajada |
+| 30 | La pasada 1 resuelve entre 7 y 15 de 60 | 0,70 | 21 de 116 (18 %) sin razonamiento; el sorteo no es el mismo conjunto | `resolved` en `task_results.jsonl` |
+| 31 | Su duración media por tarea cae entre 95 y 125 s | 0,70 | 109,4 s; de 99 a 114 por iteración (cifra del arquitecto) | Media de `duration_seconds` |
+| 32 | `diagnosticar` sale con código 0 sobre la pasada 1 | 0,50 | Sin historia contada (0,5): nunca corrió sobre una sesión de Kaggle | Código de salida de la orden, copiado en la bitácora |
+| 33 | Entre las pasadas 1 y 2 hay 5 o menos pares discordantes, sobre los pares válidos | 0,65 | 2 de 43 entre las iteraciones 03 y 04 (bitácora; no recontado en esta vuelta) | Salida del guion de comparación (#179, punto 11) |
+| 34 | El kit B resuelve más tareas que la media de las dos pasadas de A | 0,70 | 18 de 29 contra 21 de 116, confundido: tareas elegidas, 4,5 min y 60 llamadas | Recuento de `resolved` de los tres brazos |
+| 35 | B contra la pasada 1: 6 pares netos o más a favor y McNemar exacto de 0,05 o menos | 0,30 | Sin historia contada (0,5). El diseño detecta 6 netas con potencia de 38 % (analista) | Salida del guion de comparación |
+| 36 | En B se cortan por tiempo (mensaje del arnés) entre 30 % y 60 % de las tareas, y la media por tarea cae entre 185 y 235 s | 0,55 | 10 de 29 (34 %) y 245,9 s con tope de 4,5 min; aquí el tope es 4 | `error_message` y `duration_seconds` |
+| 37 | En las lecturas tercera a quinta del zip `65a02160…`: (a) alguna pasa por estado de error; (b) las tres notas caen entre 4 y 10 tareas de 58; (c) la media de las cinco supera 6,5 | (a) 0,60; (b) 0,75; (c) 0,40 | (a) 2 de 2 envíos de ese zip pasaron por error y 0 de 2 del kit A; (b) y (c) lecturas previas de 5 y 8 | Historial del vigía con la hora de cada estado; `envios.json` |
+
+- La 36 solo ocurre si se cumplen sus dos partes.
+- La 35 se lee contra la pasada 1, fijada aquí, para no elegir la pasada después.
+- La 37 se marca por letra, como tres desenlaces.
+- La 26 tiene efecto de predecir: quien arma la sonda decide qué imprime.
+
+**Qué haría abandonar el plan.** Cualquiera de estos resultados:
+1. La 29 no ocurre (registros vacíos): no se lanza la pasada 2 hasta arreglarlo.
+2. La 28 ocurre, o la pasada 1 deja menos de 55 tareas válidas.
+3. La 33 no ocurre con más de 6 discordantes: el diseño de 60 pares no separa nada, no se gasta cuota en B y la medida pasa a los envíos alternados.
+4. La media de B pasa de 240 s: el razonamiento no cabe en 4 minutos y no se envía con ese tope.
+5. Dos reenvíos terminan en error sin repuntuarse: se detienen los envíos hasta tener la duración de una evaluación.
+
+### Verificador limpio de la vuelta 43 (2026-10-10, hacia las 00:40 UTC)
+
+No abrió la bitácora ni los informes. Midió sobre la copia `2026-10-09T1741Z` (12 zips distintos, 145 sesiones;
+sin rescate nuevo porque el encargo le prohibía la red). Diez afirmaciones dadas sin cifras:
+
+| Afirmación | Marca | Su medida |
+|---|---|---|
+| Sin razonamiento, una sesión dura menos de la mitad | Se sostiene | 109,4 s frente a 245,9 s |
+| Muchas sin razonamiento acaban al tope de llamadas o a una, y casi ninguna resuelve | Se sostiene | 41 de 116 con 39 o 40 llamadas (12 y 29); 2 resueltas; el resto resuelve 19 de 75 |
+| Con razonamiento, ninguna al tope y un tercio cortada por tiempo | Se sostiene, con caso contrario | Máximo 53 de 60; 10 de 29 por mensaje; 16 de 29 duran 270 s o más y 6 de esas resuelven |
+| 120 tareas caben en 12 h; márgenes con todas al tope | La media se sostiene; los márgenes, tal como se le dieron, se caen | 8,20 h con la media. Al tope de 4,5 min: margen de 3,00, 2,17 o 0,88 h según el sobrepaso, **sin sumar la carga del modelo** |
+| En el notebook de la 08 manda el tope del conjunto de tareas | Se sostiene | 7 200 s; holgura de 636 s con la media global y 1 204 s con la mezcla del sorteo |
+| El kit B difiere del A en una línea; el I, además, en dos topes | Se sostiene | Una línea (`include_thoughts`); I añade 40→60 llamadas y 4→4,5 min |
+| El mismo archivo, notas distintas | Se sostiene | 0,06 y 0,05; 0,08 y 0,13. La identidad del archivo consta solo en la descripción del envío |
+| Más envíos, mejor nota; más dispersión que una binomial | Se sostiene, condicionada | Media 0,068 con un envío y 0,124 con 11 a 20; vale si las tareas públicas son más de 32 |
+| Verificaciones cortadas por tiempo, de un solo repositorio | Se sostiene, con una mitad vacía | 16 sin razonamiento, del mismo repositorio (16 de 26). Con razonamiento hay 0, **pero ese repositorio nunca se corrió con razonamiento** |
+| Parche vacío, ninguna resuelta | Se sostiene | 37 de 145; 0 resueltas |
+
+**Sobre la fila que se cae:** el margen de «media hora a hora y media» que el concilio escribió incluye la carga
+del modelo (1 142 s, el máximo medido) además del sobrepaso; el verificador no la sumó. Con ella, sus cifras dan
+0,56 a 1,85 h de margen, que es el rango del auditor (peor caso de 10,1 a 11,4 h). La frase del orquestador
+estaba mal dada, no la cuenta.
+
+**Lo que el relato no separa y el verificador sí vio:**
+- El kit con razonamiento que se envió cambia tres cosas a la vez, y ningún zip corre el kit B: el brazo «solo
+  razonamiento» que se va a medir nunca ha corrido. Tres sesiones del kit con razonamiento pasan de 39 llamadas y
+  habrían topado con el tope de 40.
+- Las sesiones con razonamiento son de un subconjunto de tareas y nunca del tercer repositorio, que es el más
+  lento sin razonamiento (142,6 s frente a unos 100 s): la media de 245,9 s no representa la mezcla oculta.
+- «Sin razonamiento» mezcla dos kits (86 y 30 sesiones) con instrucción de sistema distinta.
+- «Enciende el razonamiento» es interpretación: el presupuesto de razonamiento es el mismo en todos los kits; la
+  línea solo cambia si los pensamientos se incluyen.
+- El campo de estado no distingue nada (vale lo mismo en las 145); el corte solo se ve en el mensaje de error.
+
+**Consecuencia para el plan, sin cambiarlo:** la predicción 36 (duración y cortes del brazo B) parte de tareas
+elegidas y de otro tope; el verificador da una razón más para leer la pasada del brazo con cuidado y para no
+subir minutos antes de tenerla.
+
+### Estado al cierre y cómo retomar (2026-10-10, 00:55 UTC)
+
+Cierre pedido por el dueño. **Nada se subió ni se envió a Kaggle.** Todos los agentes de la sesión quedaron
+detenidos y no queda ningún contenedor de ensayo corriendo. Sustituye a los cierres del 2026-10-09.
+
+**En `main` (cabeza `72ca143`):** PR #183 fusionado (`mergedAt` 2026-10-10T00:12:01Z, CI 12 de 12): registro de
+hallazgos tras el concilio 43 (cuatro decididos, dos descartados, uno abierto, cuatro nuevos), desenlaces de
+predicciones con un solo criterio (una marcada y nueve sin marcar), la revisión cruzada en `CONTRIBUTING.md` y
+en la skill, y los episodios 076 (#180) y 079 (vuelta 43). El guardián del tablero termina sin hallazgos.
+
+**Decisiones vigentes del concilio 43:** topes del envío sin tocar (subir a 5 minutos, vetado); notebook sin
+cambios; cuota semanal en base, base repetida y brazo «solo razonamiento» (kit B: el A con una línea distinta),
+unas 22,5 h; envío diario reenviando el zip con razonamiento hasta cinco lecturas; finales por media, no por
+máximo. Predicciones 25 a 37 escritas por el auditor y selladas en el issue #182. Verificador limpio: nueve de
+diez afirmaciones se sostienen.
+
+**A medias, tal como quedó cada cosa (leer el diff antes de seguir):**
+- **PR #184 / issue #179: «cambios requeridos».** El guion `kaggle_comparar_pasadas.py` salía con 0 sobre
+  pasadas que no merecen compararse (seis bloqueantes, en el comentario del PR). Datito confirmó que las cuentas
+  son correctas. Árbol `F:\Code\ALL-wt-179`: un commit local sin subir, `bb83975`, con las correcciones del
+  guion; al implementador le faltaban las frases de los documentos y fusionar `main`. Árbol
+  `F:\Code\ALL-wt-179b`, rama `issue-179-b`: cambios **sin confirmar** en `scripts/kaggle_vigia.py`,
+  `CONTRIBUTING.md`, el episodio 078 y un archivo de pruebas nuevo. Ninguno de los dos pasó por pruebas
+  completas ni por el revisor. El guion de comparación es condición de lanzamiento.
+- **PR #185 / issue #177:** entregado; Datito recontó y se reproduce; CI en 11 de 12 al cerrar; la revisión de
+  código se detuvo sin informe. No fusionar sin ella.
+- **Issue #182 (notebook del brazo «solo razonamiento»):** en `…\instrumentos\iteracion_08_razona\` hay cinco
+  notebooks armados (`kernel_iteracion_08_r1` a `r5`: cinco porciones, no tres) y salidas de ensayo de las
+  cinco sesiones completas, de un corte por tiempo y de una tarea colgada con el tope real, con `HUELLAS.txt` y
+  `RESUMEN.json`. El implementador se detuvo sin informe final, sin PR y con `ensayo_nucleo_jupyter.md` a medio
+  editar y sin confirmar en `F:\Code\ALL-wt-brazo-razona`. **No está validado por nadie:** leer `RESUMEN.json`
+  y el diff antes de darlo por armado.
+- **Reverificación local a 240 s:** preparada en `…\concilio_43\reverificacion_240\` (guiones y lista de
+  sesiones); detenida al empezar la primera corrida. Sin resultado.
+- **Concilio ZorzALL (¿secuencia como memoria?):** rondas 1 y 2 completas, los cuatro roles en «metáfora»; el
+  auditor se detuvo mientras recontaba, sin dictamen. Todo está en la carpeta ignorada
+  `.scratch\concilio_zorzall_secuencia\` del repositorio (encargo, fuentes, informes, respuestas cruzadas y
+  tres guiones del auditor). La entrega al dueño se dio con el dictamen marcado como pendiente.
+
+**Lo que espera la orden del dueño (nada está subido):** la sonda de CPU que lee la versión de `ipykernel`
+(0 h de GPU); el reenvío diario del zip con razonamiento; la pasada 1 de la iteración 08 (5,0 a 5,6 h de cuota).
+Antes de la pasada 1 faltan: el guion de comparación corregido y revisado (PR #184) y el ensayo con la versión
+de `ipykernel` que dé la sonda. La cuota se repuso a las 00:00 UTC (30 h); el plan suma unas 22,5 h y la
+instrucción del dueño fija 24 h por semana.
+
+**Sin empezar:** #165, #166, #167; las dos discrepancias del manuscrito entre castellano e inglés (en ambas
+vale la versión inglesa; cambiarlas exige otra firma del validador y regenerar el PDF).
+
+**Fallos del orquestador en esta sesión:** esperó pasivamente una CI en cola en vez de adelantar lo demás, y el
+dueño tuvo que pedir tres veces el cierre; afirmó que un paso «no llegó a ejecutarse» sin comprobarlo (el
+commit y el comentario ya estaban hechos); corrió solo parte de las pruebas en local y la CI del PR #183 falló
+en las ocho tandas; marcó tres predicciones con un criterio distinto del que aplicaba a otras seis.
+
+**Cómo retomar:** `gh pr list`; leer los comentarios de los PR #184 y #185; `git status` en `F:\Code\ALL-wt-179`,
+`ALL-wt-179b` y `ALL-wt-brazo-razona`; no relanzar un agente sin mirar antes qué dejó el anterior.
+
+
+## Vuelta 44 — 2026-10-11 y 2026-10-12 (UTC)
+
+**Pregunta de la vuelta** (del dueño, en dos encargos): primero, un concilio de investigación de al menos diez
+ciclos sobre memoria bioinspirada para agentes, con Claude y Codex como investigadores; después, «diez
+iteraciones más», reparando desde lo aprendido hasta decidir en concilio sin preguntarle: **¿cómo mejorar
+ALL?, y continuar en el concurso**.
+
+**Nada se subió, se envió ni se ejecutó en Kaggle. No se gastó GPU.** El vigía, al iniciar la sesión: envíos
+sin cambios desde el rescate `2026-10-09T1741Z` (0,13, 0,08, 0,05 y 0,06). No se hizo rescate nuevo ni lectura
+de cuota.
+
+**Dónde está todo.** Cuaderno de los 22 ciclos, con lo que cada uno retiró:
+`F:\Code\Agents Learning Loops\.scratch\concilio_memoria\CUADERNO.md` (carpeta ignorada por git). Salida
+auditada del concilio de memoria: `…\concilio_memoria\SALIDA_FINAL.md`. Segunda tanda: `…\concilio_memoria\fase2\`
+(encargo, seis informes, revisión cruzada, guiones del analista y del auditor). Lo versionado está en los PR
+citados abajo; la medición, resumida en el issue #103.
+
+### Lo que el concilio de memoria dejó (primera tanda, 12 ciclos)
+
+- Cinco candidatas que difieren en **qué modifican**: qué se observa primero (diagnóstico), qué se da por
+  terminado (aceptación), la política por defecto, los recursos y el peso de la evidencia. Finalistas por voto
+  de Claude y de Codex: diagnóstico y aceptación. Los votos no son independientes (Codex leyó la síntesis de
+  Claude antes de votar) y la confianza discrepa: 0,25 y 0,35 frente a 0,60 y 0,55.
+- Diseño de experimento en tres etapas (techo con oráculo, piloto de 60 tareas, confirmación de 240), auditado:
+  el auditor encontró tres bloqueantes en los veredictos y se corrigieron. El costo que manda es escribir
+  tareas: hoy hay 9.
+- **Ninguna candidata está medida.** El banco propio tiene tres tareas independientes por estrato y no detecta
+  nada al 5 %.
+- Citas del documento base que no se sostienen: «MemGuard (Zhong et al. 2024)» no existe; «PER ~20 %» no
+  tiene fuente.
+
+### Lo medido en esta vuelta (resumen; detalle en el issue #103)
+
+Con los 73 episodios del repositorio, memoria reconstruida solo con los anteriores a cada uno (63 evaluables):
+el ranking de acciones de `devlog recall` no se separa del azar (AUC 0,550; p = 0,055) y **la tasa base de
+fallo por acción lo supera** (0,646; gana en 34 episodios, pierde en 20). 21 de 75 lecciones automáticas eran
+«si X falla, usar X», y ocupaban 120 de las 295 posiciones que `recall` mostró. El heredoc largo falló en 10
+episodios; la lección ya estaba guardada en las 9 repeticiones y 5 son posteriores a la regla escrita.
+Exploratorio: un corpus, episodios dependientes, código de hoy; no hay contrafactual.
+
+### Decisiones del concilio de la segunda tanda (dictamen del auditor del método, 2026-10-12)
+
+Registradas en el issue #182. Seis roles con la misma pregunta, revisión cruzada sin firmas, auditor después.
+
+- **Se hace:** cerrar condiciones de lanzamiento; gancho que rechaza heredocs y guarda de la cuenta de GitHub
+  (#186); filtrar de `recall` las lecciones de «misma acción» (#187); tasa base por acción (#167).
+- **No se hace:** una compuerta de aceptación en el agente enviado (sigue el veto del concilio 43; quien la
+  propuso la retiró al separar sus datos por kit: 9 recuperables en 73 sesiones antiguas y 0 en 29 con
+  razonamiento); «diagnóstico primero» (100 de 102 sesiones ya miran antes de editar); orden única antes del
+  push; apagar `recall` en issues alternos (sin potencia).
+- **Vetado por el auditor por estar dentro del ruido:** que `recall` deje de ser condición para empezar un
+  issue, y quitar «issues parecidos».
+- **Aplazado:** corregir la consolidación en la biblioteca (antes hay que medir su efecto en la referencia del
+  Experimento 1); recontar sintaxis y hueco en el brazo (no existe ninguna corrida real).
+- **Regla nueva del brazo «solo razonamiento»:** tras su primera porción se lee la media; si pasa de 240 s por
+  tarea, o la proyección pasa de 24 h, no se lanzan las otras cuatro. Una primera porción sin datos cuenta
+  como «no lanzar».
+
+### Cuenta de horas, corregida
+
+El brazo, armado en cinco porciones de doce tareas, no cuesta «10 a 11,3 h». Con el máximo por tarea observado
+(304 s) y carga de 364 a 1 142 s: 11,1 a 13,3 h con factor de cuota 2,0. **Plan completo (dos pasadas de base y
+el brazo): 21,1 a 23,3 h con factor 2,0 y 23,8 a 26,2 h con factor 2,25, que es el que el documento adopta
+para decidir; el tope del dueño es 24 h.** El factor 2,0 no tiene fuente versionada. Detalle y guion:
+`experiments/gemma_developer_agent/docs/ensayo_nucleo_jupyter.md`, sección del #182, y
+`scripts/kaggle_costo_brazo.py`.
+
+### Hallazgo nuevo, no medido en Kaggle
+
+En 4 de 6 sesiones completas del ensayo local del brazo, un latido guardó un diff de 4,6 a 23,8 MB (el árbol a
+medio montar, no un parche). Cabe en disco (un archivo que se sobrescribe); su duración no está medida.
+Registrado en `hallazgos.json` por el PR #190.
+
+### Lo que otros publicaron (copias guardadas hasta el 2026-10-09; las páginas vivas no se dejaron leer)
+
+Cierre de envíos el 2026-12-02; Paper Track el 2026-11-12; un envío por día. Nadie publica memoria entre
+tareas. El razonamiento encendido de otro equipo da 47 de 129 frente a 44 y 49 sin él, dentro del ruido, con
+más cortes y más parches vacíos. Las reglas permiten conocimiento dentro del zip, pero una tabla derivada de
+las tareas públicas choca con la regla 2.4.b y ninguna respuesta lo aclara.
+
+### Lo aplicado: ocho PR fusionados, cada uno con revisor independiente
+
+| PR | Issue | Qué trae | `mergedAt` (UTC, 2026-10-12) | Commit |
+|---|---|---|---|---|
+| #185 | #177 | `--permitir-mencion` avisa por línea y no da `[OK]` | 02:26:29 | `33f07be` |
+| #189 | #167 | `python -m scripts.devlog base-rates` | 03:20:07 | `a32357e` |
+| #190 | #182 (`Refs`) | Brazo «solo razonamiento»: armado, ensayo, cuenta de horas y regla de parada | 03:50:06 | `a8e809f` |
+| #191 | #186 | Gancho que rechaza heredocs y guarda de la cuenta de GitHub | 04:18:07 | `ddc9e88` |
+| #192 | #187 | `recall` omite las lecciones de «misma acción» | 04:35:21 | `19b734e` |
+| #193 | #188 | Prueba de reloj estable; fronteras del validador de envíos | 04:35:53 | `4c94115` |
+| #194 | #103, #167 | Predicciones 38 a 47 con desenlaces; episodio 086 | 05:22:15 | `d5be5cc` |
+| #184 | #179 | Comparación de pasadas, cambios de estado del vigía y registro de envíos | 05:47:03 | `281e822` |
+
+De ocho PR, cuatro recibieron «cambios requeridos» en su primera revisión (#184, #190, #191 y #193; el #184,
+además, en la segunda).
+Lo que encontró el revisor y no había visto el implementador con la suite en verde: una regla de parada que
+autorizaba lanzar cuatro porciones con una primera porción sin datos; un gancho que rechazaba todos los
+`git push` y que, si faltaba su guion, bloqueaba todas las órdenes; una prueba que ya no podía fallar; un
+guion de comparación que daba por buenas dos salidas que no cuadraban.
+
+**Cierres confirmados** (criterios comprobados sobre `main`, tarjeta en *Done* con *Verificación* =
+*Verificada*): #167, #177, #186, #187, #188. El guardián del tablero termina sin hallazgos.
+
+**Condiciones de lanzamiento de la iteración 08, una por una:**
+1. #164 fusionado: cumplida desde antes (`c6e9193`).
+2. Guion de comparación corregido y revisado: **cumplida** (PR #184, tres revisiones; las salidas reales
+   guardadas se releyeron: un par real sale con 0 y las 37 salidas guardadas cuadran con su registro).
+3. Notebook del brazo «solo razonamiento»: armado y validado en bytes (5 de 5 hashes, 125 de 125 huellas);
+   **parcial**: el corte por tiempo y la tarea colgada solo se forzaron sobre `r1` (el resto pide Docker).
+4. Ensayo local con la versión de `ipykernel` de Kaggle: **pendiente**; depende de la sonda de CPU, que
+   espera la orden del dueño.
+
+### Estado al cierre y cómo retomar (2026-10-12, 05:55 UTC)
+
+Sustituye al cierre del 2026-10-10. **Nada se subió ni se envió a Kaggle; no se gastó GPU.** No queda ningún
+agente corriendo.
+
+**`main` en `281e822`**, con el árbol principal al día y la CI en verde hasta `d5be5cc` (la de `281e822`
+estaba corriendo al cerrar: comprobarla).
+
+**Lo único que espera la palabra del dueño** (una sola cosa, lista): **lanzar la iteración 08.**
+- Sonda de CPU que lee la versión de `ipykernel` (0 h de GPU).
+- Reenvío diario del zip con razonamiento `65a02160`, sin cambios, hasta cinco lecturas (0 h; un envío por día).
+- Pasada 1 (5,0 a 5,6 h), solo tras el ensayo local con el `ipykernel` que dé la sonda.
+- Plan completo: 21,1 a 23,3 h con factor 2,0 y 23,8 a 26,2 h con factor 2,25, frente al tope de 24 h. El
+  brazo se corta tras su primera porción si la media pasa de 240 s.
+- **La cuota de la semana se pierde el 2026-10-17 a las 00:00 UTC**, y ahí vencen las predicciones 25 a 37.
+  Para medir los tres brazos, la orden tendría que llegar hacia el 14 (cálculo del auditor, no medido).
+
+**Abierto, sin depender del dueño:**
+- **#179:** fusionado y cerrado; **sin confirmar**. Su punto 8 pide la salida del gancho de inicio en una
+  sesión nueva: la pegada es del vigía anterior a los cambios. **La primera sesión que se abra debe pegar en
+  el #179 la salida del vigía** y, si cuadra, marcar *Verificada*.
+- **#182:** abierto. Falta el ensayo de corte y colgada en `r2` a `r5` (Docker) y tres observaciones menores
+  del revisor en `scripts/kaggle_costo_brazo.py` y en el documento.
+- **Gancho del #186, a vigilar:** `python -m scripts.guarda_previa --contar`. Condición de reversión: 2 o más
+  pasos fallidos por heredoc en 15 episodios, o más de 1 orden legítima frenada → pasa a solo contar. Primer
+  uso real: rechazó un heredoc a `python`, sin falsos rechazos. Fricción vista: un agente sin herramienta de
+  escritura no puede seguir el consejo del mensaje («escribe el archivo») y cae en `python -c`. Observación
+  abierta del revisor: un usuario dado por variable se toma por cuenta ajena. La guarda de cuenta no se ha
+  visto rechazar en una sesión real. No cubre PowerShell ni a Codex.
+- **Predicción 41** (un fallo por heredoc en 15 episodios): abierta, vence el 2026-11-11.
+- **Aplazado por el concilio:** corregir `memory/consolidation.py` (medir antes su efecto en la referencia del
+  Experimento 1); #165 y #166 (predicciones contra tasa base, ahora que existe `base-rates`).
+- **Candidatos a issue, sin abrir:** tres de cuatro PR en paralelo chocaron en `CHANGELOG.md`; la tabla por
+  clase de `base-rates` necesita un segundo lector antes de servir de línea base; el concilio de memoria
+  (`SALIDA_FINAL.md`) no está versionado: publicarlo exige pasar por el staff de texto público.
+- Siguen como estaban: #165, #166, las discrepancias del manuscrito, la reverificación a 240 s y el concilio
+  ZorzALL sin dictamen del auditor.
+
+**Otra sesión trabajó en paralelo** en la misma carpeta del concilio de memoria durante el ciclo 5 (con otros
+modelos): dejó `fuentes/ciclo2_mecanismos.md`, `codex/prompt_c3b.md`, tres informes de rol con guion en el
+nombre y una entrada «convocatoria» en el cuaderno. No se tocó nada suyo.
+
+**Fallos del orquestador en esta vuelta** (están en el episodio 086): usó un heredoc largo que falló, con la
+lección ya guardada y sin consultar; leyó mal dos resultados propios al resumir la evidencia (los corrigieron
+Codex y el auditor); presentó tres veces como coincidencia independiente algo que él mismo había escrito en lo
+que el otro leyó; no fijó la cuenta de GitHub al delegar y un comentario salió con la cuenta equivocada;
+afirmó sin comprobar que los ganchos no alcanzan a los subagentes; dio por confirmable un cierre antes de mirar
+la CI de `main`; y selló predicciones en comentarios en vez de en el archivo versionado.
+
+**Cómo retomar:** leer esta sección y el cuaderno; `gh pr list`; `python -m scripts.devlog board --since 160`
+con `GH_TOKEN` de `cherrera0001`; pegar en el #179 la salida del vigía de la sesión nueva; `python -m
+scripts.guarda_previa --contar`.
+
+**Añadido al cierre (05:58 UTC): lectura del contador del gancho tras su primera hora.** Rechazos 3, pasa-dudoso 8, push visto 2, fallas 0. Uno de los rechazos fue la prueba deliberada; los otros dos, un `cat` con heredoc hacia un archivo fuente hecho por agentes de solo lectura (revisor y analista), que no tienen herramienta de edición y por tanto no pueden seguir el remedio del mensaje. Si se cuentan como órdenes legítimas frenadas, la condición de reversión («más de 1») ya se cumpliría. No se aplicó: el registro no guarda la orden y la lectura es dudosa. Queda para el próximo concilio, con tres opciones escritas en el issue #186.
+
+
+### Lanzamiento de la iteración 08 (2026-10-12, 06:45 a 06:49 UTC)
+
+**Orden del dueño, textual: «lanza la iteración 08».** Llegó después de presentarle una sola cosa lista:
+sonda de CPU y reenvío diario (0 h de GPU) y pasada 1 (5,0 a 5,6 h). Estas son las primeras subidas desde el
+2026-10-07.
+
+| Hora (UTC) | Qué | Orden | Resultado |
+|---|---|---|---|
+| 06:45 | Lectura de cuota | `uvx kaggle quota` | GPU 0,00 h usadas de 30,00; reposición 2026-10-17T00:00 |
+| 06:45 | Lectura de envíos y notebooks propios | `uvx kaggle competitions submissions …`, `kernels list --mine` | Ningún envío pendiente; el último, del 2026-10-07 |
+| 06:46:20 | **Sonda de CPU** (`cs4all/sonda-nucleo-08`, privada, sin GPU, sin internet, sin datos) | `uvx kaggle kernels push -p …/sonda_nucleo/kernel_sonda` | Versión 1; terminó en menos de un minuto |
+| 06:46:48 | **Envío del día**: zip `65a02160…` sin cambios (sha256 comprobado antes de enviar), lectura 3 de 5 | `uvx kaggle competitions submit gemma-4-developer-agent -f submission.zip -m "I razona, lectura 3 de 5 (mismo zip 65a02160, sin cambios)"` | Aceptado; «0 submissions remaining today» |
+| 06:48:31 | **Pasada 1** (`cs4all/iteracion-08-p1`, privada, NvidiaL4, tope de 9 000 s) | `uvx kaggle kernels push -p …/iteracion_08/kernel_iteracion_08_p1 -t 9000 --accelerator NvidiaL4` | Versión 1; estado `QUEUED` a las 06:48:51 |
+
+**Lo que midió la sonda** (`…/instrumentos/sonda_nucleo/salida_kaggle_2026-10-12/sonda_nucleo.json`): Python
+3.12.13; **`ipykernel` 6.17.1**; `sys.stdout` es `ipykernel.iostream.OutStream` **sin** el mapa
+`_thread_to_parent`; `ipython` 7.34.0, `jupyter_client` 7.4.9, `nbclient` 0.5.13, `papermill` 2.7.0, `rich`
+13.9.4, `litellm` 1.82.4; 4 CPU; 952 paquetes. La imagen es la misma que fija el notebook de la pasada
+(`sha256:37c64f7d…`).
+
+**Condición «ensayo con el `ipykernel` de Kaggle»: cumplida con un ensayo ya hecho, no con uno nuevo.** La
+versión medida, 6.17.1, es una de las dos que el #164 ensayó el 2026-10-09 con este mismo notebook (sha256
+`30aa9b31…`, comprobado hoy antes de subir): `completa_ipykernel_6.17.1` (4 tareas, todas las celdas
+terminan, diagnóstico 0) y `colgada_ipk_6.17.1` (el tope por tarea corta, diagnóstico 3), las dos con
+`pasa: true` en el `RESUMEN.json` del ensayo. Con 6.17.1 el bucle que causó el cuelgue del #160 no existe y el
+vaciado del mapa no actúa; el tope por tarea no depende de la versión.
+
+**Lo que ese ensayo no cubre** (no se repitió: Docker no estaba en marcha, y la condición escrita pide solo
+`ipykernel`): la imagen local del ensayo difiere de Kaggle en `ipython` (9.17.1 frente a 7.34.0),
+`jupyter_client` (8.10.0 frente a 7.4.9), `nbclient` (0.10.2 frente a 0.5.13), `papermill` (ausente frente a
+2.7.0), `rich` (15.0.0 frente a 13.9.4) y `litellm` (1.104.0 frente a 1.82.4). Es el riesgo que queda en la
+pasada 1. Si la sesión falla por una de esas diferencias, la primera tarea lo dirá (la guardia corre tras la
+primera tarea) y el costo queda acotado por el tope.
+
+**Chequeos antes de subir la pasada 1:** las 12 celdas compilan; `python -m scripts.kaggle_preflight comprobar
+--tope-min 150` da 18 de 18 en verde (privado, sin internet, imagen fijada, acelerador `NvidiaL4`, sin rutas
+fijas, la guardia pasa con las dos disposiciones reales de `/kaggle/input` y se detiene sin las ruedas).
+
+**Costo comprometido:** hasta 150 min de sesión, 5,0 h de cuota con factor 2,0 y 5,6 h con 2,25. Una sola
+sesión de GPU en cola.
+
+**Qué sigue, en este orden, y qué no se hace todavía:**
+1. Cuando `cs4all/iteracion-08-p1` termine: `uvx kaggle kernels output cs4all/iteracion-08-p1 -p <carpeta>`,
+   rescate, leer solo agregados (ningún identificador de tarea) y `python -m scripts.kaggle_registro
+   comprobar` sobre su salida. Leer la cuota gastada: da el factor real entre reloj y cuota.
+2. **La pasada 2 no se sube hasta leer la 1** (condición 4: en serie).
+3. Brazo «solo razonamiento»: solo su primera porción (`r1`); las otras cuatro, si la media no pasa de 240 s y
+   la proyección no pasa de 24 h (`python -m scripts.kaggle_costo_brazo`).
+4. Envío diario: lecturas 4 y 5 del mismo zip, una por día, si el envío anterior ya terminó de puntuar.
+5. Marcar las predicciones 25 a 37 (selladas en el issue #182) con lo que salga.
+
+**Pendiente de registrar en el repositorio** (va por PR, no a mano): el envío de hoy en
+`experiments/gemma_developer_agent/submissions/registry.json`; y en `docs/ensayo_nucleo_jupyter.md`, que la
+versión de `ipykernel` de Kaggle ya está medida (hoy dice «no está medida») y que la condición 2 se dio por
+cumplida con el ensayo del 2026-10-09. La ficha de estas tres corridas en `REGISTRO_DE_PRUEBAS.md` la lleva la
+otra sesión; aquí queda el dato para copiarla.
+
+
+### La pasada 1 falló a los 106 s: el arnés cambió de versión (2026-10-12, 06:50 a 06:56 UTC)
+
+**Qué pasó.** `cs4all/iteracion-08-p1` pasó de `QUEUED` a `RUNNING` en menos de seis minutos y terminó en
+`ERROR`. Gastó **0,07 h de cuota** (lectura de las 06:56: 29,93 h restantes). No llegó a cargar el modelo ni a
+correr ninguna tarea. No dejó archivos de salida; solo el log.
+
+**Log extraído:** `…\instrumentos\iteracion_08\salida_kaggle_p1\iteracion-08-p1.log` (18 449 bytes, 149
+trozos). El cliente de Kaggle no pudo escribirlo en el primer intento por la codificación de la consola de
+Windows (`'charmap' codec can't encode character '✔'`); se bajó con `PYTHONUTF8=1`.
+
+**Causa, leída en el log:**
+- La instalación de ruedas dice `INSTALADA ✔ swegemma 0.2.11` (las corridas anteriores eran con 0.2.7).
+- Línea propia del notebook: `SERVIDOR FALLO ModuleNotFoundError No module named 'swegemma.models.discovery'`.
+- Traza: la celda que arranca el servidor del modelo hace
+  `from swegemma.models.discovery import validate_single_declared_model`.
+
+**Causa, comprobada fuera del log:**
+- El conjunto público de ruedas `metric/gemma-4-developer-agent-wheelhouse` se actualizó el **2026-10-09 a las
+  14:43 UTC**: `swegemma-0.2.11`, `adk_submission-0.2.13` (antes 0.2.12), `adk_eval_core-0.1.0`,
+  `google_adk-1.36.1`. Nuestro último rescate del foro llegaba a las 13:43 de ese día: una hora antes.
+- Diff de las ruedas (bajadas hoy a `…\instrumentos\arnes_2026-10-12\`, solo leídas, no ejecutadas) contra la
+  copia anterior: en `swegemma` desaparecen `models/discovery.py` y `models/registry.py`; cambian `cli.py`
+  (+101), `harness/agent_runner.py` (+324/−16), `harness/verification.py` (+145/−9), tres módulos de `graph/`
+  y dos de `tools/`; en `adk_submission` cambia `resolvers/generation.py` (+131/−20).
+- Comprobación estática de los 13 imports del notebook contra las fuentes nuevas: ese import está roto; contra
+  las antiguas, no.
+- **El notebook oficial vigente, bajado hoy, también importa `swegemma.models.discovery`:** no sirve de modelo
+  para el arreglo.
+
+**Por qué no lo vio el ensayo local.** El ensayo corre un arnés simulado (`scripts/kaggle_simulacro.py`), no
+las ruedas reales, y nadie comparó las versiones del conjunto de ruedas con las ensayadas antes de subir. El
+chequeo previo (18 de 18 en verde) no mira eso. **Fallo del orquestador:** di por cumplida la condición del
+ensayo mirando solo `ipykernel`, y subí sin releer el foro ni el conjunto de ruedas, con un rescate de casi
+tres días. La vigía de inicio de sesión lo había avisado («corre el rescate»).
+
+**Consecuencias que van más allá del notebook** (lectura de código pendiente; forense en curso):
+- El envío de hoy (ref 57098570) se está puntuando con un arnés distinto del que puntuó las cuatro lecturas
+  anteriores. **Las «cinco lecturas del mismo zip» ya no miden solo ruido**: mezclan dos versiones del arnés.
+- Las 145 sesiones propias de las iteraciones 03 a 07 corrieron con 0.2.7.
+- Cambió el módulo que resuelve la generación (`sampling.yaml`): hay que leer si el kit con razonamiento y el
+  de base se comportan distinto con la versión nueva.
+
+**En curso:** rescate nuevo (`2026-10-12T0700Z`), forense del cambio de arnés (lista completa de roturas, no
+solo la primera), y después corrección del notebook, ensayo local con la imagen de `ipykernel` 6.17.1 y
+comprobación de imports contra las ruedas reales, revisión independiente y, solo entonces, nueva subida.
+
+
+### Concilio 45 (2026-10-12): el kit de base ahora razona; primer paso, un sondeo de 12 tareas
+
+**Confirmado con una medición local, no solo leyendo el código.** Prueba sin GPU con las ruedas reales del
+arnés y un servidor falso que guarda cada petición (2 tareas y 6 peticiones por corrida, `ipykernel` 6.17.1;
+issue #195, `…\lanzamiento\prueba_ruedas\RESULTADO.json`):
+
+| Kit | Arnés anterior (0.2.7 / 0.2.12) | Arnés nuevo (0.2.11 / 0.2.13) |
+|---|---|---|
+| Base, `d8a3e1d3…` | `enable_thinking: false`, sin presupuesto (6 de 6) | **`enable_thinking: true`, presupuesto 4 096 (6 de 6)**; el pensamiento no vuelve al historial |
+| Razonamiento, `65a02160…` | `enable_thinking: true`, 4 096 (6 de 6); el pensamiento vuelve en 4 de 6 | Igual |
+
+Tras sustituir el import eliminado no apareció otra rotura dura (predicción 48: no ocurrió; predicción 49:
+ocurrió). No medido: la conducta real del modelo, las peticiones del subagente y qué arnés usa el puntuador.
+
+**Ronda 1** (encargo en `…\fase2\concilio_45\encargo.md`; informes en `…\concilio_45\<rol>\`). La misma
+pregunta a arquitecto, analista de datos, QA e inteligencia pública: qué se corre con las 29,93 h que quedan y
+qué se envía cada día. Límite: la lista de candidatas la escribí yo y el sondeo era una de ellas.
+
+- **Los cuatro, por separado, ponen primero lo mismo:** un **sondeo de 12 tareas con el kit de base** bajo el
+  arnés nuevo, para medir segundos por tarea, cortes y razonamiento. Costo estimado: 1,9 a 2,7 h de cuota.
+- **Arquitecto (cuenta, inferida con tiempos del arnés anterior):** razonando, 60 tareas piden de 12 600 a
+  18 240 s contra el tope de 7 200 s; correrían entre 23 y 34. Relanzar tal cual no dejaría ninguna pasada de
+  base completa. Las tres condiciones a la vez (22,9 a 30,2 h) no caben con margen. El prompt nuevo añade unos
+  640 a 1 230 tokens por turno (el árbol del espacio de trabajo).
+- **Analista (recontado desde los rescates):** 246,0 s por tarea con razonamiento (29 sesiones; censurado: 16
+  se cortan por tiempo) y 109,4 s sin él (116 sesiones). Razonar frente a no razonar con 60 tareas solo
+  detecta 16,5 puntos o más: no vale como prueba. Oculto frente a devuelto costaría 22 a 27 h con un efecto
+  esperado menor: no correrlo. **Siguen comparables las 29 sesiones con razonamiento; las 116 del kit de base y
+  las lecturas 0,05 y 0,06 ya no.** La tabla pública no muestra cambio de nivel tras el 2026-10-09 (de 1 149
+  equipos sin envío nuevo, ninguno cambió de nota), pero como guarda la mejor nota, no prueba nada.
+- **QA:** de 31 sesiones resueltas, 0 dependían de tocar pruebas o configuración; el filtro nuevo del arnés
+  vaciaría 2 entregas no resueltas de 82. En las 19 tareas comunes, razonar tarda 276 s frente a 82 s.
+- **Inteligencia pública:** las páginas vivas y el foro no se dejan leer sin sesión; lo último leído es de una
+  hora antes de la actualización. El 2026-09-29 el organizador dijo que no repuntúa envíos existentes y que
+  los arreglos llegan en silencio con el conjunto de ruedas. El 2026-10-02 un participante pidió que
+  `include_thoughts` no apagara el razonamiento: coincide con el cambio, sin anuncio conocido.
+
+**Decisión, limitada al primer paso (unánime en la ronda 1):**
+1. **Sondeo de 12 tareas con el kit de base** (`cs4all/iteracion-08-s1`), cuando el notebook corregido tenga
+   ensayo local con `ipykernel` 6.17.1, prueba con las ruedas reales, chequeo previo nuevo y revisión
+   independiente. Regla de lectura: rediseñar en porciones si la media pasa de 120 s por tarea; parar y volver
+   al concilio si pasa de 270 s o si más de la mitad se corta por tiempo.
+2. **El envío diario sigue con el zip `65a02160…`** (su petición es idéntica en las dos versiones), rotulando
+   cada lectura con su fecha; las dos anteriores no se promedian con las nuevas.
+3. **Releer el foro y los notebooks públicos desde el 2026-10-09** antes de gastar la cuota (en curso, solo
+   lectura).
+
+**Lo que queda sin decidir, a propósito:** qué se corre después del sondeo. Ahí los roles discrepan
+(arquitecto: kit sin razonar de 60 tareas y las otras cuatro porciones de la base; analista: no correr razonar
+frente a no razonar como prueba). **La revisión cruzada y el dictamen del auditor se hacen con el dato del
+sondeo**, que es lo que cambia la respuesta.
+
+**Foro releído (lectura del 2026-10-12 por la API, 202 temas; informe en `…ase2\concilio_45\inteligenciaoro_2026-10-12.md`).** Lo que cambia o confirma:
+
+- **El cambio del razonamiento fue intencional.** Organizador, 2026-10-10 12:31: «This was intended. […] This change was meant to have include_thoughts manage what is carried in the chat template from call to call, more consistent with the Gemini API.» Prometió una actualización y un README para hoy; no está en la lectura.
+- **Otro participante midió lo mismo que nuestra prueba local** (con 0.2.13 la petición lleva el razonamiento encendido aunque `include_thoughts` sea falso; con `thinking_budget: 0` se apaga) y, en una tarea, pasó de unos 90 s a 316 s: unas 3,5 veces más. Es un caso ajeno, una tarea.
+- **El `ModuleNotFoundError` de `swegemma.models.discovery` se reportó en el foro el 2026-10-09 a las 16:20**, hora y media después de la actualización. Estaba a la vista tres días antes de nuestra subida.
+- **Puntuador:** no está dicho desde cuándo usa las ruedas nuevas; el organizador dijo de otro cambio (2026-10-11) «The scorer has this update already», de donde se infiere que sigue al conjunto de ruedas. Sin repuntuación anunciada.
+- **Cola de envíos:** varios participantes reportan de 22 a 46 h entre el envío y la nota, y el límite de pendientes sigue en vigor: **el «envío diario» en la práctica será uno cada día y medio o dos.** La cola no cuenta para las 12 h.
+- **Modelos:** desde el 2026-10-11 se permiten tres variantes más pequeñas (12b, e4b y e2b), sin mezclar en un envío; hardware, 12 h y topes, iguales.
+- Las respuestas de los roles a D4 se mantienen: seguir con el mismo zip, no alternar todavía, no parar.
+
+### Arreglo fusionado y sondeo subido (2026-10-12, 08:38 a 08:48 UTC)
+
+- **PR #196 (issue #195) fusionado**, `mergedAt` 08:38:47, `2c1f05f`, CI 12 de 12. Revisión independiente: PR «apto con observaciones»; sondeo «listo con salvedades». El chequeo previo compara ahora las versiones del conjunto de ruedas con las ensayadas y comprueba los imports del notebook contra las ruedas reales; sin las ruedas no dice «se puede subir». El ensayo rearmado pasó 7 de 7 corridas con las ruedas reales. Predicciones: 48 no ocurrió, 49 ocurrió, 50 no ocurrió.
+- **Antes de subir:** listado del conjunto de ruedas releído a las 08:40, sin cambios desde las 07:07 (las del arnés, del 2026-10-09 14:43); cuota 29,93 h; hash del notebook igual al revisado (`9ea5149a…`); `kaggle_preflight comprobar --tope-min 160 --ruedas … --listado …`: 24 de 24 en verde, código 0.
+- **08:39:19 — sondeo subido:** `uvx kaggle kernels push -p …/issue_195_2026-10-12/iteracion_08_razona/kernel_iteracion_08_s1 -t 9600 --accelerator NvidiaL4`. `cs4all/iteracion-08-s1`, versión 1. Doce tareas (la primera porción del sorteo) con el kit de base `d8a3e1d3…`, que con este arnés razona con el pensamiento oculto. Costo esperado 2,2 a 2,7 h; techo, 160 min de sesión.
+- **08:41 a 08:48:** `RUNNING` en cinco lecturas seguidas; ya pasó el punto donde murió la pasada 1 (106 s). El log no se puede leer mientras corre.
+- **Riesgo residual que el revisor dejó escrito** (lo que solo se ejecuta por primera vez en Kaggle): el servidor real del modelo; la guarda de versiones tras instalar las 41 ruedas; los enganches con `litellm` 1.82.4; si vLLM informa los tokens de razonamiento; el modelo real razonando; el subagente; 6 de las 12 tareas sin copia local; las novedades del arnés.
+- **Regla de lectura del sondeo:** rediseñar en porciones si la media pasa de 120 s por tarea; parar y volver al concilio si pasa de 270 s o si más de la mitad se corta por tiempo.
+
+### El sondeo terminó completo: 4 de 12 resueltas, 212 s por tarea (2026-10-12, 09:33 UTC)
+
+`cs4all/iteracion-08-s1`: sesión completa (3 064 s de reloj; el registro termina en «cierre»; `kaggle_registro comprobar --notebook iteracion-08-s1 --tareas-esperadas 12` da código 0). Rescate nuevo en `…escate_kaggle�6-10-12T0940Z\`; salida en `…\instrumentos\issue_195_2026-10-12\salida_kaggle_s1\`. Solo agregados:
+
+| Medida | Valor |
+|---|---|
+| Arnés instalado (lo escribe el notebook) | `swegemma` 0.2.11, `adk_submission` 0.2.13: las esperadas |
+| Cuota gastada | 1,71 h (de 0,07 a 1,78); **factor 2,01** entre reloj y cuota; quedan 28,22 h |
+| Carga del modelo | registro instalado a los 519 s de sesión |
+| Resueltas | **4 de 12** |
+| Clase de fin | resuelta 4; tiempo agotado sin parche 5; tiempo agotado con parche 1; llamadas agotadas sin parche 2 |
+| Segundos por tarea | media **212,0** (censurada por el tope de 240 s); mediana 242,6; de 85,9 a 248,2 |
+| Llamadas a herramientas por tarea | media 19,2; máximo 40 |
+| Peticiones | 260; 7 canceladas por el tope; media 9,5 s por petición |
+| Tokens de entrada por petición | media 8 530; máximo 18 252 |
+| Razonamiento | 173 de 253 respuestas traen razonamiento (media 1 167 caracteres); vLLM no informó sus tokens aparte |
+| Colgadas / errores del registro | 0 / 0 |
+
+**Frente a la regla escrita antes de subir:** se cumple «rediseñar en porciones» (media sobre 120 s); no se cumple por la letra «parar» (la media no pasa de 270 s; los cortes por tiempo son 6 de 12, justo la mitad).
+
+**Predicción 51** (el notebook rearmado falla en Kaggle por una causa que el ensayo local no vio; 0,30): **no ocurrió**.
+
+**Cuenta que sale de aquí (inferida):** una porción de 12 tareas cuesta 1,71 h; las 60 del sorteo en cinco porciones, unas 8,5 h por condición. En 28,22 h caben unas tres condiciones completas.
+
+Resumen para el concilio en `…ase2\concilio_45\sondeo_resultado.md`. Ronda 2 en curso (analista, arquitecto y QA con las trazas del sondeo); después, auditor.
+
+
+### Concilio 45, ronda 2 y dictamen del auditor (2026-10-12)
+
+**Ronda 2, con el dato del sondeo** (`…\fase2\concilio_45\<rol>\ronda2.md`). Los tres roles propusieron un
+primer paso distinto:
+
+- **Arquitecto:** completar las otras cuatro porciones de la misma condición (6,8 h) y después una condición
+  sin razonar de 60 tareas (4,2 a 5,0 h) y su repetición. Cuenta del envío con unas 120 tareas ocultas: 7,2 a
+  8,6 h con el kit de base a 4 min; 8,1 a 9,6 h con el de razonamiento a 4,5 min; 4,5 min sigue siendo el
+  máximo defendible.
+- **Analista:** repetir la porción con el tope en 5 min (1,9 a 2,4 h); él mismo lo llamó conjetura. Recontó el
+  sondeo (se reproduce) y lo comparó con sesiones previas de las mismas tareas: solo 6 de 12 tienen
+  antecedente sin razonar; en ellas el acierto no cambió (1 y 1) y el tiempo se multiplicó por 2,7 (de 82 a
+  218 s). El 96 a 98 % del reloj son peticiones al modelo.
+- **QA (leyó las trazas):** de las 8 no resueltas por tope, ninguna tenía una edición plausible en disco; de
+  las 6 por tiempo, 4 avanzaban despacio y 2 giraban; dos gastaron unos 120 s en una sola respuesta de 4 000 a
+  4 300 tokens; las 2 de llamadas agotadas son bucles de la misma lectura mal formada, que empiezan tras la
+  primera compactación. Propuso bajar el presupuesto de razonamiento.
+
+**El auditor reprodujo las cifras desde el registro crudo** (guiones en `…\concilio_45\auditor\`):
+
+| Afirmación | Su número |
+|---|---|
+| 4 de 12 resueltas | Igual; intervalo del 95 %: 10 a 65 % |
+| El modelo genera el 97 % del reloj | 2 471 de 2 544 s |
+| «173 de 253 respuestas traen razonamiento» | **151** con más de 0 caracteres |
+| «79 % de los tokens de salida es razonamiento» | **Entre 84 y 93 %** |
+| «Bajar a 1 024 ahorra 28 s por tarea» | 27,4 s, el 90 % en 2 de 12 tareas; con 2 048, 14,3 s |
+| Respuestas que agotan el presupuesto | 2 con 4 096 tokens o más; 3 con 4 000 o más |
+
+Las dos cuentas del razonamiento miden cosas distintas y ambas valen: casi todo lo que el modelo escribe es
+razonamiento, pero son 151 pensamientos cortos (mediana 255 tokens), así que **bajar el tope apenas ahorra; lo
+único que mueve el reloj es apagarlo** (unos 150 a 170 s por tarea, en cuenta estática).
+
+**Plan decidido** (tope propio de 20 h; el dueño fijó 24):
+
+| Paso | Qué | Cuota (h) | Qué decide | Lo detiene |
+|---|---|---|---|---|
+| 0 | Kit sin razonar (una línea: `thinking_budget: 0`), ensayo local con ruedas reales, revisor | 0 | Que la petición salga con el razonamiento apagado 6 de 6 | Cualquier otra diferencia con el kit de base |
+| 1 | Las mismas 12 tareas del sondeo con ese kit | 1,0 a 1,5 | Segundos y clases de fin sin razonar; el tamaño del paso 2. **No decide acierto** | Alguna petición que pida razonar (corrida inválida); una colgada; más de 1,7 h |
+| 2 | Las otras 48, en una sesión si la media del paso 1 es 135 s o menos; si no, en dos de 24 | 3,2 a 4,1 | El nivel sin razonar con 60 tareas (±12 puntos) | Menos de 55 válidas |
+| 3 | Repetir las 60 sin razonar | 4,2 a 5,6 | La discordancia entre pasadas iguales: el ruido del arnés nuevo | No empieza con más de 12 h acumuladas |
+| 4 | Las otras cuatro porciones de la base que razona | 6,8 a 8,2 | 60 pares razonar frente a no razonar | Solo si la discordancia del paso 3 es 20 % o menos |
+
+Total: 15,2 a 19,4 h. **Regla escrita antes de leer:** en el paso 4 solo una diferencia de 16,5 puntos o más
+cambia el kit; por debajo se anota «exploratoria». Si las ruedas cambian, se para y vuelve al concilio.
+
+**Vetos del auditor (no se corre esta semana):** repetir las 12 con 5 min (el concilio 43 vetó los 5 min en el
+envío y la cuenta de las 12 h lo confirma; y son 6 tareas sin medida de ruido); presupuesto a 2 048 o 1 024
+(toca 3 respuestas en 2 tareas; con 12 pares no hay mínimo detectable); el razonamiento devuelto en local (8,5
+a 10 h, tres ajustes distintos, sin dato previo); subir a 4,5 min y repetir la base que razona (no caben).
+
+**Envío:** seguir con `65a02160…`; no cambiar al kit de base (4 de 12 con 6 cortadas no es evidencia de mejora
+y es el kit cuya conducta cambió); un envío en cuanto vuelve la nota, rotulado con su fecha; 0,08 y 0,13 no se
+promedian con las nuevas. Un kit retador entra tras cinco lecturas posteriores al cambio y solo si ganó un
+contraste local por 16,5 puntos o más. Antes de fijar los finales (propone el 2026-11-25): saber qué arnés usa
+el puntuador, que la lectura 3 vuelva, la dispersión de cinco lecturas y que las ruedas no cambien después.
+
+**Fallos de método que señala:**
+- **Del orquestador:** la regla «parar si la media pasa de 270 s» era **inalcanzable** con un tope de 240 s; el
+  otro criterio quedó en el borde exacto. Y el sondeo estaba en la lista de candidatas que yo escribí, con una
+  duda que preguntaba «qué porción conviene correr primero»: la unanimidad de la ronda 1 vale como un voto
+  anclado, no como cuatro. No invalida (el gasto fue bajo y el dato útil).
+- **De los roles:** se sigue usando como «base» lo que dejó de serlo (las 116 sesiones, las lecturas 0,05 y
+  0,06, los 109 s por tarea y el «tres veces más lento»); el 79 % era un supuesto; la comparación de bucles
+  cruza arneses.
+- **Del propio auditor:** no reprodujo lo que depende de las trazas; los ahorros por tope suponen la misma
+  trayectoria.
+
+**Lo que espera la palabra del dueño** (una sola cosa; redacción del auditor): la siguiente subida es el
+notebook del sondeo con las mismas 12 tareas, cambiando solo el kit: el de base con `thinking_budget: 0`.
+Cuesta 1,0 a 1,5 h de cuota (se corta a 1,7). Dice cuánto tarda y cómo termina una tarea sin razonar con el
+arnés nuevo; no dice cuál kit acierta más. Pierde valor si las ruedas dejan de ser 0.2.11 / 0.2.13, y después
+del 2026-10-15 ya no caben detrás los pasos siguientes antes del 2026-10-17 a las 00:00 UTC.
+
+**En curso (paso 0, sin subir nada):** el implementador arma el kit sin razonar y su notebook, lo prueba con las
+ruedas reales y lo ensaya; después, revisor.
+
+### Paso 0 del concilio 45 cerrado; el paso 1 espera la orden del dueño (2026-10-12, 10:26 UTC)
+
+- **PR #197 fusionado** (`mergedAt` 10:24:23, `756e2c2`, CI 12 de 12). Revisión independiente: PR «apto con observaciones»; notebook `s2` con el kit `A0`, «listo para subirse».
+- **Kit `A0`** (`submission_a0_sin_razonar.zip`, sha256 `01a6d82f…`): idéntico al de base salvo la línea 5 de `configs/sampling.yaml` (`thinking_budget: 4096` → `0`). Prueba con las ruedas reales, recontada por el revisor: con el arnés nuevo, 6 de 6 peticiones con `enable_thinking: false` y sin presupuesto; temperatura, `top_p` y tokens máximos, iguales. Leído en el arnés: un 0 no se sustituye por el valor por defecto.
+- **Notebook `s2`** (`…\issue_195_2026-10-12\paso0\kernel_iteracion_08_s2\`, sha256 `e8a5604c…`): 7 líneas distintas de `s1`, todas de condición o nombres; las mismas 12 tareas.
+- **Regla de validez nueva:** `kaggle_registro comprobar --sin-razonar` sale con 8 si alguna petición pide razonar.
+- **Comprobado a las 10:25, listo para subir:** ruedas sin cambios; chequeo previo con código 0; cuota 28,22 h; el envío del día sigue `PENDING`.
+- **Orden que se ejecutará cuando el dueño lo diga:** `uvx kaggle kernels push -p …/issue_195_2026-10-12/paso0/kernel_iteracion_08_s2 -t 9600 --accelerator NvidiaL4` (costo esperado 1,0 a 1,5 h; se corta a 1,7 h). **No se subió.**
+- Lo que nadie ha medido: qué hace el modelo real con el razonamiento apagado bajo el arnés nuevo. Es lo que viene a medir el paso 1.
+
+
+### Paso 1 del concilio 45 subido por orden del dueño (2026-10-12, 13:53 UTC)
+
+El dueño dijo «adelante» a la subida presentada (12 tareas, kit `A0` sin razonar, 1,0 a 1,5 h; corte a 1,7 h).
+
+- **Antes de subir, releído:**
+  - Ruedas del arnés (12:27 UTC, `listado_ruedas_1227.txt`): `swegemma` 0.2.11, `adk_submission` 0.2.13, `adk_eval_core` 0.1.0 y `google_adk` 1.36.1, con el mismo tamaño y fecha (2026-10-09 14:43). El conjunto sigue con `lastUpdated` 2026-10-09 14:43:19 (releído a las 13:55).
+  - **Diferencia del listado, explicada:** el de las 12:27 trae una fila más, `tokenizers-0.22.2`, con la misma fecha de creación que el resto. No es un cambio del conjunto: sin `--page-size` el cliente devuelve 19 ruedas; con 100 o más, 41. El sondeo `s1` ya la había anotado en su `versiones_arnes_…json`. Los listados de las 07:07, 08:40 y 10:25 estaban incompletos por una fila. Pendiente: que el listado del chequeo previo se pida siempre con página grande y se cuente.
+  - Chequeo previo con ese listado: código 0, «Se puede subir» (16 imports presentes en las ruedas). Notebook `e8a5604c…`, sin cambios.
+  - Foro (12:34 UTC, `publicos_2026-10-12_1230\`): 185 temas (dos nuevos, tres con comentarios nuevos). Ningún anuncio de cambio del arnés. El organizador respondió a las 11:05: el `eval_config.yaml` del participante no afecta a la puntuación (el puntuador solo recibe los parches); las pruebas del puntuador corren con tope de 300 s; el puntuador usa **«el mismo sandbox pero ruedas distintas»**; las tareas ocultas se filtraron con un modelo comercial fuerte (las que resolvió o falló por una aserción). Queda sin respuesta si los topes de `evaluation:` rigen en la fase del agente.
+  - Cuota: 1,78 h usadas, 28,22 h restantes. Envío 57098570: sigue `PENDING`.
+- **Subida:** `uvx kaggle kernels push -p …/issue_195_2026-10-12/paso0/kernel_iteracion_08_s2 -t 9600 --accelerator NvidiaL4`.
+  - 12:38:28 y 12:39:38 UTC: Kaggle respondió `500 Internal Server Error` en `SaveKernel`. No se creó el notebook (`GetKernelSessionStatus` 404) ni se gastó cuota (1,78 h). La carpeta difiere de la de `s1`, que subió bien, solo en el nombre y los finales de línea del `kernel-metadata.json`. Causa: del lado de Kaggle, no reconstruida; en la lista de notebooks aparece una fila sin nombre («[Private Notebook]», sin fecha de ejecución) que no sé si es anterior.
+  - 13:53:18 UTC: tercer intento, sin cambiar nada: «Kernel version 1 successfully pushed». Estado a los 30 s: `QUEUED`.
+- **Regla de lectura (del dictamen, escrita antes):** inválida si alguna petición pide razonar (`kaggle_registro comprobar --sin-razonar`, código 8), si hay una colgada o si pasa de 1,7 h. Decide segundos y clases de fin sin razonar y el tamaño del paso 2 (una sesión de 48 si la media es 135 s o menos; si no, dos de 24). **No decide acierto.**
+
+
+### Cierre de sesión por orden del dueño (2026-10-12, 13:58 UTC)
+
+El dueño pidió cerrar y actualizar la documentación, incluido el paper. No se lanzó trabajo nuevo; el vigía de estado se detuvo.
+
+**Estado en Kaggle al cierre (leído, no supuesto):**
+- `cs4all/iteracion-08-s2` (paso 1: 12 tareas, kit `A0` sin razonar): `KernelWorkerStatus.RUNNING`. Subido a las 13:53:18 UTC. **Corre solo; nadie lo está mirando.** Tope de sesión 9 600 s.
+- Cuota de GPU: 1.82h usadas, 28.18h restantes.
+- Envío 57098570 (zip `65a02160…`, lectura 3 de 5): `SubmissionStatus.PENDING `.
+
+**Al retomar, en este orden:**
+1. `uvx kaggle kernels status cs4all/iteracion-08-s2` (con `PYTHONUTF8=1`).
+2. Si terminó: bajar la salida a `…\issue_195_2026-10-12\salida_kaggle_s2\`, rescate, `python -m scripts.kaggle_registro comprobar --sin-razonar --notebook iteracion-08-s2 --tareas-esperadas 12` (código 8 = alguna petición pidió razonar: corrida inválida), leer solo agregados (el lector `leer_sondeo.py` busca `iteracion_08_s1.json`: hay que pasarle el nombre nuevo), `uvx kaggle quota` y anotar el factor.
+3. Si dio error: log extraído y causa reconstruida antes de cualquier otra cosa (forense).
+4. Paso 2 (las otras 48): una sesión si la media del paso 1 es 135 s o menos; si no, dos de 24. Necesita ensayo local, releer ruedas y foro, y la palabra del dueño. Después del 2026-10-15 ya no caben detrás los pasos 3 y 4 antes del 2026-10-17 a las 00:00 UTC.
+5. Envío: cuando 57098570 tenga nota, anotarla con su fecha y hacer la lectura siguiente del mismo zip (con la palabra del dueño); actualizar `sub-008` en `submissions/registry.json` por PR.
+
+**Documentación actualizada en este cierre:**
+- Esta bitácora (subida del paso 1 y cierre).
+- Paper: versión nueva `experiments\gemma_developer_agent\drafts\paper\manuscript_defendible_2026-10-12.md` (sin versionar, **borrador no publicado**; la del 2026-10-04 queda intacta). Cambios: ya no dice que Gemma 4 no se ejecutó; § 4.1 nuevo con las notas públicas, el cambio del arnés del 2026-10-09 (la línea de base preregistrada ya no describe lo que el arnés hace: necesita enmienda), el sondeo de 12 tareas y el paso en curso; tres amenazas nuevas; y **se corrigió la lectura del placebo del § 3**, que decía lo contrario de `docs/results/failure-transfer.md` (H7c: el contenido importa en cuatro de seis casos). Guion de los cambios: `…\fase2\lanzamiento\actualizar_paper.py`.
+- Cuaderno del concilio (`.scratch\concilio_memoria\CUADERNO.md`), memoria del proyecto e issue #182.
+
+**No hecho, queda escrito como pendiente (requiere PR con revisión, no cabe en un cierre):**
+- Documentos versionados: `docs/ensayo_nucleo_jupyter.md` y `docs/rescate_kaggle.md` no recogen aún que el listado de ruedas hay que pedirlo con página grande (sin `--page-size` salen 19 de 41 ruedas; los listados de las 07:07, 08:40 y 10:25 perdían una fila) ni la subida del paso 1. `kaggle_rescate` y el chequeo previo deberían contar las filas del listado.
+- El paper nuevo no ha pasado por validador estadístico, auditor de datos, investigador de citas ni redactor; antes de publicarlo o versionarlo, pasa por ellos. La Tabla 3 y las cifras del § 4.1 salen de la API y del sondeo recontado por el auditor del concilio 45; la frase sobre las predicciones P2 y P3 es descripción, no contraste.
+- La enmienda al preregistro por el cambio del arnés (línea de base con `thinking_budget: 0` o declarada «razona») no está escrita.
+- Causa de los dos `500` de `SaveKernel`: no reconstruida.
+- Siguen abiertos: #179 sin confirmar, #182, confirmación de cierre de #195, predicciones 25 a 37 y 41, seguimiento del gancho del #186, y los candidatos a issue de la vuelta 44.
+
+
+## Vuelta 45 — 2026-10-12 (UTC), tarde: el paso 1 terminó y las ruedas cambiaron
+
+### Retomar: salida del paso 1 rescatada (2026-10-12, 20:45 a 20:55 UTC)
+
+Orden del dueño: «sigue con la primera: las 60 tareas de Kaggle» (la primera de tres salidas que dejó el
+concilio cuantitativo de memoria, ver más abajo) y «evalúa junto al concilio los resultados».
+
+- `cs4all/iteracion-08-s2`: `COMPLETE`. Salida bajada a `…\issue_195_2026-10-12\salida_kaggle_s2\` y rescate
+  completo por la API en `…\rescate_kaggle\2026-10-12T2051Z\2026-10-12T2051Z\` (código 4: 145 faltantes, ninguno
+  de `s1` ni de `s2` según el forense).
+- `uvx kaggle quota` (leída por el orquestador a las 20:47 UTC): 2,77 h usadas, 27,23 h restantes; renovación
+  2026-10-17 00:00 UTC. Con 1,78 h antes de subir, `s2` costó 0,99 h: factor 2,013 sobre los 1 770,5 s del log.
+- Envío 57098570: sigue `PENDING` (más de 14 h).
+- `kaggle_registro comprobar --sin-razonar --notebook iteracion-08-s2 --tareas-esperadas 12`: «completa», 408
+  peticiones piden no razonar, 0 piden razonar, 0 sin el dato. Regla «sin razonar» cumplida.
+- No se subió ni se envió nada.
+
+### Concilio 46 (2026-10-12): cinco roles, revisión cruzada sin firmas y auditor
+
+Expediente: `F:\Code\Agents Learning Loops\.scratch\concilio_memoria\fase2\concilio_46\` (encargo con las frases
+del dueño literales, prompts de las dos rondas y del auditor en `prompts\`, un informe y una `ronda2.md` por
+rol con sus guiones, y `auditor\dictamen.md`). El orquestador no ocupó ningún rol ni votó.
+
+**Parecer del auditor, tal cual (su resumen):**
+
+> El paso 1 es válido según la regla escrita antes: 408 de 408 peticiones sin pedir razonar, 0 colgadas, media
+> de 101,0 s por tarea. La regla manda una sesión para el paso 2, pero la misma regla manda parar si cambian
+> las ruedas, y cambiaron a las 19:51 UTC: `swegemma` creció 150 bytes y `vllm` 198, con la misma versión. `s2`
+> corrió antes, con las anteriores.
+>
+> El veto unánime a subir se sostiene. Lo levanta el diff de contenido; de `vllm` vieja no hay copia local, así
+> que recomiendo que el paso 2 sean 60 tareas con las ruedas nuevas (3,7 h de cuota) y después su repetición
+> (3,7 h). El paso 4 no se presenta esta semana.
+>
+> Tres roles dieron horas de reloj como cuota; el factor es 2,0, medido una sola vez. Quedan unas 27,2 h,
+> inferidas: nadie leyó la cuota. Ninguna predicción fechada cubría el paso 1.
+>
+> Con 12 pares no se detecta nada; con 60, 16 puntos solo si la discordancia es 0,2.
+>
+> Para el dueño: ninguna cosa lista todavía. Faltan la lectura de cuota, el diff, el paso 0 con las ruedas
+> nuevas, y las definiciones y predicciones escritas por analista y forense.
+
+(La cuota sí estaba leída; el orquestador no la puso en el encargo. El auditor lo añadió como nota.)
+
+**Lo que cada rol midió (ronda 1) y lo que retiró (ronda 2):**
+
+- **Analista:** con 12 pares no se detecta ninguna diferencia de acierto; `s2` fue más rápida en 12 de 12
+  tareas; una petición rechazada por ventana de contexto que la herramienta no marca. Retiró sus cifras de
+  cuota (eran reloj) y «31 veces» sobre la lectura repetida.
+- **Forense:** las ruedas se republicaron a las 19:51 UTC; la guarda del notebook compara versiones y no
+  bytes; cuatro finales anómalos sin corte. Retiró que la compactación hiciera perder el enunciado en dos
+  tareas (esos enunciados no traían el problema) y su «1,5 h» del paso 2 (era reloj).
+- **QA:** sin razonar el límite activo son las 40 llamadas; las lecturas mal formadas empiezan en la llamada 2
+  en cuatro tareas, antes de cualquier compactación (contradice al concilio 45). Corrigió sus horas a cuota.
+- **Arquitecto:** los pasos 2 a 4 caben en la cuota. Retiró «el plan cabe» como permiso para seguir, al ver el
+  cambio de ruedas que se le había pasado.
+- **Inteligencia pública:** mismo cambio de bytes, por otro guion; el mismo zip ya dio 0,08 y 0,13. Retiró «7
+  cortes por tiempo en `s1`» (son 6). No pudo leer el foro posterior a las 12:05 UTC sin sesión.
+
+**Correcciones del auditor a cifras de los roles:** 7 tareas con 35 o más llamadas (no 8); las lecturas
+repetidas antes del rechazo son 11 seguidas (no 7 ni 31); «`s1` y `s2` idénticas byte a byte» queda en
+«tamaños iguales» (no se registró sha256). El auditor no rehízo lo que sale de las trazas.
+
+**Plan del auditor** (pasos 1 a 4 sin cuota y sin la palabra del dueño; 5 y 6 la necesitan):
+1. Leer la cuota (hecho). 2. Bajar las ruedas nuevas, sha256 y diff. 3. Guarda por sha256 en el notebook y
+paso 0 repetido con las ruedas nuevas, con revisor. 4. Definiciones («válida», «corte», «discordante», unidad
+de costo) y predicciones fechadas, escritas por analista y forense. 5. Las 60 tareas en una sesión, kit `A0`,
+ruedas nuevas: 3,7 h (2,7 a 4,7). 6. Repetir las 60: 3,7 h. El paso de comparar con el kit que razona no se
+presenta esta semana (es el más caro y está confundido: un brazo lo corta el reloj y el otro las llamadas).
+
+**Fallos del orquestador en esta vuelta (lista del auditor):** retuvo la lectura de cuota y cinco informes la
+infirieron; dijo que el encargo no traía conclusiones y traía la suya sobre el paso 3 más el plan como marco
+(el orden 2 → 3 → 4 vale como un voto anclado, no cinco); convocó con un rescate que ya traía el listado nuevo
+de ruedas sin que nada avisara; no hubo predicción fechada antes del paso 1 (las 48 a 51 no están en el
+archivo versionado); no hizo cumplir el tope de palabras; la ronda 2 duró de 60 a 103 s por rol, poco para
+rehacer cuentas. De la herramienta: dice «completa» con un 400 dentro y rotula como «con caracteres de
+razonamiento: 225» respuestas que traen el campo vacío.
+
+### Paso 2 del dictamen: las ruedas nuevas, bajadas y comparadas (2026-10-12, hacia las 21:20 UTC)
+
+Orden del dueño: «sigue con los pasos 2 a 4 del auditor». Carpeta: `…\instrumentos\arnes_2026-10-12_1951\`.
+
+- Bajadas del conjunto `metric/gemma-4-developer-agent-wheelhouse` las cuatro ruedas del arnés. sha256 frente a
+  la copia local que corrió en `s1` y `s2`: `google_adk` igual; `swegemma`, `adk_submission` y `adk_eval_core`
+  distintos.
+- Contenido, archivo por archivo: `adk_submission` y `adk_eval_core` son **idénticos** (solo cambió el
+  empaquetado; mismo tamaño). **`swegemma` cambió de código** en cinco archivos (`budget.py`, `cli.py`,
+  `config.py`, `context.py`, `harness/verification.py`): añade `verification_timeout_seconds`, por defecto 300,
+  y la verificación con pytest deja de usar el tope de cada orden y usa ese. Diff completo en
+  `diff_swegemma_0951_vs_1951.diff` (98 líneas).
+- Lectura del orquestador, **sin comprobar por otro todavía**: no toca al agente, a la compactación ni al
+  servidor; toca cuánto tiempo tiene la verificación. Si en `s1` o `s2` alguna verificación se cortó por el
+  tope anterior, su «resuelta» pudo salir distinta. Encargado al forense.
+- `vllm` nueva no se bajó (433 MB) y de la anterior no hay copia: su cambio de 198 bytes sigue sin medir.
+- Con la regla del dictamen («48 solo con empaquetado puro probado en las dos»), el paso siguiente son **60
+  tareas con las ruedas nuevas**, y `s1` y `s2` quedan rotuladas «ruedas del 2026-10-09».
+- **En curso, sin subir nada:** forense (comprobar el diff y su efecto en `s1` y `s2`, y sus predicciones),
+  analista (definiciones y predicciones fechadas) e implementador (guarda por sha256, notebook de 60 y paso 0
+  repetido, por PR con `Refs #182`). Encargos literales en `…\concilio_46\prompts\pasos_2_a_4.md`.
+
+### Pasos 2 a 4 del dictamen y cierre de sesión por orden del dueño (2026-10-12, 21:40 UTC)
+
+El dueño pidió cerrar y documentar, sin crear más tareas. Se detuvieron el implementador y la espera de CI.
+**No se subió ni se envió nada a Kaggle en toda la tarde.** No queda ningún agente corriendo.
+
+**Paso 2, cerrado.** El forense rehízo la comparación de ruedas por su cuenta y coincide con la del
+orquestador (`…\concilio_46\forense\paso2_ruedas.md`): `google_adk` igual; `adk_submission` y `adk_eval_core`,
+solo empaquetado; `swegemma` cambia el código, y solo la verificación: el tope de pytest pasa de 60 s (lo que
+configuró el notebook en `s1` y `s2`) a 300 s por defecto. Ninguna verificación de `s1` ni de `s2` terminó por
+ese tope (la más larga, 4,0 s): para las 12 tareas medidas el cambio es inerte; para las otras 48 no está
+medido. `vllm`: sin medir. La regla manda **60 tareas con las ruedas nuevas**.
+
+**Paso 4, escrito y revisado; falta fusionarlo.** PR #200 (rama `issue-182-predicciones-concilio-46`, cabeza
+`d824e8a`): sección 20 de `experiments/azar/preregistro/prediccion_de_fallos.md` con las definiciones
+(«válida», «corte», «discordante», unidad de costo), la puerta escrita sobre el conteo y las predicciones 52 a
+65 (analista) y 66 a 73 (forense), copiadas tal cual, más dos notas de precisiones de los propios autores
+tras la revisión, sin cambiar probabilidades. Fechadas 21:19 a 21:31 UTC, antes de cualquier dato. El revisor
+independiente aprobó en la tercera pasada. **Al cerrar, la CI iba 3 de 12 con 9 corriendo: no se fusionó.**
+
+**Paso 3, a medias: NO está hecho.** El implementador (rama `issue-182-guarda-sha256-ruedas`, worktree
+`.claude\worktrees\agent-a0a0d5a3887c12502`, sin commits ni PR) fue detenido cuando empezaba a escribir
+código. No existe todavía la guarda por sha256, ni el notebook de 60 tareas, ni el paso 0 repetido con las
+ruedas nuevas. Su encargo literal está en `…\concilio_46\prompts\pasos_2_a_4.md`.
+
+**Lo que espera la palabra del dueño: nada todavía.** Cuando el paso 3 esté hecho, ensayado y revisado, la
+subida se presentará con la redacción del auditor: 60 tareas del sorteo, kit `A0` sin razonar, ruedas del
+2026-10-12 19:51 UTC con sha256 comprobado; unas 3,7 h de cuota, corte a 5,4 h; dice el nivel sin razonar con
+±11 puntos; no compara kits.
+
+**Estado en Kaggle, leído a las 20:47 UTC y no releído al cierre:** cuota 2,77 h usadas, 27,23 h restantes,
+renovación 2026-10-17 00:00 UTC; envío 57098570 `PENDING`.
+
+**Al retomar, en este orden:**
+1. PR #200: comprobar la CI de `d824e8a`; si está 12 de 12, fusionar y verificar `mergedAt`.
+2. Releer el listado de ruedas (`--page-size 200`) y comparar sha256 con
+   `…\instrumentos\arnes_2026-10-12_1951\sha256_ruedas_1951.txt`. Si cambió otra vez, vuelve al concilio.
+3. Relanzar el paso 3 con el mismo encargo (mirar antes qué dejó el worktree del implementador).
+4. Para que las predicciones 65 y 71 sean evaluables, **copiar en esta bitácora la salida literal de cada
+   orden `kernels push`**; y leer `uvx kaggle quota` justo antes del push y tras `complete` (predicción 60).
+5. Episodio de la vuelta en `learning/episodes/` (no escrito).
+
+**Otra línea cerrada hoy (memoria selectiva):** concilio cuantitativo de ocho roles con auditor; PR #199
+fusionado (`0db6c49`) con el pre-registro de un predicado de alcance y su informe, veredicto INSUFICIENTE: los
+operadores del solver acotado solo actúan en seis sitios de la aplicación y el banco nuevo no se escribió.
+Issue #198 abierto. Expediente en `.scratch\concilio_cuantitativo\`. De ahí salió la orden del dueño de usar
+las 60 tareas de Kaggle como población.
+
+---
+
+## Vuelta 46 — 2026-10-12 y 13 (UTC): la nota no bajó, el puesto sí; staff de construcción y bloque R1 listo sin subir
+
+**Nada se subió ni se envió a Kaggle en esta vuelta.** El envío 57098570 seguía PENDING en la última lectura
+(no es anómalo antes del 2026-10-14 05:00 UTC).
+
+### Lo hecho, con su prueba
+
+| Qué | Dónde | Estado |
+|---|---|---|
+| Predicciones 52 a 73 (concilio 46) | PR #200, `0d3725f` | Fusionado |
+| Guarda por sha256 de las ruedas y notebook de 60 tareas ensayado en Docker | PR #201, `52eb0f0` | Fusionado |
+| Sección 21: definición del «cerrojo» del auditor y predicciones 74 a 83 | PR #204, `ea3ab21` | Fusionado |
+| Staff de construcción: estratega, diseñador del agente, calibrador, constructor del kit; los revisores publican su revisión en GitHub | PR #203, `acca047`, issue #202 | Fusionado y **verificado** (los cuatro tipos cargaron; un revisor publicó solo en el PR #208) |
+| Sección 22: predicciones 84 a 98 del bloque R1 | PR #207, `a5302f6` | Fusionado |
+| Cuatro candidatos de kit y seis notebooks de R1, ensayados en Docker | PR #209, `8dae1bb`, issue #205 | Fusionado; issue abierto hasta correr y leer |
+| Secciones 22.5 (precisiones del diseñador) y 22.6 (orden de tandas y regla de parada) | PR #211 | Aprobado dos veces; esperando CI |
+| La guarda de cuentas falla abierta | PR #208, issue #206 | Cambios requeridos; en arreglo |
+| Caminos de la guarda fuera del #206 | Issue #210 | Abierto, sin empezar |
+
+### Concilio 47: qué se midió y qué se decidió
+
+- **Medido:** la nota sigue en 0,13 (8 de 58) y el puesto pasó de 544 a 864. Desde el 2026-10-07 no hay un
+  envío puntuado. Los kits públicos llegan a 0,18; el mejor es nuestro kit que razona con tres cambios, y su
+  0,18 es el máximo de seis o más lecturas (ventaja probable: 1,5 a 2,5 tareas). El ruido entre dos envíos
+  idénticos es de unas 1,6 tareas.
+- **Regla que cambia el plan:** el puesto final lo decide la tabla privada con hasta dos envíos elegidos.
+  Reenviar el mismo zip solo sube el máximo público.
+- **Dictamen y adenda del auditor:** 12 tareas locales filtran seguridad, no calidad; la calidad se lee en la
+  tabla, un candidato por envío. Hallazgo retirado: el «cerrojo de lectura» (p = 0,13, confundido, 0 de 29 en
+  el kit que razona).
+- **Regla de envío, literal:** «el primer candidato, en este orden, revisado, ensayado en Docker, con media de
+  262 s o menos en R1, ninguna colgada y neto de −1 o mejor frente a la base. Si ninguno está listo, no se
+  reenvía la base.»
+- **Candidatos, en orden:** C1 tres cambios a 6 min (28 llamadas, 240 s por orden, sin subagente, grafo
+  prohibido, edición temprana); C2 edición temprana sola; C3 `thinking_budget` 1 536; C4 triaje de enunciado
+  corto. **No construir:** quitar `read_file`, reglas de lectura sobre el kit sin razonar, 8 minutos,
+  adaptadores, copia literal del kit público.
+
+### El bloque R1, tal como quedó
+
+- Artefactos, con 330 huellas comprobadas: `experiments\gemma_developer_agent\data\rescate_kaggle\instrumentos\issue_205_bloque_r1\`.
+  Zips: C1 `a038a389…`, C2 `aa0750f0…`, C3 `e655e942…`, C4 `8e7009dd…`; base `65a02160…`.
+  Notebooks `iteracion-08-br1-{i1,i2,c1,c2,c3,c4}`.
+- **Revisión de código (5497999068):** aprobar. Bases y C2, listos; C1, C3 y C4, listos con reservas (C1: aviso
+  de presupuesto desde la llamada 18; C3: subagente con 1 536 sin ensayar; C4: resuelto en 22.5).
+- **Cuota (estratega, rehecha):** 11,1 a 12,1 h esperadas, techo 13,4 h. La cuenta anterior (10,40 a 11,39 h)
+  partía de `s1`, que corrió otro kit a 4 min y 40 llamadas. **No hay ninguna pasada de la base con el arnés
+  nuevo: toda la cuenta es proyección.** La semana cabe sin recortes (27,23 h en la lectura de las 00:44 UTC).
+- **Tandas:** i1 + c1; c2 + c3; i2 + c4. **Parada entre tandas:** una colgada, guarda de ruedas, sesión sobre
+  3 830 s (c1: 4 910 s), tanda sobre 4,9 h (4,3 h las otras), o i1 con 0 o 1 resueltas. Si i1 baja de
+  29 tokens/s, las restantes van de una en una. Texto literal en la sección 22.6 del pre-registro.
+- **El contador:** `llamadas_herramientas` cuenta solo las llamadas que gastan presupuesto; la traza las cuenta
+  todas (28 contra 33 en el ensayo del corte de C1).
+- **Sin ensayar:** si el modelo real obedece las instrucciones, si el servidor aplica el 1 536, las duraciones
+  por tarea, 6 de las 12 tareas (sin copia local) y la instalación real de las ruedas.
+
+### Obligaciones al subir (si el dueño da la orden)
+
+1. Chequeo previo con el listado de ruedas del día, antes de **cada** tanda.
+2. `uvx kaggle quota` justo antes del primer `kernels push` y tras cada `complete`; ninguna otra sesión de GPU
+   en medio (predicción 91).
+3. Copiar aquí la salida literal de cada `kernels push`.
+4. Rescatar el zip crudo de cada sesión: las predicciones marcadas (T) se leen en las trazas.
+5. Aplicar la regla de parada de 22.6 tras cada tanda, antes de lanzar la siguiente.
+
+### Fallos del orquestador en esta vuelta
+
+- Fusioné los PR #199 y #200 sin ninguna revisión publicada en GitHub. El dueño lo corrigió: una aprobación
+  dicha en el chat no cuenta.
+- Destaqué el «cerrojo de lectura» como mejor candidato antes de que el auditor lo midiera; se retiró.
+- Sembré el encuadre en varios encargos del concilio (nombrar un hallazgo en el encargo, elegir yo los 18
+  notebooks). Lo señaló el auditor.
+- Di por cierta la cuenta de cuota del constructor sin mirar de qué corrida salía; lo encontró el revisor.
+- Escribí en una nota del pre-registro que una revisión «no encontró ambigua» ninguna predicción del analista,
+  cuando no las había examinado; lo encontró el revisor.
+- La guarda de cuentas no me protegía: mis órdenes empiezan con `cd`, y esa forma pasa siempre (47 de 47
+  «pasa-dudoso» en el registro). Lo que evitó errores fue fijar y comprobar la cuenta a mano.
+
+### Al retomar
+
+1. PR #211: fusionar con CI 12 de 12 y verificar `mergedAt`.
+2. PR #208: revisión sobre la cabeza nueva, publicada por el revisor; fusionar con CI en verde.
+3. Presentar al dueño **una cosa**: la subida del bloque R1 (techo de 13,4 h de cuota).
+4. Episodio de la vuelta en `learning/episodes/` (no escrito).
+5. Sin decidir por el dueño: la propuesta de cambio a `AGENTS.md` y `CLAUDE.md`; cómputo local o de pago.
+
+### Subida de la tanda 1 de R1, por orden del dueño (2026-10-13, 12:19 UTC)
+
+El dueño escribió «Adelante, sube el bloque R1». Lectura completa en experiments/gemma_developer_agent/data/rescate_kaggle/lecturas_envios\subida_r1_tanda1_2026-10-13T1218Z.txt (dentro del repositorio). Salida literal:
+
+```
+== 2026-10-13T1218Z tanda 1: i1 + c1
+huellas_ok
+listado_igual
+preflight i1 0
+preflight c1 0
+== quota antes
+resource  used   remaining  total   refreshAt            
+--------  -----  ---------  ------  -------------------  
+GPU       2.77h  27.23h     30.00h  2026-10-17T00:00:00  
+TPU       0.00h  20.00h     20.00h  2026-10-17T00:00:00  
+== kernels en curso
+ref                              title                     author  lastRunTime                 totalVotes  
+-------------------------------  ------------------------  ------  --------------------------  ----------  
+cs4all/iteracion-08-s2           iteracion-08-s2           CS4ALL  2026-10-12 13:57:31.263000           0  
+cs4all/iteracion-08-s1           iteracion-08-s1           CS4ALL  2026-10-12 08:41:06.287000           0  
+cs4all/sonda-nucleo-08           sonda-nucleo-08           CS4ALL  2026-10-12 06:46:21.787000           0  
+cs4all/sesion-unica-a            sesion-unica-a            CS4ALL  2026-10-04 21:23:28.010000           0  
+cs4all/iteracion-06              iteracion-06              CS4ALL  2026-10-07 00:37:40.847000           0  
+cs4all/validez-causa-cpu         validez-causa-cpu         CS4ALL  2026-10-04 21:17:41.937000           0  
+== 2026-10-13T12:19:12Z kernels push i1
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-i1
+codigo 0
+== 2026-10-13T12:19:18Z kernels push c1
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-c1
+codigo 0
+== 2026-10-13T12:19:24Z estado
+cs4all/iteracion-08-br1-i1 has status "KernelWorkerStatus.QUEUED"
+cs4all/iteracion-08-br1-c1 has status "KernelWorkerStatus.QUEUED"
+```
+
+### Tanda 1 de R1 leída, y subida de la tanda 2 (2026-10-13, 13:41 a 13:52 UTC)
+
+- **i1 (base 1):** completa, 12 de 12, **5 resueltas**, media 238,4 s, sesión 3 362 s, 0 colgadas, 0 errores del registro, mediana 33,9 tokens/s.
+- **c1:** completa, 12 de 12, **5 resueltas**, media 297,2 s, sesión 4 478 s, 0 colgadas, 0 errores, 34,0 tokens/s. **Descartado por la regla de envío** (media sobre 262 s).
+- **Cuota:** 27,23 h antes, 22,85 h después: 4,38 h. Reloj 7 840 s por 2,01 = 4,38 h.
+- **Regla de parada (22.6):** todas las condiciones pasan salvo una en duda: la orden de comprobación dio código 4. El forense (informe en .scratch/concilio_memoria/fase2/concilio_47/forense/tanda1_codigo_4.md) lo reconstruyó: el 4 son 145 logs de 0 bytes de iteracion-03 a -07; ninguno es de i1 ni c1; el rescate de toda la cuenta da 4 desde el 2026-10-09. A/B sin red: comprobar sobre una copia con solo las dos sesiones da 0, y 4 al añadir iteracion-07. Por pasada, las dos dan 0. La condición manda «primero el forense»; hecho, y las sesiones están sanas: se sigue. **Para las tandas siguientes la comprobación se lee por pasada, y se dice.**
+- Del forense: las canceladas (9 y 6) son la última petición de cada tarea cortada por tiempo; el error de i1 es un desborde de contexto recuperado en la petición siguiente; la bajada directa falla porque la CLI escribe el log en cp1252; el notebook rescatado es idéntico al subido como JSON, no byte a byte.
+- Rescate: experiments/gemma_developer_agent/data/rescate_kaggle/2026-10-13T1342Z/.
+
+Salida literal de la subida de la tanda 2 (c2 + c3), en experiments/gemma_developer_agent/data/rescate_kaggle/lecturas_envios\subida_r1_tanda2_2026-10-13T1351Z.txt:
+
+```
+== 2026-10-13T1351Z tanda 2: c2 + c3
+huellas_ok
+listado_igual
+preflight c2 0
+preflight c3 0
+== quota antes
+GPU       7.15h  22.85h     30.00h  2026-10-17T00:00:00  
+== 2026-10-13T13:51:53Z kernels push c2
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-c2
+codigo 0
+== 2026-10-13T13:51:57Z kernels push c3
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-c3
+codigo 0
+cs4all/iteracion-08-br1-c2 has status "KernelWorkerStatus.QUEUED"
+cs4all/iteracion-08-br1-c3 has status "KernelWorkerStatus.QUEUED"
+```
+
+### Bloque R1, tanda 2 leída y tanda 3 subida — 2026-10-13, 15:28 a 15:32 UTC
+
+**No es un envío a la competencia.** Son sesiones privadas del bloque R1, con la orden del dueño «Adelante, sube el bloque R1».
+
+Tanda 2 (C2 con C3), subida a las 13:51 UTC, las dos `COMPLETE` en la lectura de las 15:28 UTC.
+
+| Sesión | Resueltas | Media por tarea | Sesión | Colgadas | Errores del registro | Frente a la base 1 |
+|---|---|---|---|---|---|---|
+| base 1 (`i1`) | 5 de 12 | 238,4 s | 3 362 s | 0 | 0 | — |
+| C1 | 5 de 12 | 297,2 s | 4 478 s | 0 | 0 | neto 0; descartado por media > 262 s |
+| C2 | 6 de 12 | 234,6 s | 3 371 s | 0 | 0 | gana `rich_3470`, no pierde ninguna: neto +1 |
+| C3 | 3 de 12 | 235,6 s | 3 301 s | 0 | 0 | pierde `rich_2725` y `rich_3278`: neto −2 |
+
+Regla de parada de 22.6, aplicada a la tanda 2: las dos completas, 12 `tarea_fin` cada una, ninguna colgada, ningún error del registro, `comprobar` por pasada en 0 (el código global sigue en 4 por los 145 registros vacíos de notebooks viejos, igual que en la tanda 1), guarda de ruedas con `distintas` vacío, sesiones bajo 3 830 s, cuota de la tanda 3,74 h (22,85 h a 19,11 h; tope 4,3 h). **Pasa.**
+
+Una sola pasada por brazo: las diferencias de una o dos tareas están dentro del ruido medido entre dos corridas iguales; la base 2 (`i2`) es la que dice cuánto.
+
+Chequeo previo de la tanda 3: 330 huellas sin cambio, listado de ruedas igual al de las 13:51, `preflight` 0 en `i2` y `c4`. Salida literal de la subida:
+
+```
+== quota antes
+GPU       10.89h  19.11h     30.00h  2026-10-17T00:00:00
+== 2026-10-13T15:31:35Z kernels push i2
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-i2
+codigo 0
+== 2026-10-13T15:31:40Z kernels push c4
+Kernel version 1 successfully pushed.  Please check progress at https://www.kaggle.com/code/cs4all/iteracion-08-br1-c4
+codigo 0
+cs4all/iteracion-08-br1-i2 has status "KernelWorkerStatus.QUEUED"
+cs4all/iteracion-08-br1-c4 has status "KernelWorkerStatus.QUEUED"
+```
+
+Archivos: `lecturas_envios/{rescate_2026-10-13T1530Z,comprobar_tanda2_2026-10-13T1530Z,quota_2026-10-13T1528Z_tras_tanda2,subida_r1_tanda3_2026-10-13T1535Z}.txt`; rescate fechado en `rescate_kaggle/2026-10-13T1530Z/2026-10-13T1528Z/`.
+
+### Bloque R1, tanda 3 terminada y rescatada; concilio 48 convocado — 2026-10-13, 23:35 a 23:50 UTC
+
+**Nada se subió ni se envió.** Solo lecturas y un rescate (descarga).
+
+- **Estado (lectura de las 23:35 UTC):** las seis sesiones `iteracion-08-br1-{i1,c1,c2,c3,i2,c4}` en `COMPLETE`.
+- **Cuota:** 14,64 h usadas, 15,36 h restantes; se renueva el 2026-10-17 00:00 UTC. La tanda 3 gastó 3,75 h
+  (de 19,11 h a 15,36 h; techo 4,3 h).
+- **Envío 57098570:** pasó de `PENDING` a `COMPLETE` con 0,13. El zip `65a02160…` lleva tres lecturas: 0,08,
+  0,13 y 0,13. Entre la lectura de las 15:28 UTC y esta no hay otra: no se sabe a qué hora puntuó.
+- **Rescate:** `rescate_kaggle/2026-10-13T2337Z/2026-10-13T2335Z/`, código 4 (los mismos 145 registros vacíos
+  de notebooks viejos). `comprobar` por pasada: `i2` 0 y `c4` 0, «completa» las dos. Prueba del rescate, con
+  los bytes de cada archivo y de cada miembro de los zips:
+  `lecturas_envios/prueba_rescate_tanda3_2026-10-13T2337Z.txt` (164 líneas). 13 archivos por sesión y ninguno
+  de 0 bytes en `i2` ni en `c4`; dentro de los zips hay parches, diffs y salidas de prueba de 0 bytes, que
+  quedan para el forense.
+- **El orquestador no leyó los resultados de la tanda 3.** Los leen los roles desde los archivos.
+- **Concilio 48:** pregunta del dueño, literal: «realizar un llamado al concilio para definir ¿Cómo avanzar en
+  el desafío kaggle? analiza todos los datos, datos, datos y planifica ¿qué haras para mejorar esto?». Encargo
+  y prompts en `.scratch/concilio_memoria/fase2/concilio_48/`. Primera ronda en paralelo: analista de datos,
+  QA de trayectorias, forense del arnés, inteligencia pública y arquitecto de IA.
+
+Archivos: `lecturas_envios/{lectura_tanda3_2026-10-13T2335Z,rescate_2026-10-13T2337Z,comprobar_tanda3_2026-10-13T2337Z,prueba_rescate_tanda3_2026-10-13T2337Z}.txt`.
+
+### Concilio 48: dictamen, corrección de una lectura y envío del día — 2026-10-14, 00:07 UTC
+
+**Corrección de la entrada anterior.** Escribí que el envío 57098570 «pasó de `PENDING` a `COMPLETE`» en la
+lectura de las 23:35 UTC y que no se sabía cuándo puntuó. Es falso: ya figuraba `complete` con 0,13 en el
+`envios.json` de los rescates de las 13:42 y de las 15:28 UTC, y estaba `PENDING` a las 00:44 UTC del día 13.
+Tardó entre 17,95 y 30,92 h (forense, inteligencia pública y auditor, cada uno por su cuenta). No leí mis
+propios archivos antes de afirmar un estado remoto: es el mismo fallo que el auditor anotó en el concilio 47.
+
+**Dictamen del auditor** (`.scratch/concilio_memoria/fase2/concilio_48/auditor/dictamen.md`), en corto:
+- Las cifras de R1 se reproducen: resueltas 5, 5, 5, 6, 3, 5; base contra base, 0 discordantes; solo el tiempo
+  de C1 (+55 s) sale del ruido. Ninguna decisión alcanza el criterio de decisión válida: todas exploratorias.
+- C2 es otra lectura de un kit equivalente a la base: su instrucción no adelantó la primera edición.
+- El modelo de tiempo se reproduce (0,248 s + 28,49 ms por token de salida + 0,033 ms por token de entrada,
+  R² 0,996, 1 953 peticiones). «97 % de espera al modelo» era 93,9 %.
+- Los 145 logs por tarea de las iteraciones 03 a 07 están vacíos en el origen y no son recuperables; desde
+  `08-s1` hay 96 de 96.
+- Vetos: llamar mejora a C2; concluir por repositorio o por «tarea imposible» desde las 241 tarea-sesiones (27
+  de las 33 tareas nunca resueltas solo se vieron con kits viejos).
+- Fallos del orquestador: afirmó un estado remoto contra sus archivos; sembró la ronda 2 con su primer hecho
+  nuevo (traía juicio y nombraba mecanismos); los hechos 2 y 3 y un mensaje del dueño no fueron a ningún rol;
+  nadie leyó los criterios de descarte de la adenda del concilio 47; no anotó el recall en la bitácora (lo
+  ejecutó a las 23:4x UTC sobre la rama `issue-investigacion-fuentes`, sin registrarlo); ocho hallazgos
+  siguen en «medido».
+
+**Envío del día, por decisión del dueño.** El dueño escribió: «tienes total libertad de decidir. /loop puedes
+incluso corregir todo, sin detención». Se envió el candidato que da la regla de envío escrita antes de los
+datos (C2), rotulado como lectura y no como mejora, que es la acción 5 del dictamen. Salida literal, en
+`lecturas_envios/envio_c2_2026-10-14T0007Z.txt`:
+
+```
+== 2026-10-14T0007Z envio del dia: candidato C2 (edicion temprana), rotulado lectura, no mejora
+sha256 aa0750f0f47f63276cfcd3756fd0771d0b6633b3e21393e60ce8f9351dea0f39
+huella_ok
+== 00:07:17Z submit
+0 submissions remaining today.
+Successfully submitted to Google - The Gemma 4 Developer Agent Competition
+codigo 0
+57160374  submission.zip  2026-10-14 00:07:20  C2 edicion temprana (zip aa0750f0): lectura, no mejora; regla de envio del concilio 47  SubmissionStatus.PENDING
+```
+
+No decide nada por sí solo: con una lectura, la diferencia mínima detectable es de 9 a 15 tareas (auditor).
+`registry.json` todavía dice `prepared` para ese zip: lo corrige el PR del issue #215.
+
+**En construcción, sin gastar cuota ni envíos:** issue #215 (el registro escribe el muestreo, la causa del
+fin y las peticiones canceladas) e issue #216 (sonda de caudal con peticiones concurrentes, ensayada en
+Docker), cada uno con un constructor del kit. PR #214 (matriz RACI y definiciones de agentes), en revisión.
+
+### Plan único del caso, fijado el 2026-10-14 (01:10 UTC) tras la orden del dueño de ordenar el trabajo
+
+El dueño: «deja de generar basura […] Aún veo iteraciones sin sentido, y desordenadas. Falta enfocarnos de
+acuerdo a 1 planificación.» Se detuvieron dos constructores que no servían a este plan (la sonda de caudal,
+#216, y los tres candidatos anteriores, #217) y el loop de vueltas automáticas.
+
+**Hipótesis única.** El agente pierde porque no localiza el sitio de la edición cuando el enunciado no lo
+nombra. Localizarlo por el grafo de código (semillas en los símbolos del enunciado y propagación, el mecanismo
+de ALL) sube las tareas resueltas.
+
+| Paso | Qué | Costo | Puerta para pasar al siguiente |
+|---|---|---|---|
+| 1 | Medir en local, sin modelo, si la propagación sobre el grafo pone el sitio entre los 5 primeros (#221) | 0 h | Supera a las palabras clave en las tareas públicas. Si no supera a los vecinos a 2 saltos, se usa lo más simple |
+| 2 | Un solo candidato de kit que localiza por el grafo, con la ficha del diseñador, ensayado en Docker | 0 h | El cambio se ve en la petición y la sesión de ensayo termina |
+| 3 | Medición pareada en Kaggle: el candidato en las tareas 1 a 12 (la base ya está) y base y candidato en las tareas 13 a 48 | 13,9 h de las 15,36 h que caducan el 17 | Sesiones completas, sin colgadas |
+| 4 | Decidir con la regla escrita antes de correr y enviar el candidato si pasa; si no, se descarta y se anota | 1 envío por día | Neto de 3 tareas o más a favor en las 48 pareadas y media por tarea dentro del tope |
+
+**Congelado hasta cerrar el paso 4:** concilios nuevos, roles, documentos de proceso, esperas de CI, issues
+que no sean de estos cuatro pasos, la sonda de caudal, los candidatos de texto y los tres estructurales
+anteriores, y el adaptador LoRA. El writeup del Paper Track (cierre el 12 de noviembre) queda aparte: espera
+los pendientes que el dueño ve en la página.
+
+**Lo que no está decidido y se dice:** la regla del paso 4 (neto de 3 en 48) la fija el orquestador hoy; no la
+revisó ningún rol. Las predicciones del paso 3 las escribe un rol antes de subir.
+
+### Plan único, enmienda del 2026-10-14 (01:45 UTC): la cuenta del estratega cambia los pasos 3 y 4
+
+El dueño preguntó qué dice el concilio y «el matemático experto». La cuenta la hizo el estratega de
+experimentos (`.scratch/concilio_memoria/fase2/concilio_48/estratega/cuenta.md`, con sus guiones `e1` a `e4`);
+el orquestador la había adelantado por su cuenta (`orquestador/g12_potencia_tabla.py`) y coinciden.
+
+Parecer del estratega, tal cual lo resumió:
+
+> - **Ruido:** un mismo zip varía 1,43 tareas (IC 95 % 0,97 a 2,75), de 13 lecturas: 5 propias y 8 públicas declaradas. La base vigente tiene media 7,0 ± 0,83.
+> - **Qué se mide en la tabla:** ver 1 tarea pide 26 lecturas por brazo; 2 piden 7; 3 piden 3; 4 piden 2. Con 25 a 38 envíos efectivos caben 0, 3 a 4, 8 a 12 y 13 a 19 brazos.
+> - **Qué se mide en local:** con 3 de 48 tareas cambiando, hacen falta 1 415, 352, 159 y 97 tareas pareadas (466 a 32 h de cuota).
+> - **Máximo frente a media:** el máximo de 12 lecturas sube 2,33 sobre la media. La parte alta es compatible con una media de 9 a 10, así que la distancia real es de 2 a 3 tareas, no 6.
+> - **Plan del orquestador:** su regla (neto de 3 en 48) pasa con probabilidad 0,07 a 0,23 con efecto nulo y 0,11 a 0,27 con el efecto que los datos dan al grafo (0,55 a 0,72). Los pasos 3 y 4 no deciden nada.
+> - **Propuesta:** ensayar la receta pública (+3,67 declarado) con hasta 3,52 h y 3 envíos. Merece envío quien prometa 3 tareas o más.
+> - **Nota final:** cuenta la tabla privada, no el máximo público.
+
+**Lo que cambia.** Los pasos 3 y 4 del plan de las 01:10 UTC (medición pareada del candidato de grafo en 48
+tareas, 13,9 h, y regla de neto 3) quedan **retirados**: no pueden decidir. Se detuvo el constructor del
+notebook de la base en las tareas restantes (#218).
+
+| Paso | Qué | Costo | Qué lo detiene |
+|---|---|---|---|
+| 1 | Terminar la medición local de localización por grafo (#221) como conocimiento; no gasta cuota | 0 h | — |
+| 2 | Dejar ensayados en Docker el candidato de una línea y nuestro C1 a 8 minutos (#224) | 0 h | — |
+| 3 | Una sesión de 12 tareas del C1 a 8 minutos, para comprobar tiempos y validez antes de enviarlo | hasta 3,52 h (cota, sin medir) | Una colgada, guarda de ruedas, o la proyección de 120 tareas fuera de plazo |
+| 4 | Tres lecturas del C1 a 8 minutos en la tabla, una por día | 3 envíos | Media de las tres por debajo de la media de la base (7,0 tareas): se descarta |
+| 5 | Regla desde hoy: solo recibe un envío un candidato que prometa 3 tareas o más sobre la base, con su fuente | — | — |
+
+**Lo que no está medido y se dice:** las tres notas de la configuración pública son declaradas por quienes
+la publican; el costo de una sesión con tope de 8 minutos es una cota; y el efecto que los datos dan a la
+localización por grafo (0,55 a 0,72 tareas) sale de una prueba pública ajena, no nuestra.
+
+### Protocolo de envíos fijado por el dueño — 2026-10-14, 02:12 UTC
+
+Sustituye al plan enmendado de las 01:45 UTC en lo que toca a envíos. Texto del dueño, tal cual:
+
+> Próxima acción: esperar el resultado definitivo del envío C2 (`aa0750f0…`) y registrarlo con su versión de arnés y tamaño efectivo de tabla. No modificar C2 ni inferir conclusiones mientras esté pendiente.
+>
+> Decisión posterior:
+>
+> - Si C2 logra al menos 9 tareas o supera claramente la referencia histórica, conservarlo como candidato y repetir exactamente el mismo ZIP una vez para comprobar que el resultado no fue una lectura excepcional.
+> - Si C2 queda en 7 tareas o menos, enviar C1 (`a038a389…`) sin modificar ningún byte. C1 se evalúa como paquete de alto impacto, no como ablación.
+> - Si C2 queda entre 8 y 8,9 tareas, registrar el resultado como ambiguo y enviar C1 como candidato alternativo; no gastar un día repitiendo la base.
+>
+> Después de la primera lectura de C1, realizar solo una relectura de la base actual como control de versión del arnés. No alternar diariamente base y candidato: conservar las demás oportunidades para repetir únicamente el candidato que alcance el mejor resultado consistente.
+>
+> El objetivo no es demostrar causalidad académica de cada cambio. El objetivo es identificar un ZIP robusto que aumente la cantidad de tareas resueltas y tenga opciones reales de transferir al leaderboard privado.
+
+**Estado al fijarlo.** Envío 57160374 (C2, zip `aa0750f0…`): `PENDING` en la lectura de las 02:12 UTC
+(`lecturas_envios/lectura_2026-10-14T0212Z.txt`); se envió a las 00:07 UTC. El envío anterior tardó entre
+17,95 y 30,92 h en puntuar. El cupo del día 14 (UTC) está usado; el siguiente se abre el 15 a las 00:00 UTC.
+
+**Cómo se lee la nota en tareas** (tabla de 58, nota truncada a dos decimales): 0,12 son 7 tareas; 0,13 son
+8; 0,15 son 9; 0,17 son 10. Con 58 y con 60 tareas las notas vistas hasta hoy son compatibles: al registrar
+el resultado se vuelve a deducir el tamaño de la tabla desde la tabla pública del rescate.
+
+**Al llegar la nota:** rescate (que trae `envios.json`, la tabla pública y el listado de ruedas del día),
+registro en `registry.json` con la fecha de la lectura que lo vio completo y el conjunto de ruedas público de
+ese día, y la rama del protocolo que corresponda. Ningún rol ni el orquestador cambia un byte de C2 ni de C1.
+
+## Vuelta 48 � 2026-10-14 (UTC): concilio 49, auditor�a decisiva local mientras C2 espera nota
+
+### Retomar, #179 verificado y convocatoria del concilio 49 (2026-10-14, 09:30 a 10:15 UTC)
+
+**Nada se subi� ni se envi�.** Solo lecturas.
+
+- **Env�o 57160374 (C2):** `PENDING` en la lectura de las 09:30 UTC (`uvx kaggle competitions submissions`). Lleva 9,4 h; el anterior tard� entre 17,95 y 30,92 h. El loop lo consulta cada hora.
+- **#179:** la salida del vig�a de esta sesi�n (arranque real con `main` en `11b65eb`, que contiene `281e822`) se peg� en el issue y coincide con la lectura independiente de Kaggle. Tarjeta pasada a *Verificada*.
+- **Orden del due�o:** �llamar al concilio a trabajar en la planificaci�n lograda antes�, y despu�s �insisto, recuerda el foco�: los dos encargos de auditor�a (Lead Data Scientist y auditor�a decisiva local con `KAGGLE_AUDIT.md`), guardados tal cual en `.scratch/concilio_memoria/fase2/concilio_49/prompts/`.
+- **Concilio 49, ronda 1** (en paralelo, la misma pregunta): analista de datos, estratega, QA de trayectorias y forense del arn�s. Encargo en `.scratch/concilio_memoria/fase2/concilio_49/encargo.md`. Despu�s, la revisi�n cruzada sin firmas y el auditor del m�todo. Con su dictamen se escribe `KAGGLE_AUDIT.md`.
+- **Anexo del encargo:** cada rol deja hoy, antes de la nota, su predicci�n fechada para la nota de C2. El protocolo del due�o de las 02:12 UTC no cambia.
+- Los cuatro archivos sin versionar de la ra�z (`STATE_OF_COMPETITION.md`, `HARNESS_AUDIT.md`, `FAILURE_TAXONOMY.md`, `EXPERIMENT_LEDGER.csv`, del 13 a las 21:17) son de autor no verificado: los roles los tratan como hip�tesis.
+
+### Correcci�n (2026-10-14, ~11:00 UTC): el concilio 49 repet�a trabajo ya hecho
+
+El due�o: �este an�lisis ya lo hicimos ayer. Luego fuimos a comentarios claves en Kaggle y definimos un plan�. Es cierto. La auditor�a decisiva est� en `.scratch/concilio_memoria/fase2/concilio_48/orquestador/auditoria_decisiva_sintesis.md` (14, 00:50 UTC) y el foro en `.../concilio_48/inteligencia2/informe.md`; de ah� sali� el plan enmendado de las 01:45 y el protocolo del due�o de las 02:12, que es el plan vigente. **Fallo del orquestador:** convoc� un concilio nuevo y escribi� un `KAGGLE_AUDIT.md` sin leer antes la carpeta del concilio 48. Se detuvieron analista, estratega y QA; se borr� el `KAGGLE_AUDIT.md` duplicado.
+
+**Lo �nico nuevo que dej�, del forense** (`.../concilio_49/forense/informe.md`): repetir C2 se proyecta en 8,0 a 10,1 h; C1 en 11,3 a 11,5 h, en 12,3 a 12,5 h si el puntuador suma 30 s por tarea, y en 13,9 h si todas llegan al tope: probabilidad de pasar de las 12 h 0,25 (juicio del forense). Predicci�n del forense para C2, fechada a las 09:48 UTC: 7 tareas, intervalo 80 % de 5 a 9; P(9 o m�s) 0,19, P(8) 0,20, P(7 o menos) 0,61. El protocolo no cambia; se informa al due�o.
+
+**Comprobaci�n p�blica del plazo de C1 (2026-10-14, ~11:20 UTC, 0 h, sin env�o).** En lo bajado el 13 (`concilio_48/inteligencia2/nb18.txt`, l�neas 35, 79 y 86): la receta p�blica de 8 min, 28 llamadas y 240 s por orden puntu� 0,18 dos veces (su autor y la reproducci�n 56932359) sin pasar de las 12 h, porque la mayor�a de las tareas paran en el tope de llamadas o entregan antes. C1 tiene el mismo tope de 28 llamadas y menos minutos (6), as� que cabe si cabe la receta. Salvedad: esas lecturas son de antes del cambio de ruedas del 9 y del 12. Conclusi�n: nada impide la rama C1 del protocolo; el riesgo de 0,25 del forense no se sostiene frente a lo p�blico.
+
+**Zip nuevo, por orden del due�o (2026-10-14, ~11:40 UTC).** El due�o record� que la tabla privada decide la posici�n final y que copiar el zip p�blico no sirve: el env�o tiene que ser un zip nuevo, nuestro. Se construye en local, sin cuota ni env�o: la receta p�blica de 0,18 (control, armada byte a byte) m�s un solo cambio, quitar `write_file` (plan �nico de la auditor�a decisiva del 14 a las 00:50 UTC; 17 de 43 fallos de R1 terminan solo con archivos nuevos). Carpeta `instrumentos/receta_publica_018/`; antes, el conteo de cu�ntos parches de referencia crean un archivo fuente nuevo. Su env�o espera la palabra del due�o: el protocolo de las 02:12 autoriza C1, no este zip.
+
+**Regla del env�o del 15 (escrita el 14 a las ~11:55 UTC, antes de cualquier dato nuevo).** Orden del due�o: avanzar sin preguntar. (1) Si C2 punt�a 9 tareas o m�s: repetir C2 (protocolo). (2) Si no, y la sesi�n de 12 tareas de la receta sin `write_file` termin� completa, sin colgadas, y resuelve al menos lo mismo que la receta exacta menos 1: se env�a la receta sin `write_file`. (3) Si esa sesi�n no termin� a tiempo o falla la condici�n: C1 sin tocar (protocolo). Antes del env�o, el analista de datos y el auditor leen la nota de C2 y la sesi�n (a�adido del due�o). Sesiones de GPU de hasta 4,5 h de las 15,36 que caducan el 17, subidas por el constructor sin esperar al due�o.
+
+**Cambio de base y concilio 50 (2026-10-14, ~12:15 UTC).** Se ley� el bundle p�blico �contract-first� (t�tulo �LB 0.24�): mismos topes que la receta 0,18, sin grafo, y una instrucci�n que dice que los archivos que quedan en el repositorio entran en el diff y hacen fallar la tarea (17 de 43 fallos nuestros en R1 dejan solo archivos nuevos). El zip nuevo pasa a ser el 0,24 sin `write_file`, frente al 0,24 exacto, con dos sesiones de 12 tareas. En la regla del env�o del 15, �receta� se lee ahora �0,24�. Concilio 50 convocado con la pregunta del due�o ��C�mo logramos llegar al primer lugar?�: inteligencia p�blica, arquitecto y estratega en paralelo; despu�s, el auditor. Encargo en `.scratch/concilio_memoria/fase2/concilio_50/encargo.md`.
+
+**Regla del env�o del 15, ajuste (2026-10-14 ~13:00 UTC, antes de cualquier dato nuevo).** En la rama (3), si la sesi�n de nuestro zip no termin� a tiempo, se env�a el bundle 0,24 exacto en lugar de C1 (C1 no tiene ninguna lectura en la tabla; el 0,24 es la mejor base p�blica). Las ramas (1) y (2) no cambian.
+
+**Sesiones del 0,24 subidas (2026-10-14, 10:28 UTC, reloj de la m�quina).** Las subi� el orquestador por la orden del due�o de avanzar (el constructor no lo hizo, por la prohibici�n de su encargo). `cs4all/iteracion-08-p24-sinwf` (zip `b1f904c8�`, el 0,24 sin `write_file`) y `cs4all/iteracion-08-p24-exacta` (zip `1fd1c073�`), 12 tareas de R1 cada una, las dos `RUNNING` a los 20 s. Cuota antes: 15,36 h de GPU y 20 h de TPU, las dos caducan el 17. Costo estimado por el constructor: de 5,2 a 6,0 h las dos. Salida literal en `lecturas_envios/subida_p24_*.txt`. Correcci�n: las horas �~11:00 a ~13:00 UTC� de las entradas anteriores de hoy est�n adelantadas unas 2 h; el reloj de la m�quina daba de 09:30 a 10:30 UTC. Ensayo, huellas y conteo: `instrumentos/receta_publica_018/INFORME.md` (11 de 129 parches de referencia crean un archivo fuente nuevo; sin `write_file` se crean por `run_command`).
+
+**Adaptador LoRA nulo: aceptado por el arn�s sin GPU; sonda armada (2026-10-14, ~10:45 UTC).** Constructor: `validate_directory` OK, orden de vLLM con `--enable-lora --max-lora-rank 16 --lora-modules main_lora=�`, y las peticiones salen con `model=main_lora`. Zip `submission_024_lora_nulo.zip` (sha `409f58fe�`), adaptador r16 en `q_proj` y `o_proj`, `lora_B` en ceros (sha `9aadc3af�`). Que vLLM lo aplique solo lo dice una sesi�n de GPU: kernel `cs4all/sonda-lora-nulo` armado (`instrumentos/lora_nulo/kernel_sonda_lora/`, 4 celdas compiladas), costo estimado de 0,7 a 1,3 h. Criterio escrito antes de los datos: nulo id�ntico a la base en 8 de 8 y ruido distinto en al menos 1 de 8 : el arn�s sirve el adaptador; si no, la v�a LoRA queda fuera. Se sube en cuanto termine una de las dos sesiones del 0,24 (tope de 2 sesiones de GPU por cuenta).
+
+**Dictamen del auditor, concilio 50 (2026-10-14, ~10:55 UTC), aplicado.** Estrategia �nica: un suelo propio de la familia contract-first en la tabla y una sola apuesta de techo, el adaptador LoRA, detr�s de tres puertas (G2 efecto en logits, E2 aceptaci�n en el puntuador, G3 tok/s de entrenamiento). Parada el 11-14 si ning�n brazo promedia 13 tareas o m�s en 3 lecturas. P(primero) entre 0,01 y 0,035 con cualquier plan (juicio con priores, no medido). **Veto 1 aplicado:** la rama (3) del env�o del 15 vuelve a C1 sin tocar (el 0,24 exacto contradice la orden del due�o de no copiar el zip p�blico). En obra: la sonda G2 rehecha seg�n el dictamen (gemelos N(0,1e-3) y N(0,1), gpu 0,80, 5 indicaciones a T=0, top-20 del primer token, deriva de la base dos veces) y el cuaderno G3 m�s la conversi�n de trayectorias en CPU. Las 20 h de TPU caducan sin uso. Fallos del orquestador se�alados por el auditor: sembr� el encargo con cifras y conclusiones del concilio 48 y con el LoRA (el acuerdo entre roles no es una medici�n); omiti� analista, forense y revisi�n cruzada; horas adelantadas unas 2 h. Dictamen: `.scratch/concilio_memoria/fase2/concilio_50/auditor/dictamen.md`.
+
+**Sesiones del 0,24 terminadas (2026-10-14, 12:04 UTC).** Las dos `COMPLETE`, rescatadas en `rescate_kaggle/p24_2026-10-14T1204Z/`. Recuento del orquestador, para que lo vuelva a hacer el analista: 0,24 exacto 4 de 12 (270 s de media de reloj), 0,24 sin `write_file` 4 de 12 (269 s), discordantes 1 y 1. La base hab�a hecho 5 y 5 en las mismas tareas, y C2 6. Todo dentro del ruido de 12 tareas. Por la regla del env�o del 15, rama (2), el 0,24 sin `write_file` cumple (4 frente a 4 menos 1). Sonda G2 subida a las 12:04 UTC, `RUNNING`; cuota antes de subirla, 11,05 h de GPU.
+
+**Sonda G2: PASA (2026-10-14, 12:36 UTC).** `cs4all/sonda-lora-nulo` completa; salida en `rescate_kaggle/sonda_g2_2026-10-14T1236Z/sonda_g2.json`. vLLM arranca con LoRA a `gpu_memory_utilization` 0,80 (427 s). Primer token, 5 indicaciones a T=0: deriva de la base 0 en 4 y 0,19 nat en 1; adaptador de ceros 0 en 5 de 5; ruido N(0,1e-3) de 0,13 a 0,25 nat; ruido N(0,1) de 12,2 a 16,5 nat en 5 de 5. Criterio escrito antes (ceros dentro de la deriva en 5 de 5; N(0,1) de 1 nat o m�s y 10 veces la deriva o m�s en 4 de 5 o m�s): **cumplido**. Decodificaci�n: base 37,85 tok/s, con adaptador 35,38 (6,5 por ciento m�s lenta). Cach� KV 6,13 GiB por GPU. Siguen G3 (tok/s de entrenamiento) y E2 (aceptaci�n en el puntuador con un env�o del adaptador nulo).
+
+**G3 subida (2026-10-14, 12:47 UTC).** Dataset privado `cs4all/ruedas-g3` creado con peft 0.21.2, accelerate 1.15.0, psutil, PyYAML y tqdm (faltaban en el wheelhouse; transformers 5.13.1 exige accelerate). Kernel `cs4all/sonda-g3-entreno` (sha `3c676fc6�`) `QUEUED`; tope 1,9 h de reloj (~3,8 h de cuota). Criterio escrito en la celda: 150 tok/s o m�s, 31B viable; de 50 a 150, solo una miniatura de 4 M de tokens o menos; menos de 50, se cierra el entrenamiento en GPU. Hallazgo del constructor: con `run_compressed=True` la capa ct no se ejecuta y peft no la envuelve; el cuaderno descomprime a bf16 (60,9 GiB) o recuantiza a nf4 (21,7 GiB). Cuota antes: 10,72 h de GPU. Tope de `episodios-01` bajado a 3,0 h de reloj para que quepa. Trayectorias abiertas: Nebius SWE-rebench-openhands (CC-BY-4.0) convertidas a nuestro formato; 3 336 caben en 24k tokens, pero solo 142 caben adem�s en 28 llamadas. Detalle en `instrumentos/lora_g3/INFORME.md`.
+
+**Kit propio ALL-1 y nueva regla del env�o del 15 (2026-10-14, 13:10 UTC, antes de cualquier dato del kit).** El due�o: �no puedes usar el mismo de 0.24, debes crear el nuestro a partir de este aprendizaje�. Se retira el 0,24 sin `write_file` como candidato. Especificaci�n propia en `instrumentos/kit_all_1/ESPECIFICACION.md`: texto escrito desde cero y dos mecanismos que el agente ejecuta, la skill `localizar` (grep m�s BM25 sobre los t�rminos del enunciado, top 5 de archivos) y la skill `entregar` (limpia rutas de pruebas y archivos sueltos, `py_compile`, proh�be el diff vac�o). Cada pieza nombra el fallo medido que ataca. `episodios-01` se borr� de la cola sin haber empezado: los episodios se generan con el kit que se env�a, porque el adaptador aprende su formato; se relanzan con ALL-1. G3 fall� en 85 s por falta de `loguru` (dependencia de `compressed-tensors`); dataset `ruedas-g3` versionado con `loguru` 0.7.3 y G3 relanzada, `QUEUED`. **Regla del env�o del 15, reemplaza a la anterior:** (1) si C2 saca 9 tareas o m�s, repetir C2; (2) si no, ALL-1, si su sesi�n de 12 tareas termin� completa, sin colgadas y con 4 resueltas o m�s (la base hizo 5 y 5; se admite menos 1); (3) si no, C1 sin tocar.
+
+**Correcci�n del due�o (2026-10-14 ~13:15 UTC):** ALL-1 se construye a partir del zip 0,24 (`1fd1c073�`), no desde cero. Base: sus cuatro archivos tal cual. Encima, solo nuestras mejoras: la skill `localizar`, la skill `entregar` y las reglas de higiene de llamadas que le falten al prompt. Mismos topes, muestreo y herramientas. El diff frente al 0,24 debe mostrar solo esas adiciones. La regla del env�o del 15 no cambia.
+
+**ALL-1 subido (2026-10-14, 13:32 UTC).** `cs4all/iteracion-08-all1`, `RUNNING`. Zip `240e5df8�` = 0,24 exacto + skills `localizar` y `entregar` (scripts Python; el arn�s no admite `.sh`) + sus dos l�neas de prompt + tres reglas de higiene; 0 l�neas quitadas frente al 0,24. Puertas: (1) `validate_directory` pasa, las ruedas admiten skills con script; (2) Docker: sesi�n completa y tarea colgada pasan, 5 de 6 resueltas; (3) `localizar` sin modelo: archivo del parche entre los 5 primeros en 72 de 129 tareas (55,8 por ciento), igual que `git grep` del identificador m�s raro, y peor en el primer puesto (33 frente a 55). Cumple el umbral del 50 por ciento escrito, pero no mejora la localizaci�n. Sin comprobar: si Gemma gasta llamadas en `load_skill`. Cuota antes: 10,49 h. Informe: `instrumentos/kit_all_1/INFORME.md`.
+
+**G3 v2 sin lectura (2026-10-14, 13:12 a 13:17 UTC).** Con `loguru` ya instalado, fall� por falta de memoria al descomprimir el modelo, en los dos modos. Memoria m�xima reservada por GPU: 0 = 9,6 GiB; 1 = 21,8 de 22,0 GiB (sin memoria al pedir 442 MiB); 2 = 4,9; 3 = 4,6. `device_map` reparti� mal, y el modo nf4 tambi�n pasa por la descompresi�n a bf16. Costo: unos 5 min de reloj. Encargo: `max_memory` equilibrado, `expandable_segments` y recuantizar capa a capa para nf4. Salida en `rescate_kaggle/sonda_g3v2_2026-10-14T1340Z/`.
+
+**Fallo del orquestador y regla nueva (2026-10-14, 13:45 UTC).** Las dos fallas de G3 (falta de `loguru` y memoria de la GPU 1) eran detectables antes de subir: dependencias declaradas en la rueda y `device_map` sin `max_memory`. El constructor hab�a escrito �sin comprobar CUDA ni memoria� y el orquestador subi� sin revisi�n. Regla desde ahora: ning�n cuaderno de GPU se sube sin (1) cierre de dependencias, (2) plan de memoria por GPU escrito en el cuaderno y (3) premortem del forense del arn�s.
+
+**Datos de entrenamiento: decisi�n (2026-10-14, 14:40 UTC).** `entrenamiento-01` armado en `instrumentos/lora_entreno/`, con 179 ejemplos de 84 tareas (R1 29, p24 8, Nebius 142). Todas las trazas propias resueltas son de las 12 tareas de R1, que son la guarda de evaluaci�n: **se excluyen** (`--filtro sin_r1`). Quedan las 142 de Nebius m�s los episodios de `episodios-02` (kit ALL-1, que s� usan las skills). G3 v3 armada (mapa de memoria sobre el modelo denso, 16 GiB por GPU; nf4 descomprime en RAM de CPU y pide 70 GiB o m�s); premortem del forense en curso antes de subirla.
+
+**ALL-1, sesi�n de 12 tareas le�da (2026-10-14, 14:35 UTC).** `COMPLETE`, completa, sin colgadas; 6 de 12 resueltas (base 5 y 5; C2 6; 0,24 exacto 4; 0,24 sin `write_file` 4), 272,5 s de media de reloj, 2 sin parche (el 0,24 tuvo 4). Frente al 0,24 exacto: 3 tareas que solo resuelve ALL-1 y 1 que solo resuelve el exacto (neto +2, dentro del ruido). Skills usadas por Gemma real: 83 `run_skill_script`, 12 `load_skill`, 25 `list_skills`, sin errores de skill encontrados. Cumple la rama (2) de la regla del env�o del 15. Rescate en `rescate_kaggle/all1_2026-10-14T1435Z/`. `episodios-02` subida a las 14:36 UTC (sha `88ba79dd�`, 94 tareas v�lidas, tope 7 020 s), `QUEUED`; cuota antes: 8,39 h de GPU.
+
+**G3 v3 subida (2026-10-14, 14:43 UTC).** Sha `2a89a14d�`, `-t 7800`, `RUNNING`. Pas� los tres controles: dependencias completas (dictamen del forense), plan de memoria por GPU en la celda y premortem del forense con 4 arreglos aplicados (RAM le�da del cgroup, mapa guardado antes de cargar, etiqueta de OOM a 16k, se�al de muerte por RAM). `episodios-02` en `RUNNING`. Cuota antes: 8,29 h.
+
+**G3 v3 sin lectura, con avance (2026-10-14, 15:18 UTC).** Carg� el modelo: bf16 en 184 s y nf4 en 861 s, sin falta de memoria; RAM de la sesi�n 173 GiB (l�mite cgroup v2); atenci�n SDPA con flash. Fall� al envolver con peft en los dos modos: `peft` 0.19.1 de la imagen rechaza `torchao` 0.10.0 (�only versions above 0.16.0�). El cierre de dependencias no lo vio: comprueba faltantes, no conflictos de versi�n con paquetes opcionales que trae la imagen. Arreglo: desinstalar `torchao`, forzar `peft` 0.21.2 del dataset y ensayar con el inventario exacto de la imagen. Duraci�n: 1 114 s.
+
+**Causa de la falla de `loguru` (2026-10-14).** Ya estaba resuelta: `loguru` 0.7.3 viene en el wheelhouse y los cuadernos de iteraci�n lo instalan desde el 4 de octubre. La celda de G3 instal� a mano solo 5 ruedas en vez de reutilizar la celda de instalaci�n probada. Regla: todo cuaderno nuevo parte de uno que ya corri� en Kaggle y solo cambia lo necesario. La memoria de la GPU 1 y el choque de `torchao` no ten�an antecedente.
+
+**G3 v4 subida, intento �nico (2026-10-14, 15:39 UTC).** Sha `56187d24�`, `-t 7800`, `QUEUED`. Cumpli� los tres compromisos: parte de las celdas del p24 sin cambios (wheelhouse completo); ensayo en una r�plica local de la imagen (`aal-g3-replica:cpu`), que reproduce el error de la v3 y en la que la v4 pasa; premortem del forense SUBIR (65 por ciento de obtener tok/s a 16k; riesgo principal, el paso a 16k en bf16; preflight 19 de 19 `[OK]`). `ruedas-g3` contiene `peft-0.21.2`. Si falla, no se reintenta esta semana. Cuota antes: 5,80 h.
+
+**Regla de oro del due�o (2026-10-14, 15:45 UTC): �siempre resolver�.** Se retira la promesa de no reintentar G3 esta semana. Ante una falla: causa con evidencia, arreglo, ensayo en la r�plica, controles y nuevo intento. Una v�a se cierra solo por un resultado medido con el criterio escrito antes.
+
+**Orden del due�o de las 16:00 UTC, aplicada.** Loop detenido, junto con la regla vencida �si C2 no llega a 9, va C1�. ALL-1 se define como el zip 0,24 m�s tres piezas: `localizar`, `entregar` y la instrucci�n �editar un archivo de fuente existente antes de la llamada 10; no repetir `submit_patch` si sali� vac�o�. El zip `240e5df8�` no tra�a la pieza 3, as� que se rearma. `episodios-02` se borr� a las 16:06 UTC porque corr�a con ese zip incompleto (cuota tras borrarla: 4,04 h). G3 v4 sigue corriendo. El QA de ALL-2 se detuvo.
+
+**ALL-1 (`450e1a1a�`), pasos 1 a 3 (2026-10-14).** Ensayo en Docker: `completa`, `submit_vacio` y `tarea_colgada` pasan; el arn�s acepta un `submit_patch` vac�o repetido, y solo lo frenan la l�nea del prompt y el aviso de `entregar`. `localizar` sin modelo: 72 de 129 tareas con el archivo del parche entre los 5 primeros. Sesi�n de 12 tareas `cs4all/iteracion-08-all1b` subida a las 16:17 UTC (notebook `768ee46e�`, `-t 9600`), `RUNNING`; cuota antes: 3,68 h, con G3 todav�a corriendo.
+
+**G3 v4 detenida (2026-10-14, 16:52 UTC).** Cuota a las 16:50 UTC: 1,48 h, con G3 y ALL-1b corriendo a la vez (~4 h de cuota por hora: ~22 min). Ninguna de las dos habr�a terminado. Se prioriz� el paso 3 (sesi�n ALL-1b) seg�n el orden del due�o, y G3 se borr� tras 65 min sin salida parcial disponible. Cuota tras borrarla: 2,42 h. G3 v4 pas� todos los controles y se vuelve a subir tal cual con la cuota del 17.

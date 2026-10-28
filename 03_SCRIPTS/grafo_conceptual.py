@@ -29,7 +29,7 @@ from collections import defaultdict
 
 import yaml
 
-RAIZ = r"F:\MACI"
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CURRICULUM = os.path.join(RAIZ, "07_DATITO", "curriculum.yaml")
 SALIDA = os.path.join(RAIZ, "07_DATITO", "grafo.yaml")
 

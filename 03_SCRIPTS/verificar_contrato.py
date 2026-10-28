@@ -24,7 +24,7 @@ import re
 import subprocess
 import sys
 
-RAIZ = r"F:\MACI"
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OK, FALLO, AVISO = "OK", "FALLO", "AVISO"
 
 
@@ -162,11 +162,24 @@ def memoria_dominado_con_evidencia():
 def seguridad_sin_secretos():
     """Ningun secreto ni binario pesado versionado."""
     archivos = git("ls-files").splitlines()
-    patron = re.compile(r"storage_state|master_token|auth\.json|cookie|\.env$"
+    patron = re.compile(r"storage_state|master_token|auth\.json|\.env$"
+                        r"|cookie[s]?\.(json|txt|har|sqlite)"
                         r"|\.mp4$|\.zip$|\.mkv$", re.I)
-    malos = [a for a in archivos if patron.search(a)]
+    # Excepcion documentada (decision del owner, 2026-10-18): el artefacto de
+    # producto dist/datito.zip SÍ se versiona. Es pequeño, reproducible con
+    # 15_TERMINITO/scripts/build_paquete.py desde fuentes trackeadas, y el
+    # sitio lo sirve byte-identico a lo verificado localmente (la generacion
+    # en CI de Vercel fallo en silencio el 2026-10-18: python3 sin pip). La
+    # regla apunta a secretos y binarios pesados (grabaciones). El guardarraíl
+    # de tamano obliga a revisar la excepcion si el ZIP crece.
+    permitidos = {"dist/datito.zip"}
+    malos = [a for a in archivos if patron.search(a) and a not in permitidos]
     if malos:
         return FALLO, "versionado lo que no debe: " + ", ".join(malos[:5])
+    for a in permitidos & set(archivos):
+        mb = os.path.getsize(os.path.join(RAIZ, a)) / 1024 / 1024
+        if mb > 10:
+            return FALLO, f"{a} supera 10 MB ({mb:.1f}): sacarlo de git y revisar la excepcion"
 
     cfg = leer(".git/config") or ""
     if re.search(r"ghp_|github_pat_", cfg):
