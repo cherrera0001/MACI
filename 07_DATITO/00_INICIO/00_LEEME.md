@@ -61,7 +61,7 @@ el de la sesión.
 │       └── 00_index.html         portada: 23 clases, navegación, síntesis
 │
 ├── 02_REFERENCIA/           fuentes, documentación, material externo
-│   ├── fuentes.md               jerarquía de prioridad, etiquetado, NotebookLM
+│   ├── fuentes.md               jerarquía de prioridad y etiquetado (NotebookLM descartado, ADR-005)
 │   ├── material.md              prácticos, certámenes, proyectos Melbourne/Galaxy Zoo
 │   ├── memoria.md               estados, cadena de evidencia, qué y dónde escribir
 │   └── clase6_regresion.html    material adicional de referencia
@@ -212,11 +212,10 @@ individual de mayor puntaje.
 | 1 | Laboratorios del curso — `06_LABORATORIOS/`, 12 de los 21 conceptos |
 | 2 | Transcripciones de clase — `05_CLASES/` |
 | 3 | Material FCD del repositorio |
-| 4 | Cuaderno de NotebookLM |
 | 5 | Proyectos propios: Melbourne, Galaxy Zoo |
 | 6 | Fuentes académicas externas |
 
-Toda afirmación lleva etiqueta: `[FUENTE · NotebookLM: …]`, `[FUENTE · Repo: …]`,
+Toda afirmación lleva etiqueta: `[FUENTE · Repo: …]` (o `[FUENTE · Transcripción: …]`),
 `[INFERENCIA]` o `[DATITO]` para explicación pedagógica propia.
 
 Las transcripciones se citan con la ruta completa del `.md` y la marca de tiempo,
@@ -252,14 +251,9 @@ python 03_SCRIPTS/verificar_visuales.py              # sin red, enlaces, citas
 uv run --with playwright python 03_SCRIPTS/probar_visuales_offline.py   # prueba en Edge sin red
 ```
 
-Reautenticar NotebookLM cuando caduque:
-
-```bash
-notebooklm login --browser msedge
-notebooklm auth check --test --json     # debe devolver "status": "ok"
-```
-
-Datito **no depende** de NotebookLM: si falla, avisa, sigue con el material
+Post ADR-005 (2026-10-28) el proyecto **no usa NotebookLM**: la consulta a
+fuentes es local (transcripciones 15/15 + índice del motor). Datito **no depende**
+de servicios externos: si uno falla, avisa, sigue con el material
 local y etiqueta el resto.
 
 ---

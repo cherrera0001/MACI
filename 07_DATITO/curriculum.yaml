@@ -4,10 +4,13 @@ meta:
   universidad: Universidad de Concepcion
   proyecto_ancla: Prediccion de precios de propiedades en Melbourne, 2016 -> 2017
   notebooklm:
-    nombre: Fundamentals of Data Science Syllabus
-    id: 97ce114e-2371-44eb-85b5-527cd28180cb
-    url: https://notebook.google.com/notebook/97ce114e-2371-44eb-85b5-527cd28180cb
-    total_fuentes: 66
+    # DESCARTADO (ADR-005, 2026-10-28): fuente externa fragil, sin API nativa.
+    # La consulta a fuentes usa las transcripciones locales (15/15) y el
+    # indice propio del motor (15_TERMINITO).
+    historico:
+      nombre: Fundamentals of Data Science Syllabus
+      id: 97ce114e-2371-44eb-85b5-527cd28180cb
+      total_fuentes: 66
     por_tipo:
       web_page: 32
       pdf: 29
@@ -489,9 +492,9 @@ conceptos:
   - 05_CLASES/11_PRESENTACIÓN/_markdown/FCD-2026-2_08_DL_LLMs_Agents.md
   - 05_CLASES/11_PRESENTACIÓN/_markdown/Resumen_Clase8_DL_LLMs_Agentes.md
   - .claude/skills/datito/SKILL.md
-  - 00_INICIO/.mcp.json
-  pregunta_diagnostico: Este tutor consulta tu cuaderno de NotebookLM por MCP y escribe
-    tu progreso en un archivo. Que lo hace un agente y no simplemente un chatbot con
-    documentos adjuntos?
+  - docs/adr/ADR-005-sin-notebooklm.md
+  pregunta_diagnostico: Este tutor lee tus transcripciones y tu progreso, decide
+    su proxima accion y escribe en archivos. Que lo hace un agente y no simplemente
+    un chatbot con documentos adjuntos?
   importancia_curricular: 0
   prioridad_evaluacion: 5

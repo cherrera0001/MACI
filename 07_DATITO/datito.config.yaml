@@ -4,8 +4,7 @@
 # skills. Para reutilizar Datito en otro curso se edita este archivo y se
 # reconstruye curriculum.yaml; las skills no se tocan.
 #
-# Lo que NO va aquí: credenciales. Viven en .env (GitHub) y en ~/.notebooklm
-# (Gemini Notebook), y ninguno de los dos se versiona.
+# Lo que NO va aquí: credenciales. Viven en .env (ignorado por git).
 
 # MULTI-CURSO (ADR-001)
 # Si no están presentes, los scripts asumen:
@@ -58,13 +57,13 @@ proyectos:
     resultados: 08_PROYECTO_FCD/Desafio/REPORT.md
     ensena: [clasificacion, matriz_confusion, metricas_clasificacion, roc_auc, ensembles]
 
-# Biblioteca externa. Opcional: si no esta disponible, Datito degrada y sigue
-# con el material local, etiquetando lo que no tiene respaldo.
+# Biblioteca externa de fuentes: DESCARTADA (ADR-005, 2026-10-28).
+# La consulta a fuentes se resuelve con las transcripciones locales (15/15)
+# y el indice propio del motor (15_TERMINITO). Este bloque se conserva
+# apagado como registro historico de la decision.
 notebooklm:
-  habilitado: true
-  notebook_id: 97ce114e-2371-44eb-85b5-527cd28180cb
-  nombre: Fundamentals of Data Science Syllabus
-  servidor_mcp: notebooklm
+  habilitado: false
+  descartado_por: ADR-005-sin-notebooklm
 
 # Reglas pedagogicas. Son las unicas que conviene ajustar por alumno;
 # el resto del metodo vive en spec.md.

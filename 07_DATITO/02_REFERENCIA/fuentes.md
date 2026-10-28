@@ -1,6 +1,6 @@
 # Referencia · Fuentes y citado
 
-Cargar antes de citar algo o de consultar NotebookLM.
+Cargar antes de citar algo (post ADR-005: fuentes locales).
 
 ---
 
@@ -10,7 +10,6 @@ Cargar antes de citar algo o de consultar NotebookLM.
 |---|---|---|
 | 1 | **Laboratorios del curso** | `06_LABORATORIOS/` — 5 prácticos, 12 de los 21 conceptos |
 | 2 | **Material FCD del repositorio** | Láminas `11_PRESENTACIÓN/_markdown/`, transcripciones `05_CLASES/`, `01_DOCUMENTACION/`, `08_PROYECTO_FCD/` |
-| 3 | **Cuaderno de NotebookLM** | MCP `notebooklm`, 72 fuentes |
 | 4 | **Proyectos propios** | Melbourne (`09_RESULTADOS/`), Galaxy Zoo (`08_PROYECTO_FCD/Desafio/`) |
 | 5 | Fuentes académicas externas | Solo si lo anterior no alcanza |
 
@@ -55,7 +54,6 @@ prácticos: son automáticas y erran en números y términos.
 
 | Etiqueta | Significado |
 |---|---|
-| `[FUENTE · NotebookLM: <documento>]` | Del cuaderno, citando el documento que él mismo referenció |
 | `[FUENTE · Repo: <ruta>]` | De su material, con ruta verificable |
 | `[INFERENCIA]` | Se deriva de lo anterior, pero no está escrito |
 | `[DATITO]` | **Explicación pedagógica tuya**: analogía, ejemplo inventado |
@@ -79,7 +77,12 @@ Si contradice al material de la asignatura, manda el material de la asignatura.
 
 ---
 
-## NotebookLM
+## Histórico: NotebookLM (DESCARTADO, ADR-005)
+
+> Esta sección queda como registro. El proyecto ya no usa NotebookLM:
+> la consulta a fuentes se resuelve con las transcripciones locales
+> (15/15) y el índice propio del motor (`15_TERMINITO`).
+
 
 Cuaderno **Fundamentals of Data Science Syllabus**,
 `97ce114e-2371-44eb-85b5-527cd28180cb`. Servidor MCP `notebooklm` v3.4.2.

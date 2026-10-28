@@ -10,7 +10,6 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
     "README.md",
     "00_INICIO/spec.md",
-    "00_INICIO/.mcp.json",
     "01_DOCUMENTACION/00_INDICE_GENERAL.md",
     "01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md",
     "01_DOCUMENTACION/DIAGNOSTICO_DRIFT.md",

@@ -225,7 +225,7 @@ pipeline propio, fuera del bucle de estudio:
           ▼
 07_DATITO/01_CONCEPTOS/visual/   bloque «Dónde se enseñó» en cada visual + 00_index.html
           │
-          └──► (opcional) subida a NotebookLM, si la sesión MCP está viva
+          └──► (descartada, ADR-005) subida externa; el índice local es la fuente
 ```
 
 **Mención ≠ enseñanza.** El índice automático marcaba `roc_auc` por «Congreso
@@ -303,7 +303,9 @@ verificable. Uno que pretende verificarse entero, miente.
 
 ---
 
-## 8 · Degradación: el sistema asume que NotebookLM se va a caer
+## 8 · Degradación (histórico, ADR-005)
+
+El sistema asumía que NotebookLM se iba a caer
 
 La integración con NotebookLM usa
 [`notebooklm-py`](https://github.com/teng-lin/notebooklm-py) sobre **APIs

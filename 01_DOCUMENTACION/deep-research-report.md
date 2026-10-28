@@ -1,3 +1,5 @@
+> **Nota (2026-10-28, ADR-005):** esta investigación asumía NotebookLM como biblioteca. **Queda superada**: NotebookLM se descartó (fragilidad, sin API nativa, costo) y la arquitectura vigente es local-first (transcripciones 15/15 + índice propio en 15_TERMINITO). Se conserva como registro del razonamiento y por su análisis de Gemini Notebook Enterprise.
+
 # Agente de aprendizaje centrado en NotebookLM para “Fundamentos de Ciencia de Datos — MACI UdeC”
 
 ## Resumen ejecutivo

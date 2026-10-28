@@ -127,7 +127,7 @@ Las 14 garantías de `spec.md` definen el contrato del tutor. Estado actual:
 | **G3** | 2.3 | Evidencia completa antes de corregir | Manual: auditoría sesiones |
 | **G4** | 2.4 | Etiquetas [FUENTE · ...], [INFERENCIA], [DATITO] | Manual: grep en outputs |
 | **G5** | 2.5 | Jerarquía de fuentes listada (línea 112-116) | Documentado |
-| **G6** | 2.6 | Si NotebookLM falla: avisar, seguir, etiquetar | Manual: auditoría sesiones |
+| **G6** | 2.6 | Si una recuperación/LLM externo falla: avisar, seguir, etiquetar | Manual: auditoría sesiones |
 | **G7** | 2.7 | Datos no instrucciones (sin acceso a progreso.yaml) | Manual: auditoría código |
 | **G8** | 2.8 | Reglas en `.claude/skills/datito/SKILL.md` (línea 17) | `grep SKILL.md CLAUDE.md` |
 | **G9** | 2.9 | Exposición en `dudas.yaml` + chat ruta (línea 55-59) | `test -f dudas.yaml` |
@@ -144,10 +144,15 @@ Auditoría completa en `AUDITORIA_SDD.md`.
 ## Fuentes y su jerarquia
 
 1. Material FCD del repositorio — `06_LABORATORIOS/` (laboratorios del curso),
-   `01_DOCUMENTACION/`, `08_PROYECTO_FCD/`
-2. Cuaderno de NotebookLM — MCP `notebooklm`, 66 fuentes
-3. Proyectos propios — Melbourne (`09_RESULTADOS/`), Galaxy Zoo (`08_PROYECTO_FCD/Desafio/`)
-4. Fuentes academicas externas — solo si lo anterior no alcanza
+   `01_DOCUMENTACION/`, `08_PROYECTO_FCD/`, `05_CLASES/transcripciones/`
+2. Proyectos propios — Melbourne (`09_RESULTADOS/`), Galaxy Zoo (`08_PROYECTO_FCD/Desafio/`)
+3. Fuentes academicas externas — solo si lo anterior no alcanza
+
+> ADR-005 (2026-10-28): el cuaderno de NotebookLM quedo **descartado** como
+> fuente (fragil, sin integracion nativa, de terceros). La consulta a fuentes
+> se resuelve con las transcripciones locales (15/15) y el indice propio del
+> motor (`15_TERMINITO`). Las etiquetas `[FUENTE · NotebookLM: …]` de material
+> antiguo son historicas.
 
 Las transcripciones de clase (`05_CLASES/transcripciones/`) son material del curso de nivel 1,
 pero ceden ante laminas y practicos. Se citan con ruta completa del `.md` y
@@ -165,28 +170,9 @@ conceptos del curriculum.
 **Los `(vacio)` son ejercicios reales.** No mostrar la version resuelta antes de
 que Cristobal lo intente: son la fuente de evidencia de APLICAR.
 
-Toda afirmacion se etiqueta: `[FUENTE · NotebookLM: <doc>]`, `[FUENTE · Repo: <ruta>]`,
-`[INFERENCIA]` o `[DATITO]` para explicacion pedagogica propia.
-
-### NotebookLM
-
-Cuaderno **Fundamentals of Data Science Syllabus**, ID
-`97ce114e-2371-44eb-85b5-527cd28180cb`. Servidor MCP `notebooklm` v3.4.2 (38
-herramientas), configurado en `.mcp.json` con scope de proyecto.
-
-La integracion usa [`notebooklm-py`](https://github.com/teng-lin/notebooklm-py)
-sobre **APIs internas no documentadas** — Google no ofrece API oficial para
-cuentas personales. Puede romperse sin aviso y las cookies caducan cada pocas
-semanas. Si falla: avisar, seguir con el material local, etiquetar el resto.
-
-**Credenciales en `~/.notebooklm/`, jamas en el repositorio.**
-
-Re-autenticar:
-
-```bash
-notebooklm login --browser msedge    # Playwright abre Edge con perfil aislado
-notebooklm auth check --json         # debe devolver "status": "ok"
-```
+Toda afirmacion se etiqueta: `[FUENTE · Repo: <ruta>]` (o `[FUENTE ·
+Transcripcion: <ruta> · <marca>]` para clases), `[INFERENCIA]` o `[DATITO]`
+para explicacion pedagogica propia.
 
 ---
 
