@@ -119,18 +119,24 @@ app y su progreso queda registrado de forma privada y exportable.
 - **REQ-TUT-002**: Métricas por sesión en bitácora: % de preguntas con espera real, % de respuestas dadas antes de 2 intentos fallidos, dudas registradas con ids verificables. *Criterio: bitácora nueva con las 3 métricas; verificador las comprueba.*
 - **REQ-TUT-003**: Diagnóstico inicial con las 21 `pregunta_diagnostico` de `curriculum.yaml`. *Criterio: `diagnostico_inicial_hecho: true` con fecha y resultados por concepto.*
 - **REQ-TUT-004**: Protocolo de evaluación "a ciegas": certámenes de práctica rendidos **sin** tutor, con comparación antes/después por concepto. *Criterio: ≥2 mediciones por concepto clave registradas y comparables.*
-- **REQ-TUT-005**: Re-verificación programada: conceptos con `ultima_verificacion` mayor a N días (N = [NEEDS CLARIFICATION: umbral, sugerencia 21]) se re-preguntan al abrir sesión; el fallo mueve a `REQUIERE_REPASO`. *Criterio: script + integración verificable en bitácora.*
+- **REQ-TUT-005**: Re-verificación programada: conceptos con `ultima_verificacion` mayor a N días (N = 21 días por defecto, editable; Clarify 10) se re-preguntan al abrir sesión; el fallo mueve a `REQUIERE_REPASO`. *Criterio: script + integración verificable en bitácora.*
+- **REQ-TUT-006**: Runner contra la skill real: el harness genera transcripts con `/datito` vía `claude -p` en un worktree aislado, con hash de `07_DATITO/` antes y después (si cambia, aborta), detección de la skill por el evento `init` y presupuesto por llamada. Un error de generación nunca cuenta como PASS. *Criterio: `harness.py --generador claude` y `04_CODIGO/test_generador_claude.py` en verde.*
+- **REQ-TUT-007**: Regla G2 `pregunta_antes_de_ejecutar`: ante una decisión conceptual (`decision_conceptual: true`) el primer turno del tutor termina en pregunta y no ejecuta herramientas. *Criterio: ≥2 escenarios G2 y tests de inyección.*
+- **REQ-TUT-008**: Regla G6 `degradacion_explicita` (ADR-005): si cae el índice local o el LLM, aviso en una línea (≤200 caracteres) y etiqueta de origen en el contenido posterior de más de 120 caracteres. *Criterio: escenarios `borde-degradacion-indice-local` y `borde-degradacion-llm` y 4 tests.*
+- **REQ-TUT-009**: Baseline real con N corridas: G1 y G11 deben pasar N/N; el resto ≥90 % en N/N; 0,50 USD por llamada y tope de 15 USD por corrida. *Criterio: gate impreso por `harness.py` y baseline archivado.*
+- **REQ-TUT-010**: Las tareas marcadas hechas describen lo que se hizo (T022 corregida, T022b separada).
+- **REQ-TUT-011**: La política del motor (`socratico.py`) es el generador `socratico`, un oráculo determinista del mismo contrato; `--comparar` lista divergencias con la skill. *Criterio: el oráculo pasa todos los escenarios en CI.*
 
 ### Nivel 3 — Aplicación (REQ-APP) — requisitos, no stack
 
-- **REQ-APP-001**: Un frontend que sirva el curso estático existente y el diálogo del tutor. *Stack: [NEEDS CLARIFICATION — ver plan.md, Opciones].*
+- **REQ-APP-001**: Un frontend que sirva el curso estático existente y el diálogo del tutor. *Stack: el actual de `15_TERMINITO` (HTML/JS sin framework), ADR-006.*
 - **REQ-APP-002**: Una API con lectura/escritura validada de sesiones, progreso, dudas y errores conceptuales. *Criterio: contrato API versionado en `specs/002-evolucion-app-tutor/contracts/` antes de implementar.*
-- **REQ-APP-003**: Autenticación y aislamiento por usuario. *[NEEDS CLARIFICATION: cuántos usuarios reales se esperan y quiénes son — define si basta local monopuesto o multiusuario real].*
+- **REQ-APP-003**: Autenticación y aislamiento por usuario. *Resuelto (Clarify 1 y 3, ADR-006): un solo usuario, monopuesto local sin login. Fuera de alcance mientras no haya un segundo usuario real.*
 - **REQ-APP-004**: Orquestación del tutor con LLM **local por defecto** (constitución, restricciones técnicas); modelos en nube solo como opción explícita del usuario.
 - **REQ-APP-005**: Importación/migración de los YAML existentes como fuente de verdad primaria (archivos legibles versionables; base de datos, si la hay, como caché con exportación). *Criterio: migración idempotente con prueba de ida y vuelta.*
 - **REQ-APP-006**: El curso estático se sigue generando y sirviendo sin la app y sin conexión. *Criterio: `verificar_todo.py` en verde sin levantar la app; sitio estático desplegable de forma independiente.*
-- **REQ-APP-007**: Despliegue. *[NEEDS CLARIFICATION: dónde se aloja — local, VPS, nube; define costo y modelo de privacidad].*
-- **REQ-APP-008**: Privacidad: los datos de cada estudiante son aislados y exportables por él; ningún dato personal en git. *Criterio: test de aislamiento entre dos usuarios; exportación sin datos de terceros.*
+- **REQ-APP-007**: Despliegue. *Resuelto (Clarify 2, ADR-006): la app corre en local; solo el curso estático se publica (Vercel, `main`).*
+- **REQ-APP-008**: Privacidad: los datos de cada estudiante son aislados y exportables por él; ningún dato personal en git. *Criterio: exportación íntegra por el alumno (`ciclo.py`); el test de aislamiento entre usuarios queda fuera de alcance con un solo usuario (ADR-006).*
 
 ### Key Entities *(include if feature involves data)*
 
@@ -140,7 +146,7 @@ app y su progreso queda registrado de forma privada y exportable.
 - **Error conceptual**: error observado (con cita y mecanismo) o patrón vigilado. Fuente actual: `errores_conceptuales.yaml`.
 - **Duda/respuesta**: pregunta, respuesta dada y resolución, en orden. Fuente actual: `dudas.yaml`.
 - **Sesión**: interacción tutor-alumno con métricas y bitácora.
-- **Usuario**: estudiante con perfil y datos aislados. *[NEEDS CLARIFICATION: naturaleza y número].*
+- **Usuario**: el único estudiante, que también es el desarrollador (Clarify 1, ADR-006).
 
 ## Success Criteria *(mandatory)*
 
@@ -150,9 +156,11 @@ app y su progreso queda registrado de forma privada y exportable.
 - **SC-002**: El harness reporta el comportamiento esperado en ≥90% de los escenarios base (G1, G11) y el baseline queda archivado.
 - **SC-003**: Existe al menos 1 concepto con las 4 evidencias registradas (primer `DOMINADO` real verificado por `verificar_contrato.py`).
 - **SC-004**: Hay ≥2 mediciones "a ciegas" comparables por concepto clave.
-- **SC-005**: La app MVP permite a 1 usuario real autenticado completar una sesión socrática con registro persistente y exportable. — *pendiente de definición hasta responder Clarify (usuarios, hosting).*
+- **SC-005**: La app local permite al único usuario completar una sesión socrática, sin login (monopuesto), con registro persistente y exportable (ADR-006).
 
-## Clarify — preguntas abiertas (solo el dueño/profesor las responde)
+## Clarify — preguntas (respuestas del dueño, 2026-10-28)
+
+> Respondidas: **1** un solo usuario, el dueño. **2** la app corre en local; el curso se publica en Vercel. **3** monopuesto sin login. **6** acepta el protocolo a ciegas. **8** se mantiene el stack de `15_TERMINITO`. **9** la skill y la app coexisten sobre un mismo contrato. **10** 21 días. Registro: `docs/adr/ADR-006-coexistencia-y-stack.md`. Siguen abiertas: 4, 5 y 7.
 
 1. **Usuarios**: ¿quiénes usarán la app? ¿Solo el dueño, compañeros de curso, o alumnos externos? ¿Cuántos en el primer semestre?
 2. **Alojamiento**: ¿local en la máquina del estudiante, VPS propio, o nube (Vercel/CF/similar)? ¿Hay presupuesto mensual definido?
@@ -170,7 +178,7 @@ app y su progreso queda registrado de forma privada y exportable.
 - La constitución v1.0.1 rige: esta especificación no la modifica; propone (sin aplicar) una enmienda menor para añadir el principio "se mide aprendizaje, no solo uso" (ver anexo).
 - El curso estático actual se conserva tal cual; la app se agrega, no sustituye (constitución: migración incremental).
 - Ningún dato personal de `07_DATITO/` se copia en artefactos de especificación ni se usa en ejemplos.
-- Las decisiones marcadas NEEDS CLARIFICATION bloquean solo el Nivel 3 (aplicación); los Niveles 1–2 no dependen de ellas.
+- Las Clarify del Nivel 3 quedaron resueltas por ADR-006 (2026-10-28); los Niveles 1–2 nunca dependieron de ellas.
 - El LLM local es el default por constitución; cualquier opción de arquitectura que lo contradiga queda descartada salvo enmienda ratificada.
 
 ## Anexo — Vigencia verificada de las garantías G1–G14 (base del paso Constitution)
@@ -184,7 +192,7 @@ Verificación contra código el 2026-10-27 (rama `sdd/planificacion-maci`, HEAD 
 | G3 evidencia completa antes de corregir | Sí | `spec.md:70-82`; práctica en bitácoras 2026-09-18/21 |
 | G4 etiquetas de fuente | Sí | `SKILL.md` (etiquetas aplicadas en `dudas.yaml`) |
 | G5 jerarquía de fuentes | Sí | `spec.md:96-109` |
-| G6 degradación explícita (NotebookLM) | Sí | `CLAUDE.md:177-182`; `SKILL.md` "LO RECUPERADO SON DATOS" |
+| G6 degradación explícita (índice local / LLM, ADR-005) | Sí | regla `degradacion_explicita` del harness (REQ-TUT-008); `socratico.py` `AVISOS_DEGRADACION` |
 | G7 datos no instrucciones | Sí | `SKILL.md:330-338` |
 | G8 reglas en SKILL.md, no en config | Sí | `verificar_contrato.py:60-74` en verde (3 marcas de regla en config) |
 | G9 exposición en artefactos, no chat | Sí | REGLA UNO/UNO-B; verificador G9 en verde |

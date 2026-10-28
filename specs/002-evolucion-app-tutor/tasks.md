@@ -2,7 +2,7 @@
 
 **Input**: Design documents from `/specs/002-evolucion-app-tutor/` (spec.md, plan.md)
 
-**Prerequisites**: spec.md ✔ · plan.md ✔ · research.md / data-model.md / contracts/ — pendientes, bloqueados por Clarify (Nivel 3)
+**Prerequisites**: spec.md ✔ · plan.md ✔ · research.md / data-model.md / contracts/ — no aplican: Opción B descartada (ADR-006)
 
 **Tests**: los requisitos de los Niveles 1–2 son en sí mismos verificables (cada tarea lleva su criterio). Las tareas de test aparecen marcadas.
 
@@ -62,7 +62,7 @@
 - [x] T023 [US2] Métricas de sesión en la plantilla de bitácora (`07_DATITO/07_BITACORA/`): % de preguntas con espera real, % de respuestas dadas antes de 2 intentos, dudas registradas con ids verificables; extender `verificar_contrato.py` para comprobarlas (REQ-TUT-002)
 - [x] T024 [US2] Ejecutar el diagnóstico inicial con las 21 `pregunta_diagnostico` en sesiones reales y fijar `diagnostico_inicial_hecho: true` con resultados por concepto (REQ-TUT-003; es operación del tutor, no código nuevo). Hecho 2026-10-28 en modo demo con alumno simulado (bitácora `2026-10-28-diagnostico_inicial.md`)
 - [ ] T025 [US2] Protocolo de evaluación a ciegas: elegir certámenes de `07_DATITO/04_EJERCICIOS/certamenes/`, rendirlos sin asistencia del tutor, registrar puntaje; repetición a las 3 semanas; plantilla de comparación en `07_DATITO/06_AUDITORIAS/` (REQ-TUT-004). Consentimiento dado 2026-10-28; pre de 3 conceptos registrado en `mediciones.csv`, post desde 2026-11-11; `04_CODIGO/test_mediciones.py` valida los pares
-- [x] T026 [US2] Script `03_SCRIPTS/verificar_antiguedad.py`: lista conceptos con `ultima_verificacion` mayor al umbral (NEEDS CLARIFICATION umbral; sugerencia 21 días) e integra la salida en `estado.md` para la apertura de sesión; el fallo de re-verificación mueve a `REQUIERE_REPASO` (REQ-TUT-005)
+- [x] T026 [US2] Script `03_SCRIPTS/verificar_antiguedad.py`: lista conceptos con `ultima_verificacion` mayor al umbral (umbral: 21 días, Clarify 10) e integra la salida en `estado.md` para la apertura de sesión; el fallo de re-verificación mueve a `REQUIERE_REPASO` (REQ-TUT-005)
 
 **Checkpoint**: SC-002 a SC-004 medibles; el tutor tiene, por primera vez, evaluación de comportamiento.
 
@@ -93,13 +93,13 @@
 
 - [x] T039 [P] [US3] Prueba de independencia del curso estático (2026-10-28: `verificar_todo.py` → LISTO, 105 tests, sin levantar la app): `verificar_todo.py` en verde sin levantar la app; sitio generable y servible por separado (REQ-APP-006; verificable hoy)
 
-**Checkpoint**: post-Clarify, desbloquear T034–T038 en orden; sin esas respuestas, esta fase se limita a T030–T033 + T039.
+**Checkpoint**: fase cerrada con T030–T033 + T039; T034–T038 descartadas (ADR-006).
 
 ---
 
 ## Phase 5: Cierre de la feature (quality gates)
 
-- [ ] T040 Ejecutar `/speckit-analyze` (consistencia cruzada spec ↔ plan ↔ tasks) y corregir divergencias
+- [x] T040 Ejecutar `/speckit-analyze` (consistencia cruzada spec ↔ plan ↔ tasks) y corregir divergencias (2026-10-28: 8 hallazgos, C1, I1–I4, F1, U1 y U2, corregidos)
 - [ ] T041 Verificar SC-001…SC-005 del spec con evidencia (comandos + salidas archivadas en la bitácora de la feature)
 - [ ] T042 Confirmar cumplimiento de principios I–X y restricciones de la constitución (checklist en el PR)
 
@@ -107,12 +107,8 @@
 
 | Tarea | Bloqueada por | Pregunta de Clarify |
 |---|---|---|
-| T025 (parcial) | Consentimiento del alumno para evaluación a ciegas | Clarify 6 |
-| T030 | Modelo de coexistencia app/skill | Clarify 9 |
-| T034 | Usuarios y alojamiento | Clarify 1, 2 |
-| T035 | Stack y presupuesto | Clarify 8 (+2) |
-| T036 | Multiusuario real requerido | Clarify 3 |
-| T037 | Contrato API (T034) | — |
-| T038 | Stack (T035) | — |
+| T025 | Post a ciegas a ≥14 días del pre (desde 2026-11-11) | — (consentimiento dado, Clarify 6) |
+| T030 | — | Cerrada (ADR-006, Clarify 9) |
+| T034–T038 | — | Descartadas (ADR-006, Clarify 1-3, 8) |
 
-**Orden de ejecución recomendado**: Phase 1 → Phase 2 completa → Phase 3 completa (T025 sujeto a Clarify 6) → Phase 4 limitada a T030–T033/T039 → responder Clarify → completar Phase 4 → Phase 5.
+**Orden de ejecución**: Phases 1–4 cerradas salvo T025 (espera el post); Phase 5 en curso.

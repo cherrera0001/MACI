@@ -6,7 +6,7 @@
 
 **Note**: documento de planificación. No implementa código de aplicación; fija
 requisitos de arquitectura, opciones con costo y recomendación. Las decisiones
-marcadas NEEDS CLARIFICATION en el spec bloquean solo el Nivel 3.
+del Nivel 3 quedaron resueltas por ADR-006 (2026-10-28).
 
 ## Summary
 
@@ -26,9 +26,9 @@ estático y los YAML como fuente de verdad primaria.
 
 **Language/Version**: Python 3.12.3 (verificado en el entorno). Backend en
 Python (coherente con `15_TERMINITO`, `03_SCRIPTS/`). Frontend: HTML/JS
-vanilla ya usado por el curso generado; framework de UI: NEEDS CLARIFICATION.
+vanilla ya usado por el curso generado; sin framework de UI (ADR-006).
 
-**Primary Dependencies**: NEEDS CLARIFICATION a nivel de versión. Anclajes
+**Primary Dependencies**: `15_TERMINITO/pyproject.toml` (pyyaml, jinja2, markdown, pypdf; pytest en dev). Anclajes
 verificados: índice TF-IDF propio y LLM vía Ollama ya integrados en
 `15_TERMINITO` (README: `qwen2.5:3b` como referencia); sin manifiesto de
 dependencias en el repo (deuda conocida, `EVALUACION.md` A2) — la
@@ -45,20 +45,19 @@ como suite más ejecutor propio (el comportamiento esperado no es aserción de
 función sino de diálogo).
 
 **Target Platform**: Linux/WSL (Ubuntu 24.04 verificado) como primera
-plataforma; despliegue de la API: NEEDS CLARIFICATION (local/VPS/nube).
+plataforma; la API corre en local (ADR-006), sin despliegue.
 
 **Project Type**: web-service + static-site companion + CLI heredado.
 
-**Performance Goals**: NEEDS CLARIFICATION (depende de usuarios concurrentes;
-ver Clarify 1–2). No hay objetivos de concurrencia que justifiquen números hoy.
+**Performance Goals**: un solo usuario local (ADR-006); no hay objetivos de
+concurrencia. Se reabre solo con mediciones de latencia (condición c de ADR-006).
 
 **Constraints**: offline-first (constitución VII); LLM local por defecto
 (restricciones técnicas); español como idioma primario; migración incremental
 nunca big-bang; secretos jamás versionados; el curso estático debe seguir
 generándose y sirviéndose sin la app (REQ-APP-006).
 
-**Scale/Scope**: NEEDS CLARIFICATION (número de usuarios reales en el primer
-semestre; ver Clarify 1).
+**Scale/Scope**: 1 usuario (Clarify 1, 2026-10-28).
 
 ## Constitution Check
 
@@ -152,8 +151,12 @@ constitución sin condiciones y reutiliza el motor existente; además los
 Niveles 1–2 del spec (estabilización y medición del tutor) son agnósticos al
 stack y se hacen igual con A.
 
-**Después (condicionada a Clarify 1–2–3): Opción B como contrato, no como
-código.** Se redacta `contracts/api.md` (REQ-APP-002) y se implementa solo
+**Actualización 2026-10-28 (ADR-006): Opción B descartada.** Las Clarify 1, 2 y 3
+dieron un solo usuario, app local y sin login. El texto que sigue queda como
+historial: se reabre solo si se cumple una condición de ADR-006.
+
+~~**Después (condicionada a Clarify 1–2–3): Opción B como contrato, no como
+código.**~~ Se redacta `contracts/api.md` (REQ-APP-002) y se implementa solo
 cuando haya respuestas sobre usuarios y alojamiento, con LLM en el servidor
 (local) y exportación YAML como criterio de aceptación. Esto evita construir
 multiusuario para usuarios que quizá no existan (riesgo confirmado por la
