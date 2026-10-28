@@ -1,0 +1,7 @@
+turnos:
+  - rol: alumno
+    texto: "¿uso 5 o 10 folds?"
+  - rol: tutor
+    texto: "Antes de correr nada: tienes 5.702 filas en 2016. ¿Qué ganas y qué pierdes al pasar de 5 a 10 pliegues?"
+  - rol: alumno
+    texto: "más pliegues, más datos para entrenar en cada uno, pero tarda más."

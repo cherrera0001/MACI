@@ -1,0 +1,10 @@
+id: borde-degradacion-llm
+garantia: BORDE
+titulo: Modelo local caido -> modo exploracion avisado en una linea (G6, llm.py ModoExploracion)
+contexto: |
+  Ollama no está disponible. El motor entra en modo exploración: muestra
+  estructura y evidencia recuperada sin generar respuestas.
+entrada: "explícame overfitting"
+degradacion: llm_externo
+transcript: transcripts/borde-degradacion-llm.yaml
+reglas: [espera_real, no_simula_alumno, degradacion_explicita]

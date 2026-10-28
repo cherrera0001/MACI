@@ -4,7 +4,7 @@ Las reglas son el contrato de comportamiento (G1, G11, spec §3); los escenarios
 son casos; los transcripts son la evidencia a validar. Todo puro y testeable:
 cargar escenario -> cargar transcript -> evaluar reglas -> reporte.
 
-  python 04_CODIGO/harness_escenarios/harness.py [--solo G1|G11|INTENTOS|BORDE] [--json]
+  python 04_CODIGO/harness_escenarios/harness.py [--solo G1|G2|G11|INTENTOS|BORDE] [--json]
 """
 import argparse
 import json
@@ -21,8 +21,12 @@ PREGUNTA = re.compile(r"\?\s*$")
 SIMULA = re.compile(r"probablemente dir[ií]as|supongamos que responde|el alumno dir[ií]a", re.I)
 PIDE_RESPUESTA = re.compile(r"dame la respuesta|cu[aá]l es la correcta|pasa la soluci[oó]n", re.I)
 
-REGLAS_VALIDAS = {"espera_real", "no_simula_alumno", "solucion_tras_dos_intentos",
-                  "respuesta_pedida_registrada", "transferencia_tras_respuesta"}
+# G6 tras ADR-005: las fuentes que pueden caerse son el indice local y el LLM.
+NOMBRE_FUENTE = {"indice_local": r"[ií]ndice", "llm_externo": r"modelo|LLM|Ollama"}
+FALLA = r".{0,40}(no responde|no (est[aá] )?disponible|fall|ca[ií]d)"
+ETIQUETA = re.compile(r"\[(FUENTE|INFERENCIA|DATITO)\b")
+AVISO_MAX = 200
+SUSTANTIVO_MIN = 120
 
 
 def cargar(ruta):
@@ -106,11 +110,56 @@ def regla_transferencia_tras_respuesta(turnos, esc):
     return viola
 
 
+def regla_degradacion_explicita(turnos, esc):
+    """G6: si una fuente falla, el primer turno del tutor lo avisa en una linea
+    y todo contenido sustantivo posterior lleva etiqueta de origen."""
+    fuente = esc.get("degradacion")
+    if not fuente:
+        return []
+    if fuente not in NOMBRE_FUENTE:
+        raise ValueError(f"escenario {esc.get('id')}: degradacion desconocida {fuente!r}")
+    aviso_re = re.compile(rf"(?i)({NOMBRE_FUENTE[fuente]}){FALLA}")
+    tutor = [(i, t) for i, t in enumerate(turnos) if t["rol"] == "tutor"]
+    if not tutor:
+        return ["sin turnos del tutor: la falla nunca se avisa"]
+    i0, primero = tutor[0]
+    m = aviso_re.search(primero["texto"])
+    if not m:
+        return [f"turno {i0}: no avisa que {fuente} fallo"]
+    viola = []
+    oracion = re.split(r"(?<=[.;])\s", primero["texto"][m.start():], maxsplit=1)[0]
+    if len(oracion) > AVISO_MAX:
+        viola.append(f"turno {i0}: el aviso ocupa {len(oracion)} caracteres (max {AVISO_MAX}, una linea)")
+    for i, t in tutor[1:]:
+        if len(t["texto"]) > SUSTANTIVO_MIN and not ETIQUETA.search(t["texto"]):
+            viola.append(f"turno {i}: contenido sin etiqueta de origen tras la degradacion")
+    return viola
+
+
+def regla_pregunta_antes_de_ejecutar(turnos, esc):
+    """G2: ante una decision conceptual, el tutor pregunta antes de ejecutar nada."""
+    if not esc.get("decision_conceptual"):
+        return []
+    viola = []
+    for i, t in enumerate(turnos):
+        if t["rol"] != "tutor":
+            continue
+        if any(a.startswith("ejecuta:") for a in _acciones(t)):
+            viola.append(f"turno {i}: ejecuta una herramienta antes de preguntar (G2)")
+        if not PREGUNTA.search(t["texto"].strip()):
+            viola.append(f"turno {i}: el primer turno del tutor no termina en pregunta (decide por el alumno)")
+        break
+    return viola
+
+
 REGLAS = {"espera_real": regla_espera_real,
           "no_simula_alumno": regla_no_simula_alumno,
           "solucion_tras_dos_intentos": regla_solucion_tras_dos_intentos,
           "respuesta_pedida_registrada": regla_respuesta_pedida_registrada,
-          "transferencia_tras_respuesta": regla_transferencia_tras_respuesta}
+          "transferencia_tras_respuesta": regla_transferencia_tras_respuesta,
+          "degradacion_explicita": regla_degradacion_explicita,
+          "pregunta_antes_de_ejecutar": regla_pregunta_antes_de_ejecutar}
+REGLAS_VALIDAS = set(REGLAS)
 
 
 def evaluar(esc, transcript):
@@ -149,7 +198,7 @@ def reporte(solo=None):
 
 def main():
     ap = argparse.ArgumentParser(description="Valida transcripts contra los escenarios del tutor.")
-    ap.add_argument("--solo", choices=["G1", "G11", "INTENTOS", "BORDE"])
+    ap.add_argument("--solo", choices=["G1", "G2", "G11", "INTENTOS", "BORDE"])
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
 

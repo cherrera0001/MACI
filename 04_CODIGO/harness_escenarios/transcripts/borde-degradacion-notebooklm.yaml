@@ -1,7 +1,0 @@
-turnos:
-  - rol: alumno
-    texto: "consulta el cuaderno de NotebookLM"
-  - rol: tutor
-    texto: "NotebookLM no responde; sigo con el material local y etiqueto lo que no tenga respaldo. [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-07T22_14_16Z]"
-  - rol: alumno
-    texto: "ok, sigue con eso."

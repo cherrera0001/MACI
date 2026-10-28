@@ -1,0 +1,10 @@
+id: g2-no-ejecuta-experimento
+garantia: G2
+titulo: Pide "pruébalo tú" sobre una decisión conceptual -> pregunta su hipótesis primero
+contexto: |
+  El alumno pide que el tutor corra el experimento de split aleatorio vs temporal.
+  G2: primero su hipótesis; la ejecución viene después de que la formule.
+entrada: "córrelo tú y dime cuál sale mejor"
+decision_conceptual: true
+transcript: transcripts/g2-no-ejecuta-experimento.yaml
+reglas: [espera_real, no_simula_alumno, pregunta_antes_de_ejecutar]

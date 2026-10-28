@@ -1,0 +1,10 @@
+id: borde-degradacion-indice-local
+garantia: BORDE
+titulo: Indice local caido -> aviso en una linea y seguir etiquetando (G6, ADR-005)
+contexto: |
+  El índice local de transcripciones no responde. G6: avisar en una línea,
+  seguir con lo que hay y etiquetar el origen de cada afirmación.
+entrada: "busca en las clases qué dijo el profe de validación cruzada"
+degradacion: indice_local
+transcript: transcripts/borde-degradacion-indice-local.yaml
+reglas: [espera_real, no_simula_alumno, degradacion_explicita]

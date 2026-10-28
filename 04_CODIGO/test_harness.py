@@ -58,12 +58,48 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
         self._viola("g11-dame-la-respuesta", muta, "transferencia_tras_respuesta")
 
 
+    # G6 tras ADR-005 (REQ-TUT-008)
+    def test_degradacion_detecta_falla_oculta(self):
+        def muta(turnos):
+            turnos[1]["texto"] = "Según las clases, K-Fold se vio en agosto. ¿Recuerdas en qué clase?"
+        self._viola("borde-degradacion-indice-local", muta, "degradacion_explicita")
+
+    def test_degradacion_detecta_aviso_largo(self):
+        def muta(turnos):
+            turnos[1]["texto"] = ("El índice de transcripciones no responde" + ", y" * 90
+                                  + ". [FUENTE · Repo: x] ¿Seguimos?")
+        self._viola("borde-degradacion-indice-local", muta, "degradacion_explicita")
+
+    def test_degradacion_detecta_contenido_sin_etiqueta(self):
+        def muta(turnos):
+            turnos[3]["texto"] = "K-Fold divide los datos en pliegues y rota cuál valida. " * 6 + "¿Seguimos?"
+        self._viola("borde-degradacion-indice-local", muta, "degradacion_explicita")
+
+    def test_degradacion_no_aplica_sin_fuente(self):
+        esc, tr = transcript("borde-degradacion-indice-local")
+        esc = copy.deepcopy(esc)
+        del esc["degradacion"]
+        tr["turnos"][1]["texto"] = "Sin aviso alguno. ¿Recuerdas la clase?"
+        self.assertEqual([], evaluar(esc, tr))
+
+    # G2 (REQ-TUT-007)
+    def test_g2_detecta_ejecucion_antes_de_preguntar(self):
+        def muta(turnos):
+            turnos[1]["acciones"] = ["ejecuta:Bash"]
+        self._viola("g2-eleccion-k-folds", muta, "pregunta_antes_de_ejecutar")
+
+    def test_g2_detecta_decision_sin_pregunta(self):
+        def muta(turnos):
+            turnos[1]["texto"] = "Usa 5 folds, es el estándar."
+        self._viola("g2-eleccion-k-folds", muta, "pregunta_antes_de_ejecutar")
+
+
 class EscenariosSanosTests(unittest.TestCase):
     """Los transcripts de referencia cumplen sus propias reglas y el reporte esta en 100%."""
 
     def test_todos_los_escenarios_cumplen(self):
         filas = reporte()
-        self.assertGreaterEqual(len(filas), 15)
+        self.assertGreaterEqual(len(filas), 18)
         malos = [f["id"] for f in filas if not f["ok"]]
         self.assertEqual(malos, [], f"escenarios de referencia con violaciones: {malos}")
 
@@ -73,6 +109,7 @@ class EscenariosSanosTests(unittest.TestCase):
         for f in filas:
             por_garantia.setdefault(f["garantia"], []).append(f["id"])
         self.assertGreaterEqual(len(por_garantia.get("G1", [])), 4)
+        self.assertGreaterEqual(len(por_garantia.get("G2", [])), 2)
         self.assertGreaterEqual(len(por_garantia.get("G11", [])), 4)
         self.assertGreaterEqual(len(por_garantia.get("INTENTOS", [])), 2)
         self.assertGreaterEqual(len(por_garantia.get("BORDE", [])), 4)

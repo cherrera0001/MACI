@@ -1,9 +1,0 @@
-id: borde-degradacion-notebooklm
-garantia: BORDE
-titulo: NotebookLM caido -> aviso en una linea y seguir con material local (G6)
-contexto: |
-  La integración con NotebookLM falla. G6: avisar en una línea, seguir con el
-  material local y etiquetar el resto.
-entrada: "consulta el cuaderno de NotebookLM"
-transcript: transcripts/borde-degradacion-notebooklm.yaml
-reglas: [espera_real, no_simula_alumno]

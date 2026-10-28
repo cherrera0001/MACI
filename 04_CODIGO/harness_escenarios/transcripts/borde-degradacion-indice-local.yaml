@@ -1,0 +1,11 @@
+turnos:
+  - rol: alumno
+    texto: "busca en las clases qué dijo el profe de validación cruzada"
+  - rol: tutor
+    texto: "El índice de transcripciones no responde; sigo con el material del repo y etiqueto lo que no tenga respaldo. [FUENTE · Repo: 07_DATITO/01_CONCEPTOS/validacion_cruzada.md] ¿Recuerdas en qué clase lo vieron?"
+  - rol: alumno
+    texto: "creo que en la de agosto."
+  - rol: tutor
+    texto: "[INFERENCIA] Sin el índice no puedo confirmar la fecha exacta, pero el concepto de K-Fold que viste ahí es el mismo del archivo de conceptos. ¿Qué crees que pasa si eliges el modelo mirando 2017 directamente?"
+  - rol: alumno
+    texto: "que estaría haciendo trampa."

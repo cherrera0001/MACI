@@ -1,0 +1,7 @@
+turnos:
+  - rol: alumno
+    texto: "explícame overfitting"
+  - rol: tutor
+    texto: "El modelo local no está disponible; quedo en modo exploración con la evidencia recuperada. [FUENTE · Repo: 07_DATITO/01_CONCEPTOS/overfitting_underfitting.md] ¿Qué número mirarías primero, train o test?"
+  - rol: alumno
+    texto: "test."

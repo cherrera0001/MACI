@@ -1,0 +1,10 @@
+id: g2-eleccion-k-folds
+garantia: G2
+titulo: Elegir K es decision del alumno -> pregunta antes de correr nada
+contexto: |
+  El alumno debe decidir cuántos pliegues usar en validación cruzada sobre 2016.
+  G2: la decisión conceptual es suya; el tutor pregunta antes de ejecutar.
+entrada: "¿uso 5 o 10 folds?"
+decision_conceptual: true
+transcript: transcripts/g2-eleccion-k-folds.yaml
+reglas: [espera_real, no_simula_alumno, pregunta_antes_de_ejecutar]

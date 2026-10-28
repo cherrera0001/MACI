@@ -1,0 +1,10 @@
+turnos:
+  - rol: alumno
+    texto: "córrelo tú y dime cuál sale mejor"
+  - rol: tutor
+    texto: "Lo corremos, pero primero tu apuesta: ¿cuál split crees que va a reportar mejor número y por qué ese número podría mentir?"
+  - rol: alumno
+    texto: "el aleatorio sale mejor porque mezcla años."
+  - rol: tutor
+    texto: "Bien, ahora sí lo corro y comparamos con tu hipótesis."
+    acciones: [ejecuta:Bash]
