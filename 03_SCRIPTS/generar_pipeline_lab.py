@@ -157,11 +157,23 @@ def esperado(train, test, meta):
     scores = [predecir(beta, test, cols, i) for i in tst]
     etiq = [1 if p > meta["mediana_precio_2016"] else 0 for p in test["Price"]]
     med = statistics.median(train["Price"])
-    return {"preset": DEFECTO["preset"], "k": DEFECTO["k"], "folds": folds, "cv": sum(folds) / len(folds),
+    return _redondear({"preset": DEFECTO["preset"], "k": DEFECTO["k"], "folds": folds, "cv": sum(folds) / len(folds),
             "train": mae(beta, train, cols, todas), "test": mae(beta, test, cols, tst),
             "beta": beta, "auc": auc(scores, etiq),
             "confusion": confusion(scores, etiq, meta["mediana_precio_2016"]),
-            "baseline_cv": sum(abs(p - med) for p in train["Price"]) / len(train["Price"])}
+            "baseline_cv": sum(abs(p - med) for p in train["Price"]) / len(train["Price"])})
+
+
+def _redondear(x):
+    """9 decimales: Python 3.12 suma floats con compensacion y 3.11 no; sin esto el
+    HTML generado difiere en el digito 15 entre la maquina local y el CI."""
+    if isinstance(x, float):
+        return round(x, 9)
+    if isinstance(x, list):
+        return [_redondear(v) for v in x]
+    if isinstance(x, dict):
+        return {k: _redondear(v) for k, v in x.items()}
+    return x
 
 
 def corpus():

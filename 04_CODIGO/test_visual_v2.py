@@ -176,7 +176,7 @@ console.log(JSON.stringify({folds: cv(TR, cols, E.k), beta: b, train: mae(b, TR,
         for a, b in zip(js_["beta"], e["beta"]):
             self.assertAlmostEqual(a, b, delta=1e-6 * max(1, abs(b)))
         for k in ("train", "test", "auc"):
-            self.assertAlmostEqual(js_[k], e[k], delta=1e-9, msg=k)
+            self.assertAlmostEqual(js_[k], e[k], delta=1e-8, msg=k)
         self.assertEqual(js_["confusion"], e["confusion"])
 
 
