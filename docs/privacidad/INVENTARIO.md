@@ -16,6 +16,20 @@ valores (emails, citas) aquí.
 | 6 | Emails de terceros | `05_CLASES/10_GRABACIÓN_CLASES/80038_Procesos_Innovacion/NOTAS_INDICE.md`, `01_DOCUMENTACION/PRIMERA-ENTREGA-PLAN.md`, `06_LABORATORIOS/_markdown/2026_P5_Clasificación_res_ _1.md` (consentimiento por verificar) | alta (terceros) |
 | 7 | ~~Copia archivada del estado~~ | ~~`10_ARCHIVO/learners/`~~ **eliminada el 2026-10-27** (REQ-EST-004) | — |
 
+## Tamaño de lo versionado (T-6.1.1)
+
+| Categoría | Ruta | Tamaño |
+|---|---|---|
+| email del alumno (config) | `07_DATITO/datito.config.yaml` | 5.4 KB |
+| nombre + meta (progreso) | `07_DATITO/progreso.yaml` | 10.3 KB |
+| citas de desempeno (errores) | `07_DATITO/errores_conceptuales.yaml` | 10.3 KB |
+| citas + estado (dudas) | `07_DATITO/dudas.yaml` | 14.5 KB |
+| bitacoras de sesion | `07_DATITO/07_BITACORA` | 4.5 MB en 132 archivos |
+| capturas certamen 2 | `01_DOCUMENTACION/01_CERTAMEN2/fuentes` | 1.8 MB en 5 archivos |
+| notas 80038 (email tercero) | `05_CLASES/10_GRABACIÓN_CLASES/80038_Procesos_Innovacion/NOTAS_INDICE.md` | 5.4 KB |
+| PRIMERA-ENTREGA-PLAN | `01_DOCUMENTACION/PRIMERA-ENTREGA-PLAN.md` | 10.3 KB |
+| P5 res (email tercero) | `06_LABORATORIOS/_markdown/2026_P5_Clasificación_res_ _1.md` | 42.5 KB |
+
 ## Decisión (registrada, ejecutable por fases)
 
 1. **Repo privado permanente.** MACI sigue privado; la publicación del *sitio*
