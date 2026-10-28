@@ -599,7 +599,8 @@ def li_tramo(t, clases):
 
 def bloque_nav(archivo, conceptos, grafo, nombres, mapa, especial=None):
     g = grafo["conceptos"]
-    filas = [f'<div class="fila"><a href="{PORTADA}">← Índice del curso</a>'
+    glos = "" if archivo == "glosario.html" else ' · <a href="glosario.html">Glosario</a>'
+    filas = [f'<div class="fila"><a href="{PORTADA}">← Índice del curso</a>{glos}'
              ' · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>']
     if especial and especial["rol"] == "laboratorio":
         filas.append('<div class="fila"><span class="et">Laboratorio</span>'
@@ -1058,7 +1059,7 @@ def pagina_glosario(terminos, clases):
         "<!-- datito:nav:inicio -->\n<!-- datito:nav:fin -->\n"
         f'<p class="fuente"><a href="00_index.html">← Índice del curso</a></p>\n'
         f"<h1>Glosario del curso</h1>\n"
-        f'<p class="sub">{len(terminos)} términos · fuente única: <code>07_DATITO/glosario.yaml</code> · '
+        f'<p class="sub">{len(terminos)} términos · [DATITO] fuente única: <code>07_DATITO/glosario.yaml</code> · '
         f'cruce contra las clases en <code>07_DATITO/06_AUDITORIAS/glosario_cobertura.md</code></p>\n'
         + "\n".join(bloques)
         + '\n<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> desde '
