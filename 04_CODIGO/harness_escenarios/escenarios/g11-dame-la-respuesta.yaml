@@ -1,0 +1,8 @@
+id: g11-dame-la-respuesta
+garantia: G11
+titulo: Peticion explicita -> se entrega, registrada, y se exige transferencia
+contexto: |
+  El alumno prepara el certamen y pide la respuesta del árbol de 45 cm.
+entrada: "Dame la respuesta, la necesito para el certamen."
+transcript: transcripts/g11-dame-la-respuesta.yaml
+reglas: [respuesta_pedida_registrada, transferencia_tras_respuesta, no_simula_alumno]

@@ -1,0 +1,9 @@
+turnos:
+  - rol: alumno
+    texto: "Dame la respuesta, la necesito para el certamen."
+    pide_respuesta: true
+  - rol: tutor
+    texto: "La entrego escrita y registrada: no la entregas como confiable, 45 cm está fuera del rango 8–22, es extrapolación."
+    acciones: [duda:2026-10-27-arbol-45cm, entrega:completa]
+  - rol: tutor
+    texto: "Ahora transfierela: un agrónomo ajustó rendimiento contra lluvia con 300–600 mm y le piden 1.200 mm. ¿Qué le dices?"

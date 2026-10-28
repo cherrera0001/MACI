@@ -1,0 +1,5 @@
+turnos:
+  - rol: tutor
+    texto: "Tres modelos, R² train/test: A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39. ¿Cuál sobreajusta?"
+  - rol: alumno
+    texto: "B, porque la brecha es enorme."

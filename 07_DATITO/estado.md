@@ -26,6 +26,11 @@ Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · **T**ransferir. `DO
 
 Si el concepto a tratar aparece aqui, **anticipa la confusion**: ya la tuvo y repetir la misma explicacion no va a funcionar.
 
+## Candidatos a repaso
+
+- `train_validation_test` — `COMPRENDIDO` · hace 39 dias
+
+Re-pregunta uno de estos al abrir sesion; si falla, pasa a `REQUIERE_REPASO`.
 **Siguiente recomendado:** `generalizacion` — Generalizacion
 
-<!-- generado 2026-09-27 -->
+<!-- generado 2026-10-27 -->

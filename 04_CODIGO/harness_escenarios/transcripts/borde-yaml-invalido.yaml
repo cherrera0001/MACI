@@ -1,0 +1,5 @@
+turnos:
+  - rol: tutor
+    texto: "Tu progreso.yaml quedó inválido (estado CASI_DOMINADO no existe). No toco nada hasta que lo revisemos: dime qué cambiaste y lo corregimos juntos."
+  - rol: alumno
+    texto: "puse CASI_DOMINADO en regresión, jaja. lo devuelvo."

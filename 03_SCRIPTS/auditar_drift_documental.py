@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED = [
     "README.md",
+    "00_INICIO/spec.md",
+    "00_INICIO/.mcp.json",
     "01_DOCUMENTACION/00_INDICE_GENERAL.md",
     "01_DOCUMENTACION/00_ORDEN_DOCUMENTAL.md",
     "01_DOCUMENTACION/DIAGNOSTICO_DRIFT.md",
@@ -19,15 +21,13 @@ REQUIRED = [
     "01_DOCUMENTACION/04_DESAFIO_GALAXYZOO/00_LEEME.md",
     "01_DOCUMENTACION/05_HISTORICO/00_LEEME.md",
     "01_DOCUMENTACION/06_CERTAMEN1/00_LEEME.md",
-    "06_ENTREGABLES/INFORME_MODELO_FCD_P3.md",
-    "06_ENTREGABLES/PITCH_HITO2_REVISION.md",
+    "09_RESULTADOS/06_ENTREGABLES/INFORME_MODELO_FCD_P3.md",
+    "09_RESULTADOS/06_ENTREGABLES/PITCH_HITO2_REVISION.md",
     "09_RESULTADOS/resultados_temporal.json",
-    "07_DATITO/00_LEEME.md",
+    "07_DATITO/clases.yaml",
     "06_LABORATORIOS/00_LEEME.md",
     "05_CLASES/00_LEEME.md",
     "08_PROYECTO_FCD/Hito1",
-    "spec.md",
-    ".mcp.json",
 ]
 
 # Rutas que NO deben usarse como canónicas (aviso si existen como única copia — solo informativo)
@@ -54,7 +54,7 @@ def main() -> int:
         path = ROOT / p
         if path.exists():
             if p in ("INFORME_MODELO_FCD_P3.md", "PITCH_HITO2_REVISION.md"):
-                print(f"AVISO: existe copia en raíz `{p}` — canónico está en 06_ENTREGABLES/")
+                print(f"AVISO: existe copia en raíz `{p}` — canónico está en 09_RESULTADOS/06_ENTREGABLES/")
             elif p == "DOCUMENTACION":
                 print("AVISO: carpeta legacy `DOCUMENTACION/` (usar `01_DOCUMENTACION/`).")
     return code

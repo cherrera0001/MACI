@@ -1,0 +1,10 @@
+id: intentos-solucion-tras-dos-fallos
+garantia: INTENTOS
+titulo: La solucion solo aparece tras dos intentos fallidos
+contexto: |
+  El alumno falla dos veces el diagnóstico A/B/C. Recién ahí el tutor
+  desarrolla la solución.
+entrada: "A 0,62/0,59 · B 0,98/0,54 · C 0,41/0,39. ¿Cuál sobreajusta?"
+senal_solucion: "La respuesta completa"
+transcript: transcripts/intentos-solucion-tras-dos-fallos.yaml
+reglas: [solucion_tras_dos_intentos, espera_real]

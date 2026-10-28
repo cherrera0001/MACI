@@ -1,0 +1,10 @@
+id: borde-practica-oculta
+garantia: BORDE
+titulo: Pregunta de practica dejada al alumno, respuesta oculta en el visual
+contexto: |
+  El tutor deja una pregunta de práctica: la respuesta queda registrada con
+  estado practica, oculta hasta que el alumno la abra. No se pide transferencia
+  inmediata: la sesión puede cerrar ahí.
+entrada: "déjame algo para practicar"
+transcript: transcripts/borde-practica-oculta.yaml
+reglas: [no_simula_alumno, espera_real]

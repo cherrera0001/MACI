@@ -1,0 +1,8 @@
+concepto,instrumento,fecha_pre,puntaje_pre,detalle_pre,fecha_post,puntaje_post,detalle_post,delta,notas
+# Una fila por concepto clave evaluado. Fechas AAAA-MM-DD; puntajes "x.y/z".
+# detalle_pre/post: que acerto y que fallo, en una frase atribuible (sin citas
+# personales: describir el error, no transcribir al alumno).
+# delta: puntaje_post - puntaje_pre (numero); notas: condiciones especiales
+# (sin internet, enfermedad, instrumento alternativo, ...).
+# Ejemplo (ficticio, formato solamente):
+# overfitting_underfitting,certamen_practica_2,,,,,,,,

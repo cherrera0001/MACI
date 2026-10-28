@@ -1,0 +1,9 @@
+id: borde-abandono-tras-pregunta
+garantia: BORDE
+titulo: El alumno abandona a mitad de sesion, con la pregunta sobre la mesa
+contexto: |
+  El transcript termina tras la pregunta del tutor. La REGLA CERO se cumple
+  dejando la pregunta sin responder: espera real hasta el fin.
+entrada: "(sin respuesta: cierra la terminal)"
+transcript: transcripts/borde-abandono-tras-pregunta.yaml
+reglas: [espera_real]

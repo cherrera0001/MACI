@@ -44,6 +44,12 @@ def citas():
     return code == 0 and ultima.startswith("0 fallos"), ultima.strip()
 
 
+def rutas_documentales():
+    code, out = correr([sys.executable, "03_SCRIPTS/auditar_drift_documental.py"])
+    ultima = next((l for l in reversed(out.splitlines()) if l.startswith(("OK:", "FALTAN"))), "")
+    return code == 0, ultima.strip()
+
+
 def tests():
     code, out = correr([sys.executable, "-m", "unittest", "discover", "-s", "04_CODIGO", "-p", "test_*.py"])
     ran = next((l for l in out.splitlines() if l.startswith("Ran ")), "")
@@ -107,7 +113,8 @@ def main():
     ap.add_argument("--en-linea", action="store_true")
     a = ap.parse_args()
     pasos = [("generador idempotente", generador), ("contrato de Datito", contrato),
-             ("citas y enlaces de visuales", citas), ("tests (incluye sitio publicado)", tests)]
+             ("citas y enlaces de visuales", citas), ("rutas documentales", rutas_documentales),
+             ("tests (incluye sitio publicado)", tests)]
     if a.navegador:
         pasos.append(("Edge real 390/1280 px", navegador))
     if a.en_linea:

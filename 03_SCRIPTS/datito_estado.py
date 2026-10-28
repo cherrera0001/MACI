@@ -117,6 +117,19 @@ def main():
         L.append("Ninguno.")
         L.append("")
 
+    # Candidatos a repaso: lo sabido que envejece (spec §3, Re-verificacion)
+    from verificar_antiguedad import candidatos
+    viejos = candidatos(pro)
+    if viejos:
+        L.append("## Candidatos a repaso")
+        L.append("")
+        for c in viejos:
+            dias = f"hace {c['dias']} dias" if c["dias"] is not None else "sin verificar"
+            L.append(f"- `{c['id']}` — `{c['estado']}` · {dias}")
+        L.append("")
+        L.append("Re-pregunta uno de estos al abrir sesion; si falla, pasa a "
+                 "`REQUIERE_REPASO`.")
+
     sig = pro["resumen"].get("siguiente_recomendado")
     if sig:
         L.append(f"**Siguiente recomendado:** `{sig}` — {nombres.get(sig, '')}")

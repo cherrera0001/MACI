@@ -1,0 +1,9 @@
+turnos:
+  - rol: alumno
+    texto: "Explícame F1-macro completo."
+    pide_respuesta: true
+  - rol: tutor
+    texto: "Desarrollo completo: F1 por clase y promedio simple sin ponderar. Registrado en dudas."
+    acciones: [duda:2026-10-27-f1-macro, entrega:completa]
+  - rol: tutor
+    texto: "Con clases 90/10, ¿por qué el macro castiga más que el weighted?"

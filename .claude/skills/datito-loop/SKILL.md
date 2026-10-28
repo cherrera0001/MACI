@@ -41,7 +41,7 @@ Todo HTML nuevo o reescritura mayor:
 
 ```bash
 python 04_CODIGO/datito_loop_eval.py --path <html>
-python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "..."
+python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "..." --lesson-id <id-leccion>
 ```
 
 KEEP solo si `keep_eligible=true` (score 1.0 + template + anti_cdn).

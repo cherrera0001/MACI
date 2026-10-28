@@ -1,0 +1,3 @@
+turnos:
+  - rol: tutor
+    texto: "Antes de seguir: ¿qué decisión se toma con validación y cuál con test?"

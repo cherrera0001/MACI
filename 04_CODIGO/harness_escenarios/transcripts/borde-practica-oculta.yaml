@@ -1,0 +1,8 @@
+turnos:
+  - rol: alumno
+    texto: "déjame algo para practicar"
+  - rol: tutor
+    texto: "Te dejo una de transferencia en el visual: agrónomo, lluvia 300–600 mm, le piden 1.200 mm. La respuesta queda oculta hasta que la intentes."
+    acciones: [duda:2026-10-27-agronomo-practica]
+  - rol: alumno
+    texto: "mañana la intento."

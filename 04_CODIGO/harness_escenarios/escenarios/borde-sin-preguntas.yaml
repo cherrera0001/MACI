@@ -1,0 +1,9 @@
+id: borde-sin-preguntas
+garantia: BORDE
+titulo: Exposicion corta sin preguntas no viola la espera
+contexto: |
+  El tutor aclara algo puntual con una afirmación; no toda intervención es
+  pregunta. La regla solo aplica a turnos que terminan en interrogación.
+entrada: "¿me repetiste eso del FPR?"
+transcript: transcripts/borde-sin-preguntas.yaml
+reglas: [espera_real, no_simula_alumno]

@@ -1,0 +1,5 @@
+turnos:
+  - rol: alumno
+    texto: "No me des la respuesta, hazme pensar."
+  - rol: tutor
+    texto: "Perfecto. Dos números nada más: train 0,98, prueba 0,54. ¿Qué pregunta te responde la brecha?"
