@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<!--
+  Clase 19 · Repaso integrado: el proyecto Melbourne.
+  Cifras 100% de 09_RESULTADOS/ (resultados_temporal.json, comparacion_estadistica.json,
+  dashai_resultados.json, experimento_councilarea_2026-09-18.json).
+-->
+<title>Repaso integrado: el proyecto Melbourne · Clase 19 · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred button.acierto{background:var(--verde);border-color:var(--verde);color:#fff}
+  .pred button.fallo{background:var(--rojo);border-color:var(--rojo);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,nav.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}nav.pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;font:14px/1.5 "Segoe UI",system-ui,sans-serif}nav.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}.fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}pre{white-space:pre-wrap}.leccion-top,nav.pasos{flex-wrap:wrap}}</style>
+<section class="leccion" data-clase="19" id="clase-19">
+<div class="leccion-top"><span class="uni">Unidad 6 · Integrar y rendir</span><b>Clase 19 de 23</b></div>
+<div class="barra"><span style="width:82.6%"></span></div>
+<div class="lt">Clase 19 · Repaso integrado: el proyecto Melbourne</div>
+<p><b>Objetivo.</b> Explicar el proyecto Melbourne de punta a punta y defender cada decisión con sus propias cifras.</p>
+<div class="fichas"><div><span class="et">prerrequisitos</span><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a>, <a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a>, <a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a>, <a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a>, <a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a>, <a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a>, <a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a></div>
+<div><span class="et">habilita</span>ninguna</div>
+<div><span class="et">tiempo estimado</span>~15 min</div></div>
+<div class="ficha"><b>Ficha Bloom · Crear</b><ul>
+<li><b>Evidencia de aprendizaje:</b> Una explicación oral de tres minutos: split temporal, validación dentro de 2016, modelo final y lo que la caída a 2017 significa.</li>
+<li><b>Actividad final:</b> Defender el proyecto ante cuatro repreguntas del estilo del profesor.</li>
+<li><b>Criterio de dominio:</b> Usa solo cifras verificadas (MAE 188.218, R² 0,757, 29,1 % de suburbios nuevos) y nombra el mecanismo de cada una.</li></ul></div>
+<div class="activ"><b>Activación.</b> Si el profesor te pidiera tres minutos sobre tu proyecto, ¿con qué cifra empezarías y por qué? <span class="apagado">Escribe tu respuesta antes de seguir: la retomas en el cierre.</span></div>
+<label class="hecha"><input type="checkbox" data-clase-hecha="19"> Terminé esta clase <span class="apagado">(marca personal en este navegador; no es evidencia para Datito)</span></label>
+</section>
+<nav class="pasos"><span><a href="19_deep_learning.html">← Clase 18 · Deep learning, LLM y agentes</a></span><a href="00_index.html">Índice del curso</a><span><a href="../../04_EJERCICIOS/certamen_1.html">Clase 20 · Distinciones del Certamen 1 →</a></span></nav>
+<script>(function(){try{document.querySelectorAll('[data-clase-hecha]').forEach(function(c){var k='datito-clase-'+c.getAttribute('data-clase-hecha');c.checked=localStorage.getItem(k)==='1';c.addEventListener('change',function(){localStorage.setItem(k,c.checked?'1':'0');});});}catch(e){}})();</script>
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+</nav>
+<!-- datito:nav:fin -->
+
+<h1>Repaso integrado: el proyecto Melbourne de punta a punta</h1>
+<p class="sub">Clase 19 · Unidad 6 · todas las cifras salen de tus propios <code>09_RESULTADOS/</code> · sin conexión</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Defender el proyecto en tres minutos: recorrer
+  el pipeline completo (EDA → split → validación → modelo → significancia) y justificar
+  cada decisión con la cifra que la respalda, no con intuición.
+</div>
+
+<div class="grafo">
+  <span class="n">clases 1–4 · datos y limpieza</span> →
+  <span class="n">clases 5–8 · validación y generalización</span> →
+  <span class="n">clase 9 · regresión</span> →
+  <span class="n">clases 14–17 · ensambles</span> →
+  <span class="n aqui">clase 19 · todo junto, en tu proyecto</span>
+</div>
+
+<h2>1 · El caso y la pregunta</h2>
+<p>Predicción de precios de viviendas en Melbourne (competencia del ramo, datos
+<code>housing_dashai_2016_2017.csv</code>). Entrenas con ventas de <strong>2016</strong> y el
+certamen te pide predecir <strong>2017</strong>. Esa frase —«entrenas con 2016, predicen 2017»—
+decide todo lo que sigue: qué columnas entran, cómo validas y cómo comparas modelos.</p>
+<div class="met">
+  <div><div class="n">6.336</div><div class="e">train 2016</div></div>
+  <div><div class="n">7.244</div><div class="e">test 2017</div></div>
+  <div><div class="n">$900.000</div><div class="e">mediana 2016 (AUD)</div></div>
+  <div><div class="n">$910.000</div><div class="e">mediana 2017 (AUD)</div></div>
+</div>
+<p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · meta]</p>
+
+<h2>2 · EDA y limpieza: qué entra al modelo</h2>
+<p>De las 21 columnas crudas entran <strong>9 numéricas + 3 categóricas</strong>. Las otras 7 se
+excluyen por un motivo con nombre: fuga de información (Date), cardinalidad altísima
+(Suburb, Address, SellerG), identificadores sin señal (Postcode) o faltantes estructurales
+(BuildingArea, YearBuilt).</p>
+<table>
+  <tr><th>Entran (12)</th><th>Se excluyen (7) y por qué</th></tr>
+  <tr><td>Rooms, Distance, Bedroom2, Bathroom, Car, Landsize, Lattitude, Longtitude, Propertycount <span class="rol r-dato">num</span><br>
+      Type, Method, Regionname <span class="rol r-dato">cat</span></td>
+  <td>Suburb, Address, SellerG · demasiadas categorías<br>
+      Date · fuga: la fecha define el año, no el precio<br>
+      Postcode · identificador<br>
+      BuildingArea, YearBuilt · faltantes masivos<br>
+      <span class="highlight">CouncilArea · el experimento de abajo la condena</span></td></tr>
+</table>
+<p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · meta.features/excluidas]</p>
+
+<h3>El experimento que la condena: CouncilArea</h3>
+<p>¿Y si agregamos CouncilArea (el municipio)? A/B con el mismo modelo: A sin la columna,
+B con ella. Resultado: en 2017 la columna deja <strong>1.369 casos sin categoría conocida
+(18,9 %)</strong>, porque 2017 trae 33 municipios contra 19 en 2016 —14 de ellos no existen
+en el train. Un one-hot encoding no tiene dónde ponerlos: la información del train no
+alcanza para el futuro. Por eso sale.</p>
+
+<div class="pred" data-correct="b">
+  <div class="q">Predicción — CouncilArea agrega 14 categorías que solo existen en 2017.
+  Sin tocar el experimento: ¿qué le pasa al modelo B en esas casas?</div>
+  <button data-opcion="a">Las predice bien: es un municipio más, el modelo aprende</button>
+  <button data-opcion="b">Se pierde en ellas: el train nunca las vio, no tiene dónde asignarlas</button>
+  <button data-opcion="c">Da igual: las categorías nuevas se ignoran y no afectan</button>
+  <div class="veredicto"></div>
+</div>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> (b) — el train nunca las vio; el modelo B queda sin señal en 18,9 % del test.</p>
+  <p><strong>Resolución:</strong> one-hot sobre 19 categorías produce 19 columnas; las 14 nuevas
+  quedan todas en cero → el árbol no tiene regla para ellas. Por eso 1.369 casos (18,9 %) pierden
+  la señal municipal, y la columna se excluye del pipeline.</p>
+  <p><strong>Error típico:</strong> creer que «más columnas = más información». Si la columna no
+  generaliza al futuro, es deuda, no señal. [DATITO]</p>
+  <p class="f">[FUENTE · Repo: 09_RESULTADOS/experimento_councilarea_2026-09-18.json · fase4_faltantes]</p>
+</details>
+
+<h2>3 · Split temporal: la evaluación manda</h2>
+<p>No mezclamos: entrenamos con 2016 y medimos en 2017 porque <strong>el uso real del modelo
+es predecir el futuro</strong>. Un split aleatorio rompe eso: el modelo «ve» 2017 durante el
+entrenamiento y el error sale optimista. Este repo ya pagó ese error: el primer modelo,
+con split aleatorio, anunciaba «81 % de precisión» y fue invalidado por el split temporal.
+Está archivado con su lección en <code>10_ARCHIVO/_obsoleto_split_aleatorio/</code>.</p>
+<div class="cita">Un error real, suyo y documentado: el mejor material para enseñar fuga de
+información y por qué un número más alto puede ser un modelo peor.
+<span class="f">[FUENTE · Repo: 07_DATITO/02_REFERENCIA/material.md · «El error documentado»]</span></div>
+
+<div class="pred" data-correct="b">
+  <div class="q">Predicción — ¿qué le pasa al MAE si cambias el split temporal por uno aleatorio
+  (mismo modelo, mismas columnas)?</div>
+  <button data-opcion="a">Sube: el azar mezcla años y el modelo aprende menos</button>
+  <button data-opcion="b">Baja de forma engañosa: el modelo ya «vió» 2017 en entrenamiento</button>
+  <button data-opcion="c">No cambia: el split no afecta el error del test</button>
+  <div class="veredicto"></div>
+</div>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> (b) — baja engañosamente, porque hay fuga de información.</p>
+  <p><strong>Resolución:</strong> con split aleatorio, filas de 2017 entran al train. El modelo
+  memoriza precios de casas que luego «predice» en test. El error medido ya no mide generalización:
+  mide memoria. El «81 % de precisión» del split aleatorio vs el R² 0,757 honesto del temporal
+  cuantifican esa mentira.</p>
+  <p><strong>Error típico:</strong> elegir el split que da el número más bonito. La pregunta correcta
+  es «¿qué datos tendré cuando use el modelo de verdad?». [DATITO]</p>
+  <p class="f">[FUENTE · Repo: 10_ARCHIVO/_obsoleto_split_aleatorio/ · 07_DATITO/02_REFERENCIA/material.md]</p>
+</details>
+
+<h3>El test trae lo que el train no conoce</h3>
+<p>El 29,1 % de las casas del test 2017 están en suburbios que no aparecen en el train
+de 2016: barrios nuevos, urbanización expandiéndose. No es ruido del dataset: es la
+<strong>generalización hecha caso real</strong> — predecir donde nunca estuviste.</p>
+<div class="met">
+  <div><div class="n">29,1 %</div><div class="e">del test son suburbios nuevos</div></div>
+  <div><div class="n">193.462</div><div class="e">MAE suburbio nuevo (AUD)</div></div>
+  <div><div class="n">186.064</div><div class="e">MAE suburbio conocido (AUD)</div></div>
+</div>
+<p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · meta.pct_test_suburbio_nuevo · HistGradientBoosting | log]</p>
+
+<h2>4 · Validación cruzada dentro de 2016</h2>
+<p>¿Cómo eliges modelo e hiperparámetros sin tocar 2017? Con validación cruzada <strong>solo
+dentro del train</strong>: 5 semillas sobre 2016. La CV decide; el test 2017 solo se mira al
+final, una vez. Pero ojo con lo que descubrirás en la siguiente predicción: la CV es
+optimista respecto al futuro.</p>
+<div class="pred" data-correct="a">
+  <div class="q">Predicción — HistGradientBoosting (log): MAE en CV-2016 = 159.777.
+  ¿El MAE en test-2017 será mayor o menor?</div>
+  <button data-opcion="a">Mayor: 2017 trae suburbios nuevos y otro año; el futuro es más duro</button>
+  <button data-opcion="b">Menor: con más datos (7.244 &gt; 6.336) el modelo generaliza mejor</button>
+  <button data-opcion="c">Igual: la CV es un estimador insesgado del error futuro</button>
+  <div class="veredicto"></div>
+</div>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> (a) — mayor: 188.218 en test 2017 vs 159.777 en CV.</p>
+  <p><strong>Resolución:</strong> la CV mide cómo le va al modelo dentro de 2016, repartiendo
+  el mismo año. El test 2017 agrega año nuevo + 29,1 % de suburbios desconocidos. La brecha
+  159.777 → 188.218 (~28.441 AUD) es el costo real de generalizar. Por eso la CV se usa para
+  <em>comparar</em> modelos entre sí, no para prometer el error final.</p>
+  <p><strong>Error típico:</strong> citar el MAE de CV como «el error del modelo». El error que
+  le importa al cliente es el del test futuro. [DATITO]</p>
+  <p class="f">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · HistGradientBoosting | log · cv2016_MAE_mean vs test2017_MAE]</p>
+</details>
+
+<h2>5 · Overfitting: el árbol que memoriza</h2>
+<p>Mismo algoritmo (árbol de decisión), dos configuraciones, dos historias:</p>
+<table>
+  <tr><th>Árbol</th><th class="num">R² train</th><th class="num">R² test 2017</th><th class="num">Brecha</th><th>Lectura</th></tr>
+  <tr><td>DashAI run 03 (sin regularizar)</td><td class="num">0,9999</td><td class="num">0,4521</td><td class="num highlight">0,5478</td><td>memoriza 2016; se desploma en 2017</td></tr>
+  <tr><td>Pipeline (podado, log)</td><td class="num">0,7523</td><td class="num">0,6123</td><td class="num">0,1400</td><td>peor en train, mejor en el futuro</td></tr>
+</table>
+<p>El sobreajuste no es del algoritmo: es de la <strong>configuración</strong>. Un árbol que se
+permite crecer hasta R² 0,9999 aprendió el ruido de 2016. La regularización (poda, log del
+target) baja el train… y sube el test. Ese intercambio es <code>overfitting_underfitting</code>
+con tus números.</p>
+<div class="panel">
+  <div class="lbl">Brecha R² (train − test) por modelo · target log</div>
+  <canvas id="cvBrecha" width="880" height="300"></canvas>
+  <p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json (brechas pipeline) · 09_RESULTADOS/dashai_resultados.json (árbol run 03)]</p>
+</div>
+<details>
+  <summary>Por qué el árbol de DashAI memoriza tanto</summary>
+  <p>Un árbol sin límite de profundidad crea una hoja por caso atípico. Con train R² 0,9999
+  y MedianAbsoluteError 0,0 en entrenamiento, el modelo interpoló casi cada precio de 2016.
+  En 2017 esas mismas ramas no existen: el error se dispara a MAE 286.088. La regularización
+  del pipeline (podado + <code>log1p(Price)</code>) fuerza al árbol a generalizar: train R² baja a
+  0,7523, pero el test sube a 0,6123.</p>
+</details>
+
+<h2>6 · Regresión: de la mediana a la recta</h2>
+<p>Antes de cualquier modelo «inteligente», gánate la línea base: predecir la mediana.
+Cualquier modelo que no la supere es peor que no hacer nada. Después la regresión lineal
+(Ridge sobre <code>log1p(Price)</code>) ordena el problema: cada predictor pesa, y puedes
+leer la dirección de cada efecto.</p>
+<table>
+  <tr><th>Modelo</th><th class="num">MAE test 2017 (AUD)</th><th class="num">R² test</th></tr>
+  <tr><td>Baseline: mediana del train</td><td class="num">431.649</td><td class="num">−0,080</td></tr>
+  <tr><td>Ridge (log)</td><td class="num">275.806</td><td class="num">0,476</td></tr>
+</table>
+<div class="pred" data-correct="b">
+  <div class="q">Predicción — la mediana gana al Ridge cuando la casa está en un suburbio nuevo…</div>
+  <button data-opcion="a">Verdadero: la mediana no depende de columnas que fallen en barrios nuevos</button>
+  <button data-opcion="c">Falso: Ridge siempre gana porque es un modelo</button>
+  <button data-opcion="b">Depende del segmento; la media esconde eso: hay que mirar el error por segmento</button>
+  <div class="veredicto"></div>
+</div>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> (b) — el promedio esconde segmentos; mira el error por segmento.</p>
+  <p><strong>Resolución:</strong> el MAE del baseline en suburbio nuevo es 308.196 (mejor que el
+  conocido, 482.352), pero el Ridge log lo invierte: 207.728 en nuevo vs 303.766 en conocido.
+  Ningún modelo «gana siempre»: por eso el informe reporta MAE por segmento y no solo el global.
+  Un promedio sin segmentos te deja ciego donde más importa.</p>
+  <p><strong>Error típico:</strong> defender un solo número global. El profesor pregunta «¿y en
+  los suburbios nuevos?» — tenlo a mano. [DATITO]</p>
+  <p class="f">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · Baseline | log y Ridge | log · MAE_suburbio_*]</p>
+</details>
+
+<h2>7 · Gradient boosting: el ganador, con significancia</h2>
+<p>El ranking final (target <code>log1p(Price)</code>, 5 semillas, test 2017):</p>
+<div class="panel">
+  <div class="lbl">MAE en test 2017 por modelo (AUD) · barra verde = elegido</div>
+  <canvas id="cvMae" width="880" height="340"></canvas>
+  <p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · test2017_MAE]</p>
+</div>
+<p>HistGradientBoosting gana con MAE <strong>188.218</strong> y R² <strong>0,757</strong>. ¿Y si es ruido?
+El bootstrap sobre las predicciones responde: la mejora de HistGB sobre Random Forest es
+−18.420 AUD con IC95 [−21.152; −15.678] — el intervalo no toca el cero, p≈1,0. La mejora
+es real, no suerte del semillero.</p>
+<table>
+  <tr><th>Comparación (bootstrap)</th><th class="num">Δ MAE</th><th class="num">IC95</th><th>¿Significativa?</th></tr>
+  <tr><td>HistGB − Random Forest</td><td class="num">−18.420</td><td class="num">[−21.152; −15.678]</td><td>sí, p≈1,0</td></tr>
+  <tr><td>HistGB − Gradient Boosting</td><td class="num">−2.816</td><td class="num">[−4.470; −1.110]</td><td>sí, p=0,9995</td></tr>
+</table>
+<div class="pred" data-correct="a">
+  <div class="q">Predicción — ¿por qué un IC95 que no cruza el 0 certifica que HistGB es mejor que RF?</div>
+  <button data-opcion="a">Porque en el 95 % de las remuestras la diferencia favorece a HistGB: no es azar del semillero</button>
+  <button data-opcion="b">Porque el MAE de HistGB es menor en valor absoluto, punto</button>
+  <button data-opcion="c">Porque R² 0,757 &gt; 0,711 y eso basta para elegir</button>
+  <div class="veredicto"></div>
+</div>
+<details class="resp">
+  <summary>Respuesta correcta y cómo se resuelve</summary>
+  <p><strong>Respuesta:</strong> (a) — el intervalo entero favorece a HistGB; el azar no explica la diferencia.</p>
+  <p><strong>Resolución:</strong> el bootstrap re-muestrea las predicciones y recalcula la
+  diferencia miles de veces. Si el IC95 de esa diferencia no incluye 0, en al menos el 95 %
+  de los remuestreos HistGB fue mejor. Un MAE menor solo en el promedio podría deberse a
+  una semilla afortunada; el intervalo descarta esa explicación.</p>
+  <p><strong>Error típico:</strong> elegir modelo por el promedio de una sola corrida. Con
+  semillas (0–4) y bootstrap, la decisión sobrevive a la pregunta «¿y si otra semilla?». [DATITO]</p>
+  <p class="f">[FUENTE · Repo: 09_RESULTADOS/comparacion_estadistica.json · bootstrap_delta_MAE]</p>
+</details>
+
+<h2>8 · Qué NO se usó (y por qué)</h2>
+<ul>
+  <li><strong>Clasificación</strong> (matriz de confusión, ROC): el precio es un número continuo.
+  La clasificación la practicas en el desafío Galaxy Zoo, no aquí. Confundir MAE con exactitud
+  es un error de unidad, no de detalle.</li>
+  <li><strong>Redes neuronales y deep learning</strong>: 6.336 filas tabulares. El gradiente
+  boosting domina este régimen; una red sin más datos aporta varianza, no señal.</li>
+  <li><strong>LLM y agentes</strong>: herramientas del flujo de trabajo (como este curso las usa),
+  no modelos para predecir precios.</li>
+</ul>
+<div class="tension">Un buen repaso dice «usé esto y no esto, y sé por qué». Saber qué quedó
+fuera y argumentarlo es tan evaluable como el modelo elegido.</div>
+
+<h2>9 · La defensa de tres minutos</h2>
+<p>Guion hablado, con la cifra exacta en cada frase:</p>
+<ol class="pasos">
+  <li>«Mi caso es predecir precios de viviendas en Melbourne: entreno con 6.336 ventas de 2016
+  y predigo 7.244 de 2017, porque el uso real es predecir el futuro.»</li>
+  <li>«Elegí 12 columnas y excluí 7; la más tentadora, CouncilArea, deja 18,9 % del test sin
+  categoría conocida porque 2017 trae 14 municipios que 2016 no tenía.»</li>
+  <li>«Validé con 5 semillas solo dentro de 2016: la CV eligió el modelo, pero su MAE (159.777)
+  es optimista frente al futuro (188.218).»</li>
+  <li>«El sobreajuste lo documenté con un árbol sin regularizar: R² 0,9999 en train, 0,4521 en
+  test. Mi modelo final mantiene la brecha en 0,170.»</li>
+  <li>«El ganador es HistGradientBoosting sobre log1p(Price): MAE 188.218 AUD, R² 0,757, y la
+  mejora sobre Random Forest es significativa (IC95 que no cruza el cero). El 29,1 % del test
+  son suburbios nuevos: ahí mi MAE es 193.462 contra 186.064 en los conocidos.»</li>
+</ol>
+<p class="fuente">[FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json · comparacion_estadistica.json · experimento_councilarea_2026-09-18.json]</p>
+
+<div class="repreg">
+  <strong>Repreguntas del estilo del profesor</strong> (respóndelas sin mirar arriba):
+  <ul>
+    <li>¿Por qué no un split aleatorio con 80/20? <span class="fuente" style="color:#a8a29e">→ fuga: el uso real es temporal; el «81 %» del split aleatorio fue invalidado</span></li>
+    <li>¿Tu MAE de 188.218 es en 2016 o 2017? ¿Por qué importa la diferencia? <span class="fuente" style="color:#a8a29e">→ 2017 (test); la CV en 2016 da 159.777 y prometer esa es engañoso</span></li>
+    <li>¿Qué pasa con tu modelo en un suburbio que no existía en 2016? <span class="fuente" style="color:#a8a29e">→ MAE 193.462 vs 186.064 conocido; 29,1 % del test</span></li>
+    <li>¿Por qué HistGB y no Random Forest si «los ensambles son parecidos»? <span class="fuente" style="color:#a8a29e">→ Δ −18.420 MAE, IC95 [−21.152; −15.678], no cruza 0</span></li>
+  </ul>
+</div>
+
+<div class="peligro">
+  <strong>Errores que el formato castiga.</strong>
+  <ul>
+    <li>Citar el MAE de CV como error del modelo (159.777 ≠ error real 188.218).</li>
+    <li>Defender un número global sin segmento (suburbios nuevos, tipo de propiedad).</li>
+    <li>Elegir modelo por una corrida sin semillas ni intervalo.</li>
+    <li>Confundir «el árbol memoriza» con «el árbol es malo»: es la configuración, no el algoritmo.</li>
+    <li>Agregar columnas que no generalizan al futuro (CouncilArea: 18,9 % perdidos).</li>
+  </ul>
+</div>
+
+<div class="nota">
+  <strong>Checklist antes de la defensa.</strong>
+  <ul>
+    <li>□ Digo train 2016 / test 2017 y por qué temporal, sin que me lo pregunten.</li>
+    <li>□ Tengo las tres cifras: 188.218 · 0,757 · 29,1 %, con su mecanismo.</li>
+    <li>□ Explico la brecha de CV (159.777 → 188.218) antes de que me la repregunten.</li>
+    <li>□ Nombro el experimento CouncilArea como evidencia de criterio para excluir.</li>
+    <li>□ Mi conclusión de significancia usa el IC95, no solo el promedio.</li>
+  </ul>
+</div>
+
+<!-- datito:cierre:inicio -->
+<style>.dcierre{margin:2.4rem 0 1.2rem;padding:1.1rem 1.2rem;background:#f8fafc;border:2px solid #2563eb;border-radius:12px}.dcierre h2{margin-top:0;border:0;padding-top:0}.dcierre h3{font-size:1rem;margin:1rem 0 .3rem}.dcierre .c2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.dcierre .pf{background:#fff;border:1px dashed #d97706;border-radius:8px;padding:.7rem 1rem;margin:1rem 0}.dcierre details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0}.dcierre details.resp summary{cursor:pointer;font-weight:700;color:#065f46}.dcierre .continuar{display:inline-block;margin-top:.6rem;background:#2563eb;color:#fff;padding:.55rem 1.1rem;border-radius:8px;font-weight:700;text-decoration:none}.dcierre .apagado{color:#94a3b8}</style>
+<section class="dcierre" id="cierre-clase-19">
+<h2>Cierre de la Clase 19 · Repaso integrado: el proyecto Melbourne</h2>
+<div class="c2"><div><h3>Qué aprendiste</h3><ul><li>El split temporal manda porque el uso del modelo es predecir el futuro: 6.336 train 2016, 7.244 test 2017.</li><li>La CV dentro de 2016 elige el modelo (MAE 159.777) pero es optimista frente al test 2017 (188.218).</li><li>El sobreajuste es de la configuración: el mismo árbol pasa de brecha R² 0,5478 a 0,1400 con poda y log del target.</li></ul></div>
+<div><h3>Qué no debes confundir</h3><ul><li>MAE de CV ≠ MAE de test: uno compara modelos, el otro promete error futuro.</li><li>Un promedio global sin segmentos esconde dónde falla el modelo (suburbios nuevos: 29,1 % del test).</li><li>Mejor promedio ≠ mejor modelo: sin IC95 no sabes si es señal o semilla.</li></ul></div></div>
+<h3>Procedimiento para el papel</h3><ol><li>Abre con el caso y el split: qué predices, con qué año entrenas y con cuál evalúas.</li><li>Justifica cada exclusión de columnas con un experimento o un mecanismo.</li><li>Cierra con el modelo, su métrica en test, la significancia y el segmento donde más falla.</li></ol>
+<p><b>Viene de:</b> <a href="19_deep_learning.html">Clase 18 · Deep learning, LLM y agentes</a> · <b>Sigue:</b> <a href="../../04_EJERCICIOS/certamen_1.html">Clase 20 · Distinciones del Certamen 1</a></p>
+<p><b>Vuelve a tu activación:</b> Si el profesor te pidiera tres minutos sobre tu proyecto, ¿con qué cifra empezarías y por qué? ¿Cambiarías tu respuesta?</p>
+<div class="pf"><b>Pregunta final.</b> ¿Por qué el MAE de la validación cruzada (159.777) no es el error que le prometes a quien use el modelo?
+<details class="resp"><summary>Respuesta correcta y cómo se resuelve</summary><p>Porque la CV mide dentro de 2016; el uso real es 2017, con 29,1 % de suburbios nuevos: el error honesto es el del test temporal, 188.218. [FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json]</p>
+<p class="apagado">El cierre es una síntesis de la clase [DATITO]: cada afirmación tiene su fuente en el cuerpo de este visual. Fuente del cierre: <code>07_DATITO/clases.yaml</code>.</p></details></div>
+<a class="continuar" href="../../04_EJERCICIOS/certamen_1.html">Continuar → Clase 20 · Distinciones del Certamen 1</a>
+</section>
+<!-- datito:cierre:fin -->
+<footer>
+  Generado con template canónico Datito v1 · sin conexión ·
+  <code><!-- datito:template:v1 --></code>
+</footer>
+</main>
+
+<script>
+/* Predicciones: marca la opción elegida y contrasta con la respuesta */
+document.querySelectorAll('.pred').for(function(p){
+  var correcta = p.getAttribute('data-correct');
+  var veredicto = p.querySelector('.veredicto');
+  p.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      p.querySelectorAll('button').forEach(function(x){x.classList.remove('elegida','acierto','fallo');});
+      b.classList.add('elegida');
+      var ok = b.getAttribute('data-opcion') === correcta;
+      b.classList.add(ok ? 'acierto' : 'fallo');
+      var acierto = p.querySelector('button[data-opcion="' + correcta + '"]');
+      if (acierto) acierto.classList.add('acierto');
+      veredicto.innerHTML = (ok
+        ? '<span class="highlight">Bien: tu predicción coincide con lo que muestran los datos.</span> '
+        : '<span style="color:var(--rojo);font-weight:600">No: la cifra real contradice esa intuición.</span> ')
+        + 'Abajo está la resolución paso a paso.';
+      veredicto.classList.add('on');
+    });
+  });
+});
+
+function dibujaBarras(id, datos, opts){
+  var cv = document.getElementById(id);
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+  var margen = {izq: 190, der: 60, sup: 26, inf: 34};
+  var ancho = W - margen.izq - margen.der;
+  var alto = H - margen.sup - margen.inf;
+  var max = opts.max;
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = '13px "Segoe UI", system-ui, sans-serif';
+  /* ejes */
+  ctx.strokeStyle = '#d8d8d8';
+  ctx.fillStyle = '#666';
+  ctx.textAlign = 'center';
+  for (var g = 0; g <= opts.divisiones; g++){
+    var x = margen.izq + ancho * g / opts.divisiones;
+    ctx.beginPath(); ctx.moveTo(x, margen.sup); ctx.lineTo(x, margen.sup + alto); ctx.stroke();
+    var val = opts.min + (max - opts.min) * g / opts.divisiones;
+    ctx.fillText(opts.formato(val), x, margen.sup + alto + 20);
+  }
+  var n = datos.length;
+  var altoBarra = Math.min(34, alto / n * 0.62);
+  datos.forEach(function(d, i){
+    var y = margen.sup + alto * (i + 0.5) / n - altoBarra / 2;
+    var x0 = margen.izq + ancho * (d.v0 - opts.min) / (max - opts.min);
+    var x1 = margen.izq + ancho * (d.v1 - opts.min) / (max - opts.min);
+    ctx.fillStyle = d.color;
+    ctx.fillRect(x0, y, Math.max(2, x1 - x0), altoBarra);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.textAlign = 'right';
+    ctx.fillText(d.nombre, margen.izq - 8, y + altoBarra / 2 + 4);
+    ctx.textAlign = 'left';
+    ctx.fillText(d.etiqueta, x1 + 8, y + altoBarra / 2 + 4);
+  });
+}
+
+var AZUL = '#2563eb', ROJO = '#dc2626', VERDE = '#059669', GRIS = '#9ca3af';
+var fmt2 = function(v){ return (Math.round(v * 100) / 100).toFixed(2).replace('.', ','); };
+
+/* Brecha R² (train − test): barra desde 0 hasta la brecha */
+dibujaBarras('cvBrecha', [
+  {nombre: 'Árbol DashAI (sin regularizar)', v0: 0, v1: 0.5478, color: ROJO, etiqueta: '0,5478'},
+  {nombre: 'Random Forest', v0: 0, v1: 0.2314, color: GRIS, etiqueta: '0,2314'},
+  {nombre: 'HistGradientBoosting', v0: 0, v1: 0.1703, color: VERDE, etiqueta: '0,1703'},
+  {nombre: 'Gradient Boosting', v0: 0, v1: 0.1392, color: GRIS, etiqueta: '0,1392'},
+  {nombre: 'Árbol podado (pipeline)', v0: 0, v1: 0.1400, color: AZUL, etiqueta: '0,1400'}
+], {min: 0, max: 0.6, divisiones: 6, formato: fmt2});
+
+/* MAE test 2017 por modelo (target log) */
+dibujaBarras('cvMae', [
+  {nombre: 'Baseline mediana', v0: 0, v1: 431649, color: GRIS, etiqueta: '431.649'},
+  {nombre: 'Ridge', v0: 0, v1: 275806, color: GRIS, etiqueta: '275.806'},
+  {nombre: 'Árbol podado', v0: 0, v1: 246568, color: GRIS, etiqueta: '246.568'},
+  {nombre: 'Random Forest', v0: 0, v1: 206843, color: GRIS, etiqueta: '206.843'},
+  {nombre: 'Gradient Boosting', v0: 0, v1: 192441, color: AZUL, etiqueta: '192.441'},
+  {nombre: 'HistGradientBoosting', v0: 0, v1: 188218, color: VERDE, etiqueta: '188.218'}
+], {min: 0, max: 450000, divisiones: 5, formato: function(v){ return Math.round(v / 1000) + 'k'; }});
+</script>
+</body>
+</html>

@@ -575,7 +575,7 @@ clases:
   - n: 19
     unidad: 6
     titulo: 'Repaso integrado: el proyecto Melbourne'
-    visual: null
+    visual: 19_repaso_integrado_melbourne.html
     tipo: repaso
     conceptos: [train_validation_test, validacion_cruzada, generalizacion, overfitting_underfitting, regresion, gradient_boosting]
     objetivo: 'Explicar el proyecto Melbourne de punta a punta y defender cada decisión con sus propias cifras.'
@@ -586,11 +586,20 @@ clases:
       actividad_final: 'Defender el proyecto ante cuatro repreguntas del estilo del profesor.'
       criterio_dominio: 'Usa solo cifras verificadas (MAE 188.218, R² 0,757, 29,1 % de suburbios nuevos) y nombra el mecanismo de cada una.'
     cierre:
-      aprendiste: []
-      no_confundir: []
-      procedimiento: []
-      pregunta_final: ''
-      respuesta_final: ''
+      aprendiste:
+        - 'El split temporal manda porque el uso del modelo es predecir el futuro: 6.336 train 2016, 7.244 test 2017.'
+        - 'La CV dentro de 2016 elige el modelo (MAE 159.777) pero es optimista frente al test 2017 (188.218).'
+        - 'El sobreajuste es de la configuración: el mismo árbol pasa de brecha R² 0,5478 a 0,1400 con poda y log del target.'
+      no_confundir:
+        - 'MAE de CV ≠ MAE de test: uno compara modelos, el otro promete error futuro.'
+        - 'Un promedio global sin segmentos esconde dónde falla el modelo (suburbios nuevos: 29,1 % del test).'
+        - 'Mejor promedio ≠ mejor modelo: sin IC95 no sabes si es señal o semilla.'
+      procedimiento:
+        - 'Abre con el caso y el split: qué predices, con qué año entrenas y con cuál evalúas.'
+        - 'Justifica cada exclusión de columnas con un experimento o un mecanismo.'
+        - 'Cierra con el modelo, su métrica en test, la significancia y el segmento donde más falla.'
+      pregunta_final: '¿Por qué el MAE de la validación cruzada (159.777) no es el error que le prometes a quien use el modelo?'
+      respuesta_final: 'Porque la CV mide dentro de 2016; el uso real es 2017, con 29,1 % de suburbios nuevos: el error honesto es el del test temporal, 188.218. [FUENTE · Repo: 09_RESULTADOS/resultados_temporal.json]'
 
   - n: 20
     unidad: 6

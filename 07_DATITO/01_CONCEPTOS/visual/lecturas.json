@@ -3,7 +3,7 @@
   "semestre": "T2-2026",
   "universidad": "Universidad de Concepción",
   "total_clases": 23,
-  "lecturas_disponibles": 22,
+  "lecturas_disponibles": 23,
   "lecturas": [
     {
       "clase": 1,
@@ -94,6 +94,11 @@
       "clase": 18,
       "titulo": "Clase 18 · Deep learning, LLM y agentes",
       "href": "19_deep_learning.html"
+    },
+    {
+      "clase": 19,
+      "titulo": "Clase 19 · Repaso integrado: el proyecto Melbourne",
+      "href": "19_repaso_integrado_melbourne.html"
     },
     {
       "clase": 20,

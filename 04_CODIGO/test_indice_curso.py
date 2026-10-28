@@ -137,7 +137,6 @@ class IndiceCursoTests(unittest.TestCase):
     def test_el_contador_coincide_con_las_marcas(self):
         html = INDICE.read_text(encoding="utf-8")
         marcas = MARCA.findall(html)
-        self.assertNotIn("19", marcas)
         self.assertEqual(len(marcas), len(set(marcas)))
         self.assertIn(f'id="total-clases">{len(marcas)}</b> clases disponibles', html)
         self.assertIn("getElementById('total-clases').textContent=total", html)
