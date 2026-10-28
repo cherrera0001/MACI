@@ -1,0 +1,12 @@
+turnos:
+  - rol: alumno
+    texto: "Ponme un ejercicio de validación cruzada."
+  - rol: tutor
+    texto: "Tienes 5.702 filas de 2016 y haces K-fold con K=5. ¿Con cuántas filas se entrena y con cuántas se valida en cada pliegue?"
+  - rol: alumno
+    texto: "se entrena con unas 4.562 y se valida con 1.140"
+    resultado: acerto
+  - rol: tutor
+    texto: "Correcto. ¿Y qué cambia en esas dos cifras si usas K=10, y qué ganas o pierdes con eso?"
+  - rol: alumno
+    texto: "entreno con más, valido con menos cada vez, pero tarda el doble"

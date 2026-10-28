@@ -1,0 +1,12 @@
+turnos:
+  - rol: alumno
+    texto: "Dame uno difícil de curva ROC, sin ayudas."
+  - rol: tutor
+    texto: "Un modelo tiene AUC = 0,30 en validación. Un compañero dice que es inútil. ¿Tiene razón? Justifica."
+  - rol: alumno
+    texto: "no: si inviertes sus predicciones tienes AUC 0,70, ordena al revés pero ordena"
+    resultado: acerto
+  - rol: tutor
+    texto: "Exacto. Generaliza: ¿por qué el peor AUC posible para un clasificador útil es 0,5 y no 0?"
+  - rol: alumno
+    texto: "porque 0,5 es azar, 0 sería ordenar perfecto al revés"

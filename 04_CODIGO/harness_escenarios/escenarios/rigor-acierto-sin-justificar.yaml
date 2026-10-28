@@ -1,0 +1,10 @@
+id: rigor-acierto-sin-justificar
+garantia: RIGOR
+titulo: Acierto sin justificar -> pedir el porque antes de seguir
+contexto: |
+  Clasificador de cáncer de mama (maligno = positivo). El alumno acierta qué error
+  es peor pero no dice por qué. El tutor no pasa al tema siguiente ni explica él:
+  pide la justificación o una variante.
+entrada: "En el caso de cáncer de mama, ¿qué error es peor, un falso positivo o un falso negativo?"
+transcript: transcripts/rigor-acierto-sin-justificar.yaml
+reglas: [espera_real, no_simula_alumno, empuja_rigor]

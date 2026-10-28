@@ -23,6 +23,14 @@ contexto y no debe gastar el de la sesion de estudio.
 3. Conservar `<!-- datito:template:v1 -->` y el bloque `:root{…}`
 4. Rellenar título + cuerpo; **no** inventar CSS, gradientes ni CDN
 
+**Laboratorio v2 (REQ-TUT-012…017)** — si el visual tiene controles, agrega
+`<!-- datito:template:v2 -->` y usa el núcleo: predicción `data-predice` antes del
+primer control, controles en `data-requiere`, cada `details.resp` con su
+`data-intento`, niveles `details.nivel` (el 2 cerrado), y secciones `#decision` y
+`#codigo`. Deja vacíos los marcadores `datito:nucleo` y corre
+`python 03_SCRIPTS/sincronizar_nucleo.py`; el contrato lo revisa
+`verificar_visuales.py`. Modelo de referencia: `20_llm.html`.
+
 **Prohibido (ya falló 2 veces):** `cdn.jsdelivr` / Chart.js remoto / `#667eea` / `#764ba2`.
 
 Gate de KEEP:

@@ -124,3 +124,39 @@ def test_politica_y_validador_comparten_esquema():
         presentes = [n for n in esquema.EVIDENCIAS if c.evidencias[n]]
         esquema.exigir_estado(c.estado, presentes, 1, "2026-10-28", c.id)
     assert c.estado == "DOMINADO"
+
+
+BLOQUE_LAB = """Mira lo que hice en el lab:
+DATITO-EVENTOS v1 · 20_llm
+{"tipo":"prediccion","id":"p1","texto":"la barra de imagen crece","ts":"2026-10-28T12:00:00"}
+{"tipo":"observacion","id":"A","texto":"T=2: la más alta «imagen» 15 %","ts":"2026-10-28T12:01:00"}
+{"tipo":"observacion","id":"A","texto":"corte del portap
+"""
+
+
+def test_leer_eventos_tolera_un_bloque_cortado():
+    from datito import esquema
+    pagina, eventos = esquema.leer_eventos(BLOQUE_LAB)
+    assert pagina == "20_llm"
+    assert [e["tipo"] for e in eventos] == ["prediccion", "observacion"]
+    assert esquema.leer_eventos("sin bloque") is None
+
+
+def test_contraste_toma_la_observacion_posterior_a_la_ultima_prediccion():
+    from datito import esquema
+    evs = [{"tipo": "observacion", "id": "A", "texto": "antes"},
+           {"tipo": "prediccion", "id": "p1", "texto": "vieja"},
+           {"tipo": "prediccion", "id": "p2", "texto": "nueva"},
+           {"tipo": "observacion", "id": "B", "texto": "despues"}]
+    pred, obs = esquema.contraste(evs)
+    assert (pred["texto"], obs["texto"]) == ("nueva", "despues")
+    assert esquema.contraste(evs[:3]) is None
+
+
+def test_evento_de_lab_se_contrasta_y_se_pregunta_sin_explicar():
+    pol = nueva()
+    accion = pol.responder(BLOQUE_LAB)
+    assert accion.nombre == "PREGUNTAR"
+    assert "la barra de imagen crece" in accion.texto and "15 %" in accion.texto
+    assert accion.texto.rstrip().endswith("?")
+    assert "SOLUCION" not in accion.texto

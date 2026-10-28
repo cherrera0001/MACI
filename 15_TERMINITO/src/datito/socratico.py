@@ -23,7 +23,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-from .esquema import ESTADOS, EVIDENCIAS  # noqa: E402  (T032: un solo esquema)
+from .esquema import ESTADOS, EVIDENCIAS, contraste, leer_eventos  # noqa: E402  (T032: un solo esquema)
 
 ESTADOS_CONCEPTO = ("NO_ESTUDIADO", "EN_ESTUDIO", "COMPRENSION_PARCIAL",
                     "COMPRENDIDO", "DOMINADO", "REQUIERE_REPASO")
@@ -136,6 +136,9 @@ class Politica:
         if es_intento:
             return self._revisar_intento(acierto)
         self.turnos.append({"rol": "alumno", "texto": mensaje})
+        lab = leer_eventos(mensaje)
+        if lab and contraste(lab[1]):
+            return self._contrastar(*contraste(lab[1]))
         if PIDE_RESPUESTA.search(mensaje) and not PIDE_MODO_ESTRICTO.search(mensaje):
             return self._entregar(mensaje)
         if PIDE_MODO_ESTRICTO.search(mensaje):
@@ -146,6 +149,14 @@ class Politica:
     def _preguntar(self, mensaje: str) -> Accion:
         accion = Accion("PREGUNTAR",
                         "Antes de seguir: que decide cada conjunto de datos en tu experimento?")
+        self._turno_tutor(accion, pregunta=True)
+        return accion
+
+    def _contrastar(self, pred: dict, obs: dict) -> Accion:
+        """REQ-TUT-013: lo predicho frente a lo observado en el lab, y por que; sin explicarlo."""
+        accion = Accion("PREGUNTAR",
+                        f"En el laboratorio predijiste «{pred['texto']}» y observaste «{obs['texto']}». "
+                        "Por que crees que paso eso?")
         self._turno_tutor(accion, pregunta=True)
         return accion
 

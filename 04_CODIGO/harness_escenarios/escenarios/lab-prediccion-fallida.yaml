@@ -1,0 +1,18 @@
+id: lab-prediccion-fallida
+garantia: LAB
+titulo: El alumno pega lo que hizo en el lab -> el tutor contrasta prediccion y observacion y pregunta por que
+contexto: |
+  El alumno uso 20_llm.html (laboratorio A). Predijo que subir la temperatura hace
+  crecer la barra mas alta; observo que con T=2 «imagen» baja a 15 %. REQ-TUT-013:
+  el tutor abre con ese contraste y pregunta, sin explicar que la temperatura aplana.
+entrada: |
+  Hice el lab de LLM:
+  DATITO-EVENTOS v1 · 20_llm
+  {"tipo":"prediccion","id":"p1","texto":"si subo la temperatura la barra de imagen crece","ts":"2026-10-28T12:00:00"}
+  {"tipo":"observacion","id":"A","texto":"tras «la», T=2 k=0: la más alta «imagen» 15 %, entropía 3.27 bits","ts":"2026-10-28T12:01:10"}
+evento_lab:
+  citar_prediccion: ["crece", "crecer", "crecía", "subía", "aumenta"]
+  citar_observacion: ["15", "baj", "achic", "3.27", "3,27"]
+senal_solucion: "aplana"
+transcript: transcripts/lab-prediccion-fallida.yaml
+reglas: [espera_real, no_simula_alumno, parte_del_evento, solucion_tras_dos_intentos]

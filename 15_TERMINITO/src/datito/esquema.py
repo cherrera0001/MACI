@@ -104,3 +104,50 @@ def exigir_estado(estado, presentes, sesiones, ultima_verificacion, cid):
     elif estado == "REQUIERE_REPASO":
         exige(presentes and ultima_verificacion, cid,
               "REQUIERE_REPASO exige al menos una evidencia y ultima_verificacion")
+
+
+# --- eventos de los laboratorios v2 (REQ-TUT-013) ---------------------------
+# El nucleo de 07_DATITO/01_CONCEPTOS/visual/ (03_SCRIPTS/plantillas/nucleo_v2.js)
+# exporta lo que el alumno hizo como un bloque que se pega en el chat:
+#   DATITO-EVENTOS v1 · 20_llm
+#   {"tipo":"prediccion","id":"p1","texto":"...","ts":"..."}
+TIPOS_EVENTO = {"prediccion", "intento", "pidio_respuesta", "observacion", "nivel"}
+CABECERA_EVENTOS = re.compile(r"DATITO-EVENTOS v1 · (\S+)")
+
+
+def leer_eventos(texto):
+    """(pagina, [evento]) del bloque DATITO-EVENTOS de un mensaje; None si no hay bloque.
+
+    Las lineas que no son un evento valido se descartan: el bloque viene del
+    portapapeles del alumno y puede llegar cortado."""
+    import json
+    m = CABECERA_EVENTOS.search(texto or "")
+    if not m:
+        return None
+    eventos = []
+    for linea in texto[m.end():].splitlines():
+        linea = linea.strip()
+        if not linea.startswith("{"):
+            continue
+        try:
+            ev = json.loads(linea)
+        except ValueError:
+            continue
+        if isinstance(ev, dict) and ev.get("tipo") in TIPOS_EVENTO and isinstance(ev.get("id"), str):
+            if ev["tipo"] != "pidio_respuesta" and ev["tipo"] != "nivel" and not isinstance(ev.get("texto"), str):
+                continue
+            eventos.append(ev)
+    return m.group(1), eventos
+
+
+def contraste(eventos):
+    """(prediccion, observacion) a contrastar: la ultima prediccion y la primera
+    observacion posterior a ella. None si falta alguna."""
+    pred = None
+    for i, ev in enumerate(eventos):
+        if ev["tipo"] == "prediccion":
+            pred = (i, ev)
+    if pred is None:
+        return None
+    obs = next((ev for ev in eventos[pred[0] + 1:] if ev["tipo"] == "observacion"), None)
+    return (pred[1], obs) if obs else None

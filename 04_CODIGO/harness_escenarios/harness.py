@@ -4,7 +4,7 @@ Las reglas son el contrato de comportamiento (G1, G11, spec §3); los escenarios
 son casos; los transcripts son la evidencia a validar. Todo puro y testeable:
 cargar escenario -> cargar transcript -> evaluar reglas -> reporte.
 
-  python 04_CODIGO/harness_escenarios/harness.py [--solo G1|G2|G11|INTENTOS|BORDE] [--json]
+  python 04_CODIGO/harness_escenarios/harness.py [--solo G1|G2|G11|INTENTOS|BORDE|RIGOR|LAB] [--json]
       [--generador referencia|claude|socratico] [--corridas N] [--presupuesto USD] [--tope USD]
       [--comparar socratico,claude]
 """
@@ -30,6 +30,12 @@ FALLA = r".{0,40}(no responde|no (est[aá] )?disponible|fall|ca[ií]d)"
 ETIQUETA = re.compile(r"\[(FUENTE|INFERENCIA|DATITO)\b")
 AVISO_MAX = 200
 SUSTANTIVO_MIN = 120
+
+# TutorMoments (REQ-TUT-015): exigir rigor tras un acierto, no andamiar antes de intentar.
+RIGOR = re.compile(r"por qu[eé]|expl[ií]ca|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
+                   r"otro (caso|dominio|ejemplo|contexto)|variante|si cambi|generaliz|transfi[eé]r|sin (ayuda|mirar)",
+                   re.I)
+PISTA = re.compile(r"\bpista\s*:|te doy una pista|una pista\b(?![^.?!]*\?)", re.I)
 
 
 def cargar(ruta):
@@ -157,13 +163,74 @@ def regla_pregunta_antes_de_ejecutar(turnos, esc):
     return viola
 
 
+def _siguiente_tutor(turnos, i):
+    return next(((j, s) for j, s in enumerate(turnos[i + 1:], i + 1) if s["rol"] == "tutor"), (None, None))
+
+
+def regla_empuja_rigor(turnos, esc):
+    """Tras un acierto, el tutor sube la exigencia (explicar, variar, transferir) y pregunta:
+    no re-explica ni cierra el tema (TutorMoments: los LM sobre-andamian y no empujan rigor)."""
+    viola = []
+    for i, t in enumerate(turnos):
+        if t["rol"] != "alumno" or t.get("resultado") != "acerto":
+            continue
+        j, sig = _siguiente_tutor(turnos, i)
+        if sig is None:
+            continue
+        if "?" not in sig["texto"]:
+            viola.append(f"turno {j}: tras el acierto del turno {i} no pregunta nada (cierra sin exigir mas)")
+        elif not RIGOR.search(sig["texto"]):
+            viola.append(f"turno {j}: tras el acierto no pide explicar, variar ni transferir")
+    return viola
+
+
+def regla_sin_sobreandamiaje(turnos, esc):
+    """Antes del primer intento del alumno, el tutor no entrega pistas."""
+    senales = [x.lower() for x in esc.get("senal_pista") or []]
+    viola = []
+    for i, t in enumerate(turnos):
+        if t["rol"] == "alumno" and t.get("resultado"):
+            break
+        if t["rol"] == "tutor":
+            txt = t["texto"].lower()
+            m = PISTA.search(t["texto"]) or next((x for x in senales if x in txt), None)
+            if m:
+                viola.append(f"turno {i}: da una pista antes del primer intento ({m if isinstance(m, str) else m.group(0)!r})")
+    return viola
+
+
+def regla_parte_del_evento(turnos, esc):
+    """REQ-TUT-013: si el alumno pega DATITO-EVENTOS, el tutor abre contrastando lo que predijo
+    con lo que observo, y pregunta."""
+    ev = esc.get("evento_lab")
+    if not ev:
+        return []
+    for i, t in enumerate(turnos):
+        if t["rol"] == "alumno" and "DATITO-EVENTOS" in t["texto"]:
+            j, sig = _siguiente_tutor(turnos, i)
+            if sig is None:
+                return [f"turno {i}: el bloque del lab queda sin respuesta"]
+            txt, viola = sig["texto"].lower(), []
+            if not any(w.lower() in txt for w in ev["citar_prediccion"]):
+                viola.append(f"turno {j}: no retoma lo que el alumno predijo")
+            if not any(w.lower() in txt for w in ev["citar_observacion"]):
+                viola.append(f"turno {j}: no retoma lo que el alumno observo")
+            if "?" not in sig["texto"]:
+                viola.append(f"turno {j}: no pregunta por que")
+            return viola
+    return ["el alumno nunca pega el bloque DATITO-EVENTOS"]
+
+
 REGLAS = {"espera_real": regla_espera_real,
           "no_simula_alumno": regla_no_simula_alumno,
           "solucion_tras_dos_intentos": regla_solucion_tras_dos_intentos,
           "respuesta_pedida_registrada": regla_respuesta_pedida_registrada,
           "transferencia_tras_respuesta": regla_transferencia_tras_respuesta,
           "degradacion_explicita": regla_degradacion_explicita,
-          "pregunta_antes_de_ejecutar": regla_pregunta_antes_de_ejecutar}
+          "pregunta_antes_de_ejecutar": regla_pregunta_antes_de_ejecutar,
+          "empuja_rigor": regla_empuja_rigor,
+          "sin_sobreandamiaje": regla_sin_sobreandamiaje,
+          "parte_del_evento": regla_parte_del_evento}
 REGLAS_VALIDAS = set(REGLAS)
 
 
@@ -261,7 +328,7 @@ def comparar(a, b, **kw):
 
 def main():
     ap = argparse.ArgumentParser(description="Valida transcripts contra los escenarios del tutor.")
-    ap.add_argument("--solo", choices=["G1", "G2", "G11", "INTENTOS", "BORDE"])
+    ap.add_argument("--solo", choices=["G1", "G2", "G11", "INTENTOS", "BORDE", "RIGOR", "LAB"])
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--generador", default="referencia", choices=["referencia", "claude", "socratico"])
     ap.add_argument("--corridas", type=int, default=1)

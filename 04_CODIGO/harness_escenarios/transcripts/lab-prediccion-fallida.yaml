@@ -1,0 +1,11 @@
+turnos:
+  - rol: alumno
+    texto: |
+      Hice el lab de LLM:
+      DATITO-EVENTOS v1 · 20_llm
+      {"tipo":"prediccion","id":"p1","texto":"si subo la temperatura la barra de imagen crece","ts":"2026-10-28T12:00:00"}
+      {"tipo":"observacion","id":"A","texto":"tras «la», T=2 k=0: la más alta «imagen» 15 %, entropía 3.27 bits","ts":"2026-10-28T12:01:10"}
+  - rol: tutor
+    texto: "Predijiste que con más temperatura la barra de «imagen» crecía, y viste que bajó a 15 %. ¿Qué crees que le hace la temperatura a las diferencias entre las palabras?"
+  - rol: alumno
+    texto: "¿las achica? las raras ganan algo"

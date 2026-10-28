@@ -113,12 +113,58 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
         tr["turnos"][1]["texto"] = "¿Qué ganas al subir k? Responde con tu elección y una frase."
         self.assertEqual([], evaluar(esc, tr))
 
+    # REQ-TUT-015 (TutorMoments): rigor tras acertar, sin pistas antes de intentar
+    def test_rigor_detecta_reexplicar_tras_el_acierto(self):
+        def muta(turnos):
+            turnos[3]["texto"] = "Exacto. Recuerda: sobreajustar es memorizar el ruido del entrenamiento."
+        self._viola("rigor-acierto-justificado", muta, "empuja_rigor")
+
+    def test_rigor_detecta_pregunta_sin_exigencia(self):
+        def muta(turnos):
+            turnos[3]["texto"] = "Bien. ¿Seguimos con el siguiente tema?"
+        self._viola("rigor-acierto-sin-justificar", muta, "empuja_rigor")
+
+    def test_sobreandamiaje_detecta_pista_antes_del_intento(self):
+        def muta(turnos):
+            turnos[1]["texto"] = "Recuerda que K-fold deja un pliegue fuera. ¿Con cuántas filas entrenas?"
+        self._viola("andamiaje-ejercicio-nuevo", muta, "sin_sobreandamiaje")
+
+    def test_sobreandamiaje_detecta_pista_explicita(self):
+        def muta(turnos):
+            turnos[1]["texto"] = "Pista: compara con 0,5. AUC = 0,30, ¿es inútil?"
+        self._viola("andamiaje-pide-dificil", muta, "sin_sobreandamiaje")
+
+    def test_ofrecer_una_pista_no_es_darla(self):
+        esc, tr = transcript("andamiaje-ejercicio-nuevo")
+        esc = copy.deepcopy(esc)
+        esc["senal_pista"] = []
+        tr["turnos"][1]["texto"] += " Si te trabas, ¿quieres una pista?"
+        self.assertEqual([], evaluar(esc, tr))
+
+    def test_pista_despues_del_intento_no_viola(self):
+        esc, tr = transcript("andamiaje-ejercicio-nuevo")
+        tr["turnos"][3]["texto"] = "Pista: K=10 deja 570 por pliegue. ¿Qué cambia?"
+        self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[sin_sobreandamiaje]")])
+
+    # REQ-TUT-013: el lab conversa con el tutor
+    def test_evento_detecta_tutor_que_ignora_el_lab(self):
+        def muta(turnos):
+            turnos[1]["texto"] = "Hoy veamos la temperatura. ¿Qué crees que controla?"
+        self._viola("lab-prediccion-fallida", muta, "parte_del_evento")
+
+    def test_evento_detecta_tutor_que_explica_en_vez_de_preguntar(self):
+        def muta(turnos):
+            turnos[1]["texto"] = ("Predijiste que crecía y bajó a 15 %: la temperatura aplana la distribución. "
+                                  "¿Seguimos?")
+        self._viola("lab-prediccion-fallida", muta, "solucion_tras_dos_intentos")
+
+
 class EscenariosSanosTests(unittest.TestCase):
     """Los transcripts de referencia cumplen sus propias reglas y el reporte esta en 100%."""
 
     def test_todos_los_escenarios_cumplen(self):
         filas, _ = reporte()
-        self.assertGreaterEqual(len(filas), 18)
+        self.assertGreaterEqual(len(filas), 23)
         malos = [f["id"] for f in filas if not f["ok"]]
         self.assertEqual(malos, [], f"escenarios de referencia con violaciones: {malos}")
 
@@ -132,6 +178,8 @@ class EscenariosSanosTests(unittest.TestCase):
         self.assertGreaterEqual(len(por_garantia.get("G11", [])), 4)
         self.assertGreaterEqual(len(por_garantia.get("INTENTOS", [])), 2)
         self.assertGreaterEqual(len(por_garantia.get("BORDE", [])), 4)
+        self.assertGreaterEqual(len(por_garantia.get("RIGOR", [])), 4)
+        self.assertGreaterEqual(len(por_garantia.get("LAB", [])), 1)
 
     def test_schema_rechaza_regla_desconocida(self):
         esc, tr = transcript("g1-espera-basica")

@@ -1,0 +1,12 @@
+turnos:
+  - rol: alumno
+    texto: "En el caso de cáncer de mama, ¿qué error es peor, un falso positivo o un falso negativo?"
+  - rol: tutor
+    texto: "Tú primero: ¿cuál crees que es peor en este caso?"
+  - rol: alumno
+    texto: "el falso negativo"
+    resultado: acerto
+  - rol: tutor
+    texto: "Bien. ¿Por qué, en términos de lo que le pasa a la paciente en cada caso?"
+  - rol: alumno
+    texto: "porque se va a la casa con un tumor maligno sin tratar"

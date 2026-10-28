@@ -1,0 +1,12 @@
+turnos:
+  - rol: alumno
+    texto: "P 0,15/0,92 · Q 0,71/0,78 (MAE train/validación). ¿Cuál sobreajusta?"
+  - rol: tutor
+    texto: "Antes de elegir: ¿qué esperas ver en el error de train y en el de validación de un modelo que memorizó?"
+  - rol: alumno
+    texto: "P sobreajusta: error bajísimo en train (0,15) y muy alto en validación (0,92), memorizó. Q tiene los dos parecidos, generaliza mejor."
+    resultado: acerto
+  - rol: tutor
+    texto: "Exacto. Ahora sin ayuda: si a P le das el doble de datos de entrenamiento, ¿qué esperas que pase con sus dos errores y por qué?"
+  - rol: alumno
+    texto: "el de validación debería bajar y el de train subir un poco"
