@@ -225,9 +225,10 @@ Los siguientes directorios NO se numeran (son módulos modernos, no funcionales)
 | `15_TERMINITO/` | Motor Datito 1.0 (MVP) | Moderno, fuera de 00-10 |
 | `.github/` | Workflows, CI/CD, templates | Especial, fuera de 00-10 |
 
-ADR-004 sigue marcada como PROPUESTA en `docs/adr/ADR-004-estructura-destino.md`;
-la tabla lista solo directorios que existen en disco. La ratificación formal de
-la ADR es trabajo pendiente (specs/002-evolucion-app-tutor, T014).
+ADR-004 quedó resuelta el 2026-10-27 como **no ejecutada** (la reorganización
+total que proponía nunca ocurrió): `docs/adr/ADR-004-estructura-destino.md`. La
+tabla lista solo directorios que existen en disco; para la estructura vigente
+manda el disco y esta sección.
 
 **Regla para nuevos archivos:** Verificar que FUENTES coincidan antes de crear:
 1. Leer esta sección (Convenciones)
