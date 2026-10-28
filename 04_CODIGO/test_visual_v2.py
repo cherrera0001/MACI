@@ -33,6 +33,13 @@ class ContratoV2Tests(unittest.TestCase):
     def test_lab_llm_cumple(self):
         self.assertEqual([], self.fallos(self.t))
 
+    def test_todos_los_visuales_v2_cumplen(self):
+        paginas = sincronizar_nucleo.paginas_v2()
+        self.assertGreaterEqual(len(paginas), 2)  # 20_llm, 21_agentes
+        for ruta in paginas:
+            t = Path(ruta).read_text(encoding="utf-8")
+            self.assertEqual([], revisar_v2(Path(ruta).name, t, self.nucleo), ruta)
+
     def test_v1_no_se_revisa(self):
         self.assertEqual([], revisar_v2("x.html", "<!-- datito:template:v1 --><details class=\"resp\">", self.nucleo))
 

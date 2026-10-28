@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<!-- datito:template:v2 -->
+<title>Agentes de IA · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .flujo{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:1rem 0}
+  .flujo a{background:#fff;border:1px solid var(--linea);border-radius:7px;padding:.35rem .7rem;color:var(--tinta);text-decoration:none;font-size:.9rem}
+  .flujo span.f{color:var(--suave)}
+  .ctl{display:grid;grid-template-columns:9rem 1fr 3.5rem;gap:.4rem .8rem;align-items:center;margin:.5rem 0}
+  .ctl>*{min-width:0;overflow-wrap:anywhere}
+  @media (max-width:520px){.ctl{grid-template-columns:1fr}.ctl select{width:100%}}
+  .gen{font-family:ui-monospace,monospace;background:var(--fondo);padding:.6rem .8rem;border-radius:7px;min-height:2.4rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,nav.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}nav.pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;font:14px/1.5 "Segoe UI",system-ui,sans-serif}nav.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}.fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}pre{white-space:pre-wrap}.leccion-top,nav.pasos{flex-wrap:wrap}}</style>
+
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Agentes de IA</b></span> · <span class="et">viene de</span><a href="20_llm.html">Modelos de lenguaje (LLM)</a> · <span class="et">habilita</span>—</div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 0 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3d">C3 P3D</a></div>
+<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 2:45:33–2:54:43 · profesor — definicion, mecanismo de herramientas, multiagente, responsabilidad<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:45:33]</span></li><li><b>Clase del 21-ago</b> · 3:04:17–3:05:41 · profesor — uso autonomo del computador; agentes multimodales<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 3:04:17]</span></li><li><b>Clase del 31-jul</b> · 1:21:54–1:23:15 · profesor — un agente con un LLM de base<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 1:21:54]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+<h1>Agentes de IA: el bucle que un LLM solo no cierra</h1>
+<p class="sub">Laboratorio · Clase 18 · Deep learning, LLM y agentes · el agente que se estudia es este mismo tutor</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Distinguir un LLM de un agente por el bucle cerrado (acción, observación del
+  resultado, siguiente paso), nombrar las cuatro piezas de un agente en un sistema real y decidir qué control ponerle a un
+  agente que escribe sobre tus datos.
+</div>
+
+<h2 id="pregunta">0 · Antes de empezar</h2>
+<div class="pred">
+  <div class="q">Este tutor lee tus transcripciones y tu progreso, decide su próxima acción y escribe en archivos. ¿Qué lo hace un agente y no simplemente un chatbot con documentos adjuntos?</div>
+  <div class="intento" data-intento="q0"><textarea placeholder="Tu respuesta, aunque sea a medias"></textarea></div>
+</div>
+
+<div class="cita">el agente tiene por detrás o dentro de la gente acceso a una LLM que genera texto y además tienen memoria tiene acceso a herramientas y tienen los objetivos súper claros
+  <span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:49:30–2:49:46] · la transcripción automática escribe «la gente» por «el agente»</span></div>
+
+<p class="lbl">El bucle (pasa el cursor: cada etapa se ilumina en el simulador)</p>
+<div class="flujo" aria-label="bucle de un agente">
+  <a href="#lab-bucle" data-enlace="percibe">percibe</a><span class="f">→</span>
+  <a href="#lab-bucle" data-enlace="decide">decide</a><span class="f">→</span>
+  <a href="#lab-bucle" data-enlace="actua">actúa con una herramienta</a><span class="f">→</span>
+  <a href="#lab-bucle" data-enlace="observa">observa el resultado</a><span class="f">→</span>
+  <a href="#lab-bucle" data-enlace="sigue">sigue generando</a><span class="f">↺</span>
+</div>
+
+<h2 id="lab-bucle">1 · Laboratorio · Una vuelta del bucle de Datito</h2>
+<p>Le escribes a Datito: <em>«dame la respuesta de la P8 del Certamen 2»</em>. El simulador muestra, paso a paso, qué genera
+el modelo y qué herramienta usa. Los archivos y las reglas son los reales del repositorio. [DATITO]</p>
+
+<div class="predice" data-predice="p1">
+  <p class="lbl-pred">Predice antes de usar el simulador</p>
+  <p>Si a Datito le quitas las herramientas y queda solo el LLM, ¿qué pasos del bucle desaparecen? ¿Qué le pasa a la
+  respuesta que te da?</p>
+  <textarea placeholder="Mi predicción…"></textarea>
+  <button>Registrar predicción</button>
+</div>
+
+<div class="panel" data-requiere="p1">
+  <div class="ctl"><label for="modo">Datito con</label>
+    <select id="modo"><option value="agente">herramientas y memoria (agente)</option><option value="llm">solo el LLM</option></select><span></span></div>
+  <button id="bPaso">Siguiente paso</button><button id="bTodo" class="alt">Ver la vuelta completa</button><button id="bReinicia" class="alt">Reiniciar</button>
+  <table id="pasos"><thead><tr><th>Etapa</th><th>Qué genera el modelo</th><th>Herramienta y resultado</th></tr></thead><tbody></tbody></table>
+  <p id="resumen" class="fuente"></p>
+</div>
+
+<details class="nivel" data-nivel="1" id="n1-piezas">
+  <summary>Nivel 1 · Las cuatro piezas del profesor, en archivos de este repositorio</summary>
+  <table>
+    <tr><th>Pieza (2:49:30)</th><th>En Datito</th></tr>
+    <tr><td>Un LLM que genera texto</td><td>Claude cuando usas <code>/datito</code>; un modelo local de Ollama en <code>15_TERMINITO/src/datito/llm.py</code></td></tr>
+    <tr><td>Instrucciones («tú eres un agente que…», 2:49:54)</td><td><code>.claude/skills/datito/SKILL.md</code>: lo escribiste tú</td></tr>
+    <tr><td>Memoria</td><td><code>07_DATITO/progreso.yaml</code>, <code>dudas.yaml</code>, <code>errores_conceptuales.yaml</code> y la bitácora</td></tr>
+    <tr><td>Herramientas</td><td>Leer archivos, escribir <code>dudas.yaml</code>, el índice de transcripciones y otro agente: <code>/datito-visual</code>, que construye los visuales en su propio contexto</td></tr>
+    <tr><td>Objetivos claros</td><td>El contrato G1–G14, revisado por <code>03_SCRIPTS/verificar_contrato.py</code></td></tr>
+  </table>
+</details>
+<details class="nivel" data-nivel="2" id="n2-palabra">
+  <summary>Nivel 2 · La «palabra especial» existe: se puede leer</summary>
+  <p>El profesor explica que el agente, mientras predice la siguiente palabra, genera una palabra especial que llama a la
+  herramienta, recibe la respuesta y sigue prediciendo
+  [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44–2:51:08].
+  En Datito esa palabra especial es un bloque <code>tool_use</code> dentro del flujo que devuelve <code>claude -p</code>.
+  El harness lo lee en <code>04_CODIGO/harness_escenarios/generadores/claude_cli.py</code> y lo clasifica: escribir
+  <code>dudas.yaml</code> es <code>duda:registrada</code>, un Bash que solo lee es <code>lee:Bash</code> y cualquier otro es
+  <code>ejecuta:Bash</code>. Con eso la regla G2 sabe si el tutor corrió un experimento antes de preguntarte. [DATITO]</p>
+</details>
+
+<div class="peligro"><strong>Lo que un LLM solo no puede.</strong> Sin herramientas, el modelo no sabe el clima de mañana ni lo
+que dice tu archivo: genera una palabra, otra y otra, y si no sabe, inventa. A eso se le llama alucinar
+[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:46:05–2:46:27].</div>
+
+<h2 id="clasificar">2 · Clasifica: ¿LLM o agente?</h2>
+<ol class="pasos">
+  <li>Un LLM al que le pegas un PDF dentro del mensaje y le pides un resumen.</li>
+  <li>Un modelo que, a mitad de la respuesta, genera un token especial que llama a una calculadora y sigue con el resultado.</li>
+  <li>Datito cuando registra tu duda en <code>dudas.yaml</code> y después te hace una pregunta de transferencia.</li>
+  <li>El autocompletar del teclado del teléfono.</li>
+</ol>
+<div class="pred">
+  <div class="q">Para cada uno: ¿LLM (o modelo de lenguaje) o agente? Nombra qué parte del bucle tiene o le falta.</div>
+  <div class="intento" data-intento="q1"><textarea placeholder="1: … 2: … 3: … 4: …"></textarea></div>
+  <button class="pedir" data-intento="q1">Dame la respuesta</button>
+  <details class="resp" data-intento="q1">
+    <summary>Respuesta y resolución</summary>
+    <p><strong>Respuesta:</strong> 1, LLM; 2, agente; 3, agente; 4, modelo de lenguaje, no agente.</p>
+    <p><strong>Resolución:</strong> el PDF pegado es más contexto para predecir palabras; no hay acción ni resultado que vuelva.
+    La calculadora sí cierra el bucle: acción, resultado, siguiente paso
+    [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:50:44–2:51:08].
+    Datito escribe en un archivo, recibe la confirmación de la herramienta y sigue. El teclado solo predice la siguiente
+    palabra, igual que el juguete de <a href="20_llm.html">20 · Modelos de lenguaje</a>.</p>
+    <p><strong>Error típico:</strong> llamar «agente» a cualquier sistema que lee documentos. Leer un documento pegado no es
+    actuar: falta que el resultado de una acción vuelva y condicione lo que viene.</p>
+  </details>
+</div>
+
+<h2 id="decision">3 · Decisión: un agente que escribe sobre tus datos</h2>
+<p>Propuesta: que Datito marque por su cuenta un concepto como <strong>DOMINADO</strong> en <code>progreso.yaml</code> cuando
+crea que ya lo dominas.</p>
+<div class="pred">
+  <div class="q">¿Lo dejarías? ¿Qué control le pondrías, y quién responde si se equivoca?</div>
+  <div class="intento" data-intento="q2"><textarea placeholder="Lo dejaría / no, porque … El control sería … Responde …"></textarea></div>
+  <button class="pedir" data-intento="q2">Dame la respuesta</button>
+  <details class="resp" data-intento="q2">
+    <summary>Respuesta y resolución</summary>
+    <p><strong>Respuesta:</strong> solo con un auditor que no sea el mismo agente, y la responsabilidad sigue siendo tuya,
+    porque tú diseñaste el agente.</p>
+    <p><strong>Resolución:</strong> el profesor describe cómo se reduce la alucinación en funciones críticas: otro agente
+    revisa la tarea y da el visto bueno, aunque igual se puede colar un error
+    [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:53:37–2:54:19],
+    y deja abierta la pregunta de quién responde por las fallas (2:54:25–2:54:33). En Datito el auditor ya existe:
+    <code>exigir_estado</code> en <code>15_TERMINITO/src/datito/esquema.py</code> rechaza un DOMINADO sin las cuatro
+    evidencias, y el harness revisa el comportamiento en 23 escenarios. [DATITO]</p>
+    <p><strong>Error típico:</strong> pensar que basta con escribir «no te equivoques» en las instrucciones. Una instrucción
+    no es un control: el control es algo externo que puede decir que no.</p>
+  </details>
+</div>
+
+<h2 id="codigo">4 · Audita a tu agente</h2>
+<p>Estos comandos revisan a Datito desde afuera. Los corres tú (G2).</p>
+<div class="ecu"><div class="f">python3 04_CODIGO/harness_escenarios/harness.py --solo G11<br>python3 03_SCRIPTS/verificar_contrato.py</div>
+<p>El primero reproduce las conversaciones de los escenarios G11 y comprueba cada regla. El segundo revisa que las
+instrucciones de la skill sigan diciendo lo que el contrato exige. [FUENTE · Repo: 04_CODIGO/harness_escenarios/harness.py]</p></div>
+
+<h2 id="vuelta">5 · Vuelve a tu primera respuesta</h2>
+<div class="pred">
+  <div class="q">Relee lo que escribiste al empezar y escribe la versión nueva.</div>
+  <div class="intento" data-intento="q0b"><textarea placeholder="Mi respuesta ahora"></textarea></div>
+  <button class="pedir" data-intento="q0b">Dame la respuesta</button>
+  <details class="resp" data-intento="q0b">
+    <summary>Una respuesta completa</summary>
+    <p><strong>Respuesta:</strong> el bucle cerrado. Un chatbot con documentos adjuntos solo genera texto a partir de lo que
+    le pegaste. Datito, además, actúa con herramientas (lee tu progreso, escribe tus dudas), recibe el resultado de esa
+    acción y lo usa para decidir el paso siguiente. Además guarda memoria entre sesiones y persigue objetivos explícitos,
+    el contrato.</p>
+    <p><strong>Resolución:</strong> son las piezas del profesor
+    [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:47:31–2:47:51]
+    y el simulador de la sección 1 en modo «solo el LLM».</p>
+    <p><strong>Error típico:</strong> responder «porque usa un LLM más grande». El tamaño no lo hace agente; el bucle sí.</p>
+  </details>
+</div>
+
+<div class="vecino">Este laboratorio amplía la sección <a href="19_deep_learning.html#agentes">agentes de la clase 18</a>.
+El concepto anterior es <a href="20_llm.html">20 · Modelos de lenguaje</a>.</div>
+
+<h2 id="para-datito">Para Datito</h2>
+<p>Copia el bloque y pégalo en el chat: Datito abrirá comparando lo que predijiste con lo que observaste.</p>
+<pre id="datito-export"></pre>
+<button id="datito-copiar">Copiar para Datito</button><button id="datito-borrar" class="alt">Borrar mis registros</button>
+
+<footer>
+  Laboratorio Datito v2 · sin conexión · citas: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md ·
+  <code>&lt;!-- datito:template:v2 --&gt;</code>
+</footer>
+</main>
+
+<script id="agentes-ui">
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  /* Una vuelta del bucle. Archivos y reglas reales: SKILL.md (UNO-B, R5, G1) y 07_DATITO/. [DATITO] */
+  var VUELTA = {
+    agente: [
+      ["percibe", "Lee tu mensaje y decide que necesita tu estado", "leer <code>07_DATITO/progreso.yaml</code> → «matriz_confusion: REQUIERE_REPASO»"],
+      ["percibe", "Busca la P8 en el material", "leer <code>04_EJERCICIOS/certamen_2.html#p8</code> → el enunciado real"],
+      ["decide", "Aplica su instrucción: si la pide, se la da escrita (UNO-B)", "ninguna: es texto que sigue la instrucción de <code>SKILL.md</code>"],
+      ["actua", "Genera la palabra especial para escribir", "escribir <code>07_DATITO/dudas.yaml</code> → «duda registrada»"],
+      ["observa", "Lee la respuesta de la herramienta", "la escritura funcionó: ya puede dar la ruta <code>visual.html#duda-…</code>"],
+      ["sigue", "Cierra con una pregunta de transferencia y espera (R5, G1)", "ninguna: el turno termina en «?»"]
+    ],
+    llm: [
+      ["percibe", "Lee solo tu mensaje", "<em>sin herramienta</em>: no sabe tu estado ni qué dice la P8"],
+      ["decide", "Sigue la instrucción: si la pide, dársela", "ninguna"],
+      ["actua", "Escribe una «respuesta de la P8» con palabras probables", "<em>sin herramienta</em>: puede inventar el enunciado (alucinar)"],
+      ["observa", "—", "<em>no hay resultado que observar</em>: nada queda registrado"],
+      ["sigue", "Pregunta algo al final", "ninguna"]
+    ]
+  };
+  var paso = 0;
+  function filas() { return VUELTA[$("modo").value]; }
+  function pinta() {
+    var tb = $("pasos").querySelector("tbody"), f = filas();
+    tb.innerHTML = "";
+    f.slice(0, paso).forEach(function (r) {
+      var tr = document.createElement("tr");
+      tr.setAttribute("data-enlace", r[0]);
+      tr.innerHTML = "<td>" + r[0] + "</td><td>" + r[1] + "</td><td>" + r[2] + "</td>";
+      tb.appendChild(tr);
+    });
+    var herr = f.slice(0, paso).filter(function (r) { return /^(leer|escribir)/.test(r[2]); }).length;
+    $("resumen").textContent = paso ? (paso + " de " + f.length + " pasos · " + herr + " usos de herramienta con resultado") : "";
+    if (paso === f.length && window.Datito) Datito.observa($("modo").value, $("modo").value === "agente"
+      ? "con herramientas: 6 pasos, 3 usos de herramienta, la duda queda registrada"
+      : "solo LLM: 5 pasos, 0 herramientas, no lee el estado, puede inventar la P8, nada queda registrado");
+  }
+  $("bPaso").addEventListener("click", function () { paso = Math.min(paso + 1, filas().length); pinta(); });
+  $("bTodo").addEventListener("click", function () { paso = filas().length; pinta(); });
+  $("bReinicia").addEventListener("click", function () { paso = 0; pinta(); });
+  $("modo").addEventListener("change", function () { paso = 0; pinta(); });
+  pinta();
+})();
+</script>
+<!-- datito:nucleo:inicio -->
+<style id="nucleo-datito-css">
+/* datito:nucleo:v2 — estilos del núcleo (fuente: 03_SCRIPTS/plantillas/nucleo_v2.css) */
+.predice{border:2px dashed var(--morado);border-radius:8px;padding:.8rem 1rem;margin:1rem 0;background:#fff}
+.predice .lbl-pred{font-weight:600;color:var(--morado);margin:0 0 .4rem}
+.predice textarea,.intento textarea{width:100%;min-height:3.2rem;font:inherit;padding:.4rem;border:1px solid var(--linea);border-radius:6px}
+.predice.hecha{border-style:solid;background:#f5f3ff}
+.predice.hecha button{display:none}
+.predice.falta textarea{border-color:var(--rojo)}
+.bloqueado{opacity:.45;filter:grayscale(.6);position:relative}
+.bloqueado::before{content:"🔒 Registra tu predicción arriba para usar esto";display:block;font-size:.85rem;color:var(--morado);margin-bottom:.3rem}
+details.nivel{border-left:3px solid var(--azul);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
+details.nivel[data-nivel="2"]{border-left-color:var(--morado)}
+details.nivel>summary{cursor:pointer;font-weight:600}
+details.nivel[open]>*:not(summary){animation:datito-abre .25s ease-out}
+@keyframes datito-abre{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.intento{margin:.6rem 0}
+.aviso-intento{color:var(--ambar);font-size:.9rem;margin:.3rem 0}
+button.pedir{background:none;border:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+.enlazado{outline:3px solid var(--ambar);outline-offset:2px;background:#fff7ed}
+#datito-export{white-space:pre-wrap;font-size:.8rem;background:#f1f0ee;padding:.6rem;border-radius:6px;max-height:14rem;overflow:auto}
+@media (prefers-reduced-motion:reduce){details.nivel[open]>*:not(summary){animation:none}}
+</style>
+<script id="nucleo-datito">
+/* datito:nucleo:v2 — fuente: 03_SCRIPTS/plantillas/nucleo_v2.js (no editar la copia embebida;
+   correr 03_SCRIPTS/sincronizar_nucleo.py). REQ-TUT-012, 013, 014, 017.
+
+   Marcado que entiende:
+     <div class="predice" data-predice="p1"> ... <textarea></textarea> <button>Registrar</button></div>
+         predicción escrita; desbloquea todo [data-requiere="p1"]
+     <div data-requiere="p1"> ... </div>            controles bloqueados hasta predecir
+     <details class="nivel" data-nivel="1|2">       nivel de abstracción; el 2 arranca cerrado
+     <div class="intento" data-intento="q1"><textarea></textarea></div>
+     <details class="resp" data-intento="q1">       se abre tras el intento, o con .pedir
+     <button class="pedir" data-intento="q1">       "dame la respuesta" (G11): abre y lo registra
+     [data-enlace="k"]                              hover ilumina todos los [data-enlace="k"]
+     <pre id="datito-export"></pre>                 bloque DATITO-EVENTOS para pegar en el chat
+   API: Datito.observa(id, texto), Datito.evento(tipo, datos), Datito.desbloqueado(id)
+*/
+(function () {
+  "use strict";
+  var MIN = 3;
+  var pagina = (location.pathname.split("/").pop() || "visual").replace(/\.html$/, "");
+  var CLAVE = "datito:v2:" + pagina;
+  var estado = { pred: {}, intentos: {}, pedidas: {}, eventos: [] };
+
+  function cargar() {
+    try {
+      var s = JSON.parse(localStorage.getItem(CLAVE) || "null");
+      if (s && s.eventos) estado = s;
+    } catch (e) { /* sin almacenamiento: la página funciona igual */ }
+  }
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* idem */ }
+  }
+  function todos(sel, raiz) { return Array.prototype.slice.call((raiz || document).querySelectorAll(sel)); }
+
+  function evento(tipo, datos) {
+    var ev = { tipo: tipo, pagina: pagina, ts: new Date().toISOString().slice(0, 19) };
+    for (var k in datos) if (Object.prototype.hasOwnProperty.call(datos, k)) ev[k] = datos[k];
+    estado.eventos.push(ev);
+    if (estado.eventos.length > 60) estado.eventos.shift();
+    guardar();
+    pintarExport();
+    return ev;
+  }
+
+  function exportar() {
+    var lineas = ["DATITO-EVENTOS v1 · " + pagina];
+    estado.eventos.forEach(function (e) {
+      var r = {};
+      for (var k in e) if (k !== "pagina") r[k] = e[k];
+      lineas.push(JSON.stringify(r));
+    });
+    return lineas.join("\n");
+  }
+  function pintarExport() {
+    var pre = document.getElementById("datito-export");
+    if (pre) pre.textContent = estado.eventos.length ? exportar() : "(todavía no registras nada en esta página)";
+  }
+
+  function desbloqueado(id) { return !!estado.pred[id]; }
+
+  function aplicarCandados() {
+    todos("[data-requiere]").forEach(function (el) {
+      var ok = el.getAttribute("data-requiere").split(/\s+/).every(desbloqueado);
+      el.classList.toggle("bloqueado", !ok);
+      todos("input, select, button, textarea", el).forEach(function (c) { c.disabled = !ok; });
+      if (el.tagName === "DETAILS" && !ok) el.open = false;
+    });
+    todos(".predice[data-predice]").forEach(function (box) {
+      var id = box.getAttribute("data-predice");
+      if (estado.pred[id]) {
+        box.classList.add("hecha");
+        var ta = box.querySelector("textarea");
+        if (ta) { ta.value = estado.pred[id]; ta.readOnly = true; }
+      }
+    });
+  }
+
+  function intentoHecho(id) { return !!(estado.intentos[id] || estado.pedidas[id]); }
+
+  function iniciar() {
+    cargar();
+
+    todos(".predice[data-predice]").forEach(function (box) {
+      var id = box.getAttribute("data-predice");
+      var ta = box.querySelector("textarea");
+      var b = box.querySelector("button");
+      if (!b || !ta) return;
+      b.addEventListener("click", function () {
+        var v = ta.value.trim();
+        if (v.length < MIN) { ta.focus(); box.classList.add("falta"); return; }
+        box.classList.remove("falta");
+        if (!estado.pred[id]) { estado.pred[id] = v; evento("prediccion", { id: id, texto: v }); }
+        aplicarCandados();
+      });
+    });
+
+    todos(".intento[data-intento] textarea").forEach(function (ta) {
+      var id = ta.closest(".intento").getAttribute("data-intento");
+      if (estado.intentos[id]) ta.value = estado.intentos[id];
+      ta.addEventListener("change", function () {
+        var v = ta.value.trim();
+        if (v.length >= MIN && v !== estado.intentos[id]) {
+          estado.intentos[id] = v;
+          evento("intento", { id: id, texto: v });
+        }
+      });
+    });
+
+    todos("details.resp[data-intento]").forEach(function (d) {
+      var id = d.getAttribute("data-intento");
+      d.addEventListener("toggle", function () {
+        if (d.open && !intentoHecho(id)) {
+          d.open = false;
+          var aviso = d.parentNode.querySelector('.aviso-intento[data-intento="' + id + '"]');
+          if (!aviso) {
+            aviso = document.createElement("p");
+            aviso.className = "aviso-intento";
+            aviso.setAttribute("data-intento", id);
+            aviso.textContent = "Primero escribe tu intento arriba, o pide la respuesta.";
+            d.parentNode.insertBefore(aviso, d);
+          }
+        } else if (d.open) {
+          var a = d.parentNode.querySelector('.aviso-intento[data-intento="' + id + '"]');
+          if (a) a.remove();
+        }
+      });
+    });
+
+    todos("button.pedir[data-intento]").forEach(function (b) {
+      var id = b.getAttribute("data-intento");
+      b.addEventListener("click", function () {
+        if (!estado.pedidas[id]) { estado.pedidas[id] = true; evento("pidio_respuesta", { id: id }); }
+        var d = document.querySelector('details.resp[data-intento="' + id + '"]');
+        if (d) d.open = true;
+      });
+    });
+
+    todos('details.nivel[data-nivel="2"]').forEach(function (d) { d.open = false; });
+    todos("details.nivel").forEach(function (d) {
+      d.addEventListener("toggle", function () {
+        if (d.open) evento("nivel", { id: d.id || "", nivel: +d.getAttribute("data-nivel") });
+      });
+    });
+
+    // delegado: sirve tambien para elementos que el lab crea despues
+    function enlace(e, on) {
+      var el = e.target && e.target.closest ? e.target.closest("[data-enlace]") : null;
+      if (!el) return;
+      var k = el.getAttribute("data-enlace");
+      todos('[data-enlace="' + k + '"]').forEach(function (x) { x.classList.toggle("enlazado", on); });
+    }
+    document.addEventListener("mouseover", function (e) { enlace(e, true); });
+    document.addEventListener("mouseout", function (e) { enlace(e, false); });
+    document.addEventListener("focusin", function (e) { enlace(e, true); });
+    document.addEventListener("focusout", function (e) { enlace(e, false); });
+
+    var copiar = document.getElementById("datito-copiar");
+    if (copiar) copiar.addEventListener("click", function () {
+      var txt = exportar();
+      try { navigator.clipboard.writeText(txt); copiar.textContent = "Copiado: pégalo en el chat con Datito"; }
+      catch (e) { copiar.textContent = "Selecciona el bloque y cópialo a mano"; }
+    });
+    var borrar = document.getElementById("datito-borrar");
+    if (borrar) borrar.addEventListener("click", function () {
+      estado = { pred: {}, intentos: {}, pedidas: {}, eventos: [] };
+      guardar();
+      location.reload();
+    });
+
+    aplicarCandados();
+    pintarExport();
+  }
+
+  window.Datito = {
+    evento: evento,
+    observa: function (id, texto) { return evento("observacion", { id: id, texto: String(texto) }); },
+    desbloqueado: desbloqueado,
+    exportar: exportar,
+    alCambiar: aplicarCandados
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);
+  else iniciar();
+})();
+</script>
+<!-- datito:nucleo:fin -->
+</body>
+</html>

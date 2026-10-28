@@ -106,7 +106,7 @@
 
 <nav class="dnav" aria-label="Navegación de Datito">
 <div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
-<div class="fila"><span class="cpt"><b>Modelos de lenguaje (LLM)</b></span> · <span class="et">viene de</span><a href="19_deep_learning.html#deep-learning">Deep learning</a> · <span class="et">habilita</span><a href="19_deep_learning.html#agentes">Agentes de IA</a></div>
+<div class="fila"><span class="cpt"><b>Modelos de lenguaje (LLM)</b></span> · <span class="et">viene de</span><a href="19_deep_learning.html#deep-learning">Deep learning</a> · <span class="et">habilita</span><a href="21_agentes.html">Agentes de IA</a></div>
 <div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3c">C3 P3C</a></div>
 <details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 2:11:41–2:35:37 · profesor — transformer, atencion, BERT, predecir la siguiente palabra<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:41]</span></li><li><b>Clase del 21-ago</b> · 2:43:47–2:46:54 · profesor — destilacion y limitaciones<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:43:47]</span></li><li><b>Clase del 31-jul</b> · 0:04:42–0:06:34 · profesor — GPT es el modelo; ChatGPT, el sistema<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:42]</span></li></ul></details>
 </nav>
@@ -156,11 +156,11 @@ la transcripción automática trae errores («la dro» por «ladró»): el model
   <button>Registrar predicción</button>
 </div>
 
-<div class="panel" data-requiere="p1" data-enlace="probs">
+<div class="panel" data-requiere="p1">
   <div class="ctl"><label for="ctx">Palabra anterior</label><select id="ctx"></select><span></span></div>
   <div class="ctl"><label for="temp">Temperatura</label><input type="range" id="temp" min="0.1" max="3" step="0.1" value="1"><span id="tempV">1.0</span></div>
   <div class="ctl"><label for="topk">top-k (0 = todas)</label><input type="range" id="topk" min="0" max="10" step="1" value="0"><span id="topkV">todas</span></div>
-  <div class="barras" id="barras"></div>
+  <div class="barras" id="barras" data-enlace="probs"></div>
   <div class="met">
     <div><div class="n" id="mTop">—</div><div class="e">prob. de la más alta</div></div>
     <div><div class="n" id="mEnt">—</div><div class="e">entropía (bits)</div></div>
@@ -199,11 +199,11 @@ Eso es la atención.</div>
   <button>Registrar predicción</button>
 </div>
 
-<div class="panel" data-requiere="p2" data-enlace="atencion">
+<div class="panel" data-requiere="p2">
   <p class="lbl">La oración (cada palabra se convierte en un vector)</p>
   <div class="toks" id="toksAt" data-enlace="vectores"></div>
   <button id="bVerAt">Ver los pesos que dio el profesor para «ladró»</button>
-  <div class="barras" id="barrasAt"></div>
+  <div class="barras" id="barrasAt" data-enlace="atencion"></div>
   <div class="ctl"><label for="escala">Escala de los puntajes</label><input type="range" id="escala" min="0.2" max="3" step="0.1" value="1"><span id="escalaV">1.0</span></div>
 </div>
 

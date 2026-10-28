@@ -163,7 +163,7 @@ VISUAL_DE = {
     "redes_neuronales": "18_redes_neuronales.html",
     "deep_learning": "19_deep_learning.html#deep-learning",
     "llm": "20_llm.html",
-    "agentes_ia": "19_deep_learning.html#agentes",
+    "agentes_ia": "21_agentes.html",
 }
 
 # Preguntas de certamen que entrena cada concepto. Fuente: patron_evaluacion.md

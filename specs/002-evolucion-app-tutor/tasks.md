@@ -110,7 +110,7 @@
 - [x] T045 `20_llm.html` + `03_SCRIPTS/generar_llm_lab.py` + test node de entropía (REQ-TUT-018)
 - [ ] T046 Skill: leer `DATITO-EVENTOS` y escenario `lab-prediccion-fallida` (REQ-TUT-013)
 - [ ] T047 Harness: `empuja_rigor` y `sin_sobreandamiaje`, 4 escenarios, tests de inyección, medición real N=3 (REQ-TUT-015)
-- [ ] T048 `21_agentes.html` (REQ-TUT-019)
+- [x] T048 `21_agentes.html` (REQ-TUT-019): simulador de una vuelta del bucle de Datito con y sin herramientas, piezas del profesor en archivos reales, decisión sobre un agente que escribe DOMINADO
 - [ ] T049 Explicador del pipeline Melbourne (REQ-TUT-020)
 
 ## Resumen de bloqueos
