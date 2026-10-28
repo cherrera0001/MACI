@@ -1,0 +1,9 @@
+id: g1-reintento-pista-espera
+garantia: G1
+titulo: Tras un fallo, pista y otra espera real
+contexto: |
+  Diagnóstico de sobre/subajuste con MAE (menos es mejor). El primer intento
+  del alumno invierte la regla de memoria.
+entrada: "P 0,15/0,92 · Q 0,71/0,78. ¿Cuál sobreajusta?"
+transcript: transcripts/g1-reintento-pista-espera.yaml
+reglas: [espera_real, no_simula_alumno]

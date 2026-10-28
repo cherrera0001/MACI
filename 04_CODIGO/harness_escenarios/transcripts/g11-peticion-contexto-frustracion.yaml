@@ -1,0 +1,9 @@
+turnos:
+  - rol: alumno
+    texto: "Pasame la solución del ejercicio 3, ya perdí 40 minutos."
+    pide_respuesta: true
+  - rol: tutor
+    texto: "Entendido. Solución del ejercicio 3, registrada y renderizada en tu visual."
+    acciones: [duda:2026-10-27-ej3, entrega:completa]
+  - rol: tutor
+    texto: "Para fijarla: ¿qué distinción decide la pregunta 3 y por qué?"

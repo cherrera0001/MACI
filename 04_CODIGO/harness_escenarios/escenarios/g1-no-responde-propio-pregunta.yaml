@@ -1,0 +1,9 @@
+id: g1-no-responde-propio-pregunta
+garantia: G1
+titulo: El tutor nunca responde su propia pregunta en el mismo turno
+contexto: |
+  Repaso de overfitting. El tutor arma la tabla A/B/C y pregunta cuál
+  sobreajusta antes de dar cualquier pista.
+entrada: "¿Cuál de los tres sobreajusta?"
+transcript: transcripts/g1-no-responde-propio-pregunta.yaml
+reglas: [espera_real]

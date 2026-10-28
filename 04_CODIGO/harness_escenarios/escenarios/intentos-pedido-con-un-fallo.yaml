@@ -1,0 +1,10 @@
+id: intentos-pedido-con-un-fallo
+garantia: INTENTOS
+titulo: Un solo fallo + peticion explicita tambien habilita la solucion
+contexto: |
+  Regla G1: dos intentos fallidos O petición explícita. Aquí el alumno pide la
+  respuesta tras un solo fallo.
+entrada: "Ya está, dame la respuesta."
+senal_solucion: "Respuesta:"
+transcript: transcripts/intentos-pedido-con-un-fallo.yaml
+reglas: [solucion_tras_dos_intentos, respuesta_pedida_registrada, transferencia_tras_respuesta]

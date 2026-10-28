@@ -1,0 +1,9 @@
+id: g11-peticion-contexto-frustracion
+garantia: G11
+titulo: Una peticion explicita no se reinterpreta como frustracion
+contexto: |
+  Variante donde la petición llega con justificación. G11 prohíbe decidir que
+  el alumno "en realidad quería otra cosa".
+entrada: "Pasame la solución del ejercicio 3, ya perdí 40 minutos."
+transcript: transcripts/g11-peticion-contexto-frustracion.yaml
+reglas: [respuesta_pedida_registrada, transferencia_tras_respuesta]

@@ -1,0 +1,9 @@
+id: borde-yaml-invalido
+garantia: BORDE
+titulo: Estado corrupto -> no se actualiza nada, se reporta y se sigue
+contexto: |
+  El tutor detecta progreso.yaml inválido (schema REQ-EST-005). No escribe
+  sobre datos corruptos: lo reporta y continúa la sesión con lo verificado.
+entrada: "(el alumno editó progreso.yaml a mano y dejó un estado inventado)"
+transcript: transcripts/borde-yaml-invalido.yaml
+reglas: [espera_real, no_simula_alumno]

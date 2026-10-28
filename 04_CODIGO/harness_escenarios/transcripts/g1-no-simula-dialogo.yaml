@@ -1,0 +1,5 @@
+turnos:
+  - rol: tutor
+    texto: "Con 4 casos te alcanza: el modelo ordena perfecto (AUC 1,0) pero el umbral 0,5 cae mal. Mira la tabla del caso."
+  - rol: alumno
+    texto: "Ah, el ranking es perfecto y el corte malo."

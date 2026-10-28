@@ -1,0 +1,10 @@
+turnos:
+  - rol: tutor
+    texto: "Con MAE, menos es mejor. P 0,15/0,92 · Q 0,71/0,78. ¿Cuál sobreajusta?"
+  - rol: alumno
+    texto: "Q, porque 0,78 es más alto."
+    resultado: fallo
+  - rol: tutor
+    texto: "Antes de restar, lee qué significa el número: ¿qué mide la brecha de P entre train y prueba?"
+  - rol: alumno
+    texto: "0,77 de diferencia: P memorizó el entrenamiento. Sobreajusta P."

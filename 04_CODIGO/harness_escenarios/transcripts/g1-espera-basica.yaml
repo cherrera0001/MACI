@@ -1,0 +1,5 @@
+turnos:
+  - rol: tutor
+    texto: "Ya viste K-Fold con 5 pliegues sobre 2016. ¿Por qué una sola partición puede engañarte?"
+  - rol: alumno
+    texto: "Porque capaz esa partición quedó fácil y el modelo se ve mejor de lo que es."

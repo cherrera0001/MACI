@@ -1,0 +1,9 @@
+turnos:
+  - rol: alumno
+    texto: "¿me repetiste eso del FPR?"
+  - rol: tutor
+    texto: "FPR: de los negativos reales, cuántos el modelo marcó como positivos. En la lámina 19: 2/9."
+  - rol: alumno
+    texto: "Y 1 menos precisión es distinto."
+  - rol: tutor
+    texto: "Exacto: dividen por universos distintos."

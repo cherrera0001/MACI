@@ -1,0 +1,15 @@
+turnos:
+  - rol: tutor
+    texto: "¿Cuál sobreajusta, cuál subajusta y cuál está bien?"
+  - rol: alumno
+    texto: "A sobreajusta."
+    resultado: fallo
+  - rol: tutor
+    texto: "Calcula la brecha de cada uno antes de etiquetar. ¿Ahora?"
+  - rol: alumno
+    texto: "A: 0,03... entonces B sobreajusta."
+    resultado: fallo
+  - rol: tutor
+    texto: "La respuesta completa: B sobreajusta (brecha 0,44), C subajusta, A está bien."
+  - rol: tutor
+    texto: "¿Qué remedio le darías a B y qué supuesto estás declarando?"

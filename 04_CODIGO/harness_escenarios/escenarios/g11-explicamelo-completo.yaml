@@ -1,0 +1,9 @@
+id: g11-explicamelo-completo
+garantia: G11
+titulo: Peticion de desarrollo completo -> se registra y cierra con pregunta
+contexto: |
+  Instrucción explícita de desarrollo completo. La respuesta también es
+  exposición: se registra antes de decirse (REGLA UNO-B).
+entrada: "Explícame F1-macro completo."
+transcript: transcripts/g11-explicamelo-completo.yaml
+reglas: [respuesta_pedida_registrada, transferencia_tras_respuesta]
