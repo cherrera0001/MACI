@@ -32,19 +32,16 @@ Las historias mapean a conceptos del currículum y definen criterios de aceptaci
 auditables: explicar, aplicar en Melbourne, interpretar resultados, transferir a
 un problema nuevo.
 
-**Fuente:** `07_DATITO/historias_usuario.yaml` — 18 historias, numeradas US-01 a
-US-18, cada una con criterio de aceptación concreto. Estado real verificado el
-2026-10-27: las 18 historias cubren las clases 1–18; las clases de repaso
-19–23 aún no tienen historia, y el archivo referencia cuatro conceptos que no
-existen en `curriculum.yaml` (`particionamiento_temporal`, `metricas_regresion`,
-`interpretacion`, `transferencia`). Reconciliar historias con clases y con el
-curriculum es deuda registrada (specs/002-evolucion-app-tutor, fase de tutor).
+**Fuente:** `07_DATITO/historias_usuario.yaml` — 23 historias, numeradas US-01 a
+US-23 (una por clase: 18 de concepto y 5 de repaso), cada una con el criterio
+de aceptación de la ficha Bloom de su clase. No hay historia de usuario
+sin clase; no hay clase sin historia.
 
 Ejemplo:
 
-- **US-09:** Predecir con Regresión
-  - _Criterio:_ Entreno regresor en Melbourne; interpreto coeficientes; predigo
-    2017; calculo MAE y R².
+- **US-09:** Comprender generalización
+  - _Criterio:_ Declara la extrapolación y explica la caída con dos mecanismos:
+    haber decidido con esos datos y el cambio de distribución.
 
 El orden de las historias en `clases.yaml` define la secuencia de aprendizaje.
 Una historia no se da por completa hasta que todos sus criterios tengan evidencia
