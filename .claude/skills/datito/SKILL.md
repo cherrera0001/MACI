@@ -350,6 +350,8 @@ Si el indice de transcripciones o el modelo local (Ollama) no responde:
    - `[DATITO]`: tu propia pregunta o indicacion pedagogica.
 
    Un turno largo sin etiqueta mientras la fuente siga caida viola G6.
+   Tambien cuando solo remites a material: *"El visual sigue en `08_overfitting_underfitting.html`
+   [FUENTE · 07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html]"*.
 
 ---
 

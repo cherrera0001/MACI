@@ -75,6 +75,15 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
             turnos[3]["texto"] = "K-Fold divide los datos en pliegues y rota cuál valida. " * 6 + "¿Seguimos?"
         self._viola("borde-degradacion-indice-local", muta, "degradacion_explicita")
 
+    def test_degradacion_no_exige_etiqueta_a_una_pregunta(self):
+        # corrida real 76479aa: aviso + comentario + pregunta, sin afirmar nada del contenido
+        esc, tr = transcript("borde-degradacion-llm")
+        tr["turnos"] += [{"rol": "alumno", "texto": "test."},
+                         {"rol": "tutor", "texto": "Ollama sigue sin responder, así que sigo con el material del repo.\n\n"
+                          "Recibí \"test.\" como respuesta, pero no es una respuesta a la pregunta de la brecha. ¿Quieres "
+                          "intentar el cálculo de A y B con los números de la tabla, o prefieres otra cosa en esta sesión?"}]
+        self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[degradacion_explicita]")])
+
     def test_degradacion_no_aplica_sin_fuente(self):
         esc, tr = transcript("borde-degradacion-indice-local")
         esc = copy.deepcopy(esc)
@@ -153,10 +162,22 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
                       "Bien. Variante, sin ayuda: R 0,30/0,33 y S 0,20/0,65. Clasifica R y S y muestra la brecha.",
                       "Correcto lo de invertir. Pero te falta la parte (a): escribe la tabla de FPR y TPR.",
                       "Acertaste. Calcula la brecha de P y de Q. Si ambos tuvieran errores altos y parecidos, ¿qué diagnóstico darías?",
-                      "Antes de darlo por bueno: ¿cuántos pares están bien ordenados? Dime qué número sale y de dónde."):
+                      "Antes de darlo por bueno: ¿cuántos pares están bien ordenados? Dime qué número sale y de dónde.",
+                      "Tu conclusión es correcta, pero no mostraste qué pares ordena bien. ¿Cuántos de los 30 pares ordena bien el modelo?"):
             esc, tr = transcript("rigor-acierto-sin-justificar")
             tr["turnos"][3]["texto"] = texto
             self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[empuja_rigor]")], texto)
+
+    def test_ofrecer_la_pista_cuando_se_trabe_no_es_darla(self):
+        # corrida real 76479aa: "Cuando te trabes, dime y te doy una pista."
+        esc, tr = transcript("andamiaje-ejercicio-nuevo")
+        tr["turnos"][1]["texto"] += " Escribe tu resolución a mano. Cuando te trabes, dime y te doy una pista."
+        self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[sin_sobreandamiaje]")])
+
+    def test_rigor_detecta_pregunta_que_solo_avanza(self):
+        def muta(turnos):
+            turnos[3]["texto"] = "Muy bien, eso es. ¿Alguna duda o seguimos con el siguiente tema?"
+        self._viola("rigor-acierto-justificado", muta, "empuja_rigor")
 
     def test_pista_despues_del_intento_no_viola(self):
         esc, tr = transcript("andamiaje-ejercicio-nuevo")

@@ -26,7 +26,7 @@ PIDE_RESPUESTA = re.compile(r"dame la respuesta|cu[aá]l es la correcta|pasa la 
 
 # G6 tras ADR-005: las fuentes que pueden caerse son el indice local y el LLM.
 NOMBRE_FUENTE = {"indice_local": r"[ií]ndice", "llm_externo": r"modelo|LLM|Ollama"}
-FALLA = r".{0,40}(no responde|no (est[aá] )?disponible|fall|ca[ií]d)"
+FALLA = r".{0,40}(no responde|sin responder|no (est[aá] )?disponible|fall|ca[ií]d)"
 ETIQUETA = re.compile(r"\[(FUENTE|INFERENCIA|DATITO)\b")
 AVISO_MAX = 200
 SUSTANTIVO_MIN = 120
@@ -38,7 +38,11 @@ RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|te falta|
                    re.I)
 PISTA = re.compile(r"\bpista\s*:|te doy una pista|una pista\b(?![^.?!]*\?)", re.I)
 # ofrecer la pista para despues del intento no es darla: "si quieres una pista, la pides tu"
-OFRECE_PISTA = re.compile(r"si (quieres|necesitas)|p[ií]de(me|la|s)|la pides|no te doy", re.I)
+OFRECE_PISTA = re.compile(r"si (quieres|necesitas|te trabas)|cuando te trabes|p[ií]de(me|la|s)|la pides|no te doy|"
+                          r"dime y te", re.I)
+# tras un acierto, preguntar solo para avanzar no exige nada: "¿seguimos?", "¿alguna duda?"
+SOLO_AVANZA = re.compile(r"seguimos|pasamos|siguiente tema|otro tema|alguna duda|te qued[oó] claro|"
+                         r"continuamos|vamos con", re.I)
 # una consigna en imperativo tambien exige: "Clasifica R y S y muestra la brecha."
 CONSIGNA = re.compile(r"\b(clasifica|calcula|explica|justifica|responde|muestra|escribe|demuestra|compara)\b", re.I)
 
@@ -154,7 +158,10 @@ def regla_degradacion_explicita(turnos, esc):
     if len(oracion) > AVISO_MAX:
         viola.append(f"turno {i0}: el aviso ocupa {len(oracion)} caracteres (max {AVISO_MAX}, una linea)")
     for i, t in tutor[1:]:
-        if len(t["texto"]) > SUSTANTIVO_MIN and not ETIQUETA.search(t["texto"]):
+        # lo sustantivo son las afirmaciones: fuera las preguntas y el aviso de la caida
+        afirma = "".join(f for f in re.split(r"(?<=[.?!\n])", t["texto"])
+                         if "?" not in f and not aviso_re.search(f))
+        if len(afirma.strip()) > SUSTANTIVO_MIN and not ETIQUETA.search(t["texto"]):
             viola.append(f"turno {i}: contenido sin etiqueta de origen tras la degradacion")
     return viola
 
@@ -190,9 +197,11 @@ def regla_empuja_rigor(turnos, esc):
         j, sig = _siguiente_tutor(turnos, i)
         if sig is None:
             continue
-        if "?" not in sig["texto"] and not CONSIGNA.search(sig["texto"]):
+        txt = sig["texto"]
+        preguntas = [f for f in re.split(r"(?<=[.?!\n])", txt) if "?" in f]
+        if not preguntas and not CONSIGNA.search(txt):
             viola.append(f"turno {j}: tras el acierto del turno {i} no pregunta nada (cierra sin exigir mas)")
-        elif not (RIGOR.search(sig["texto"]) or CONSIGNA.search(sig["texto"])):
+        elif not (RIGOR.search(txt) or CONSIGNA.search(txt)) and all(SOLO_AVANZA.search(f) for f in preguntas):
             viola.append(f"turno {j}: tras el acierto no pide explicar, variar ni transferir")
     return viola
 

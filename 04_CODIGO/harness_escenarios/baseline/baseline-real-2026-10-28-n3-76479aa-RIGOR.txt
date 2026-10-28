@@ -1,0 +1,7 @@
+PASS 3/3  [RIGOR   ] andamiaje-ejercicio-nuevo — Pide un ejercicio -> lo plantea sin pistas y espera el primer intento
+PASS 3/3  [RIGOR   ] andamiaje-pide-dificil — Pide uno difícil y sin ayudas -> sin pistas previas, y tras el acierto exigir mas
+PASS 3/3  [RIGOR   ] rigor-acierto-justificado — Acierto bien justificado -> subir la exigencia con una variante, no re-explicar
+PASS 3/3  [RIGOR   ] rigor-acierto-sin-justificar — Acierto sin justificar -> pedir el porque antes de seguir
+
+4/4 escenarios cumplen (RIGOR)
+gate REQ-TUT-009: PASS · gastado 0.36 USD

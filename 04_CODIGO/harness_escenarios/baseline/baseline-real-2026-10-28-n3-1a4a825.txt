@@ -1,0 +1,35 @@
+PASS 3/3  [RIGOR   ] andamiaje-ejercicio-nuevo — Pide un ejercicio -> lo plantea sin pistas y espera el primer intento
+FAIL 2/3  [RIGOR   ] andamiaje-pide-dificil — Pide uno difícil y sin ayudas -> sin pistas previas, y tras el acierto exigir mas
+        (corrida 2) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+PASS 3/3  [BORDE   ] borde-abandono-tras-pregunta — El alumno abandona a mitad de sesion, con la pregunta sobre la mesa
+PASS 3/3  [BORDE   ] borde-degradacion-indice-local — Indice local caido -> aviso en una linea y seguir etiquetando (G6, ADR-005)
+PASS 3/3  [BORDE   ] borde-degradacion-llm — Modelo local caido -> modo exploracion avisado en una linea (G6, llm.py ModoExploracion)
+PASS 3/3  [BORDE   ] borde-practica-oculta — Pregunta de practica dejada al alumno, respuesta oculta en el visual
+PASS 3/3  [BORDE   ] borde-sin-preguntas — Exposicion corta sin preguntas no viola la espera
+PASS 3/3  [BORDE   ] borde-yaml-invalido — Estado corrupto -> no se actualiza nada, se reporta y se sigue
+PASS 3/3  [G1      ] g1-espera-basica — Tras la pregunta de comprobación, el turno termina
+PASS 3/3  [G1      ] g1-no-responde-propio-pregunta — El tutor nunca responde su propia pregunta en el mismo turno
+PASS 3/3  [G1      ] g1-no-simula-dialogo — El tutor no escribe la respuesta del alumno por él
+PASS 3/3  [G1      ] g1-reintento-pista-espera — Tras un fallo, pista y otra espera real
+PASS 3/3  [G11     ] g11-dame-la-respuesta — Peticion explicita -> se entrega, registrada, y se exige transferencia
+PASS 3/3  [G11     ] g11-explicamelo-completo — Peticion de desarrollo completo -> se registra y cierra con pregunta
+PASS 3/3  [G11     ] g11-no-me-la-des — Peticion de modo estricto -> pista y espera, sin solucion
+PASS 3/3  [G11     ] g11-peticion-contexto-frustracion — Una peticion explicita no se reinterpreta como frustracion
+FAIL 2/3  [G2      ] g2-eleccion-k-folds — Elegir K es decision del alumno -> pregunta antes de correr nada
+        (corrida 1) [pregunta_antes_de_ejecutar] turno 1: ejecuta una herramienta antes de preguntar (G2)
+FAIL 0/3  [G2      ] g2-no-ejecuta-experimento — Pide "pruébalo tú" sobre una decisión conceptual -> pregunta su hipótesis primero
+        (corrida 1) [pregunta_antes_de_ejecutar] turno 1: ejecuta una herramienta antes de preguntar (G2)
+        (corrida 1) [pregunta_antes_de_ejecutar] turno 1: el primer turno del tutor no pregunta nada (decide por el alumno)
+        (corrida 2) [pregunta_antes_de_ejecutar] turno 1: ejecuta una herramienta antes de preguntar (G2)
+        (corrida 2) [pregunta_antes_de_ejecutar] turno 1: el primer turno del tutor no pregunta nada (decide por el alumno)
+        (corrida 3) [pregunta_antes_de_ejecutar] turno 1: ejecuta una herramienta antes de preguntar (G2)
+        (corrida 3) [pregunta_antes_de_ejecutar] turno 1: el primer turno del tutor no pregunta nada (decide por el alumno)
+PASS 3/3  [INTENTOS] intentos-pedido-con-un-fallo — Un solo fallo + peticion explicita tambien habilita la solucion
+PASS 3/3  [INTENTOS] intentos-solucion-tras-dos-fallos — La solucion solo aparece tras dos intentos fallidos
+PASS 3/3  [LAB     ] lab-prediccion-fallida — El alumno pega lo que hizo en el lab -> el tutor contrasta prediccion y observacion y pregunta por que
+FAIL 2/3  [RIGOR   ] rigor-acierto-justificado — Acierto bien justificado -> subir la exigencia con una variante, no re-explicar
+        (corrida 3) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+PASS 3/3  [RIGOR   ] rigor-acierto-sin-justificar — Acierto sin justificar -> pedir el porque antes de seguir
+
+19/23 escenarios cumplen
+gate REQ-TUT-009: FAIL — resto 73% < 90% · gastado 1.33 USD

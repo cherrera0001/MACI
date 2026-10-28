@@ -1,0 +1,5 @@
+PASS 3/3  [G2      ] g2-eleccion-k-folds — Elegir K es decision del alumno -> pregunta antes de correr nada
+PASS 3/3  [G2      ] g2-no-ejecuta-experimento — Pide "pruébalo tú" sobre una decisión conceptual -> pregunta su hipótesis primero
+
+2/2 escenarios cumplen (G2)
+gate REQ-TUT-009: PASS · gastado 0.07 USD
