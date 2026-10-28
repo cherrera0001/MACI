@@ -29,7 +29,13 @@ def correr(cmd):
 def generador():
     code, out = correr([sys.executable, "03_SCRIPTS/construir_navegacion.py", "--revisar"])
     pend = [l.strip() for l in out.splitlines() if re.search(r"\b(actualizado|inyectado|cambiaria|actualizadas)\b", l)]
-    return code == 0 and not pend, "sin pendientes" if not pend else f"{len(pend)} páginas desactualizadas: correr construir_navegacion.py"
+    if pend or code:
+        return False, f"{len(pend)} páginas desactualizadas: correr construir_navegacion.py"
+    for script in ("sincronizar_nucleo.py", "generar_llm_lab.py"):
+        code, out = correr([sys.executable, f"03_SCRIPTS/{script}", "--revisar"])
+        if code:
+            return False, f"visuales v2 desactualizados: correr 03_SCRIPTS/{script} {out.strip()[:80]}"
+    return True, "sin pendientes (navegación, núcleo v2, corpus del lab LLM)"
 
 
 def contrato():
@@ -57,12 +63,20 @@ def tests():
     return code == 0, ran + (" · OK" if code == 0 else f" · fallan: {', '.join(fallidos[:4])}")
 
 
+# Sin sudo en WSL: libnss3/libnspr4/libasound extraidas de sus .deb (apt-get download + dpkg-deb -x)
+LIBS_LOCALES = os.path.expanduser("~/.local/lib/chromium-deps/root/usr/lib/x86_64-linux-gnu")
+
+
 def navegador():
     if not shutil.which("uv"):
         return False, "falta uv (uv run --with playwright …)"
+    if os.path.isdir(LIBS_LOCALES):
+        ENV["LD_LIBRARY_PATH"] = LIBS_LOCALES + os.pathsep + ENV.get("LD_LIBRARY_PATH", "")
     code, out = correr(["uv", "run", "-q", "--with", "playwright", "python", "03_SCRIPTS/probar_visuales_offline.py"])
     ultima = next((l for l in reversed(out.splitlines()) if "paginas" in l), out.strip()[-160:])
-    return code == 0, ultima.strip()
+    code2, out2 = correr(["uv", "run", "-q", "--with", "playwright", "python", "03_SCRIPTS/probar_nucleo_v2.py"])
+    nucleo = next((l for l in reversed(out2.splitlines()) if "nucleo v2" in l), out2.strip()[-120:])
+    return code == 0 and code2 == 0, f"{ultima.strip()} · {nucleo.strip()}"
 
 
 def en_linea():

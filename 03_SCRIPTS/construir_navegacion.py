@@ -162,7 +162,7 @@ VISUAL_DE = {
     "ensembles": "14_arboles_decision.html#ensambles",
     "redes_neuronales": "18_redes_neuronales.html",
     "deep_learning": "19_deep_learning.html#deep-learning",
-    "llm": "19_deep_learning.html#llm",
+    "llm": "20_llm.html",
     "agentes_ia": "19_deep_learning.html#agentes",
 }
 

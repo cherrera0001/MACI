@@ -428,7 +428,7 @@ fuera y argumentarlo es tan evaluable como el modelo elegido.</div>
 
 <script>
 /* Predicciones: marca la opción elegida y contrasta con la respuesta */
-document.querySelectorAll('.pred').for(function(p){
+document.querySelectorAll('.pred').forEach(function(p){
   var correcta = p.getAttribute('data-correct');
   var veredicto = p.querySelector('.veredicto');
   p.querySelectorAll('button').forEach(function(b){

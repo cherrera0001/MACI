@@ -15,6 +15,11 @@ QUE COMPRUEBA
                  entrante desde otro visual
   etiquetas      los visuales de concepto usan etiquetas G4
   mapa           cada marca de 05_CLASES/mapa_ensenanza.yaml existe
+  v2             en los visuales <!-- datito:template:v2 -->: nucleo identico a
+                 03_SCRIPTS/plantillas, prediccion antes del primer control,
+                 data-requiere con su data-predice, cada details.resp con su
+                 intento, nivel 2 cerrado, secciones #decision y #codigo
+                 (REQ-TUT-012, 014, 016, 017)
 
 Distingue FALLO (impide estudiar o citar) de AVISO (revisar a mano).
 
@@ -46,6 +51,7 @@ RUTA_T = re.compile(r"05_CLASES/transcripciones/([^\s<>\"'\]\)·,;]+)")
 TOL = 20  # segundos de tolerancia para una marca
 
 _cache = {}
+MARCA_V2 = "<!-- datito:template:v2 -->"
 
 
 def seg(t):
@@ -82,6 +88,48 @@ def texto_plano(fragmento):
     return html.unescape(re.sub(r"<[^>]+>", " ", sin))
 
 
+def revisar_v2(n, t, nucleo=None):
+    """Fallos de contrato de un visual v2 (vacio si no es v2)."""
+    if MARCA_V2 not in t:
+        return []
+    fallos = []
+    if nucleo is not None:
+        bloques = re.findall(r"<!-- datito:nucleo:inicio -->.*?<!-- datito:nucleo:fin -->", t, flags=re.S)
+        if bloques != [nucleo]:
+            fallos.append(f"{n}: nucleo v2 ausente o distinto de 03_SCRIPTS/plantillas (correr sincronizar_nucleo.py)")
+    cuerpo = re.sub(r"<!-- datito:nucleo:inicio -->.*?<!-- datito:nucleo:fin -->|<script.*?</script>|<!--.*?-->",
+                    " ", t, flags=re.S)
+    predice = set(re.findall(r'data-predice="([^"]+)"', cuerpo))
+    for req in re.findall(r'data-requiere="([^"]+)"', cuerpo):
+        for x in req.split():
+            if x not in predice:
+                fallos.append(f"{n}: data-requiere=\"{x}\" sin su data-predice")
+    control = re.search(r'<input[^>]*type="range"|<select\b', cuerpo)
+    primera = re.search(r'data-predice="', cuerpo)
+    if control and (not primera or primera.start() > control.start()):
+        fallos.append(f"{n}: un control aparece antes de la primera prediccion (REQ-TUT-012)")
+    intentos = set(re.findall(r'class="intento"[^>]*data-intento="([^"]+)"', cuerpo))
+    for tag in re.findall(r"<details\b[^>]*>", cuerpo):
+        if re.search(r'class="[^"]*\bresp\b', tag):
+            m = re.search(r'data-intento="([^"]+)"', tag)
+            if not m:
+                fallos.append(f"{n}: details.resp sin data-intento (REQ-TUT-014)")
+            elif m.group(1) not in intentos:
+                fallos.append(f"{n}: details.resp {m.group(1)} sin su caja de intento")
+        if re.search(r'class="[^"]*\bnivel\b', tag) and 'data-nivel="2"' in tag and re.search(r"\sopen\b", tag):
+            fallos.append(f"{n}: un nivel 2 arranca abierto")
+    for sec in ("decision", "codigo"):
+        if f'id="{sec}"' not in cuerpo:
+            fallos.append(f"{n}: falta la seccion #{sec} (REQ-TUT-016)")
+    return fallos
+
+
+def nucleo_esperado():
+    sys.path.insert(0, os.path.join(RAIZ, "03_SCRIPTS"))
+    import sincronizar_nucleo
+    return sincronizar_nucleo.bloque()
+
+
 # --------------------------------------------------------------------------
 def revisar(detalle=False):
     fallos, avisos = [], []
@@ -94,7 +142,9 @@ def revisar(detalle=False):
     node = shutil.which("node")
     n_citas = n_bloques = 0
 
+    nucleo = nucleo_esperado()
     for n, t in contenido.items():
+        fallos.extend(revisar_v2(n, t, nucleo))
         sin_script = re.sub(r"<script.*?</script>", " ", t, flags=re.S)
 
         # --- sin red

@@ -103,6 +103,16 @@
 - [x] T041 Verificar SC-001…SC-005 del spec con evidencia (`verificacion-2026-10-28.md`: SC-002 y SC-005 cumplidos; SC-001 y SC-004 dependen de fechas; SC-003 depende del alumno)
 - [x] T042 Confirmar cumplimiento de principios I–X y restricciones de la constitución (checklist en `verificacion-2026-10-28.md`)
 
+## Phase 6: Laboratorios que conversan con el tutor (REQ-TUT-012…020)
+
+- [x] T043 [P] Núcleo v2: `03_SCRIPTS/plantillas/nucleo_v2.js` (predicción, candados, niveles, hover enlazado, exportación `DATITO-EVENTOS`) y `03_SCRIPTS/sincronizar_nucleo.py` (REQ-TUT-017)
+- [x] T044 Validador v2 en `verificar_visuales.py`: núcleo idéntico, `data-requiere` ↔ `data-predice`, `details.resp[data-intento]`, nivel 2 cerrado, `#decision` y `#codigo` (REQ-TUT-012, 014, 016, 017) — además `probar_nucleo_v2.py` en navegador real; `verificar_todo --navegador` lo corre
+- [x] T045 `20_llm.html` + `03_SCRIPTS/generar_llm_lab.py` + test node de entropía (REQ-TUT-018)
+- [ ] T046 Skill: leer `DATITO-EVENTOS` y escenario `lab-prediccion-fallida` (REQ-TUT-013)
+- [ ] T047 Harness: `empuja_rigor` y `sin_sobreandamiaje`, 4 escenarios, tests de inyección, medición real N=3 (REQ-TUT-015)
+- [ ] T048 `21_agentes.html` (REQ-TUT-019)
+- [ ] T049 Explicador del pipeline Melbourne (REQ-TUT-020)
+
 ## Resumen de bloqueos
 
 | Tarea | Bloqueada por | Pregunta de Clarify |

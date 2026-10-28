@@ -127,6 +127,20 @@ app y su progreso queda registrado de forma privada y exportable.
 - **REQ-TUT-010**: Las tareas marcadas hechas describen lo que se hizo (T022 corregida, T022b separada).
 - **REQ-TUT-011**: La política del motor (`socratico.py`) es el generador `socratico`, un oráculo determinista del mismo contrato; `--comparar` lista divergencias con la skill. *Criterio: el oráculo pasa todos los escenarios en CI.*
 
+### Nivel 2b — Laboratorios que conversan con el tutor (REQ-TUT-012…020, 2026-10-28)
+
+Origen: `MACI-revision/sprint-gstack/10-propuesta-visual-learning.md` (Ackley Will, Khanmigo, TutorMoments) y `11-propuesta-explicadores.md` (Transformer Explainer).
+
+- **REQ-TUT-012**: Lab de un cambio. Predicción escrita obligatoria antes del primer control y un solo control activo al inicio. *Criterio: el validador rechaza un visual v2 cuyo `data-requiere` no tenga su `data-predice`.*
+- **REQ-TUT-013**: Puente lab → tutor sin red. El núcleo registra predicción y observación y las exporta como bloque `DATITO-EVENTOS`; la skill abre el turno citando lo predicho frente a lo observado y pregunta por qué. *Criterio: escenario `lab-prediccion-fallida`.*
+- **REQ-TUT-014**: Respuesta tras intento también en el visual. `details.resp` solo se abre tras un intento escrito o si el alumno pide la respuesta (UNO-B). *Criterio: el validador exige `data-intento` en cada `details.resp` de un visual v2.*
+- **REQ-TUT-015**: Rigor y sobre-andamiaje en el harness: reglas `empuja_rigor` y `sin_sobreandamiaje`. *Criterio: 2 escenarios por regla, tests de inyección y una medición real N=3.*
+- **REQ-TUT-016**: Cada lab cierra con una decisión con costo y la línea de código equivalente, que corre el alumno (G2). *Criterio: el validador exige `id="decision"` e `id="codigo"`.*
+- **REQ-TUT-017**: Núcleo v2 (`03_SCRIPTS/plantillas/nucleo_v2.js`) con niveles colapsables, candados, hover enlazado y exportación, embebido idéntico en cada visual v2. *Criterio: el validador compara el bloque embebido con la fuente.*
+- **REQ-TUT-018**: Explicador de LLM (`20_llm.html`). Bigrama entrenado con la clase del 21-ago, temperatura, top-k, atención con los pesos del profesor y enmascarado. *Criterio: la entropía crece con la temperatura (test con node).*
+- **REQ-TUT-019**: Explicador de agentes (`21_agentes.html`) con el propio Datito por niveles.
+- **REQ-TUT-020**: Explicador del pipeline Melbourne, con niveles 0–2 y paridad numérica con Python.
+
 ### Nivel 3 — Aplicación (REQ-APP) — requisitos, no stack
 
 - **REQ-APP-001**: Un frontend que sirva el curso estático existente y el diálogo del tutor. *Stack: el actual de `15_TERMINITO` (HTML/JS sin framework), ADR-006.*

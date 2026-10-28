@@ -1,0 +1,20 @@
+/* datito:nucleo:v2 — estilos del núcleo (fuente: 03_SCRIPTS/plantillas/nucleo_v2.css) */
+.predice{border:2px dashed var(--morado);border-radius:8px;padding:.8rem 1rem;margin:1rem 0;background:#fff}
+.predice .lbl-pred{font-weight:600;color:var(--morado);margin:0 0 .4rem}
+.predice textarea,.intento textarea{width:100%;min-height:3.2rem;font:inherit;padding:.4rem;border:1px solid var(--linea);border-radius:6px}
+.predice.hecha{border-style:solid;background:#f5f3ff}
+.predice.hecha button{display:none}
+.predice.falta textarea{border-color:var(--rojo)}
+.bloqueado{opacity:.45;filter:grayscale(.6);position:relative}
+.bloqueado::before{content:"🔒 Registra tu predicción arriba para usar esto";display:block;font-size:.85rem;color:var(--morado);margin-bottom:.3rem}
+details.nivel{border-left:3px solid var(--azul);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
+details.nivel[data-nivel="2"]{border-left-color:var(--morado)}
+details.nivel>summary{cursor:pointer;font-weight:600}
+details.nivel[open]>*:not(summary){animation:datito-abre .25s ease-out}
+@keyframes datito-abre{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.intento{margin:.6rem 0}
+.aviso-intento{color:var(--ambar);font-size:.9rem;margin:.3rem 0}
+button.pedir{background:none;border:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+.enlazado{outline:3px solid var(--ambar);outline-offset:2px;background:#fff7ed}
+#datito-export{white-space:pre-wrap;font-size:.8rem;background:#f1f0ee;padding:.6rem;border-radius:6px;max-height:14rem;overflow:auto}
+@media (prefers-reduced-motion:reduce){details.nivel[open]>*:not(summary){animation:none}}

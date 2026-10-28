@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<!-- datito:template:v2 -->
+<title>Modelos de lenguaje (LLM) · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+  .barras{display:grid;grid-template-columns:7.5rem 1fr 3.6rem;gap:.25rem .6rem;align-items:center;font-size:.88rem}
+  .barras .b{height:1.05rem;background:var(--azul);border-radius:3px;min-width:2px}
+  .barras .p{text-align:right;font-variant-numeric:tabular-nums}
+  .flujo{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:1rem 0}
+  .flujo a{background:#fff;border:1px solid var(--linea);border-radius:7px;padding:.35rem .7rem;color:var(--tinta);text-decoration:none;font-size:.9rem}
+  .flujo span.f{color:var(--suave)}
+  .toks{display:flex;flex-wrap:wrap;gap:.35rem;margin:.6rem 0}
+  .toks button{background:#fff;color:var(--tinta);border:1.5px solid var(--linea)}
+  .toks button.sel{border-color:var(--morado);background:#f5f3ff}
+  .toks .mask{background:#1a1a1a;color:#fbbf24}
+  .ctl{display:grid;grid-template-columns:9rem 1fr 3.5rem;gap:.4rem .8rem;align-items:center;margin:.5rem 0}
+  .barras>span,.ctl>*{min-width:0;overflow-wrap:anywhere}
+  @media (max-width:520px){.ctl{grid-template-columns:1fr 3rem}.ctl label{grid-column:1/-1}
+    .barras{grid-template-columns:5.2rem 1fr 3.2rem;font-size:.8rem}}
+  .gen{font-family:ui-monospace,monospace;background:var(--fondo);padding:.6rem .8rem;border-radius:7px;min-height:2.4rem}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,nav.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}nav.pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;font:14px/1.5 "Segoe UI",system-ui,sans-serif}nav.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}.fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}pre{white-space:pre-wrap}.leccion-top,nav.pasos{flex-wrap:wrap}}</style>
+
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+<div class="fila"><span class="cpt"><b>Modelos de lenguaje (LLM)</b></span> · <span class="et">viene de</span><a href="19_deep_learning.html#deep-learning">Deep learning</a> · <span class="et">habilita</span><a href="19_deep_learning.html#agentes">Agentes de IA</a></div>
+<div class="fila"><span class="et">prioridad</span>importancia curricular 1 · peso en certamen baja (C2: P5) · <span class="et">certamen</span><a href="../../04_EJERCICIOS/certamen_2.html#p5">C2 P5</a> · <a href="../../04_EJERCICIOS/certamen_3.html#p3c">C3 P3C</a></div>
+<details><summary>Dónde se enseñó en clase (3 tramos)</summary><ul><li><b>Clase del 21-ago</b> · 2:11:41–2:35:37 · profesor — transformer, atencion, BERT, predecir la siguiente palabra<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:41]</span></li><li><b>Clase del 21-ago</b> · 2:43:47–2:46:54 · profesor — destilacion y limitaciones<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:43:47]</span></li><li><b>Clase del 31-jul</b> · 0:04:42–0:06:34 · profesor — GPT es el modelo; ChatGPT, el sistema<br><span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/06Clase_Fundamentos_en_Ciencia_de_Datos_31_de_julio.md · 0:04:42]</span></li></ul></details>
+</nav>
+<!-- datito:nav:fin -->
+
+<h1>Modelos de lenguaje: predecir la siguiente palabra</h1>
+<p class="sub">Laboratorio · Clase 18 · Deep learning, LLM y agentes · modelo de juguete entrenado con la propia clase del 21-ago</p>
+
+<div class="clave">
+  <strong>Qué vas a poder hacer.</strong> Explicar con tus palabras cómo algo que solo predice la siguiente palabra
+  genera texto nuevo, qué controla la temperatura y qué agrega la atención. Al terminar, decidir qué temperatura usar
+  en una tarea concreta y qué cuesta equivocarse.
+</div>
+
+<h2 id="pregunta">0 · Antes de empezar</h2>
+<p>Esta es la pregunta diagnóstica del concepto. Respóndela ahora, sin leer nada más; al final vuelves a ella.</p>
+<div class="pred">
+  <div class="q">Un LLM predice el siguiente token. ¿Cómo puede algo así responder una pregunta que nunca vio escrita?</div>
+  <div class="intento" data-intento="q0"><textarea placeholder="Tu respuesta, aunque sea a medias"></textarea></div>
+</div>
+
+<div class="cita">son simplemente modelos que predicen la siguiente palabra y son large porque son grandes o sea tienen billones de parametros
+  <span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:22:42–2:22:49]</span></div>
+
+<p class="lbl">El recorrido completo (pasa el cursor: cada bloque se ilumina donde lo trabajas)</p>
+<div class="flujo" aria-label="flujo de un modelo de lenguaje">
+  <a href="#lab-siguiente" data-enlace="texto">texto</a><span class="f">→</span>
+  <a href="#lab-atencion" data-enlace="vectores">palabras → vectores</a><span class="f">→</span>
+  <a href="#lab-atencion" data-enlace="atencion">atención al contexto</a><span class="f">→</span>
+  <a href="#lab-siguiente" data-enlace="probs">probabilidades</a><span class="f">→</span>
+  <a href="#lab-siguiente" data-enlace="muestreo">elegir con temperatura</a><span class="f">→</span>
+  <a href="#lab-mascara" data-enlace="generar">repetir: generar</a>
+</div>
+
+<h2 id="lab-siguiente">1 · Laboratorio A · La siguiente palabra y la temperatura</h2>
+<p>Este modelo de juguete leyó <strong id="nPal">—</strong> palabras de la clase del 21-ago (el tramo de redes, atención
+y LLM) y contó qué palabra siguió a cuál. Es un <em>bigrama</em>: mira solo la palabra anterior. Un LLM real mira
+todo lo escrito antes, y eso es lo que agrega la atención (laboratorio B).
+<span class="fuente">[DATITO] corpus: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:11:41–2:46:54 ·
+la transcripción automática trae errores («la dro» por «ladró»): el modelo los aprende igual, como aprendería cualquier error de sus datos.</span></p>
+
+<div class="predice" data-predice="p1">
+  <p class="lbl-pred">Predice antes de mover nada</p>
+  <p>Después de «la», el modelo ve que «imagen» y «palabra» son lo más frecuente. Si subes la temperatura de 0,3 a 2,
+  ¿la barra más alta crece o se achica? ¿Y qué le pasa a las palabras raras?</p>
+  <textarea placeholder="Mi predicción…"></textarea>
+  <button>Registrar predicción</button>
+</div>
+
+<div class="panel" data-requiere="p1" data-enlace="probs">
+  <div class="ctl"><label for="ctx">Palabra anterior</label><select id="ctx"></select><span></span></div>
+  <div class="ctl"><label for="temp">Temperatura</label><input type="range" id="temp" min="0.1" max="3" step="0.1" value="1"><span id="tempV">1.0</span></div>
+  <div class="ctl"><label for="topk">top-k (0 = todas)</label><input type="range" id="topk" min="0" max="10" step="1" value="0"><span id="topkV">todas</span></div>
+  <div class="barras" id="barras"></div>
+  <div class="met">
+    <div><div class="n" id="mTop">—</div><div class="e">prob. de la más alta</div></div>
+    <div><div class="n" id="mEnt">—</div><div class="e">entropía (bits)</div></div>
+    <div><div class="n" id="mN">—</div><div class="e">candidatas</div></div>
+  </div>
+  <p class="lbl" data-enlace="muestreo">Generar: elegir, agregar y repetir</p>
+  <button id="bGen">Generar 12 palabras</button><button id="bSem" class="alt">Otra semilla</button>
+  <div class="gen" id="gen" data-enlace="generar"></div>
+</div>
+
+<details class="nivel" data-nivel="1" id="n1-temp">
+  <summary>Nivel 1 · Qué hace la temperatura</summary>
+  <div class="ecu"><div class="f">p(w) = exp(log c(w) / T) / Σ exp(log c(v) / T)</div>
+  <p><code>c(w)</code> es cuántas veces siguió <code>w</code> a la palabra anterior; <code>T</code> es la temperatura;
+  top-k deja solo las <code>k</code> más contadas antes de normalizar. Con <code>T = 1</code> la fórmula da exactamente
+  las frecuencias contadas. <code>T &lt; 1</code> exagera las diferencias; <code>T &gt; 1</code> las aplana. [DATITO]</p></div>
+</details>
+<details class="nivel" data-nivel="2" id="n2-temp">
+  <summary>Nivel 2 · Por qué T = 1 reproduce las cuentas</summary>
+  <p>Con <code>T = 1</code>, <code>exp(log c(w)) = c(w)</code>, así que <code>p(w) = c(w) / Σ c(v)</code>: la frecuencia relativa.
+  Dividir por <code>T</code> equivale a elevar cada cuenta a <code>1/T</code>: con <code>T = 0,5</code> una palabra que salió el doble pesa
+  cuatro veces más; con <code>T = 2</code>, solo √2 ≈ 1,4 veces más. Cuando T tiende a 0 se elige siempre la más contada. [DATITO]</p>
+</details>
+
+<div class="nota"><strong>Lo que el juguete no puede.</strong> Prueba generar desde «modelo»: a las pocas palabras pierde el hilo, porque solo
+recuerda una palabra. Para responder una pregunta que nunca vio, el modelo necesita representar cada palabra <em>en su contexto</em>.
+Eso es la atención.</div>
+
+<h2 id="lab-atencion">2 · Laboratorio B · Atención: a qué palabras mirar</h2>
+<p>El profesor usó esta oración para explicar la atención [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:16:07–2:16:11]:</p>
+
+<div class="predice" data-predice="p2">
+  <p class="lbl-pred">Predice antes de ver los pesos</p>
+  <p>Para representar «ladró» dentro de su oración, ¿a qué palabras le prestarías más atención y por qué?</p>
+  <textarea placeholder="Por ejemplo: a … porque …"></textarea>
+  <button>Registrar predicción</button>
+</div>
+
+<div class="panel" data-requiere="p2" data-enlace="atencion">
+  <p class="lbl">La oración (cada palabra se convierte en un vector)</p>
+  <div class="toks" id="toksAt" data-enlace="vectores"></div>
+  <button id="bVerAt">Ver los pesos que dio el profesor para «ladró»</button>
+  <div class="barras" id="barrasAt"></div>
+  <div class="ctl"><label for="escala">Escala de los puntajes</label><input type="range" id="escala" min="0.2" max="3" step="0.1" value="1"><span id="escalaV">1.0</span></div>
+</div>
+
+<div class="cita">voy a usar un 30% de atención a la palabra la dro voy a prestar un 30% de la atención a feliz un 30% de la atención a perro un 10% de atención a café
+  <span class="f">[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:17:59–2:18:09]</span></div>
+
+<details class="nivel" data-nivel="1" id="n1-at">
+  <summary>Nivel 1 · De dónde salen esos porcentajes</summary>
+  <p>La red calcula un puntaje entre «ladró» y cada palabra, y los convierte en porcentajes que suman 100 con la misma
+  función que usa el laboratorio A (softmax). Los puntajes de este panel están elegidos para reproducir los porcentajes
+  del profesor; en un transformer real salen de multiplicar vectores aprendidos. [DATITO]</p>
+</details>
+<details class="nivel" data-nivel="2" id="n2-at">
+  <summary>Nivel 2 · La fórmula, y por qué √d es una temperatura</summary>
+  <div class="ecu"><div class="f">atención(q, K) = softmax( q·kᵢ / √d )</div>
+  <p><code>q</code> es el vector de la palabra que se quiere representar («ladró»), <code>kᵢ</code> el de cada palabra de la
+  oración y <code>d</code> su dimensión. Dividir por <code>√d</code> es lo mismo que la temperatura del laboratorio A: el control
+  «escala» multiplica los puntajes. Con la escala alta, la atención se concentra en una sola palabra; con la escala baja, se
+  reparte entre todas. [DATITO]</p></div>
+</details>
+
+<p>Además, cada palabra se puede representar sin esperar a las demás, y por eso estos modelos se entrenan en paralelo
+con muchísimos datos [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:18:30–2:18:59].</p>
+
+<h2 id="lab-mascara">3 · Laboratorio C · Enmascarar, y de ahí a generar</h2>
+<p>BERT tapa al azar alrededor del 15 % de las palabras y aprende a adivinarlas: es un problema de clasificación
+[FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:20:41–2:21:09].</p>
+<div class="panel">
+  <div class="toks" id="toksM"></div>
+  <button id="bM15">Enmascarar ~15 % al azar</button>
+  <button id="bMUlt">Enmascarar solo la última</button>
+  <button id="bMLimpia" class="alt">Destapar</button>
+  <p id="mGuess" class="fuente"></p>
+</div>
+<div class="pred">
+  <div class="q">¿Por qué enmascarar solamente la última palabra convierte a este modelo en un generador de texto?</div>
+  <div class="intento" data-intento="q1"><textarea placeholder="Tu intento"></textarea></div>
+  <button class="pedir" data-intento="q1">Dame la respuesta</button>
+  <details class="resp" data-intento="q1">
+    <summary>Respuesta y resolución</summary>
+    <p><strong>Respuesta:</strong> porque adivinar la palabra tapada al final es predecir la siguiente palabra. Si la agregas al
+    texto y vuelves a tapar la nueva última, obtienes otra, y así se genera texto palabra por palabra.</p>
+    <p><strong>Resolución:</strong> el profesor lo dice así: si el modelo reconoce palabras enmascaradas, puede enmascarar la
+    última, predecirla, y después buscar la siguiente, y la siguiente
+    [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:21:16–2:22:04].
+    Es el botón «Generar» del laboratorio A.</p>
+    <p><strong>Error típico:</strong> creer que el modelo planifica la frase completa. Elige una palabra a la vez; la sensación de
+    plan sale del contexto que la atención ya leyó.</p>
+  </details>
+</div>
+
+<h2 id="decision">4 · Decisión: qué temperatura usar y cuánto cuesta equivocarse</h2>
+<p>Tienes dos encargos con el mismo LLM local:</p>
+<ol class="pasos">
+  <li>Extraer el monto total de 500 boletas escaneadas a una planilla.</li>
+  <li>Proponer 10 títulos posibles para el informe de tu proyecto Melbourne.</li>
+</ol>
+<div class="pred">
+  <div class="q">¿Temperatura baja o alta en cada uno? Justifica con lo que cuesta un error en cada caso.</div>
+  <div class="intento" data-intento="q2"><textarea placeholder="1: … porque …  2: … porque …"></textarea></div>
+  <button class="pedir" data-intento="q2">Dame la respuesta</button>
+  <details class="resp" data-intento="q2">
+    <summary>Respuesta y resolución</summary>
+    <p><strong>Respuesta:</strong> 1, temperatura baja (cerca de 0) y top-k chico; 2, temperatura alrededor de 1 o algo más.</p>
+    <p><strong>Resolución:</strong> en las boletas hay una sola respuesta correcta y un error cuesta plata: quieres la
+    palabra más probable siempre, como en el laboratorio A con T = 0,3. En los títulos, la variedad vale y un mal título
+    cuesta poco, porque lo descartas. [DATITO]</p>
+    <p><strong>Error típico:</strong> creer que temperatura baja significa «correcto». Solo significa «lo más probable»: el
+    modelo puede estar muy seguro y equivocado. En las boletas igual revisas una muestra a mano. [DATITO]</p>
+  </details>
+</div>
+
+<h2 id="codigo">5 · El mismo control en código</h2>
+<p>El motor de <code>15_TERMINITO</code> ya llama a un LLM local con temperatura. Esta línea la corres tú, si quieres
+(Datito no ejecuta experimentos por ti: G2).</p>
+<div class="ecu"><div class="f">from datito import llm<br>llm.generar("Monto total de esta boleta: …", temperatura=0.0)</div>
+<p>Está en <code>15_TERMINITO/src/datito/llm.py</code> y usa Ollama con el modelo de <code>config.py</code>. Si Ollama no está
+corriendo, el motor avisa en una línea y sigue en modo exploración (G6). [FUENTE · Repo: 15_TERMINITO/src/datito/llm.py]</p></div>
+
+<h2 id="vuelta">6 · Vuelve a tu primera respuesta</h2>
+<div class="pred">
+  <div class="q">Relee lo que escribiste al empezar. ¿Qué cambiarías? Escribe la versión nueva.</div>
+  <div class="intento" data-intento="q0b"><textarea placeholder="Mi respuesta ahora"></textarea></div>
+  <button class="pedir" data-intento="q0b">Dame la respuesta</button>
+  <details class="resp" data-intento="q0b">
+    <summary>Una respuesta completa</summary>
+    <p><strong>Respuesta:</strong> no necesita haber visto la pregunta. Con la atención representa cada palabra en el contexto
+    de toda la pregunta, y con lo aprendido de billones de palabras asigna probabilidades a la siguiente. Al elegir una,
+    agregarla y repetir, arma una respuesta nueva palabra por palabra.</p>
+    <p><strong>Resolución:</strong> laboratorio A (siguiente palabra y generación), B (contexto por atención) y C (de
+    enmascarar a generar). [FUENTE · Repo: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md · 2:21:38–2:22:04]</p>
+    <p><strong>Error típico:</strong> decir que «busca la respuesta en una base de datos». Un LLM solo genera; si además busca o
+    usa herramientas y observa el resultado, ya es un agente: ver <a href="19_deep_learning.html#agentes">agentes</a>.</p>
+  </details>
+</div>
+
+<div class="vecino">Este laboratorio amplía la sección <a href="19_deep_learning.html#llm">LLM de la clase 18</a>, que tiene el
+juguete del «hola cómo estás».</div>
+
+<h2 id="para-datito">Para Datito</h2>
+<p>Tus predicciones e intentos quedan en este navegador. Para que Datito los vea, copia el bloque y pégalo en el chat:
+abrirá la conversación comparando lo que predijiste con lo que observaste.</p>
+<pre id="datito-export"></pre>
+<button id="datito-copiar">Copiar para Datito</button><button id="datito-borrar" class="alt">Borrar mis registros</button>
+
+<footer>
+  Laboratorio Datito v2 · sin conexión · corpus y citas: 05_CLASES/transcripciones/2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md ·
+  <code>&lt;!-- datito:template:v2 --&gt;</code>
+</footer>
+</main>
+
+<script id="llm-modelo">
+/* Modelo de juguete: funciones puras (test: 04_CODIGO/test_visual_v2.py). */
+var CORPUS = /* datito:llm:datos:inicio */{"bigramas":{"a":{"agregar":2,"explicar":4,"feliz":2,"generar":7,"la":14,"lo":3,"perro":3,"poquito":3,"ser":3,"una":3},"acá":{"atrás":1,"dado":1,"de":2,"donde":1,"en":1,"estábamos":1,"fíjense":1,"muestra":1,"y":3,"yo":3},"además":{"como":1,"lo":1,"son":1,"un":1},"ahora":{"bert":1,"dado":1,"en":1,"esta":1,"genere":1,"le":1,"lo":1,"me":1,"no":1,"si":2},"ahí":{"es":1,"estamos":1,"estaría":1,"hay":1,"pero":1},"al":{"alumno":3,"alza":1,"audio":1,"azar":1,"final":2,"nivel":1,"orden":1,"punto":2,"transformer":1},"algo":{"así":1,"que":2,"te":1},"alguna":{"forma":8,"parte":1,"persona":1},"algún":{"algoritmo":1,"modelo":1,"momento":3},"alta":{"atención":1,"inversión":1,"la":1,"osea":1,"pero":1,"tengo":1,"una":1},"alumno":{"de":2,"y":1},"antes":{"pero":1,"por":1,"y":1},"apareció":{"albert":1,"bert":1,"el":1,"roberta":1},"aquí":{"de":1,"me":3,"para":1,"por":1},"arquitectura":{"a":1,"computacional":1,"todo":1},"así":{"como":9,"es":1,"esa":1,"mira":1,"muy":1,"por":1,"que":1,"sucesivamente":1,"tal":1,"tiene":1},"atención":{"a":12,"bueno":1,"entonces":4,"es":2,"por":1,"que":2,"solamente":1,"son":1,"sólo":1,"tengo":1},"atrás":{"si":1,"voy":1,"y":1},"audifo":{"así":1,"lo":1,"para":1,"se":1},"audio":{"con":2,"me":1,"porque":1,"sin":1,"también":1,"y":3},"año":{"en":1,"pasado":1,"se":1},"bert":{"enmascara":1,"es":1,"hizo":1,"utiliza":1,"y":2},"bien":{"amarrados":1,"definido":1,"o":1},"billones":{"de":9,"o":1,"parámetros":1,"y":1},"buenos":{"como":1,"muy":1,"y":1},"buscar":{"la":3},"básicamente":{"armamos":1,"con":1,"el":1,"esta":1,"estar":1,"hay":2,"la":1,"lo":4,"los":1,"un":2},"cada":{"una":3,"uno":2,"vez":6},"café":{"entonces":1,"se":1,"y":1},"capacidad":{"de":1,"en":1,"es":1},"caso":{"acá":1,"de":2,"estoy":1,"la":1},"chat":{"gpt":10,"que":1,"también":1},"como":{"de":2,"el":4,"en":3,"eso":2,"esta":2,"este":2,"hasta":2,"la":4,"lo":2,"un":3},"computacional":{"altísimo":1,"si":1,"super":1},"computador":{"es":1,"local":1,"o":1,"que":1,"ser":1},"computadores":{"donde":1,"es":1,"gigantes":1},"con":{"audio":2,"c":1,"el":3,"eso":3,"ladro":3,"modelos":2,"muchos":2,"personas":2,"ruido":2,"una":2},"concepción":{"en":1,"y":2},"contexto":{"de":2,"entonces":1},"contextual":{"aquí":2,"que":1},"correlacion":{"alta":1,"con":2,"de":1,"es":1,"muy":1},"cosas":{"así":1,"como":2,"tan":1,"usan":1,"y":1},"costo":{"computacional":1,"de":3,"mínimo":1,"o":1,"para":2},"creo":{"a":1,"que":4},"cual":{"como":3,"esto":1,"estoy":1,"la":1,"quiere":1,"yo":1},"cuando":{"generas":1,"le":1,"se":1,"tu":1,"tú":1,"ustedes":3,"voy":1,"yo":2},"césamo":{"les":1,"o":1,"pero":1,"si":1,"y":1},"cómo":{"está":1,"funciona":1,"genera":1,"sabe":1},"datos":{"de":5,"generar":1,"que":1,"y":3},"de":{"alguna":9,"atención":12,"billones":5,"difusión":6,"la":19,"ladro":5,"lenguaje":5,"los":10,"parametros":5,"plaza":5},"decir":{"damos":1,"ineficiente":1,"perdón":1,"que":6},"decía":{"con":1,"es":1,"esto":1,"son":1},"del":{"audifo":1,"audio":1,"caso":1,"cloud":1,"contexto":1,"costo":1,"esto":1,"funcionamiento":1,"lenguaje":2,"orden":3},"denoising":{"como":1,"donde":1,"que":1},"dentro":{"de":1,"del":2},"desde":{"acá":1,"el":3,"esta":1,"la":1,"lo":1,"un":1},"después":{"apareció":2,"de":1,"el":1,"este":1,"lo":1,"puedo":2,"tengo":1,"yo":1},"detrás":{"chat":1,"empieza":1,"openai":1,"que":1,"y":1},"dice":{"detente":1,"hola":1,"mira":1,"profesor":1,"que":1,"tengo":1,"voy":1,"y":1},"difusión":{"entonces":1,"hacia":2,"se":1,"sobre":1,"tomo":1,"y":1},"digamos":{"así":1,"el":1,"gamer":1,"la":1,"que":1,"si":1,"todo":1},"dije":{"perro":1,"por":1,"tu":1},"distintas":{"como":1,"cosas":1,"de":1},"donde":{"decimos":1,"está":1,"si":1,"tú":1,"voy":1},"dos":{"palabras":1,"parametros":1,"procesos":1},"dro":{"dentro":1,"independiente":1,"voy":1},"día":{"chat":1,"depende":1,"es":1,"hablamos":1,"lo":1,"nos":1,"por":1},"dólares":{"así":1,"entonces":1,"mensuales":2},"ejemplo":{"acá":1,"con":1,"cuando":1,"de":1,"debe":1,"en":1,"es":1,"feliz":1,"perro":1,"si":2},"el":{"audio":3,"mecanismo":4,"modelo":19,"procesamiento":3,"proceso":4,"que":3,"ruido":7,"tema":4,"texto":7,"volumen":3},"empezar":{"a":3},"empieza":{"a":3},"en":{"algún":3,"día":5,"el":14,"esta":3,"este":3,"inglés":3,"la":9,"realidad":7,"un":8,"una":5},"entonces":{"ahora":3,"básicamente":4,"como":3,"después":2,"en":5,"es":2,"esa":2,"lo":5,"puedo":4,"yo":4},"entrada":{"también":1,"un":2},"entre":{"comillas":1,"el":1,"esas":1},"entrenamiento":{"o":1,"para":1,"y":1},"entrenar":{"con":1,"el":1,"en":1,"independiente":1},"era":{"así":1,"como":1,"el":1,"este":1,"mi":1,"niño":1,"tan":1,"un":1},"es":{"básicamente":3,"como":10,"de":5,"el":6,"la":3,"lo":11,"muy":3,"por":3,"que":26,"un":6},"esa":{"es":2,"forma":3,"fue":1,"la":1,"palabra":2,"parte":1,"revolución":1,"siguiente":1},"ese":{"aceleramiento":1,"entonces":1,"es":1,"super":1},"eso":{"a":1,"ah":1,"como":1,"de":1,"el":1,"es":1,"gpt":1,"la":1,"más":1,"no":2},"especial":{"que":2,"una":1},"esta":{"acá":1,"atención":1,"construyendo":1,"curva":1,"de":1,"el":1,"empresa":1,"en":1,"representación":4,"va":2},"estamos":{"creando":1,"entrenando":1,"generando":1,"hablando":2,"pagando":1,"pidiendo":1,"por":1,"viendo":1},"estar":{"ahí":1,"aquí":1,"en":1,"muy":1,"no":1},"estas":{"acá":1,"dos":1,"empresas":1,"hablando":1,"imágenes":1,"palabras":3,"representaciones":1,"tareas":1},"este":{"alfa":2,"caso":2,"entonces":1,"era":1,"es":1,"estilo":1,"gráfico":1,"intercambio":1,"tipo":2,"vector":5},"esto":{"acuérdate":1,"acá":1,"en":1,"es":8,"genera":1,"nos":1,"nuevamente":1,"pasó":1,"quiere":2,"y":3},"estos":{"hardware":1,"investigadores":1,"mismos":1,"modelos":11,"que":1},"estoy":{"condicionando":1,"diciendo":1,"escondiendo":1,"subiendo":1},"está":{"acá":1,"ajustado":1,"corriendo":1,"de":1,"entendiendo":1,"feliz":1,"implementado":1,"la":1,"ocurriendo":1,"todo":1},"están":{"correladas":1,"entrenadas":2,"haciendo":1,"subsidiando":1,"trabajando":1},"explicar":{"ahora":1,"brevemente":1,"cómo":1,"más":1},"feliz":{"entonces":2,"ladro":1,"que":1,"un":2,"y":2},"forma":{"acelera":1,"de":2,"entonces":1,"eso":2,"nos":1,"pareciera":1,"pero":1,"ponerle":1,"por":1,"serán":1},"forward":{"es":1,"y":2},"fue":{"como":1,"desarrollado":1,"el":1,"esto":1,"publicado":1,"que":1},"funciona":{"el":1,"para":1,"también":1},"funcionan":{"con":1,"los":1,"peor":1},"fíjense":{"que":3},"gato":{"en":1,"entonces":2,"esto":1,"se":1,"y":1},"gene":{"informática":3},"genera":{"este":5,"la":2,"los":1,"pero":1,"un":1,"una":4},"generación":{"de":3,"que":1},"generalmente":{"ahí":1,"es":1,"funcionan":1,"se":1},"generando":{"generando":2,"sobre":1,"un":1,"y":1},"generar":{"datos":1,"distintos":1,"este":1,"la":5,"modelos":1,"palabras":1,"siempre":1,"texto":6,"un":1,"una":2},"generativo":{"de":1,"entonces":1,"y":1},"genero":{"para":1,"un":1,"una":1},"gpt":{"así":1,"como":2,"enter":1,"entonces":1,"es":4,"gpt":2,"los":1,"me":1,"no":1,"tiene":2},"grande":{"entonces":1,"le":1,"y":3},"grandes":{"modelos":1,"osea":1,"palabras":1},"gustaría":{"de":1,"es":1,"hablar":1,"que":1},"ha":{"generado":1,"llegado":2,"tratado":1},"hablamos":{"de":3},"hablando":{"de":3,"del":1},"hablar":{"al":1,"con":1,"de":2,"un":1,"y":1},"hace":{"bert":1,"con":2,"el":1,"es":6,"generalmente":1,"imagínese":1,"lógica":1,"poco":1,"por":1,"un":2},"hacer":{"distintas":1,"el":2,"la":2,"minimalista":1,"una":2},"hacia":{"adelante":1,"atrás":1,"el":1,"nosotros":1},"haciendo":{"como":1,"es":1,"la":1},"hago":{"el":2,"es":5,"que":1,"una":1},"hardware":{"gigante":1,"por":1,"y":1},"hasta":{"acá":1,"el":3},"hay":{"algo":1,"como":1,"generar":1,"inventar":2,"millones":1,"muchos":1,"un":2,"una":4},"he":{"contado":1,"mencionado":1,"mostrado":1},"hecho":{"ahora":1,"de":1,"delante":1,"mira":1,"o":1,"si":1,"y":1},"hola":{"ahora":1,"estudiantes":1,"tengo":1},"hoy":{"día":2,"en":5},"imagen":{"ahora":1,"bueno":1,"con":1,"de":10,"del":1,"en":1,"entonces":1,"es":3,"que":2,"y":5},"imágenes":{"de":2,"funcionan":1,"los":1,"se":1,"también":1},"inferencia":{"o":1,"porque":1,"va":1},"información":{"guarda":1,"necesaria":1,"posterior":1,"son":1},"informática":{"de":3},"inglés":{"lo":1,"osea":1,"que":1},"la":{"atención":4,"correlacion":5,"cual":3,"dro":3,"imagen":14,"llm":4,"palabra":13,"representación":5,"siguiente":9,"última":5},"ladro":{"a":1,"ahora":1,"con":7,"de":1,"el":1,"entonces":1,"eso":1,"presta":1,"y":1,"ya":1},"language":{"model":2,"processing":1,"understanding":1},"las":{"aplicaciones":1,"conversaciones":1,"correlaciones":2,"palabras":2,"personas":1,"representaciones":1},"le":{"acomode":1,"dicen":1,"dices":1,"dije":1,"empiezo":2,"enseñas":1,"estamos":1,"expliqué":1,"pase":2,"voy":4},"lenguaje":{"básicamente":1,"chat":1,"natural":4,"por":1,"que":2},"les":{"creo":1,"decía":3,"dije":1,"generó":2,"mostré":2,"suenan":1},"llama":{"bert":2,"condicionar":1,"destilación":1,"el":1,"este":1,"gpt":1,"que":1,"squad":1,"tiene":1,"un":3},"llegar":{"a":2,"al":1},"llm":{"así":1,"grande":1,"me":1,"no":1,"son":2},"lo":{"anterior":2,"cual":1,"entendí":1,"hace":1,"he":2,"mismo":2,"piensan":2,"puedo":2,"que":57,"voy":3},"logro":{"hacer":1,"no":1,"quedar":1},"los":{"agentes":1,"audios":1,"benchmarks":1,"bloques":1,"científicos":1,"costos":2,"datos":3,"desafíos":2,"modelos":9,"transformers":8},"mas":{"caro":1,"gasto":1,"no":1,"petrolios":2,"preguntas":1,"que":1,"rapido":1},"mascarar":{"la":2,"una":1},"me":{"asumo":1,"de":1,"dice":1,"esta":1,"genera":1,"gustaría":4,"hace":1,"ladro":3,"llamó":1,"refiero":3},"mecanismo":{"de":6,"que":2},"mecanismos":{"de":3},"menos":{"capacidad":1,"como":1,"del":1,"que":1,"qué":1,"rapido":1,"recursos":1,"tokens":1},"metas":{"de":1,"eso":1,"hace":1},"mira":{"en":1,"por":1,"televisión":1,"todo":1},"misma":{"carrera":1,"como":1,"forma":1,"ni":1,"palabra":1,"y":2},"mismo":{"entonces":1,"mecanismo":1,"porcentaje":1,"que":1,"sentido":1},"modelo":{"de":4,"empieza":2,"generativo":3,"grande":3,"lenguaje":2,"más":2,"negocio":2,"pequeño":2,"por":2,"ya":2},"modelos":{"como":1,"de":6,"del":1,"en":2,"entrenados":1,"entrenan":1,"es":1,"fueron":1,"fundacionales":2,"que":6},"momento":{"es":1,"genera":1,"la":1,"tal":1,"tu":1},"mucho":{"dato":1,"la":2,"menos":1,"mucho":1,"que":1,"ruido":1},"muchos":{"datos":3,"de":1,"muchas":1,"muchos":1,"más":1,"éxitos":1},"muestra":{"a":1,"como":1,"otro":1},"muy":{"alta":1,"bien":1,"buenos":2,"clarificados":1,"correlacionado":1,"malas":1,"malos":2,"paralelizable":1,"parecido":3,"rápido":1},"más":{"adelante":1,"al":1,"baja":1,"carga":1,"complejo":2,"datos":1,"grande":1,"importantes":1,"o":2,"que":3},"máscara":{"de":1,"encima":1,"entonces":1},"natural":{"ah":1,"de":1,"el":2,"language":1},"neuronal":{"aparte":1,"entonces":2,"por":1,"que":6,"uno":1,"va":1},"nivel":{"de":1,"del":2},"no":{"adoptamos":1,"dependencia":1,"distingo":1,"es":6,"la":3,"logro":2,"se":4,"sé":11,"te":2,"tiene":2},"nos":{"están":1,"lleva":1,"parece":1,"tiene":1,"va":1},"nosotros":{"como":1,"en":1,"estamos":1,"le":1,"pagamos":1,"porque":1,"también":1,"usamos":1,"y":1},"o":{"a":2,"algo":1,"anthropic":1,"asistente":1,"de":3,"en":2,"menos":3,"no":2,"sea":13,"tenemos":2},"ocurre":{"es":2,"que":1},"ok":{"entonces":3,"no":1,"y":1},"openai":{"o":1,"que":1,"y":1},"oración":{"como":1,"que":1,"sí":1,"voy":1},"orden":{"de":4,"del":2},"osea":{"es":1,"por":1,"tienen":1,"va":1},"otra":{"otra":1,"palabra":2,"y":1},"otras":{"líneas":1,"palabras":4},"otro":{"codificador":1,"desafío":1,"que":1,"salto":1},"pagando":{"dólares":1,"el":1,"es":1,"mucho":1},"palabra":{"a":1,"como":1,"dentro":1,"entonces":3,"especial":2,"la":2,"ladro":2,"que":3,"se":3,"y":5},"palabras":{"ahora":1,"de":2,"dentro":1,"enmascaradas":1,"entonces":1,"especiales":1,"para":1,"que":3,"también":1,"y":2},"para":{"ayudarle":1,"cosas":1,"desde":1,"entender":1,"entrenarse":1,"esta":1,"hablar":2,"poder":2,"que":5,"todo":2},"parametros":{"de":1,"lo":1,"son":2,"tiene":1,"y":1},"parecido":{"a":2,"al":1,"que":1,"sí":1},"parte":{"de":3,"estamos":1,"no":1},"pasar":{"por":2,"una":1},"pequeño":{"que":1,"vaya":1,"y":1},"pero":{"a":1,"así":1,"básicamente":1,"cuando":2,"de":1,"dice":1,"en":2,"la":2,"no":4,"por":2},"perro":{"atrás":1,"café":1,"de":1,"dije":1,"entendido":1,"entonces":1,"presta":1,"seguramente":1,"un":1,"y":2},"personas":{"accediendo":1,"que":2,"y":1},"pixel":{"a":2,"de":1,"es":1},"plaza":{"césamo":5},"poco":{"de":1,"la":1,"más":3,"que":1},"poder":{"de":2,"hacer":1,"llevar":1,"procesar":1,"resolver":1,"saludarlo":1,"utilizar":1},"podría":{"ajustar":1,"decir":1,"hacer":1,"ser":1,"tener":1},"poquito":{"a":2,"sacándole":1,"vais":1},"por":{"detrás":5,"ejemplo":14,"el":3,"favor":2,"la":3,"los":2,"que":5,"qué":6,"si":3,"su":2},"porque":{"como":1,"cómo":1,"el":1,"en":1,"es":1,"estos":1,"está":1,"lo":1,"los":1,"son":2},"precio":{"de":3},"predecir":{"esa":1,"la":2},"pregunta":{"es":1,"lo":1,"y":1},"preguntas":{"a":1,"en":1,"hasta":1},"presta":{"atención":1,"un":2},"prestar":{"a":1,"alta":1,"atención":1,"un":1},"primero":{"que":2,"tuvieron":1},"problema":{"de":2,"es":1},"procedimiento":{"de":3},"procesamiento":{"actualmente":1,"de":2,"lo":1,"todo":1,"y":1},"proceso":{"de":3,"inverso":2,"y":1},"profesor":{"esto":1,"mire":1,"perdón":1},"puede":{"fijar":1,"oír":1,"ser":1},"pueden":{"empezar":1,"entrenar":2},"puedes":{"instalar":1,"poner":1,"tener":1},"puedo":{"buscar":3,"empezar":1,"entrenar":1,"generar":2,"mascarar":3,"olvidarme":1,"partir":1,"pasarle":1,"usar":2},"punto":{"de":2,"en":1},"que":{"el":7,"es":12,"está":5,"hace":9,"hago":6,"la":5,"no":7,"se":19,"son":6,"yo":9},"quiere":{"decir":7},"qué":{"el":1,"es":4,"hablamos":1,"hoy":1,"los":1,"no":2,"porcentaje":1,"ruido":1,"se":2,"y":2},"realidad":{"a":1,"es":1,"hoy":2,"lo":1,"si":1,"un":1},"red":{"neural":1,"neuronal":12,"o":1},"refiero":{"con":3},"representación":{"de":5,"me":1,"que":1,"ruidosa":1,"se":1,"y":3},"respuesta":{"es":2,"o":1},"revolución":{"con":1,"porque":1,"y":1},"ruido":{"a":1,"al":1,"ambiente":1,"como":1,"cualquiera":1,"da":1,"del":1,"empezar":1,"o":2,"y":5},"se":{"ajustó":1,"como":1,"concentra":1,"detiene":2,"ha":2,"hace":4,"llama":11,"lo":2,"muera":2,"pueden":2},"sea":{"cada":1,"contextual":1,"cualquier":1,"el":1,"entiendo":1,"están":1,"gpt":1,"hacer":1,"la":2,"mas":2},"sean":{"mas":1,"más":1,"porcentajes":1},"ser":{"a":1,"ajustados":1,"capaz":1,"dolor":1,"muy":1,"quizá":1,"relevante":1,"todo":1,"una":1,"uno":1},"si":{"a":1,"alguno":2,"de":1,"el":2,"es":3,"misma":2,"tu":2,"tú":3,"ustedes":2,"yo":8},"siguiente":{"estudiantes":1,"palabra":8,"sí":1,"ve":1,"y":1},"simple":{"ante":1,"idea":1,"vista":1},"simplemente":{"generar":1,"modelos":1,"tomar":1},"sobre":{"el":3,"esta":1,"la":1},"solamente":{"la":1,"mecanismos":1,"pensando":1,"tributa":1},"solo":{"relacionado":1,"tenemos":1,"uso":1,"veo":1},"son":{"billones":2,"como":2,"del":1,"estos":1,"está":1,"gigantes":1,"grandes":1,"los":4,"modelos":2,"muy":5},"su":{"conjunto":1,"contexto":1,"entrenamiento":1,"estudio":1,"experiencia":1,"sigla":1,"traducción":1},"subiendo":{"pero":1,"que":1,"y":1},"super":{"buena":1,"buenos":1,"compleja":1,"computador":2},"sé":{"cuánto":1,"o":1,"que":1,"qué":3,"si":5,"todo":1},"sí":{"cristian":1,"esto":1,"gracias":1,"misma":1,"sí":1},"tal":{"cual":3,"vez":2},"también":{"en":1,"es":1,"esa":1,"están":1,"hay":1,"hubo":1,"lo":1,"no":1,"puede":1,"relacionado":1},"tan":{"alta":1,"de":1,"dependiento":1,"interesantes":1,"obvio":1},"tareas":{"como":1,"distintas":1,"entonces":1,"eran":1,"posteriormente":1},"te":{"genera":2,"habéis":1,"hay":3,"he":1,"la":2,"lo":1,"metes":1,"quede":1,"subirá":1,"toca":1},"tema":{"de":2,"del":1,"pero":1},"tenemos":{"acá":1,"tal":1,"un":1},"tener":{"cosas":1,"este":1,"la":1,"para":1,"un":2},"tenes":{"que":3},"tengo":{"básicamente":1,"esa":1,"esta":2,"que":10,"también":1,"un":1,"una":2},"texto":{"digamos":1,"en":1,"entonces":2,"que":4,"realmente":1,"se":1,"y":8},"ti":{"hablar":1,"que":1,"tenéis":1},"tiene":{"billones":2,"doble":1,"entropi":1,"forma":1,"mucho":1,"muchos":1,"que":3,"toda":1,"un":4,"una":3},"tienen":{"billones":2,"por":1,"que":3,"una":1},"tienes":{"que":1,"un":2},"tipo":{"chat":1,"de":5},"toda":{"la":3},"todas":{"estas":1,"las":2},"todo":{"basado":1,"distribuido":1,"el":6,"entonces":1,"eso":1,"lo":5},"todos":{"dar":1,"esos":1,"los":1,"nosotros":1},"tokens":{"de":1,"entonces":1,"estás":1,"pero":1},"tomo":{"cada":1,"la":1,"los":1},"toquen":{"ahi":1,"es":2,"por":1},"transformers":{"aparte":1,"creo":1,"cuando":1,"es":1,"les":1,"no":1,"ok":1,"por":3,"y":1},"trata":{"de":2,"o":1},"tu":{"cada":1,"creas":1,"genera":1,"la":1,"le":1,"pregunta":1,"propia":1,"puedes":1,"tenes":1,"texto":1},"tú":{"estás":1,"le":2,"lo":1,"pagas":1,"pagáis":1,"podrías":1,"tienes":2,"tomas":1,"usas":1,"yo":1},"un":{"atención":2,"audifo":2,"costo":3,"de":4,"gato":5,"modelo":18,"poco":4,"precio":3,"problema":3,"vector":8},"una":{"alta":2,"de":3,"imagen":15,"llm":2,"máscara":2,"palabra":7,"red":12,"representación":3,"revolución":2,"vez":2},"universidad":{"de":3},"uno":{"cierto":1,"de":3,"hace":2,"podría":1},"usa":{"atención":1,"la":1,"un":2,"usa":1},"usan":{"chat":1,"chatgpt":1,"como":1,"información":1,"los":1,"para":1},"usar":{"computadores":1,"el":1,"información":1,"para":2,"un":1},"usted":{"en":1,"le":1,"si":1,"tiene":1},"ustedes":{"creen":1,"deciden":1,"escribieron":1,"están":1,"ha":1,"lo":3,"tuvo":1,"usan":1},"va":{"a":12,"calo":1,"en":1,"enseñando":1,"más":1,"prestando":1},"vaya":{"aprendiendo":1,"de":1,"generando":1},"vector":{"calculo":1,"de":1,"entra":1,"hay":1,"llegaba":1,"lo":1,"o":1,"que":3,"tengo":1,"y":2},"ver":{"ahora":1,"con":3,"es":1,"y":1},"vez":{"de":1,"esta":1,"estamos":1,"inclusive":1,"mas":1,"más":1,"que":3,"sea":2,"va":1},"volumen":{"de":2,"y":1},"voy":{"a":16,"acá":1,"agregando":1,"agregándole":1},"y":{"después":7,"el":6,"entonces":14,"esto":5,"la":5,"le":5,"lo":9,"me":6,"que":8,"te":5},"ya":{"ahí":1,"conocíamos":1,"entonces":1,"está":1,"hablamos":1,"mas":1,"no":2,"sabemos":1,"tengo":1},"yo":{"creo":2,"cuando":1,"diría":1,"le":3,"les":5,"lo":2,"podría":3,"puedo":5,"tengo":6,"voy":2},"álbum":{"de":2,"hablando":1},"última":{"palabra":4,"y":1}},"frecuencia":{"a":100,"acá":19,"además":4,"ahora":18,"ahí":5,"al":13,"algo":4,"alguna":10,"algún":5,"alta":7,"alumno":3,"antes":3,"apareció":4,"aquí":6,"arquitectura":3,"así":19,"atención":27,"atrás":3,"audifo":4,"audio":9,"año":3,"bert":6,"bien":3,"billones":12,"buenos":3,"buscar":3,"básicamente":17,"cada":11,"café":3,"capacidad":3,"caso":5,"chat":12,"como":72,"computacional":3,"computador":5,"computadores":3,"con":38,"concepción":3,"contexto":3,"contextual":3,"correlacion":6,"cosas":6,"costo":8,"creo":5,"cual":8,"cuando":11,"césamo":5,"cómo":4,"datos":10,"de":249,"decir":9,"decía":4,"del":20,"denoising":3,"dentro":3,"desde":8,"después":10,"detrás":5,"dice":8,"difusión":7,"digamos":7,"dije":3,"distintas":3,"donde":5,"dos":3,"dro":3,"día":7,"dólares":4,"ejemplo":15,"el":122,"empezar":3,"empieza":3,"en":89,"entonces":70,"entrada":3,"entre":3,"entrenamiento":3,"entrenar":4,"era":8,"es":105,"esa":12,"ese":4,"eso":17,"especial":3,"esta":23,"estamos":9,"estar":5,"estas":10,"este":26,"esto":25,"estos":15,"estoy":4,"está":10,"están":6,"explicar":4,"feliz":8,"forma":14,"forward":3,"fue":6,"funciona":3,"funcionan":3,"fíjense":3,"gato":6,"gene":3,"genera":14,"generación":4,"generalmente":4,"generando":5,"generar":21,"generativo":3,"genero":3,"gpt":21,"grande":5,"grandes":3,"gustaría":4,"ha":4,"hablamos":3,"hablando":4,"hablar":6,"hace":18,"hacer":8,"hacia":4,"haciendo":3,"hago":9,"hardware":3,"hasta":4,"hay":13,"he":3,"hecho":7,"hola":3,"hoy":7,"imagen":33,"imágenes":6,"inferencia":3,"información":4,"informática":3,"inglés":3,"la":141,"ladro":17,"language":4,"las":8,"le":25,"lenguaje":9,"les":10,"llama":13,"llegar":3,"llm":6,"lo":88,"logro":3,"los":39,"mas":8,"mascarar":3,"me":21,"mecanismo":8,"mecanismos":3,"menos":8,"metas":3,"mira":4,"misma":7,"mismo":5,"modelo":39,"modelos":29,"momento":5,"mucho":7,"muchos":8,"muestra":3,"muy":14,"más":19,"máscara":3,"natural":5,"neuronal":12,"nivel":3,"no":53,"nos":5,"nosotros":9,"o":40,"ocurre":3,"ok":5,"openai":3,"oración":4,"orden":6,"osea":4,"otra":4,"otras":5,"otro":4,"pagando":4,"palabra":39,"palabras":15,"para":28,"parametros":6,"parecido":5,"parte":5,"pasar":3,"pequeño":3,"pero":36,"perro":11,"personas":4,"pixel":4,"plaza":5,"poco":6,"poder":8,"podría":5,"poquito":4,"por":53,"porque":20,"precio":3,"predecir":3,"pregunta":3,"preguntas":3,"presta":3,"prestar":4,"primero":3,"problema":3,"procedimiento":3,"procesamiento":6,"proceso":6,"profesor":3,"puede":3,"pueden":3,"puedes":3,"puedo":15,"punto":3,"que":279,"quiere":7,"qué":18,"realidad":7,"red":14,"refiero":3,"representación":12,"respuesta":3,"revolución":3,"ruido":24,"se":52,"sea":19,"sean":3,"ser":11,"si":33,"siguiente":12,"simple":3,"simplemente":3,"sobre":5,"solamente":4,"solo":4,"son":29,"su":7,"subiendo":3,"super":5,"sé":12,"sí":5,"tal":5,"también":13,"tan":5,"tareas":5,"te":14,"tema":4,"tenemos":3,"tener":6,"tenes":3,"tengo":18,"texto":18,"ti":3,"tiene":19,"tienen":7,"tienes":3,"tipo":6,"toda":3,"todas":3,"todo":15,"todos":4,"tokens":4,"tomo":3,"toquen":4,"transformers":11,"trata":3,"tu":10,"tú":12,"un":89,"una":68,"universidad":3,"uno":7,"usa":5,"usan":6,"usar":6,"usted":4,"ustedes":10,"va":17,"vaya":3,"vector":14,"ver":6,"vez":12,"volumen":3,"voy":19,"y":171,"ya":10,"yo":45,"álbum":3,"última":5},"fuente":"2026-08-21T22_13_35Z_Fundamentos_en_Ciencia_de_Datos.md 2:11:41-2:46:54","palabras":5023}/* datito:llm:datos:fin */;
+
+function distribucion(siguientes, T, k) {
+  var pares = Object.keys(siguientes).map(function (w) { return [w, Math.log(siguientes[w])]; });
+  pares.sort(function (a, b) { return b[1] - a[1] || (a[0] < b[0] ? -1 : 1); });
+  if (k > 0) pares = pares.slice(0, k);
+  var m = -Infinity;
+  pares.forEach(function (p) { m = Math.max(m, p[1] / T); });
+  var z = 0;
+  var e = pares.map(function (p) { var v = Math.exp(p[1] / T - m); z += v; return [p[0], v]; });
+  return e.map(function (p) { return [p[0], p[1] / z]; });
+}
+function entropia(d) {
+  return -d.reduce(function (s, p) { return s + (p[1] > 0 ? p[1] * Math.log(p[1]) / Math.LN2 : 0); }, 0);
+}
+function semilla(s) {
+  return function () {
+    s = (s + 0x6D2B79F5) | 0;
+    var t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function muestrear(d, azar) {
+  var u = azar(), a = 0;
+  for (var i = 0; i < d.length; i++) { a += d[i][1]; if (u <= a) return d[i][0]; }
+  return d[d.length - 1][0];
+}
+function generar(inicio, n, T, k, s) {
+  var azar = semilla(s), w = inicio, out = [inicio];
+  for (var i = 0; i < n; i++) {
+    var sig = CORPUS.bigramas[w];
+    if (!sig) { out.push("·"); break; }
+    w = muestrear(distribucion(sig, T, k), azar);
+    out.push(w);
+  }
+  return out;
+}
+function softmax(puntajes, escala) {
+  var m = Math.max.apply(null, puntajes.map(function (x) { return x * escala; }));
+  var e = puntajes.map(function (x) { return Math.exp(x * escala - m); });
+  var z = e.reduce(function (a, b) { return a + b; }, 0);
+  return e.map(function (x) { return x / z; });
+}
+</script>
+
+<script id="llm-ui">
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var B = CORPUS.bigramas || {};
+  function barras(el, d, max) {
+    el.innerHTML = "";
+    d.slice(0, max || 10).forEach(function (p) {
+      var a = document.createElement("span"); a.textContent = p[0];
+      var b = document.createElement("div"); b.className = "b"; b.style.width = (100 * p[1]).toFixed(1) + "%";
+      var c = document.createElement("span"); c.className = "p"; c.textContent = (100 * p[1]).toFixed(1) + " %";
+      if (p[2]) a.setAttribute("data-enlace", p[2]);
+      el.appendChild(a); el.appendChild(b); el.appendChild(c);
+    });
+  }
+
+  /* --- A: siguiente palabra */
+  $("nPal").textContent = (CORPUS.palabras || 0).toLocaleString("es-CL");
+  var orden = Object.keys(B).sort(function (a, b) { return (CORPUS.frecuencia[b] || 0) - (CORPUS.frecuencia[a] || 0); });
+  orden.slice(0, 60).forEach(function (w) {
+    var o = document.createElement("option"); o.value = w; o.textContent = w; $("ctx").appendChild(o);
+  });
+  if (B.la) $("ctx").value = "la";
+  var sem = 7;
+  function pintaA() {
+    var T = +$("temp").value, k = +$("topk").value;
+    $("tempV").textContent = T.toFixed(1); $("topkV").textContent = k ? k : "todas";
+    var d = distribucion(B[$("ctx").value] || {}, T, k);
+    barras($("barras"), d, 10);
+    $("mTop").textContent = d.length ? (100 * d[0][1]).toFixed(0) + " %" : "—";
+    $("mEnt").textContent = entropia(d).toFixed(2);
+    $("mN").textContent = d.length;
+    return d;
+  }
+  function observaA() {
+    var d = pintaA();
+    if (window.Datito && d.length) Datito.observa("A", "tras «" + $("ctx").value + "», T=" + $("temp").value +
+      " k=" + $("topk").value + ": la más alta «" + d[0][0] + "» " + (100 * d[0][1]).toFixed(0) +
+      " %, entropía " + entropia(d).toFixed(2) + " bits");
+  }
+  ["temp", "topk"].forEach(function (id) { $(id).addEventListener("input", pintaA); $(id).addEventListener("change", observaA); });
+  $("ctx").addEventListener("change", observaA);
+  function gen() { $("gen").textContent = generar($("ctx").value, 12, +$("temp").value, +$("topk").value, sem).join(" "); }
+  $("bGen").addEventListener("click", function () { gen(); if (window.Datito) Datito.observa("A-gen", $("gen").textContent); });
+  $("bSem").addEventListener("click", function () { sem += 1; gen(); });
+  pintaA();
+
+  /* --- B: atención (oración y pesos del profesor, 21-ago 2:16:11 y 2:17:59) */
+  var ORA = ["el", "perro", "café", "se", "puso", "feliz", "y", "me", "ladró"];
+  var PROF = { "ladró": 30, "feliz": 30, "perro": 30, "café": 10 };
+  var PUNT = ORA.map(function (w) { return PROF[w] ? Math.log(PROF[w]) : Math.log(0.15); });
+  var elegidas = {};
+  ORA.forEach(function (w, i) {
+    var b = document.createElement("button"); b.textContent = w; b.setAttribute("data-enlace", "tok-" + i);
+    b.addEventListener("click", function () { elegidas[w] = !elegidas[w]; b.classList.toggle("sel", !!elegidas[w]); });
+    $("toksAt").appendChild(b);
+  });
+  var visto = false;
+  function pintaB() {
+    if (!visto) return;
+    var esc = +$("escala").value; $("escalaV").textContent = esc.toFixed(1);
+    var p = softmax(PUNT, esc);
+    var d = ORA.map(function (w, i) { return [w, p[i], "tok-" + i]; });
+    barras($("barrasAt"), d, ORA.length);
+    if (window.Datito && Datito.alCambiar) Datito.alCambiar();
+  }
+  $("bVerAt").addEventListener("click", function () {
+    visto = true; pintaB();
+    var tuyas = Object.keys(elegidas).filter(function (w) { return elegidas[w]; });
+    if (window.Datito) Datito.observa("B", "marcó [" + tuyas.join(", ") + "]; el profesor: ladró 30, feliz 30, perro 30, café 10");
+  });
+  $("escala").addEventListener("input", pintaB);
+  $("escala").addEventListener("change", function () {
+    if (window.Datito && visto) Datito.observa("B-escala", "escala " + $("escala").value + ": «ladró» recibe " +
+      (100 * softmax(PUNT, +$("escala").value)[8]).toFixed(0) + " %");
+  });
+
+  /* --- C: enmascarar */
+  var tapadas = {};
+  function pintaC() {
+    $("toksM").innerHTML = "";
+    ORA.forEach(function (w, i) {
+      var s = document.createElement("button");
+      s.textContent = tapadas[i] ? "[MASK]" : w;
+      if (tapadas[i]) s.className = "mask";
+      $("toksM").appendChild(s);
+    });
+    var ult = Object.keys(tapadas).map(Number);
+    if (ult.length === 1 && ult[0] === ORA.length - 1) {
+      var ant = ORA[ORA.length - 2], sig = B[ant];
+      $("mGuess").textContent = sig ? "Tapada solo la última: el juguete propone tras «" + ant + "»: " +
+        distribucion(sig, 1, 3).map(function (p) { return p[0]; }).join(", ") + ". Eso es predecir la siguiente palabra." :
+        "Tapada solo la última: es exactamente predecir la siguiente palabra.";
+    } else $("mGuess").textContent = "";
+  }
+  var azarC = semilla(11);
+  $("bM15").addEventListener("click", function () {
+    tapadas = {}; var n = Math.max(1, Math.round(ORA.length * 0.15));
+    while (Object.keys(tapadas).length < n) tapadas[Math.floor(azarC() * ORA.length)] = true;
+    pintaC();
+  });
+  $("bMUlt").addEventListener("click", function () { tapadas = {}; tapadas[ORA.length - 1] = true; pintaC(); });
+  $("bMLimpia").addEventListener("click", function () { tapadas = {}; pintaC(); });
+  pintaC();
+})();
+</script>
+<!-- datito:nucleo:inicio -->
+<style id="nucleo-datito-css">
+/* datito:nucleo:v2 — estilos del núcleo (fuente: 03_SCRIPTS/plantillas/nucleo_v2.css) */
+.predice{border:2px dashed var(--morado);border-radius:8px;padding:.8rem 1rem;margin:1rem 0;background:#fff}
+.predice .lbl-pred{font-weight:600;color:var(--morado);margin:0 0 .4rem}
+.predice textarea,.intento textarea{width:100%;min-height:3.2rem;font:inherit;padding:.4rem;border:1px solid var(--linea);border-radius:6px}
+.predice.hecha{border-style:solid;background:#f5f3ff}
+.predice.hecha button{display:none}
+.predice.falta textarea{border-color:var(--rojo)}
+.bloqueado{opacity:.45;filter:grayscale(.6);position:relative}
+.bloqueado::before{content:"🔒 Registra tu predicción arriba para usar esto";display:block;font-size:.85rem;color:var(--morado);margin-bottom:.3rem}
+details.nivel{border-left:3px solid var(--azul);padding:.2rem 0 .2rem .9rem;margin:1rem 0}
+details.nivel[data-nivel="2"]{border-left-color:var(--morado)}
+details.nivel>summary{cursor:pointer;font-weight:600}
+details.nivel[open]>*:not(summary){animation:datito-abre .25s ease-out}
+@keyframes datito-abre{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.intento{margin:.6rem 0}
+.aviso-intento{color:var(--ambar);font-size:.9rem;margin:.3rem 0}
+button.pedir{background:none;border:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+.enlazado{outline:3px solid var(--ambar);outline-offset:2px;background:#fff7ed}
+#datito-export{white-space:pre-wrap;font-size:.8rem;background:#f1f0ee;padding:.6rem;border-radius:6px;max-height:14rem;overflow:auto}
+@media (prefers-reduced-motion:reduce){details.nivel[open]>*:not(summary){animation:none}}
+</style>
+<script id="nucleo-datito">
+/* datito:nucleo:v2 — fuente: 03_SCRIPTS/plantillas/nucleo_v2.js (no editar la copia embebida;
+   correr 03_SCRIPTS/sincronizar_nucleo.py). REQ-TUT-012, 013, 014, 017.
+
+   Marcado que entiende:
+     <div class="predice" data-predice="p1"> ... <textarea></textarea> <button>Registrar</button></div>
+         predicción escrita; desbloquea todo [data-requiere="p1"]
+     <div data-requiere="p1"> ... </div>            controles bloqueados hasta predecir
+     <details class="nivel" data-nivel="1|2">       nivel de abstracción; el 2 arranca cerrado
+     <div class="intento" data-intento="q1"><textarea></textarea></div>
+     <details class="resp" data-intento="q1">       se abre tras el intento, o con .pedir
+     <button class="pedir" data-intento="q1">       "dame la respuesta" (G11): abre y lo registra
+     [data-enlace="k"]                              hover ilumina todos los [data-enlace="k"]
+     <pre id="datito-export"></pre>                 bloque DATITO-EVENTOS para pegar en el chat
+   API: Datito.observa(id, texto), Datito.evento(tipo, datos), Datito.desbloqueado(id)
+*/
+(function () {
+  "use strict";
+  var MIN = 3;
+  var pagina = (location.pathname.split("/").pop() || "visual").replace(/\.html$/, "");
+  var CLAVE = "datito:v2:" + pagina;
+  var estado = { pred: {}, intentos: {}, pedidas: {}, eventos: [] };
+
+  function cargar() {
+    try {
+      var s = JSON.parse(localStorage.getItem(CLAVE) || "null");
+      if (s && s.eventos) estado = s;
+    } catch (e) { /* sin almacenamiento: la página funciona igual */ }
+  }
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) { /* idem */ }
+  }
+  function todos(sel, raiz) { return Array.prototype.slice.call((raiz || document).querySelectorAll(sel)); }
+
+  function evento(tipo, datos) {
+    var ev = { tipo: tipo, pagina: pagina, ts: new Date().toISOString().slice(0, 19) };
+    for (var k in datos) if (Object.prototype.hasOwnProperty.call(datos, k)) ev[k] = datos[k];
+    estado.eventos.push(ev);
+    if (estado.eventos.length > 60) estado.eventos.shift();
+    guardar();
+    pintarExport();
+    return ev;
+  }
+
+  function exportar() {
+    var lineas = ["DATITO-EVENTOS v1 · " + pagina];
+    estado.eventos.forEach(function (e) {
+      var r = {};
+      for (var k in e) if (k !== "pagina") r[k] = e[k];
+      lineas.push(JSON.stringify(r));
+    });
+    return lineas.join("\n");
+  }
+  function pintarExport() {
+    var pre = document.getElementById("datito-export");
+    if (pre) pre.textContent = estado.eventos.length ? exportar() : "(todavía no registras nada en esta página)";
+  }
+
+  function desbloqueado(id) { return !!estado.pred[id]; }
+
+  function aplicarCandados() {
+    todos("[data-requiere]").forEach(function (el) {
+      var ok = el.getAttribute("data-requiere").split(/\s+/).every(desbloqueado);
+      el.classList.toggle("bloqueado", !ok);
+      todos("input, select, button, textarea", el).forEach(function (c) { c.disabled = !ok; });
+      if (el.tagName === "DETAILS" && !ok) el.open = false;
+    });
+    todos(".predice[data-predice]").forEach(function (box) {
+      var id = box.getAttribute("data-predice");
+      if (estado.pred[id]) {
+        box.classList.add("hecha");
+        var ta = box.querySelector("textarea");
+        if (ta) { ta.value = estado.pred[id]; ta.readOnly = true; }
+      }
+    });
+  }
+
+  function intentoHecho(id) { return !!(estado.intentos[id] || estado.pedidas[id]); }
+
+  function iniciar() {
+    cargar();
+
+    todos(".predice[data-predice]").forEach(function (box) {
+      var id = box.getAttribute("data-predice");
+      var ta = box.querySelector("textarea");
+      var b = box.querySelector("button");
+      if (!b || !ta) return;
+      b.addEventListener("click", function () {
+        var v = ta.value.trim();
+        if (v.length < MIN) { ta.focus(); box.classList.add("falta"); return; }
+        box.classList.remove("falta");
+        if (!estado.pred[id]) { estado.pred[id] = v; evento("prediccion", { id: id, texto: v }); }
+        aplicarCandados();
+      });
+    });
+
+    todos(".intento[data-intento] textarea").forEach(function (ta) {
+      var id = ta.closest(".intento").getAttribute("data-intento");
+      if (estado.intentos[id]) ta.value = estado.intentos[id];
+      ta.addEventListener("change", function () {
+        var v = ta.value.trim();
+        if (v.length >= MIN && v !== estado.intentos[id]) {
+          estado.intentos[id] = v;
+          evento("intento", { id: id, texto: v });
+        }
+      });
+    });
+
+    todos("details.resp[data-intento]").forEach(function (d) {
+      var id = d.getAttribute("data-intento");
+      d.addEventListener("toggle", function () {
+        if (d.open && !intentoHecho(id)) {
+          d.open = false;
+          var aviso = d.parentNode.querySelector('.aviso-intento[data-intento="' + id + '"]');
+          if (!aviso) {
+            aviso = document.createElement("p");
+            aviso.className = "aviso-intento";
+            aviso.setAttribute("data-intento", id);
+            aviso.textContent = "Primero escribe tu intento arriba, o pide la respuesta.";
+            d.parentNode.insertBefore(aviso, d);
+          }
+        } else if (d.open) {
+          var a = d.parentNode.querySelector('.aviso-intento[data-intento="' + id + '"]');
+          if (a) a.remove();
+        }
+      });
+    });
+
+    todos("button.pedir[data-intento]").forEach(function (b) {
+      var id = b.getAttribute("data-intento");
+      b.addEventListener("click", function () {
+        if (!estado.pedidas[id]) { estado.pedidas[id] = true; evento("pidio_respuesta", { id: id }); }
+        var d = document.querySelector('details.resp[data-intento="' + id + '"]');
+        if (d) d.open = true;
+      });
+    });
+
+    todos('details.nivel[data-nivel="2"]').forEach(function (d) { d.open = false; });
+    todos("details.nivel").forEach(function (d) {
+      d.addEventListener("toggle", function () {
+        if (d.open) evento("nivel", { id: d.id || "", nivel: +d.getAttribute("data-nivel") });
+      });
+    });
+
+    // delegado: sirve tambien para elementos que el lab crea despues
+    function enlace(e, on) {
+      var el = e.target && e.target.closest ? e.target.closest("[data-enlace]") : null;
+      if (!el) return;
+      var k = el.getAttribute("data-enlace");
+      todos('[data-enlace="' + k + '"]').forEach(function (x) { x.classList.toggle("enlazado", on); });
+    }
+    document.addEventListener("mouseover", function (e) { enlace(e, true); });
+    document.addEventListener("mouseout", function (e) { enlace(e, false); });
+    document.addEventListener("focusin", function (e) { enlace(e, true); });
+    document.addEventListener("focusout", function (e) { enlace(e, false); });
+
+    var copiar = document.getElementById("datito-copiar");
+    if (copiar) copiar.addEventListener("click", function () {
+      var txt = exportar();
+      try { navigator.clipboard.writeText(txt); copiar.textContent = "Copiado: pégalo en el chat con Datito"; }
+      catch (e) { copiar.textContent = "Selecciona el bloque y cópialo a mano"; }
+    });
+    var borrar = document.getElementById("datito-borrar");
+    if (borrar) borrar.addEventListener("click", function () {
+      estado = { pred: {}, intentos: {}, pedidas: {}, eventos: [] };
+      guardar();
+      location.reload();
+    });
+
+    aplicarCandados();
+    pintarExport();
+  }
+
+  window.Datito = {
+    evento: evento,
+    observa: function (id, texto) { return evento("observacion", { id: id, texto: String(texto) }); },
+    desbloqueado: desbloqueado,
+    exportar: exportar,
+    alCambiar: aplicarCandados
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);
+  else iniciar();
+})();
+</script>
+<!-- datito:nucleo:fin -->
+</body>
+</html>
