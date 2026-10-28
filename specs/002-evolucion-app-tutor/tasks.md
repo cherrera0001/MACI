@@ -100,8 +100,8 @@
 ## Phase 5: Cierre de la feature (quality gates)
 
 - [x] T040 Ejecutar `/speckit-analyze` (consistencia cruzada spec ↔ plan ↔ tasks) y corregir divergencias (2026-10-28: 8 hallazgos, C1, I1–I4, F1, U1 y U2, corregidos)
-- [ ] T041 Verificar SC-001…SC-005 del spec con evidencia (comandos + salidas archivadas en la bitácora de la feature)
-- [ ] T042 Confirmar cumplimiento de principios I–X y restricciones de la constitución (checklist en el PR)
+- [x] T041 Verificar SC-001…SC-005 del spec con evidencia (`verificacion-2026-10-28.md`: SC-002 y SC-005 cumplidos; SC-001 y SC-004 dependen de fechas; SC-003 depende del alumno)
+- [x] T042 Confirmar cumplimiento de principios I–X y restricciones de la constitución (checklist en `verificacion-2026-10-28.md`)
 
 ## Resumen de bloqueos
 

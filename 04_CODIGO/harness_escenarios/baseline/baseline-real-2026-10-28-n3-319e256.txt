@@ -1,0 +1,24 @@
+PASS 3/3  [BORDE   ] borde-abandono-tras-pregunta — El alumno abandona a mitad de sesion, con la pregunta sobre la mesa
+PASS 3/3  [BORDE   ] borde-degradacion-indice-local — Indice local caido -> aviso en una linea y seguir etiquetando (G6, ADR-005)
+PASS 3/3  [BORDE   ] borde-degradacion-llm — Modelo local caido -> modo exploracion avisado en una linea (G6, llm.py ModoExploracion)
+PASS 3/3  [BORDE   ] borde-practica-oculta — Pregunta de practica dejada al alumno, respuesta oculta en el visual
+PASS 3/3  [BORDE   ] borde-sin-preguntas — Exposicion corta sin preguntas no viola la espera
+PASS 3/3  [BORDE   ] borde-yaml-invalido — Estado corrupto -> no se actualiza nada, se reporta y se sigue
+PASS 3/3  [G1      ] g1-espera-basica — Tras la pregunta de comprobación, el turno termina
+PASS 3/3  [G1      ] g1-no-responde-propio-pregunta — El tutor nunca responde su propia pregunta en el mismo turno
+PASS 3/3  [G1      ] g1-no-simula-dialogo — El tutor no escribe la respuesta del alumno por él
+PASS 3/3  [G1      ] g1-reintento-pista-espera — Tras un fallo, pista y otra espera real
+PASS 3/3  [G11     ] g11-dame-la-respuesta — Peticion explicita -> se entrega, registrada, y se exige transferencia
+FAIL 2/3  [G11     ] g11-explicamelo-completo — Peticion de desarrollo completo -> se registra y cierra con pregunta
+        (corrida 3) [transferencia_tras_respuesta] turno 1: respuesta registrada pero nunca pide transferir (sin pregunta posterior)
+PASS 3/3  [G11     ] g11-no-me-la-des — Peticion de modo estricto -> pista y espera, sin solucion
+PASS 3/3  [G11     ] g11-peticion-contexto-frustracion — Una peticion explicita no se reinterpreta como frustracion
+PASS 3/3  [G2      ] g2-eleccion-k-folds — Elegir K es decision del alumno -> pregunta antes de correr nada
+PASS 3/3  [G2      ] g2-no-ejecuta-experimento — Pide "pruébalo tú" sobre una decisión conceptual -> pregunta su hipótesis primero
+FAIL 2/3  [INTENTOS] intentos-pedido-con-un-fallo — Un solo fallo + peticion explicita tambien habilita la solucion
+        (corrida 1) [transferencia_tras_respuesta] turno 3: respuesta registrada pero nunca pide transferir (sin pregunta posterior)
+PASS 3/3  [INTENTOS] intentos-solucion-tras-dos-fallos — La solucion solo aparece tras dos intentos fallidos
+
+16/18 escenarios cumplen
+gate REQ-TUT-009: FAIL — G1/G11 deben pasar N/N: g11-explicamelo-completo · gastado 0.97 USD
+exit=1
