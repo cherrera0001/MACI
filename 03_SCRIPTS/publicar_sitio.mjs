@@ -28,6 +28,7 @@ const PORTADA = "01_CONCEPTOS/visual/00_index.html";
 // Son páginas autocontenidas: no enlazan a otros archivos del repositorio.
 const DESAFIOS = [
   ["13_KAGGLE/caso_kaggle_gemma4/desafio_kaggle_gemma4.html", "desafios/kaggle_gemma4.html"],
+  ["14_INVESTIGACION/azar_fisico/azar_fisico.html", "desafios/azar_fisico.html"],
 ];
 const NAV_INI = "<!-- datito:nav:inicio -->";
 const NAV_FIN = "<!-- datito:nav:fin -->";
@@ -124,6 +125,19 @@ if (fs.existsSync(ZIP)) {
   const destinoZip = path.join(SALIDA, "01_CONCEPTOS", "visual", "datito", "datito.zip");
   fs.mkdirSync(path.dirname(destinoZip), { recursive: true });
   fs.copyFileSync(ZIP, destinoZip);
+}
+
+// El botón «Descargar para tu curso» apunta a dist/datito.zip (único ZIP
+// trackeado, verificar_contrato.py). En el sitio el ZIP se sirve desde
+// 01_CONCEPTOS/visual/datito/ (copia de arriba), así que se reescribe el
+// enlace antes de la pasada de enlaces rotos.
+for (const archivo of paginas(SALIDA)) {
+  const html = fs.readFileSync(archivo, "utf8");
+  const nuevo = html.replace(/href="([^"]*dist\/datito\.zip)"/g, (todo, href) => {
+    if (path.resolve(path.dirname(archivo), decodeURIComponent(href)) !== ZIP) return todo;
+    return `href="${path.relative(path.dirname(archivo), path.join(SALIDA, "01_CONCEPTOS", "visual", "datito", "datito.zip")).split(path.sep).join("/")}"`;
+  });
+  if (nuevo !== html) fs.writeFileSync(archivo, nuevo);
 }
 
 let convertidos = 0;
