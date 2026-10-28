@@ -1,10 +1,12 @@
 # Pendientes y v1.0
 
-Esta página explica qué falta y por qué. El estado al día está en GitHub:
+**v1.0 lanzada el 2026-10-28** — todos los issues del milestone están cerrados
+(0 abiertos). Estado al día:
 
-- [Milestone v1.0](https://github.com/cherrera0001/MACI/milestone/3): avance de la versión.
-- [Issues abiertos](https://github.com/cherrera0001/MACI/issues): todo lo pendiente.
-- [Decisiones abiertas](https://github.com/cherrera0001/MACI/issues?q=is%3Aopen+label%3Atipo%3Adecision): lo que espera al dueño.
+- [Issues](https://github.com/cherrera0001/MACI/issues): tablero vacío, 78 ítems cerrados.
+- [Tablero generado](https://github.com/cherrera0001/MACI/blob/main/docs/gestion/tablero.md): vista de respaldo que la API de Projects no permite crear.
+- Lo que sigue vive fuera del tablero: sesiones de estudio reales con el tutor,
+  Ollama opcional para el modo generador, y la primera página de la wiki de GitHub.
 
 ## De dónde venimos
 

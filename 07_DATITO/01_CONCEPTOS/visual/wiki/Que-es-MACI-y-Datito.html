@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Que es MACI y Datito · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>Qué es MACI y Datito</h1>
+<h2>MACI</h2>
+<p>MACI es el repositorio. Tiene tres productos y la plataforma que los sostiene.</p>
+<pre><code>flowchart LR
+    subgraph Fuentes[&quot;Fuentes del profesor&quot;]
+        T[&quot;15 clases transcritas&quot;]
+        P[&quot;Presentaciones y prácticos&quot;]
+        C[&quot;Certámenes 1, 2 y 3&quot;]
+    end
+    subgraph MACI[&quot;Repositorio MACI&quot;]
+        Y[&quot;Fuente única&lt;br/&gt;07_DATITO/*.yaml&quot;]
+        V[&quot;Curso&lt;br/&gt;23 clases en HTML&quot;]
+        D[&quot;Datito&lt;br/&gt;tutor socrático&quot;]
+        F[&quot;Proyecto semestral&lt;br/&gt;Melbourne y Galaxy Zoo&quot;]
+        L[&quot;Learning Loop&lt;br/&gt;lecciones de construcción&quot;]
+    end
+    W[&quot;maci.c4a.cl&lt;br/&gt;solo el curso&quot;]
+    A([&quot;Alumno&quot;])
+
+    Fuentes --&gt; Y
+    Y --&gt; V
+    Y --&gt; D
+    V --&gt; W
+    W --&gt; A
+    V --&gt; A
+    D &lt;--&gt; A
+    L -.-&gt; V
+    F -.-&gt;|caso del curso| V</code></pre>
+<table><tr><th>Pieza</th><th>Qué es</th><th>Dónde vive</th></tr><tr><td><strong>Curso</strong></td><td>23 clases en 6 unidades. Cada una abre con objetivo, ficha Bloom y una pregunta de activación, y cierra con qué aprendiste, qué no confundir, un procedimiento y una pregunta final. Funciona sin conexión.</td><td><code>07_DATITO/01_CONCEPTOS/visual/</code>, <code>02_REFERENCIA/</code>, <code>04_EJERCICIOS/</code></td></tr><tr><td><strong>Datito</strong></td><td>Tutor personal. Corre en Claude Code, no en el sitio.</td><td><code>.claude/skills/datito*/</code>, contrato en <code>00_INICIO/spec.md</code></td></tr><tr><td><strong>Proyecto semestral</strong></td><td>Predicción de precios en Melbourne (entrenar con 2016, predecir 2017) y desafío Galaxy Zoo.</td><td><code>08_PROYECTO_FCD/</code>, <code>09_RESULTADOS/</code></td></tr><tr><td><strong>Plataforma</strong></td><td>Generador de navegación, verificación y publicación.</td><td><code>03_SCRIPTS/</code>, <code>04_CODIGO/</code>, <code>.github/workflows/</code></td></tr><tr><td><strong>Learning Loop</strong></td><td>Memoria de fallos de los agentes que construyen las páginas.</td><td><code>07_DATITO/07_BITACORA/learning_loop/</code></td></tr></table>
+<h2>Datito</h2>
+<p>Datito no explica y se va. Pregunta, <strong>espera la respuesta</strong>, diagnostica el error y registra evidencia. Un concepto llega a <code>DOMINADO</code> solo cuando el alumno lo explicó, lo aplicó, lo interpretó y lo transfirió a un caso nuevo.</p>
+<pre><code>stateDiagram-v2
+    [*] --&gt; NO_ESTUDIADO
+    NO_ESTUDIADO --&gt; EN_ESTUDIO: primera sesión
+    EN_ESTUDIO --&gt; COMPRENSION_PARCIAL: explica con huecos
+    COMPRENSION_PARCIAL --&gt; COMPRENDIDO: explica y aplica
+    COMPRENDIDO --&gt; DOMINADO: además interpreta y transfiere
+    DOMINADO --&gt; [*]</code></pre>
+<table><tr><th>Comando</th><th>Para qué</th></tr><tr><td><code>/datito</code></td><td>Sesión socrática sobre un concepto</td></tr><tr><td><code>/datito-corregir</code></td><td>Corrige un lote de respuestas escritas y actualiza el progreso</td></tr><tr><td><code>/datito-progreso</code></td><td>Informe de qué se domina y qué sigue. Solo lectura</td></tr><tr><td><code>/datito-pedagogia</code></td><td>Audita si el material apunta al nivel que la evaluación exige</td></tr><tr><td><code>/datito-visual</code></td><td>Construye una página del curso desde la plantilla canónica</td></tr><tr><td><code>/datito-loop</code></td><td>Una corrida del Learning Loop tras un fallo de construcción</td></tr></table>
+<p>Archivos que Datito lee y escribe:</p>
+<ul>
+<li><code>07_DATITO/curriculum.yaml</code>: 21 conceptos con prerrequisitos y fuentes.</li>
+<li><code>07_DATITO/progreso.yaml</code>: estado y evidencia de cada concepto.</li>
+<li><code>07_DATITO/errores_conceptuales.yaml</code>: errores observados, con la frase del alumno.</li>
+<li><code>07_DATITO/estado.md</code>: resumen generado por <code>datito_estado.py</code>. No se edita a mano.</li>
+</ul>
+<h2>Qué no es</h2>
+<ul>
+<li>No es un curso oficial de la universidad. El contenido académico es del profesor titular; aquí se estudia y se cita.</li>
+<li>El sitio no tiene tutor. Datito corre en local.</li>
+<li>El score del Learning Loop no mide aprendizaje. Mide que la página respeta la plantilla y no depende de la red.</li>
+</ul>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>

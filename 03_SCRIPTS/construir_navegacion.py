@@ -937,6 +937,12 @@ fuente. El cruce contra el glosario de referencia está en
 <a href="{desde_visual("07_DATITO/06_AUDITORIAS/glosario_cobertura.md")}">glosario_cobertura.md</a>.
 <a href="glosario.html">Abrir el glosario</a>.</p>
 
+<h2 id="wiki">0d · Wiki del proyecto</h2>
+<p>Cómo opera este repositorio: qué es cada pieza, cómo se trabaja (SDD, verificación, learning
+loop), cómo leer el tablero y qué falta para v1.0. Para orientarte sin preguntar —
+la misma base que <code>docs/wiki/</code>, publicada con el curso.
+<a href="wiki/Home.html">Abrir la wiki</a>.</p>
+
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de
 <a href="{desde_visual("07_DATITO/06_AUDITORIAS/patron_evaluacion.md")}">patron_evaluacion.md</a>: sobreajuste, generalización y validación suman el

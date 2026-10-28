@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPEC · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>Spec de la wiki (H-6.3, T-6.3.1)</h1>
+<p><strong>Propósito (una frase):</strong> que una persona que llega al repo entienda qué es</p>
+<p>MACI, cómo se trabaja y cómo opera el tablero — sin preguntar y sin leer el repo.</p>
+<h2>Alcance mínimo (7 páginas)</h2>
+<table><tr><th>Página</th><th>Qué responde</th></tr><tr><td><code>Home.md</code></td><td>Qué es MACI, por dónde empezar, links a las demás</td></tr><tr><td><code>Que-es-MACI-y-Datito.md</code></td><td>Qué es cada pieza (curso, Datito, proyecto, plataforma)</td></tr><tr><td><code>Procesos.md</code></td><td>Cómo se trabaja: SDD, verificación, learning loop</td></tr><tr><td><code>Como-opera-el-tablero.md</code></td><td>Cómo leer y mover el Project #3</td></tr><tr><td><code>Conceptos-de-GitHub-Projects.md</code></td><td>Épica/historia/tarea, campos, vistas</td></tr><tr><td><code>Pendientes-y-v1.0.md</code></td><td>Qué falta para v1.0 y cómo se decide</td></tr></table>
+<p>Más <code>_Sidebar.md</code> (navegación lateral de la wiki).</p>
+<h2>Reglas</h2>
+<p>1. <strong>Base mínima:</strong> cada página responde UNA pregunta; si no cabe en una</p>
+<p>pantalla, se divide. Nada de duplicar el README.</p>
+<p>2. <strong>Links portables:</strong> entre páginas SIEMPRE con <code>.md</code></p>
+<p>(<code><a href="Procesos.html">Procesos</a></code>): funcionan como archivos y en la wiki de GitHub.</p>
+<p>3. <strong>Estado fechado:</strong> cada página lleva «Última revisión: AAAA-MM-DD» y el</p>
+<p>verificador de drift (<code>auditar_drift_documental.py</code>) la vigila como ruta</p>
+<p>canónica.</p>
+<p>4. <strong>Publicación:</strong> la wiki de GitHub exige crear la primera página desde la</p>
+<p>web (github.com/cherrera0001/MACI/wiki → «Create the first page»). Después:</p>
+<p><code>bash 03_SCRIPTS/publicar_wiki.sh</code> (requiere <code>GITHUB_TOKEN_CLASIC</code> en <code>.env</code>).</p>
+<p>5. <strong>Fuente única:</strong> los números del curso salen de <code>clases.yaml</code> /</p>
+<p><code>curriculum.yaml</code> (test_cifras_readme.py los vigila también en docs).</p>
+<p><strong>Estado al 2026-10-28:</strong> páginas construidas y con links portables; pendiente</p>
+<p>solo el paso web manual (regla 4). Última revisión: 2026-10-28.</p>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procesos · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>Procesos</h1>
+<p>Todo issue del tablero pertenece a uno de estos seis procesos (campo <strong>Proceso</strong>). Cada proceso tiene subprocesos con un comando y un criterio de salida.</p>
+<pre><code>flowchart LR
+    P5[&quot;P5 Gestionar el backlog&quot;] --&gt; P1[&quot;P1 Construir una clase&quot;]
+    P1 --&gt; P3[&quot;P3 Verificar y publicar&quot;]
+    P3 --&gt; P2[&quot;P2 Estudiar con Datito&quot;]
+    P1 -. un fallo .-&gt; P4[&quot;P4 Aprender de fallos&quot;]
+    P3 -. un fallo .-&gt; P4
+    P4 -. lección .-&gt; P1
+    P2 -. duda o error del alumno .-&gt; P5
+    P6[&quot;P6 Proyecto semestral&quot;] -. caso Melbourne .-&gt; P1</code></pre>
+<h2>P1 Construir una clase</h2>
+<pre><code>flowchart TD
+    A[&quot;1.1 Declarar la clase&lt;br/&gt;clases.yaml&quot;] --&gt; B[&quot;1.2 Leer lecciones&lt;br/&gt;agent_lessons.yaml&quot;]
+    B --&gt; C[&quot;1.3 Construir desde la plantilla&lt;br/&gt;/datito-visual&quot;]
+    C --&gt; D{&quot;1.4 Gate del loop&lt;br/&gt;datito_loop_once.py&quot;}
+    D -- discard --&gt; E[&quot;Volver a la última versión buena&lt;br/&gt;y anotar la lección&quot;]
+    E --&gt; C
+    D -- keep --&gt; F[&quot;1.5 Regenerar navegación&lt;br/&gt;construir_navegacion.py&quot;]
+    F --&gt; G[&quot;Pasa a P3&quot;]</code></pre>
+<table><tr><th>Subproceso</th><th>Entrada</th><th>Salida</th><th>Criterio</th></tr><tr><td>1.1 Declarar</td><td>Material del profesor</td><td>Entrada en <code>07_DATITO/clases.yaml</code> con objetivo, Bloom, activación y cierre</td><td>La clase cita su concepto de <code>curriculum.yaml</code></td></tr><tr><td>1.2 Leer lecciones</td><td><code>agent_lessons.yaml</code></td><td>Lista de fallos que aplican</td><td><code>failure_patterns</code> leído completo</td></tr><tr><td>1.3 Construir</td><td><code>_TEMPLATE_CANONICO.html</code></td><td>Un HTML</td><td>Sin CDN, con el marcador de plantilla, cifras fieles a la fuente</td></tr><tr><td>1.4 Gate</td><td>El HTML</td><td>Fila en <code>results.tsv</code></td><td><code>keep_eligible=true</code> y lectura comprobada en navegador</td></tr><tr><td>1.5 Navegación</td><td><code>clases.yaml</code></td><td>Portada, barras, cierres y dudas</td><td>El generador no deja cambios pendientes</td></tr></table>
+<h2>P2 Estudiar con Datito</h2>
+<pre><code>sequenceDiagram
+    actor A as Alumno
+    participant D as Datito
+    participant R as Repo
+    A-&gt;&gt;D: /datito
+    D-&gt;&gt;R: lee estado.md y errores abiertos
+    D-&gt;&gt;A: pregunta al estilo del profesor
+    Note over D: se detiene y espera
+    A-&gt;&gt;D: respuesta escrita
+    D-&gt;&gt;D: diagnostica contra el criterio de dominio
+    D-&gt;&gt;R: progreso.yaml, errores_conceptuales.yaml
+    D-&gt;&gt;R: datito_estado.py regenera estado.md
+    D-&gt;&gt;R: entrada en 07_BITACORA/
+    D-&gt;&gt;A: siguiente concepto recomendado</code></pre>
+<table><tr><th>Subproceso</th><th>Comando</th><th>Salida</th></tr><tr><td>2.1 Sesión socrática</td><td><code>/datito</code></td><td>Evidencia en <code>progreso.yaml</code> y entrada de bitácora</td></tr><tr><td>2.2 Corrección por lote</td><td><code>/datito-corregir</code></td><td>Informe y entrenamiento dirigido a los fallos</td></tr><tr><td>2.3 Informe de avance</td><td><code>/datito-progreso</code></td><td>Qué se domina, qué se confunde y qué sigue</td></tr><tr><td>2.4 Auditoría pedagógica</td><td><code>/datito-pedagogia</code></td><td>Brechas entre el material y el nivel que exige la evaluación</td></tr></table>
+<h2>P3 Verificar y publicar</h2>
+<p>Hay tres ramas y ninguna más: <strong><code>dev</code></strong> (se construye), <strong><code>qa</code></strong> (se prueba) y</p>
+<p><strong><code>main</code></strong> (producción, la publica Vercel). No se crean ramas de feature: todo</p>
+<p>trabajo se hace en <code>dev</code>. Un cambio solo avanza hacia adelante, <code>dev → qa → main</code>,</p>
+<p>y si algo falla en <code>qa</code> se corrige en <code>dev</code> y vuelve a subir.</p>
+<pre><code>flowchart TD
+    A[&quot;3.1 Construir en dev&lt;br/&gt;verificar_todo.py en local&quot;] --&gt; B{&quot;¿LISTO?&quot;}
+    B -- no --&gt; A0[&quot;Corregir en dev. No avanza&quot;]
+    B -- sí --&gt; C[&quot;3.2 Pull request dev → qa&lt;br/&gt;Closes #issue&quot;]
+    C --&gt; D[&quot;3.3 CI en GitHub Actions&lt;br/&gt;+ verificar_todo.py --navegador en qa&quot;]
+    D --&gt; E[&quot;3.4 Pull request qa → main&quot;]
+    E --&gt; F[&quot;3.5 Vercel corre publicar_sitio.mjs&lt;br/&gt;arma public/ solo con el curso&quot;]
+    F --&gt; G[&quot;maci.c4a.cl&quot;]
+    G --&gt; H[&quot;3.6 Verificar en línea&lt;br/&gt;verificar_todo.py --en-linea&quot;]
+    H --&gt; I{&quot;¿rotos o privados expuestos?&quot;}
+    I -- sí --&gt; A0
+    I -- no --&gt; J[&quot;Cerrar el issue con la evidencia&quot;]</code></pre>
+<p><code>verificar_todo.py</code> reúne seis comprobaciones: generador sin pendientes, contrato de Datito, citas y enlaces, tests, navegador real a 390 y 1280 px, y el sitio en vivo. Cada una existe porque ese error ya ocurrió.</p>
+<h2>P4 Aprender de fallos (Agents Learning Loop)</h2>
+<p>No se entrena ningún modelo. Lo que mejora es el repositorio: un agente cambia un archivo, lo mide con un gate fijo y deja escrito si el cambio se conserva.</p>
+<pre><code>flowchart TD
+    A[&quot;4.1 Leer program_loop.md,&lt;br/&gt;failure_patterns y la última fila&quot;] --&gt; B[&quot;4.2 Una hipótesis, un archivo&quot;]
+    B --&gt; C[&quot;4.3 Editar solo lo necesario&quot;]
+    C --&gt; D[&quot;4.4 Medir con el gate&quot;]
+    D --&gt; E{&quot;¿mejora la línea base?&quot;}
+    E -- sí --&gt; F[&quot;keep&lt;br/&gt;fila en results.tsv&quot;]
+    E -- no --&gt; G[&quot;discard&lt;br/&gt;revertir el cambio&quot;]
+    F --&gt; H[&quot;4.5 Lección en keep_patterns&quot;]
+    G --&gt; I[&quot;4.5 Lección en failure_patterns&quot;]
+    H --&gt; A
+    I --&gt; A</code></pre>
+<p>Reglas:</p>
+<ul>
+<li>Una lección <code>-FAIL-</code> va en <code>failure_patterns</code> y una <code>-KEEP-</code> en <code>keep_patterns</code>. Lo comprueba <code>04_CODIGO/test_learning_loop.py</code>.</li>
+<li>Toda lección lleva su fila en <code>results.tsv</code>.</li>
+<li>El score no cierra una tarea por sí solo: certifica la piel de la página, no que el control funcione.</li>
+</ul>
+<h2>P5 Gestionar el backlog</h2>
+<pre><code>flowchart TD
+    A[&quot;5.1 Aparece trabajo&lt;br/&gt;hallazgo, duda, fallo&quot;] --&gt; B[&quot;5.2 Issue con plantilla&lt;br/&gt;tipo, área, prioridad&quot;]
+    B --&gt; C[&quot;5.3 Colgarlo de su padre&lt;br/&gt;épica → historia → tarea&quot;]
+    C --&gt; D{&quot;¿es una decisión?&quot;}
+    D -- sí --&gt; E[&quot;La responde el dueño&lt;br/&gt;en un comentario&quot;]
+    D -- no --&gt; F[&quot;Todo&quot;]
+    E --&gt; F
+    F --&gt; G[&quot;In Progress&lt;br/&gt;rama y PR&quot;]
+    G --&gt; H[&quot;P3 Verificar y publicar&quot;]
+    H --&gt; I[&quot;Done&lt;br/&gt;el PR cierra el issue&quot;]
+    I --&gt; J[&quot;5.4 El milestone avanza&quot;]</code></pre>
+<p>Detalle en <a href="Como-opera-el-tablero.html">Cómo opera el tablero</a>.</p>
+<h2>P6 Proyecto semestral</h2>
+<pre><code>flowchart LR
+    A[&quot;6.1 Datos crudos&lt;br/&gt;02_DATOS&quot;] --&gt; B[&quot;6.2 Partición temporal&lt;br/&gt;2016 entrena, 2017 prueba&quot;]
+    B --&gt; C[&quot;6.3 Modelar&lt;br/&gt;scripts y DashAI&quot;]
+    C --&gt; D[&quot;6.4 Evaluar fuera de muestra&quot;]
+    D --&gt; E[&quot;6.5 Resultados&lt;br/&gt;09_RESULTADOS&quot;]
+    E --&gt; F[&quot;6.6 Informe y pitch&lt;br/&gt;06_ENTREGABLES&quot;]</code></pre>
+<p>Regla del método: ninguna información de 2017 entra al entrenamiento, y cada cifra de un informe se regenera con un script del repo.</p>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>
