@@ -6,3 +6,6 @@ concepto,instrumento,fecha_pre,puntaje_pre,detalle_pre,fecha_post,puntaje_post,d
 # (sin internet, enfermedad, instrumento alternativo, ...).
 # Ejemplo (ficticio, formato solamente):
 # overfitting_underfitting,certamen_practica_2,,,,,,,,
+train_validation_test,diagnostico_banco_fijo,2026-10-28,0/1,"Elige el split aleatorio por reportar 81 %; no ve la fuga temporal",,,,,"demo: alumno simulado; consentimiento al protocolo 2026-10-28; post desde 2026-11-11"
+overfitting_underfitting,diagnostico_banco_fijo,2026-10-28,0/1,"Prefiere el arbol por acertar en train; no define sobreajuste",,,,,"demo: alumno simulado; post desde 2026-11-11"
+regresion,diagnostico_banco_fijo,2026-10-28,0/1,"Responde depende; no compara el MAE con la mediana",,,,,"demo: alumno simulado; post desde 2026-11-11"

@@ -54,13 +54,14 @@
 
 - [x] T020 [P] [US2] Definir el formato de escenario (estructura versionada: contexto, entrada del alumno, comportamiento esperado del tutor, etiqueta de garantía) en `04_CODIGO/harness_escenarios/README.md` (REQ-TUT-001a)
 - [x] T021 [P] [US2] Redactar ≥15 escenarios: mínimo 4 de G1 (espera real, no simulación), 4 de G11 (petición explícita de respuesta), 2 de intentos fallidos (solución solo tras 2 intentos), 5 de casos borde del spec (abandono, LLM caído, YAML inválido) en `04_CODIGO/harness_escenarios/` (REQ-TUT-001b; depende de T020)
-- [x] T022 [US2] Implementar el ejecutor: corre la skill contra cada escenario, compara comportamiento esperado y emite reporte con % de acuerdo; baseline archivado en `04_CODIGO/harness_escenarios/baseline/` (REQ-TUT-001c; depende de T021)
+- [x] T022 [US2] Implementar el ejecutor sobre **transcripts de referencia**: evalúa cada escenario, emite reporte con % de acuerdo; baseline archivado en `04_CODIGO/harness_escenarios/baseline/` (REQ-TUT-001c; depende de T021). Corregido 2026-10-28 (REQ-TUT-010): antes decía "corre la skill", y no la corría.
+- [x] T022b [US2] Ejecutor contra la **skill real**: `harness.py --generador claude --corridas N` vía `claude -p` en worktree aislado, gate G1/G11 N/N y resto ≥ 90 %, 0,50 USD por llamada y tope de 15 USD (REQ-TUT-006, REQ-TUT-009; `04_CODIGO/harness_escenarios/generadores/`)
 
 ### Implementation for User Story 2
 
 - [x] T023 [US2] Métricas de sesión en la plantilla de bitácora (`07_DATITO/07_BITACORA/`): % de preguntas con espera real, % de respuestas dadas antes de 2 intentos, dudas registradas con ids verificables; extender `verificar_contrato.py` para comprobarlas (REQ-TUT-002)
-- [ ] T024 [US2] Ejecutar el diagnóstico inicial con las 21 `pregunta_diagnostico` en sesiones reales y fijar `diagnostico_inicial_hecho: true` con resultados por concepto (REQ-TUT-003; es operación del tutor, no código nuevo)
-- [ ] T025 [US2] Protocolo de evaluación a ciegas: elegir certámenes de `07_DATITO/04_EJERCICIOS/certamenes/`, rendirlos sin asistencia del tutor, registrar puntaje; repetición a las 3 semanas; plantilla de comparación en `07_DATITO/06_AUDITORIAS/` (REQ-TUT-004; depende de Clarify 6 para el consentimiento del alumno)
+- [x] T024 [US2] Ejecutar el diagnóstico inicial con las 21 `pregunta_diagnostico` en sesiones reales y fijar `diagnostico_inicial_hecho: true` con resultados por concepto (REQ-TUT-003; es operación del tutor, no código nuevo). Hecho 2026-10-28 en modo demo con alumno simulado (bitácora `2026-10-28-diagnostico_inicial.md`)
+- [ ] T025 [US2] Protocolo de evaluación a ciegas: elegir certámenes de `07_DATITO/04_EJERCICIOS/certamenes/`, rendirlos sin asistencia del tutor, registrar puntaje; repetición a las 3 semanas; plantilla de comparación en `07_DATITO/06_AUDITORIAS/` (REQ-TUT-004). Consentimiento dado 2026-10-28; pre de 3 conceptos registrado en `mediciones.csv`, post desde 2026-11-11; `04_CODIGO/test_mediciones.py` valida los pares
 - [x] T026 [US2] Script `03_SCRIPTS/verificar_antiguedad.py`: lista conceptos con `ultima_verificacion` mayor al umbral (NEEDS CLARIFICATION umbral; sugerencia 21 días) e integra la salida en `estado.md` para la apertura de sesión; el fallo de re-verificación mueve a `REQUIERE_REPASO` (REQ-TUT-005)
 
 **Checkpoint**: SC-002 a SC-004 medibles; el tutor tiene, por primera vez, evaluación de comportamiento.
@@ -75,12 +76,12 @@
 
 ### Opción A — extensión del motor local (no bloqueada salvo por Clarify 9)
 
-- [ ] T030 ⛔ BLOQUEADA (Clarify 9) [US3] Decisión de coexistencia documentada: la app ¿reemplaza a la skill o coexiste? ADR corto en `docs/adr/` o nota en el plan
-- [ ] T031 [US3] Portar el protocolo socrático al motor: REGLA CERO, cadena de 4 evidencias, G11 (obediencia de estrategia) como módulo `15_TERMINITO/src/datito/socratico/` con tests (base: `SKILL.md:44-104` + `spec.md` §3)
+- [x] T030 [US3] Decisión de coexistencia documentada (`docs/adr/ADR-006-coexistencia-y-stack.md`, 2026-10-28): la app ¿reemplaza a la skill o coexiste? ADR corto en `docs/adr/` o nota en el plan
+- [x] T031 [US3] Portar el protocolo socrático al motor (`15_TERMINITO/src/datito/socratico.py`; además es el generador `socratico` del harness, REQ-TUT-011): REGLA CERO, cadena de 4 evidencias, G11 (obediencia de estrategia) como módulo `15_TERMINITO/src/datito/socratico/` con tests (base: `SKILL.md:44-104` + `spec.md` §3)
 - [ ] T032 [US3] Validación de esquema en el motor: reutilizar el validador de T010 como módulo compartido (sin duplicar lógica entre `03_SCRIPTS/` y `15_TERMINITO/`)
 - [ ] T033 [US3] Métricas de sesión en el motor (REQ-TUT-002) y panel de dominio existente
 
-### Opción B — API multiusuario (bloqueada por Clarify 1, 2, 3, 7, 8)
+### Opción B — API multiusuario: DESCARTADA mientras haya un solo usuario (ADR-006)
 
 - [ ] T034 ⛔ BLOQUEADA (Clarify 1, 2) [US3] Redactar `specs/002-evolucion-app-tutor/contracts/api.md`: endpoints de sesiones, progreso, dudas y errores con validación de esquema (REQ-APP-002)
 - [ ] T035 ⛔ BLOQUEADA (Clarify 8) [US3] `specs/002-evolucion-app-tutor/data-model.md` + `research.md`: stack concreto con justificación y costo (REQ-APP-001, REQ-APP-007)
