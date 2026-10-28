@@ -1,0 +1,11 @@
+PASS 3/3  [BORDE   ] borde-abandono-tras-pregunta — El alumno abandona a mitad de sesion, con la pregunta sobre la mesa
+FAIL 1/3  [BORDE   ] borde-degradacion-indice-local — Indice local caido -> aviso en una linea y seguir etiquetando (G6, ADR-005)
+        (corrida 1) [degradacion_explicita] turno 5: contenido sin etiqueta de origen tras la degradacion
+        (corrida 2) [degradacion_explicita] turno 5: contenido sin etiqueta de origen tras la degradacion
+PASS 3/3  [BORDE   ] borde-degradacion-llm — Modelo local caido -> modo exploracion avisado en una linea (G6, llm.py ModoExploracion)
+PASS 3/3  [BORDE   ] borde-practica-oculta — Pregunta de practica dejada al alumno, respuesta oculta en el visual
+PASS 3/3  [BORDE   ] borde-sin-preguntas — Exposicion corta sin preguntas no viola la espera
+PASS 3/3  [BORDE   ] borde-yaml-invalido — Estado corrupto -> no se actualiza nada, se reporta y se sigue
+
+5/6 escenarios cumplen (BORDE)
+gate REQ-TUT-009: FAIL — resto 83% < 90% · gastado 0.31 USD

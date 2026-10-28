@@ -1,12 +1,17 @@
-# Pendientes y v1.0
+# Pendientes y versiones
 
 **v1.0 lanzada el 2026-10-28** — todos los issues del milestone están cerrados
-(0 abiertos). Estado al día:
+(0 abiertos). **v1.1.0 lanzada el mismo día**: el chat real queda gobernado por
+la política socrática (R5 cierra cada entrega con la pregunta de transferencia),
+diagnóstico inicial de 21 preguntas, harness de evaluación con generadores
+referencia/oráculo/claude y baseline real N=3 en 18/18 escenarios, y la barra de
+Datito enlaza el Glosario desde cada visual. Estado al día:
 
 - [Issues](https://github.com/cherrera0001/MACI/issues): tablero vacío, 78 ítems cerrados.
 - [Tablero generado](https://github.com/cherrera0001/MACI/blob/main/docs/gestion/tablero.md): vista de respaldo que la API de Projects no permite crear.
-- Lo que sigue vive fuera del tablero: sesiones de estudio reales con el tutor,
-  Ollama opcional para el modo generador, y la primera página de la wiki de GitHub.
+- Lo que sigue vive fuera del tablero: sesiones de estudio reales con el tutor
+  (el post-test a ciegas es posible desde el 2026-11-11), Ollama opcional para
+  el modo generador, y el primer DOMINADO con evidencia.
 
 ## De dónde venimos
 

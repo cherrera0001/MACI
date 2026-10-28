@@ -108,8 +108,8 @@
 - [x] T043 [P] Núcleo v2: `03_SCRIPTS/plantillas/nucleo_v2.js` (predicción, candados, niveles, hover enlazado, exportación `DATITO-EVENTOS`) y `03_SCRIPTS/sincronizar_nucleo.py` (REQ-TUT-017)
 - [x] T044 Validador v2 en `verificar_visuales.py`: núcleo idéntico, `data-requiere` ↔ `data-predice`, `details.resp[data-intento]`, nivel 2 cerrado, `#decision` y `#codigo` (REQ-TUT-012, 014, 016, 017) — además `probar_nucleo_v2.py` en navegador real; `verificar_todo --navegador` lo corre
 - [x] T045 `20_llm.html` + `03_SCRIPTS/generar_llm_lab.py` + test node de entropía (REQ-TUT-018)
-- [ ] T046 Skill: leer `DATITO-EVENTOS` y escenario `lab-prediccion-fallida` (REQ-TUT-013)
-- [ ] T047 Harness: `empuja_rigor` y `sin_sobreandamiaje`, 4 escenarios, tests de inyección, medición real N=3 (REQ-TUT-015)
+- [x] T046 Skill: leer `DATITO-EVENTOS` y escenario `lab-prediccion-fallida` (REQ-TUT-013): skill real 3/3 en `38b6103`, `1a4a825` y `76479aa`
+- [x] T047 Harness: `empuja_rigor` y `sin_sobreandamiaje`, 4 escenarios, tests de inyección, medición real N=3 (REQ-TUT-015): RIGOR 4/4 en `76479aa`; historial en `verificacion-2026-10-28.md`
 - [x] T048 `21_agentes.html` (REQ-TUT-019): simulador de una vuelta del bucle de Datito con y sin herramientas, piezas del profesor en archivos reales, decisión sobre un agente que escribe DOMINADO
 - [x] T049 Explicador del pipeline Melbourne (REQ-TUT-020): `22_pipeline_melbourne.html` + `03_SCRIPTS/generar_pipeline_lab.py`; datos reales (13.580 ventas, muestra 1 de 2), CV en vivo con pliegues apilados, test tocado una vez, matriz/ROC con umbral y costo, estado de `progreso.yaml` en el flujo; paridad JS = Python en `test_visual_v2.py`; 184 KB
 
