@@ -127,6 +127,19 @@ if (fs.existsSync(ZIP)) {
   fs.copyFileSync(ZIP, destinoZip);
 }
 
+// El botón «Descargar para tu curso» apunta a dist/datito.zip (único ZIP
+// trackeado, verificar_contrato.py). En el sitio el ZIP se sirve desde
+// 01_CONCEPTOS/visual/datito/ (copia de arriba), así que se reescribe el
+// enlace antes de la pasada de enlaces rotos.
+for (const archivo of paginas(SALIDA)) {
+  const html = fs.readFileSync(archivo, "utf8");
+  const nuevo = html.replace(/href="([^"]*dist\/datito\.zip)"/g, (todo, href) => {
+    if (path.resolve(path.dirname(archivo), decodeURIComponent(href)) !== ZIP) return todo;
+    return `href="${path.relative(path.dirname(archivo), path.join(SALIDA, "01_CONCEPTOS", "visual", "datito", "datito.zip")).split(path.sep).join("/")}"`;
+  });
+  if (nuevo !== html) fs.writeFileSync(archivo, nuevo);
+}
+
 let convertidos = 0;
 const ENLACE = /<a\b([^>]*?)\bhref="([^"]*)"([^>]*)>([\s\S]*?)<\/a>/g;
 for (const archivo of paginas(SALIDA)) {

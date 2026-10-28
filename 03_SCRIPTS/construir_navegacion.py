@@ -906,7 +906,7 @@ Leer sin responder no es estudiar.</div>
 diseñas: le entregas los materiales reales de tu curso, defines quién es y cómo enseña,
 y conversa contigo con la fuente citada en cada respuesta. Evalúa por distinciones,
 funciona sin conexión y tus datos jamás salen de tu máquina.
-<a class="boton" href="datito/datito.zip">Descargar para tu curso</a></div>
+<a class="boton" href="{desde_visual('dist/datito.zip')}">Descargar para tu curso</a></div>
 
 <h2 id="curso-clases">0 · El curso, clase por clase</h2>
 <p>El orden sigue los prerrequisitos del currículum y la secuencia real de las clases del profesor, y sube de
