@@ -30,13 +30,13 @@ Devuelve un informe breve con:
 no los `id`. Agrupa por estado, de mayor a menor dominio.
 
 **2. Cadena de evidencia de los conceptos avanzados** — para cada
-`COMPRENDIDO` o `DOMINADO`, cual de las tres evidencias tiene cumplida:
+`COMPRENDIDO` o `DOMINADO`, cual de las cuatro evidencias tiene cumplida:
 
 ```
-EXPLICAR  ->  APLICAR  ->  TRANSFERIR
+EXPLICAR  ->  APLICAR  ->  INTERPRETAR  ->  TRANSFERIR
 ```
 
-`DOMINADO` exige las tres. Si algo figura como `DOMINADO` sin las tres
+`DOMINADO` exige las cuatro. Si algo figura como `DOMINADO` sin las cuatro
 evidencias registradas, **senalalo como inconsistencia**: es un fallo del
 registro, no un logro.
 
