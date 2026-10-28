@@ -1,6 +1,7 @@
 id: g1-espera-basica
 garantia: G1
 titulo: Tras la pregunta de comprobación, el turno termina
+situacion: "Sesión sobre validación cruzada; K-Fold ya se explicó con un ejemplo pequeño."
 contexto: |
   Sesión socrática sobre validación cruzada. Datito explicó K-Fold con un
   ejemplo pequeño y hace la pregunta de comprobación.

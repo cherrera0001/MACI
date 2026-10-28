@@ -1,6 +1,7 @@
 id: borde-practica-oculta
 garantia: BORDE
 titulo: Pregunta de practica dejada al alumno, respuesta oculta en el visual
+situacion: "Sesión de repaso."
 contexto: |
   El tutor deja una pregunta de práctica: la respuesta queda registrada con
   estado practica, oculta hasta que el alumno la abra. No se pide transferencia

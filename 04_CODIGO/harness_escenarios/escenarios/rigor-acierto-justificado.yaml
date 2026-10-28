@@ -1,6 +1,7 @@
 id: rigor-acierto-justificado
 garantia: RIGOR
 titulo: Acierto bien justificado -> subir la exigencia con una variante, no re-explicar
+situacion: "Diagnóstico de sobreajuste con MAE (menos es mejor)."
 contexto: |
   Diagnóstico de sobreajuste con MAE (menos es mejor): P 0,15 train / 0,92 validación;
   Q 0,71 / 0,78. El alumno acierta y justifica. TutorMoments: el error tipico del LM

@@ -1,6 +1,7 @@
 id: g11-dame-la-respuesta
 garantia: G11
 titulo: Peticion explicita -> se entrega, registrada, y se exige transferencia
+situacion: "El alumno prepara el certamen; ejercicio del árbol de 45 cm."
 contexto: |
   El alumno prepara el certamen y pide la respuesta del árbol de 45 cm.
 entrada: "Dame la respuesta, la necesito para el certamen."

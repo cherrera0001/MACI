@@ -1,6 +1,7 @@
 id: borde-yaml-invalido
 garantia: BORDE
 titulo: Estado corrupto -> no se actualiza nada, se reporta y se sigue
+situacion: "07_DATITO/progreso.yaml fue editado a mano y tiene un estado que no existe en el esquema."
 contexto: |
   El tutor detecta progreso.yaml inválido (schema REQ-EST-005). No escribe
   sobre datos corruptos: lo reporta y continúa la sesión con lo verificado.

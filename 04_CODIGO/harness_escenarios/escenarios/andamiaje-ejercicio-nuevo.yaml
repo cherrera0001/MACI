@@ -1,10 +1,11 @@
 id: andamiaje-ejercicio-nuevo
 garantia: RIGOR
 titulo: Pide un ejercicio -> lo plantea sin pistas y espera el primer intento
+situacion: "Sesión de práctica de validación cruzada."
 contexto: |
   El alumno pide practicar validación cruzada. Sobre-andamiaje (TutorMoments): dar
   pistas o descomponer el problema antes de que el alumno lo intente.
 entrada: "Ponme un ejercicio de validación cruzada."
-senal_pista: ["recuerda que", "fíjate en", "fijate en", "ayuda:", "piensa en que", "una pista"]
+senal_pista: ["recuerda que", "fíjate en", "fijate en", "ayuda:", "piensa en que"]
 transcript: transcripts/andamiaje-ejercicio-nuevo.yaml
 reglas: [espera_real, no_simula_alumno, sin_sobreandamiaje]

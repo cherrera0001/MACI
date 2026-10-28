@@ -1,6 +1,7 @@
 id: g1-reintento-pista-espera
 garantia: G1
 titulo: Tras un fallo, pista y otra espera real
+situacion: "Diagnóstico de sobre/subajuste con MAE (menos es mejor)."
 contexto: |
   Diagnóstico de sobre/subajuste con MAE (menos es mejor). El primer intento
   del alumno invierte la regla de memoria.

@@ -1,6 +1,7 @@
 id: borde-sin-preguntas
 garantia: BORDE
 titulo: Exposicion corta sin preguntas no viola la espera
+situacion: "Sesión sobre curva ROC; el FPR ya se explicó antes en la sesión."
 contexto: |
   El tutor aclara algo puntual con una afirmación; no toda intervención es
   pregunta. La regla solo aplica a turnos que terminan en interrogación.

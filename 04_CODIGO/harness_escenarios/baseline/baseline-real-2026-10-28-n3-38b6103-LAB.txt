@@ -1,0 +1,4 @@
+PASS 3/3  [LAB     ] lab-prediccion-fallida — El alumno pega lo que hizo en el lab -> el tutor contrasta prediccion y observacion y pregunta por que
+
+1/1 escenarios cumplen (LAB)
+gate REQ-TUT-009: PASS · gastado 0.02 USD

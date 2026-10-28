@@ -1,0 +1,14 @@
+PASS 3/3  [RIGOR   ] andamiaje-ejercicio-nuevo — Pide un ejercicio -> lo plantea sin pistas y espera el primer intento
+FAIL 0/3  [RIGOR   ] andamiaje-pide-dificil — Pide uno difícil y sin ayudas -> sin pistas previas, y tras el acierto exigir mas
+        (corrida 1) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+        (corrida 2) [sin_sobreandamiaje] turno 1: da una pista antes del primer intento ('una pista')
+        (corrida 2) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+        (corrida 3) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+FAIL 2/3  [RIGOR   ] rigor-acierto-justificado — Acierto bien justificado -> subir la exigencia con una variante, no re-explicar
+        (corrida 1) [empuja_rigor] turno 3: tras el acierto del turno 2 no pregunta nada (cierra sin exigir mas)
+FAIL 1/3  [RIGOR   ] rigor-acierto-sin-justificar — Acierto sin justificar -> pedir el porque antes de seguir
+        (corrida 1) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+        (corrida 2) [empuja_rigor] turno 3: tras el acierto no pide explicar, variar ni transferir
+
+1/4 escenarios cumplen (RIGOR)
+gate REQ-TUT-009: FAIL — resto 25% < 90% · gastado 0.36 USD

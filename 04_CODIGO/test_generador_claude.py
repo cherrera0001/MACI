@@ -94,6 +94,18 @@ class ConversarTests(unittest.TestCase):
         self.assertEqual([t.get("resultado") for t in alumnos], [t.get("resultado") for t in guion])
         self.assertTrue(all(claude_cli.MARCA in p for p, _, _ in llamadas), "G10: toda entrada va marcada")
 
+    def test_la_skill_no_ve_la_conducta_esperada(self):
+        # corrida real 2026-10-28: el contexto decia "el alumno acierta... lo correcto es pedir una
+        # variante" y la skill se adelanto al guion. Solo viaja la situacion.
+        prompts = []
+        claude_cli.conversar(esc("rigor-acierto-justificado"),
+                             lambda p, *_: prompts.append(p) or lineas("stream-duda.jsonl"), 0.5)
+        todo = "\n".join(prompts)
+        self.assertIn(esc("rigor-acierto-justificado")["situacion"], todo)
+        self.assertNotIn("lo correcto", todo)
+        for nombre in sorted(p.stem for p in harness.ESCENARIOS.glob("*.yaml")):
+            self.assertIsNone(harness.FILTRA_EXPECTATIVA.search(esc(nombre)["situacion"]), nombre)
+
     def test_turnos_alumno_mal_formado(self):
         e = copy.deepcopy(esc("g1-espera-basica"))
         e["turnos_alumno"] = [{"resultado": "fallo"}]

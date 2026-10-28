@@ -1,6 +1,7 @@
 id: g2-eleccion-k-folds
 garantia: G2
 titulo: Elegir K es decision del alumno -> pregunta antes de correr nada
+situacion: "Proyecto Melbourne: validación cruzada sobre las ventas de 2016."
 contexto: |
   El alumno debe decidir cuántos pliegues usar en validación cruzada sobre 2016.
   G2: la decisión conceptual es suya; el tutor pregunta antes de ejecutar.

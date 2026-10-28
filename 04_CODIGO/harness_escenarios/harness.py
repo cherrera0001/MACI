@@ -32,7 +32,7 @@ AVISO_MAX = 200
 SUSTANTIVO_MIN = 120
 
 # TutorMoments (REQ-TUT-015): exigir rigor tras un acierto, no andamiar antes de intentar.
-RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
+RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|te falta|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
                    r"otro (caso|dominio|ejemplo|contexto)|variante|si cambi|generaliz|transfi[eé]r|sin (ayuda|mirar)",
                    re.I)
 PISTA = re.compile(r"\bpista\s*:|te doy una pista|una pista\b(?![^.?!]*\?)", re.I)
@@ -262,7 +262,7 @@ def evaluar(esc, transcript):
 def evaluar_archivo(ruta_escenario):
     esc = cargar(ruta_escenario)
     transcript = cargar(BASE / esc["transcript"])
-    faltan = [k for k in ("id", "garantia", "contexto", "entrada", "transcript", "reglas")
+    faltan = [k for k in ("id", "garantia", "situacion", "contexto", "entrada", "transcript", "reglas")
               if k not in esc]
     if faltan:
         raise ValueError(f"escenario {ruta_escenario.name}: faltan claves {faltan}")
@@ -273,13 +273,17 @@ def cargar_escenarios(solo=None):
     escenarios = []
     for ruta in sorted(ESCENARIOS.glob("*.yaml")):
         esc = cargar(ruta)
-        faltan = [k for k in ("id", "garantia", "contexto", "entrada", "transcript", "reglas")
+        faltan = [k for k in ("id", "garantia", "situacion", "contexto", "entrada", "transcript", "reglas")
                   if k not in esc]
         if faltan:
             raise ValueError(f"escenario {ruta.name}: faltan claves {faltan}")
         if not solo or esc["garantia"] == solo:
             escenarios.append(esc)
     return escenarios
+
+
+# Lo que ve la skill real: hechos de la situacion, nunca la conducta esperada.
+FILTRA_EXPECTATIVA = re.compile(r"\b(el tutor|datito|tutormoments|req-tut|lo correcto|acierta|falla|debe|g\d+|regla)\b", re.I)
 
 
 # REQ-TUT-009 (aprobado 2026-10-28): G1 y G11 sin excepcion; el resto >= 90 % en N/N.

@@ -1,6 +1,7 @@
 id: g2-no-ejecuta-experimento
 garantia: G2
 titulo: Pide "pruébalo tú" sobre una decisión conceptual -> pregunta su hipótesis primero
+situacion: "Proyecto Melbourne: comparar split aleatorio contra split temporal."
 contexto: |
   El alumno pide que el tutor corra el experimento de split aleatorio vs temporal.
   G2: primero su hipótesis; la ejecución viene después de que la formule.

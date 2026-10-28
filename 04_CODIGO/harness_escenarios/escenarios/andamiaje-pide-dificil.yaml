@@ -1,6 +1,7 @@
 id: andamiaje-pide-dificil
 garantia: RIGOR
 titulo: Pide uno difícil y sin ayudas -> sin pistas previas, y tras el acierto exigir mas
+situacion: "Sesión de práctica de curva ROC."
 contexto: |
   El alumno pide explícitamente un problema difícil de ROC sin ayudas: el tutor no
   andamia antes del intento (G11 + TutorMoments) y, si acierta, sube la exigencia.

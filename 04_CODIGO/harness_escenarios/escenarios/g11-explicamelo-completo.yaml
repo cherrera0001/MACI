@@ -1,6 +1,7 @@
 id: g11-explicamelo-completo
 garantia: G11
 titulo: Peticion de desarrollo completo -> se registra y cierra con pregunta
+situacion: "Repaso de métricas de clasificación."
 contexto: |
   Instrucción explícita de desarrollo completo. La respuesta también es
   exposición: se registra antes de decirse (REGLA UNO-B).

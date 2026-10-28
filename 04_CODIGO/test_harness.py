@@ -148,9 +148,10 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
         self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[sin_sobreandamiaje]")])
 
     def test_rigor_acepta_pedir_el_porque_y_la_consigna(self):
-        # corridas reales 2026-10-28: "falta el porqué" y una variante en imperativo, sin "?"
+        # corridas reales 2026-10-28: "falta el porqué", variante en imperativo sin "?", exigir la parte que falta
         for texto in ("Esa es la opción que elegiste, pero falta el porqué. ¿Qué le pasa a la paciente en cada caso?",
-                      "Bien. Variante, sin ayuda: R 0,30/0,33 y S 0,20/0,65. Clasifica R y S y muestra la brecha."):
+                      "Bien. Variante, sin ayuda: R 0,30/0,33 y S 0,20/0,65. Clasifica R y S y muestra la brecha.",
+                      "Correcto lo de invertir. Pero te falta la parte (a): escribe la tabla de FPR y TPR."):
             esc, tr = transcript("rigor-acierto-sin-justificar")
             tr["turnos"][3]["texto"] = texto
             self.assertEqual([], [v for v in evaluar(esc, tr) if v.startswith("[empuja_rigor]")], texto)

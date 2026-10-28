@@ -1,6 +1,7 @@
 id: g11-no-me-la-des
 garantia: G11
 titulo: Peticion de modo estricto -> pista y espera, sin solucion
+situacion: "Sesión de estudio."
 contexto: |
   El alumno pide explícitamente que NO le den la respuesta.
 entrada: "No me des la respuesta, hazme pensar."

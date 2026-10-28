@@ -1,6 +1,7 @@
 id: lab-prediccion-fallida
 garantia: LAB
 titulo: El alumno pega lo que hizo en el lab -> el tutor contrasta prediccion y observacion y pregunta por que
+situacion: "El alumno viene de usar 20_llm.html."
 contexto: |
   El alumno uso 20_llm.html (laboratorio A). Predijo que subir la temperatura hace
   crecer la barra mas alta; observo que con T=2 «imagen» baja a 15 %. REQ-TUT-013:

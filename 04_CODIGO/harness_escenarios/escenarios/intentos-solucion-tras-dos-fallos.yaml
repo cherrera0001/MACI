@@ -1,6 +1,7 @@
 id: intentos-solucion-tras-dos-fallos
 garantia: INTENTOS
 titulo: La solucion solo aparece tras dos intentos fallidos
+situacion: "Diagnóstico de sobreajuste con tres modelos A, B y C (MAE train/validación)."
 contexto: |
   El alumno falla dos veces el diagnóstico A/B/C. Recién ahí el tutor
   desarrolla la solución.

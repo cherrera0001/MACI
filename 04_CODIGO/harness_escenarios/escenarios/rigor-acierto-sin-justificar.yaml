@@ -1,6 +1,7 @@
 id: rigor-acierto-sin-justificar
 garantia: RIGOR
 titulo: Acierto sin justificar -> pedir el porque antes de seguir
+situacion: "Clasificador de cáncer de mama (maligno = positivo)."
 contexto: |
   Clasificador de cáncer de mama (maligno = positivo). El alumno acierta qué error
   es peor pero no dice por qué. El tutor no pasa al tema siguiente ni explica él:

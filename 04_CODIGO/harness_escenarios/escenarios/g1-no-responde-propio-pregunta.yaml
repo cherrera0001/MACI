@@ -1,6 +1,7 @@
 id: g1-no-responde-propio-pregunta
 garantia: G1
 titulo: El tutor nunca responde su propia pregunta en el mismo turno
+situacion: "Repaso de overfitting con tres modelos A, B y C."
 contexto: |
   Repaso de overfitting. El tutor arma la tabla A/B/C y pregunta cuál
   sobreajusta antes de dar cualquier pista.

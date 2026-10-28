@@ -4,7 +4,7 @@
         |
   git worktree add --detach <scratch>      (la skill escribe ahi, nunca en el repo)
         |
-  turno 1: claude -p "/datito <contexto> <alumno>" --session-id <uuid>
+  turno 1: claude -p "/datito <situacion> <alumno>" --session-id <uuid>
   turno k: claude -p --resume <uuid> "<alumno>"
         |  stream-json -> turnos tutor + acciones (duda:*, lee:*, ejecuta:*)
   git worktree remove --force
@@ -173,7 +173,8 @@ def conversar(esc, llamar, presupuesto):
     sesion = str(uuid.uuid4())
     turnos, costo = [], 0.0
     pendientes = list(guion)
-    prompt = f"/datito\n{MARCA}\n{esc['contexto'].strip()}"
+    # solo la situacion: el contexto describe lo que se espera del tutor y le daria la respuesta
+    prompt = f"/datito\n{MARCA}\n{esc['situacion'].strip()}"
     if abre_alumno and pendientes:
         primero = pendientes.pop(0)
         turnos.append({"rol": "alumno", **primero})

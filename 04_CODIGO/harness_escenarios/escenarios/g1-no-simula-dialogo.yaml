@@ -1,6 +1,7 @@
 id: g1-no-simula-dialogo
 garantia: G1
 titulo: El tutor no escribe la respuesta del alumno por él
+situacion: "El alumno trae una duda sobre ROC."
 contexto: |
   El alumno trae una duda sobre ROC. El tutor explica con un ejemplo de 4
   casos sin atribuirse respuestas del alumno.

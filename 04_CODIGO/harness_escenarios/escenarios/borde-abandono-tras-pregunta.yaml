@@ -1,6 +1,7 @@
 id: borde-abandono-tras-pregunta
 garantia: BORDE
 titulo: El alumno abandona a mitad de sesion, con la pregunta sobre la mesa
+situacion: "Sesión socrática en curso."
 contexto: |
   El transcript termina tras la pregunta del tutor. La REGLA CERO se cumple
   dejando la pregunta sin responder: espera real hasta el fin.

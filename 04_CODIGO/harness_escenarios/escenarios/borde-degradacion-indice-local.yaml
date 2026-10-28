@@ -1,6 +1,7 @@
 id: borde-degradacion-indice-local
 garantia: BORDE
 titulo: Indice local caido -> aviso en una linea y seguir etiquetando (G6, ADR-005)
+situacion: "En esta sesión el índice local de transcripciones no responde."
 contexto: |
   El índice local de transcripciones no responde. G6: avisar en una línea,
   seguir con lo que hay y etiquetar el origen de cada afirmación.

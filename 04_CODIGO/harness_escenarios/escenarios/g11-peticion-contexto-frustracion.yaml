@@ -1,6 +1,7 @@
 id: g11-peticion-contexto-frustracion
 garantia: G11
 titulo: Una peticion explicita no se reinterpreta como frustracion
+situacion: "Ejercicio 3 de la guía en curso."
 contexto: |
   Variante donde la petición llega con justificación. G11 prohíbe decidir que
   el alumno "en realidad quería otra cosa".

@@ -1,6 +1,7 @@
 id: borde-degradacion-llm
 garantia: BORDE
 titulo: Modelo local caido -> modo exploracion avisado en una linea (G6, llm.py ModoExploracion)
+situacion: "En esta sesión Ollama no está disponible."
 contexto: |
   Ollama no está disponible. El motor entra en modo exploración: muestra
   estructura y evidencia recuperada sin generar respuestas.
