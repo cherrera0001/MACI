@@ -88,6 +88,11 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
             turnos[1]["acciones"] = ["ejecuta:Bash"]
         self._viola("g2-eleccion-k-folds", muta, "pregunta_antes_de_ejecutar")
 
+    def test_g2_leer_el_repo_no_es_ejecutar(self):
+        esc, tr = transcript("g2-eleccion-k-folds")
+        tr["turnos"][1]["acciones"] = ["lee:Bash"]
+        self.assertEqual([], evaluar(esc, tr))
+
     def test_g2_detecta_decision_sin_pregunta(self):
         def muta(turnos):
             turnos[1]["texto"] = "Usa 5 folds, es el estándar."

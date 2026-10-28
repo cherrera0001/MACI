@@ -36,8 +36,20 @@ class ParseStreamTests(unittest.TestCase):
         self.assertEqual(turno["rol"], "tutor")
         self.assertTrue(turno["texto"].startswith("Soy **Datito**"))
         self.assertGreater(meta["costo_usd"], 0)
-        # Bash de exploracion del repo cuenta como ejecucion (insumo de G2)
-        self.assertIn("ejecuta:Bash", turno.get("acciones", []))
+        # Bash que solo explora el repo es lectura, no ejecucion (G2)
+        self.assertIn("lee:Bash", turno.get("acciones", []))
+        self.assertNotIn("ejecuta:Bash", turno.get("acciones", []))
+
+    def test_es_lectura_separa_leer_de_ejecutar(self):
+        lee = ["ls 07_DATITO 2>/dev/null; grep -rn -A4 \"k\\|fold\" 07_DATITO",
+               "cat a.yaml | head -20", "git log --oneline -5", "sed -n 1,40p x.md"]
+        ejecuta = ["python3 experimento.py", "cat a > b", "sed -i s/a/b/ x",
+                   "ls && python3 -c 'print(1)'", "find . -delete", "git commit -m x",
+                   "echo $(rm x)", "cat a | tee b"]
+        for c in lee:
+            self.assertTrue(claude_cli.es_lectura(c), c)
+        for c in ejecuta:
+            self.assertFalse(claude_cli.es_lectura(c), c)
 
     def test_parse_duda_accion(self):
         turno, _ = claude_cli.parse_stream(lineas("stream-duda.jsonl"))

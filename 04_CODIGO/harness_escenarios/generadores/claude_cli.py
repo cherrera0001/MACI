@@ -6,7 +6,7 @@
         |
   turno 1: claude -p "/datito <contexto> <alumno>" --session-id <uuid>
   turno k: claude -p --resume <uuid> "<alumno>"
-        |  stream-json -> turnos tutor + acciones (duda:*, ejecuta:*)
+        |  stream-json -> turnos tutor + acciones (duda:*, lee:*, ejecuta:*)
   git worktree remove --force
         |
   07_DATITO real --sha256--> h1      h0 != h1  => ErrorGeneracion("aislamiento")
@@ -18,6 +18,8 @@ prompt la invoca con /datito.
 import datetime
 import hashlib
 import json
+import re
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -33,6 +35,10 @@ REALES = BASE / "transcripts_reales"
 MARCA = "[ESCENARIO SINTÉTICO · G10 · alumno simulado]"
 TIMEOUT_S = 300  # 180 s corto: un turno real con ~9 lecturas Bash lo supero (baseline 671d3f8)
 EJECUTA = {"Bash", "NotebookEdit"}
+# Bash que solo lee el repo no decide por el alumno (G2): cuenta como lee:Bash.
+LECTURA = {"cat", "ls", "grep", "rg", "head", "tail", "find", "wc", "sed",
+           "sort", "uniq", "cut", "tr", "file", "stat", "tree", "echo", "pwd", "true"}
+GIT_LECTURA = {"log", "show", "status", "diff", "ls-files", "grep", "rev-parse", "blame"}
 
 
 def hash_arbol(raiz):
@@ -46,12 +52,55 @@ def hash_arbol(raiz):
     return h.hexdigest()
 
 
+def _tramos(comando):
+    """Parte el comando en tramos por ; && || | respetando comillas; None si no se puede."""
+    lex = shlex.shlex(comando, posix=True, punctuation_chars=";&|<>")
+    lex.whitespace_split = True
+    tramos, actual = [], []
+    try:
+        for tok in lex:
+            if tok and set(tok) <= set(";&|"):
+                tramos.append(actual)
+                actual = []
+            elif tok and set(tok) <= set("<>"):
+                return None  # redireccion a archivo (las de /dev/null ya se quitaron)
+            else:
+                actual.append(tok)
+    except ValueError:
+        return None
+    return tramos + [actual]
+
+
+def es_lectura(comando):
+    """True si cada tramo del comando solo lee: sin redireccion a archivo ni edicion in situ."""
+    sin_null = re.sub(r"\d?>\s*/dev/null|\d?>&\d", " ", comando.replace("\n", ";"))
+    if re.search(r"\$\(|`", sin_null):
+        return False
+    tramos = _tramos(sin_null)
+    if tramos is None:
+        return False
+    for pal in filter(None, tramos):
+        cab = pal[0]
+        if cab == "git":
+            if len(pal) < 2 or pal[1] not in GIT_LECTURA:
+                return False
+        elif cab not in LECTURA:
+            return False
+        if cab == "sed" and any(x.startswith("-i") for x in pal[1:]):
+            return False
+        if cab == "find" and any(x in ("-delete", "-exec", "-execdir") for x in pal[1:]):
+            return False
+    return True
+
+
 def _acciones(bloque):
     nombre = bloque.get("name")
     entrada = bloque.get("input") or {}
     ruta = str(entrada.get("file_path", ""))
     if nombre in ("Write", "Edit") and ruta.endswith("07_DATITO/dudas.yaml"):
         return ["duda:registrada"]
+    if nombre == "Bash" and es_lectura(str(entrada.get("command", ""))):
+        return ["lee:Bash"]
     if nombre in EJECUTA:
         return [f"ejecuta:{nombre}"]
     return []
