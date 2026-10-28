@@ -14,8 +14,8 @@
 
 **Purpose**: dejar la base de verificación y dependencias lista antes de cualquier historia.
 
-- [ ] T001 [P] Extender `.github/workflows/ci.yml` a pushes de cualquier rama y verificar que ejecuta `verificar_todo.py` + `python -m unittest discover -s 04_CODIGO` (REQ-EST-001)
-- [ ] T002 [P] Crear `requirements.txt` con las dependencias ya usadas y versiones mínimas verificadas en esta máquina (base: `pyyaml` que ya instala la CI + pandas/numpy/sklearn solo si los tests los requieren) (soporte de REQ-EST-005)
+- [x] T001 [P] Extender `.github/workflows/ci.yml` a pushes de cualquier rama y verificar que ejecuta `verificar_todo.py` + `python -m unittest discover -s 04_CODIGO` (REQ-EST-001)
+- [x] T002 [P] Crear `requirements.txt` con las dependencias ya usadas y versiones mínimas verificadas en esta máquina (base: `pyyaml` que ya instala la CI + pandas/numpy/sklearn solo si los tests los requieren) (soporte de REQ-EST-005)
 
 **Checkpoint**: CI corre en esta rama y reporta el estado real de la suite.
 
@@ -29,16 +29,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T010 [P] [US1] Test de esquema: fixtures inválidos de `progreso.yaml`/`dudas.yaml`/`errores_conceptuales.yaml` son rechazados con error que nombra el campo; los YAML actuales pasan (REQ-EST-005). Ubicación sugerida: `04_CODIGO/test_esquema_estado.py`
-- [ ] T011 [P] [US1] Test de enlaces sobre los documentos canónicos (`00_INICIO/*.md`, `spec.md`, `CLAUDE.md`): sin rutas rotas ni comandos inexistentes (REQ-EST-003)
+- [x] T010 [P] [US1] Test de esquema: fixtures inválidos de `progreso.yaml`/`dudas.yaml`/`errores_conceptuales.yaml` son rechazados con error que nombra el campo; los YAML actuales pasan (REQ-EST-005). Ubicación sugerida: `04_CODIGO/test_esquema_estado.py`
+- [x] T011 [P] [US1] Test de enlaces sobre los documentos canónicos (`00_INICIO/*.md`, `spec.md`, `CLAUDE.md`): sin rutas rotas ni comandos inexistentes (REQ-EST-003)
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Unificar la cadena de evidencia a 4 pasos: cabecera de `07_DATITO/progreso.yaml`, `.claude/skills/datito-progreso/SKILL.md` y, si aplica, `.claude/skills/datito/SKILL.md`; sincronizar el espejo `.agents/skills/` (test de espejo vigente) (REQ-EST-002)
-- [ ] T013 [US1] Reescribir o eliminar `00_INICIO/README.md` (árbol falsificado) y `00_INICIO/INDEX_MAESTRO.md` (proyecto previo); corregir rutas internas de `00_INICIO/spec.md` §4 y §7 (REQ-EST-003; depende de T011 para verificar)
-- [ ] T014 [US1] Resolver ADR-004: aceptar formalmente (y actualizar `00_INICIO/CLAUDE.md:215-227` para reflejar solo lo que existe) o marcarla rechazada/superseded y corregir CLAUDE.md; commit separado con la decisión (REQ-EST-003)
-- [ ] T015 [US1] Eliminar o fusionar `10_ARCHIVO/learners/cristobal_herrera/`; si se conserva, nota de "fuente muerta" en `spec.md` §4; confirmar que ningún script activo lo lee (REQ-EST-004)
-- [ ] T016 [US1] Inventario de datos personales en archivos versionados activos (emails, citas textuales de desempeño) con decisión documentada: retirar, justificar repo privado permanente, o plan de history rewrite diferido. **No ejecutar history rewrite en esta fase** (REQ-EST-006)
+- [x] T012 [US1] Unificar la cadena de evidencia a 4 pasos: cabecera de `07_DATITO/progreso.yaml`, `.claude/skills/datito-progreso/SKILL.md` y, si aplica, `.claude/skills/datito/SKILL.md`; sincronizar el espejo `.agents/skills/` (test de espejo vigente) (REQ-EST-002)
+- [x] T013 [US1] Reescribir o eliminar `00_INICIO/README.md` (árbol falsificado) y `00_INICIO/INDEX_MAESTRO.md` (proyecto previo); corregir rutas internas de `00_INICIO/spec.md` §4 y §7 (REQ-EST-003; depende de T011 para verificar)
+- [x] T014 [US1] Resolver ADR-004: aceptar formalmente (y actualizar `00_INICIO/CLAUDE.md:215-227` para reflejar solo lo que existe) o marcarla rechazada/superseded y corregir CLAUDE.md; commit separado con la decisión (REQ-EST-003)
+- [x] T015 [US1] Eliminar o fusionar `10_ARCHIVO/learners/cristobal_herrera/`; si se conserva, nota de "fuente muerta" en `spec.md` §4; confirmar que ningún script activo lo lee (REQ-EST-004)
+- [x] T016 [US1] Inventario de datos personales en archivos versionados activos (emails, citas textuales de desempeño) con decisión documentada: retirar, justificar repo privado permanente, o plan de history rewrite diferido. **No ejecutar history rewrite en esta fase** (REQ-EST-006)
 
 **Checkpoint**: US1 verificable de forma independiente; Nivel 1 del spec cumplido.
 
@@ -52,16 +52,16 @@
 
 ### Tests for User Story 2
 
-- [ ] T020 [P] [US2] Definir el formato de escenario (estructura versionada: contexto, entrada del alumno, comportamiento esperado del tutor, etiqueta de garantía) en `04_CODIGO/harness_escenarios/README.md` (REQ-TUT-001a)
-- [ ] T021 [P] [US2] Redactar ≥15 escenarios: mínimo 4 de G1 (espera real, no simulación), 4 de G11 (petición explícita de respuesta), 2 de intentos fallidos (solución solo tras 2 intentos), 5 de casos borde del spec (abandono, LLM caído, YAML inválido) en `04_CODIGO/harness_escenarios/` (REQ-TUT-001b; depende de T020)
-- [ ] T022 [US2] Implementar el ejecutor: corre la skill contra cada escenario, compara comportamiento esperado y emite reporte con % de acuerdo; baseline archivado en `04_CODIGO/harness_escenarios/baseline/` (REQ-TUT-001c; depende de T021)
+- [x] T020 [P] [US2] Definir el formato de escenario (estructura versionada: contexto, entrada del alumno, comportamiento esperado del tutor, etiqueta de garantía) en `04_CODIGO/harness_escenarios/README.md` (REQ-TUT-001a)
+- [x] T021 [P] [US2] Redactar ≥15 escenarios: mínimo 4 de G1 (espera real, no simulación), 4 de G11 (petición explícita de respuesta), 2 de intentos fallidos (solución solo tras 2 intentos), 5 de casos borde del spec (abandono, LLM caído, YAML inválido) en `04_CODIGO/harness_escenarios/` (REQ-TUT-001b; depende de T020)
+- [x] T022 [US2] Implementar el ejecutor: corre la skill contra cada escenario, compara comportamiento esperado y emite reporte con % de acuerdo; baseline archivado en `04_CODIGO/harness_escenarios/baseline/` (REQ-TUT-001c; depende de T021)
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Métricas de sesión en la plantilla de bitácora (`07_DATITO/07_BITACORA/`): % de preguntas con espera real, % de respuestas dadas antes de 2 intentos, dudas registradas con ids verificables; extender `verificar_contrato.py` para comprobarlas (REQ-TUT-002)
+- [x] T023 [US2] Métricas de sesión en la plantilla de bitácora (`07_DATITO/07_BITACORA/`): % de preguntas con espera real, % de respuestas dadas antes de 2 intentos, dudas registradas con ids verificables; extender `verificar_contrato.py` para comprobarlas (REQ-TUT-002)
 - [ ] T024 [US2] Ejecutar el diagnóstico inicial con las 21 `pregunta_diagnostico` en sesiones reales y fijar `diagnostico_inicial_hecho: true` con resultados por concepto (REQ-TUT-003; es operación del tutor, no código nuevo)
 - [ ] T025 [US2] Protocolo de evaluación a ciegas: elegir certámenes de `07_DATITO/04_EJERCICIOS/certamenes/`, rendirlos sin asistencia del tutor, registrar puntaje; repetición a las 3 semanas; plantilla de comparación en `07_DATITO/06_AUDITORIAS/` (REQ-TUT-004; depende de Clarify 6 para el consentimiento del alumno)
-- [ ] T026 [US2] Script `03_SCRIPTS/verificar_antiguedad.py`: lista conceptos con `ultima_verificacion` mayor al umbral (NEEDS CLARIFICATION umbral; sugerencia 21 días) e integra la salida en `estado.md` para la apertura de sesión; el fallo de re-verificación mueve a `REQUIERE_REPASO` (REQ-TUT-005)
+- [x] T026 [US2] Script `03_SCRIPTS/verificar_antiguedad.py`: lista conceptos con `ultima_verificacion` mayor al umbral (NEEDS CLARIFICATION umbral; sugerencia 21 días) e integra la salida en `estado.md` para la apertura de sesión; el fallo de re-verificación mueve a `REQUIERE_REPASO` (REQ-TUT-005)
 
 **Checkpoint**: SC-002 a SC-004 medibles; el tutor tiene, por primera vez, evaluación de comportamiento.
 
