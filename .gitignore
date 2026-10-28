@@ -92,3 +92,6 @@ dist/termito.zip
 # informes .md; los JSON en crudo permanecen locales
 docs/investigacion/rea-evidencia/**/*.json
 dist/wheels/
+
+# Espejo local de .claude/skills: se mantiene en disco, fuera de git (D-4.4)
+.agents/

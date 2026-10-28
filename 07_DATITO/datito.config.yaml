@@ -18,7 +18,9 @@ learner_id: cristobal_herrera
 
 alumno:
   nombre: Cristobal Herrera
-  email: herrera.jara.cristobal@gmail.com
+  # D-6.1/T-6.1.3: el email salio de git (datos personales, INVENTARIO.md).
+  # Si algun flujo lo necesita, vive en .env (ignorado) como EMAIL_ALUMNO.
+  email: ""
 
 asignatura:
   nombre: Fundamentos de Ciencia de Datos

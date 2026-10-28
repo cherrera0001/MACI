@@ -17,7 +17,6 @@ LOOP = ROOT / "07_DATITO" / "07_BITACORA" / "learning_loop"
 LECCIONES = LOOP / "agent_lessons.yaml"
 RESULTADOS = LOOP / "results.tsv"
 SKILLS = ROOT / ".claude" / "skills"
-ESPEJO = ROOT / ".agents" / "skills"
 MARCA = {"failure_patterns": "-FAIL-", "keep_patterns": "-KEEP-"}
 CORTE_LECCIONES = date(2026, 10, 1)  # T-4.2.2: lecciones 011–015 (2026-09-27) quedan exentas
 LOOP_ONCE = ROOT / "04_CODIGO" / "datito_loop_once.py"
@@ -49,16 +48,10 @@ class TestLearningLoop(unittest.TestCase):
         huerfanas = sorted({r["lesson_id"] for r in filas if r["lesson_id"] not in ids})
         self.assertEqual(huerfanas, [])
 
-    @unittest.skipUnless(ESPEJO.is_dir(), "sin espejo .agents/skills en esta máquina")
-    def test_espejo_de_skills_no_diverge(self):
-        def texto(p):
-            return p.read_text(encoding="utf-8").replace("\r\n", "\n")
-
-        nombres = {p.parent.name for p in SKILLS.glob("*/SKILL.md")} | {p.parent.name for p in ESPEJO.glob("*/SKILL.md")}
-        distintos = sorted(n for n in nombres
-                           if not (SKILLS / n / "SKILL.md").is_file() or not (ESPEJO / n / "SKILL.md").is_file()
-                           or texto(SKILLS / n / "SKILL.md") != texto(ESPEJO / n / "SKILL.md"))
-        self.assertEqual(distintos, [], ".agents/skills difiere de .claude/skills")
+    # D-4.4: el espejo .agents/skills dejo de versionarse (queda en disco,
+    # ignorado por git). Este test se elimino con esa decision: vigilar un
+    # espejo que git ya no conoce es trabajo de configuracion local, no del
+    # contrato del repo.
 
 
 class TestLessonIdObligatorio(unittest.TestCase):
