@@ -95,3 +95,6 @@ dist/wheels/
 
 # Espejo local de .claude/skills: se mantiene en disco, fuera de git (D-4.4)
 .agents/
+
+# Transcripts del runner real (REQ-TUT-006): solo el baseline se versiona
+04_CODIGO/harness_escenarios/transcripts_reales/

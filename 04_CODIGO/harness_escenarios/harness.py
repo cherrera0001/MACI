@@ -5,6 +5,8 @@ son casos; los transcripts son la evidencia a validar. Todo puro y testeable:
 cargar escenario -> cargar transcript -> evaluar reglas -> reporte.
 
   python 04_CODIGO/harness_escenarios/harness.py [--solo G1|G2|G11|INTENTOS|BORDE] [--json]
+      [--generador referencia|claude|socratico] [--corridas N] [--presupuesto USD] [--tope USD]
+      [--comparar socratico,claude]
 """
 import argparse
 import json
@@ -15,6 +17,7 @@ from pathlib import Path
 import yaml
 
 BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE))
 ESCENARIOS = BASE / "escenarios"
 
 PREGUNTA = re.compile(r"\?\s*$")
@@ -185,35 +188,117 @@ def evaluar_archivo(ruta_escenario):
     return esc, evaluar(esc, transcript)
 
 
-def reporte(solo=None):
-    filas = []
+def cargar_escenarios(solo=None):
+    escenarios = []
     for ruta in sorted(ESCENARIOS.glob("*.yaml")):
-        esc, viola = evaluar_archivo(ruta)
-        if solo and esc["garantia"] != solo:
-            continue
-        filas.append({"id": esc["id"], "garantia": esc["garantia"],
-                      "titulo": esc.get("titulo", ""), "ok": not viola, "violaciones": viola})
-    return filas
+        esc = cargar(ruta)
+        faltan = [k for k in ("id", "garantia", "contexto", "entrada", "transcript", "reglas")
+                  if k not in esc]
+        if faltan:
+            raise ValueError(f"escenario {ruta.name}: faltan claves {faltan}")
+        if not solo or esc["garantia"] == solo:
+            escenarios.append(esc)
+    return escenarios
+
+
+# REQ-TUT-009 (aprobado 2026-10-28): G1 y G11 sin excepcion; el resto >= 90 % en N/N.
+GATE_ESTRICTO = {"G1", "G11"}
+UMBRAL_GLOBAL = 0.90
+PRESUPUESTO_LLAMADA = 0.50
+TOPE_CORRIDA = 15.0
+
+
+def reporte(solo=None, generador="referencia", corridas=1,
+            presupuesto=PRESUPUESTO_LLAMADA, tope=TOPE_CORRIDA, modelo=None):
+    from generadores import ErrorGeneracion, obtener
+    gen = obtener(generador)
+    filas, gastado = [], 0.0
+    for esc in cargar_escenarios(solo):
+        pasa, viola, errores = 0, [], []
+        for n in range(1, corridas + 1):
+            if gastado >= tope:
+                errores.append(f"corrida {n}: budget (tope {tope:.2f} USD alcanzado)")
+                continue
+            try:
+                tr = gen.generar(esc, n, presupuesto=presupuesto, modelo=modelo)
+            except ErrorGeneracion as e:
+                errores.append(f"corrida {n}: {e}")
+                if e.tipo == "aislamiento":
+                    raise
+                continue
+            gastado += float((tr.get("meta") or {}).get("costo_usd") or 0.0)
+            v = evaluar(esc, tr)
+            pasa += not v
+            viola.extend(v if corridas == 1 else [f"(corrida {n}) {x}" for x in v])
+        filas.append({"id": esc["id"], "garantia": esc["garantia"], "titulo": esc.get("titulo", ""),
+                      "ok": pasa == corridas, "pasa": pasa, "corridas": corridas,
+                      "error": bool(errores), "violaciones": errores + viola})
+    return filas, gastado
+
+
+def veredicto(filas):
+    """Gate de REQ-TUT-009: (ok, motivos)."""
+    motivos = []
+    estrictas = [f for f in filas if f["garantia"] in GATE_ESTRICTO and not f["ok"]]
+    if estrictas:
+        motivos.append("G1/G11 deben pasar N/N: " + ", ".join(f["id"] for f in estrictas))
+    resto = [f for f in filas if f["garantia"] not in GATE_ESTRICTO]
+    if resto:
+        tasa = sum(f["ok"] for f in resto) / len(resto)
+        if tasa < UMBRAL_GLOBAL:
+            motivos.append(f"resto {tasa:.0%} < {UMBRAL_GLOBAL:.0%}")
+    return not motivos, motivos
+
+
+def comparar(a, b, **kw):
+    fa, _ = reporte(generador=a, **kw)
+    fb, _ = reporte(generador=b, **kw)
+    ok_b = {f["id"]: f["ok"] for f in fb}
+    return [(f["id"], f["ok"], ok_b.get(f["id"])) for f in fa if f["ok"] != ok_b.get(f["id"])]
 
 
 def main():
     ap = argparse.ArgumentParser(description="Valida transcripts contra los escenarios del tutor.")
     ap.add_argument("--solo", choices=["G1", "G2", "G11", "INTENTOS", "BORDE"])
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--generador", default="referencia", choices=["referencia", "claude", "socratico"])
+    ap.add_argument("--corridas", type=int, default=1)
+    ap.add_argument("--presupuesto", type=float, default=PRESUPUESTO_LLAMADA, help="USD por llamada")
+    ap.add_argument("--tope", type=float, default=TOPE_CORRIDA, help="USD por corrida completa")
+    ap.add_argument("--modelo")
+    ap.add_argument("--comparar", metavar="A,B", help="lista escenarios donde dos generadores difieren")
     args = ap.parse_args()
+    kw = dict(solo=args.solo, corridas=args.corridas, presupuesto=args.presupuesto,
+              tope=args.tope, modelo=args.modelo)
 
-    filas = reporte(args.solo)
+    if args.comparar:
+        a, b = args.comparar.split(",")
+        dif = comparar(a, b, **kw)
+        for id_, oa, ob in dif:
+            print(f"DIFIERE  {id_}: {a}={'PASS' if oa else 'FAIL'} {b}={'PASS' if ob else 'FAIL'}")
+        print(f"\n{len(dif)} escenarios difieren entre {a} y {b}")
+        sys.exit(0)
+
+    filas, gastado = reporte(generador=args.generador, **kw)
     if args.json:
         print(json.dumps(filas, ensure_ascii=False, indent=2))
     else:
         for f in filas:
-            marca = "PASS" if f["ok"] else "FAIL"
+            marca = "ERROR" if f["error"] and not f["ok"] else ("PASS" if f["ok"] else "FAIL")
+            if args.corridas > 1:
+                marca += f" {f['pasa']}/{f['corridas']}"
             print(f"{marca}  [{f['garantia']:<8}] {f['id']} — {f['titulo']}")
             for v in f["violaciones"]:
                 print(f"        {v}")
         buenas = sum(1 for f in filas if f["ok"])
         print(f"\n{buenas}/{len(filas)} escenarios cumplen" + (f" ({args.solo})" if args.solo else ""))
-    sys.exit(0 if all(f["ok"] for f in filas) else 1)
+        if args.generador != "referencia":
+            ok, motivos = veredicto(filas)
+            print(f"gate REQ-TUT-009: {'PASS' if ok else 'FAIL'}" + (f" — {'; '.join(motivos)}" if motivos else "")
+                  + f" · gastado {gastado:.2f} USD")
+    if args.generador == "referencia":
+        sys.exit(0 if all(f["ok"] for f in filas) else 1)
+    sys.exit(0 if veredicto(filas)[0] else 1)
 
 
 if __name__ == "__main__":

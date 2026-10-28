@@ -98,13 +98,13 @@ class EscenariosSanosTests(unittest.TestCase):
     """Los transcripts de referencia cumplen sus propias reglas y el reporte esta en 100%."""
 
     def test_todos_los_escenarios_cumplen(self):
-        filas = reporte()
+        filas, _ = reporte()
         self.assertGreaterEqual(len(filas), 18)
         malos = [f["id"] for f in filas if not f["ok"]]
         self.assertEqual(malos, [], f"escenarios de referencia con violaciones: {malos}")
 
     def test_cobertura_minima_por_garantia(self):
-        filas = reporte()
+        filas, _ = reporte()
         por_garantia = {}
         for f in filas:
             por_garantia.setdefault(f["garantia"], []).append(f["id"])
