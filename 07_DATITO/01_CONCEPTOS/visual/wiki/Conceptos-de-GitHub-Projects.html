@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conceptos de GitHub Projects · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>Conceptos de GitHub Projects</h1>
+<p>Vocabulario mínimo para leer el tablero de MACI. Cada concepto trae cómo se usa aquí.</p>
+<h2>El mapa</h2>
+<pre><code>flowchart LR
+    subgraph Repo[&quot;Repositorio&quot;]
+        I[&quot;Issue&quot;]
+        PR[&quot;Pull request&quot;]
+        L[&quot;Etiquetas&quot;]
+        M[&quot;Milestone&quot;]
+        W[&quot;Wiki&quot;]
+        A[&quot;Actions (CI)&quot;]
+    end
+    subgraph Project[&quot;Project&quot;]
+        IT[&quot;Ítem&quot;]
+        C[&quot;Campos&quot;]
+        V[&quot;Vistas&quot;]
+        F[&quot;Flujos automáticos&quot;]
+    end
+    I -- se agrega como --&gt; IT
+    PR -- Closes --&gt; I
+    L --&gt; I
+    M --&gt; I
+    I -- sub-issue de --&gt; I
+    C --&gt; IT
+    V -- filtran y agrupan --&gt; IT
+    F -- mueven --&gt; IT
+    A -- comprueba --&gt; PR</code></pre>
+<h2>En el repositorio</h2>
+<table><tr><th>Concepto</th><th>Qué es</th><th>Cómo se usa en MACI</th></tr><tr><td><strong>Issue</strong></td><td>Una unidad de trabajo con título, descripción, comentarios y estado abierto o cerrado. Tiene un número (<code>#31</code>).</td><td>Todo el backlog: épicas, historias, decisiones, tareas y bugs.</td></tr><tr><td><strong>Sub-issue</strong></td><td>Un issue hijo de otro. El padre muestra cuántos hijos están cerrados.</td><td>La jerarquía épica → historia → tarea.</td></tr><tr><td><strong>Etiqueta</strong> (label)</td><td>Marca de color para clasificar. Un issue puede tener varias.</td><td><code>tipo:<em></code>, <code>area:</em></code>, <code>prioridad:*</code>.</td></tr><tr><td><strong>Milestone</strong></td><td>Un conjunto de issues que forman una entrega. Muestra el porcentaje cerrado y puede tener fecha.</td><td><code>v1.0</code>. Los dos anteriores, «Sprint 01 Lectura» y «Restauración», están cerrados.</td></tr><tr><td><strong>Plantilla de issue</strong></td><td>Formulario que pide los campos de cada tipo.</td><td><code>.github/ISSUE_TEMPLATE/</code>: épica, historia, tarea y bug.</td></tr><tr><td><strong>Rama</strong> (branch)</td><td>Línea de trabajo separada de <code>main</code>.</td><td>Una por historia o tarea. <code>main</code> siempre publicable.</td></tr><tr><td><strong>Pull request</strong> (PR)</td><td>Propuesta de fusionar una rama. Se revisa y corre el CI.</td><td>Si su descripción dice <code>Closes #31</code>, al fusionarse cierra ese issue.</td></tr><tr><td><strong>Actions</strong></td><td>Automatización que corre en cada push o PR.</td><td><code>.github/workflows/ci.yml</code> corre los tests de <code>04_CODIGO/</code>.</td></tr><tr><td><strong>Wiki</strong></td><td>Documentación del repo en páginas Markdown. Es un repositorio git aparte.</td><td>Estas páginas. La fuente está en <code>docs/wiki/</code>.</td></tr><tr><td><strong>Release / tag</strong></td><td>Una versión con nombre sobre un commit.</td><td>Cuando cierre el milestone v1.0 se etiqueta <code>v1.0</code>.</td></tr></table>
+<h2>En el Project</h2>
+<p>Un <strong>Project</strong> es un tablero que reúne issues y PR de uno o varios repositorios. No guarda el trabajo: lo muestra. Si borras el Project, los issues siguen existiendo.</p>
+<table><tr><th>Concepto</th><th>Qué es</th><th>Cómo se usa en MACI</th></tr><tr><td><strong>Ítem</strong></td><td>Un issue, un PR o un borrador dentro del Project.</td><td>Solo issues del repo MACI.</td></tr><tr><td><strong>Campo</strong> (field)</td><td>Una columna con un dato del ítem. Hay campos propios del issue (Milestone, Labels, Parent issue) y campos del Project.</td><td>Del Project: Status, Tipo, Prioridad, Proceso.</td></tr><tr><td><strong>Status</strong></td><td>Campo de selección que define las columnas del tablero.</td><td>Todo · In Progress · Done.</td></tr><tr><td><strong>Vista</strong> (view)</td><td>Una forma guardada de mirar los mismos ítems: tabla, tablero o línea de tiempo, con filtro, agrupación y orden.</td><td>Ver la lista en <a href="Como-opera-el-tablero.html">Cómo opera el tablero</a>.</td></tr><tr><td><strong>Table</strong></td><td>Vista de planilla. Sirve para agrupar y revisar campos.</td><td>Por épica, v1.0, Por proceso.</td></tr><tr><td><strong>Board</strong></td><td>Vista kanban: una columna por valor de un campo.</td><td>Tablero por Status.</td></tr><tr><td><strong>Roadmap</strong></td><td>Vista de línea de tiempo. Necesita un campo de fecha o de iteración.</td><td>Sin uso todavía: los ítems no tienen fechas.</td></tr><tr><td><strong>Filtro</strong></td><td>Expresión como <code>is:open tipo:Historia prioridad:P0</code>.</td><td>En cada vista.</td></tr><tr><td><strong>Group by</strong></td><td>Separa la vista en bloques por el valor de un campo.</td><td>Por <em>Parent issue</em> se ve cada épica con sus historias.</td></tr><tr><td><strong>Flujo automático</strong> (workflow)</td><td>Regla integrada del Project.</td><td>Activos: <em>Auto-add to project</em> (todo issue nuevo entra), <em>Auto-add sub-issues</em>, <em>Item closed</em> (pasa a Done), <em>Pull request merged</em>.</td></tr><tr><td><strong>Iteración</strong></td><td>Campo de periodos fijos (sprints).</td><td>Sin uso: se trabaja por milestone.</td></tr><tr><td><strong>Insights</strong></td><td>Gráficos del Project, por ejemplo ítems abiertos en el tiempo.</td><td>Disponible; no se depende de él.</td></tr></table>
+<h2>Cómo se relacionan Status, cierre y milestone</h2>
+<p>Tres cosas distintas que se suelen confundir:</p>
+<ul>
+<li><strong>Cerrar un issue</strong> dice «esto terminó». Lo hace un PR con <code>Closes #n</code> o una persona.</li>
+<li><strong>Status = Done</strong> es la columna del tablero. El flujo <em>Item closed</em> la pone sola al cerrar el issue.</li>
+<li><strong>El milestone</strong> cuenta issues cerrados sobre el total. No mira el Status.</li>
+</ul>
+<p>Por eso basta con cerrar bien los issues: el tablero y el milestone se actualizan solos.</p>
+<h2>Buenas prácticas que seguimos</h2>
+<p>1. Un issue, un resultado comprobable. Si no se puede escribir cómo se comprueba, todavía no es un issue.</p>
+<p>2. La evidencia va en el issue, en un comentario, antes de cerrarlo.</p>
+<p>3. Las decisiones son issues. Una pregunta sin dueño no se pierde en un chat.</p>
+<p>4. El Project no reemplaza al repo: las cifras se miden en el código y se citan en el issue.</p>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>

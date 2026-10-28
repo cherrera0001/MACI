@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como opera el tablero · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>Cómo opera el tablero</h1>
+<p>El trabajo de MACI se sigue en el <a href="https://github.com/users/cherrera0001/projects/3">Project MACI</a>. El estado de cada ítem vive en su issue; ningún archivo del repo lo duplica.</p>
+<h2>Jerarquía</h2>
+<pre><code>flowchart TD
+    M([&quot;Milestone&lt;br/&gt;v1.0&quot;])
+    E[&quot;Épica [E-n]&lt;br/&gt;un resultado grande&quot;]
+    H[&quot;Historia [H-n.m]&lt;br/&gt;valor para un usuario&quot;]
+    D[&quot;Decisión [D-n.m]&lt;br/&gt;pregunta para el dueño&quot;]
+    T[&quot;Tarea [T-n.m.p]&lt;br/&gt;trabajo concreto&quot;]
+    PR[[&quot;Pull request&lt;br/&gt;Closes #tarea&quot;]]
+
+    E --&gt; H
+    E --&gt; D
+    H --&gt; T
+    D --&gt; T
+    T --&gt; PR
+    M -.agrupa lo que entra en la versión.-&gt; H
+    M -.-&gt; D
+    M -.-&gt; T</code></pre>
+<table><tr><th>Tipo</th><th>Título</th><th>Qué contiene</th><th>Se cierra cuando</th></tr><tr><td><strong>Épica</strong></td><td><code>[E-1] Curso: …</code></td><td>Resultado, contexto e historia, cómo se mide</td><td>Todas sus historias están cerradas y las métricas se cumplen</td></tr><tr><td><strong>Historia</strong></td><td><code>[H-1.1] Como &lt;rol&gt;, quiero &lt;capacidad&gt;, para &lt;beneficio&gt;</code></td><td>Contexto con evidencia, criterios de aceptación «dado, cuando, entonces», definición de hecho</td><td>Cada criterio está marcado con su evidencia</td></tr><tr><td><strong>Decisión</strong></td><td><code>[D-6.1] ¿…?</code></td><td>Pregunta, contexto, opciones</td><td>El dueño escribe la decisión en un comentario</td></tr><tr><td><strong>Tarea</strong></td><td><code>[T-1.1.1] Verbo + objeto</code></td><td>Qué hay que hacer y qué se entrega</td><td>Un PR fusionado la cierra</td></tr><tr><td><strong>Bug</strong></td><td>Texto libre</td><td>Qué se esperaba, qué pasó, cómo reproducirlo</td><td>El test que lo reproduce pasa</td></tr></table>
+<p>El enlace entre niveles es un <strong>sub-issue</strong>: la historia es sub-issue de su épica y la tarea es sub-issue de su historia. El avance se lee en la columna <em>Sub-issues progress</em>.</p>
+<h2>Campos del Project</h2>
+<table><tr><th>Campo</th><th>Valores</th><th>Para qué</th></tr><tr><td><strong>Status</strong></td><td>Todo · In Progress · Done</td><td>Dónde está el ítem</td></tr><tr><td><strong>Tipo</strong></td><td>Épica · Historia · Decisión · Tarea · Bug</td><td>Nivel en la jerarquía</td></tr><tr><td><strong>Prioridad</strong></td><td>P0 bloquea la versión · P1 entra en la versión · P2 después</td><td>Orden de trabajo</td></tr><tr><td><strong>Proceso</strong></td><td>P1 a P6, ver <a href="Procesos.html">Procesos</a></td><td>En qué flujo de trabajo cae</td></tr><tr><td><strong>Parent issue</strong></td><td>Automático</td><td>A qué épica o historia pertenece</td></tr><tr><td><strong>Milestone</strong></td><td>v1.0</td><td>Si entra en la versión</td></tr></table>
+<p>Las etiquetas repiten tipo, área y prioridad (<code>tipo:historia</code>, <code>area:curso</code>, <code>prioridad:P1</code>) para filtrar también desde la lista de issues del repo.</p>
+<h2>Ciclo de un ítem</h2>
+<pre><code>stateDiagram-v2
+    [*] --&gt; Todo: se crea el issue con plantilla
+    Todo --&gt; InProgress: alguien abre la rama
+    InProgress --&gt; Done: el PR con Closes se fusiona
+    InProgress --&gt; Todo: se suelta sin terminar
+    Done --&gt; Todo: se reabre porque la evidencia no alcanza
+    Done --&gt; [*]
+
+    InProgress: In Progress</code></pre>
+<p>1. <strong>Crear.</strong> <em>New issue</em> en el repo y elegir plantilla. El título lleva el prefijo del tipo. Las plantillas están en <code>.github/ISSUE_TEMPLATE/</code>.</p>
+<p>2. <strong>Ubicar.</strong> En el issue, <em>Parent issue</em> para colgarlo de su historia o épica. En el Project, llenar Tipo, Prioridad y Proceso. El flujo <em>Auto-add to project</em> ya lo trae al tablero.</p>
+<p>3. <strong>Trabajar.</strong> Una rama por historia o tarea. Pasar el ítem a <em>In Progress</em>.</p>
+<p>4. <strong>Verificar.</strong> <code>python 03_SCRIPTS/verificar_todo.py --navegador</code> tiene que decir LISTO.</p>
+<p>5. <strong>Cerrar.</strong> El PR escribe <code>Closes #&lt;número&gt;</code> en su descripción. Al fusionarlo, GitHub cierra el issue y el tablero lo mueve a <em>Done</em>.</p>
+<p>6. <strong>Dejar evidencia.</strong> Un comentario en el issue con lo que se midió. Un cierre sin evidencia se reabre.</p>
+<h2>Vistas recomendadas</h2>
+<p>GitHub no permite crear vistas por API. Se crean una vez desde el tablero con <em>New view</em>:</p>
+<table><tr><th>Vista</th><th>Diseño</th><th>Configuración</th></tr><tr><td><strong>Por épica</strong></td><td>Table</td><td>Group by: <em>Parent issue</em>. Columnas: Title, Tipo, Status, Prioridad, Sub-issues progress. Filtro: <code>is:open</code></td></tr><tr><td><strong>Tablero</strong></td><td>Board</td><td>Column by: <em>Status</em>. Filtro: <code>-tipo:Épica</code>. Swimlanes por <em>Prioridad</em></td></tr><tr><td><strong>v1.0</strong></td><td>Table</td><td>Filtro: <code>milestone:&quot;v1.0 · Curso completo y verificable&quot;</code>. Sort: Prioridad</td></tr><tr><td><strong>Por proceso</strong></td><td>Table</td><td>Group by: <em>Proceso</em>. Filtro: <code>is:open tipo:Historia,Decisión</code></td></tr><tr><td><strong>Decisiones</strong></td><td>Table</td><td>Filtro: <code>tipo:Decisión is:open</code>. Son las que esperan al dueño</td></tr></table>
+<h2>Sembrar ítems nuevos</h2>
+<p>Para uno o dos ítems, la plantilla de issue basta. Para un lote, se agregan a <code>docs/gestion/backlog.yaml</code> y se corre:</p>
+<pre><code>python 03_SCRIPTS/crear_backlog.py --dry-run   # muestra qué crearía
+python 03_SCRIPTS/crear_backlog.py             # crea solo lo que falta</code></pre>
+<p>El script no duplica: reconoce los ítems por el prefijo de su título. El YAML es la semilla; después de sembrar, manda el issue.</p>
+<h2>Quién decide qué</h2>
+<ul>
+<li>Un agente puede crear tareas, abrir PR y dejar evidencia.</li>
+<li>Un agente <strong>no</strong> cierra una decisión, no cambia la visibilidad del repo, no borra ramas remotas ni reescribe historial sin la confirmación escrita del dueño en el issue.</li>
+<li>Las historias de estudio (épica de Datito) las avanza el alumno: nadie puede aprender por él.</li>
+</ul>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>

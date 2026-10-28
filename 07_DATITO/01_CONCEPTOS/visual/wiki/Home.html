@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Wiki MACI</title>
+<style>
+body{max-width:46em;margin:2rem auto;padding:0 1rem;font-family:Georgia,serif;
+line-height:1.6;color:#1a1a1a;background:#faf9f6}
+h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.25}
+h2{border-bottom:1px solid #ddd;padding-bottom:.2rem}
+a{color:#5b21b6} table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{border:1px solid #ccc;padding:.35rem .5rem;text-align:left;vertical-align:top}
+th{background:#efe9f9} code{background:#eee9f5;padding:.1rem .3rem;border-radius:3px}
+pre{background:#241f2e;color:#e8e0f5;padding:.8rem;overflow:auto;border-radius:6px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{border-left:3px solid #7c3aed;margin-left:0;padding-left:1rem;color:#444}
+nav{font-family:system-ui,sans-serif;font-size:.9em;background:#efe9f9;
+padding:.6rem .9rem;border-radius:6px;margin-bottom:1.5rem}
+nav a{margin-right:1rem}
+</style></head>
+<body>
+<nav><a href="Home.html">Inicio</a><a href="Como-opera-el-tablero.html">Como opera el tablero</a><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a><a href="Procesos.html">Procesos</a><a href="Que-es-MACI-y-Datito.html">Que es MACI y Datito</a><a href="SPEC.html">SPEC</a></nav>
+<h1>MACI</h1>
+<p>MACI es el repositorio de trabajo de <strong>Fundamentos de Ciencia de Datos</strong> (Universidad de Concepción, T2-2026). Contiene un curso interactivo de 23 clases, un tutor socrático llamado <strong>Datito</strong> y el proyecto semestral del ramo.</p>
+<ul>
+<li>Curso en línea: https://maci.c4a.cl</li>
+<li>Tablero: <a href="https://github.com/users/cherrera0001/projects/3">Project MACI</a></li>
+<li>Versión en curso: <a href="https://github.com/cherrera0001/MACI/milestone/3">v1.0 · Curso completo y verificable</a></li>
+</ul>
+<h2>Por dónde empezar</h2>
+<table><tr><th>Si quieres…</th><th>Lee</th></tr><tr><td>Saber qué es cada pieza</td><td><a href="Que-es-MACI-y-Datito.html">Qué es MACI y Datito</a></td></tr><tr><td>Entender cómo se trabaja</td><td><a href="Procesos.html">Procesos</a></td></tr><tr><td>Leer o mover el tablero</td><td><a href="Como-opera-el-tablero.html">Cómo opera el tablero</a></td></tr><tr><td>Aprender el vocabulario de GitHub</td><td><a href="Conceptos-de-GitHub-Projects.html">Conceptos de GitHub Projects</a></td></tr><tr><td>Ver qué falta</td><td><a href="Pendientes-y-v1.0.html">Pendientes y v1.0</a></td></tr></table>
+<h2>Reglas que no se negocian</h2>
+<p>1. <strong>Una sola fuente.</strong> Cada dato del curso vive en un YAML de <code>07_DATITO/</code>. Las páginas se generan desde ahí.</p>
+<p>2. <strong>Verificar antes de decir listo.</strong> <code>python 03_SCRIPTS/verificar_todo.py --navegador --en-linea</code> tiene que decir LISTO.</p>
+<p>3. <strong>Datito espera.</strong> El tutor pregunta y espera la respuesta del alumno. Nunca la simula.</p>
+<p>4. <strong>Cada fallo deja una lección.</strong> Lo que se rompe al construir se anota en el Learning Loop para que no se repita.</p>
+<p>Estas páginas se escriben en <code>docs/wiki/</code> del repositorio y se publican con <code>03_SCRIPTS/publicar_wiki.sh</code>. No se editan desde la web: el siguiente publicado las pisaría.</p>
+<hr><p style="font-size:.85em;color:#666">Wiki del proyecto MACI · fuente:
+<a href="https://github.com/cherrera0001/MACI/tree/main/docs/wiki">docs/wiki/</a>
+· <a href="../00_index.html">← Índice del curso</a></p>
+</body></html>

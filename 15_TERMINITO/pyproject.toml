@@ -1,6 +1,6 @@
 [project]
 name = "datito"
-version = "0.1.0"
+version = "1.0.0"
 description = "Motor de tutores agenticos disenados por el estudiante (MACI 1.0). Offline-first."
 requires-python = ">=3.12"
 dependencies = [
