@@ -55,7 +55,7 @@ Un **Project** es un tablero que reúne issues y PR de uno o varios repositorios
 | **Ítem** | Un issue, un PR o un borrador dentro del Project. | Solo issues del repo MACI. |
 | **Campo** (field) | Una columna con un dato del ítem. Hay campos propios del issue (Milestone, Labels, Parent issue) y campos del Project. | Del Project: Status, Tipo, Prioridad, Proceso. |
 | **Status** | Campo de selección que define las columnas del tablero. | Todo · In Progress · Done. |
-| **Vista** (view) | Una forma guardada de mirar los mismos ítems: tabla, tablero o línea de tiempo, con filtro, agrupación y orden. | Ver la lista en [Cómo opera el tablero](Como-opera-el-tablero). |
+| **Vista** (view) | Una forma guardada de mirar los mismos ítems: tabla, tablero o línea de tiempo, con filtro, agrupación y orden. | Ver la lista en [Cómo opera el tablero](Como-opera-el-tablero.md). |
 | **Table** | Vista de planilla. Sirve para agrupar y revisar campos. | Por épica, v1.0, Por proceso. |
 | **Board** | Vista kanban: una columna por valor de un campo. | Tablero por Status. |
 | **Roadmap** | Vista de línea de tiempo. Necesita un campo de fecha o de iteración. | Sin uso todavía: los ítems no tienen fechas. |

@@ -40,7 +40,7 @@ El enlace entre niveles es un **sub-issue**: la historia es sub-issue de su épi
 | **Status** | Todo · In Progress · Done | Dónde está el ítem |
 | **Tipo** | Épica · Historia · Decisión · Tarea · Bug | Nivel en la jerarquía |
 | **Prioridad** | P0 bloquea la versión · P1 entra en la versión · P2 después | Orden de trabajo |
-| **Proceso** | P1 a P6, ver [Procesos](Procesos) | En qué flujo de trabajo cae |
+| **Proceso** | P1 a P6, ver [Procesos](Procesos.md) | En qué flujo de trabajo cae |
 | **Parent issue** | Automático | A qué épica o historia pertenece |
 | **Milestone** | v1.0 | Si entra en la versión |
 

@@ -8,13 +8,14 @@ valores (emails, citas) aquí.
 
 | # | Categoría | Ubicación | Sensibilidad |
 |---|---|---|---|
-| 1 | Email del alumno | `07_DATITO/datito.config.yaml` (campo `alumno.email`) | alta (identificador directo) |
+| 1 | ~~Email del alumno~~ **RESUELTO** (valor vaciado, 2636e66) | `07_DATITO/datito.config.yaml` | alta → cerrada |
 | 2 | Nombre del alumno | `07_DATITO/progreso.yaml` (meta), `07_DATITO/datito.config.yaml`, bitácoras y `dudas.yaml` (campo `respondio`), `07_DATITO/clases.yaml` (cierre de clase 16) | media |
 | 3 | Citas textuales de desempeño | `07_DATITO/errores_conceptuales.yaml` (`dijo`), `07_DATITO/dudas.yaml` (`respondio`) | alta (evaluable, atribuible) |
 | 4 | Estado de aprendizaje completo | `07_DATITO/progreso.yaml`, `dudas.yaml`, `07_BITACORA/` | alta (perfil pedagógico) |
 | 5 | Capturas con datos académicos | `01_DOCUMENTACION/01_CERTAMEN2/fuentes/*.html` (reportado en EVALUACION.md B-S1) | media-alta |
+| 6b | ~~Espejo `.agents/skills`~~ **RESUELTO** (fuera de git, 2636e66, D-4.4) | `.agents/` (ignorado, vive en disco) | — |
 | 6 | Emails de terceros | `05_CLASES/10_GRABACIÓN_CLASES/80038_Procesos_Innovacion/NOTAS_INDICE.md`, `01_DOCUMENTACION/PRIMERA-ENTREGA-PLAN.md`, `06_LABORATORIOS/_markdown/2026_P5_Clasificación_res_ _1.md` (consentimiento por verificar) | alta (terceros) |
-| 7 | ~~Copia archivada del estado~~ | ~~`10_ARCHIVO/learners/`~~ **eliminada el 2026-10-27** (REQ-EST-004) | — |
+| 7 | ~~Copia archivada del estado~~ **ELIMINADA** (2026-10-27, REQ-EST-004) | — | — |
 
 ## Tamaño de lo versionado (T-6.1.1)
 
@@ -32,11 +33,14 @@ valores (emails, citas) aquí.
 
 ## Decisión (registrada, ejecutable por fases)
 
-1. **Repo privado permanente.** MACI sigue privado; la publicación del *sitio*
-   (maci.c4a.cl) ya va por `publicar_sitio.mjs` con su propia verificación de
-   datos privados (`verificar_todo.py --en-linea` exige que `progreso.yaml`,
-   `datito.config.yaml` y `README.md` no se sirvan). La privacidad del repo y
-   la del sitio son controles independientes y ambos quedan activos.
+1. **El repo ES público (corregido 2026-10-28, #72).** La publicación del
+   *sitio* (maci.c4a.cl) va por `publicar_sitio.mjs`, que exige que
+   `progreso.yaml`, `datito.config.yaml` y `README.md` no se sirvan. El repo
+   público SÍ expone los YAML con citas del alumno (filas 2-4): es una
+   decisión del dueño, documentada aquí. Mitigaciones ya aplicadas: email fuera
+   de git (fila 1, hecho), `11_GOOGLE/` ignorado, espejo `.agents` fuera de
+   git, duplicado archivado eliminado. Pendiente solo si el dueño lo decide:
+   anonymization de citas + history rewrite (pesado; ver punto 3).
 2. **Mover el email fuera de git (pendiente, fase tutor).** El email (fila 1)
    debe migrar a configuración local ignorada (`.env` / archivo gitignored) con
    fallback vacío; los scripts que lo usen lo leen de ahí. No se hace en esta

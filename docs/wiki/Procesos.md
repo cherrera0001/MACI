@@ -120,7 +120,7 @@ flowchart TD
     I --> J["5.4 El milestone avanza"]
 ```
 
-Detalle en [Cómo opera el tablero](Como-opera-el-tablero).
+Detalle en [Cómo opera el tablero](Como-opera-el-tablero.md).
 
 ## P6 Proyecto semestral
 

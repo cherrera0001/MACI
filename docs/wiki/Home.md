@@ -10,11 +10,11 @@ MACI es el repositorio de trabajo de **Fundamentos de Ciencia de Datos** (Univer
 
 | Si quieres… | Lee |
 |---|---|
-| Saber qué es cada pieza | [Qué es MACI y Datito](Que-es-MACI-y-Datito) |
-| Entender cómo se trabaja | [Procesos](Procesos) |
-| Leer o mover el tablero | [Cómo opera el tablero](Como-opera-el-tablero) |
-| Aprender el vocabulario de GitHub | [Conceptos de GitHub Projects](Conceptos-de-GitHub-Projects) |
-| Ver qué falta | [Pendientes y v1.0](Pendientes-y-v1.0) |
+| Saber qué es cada pieza | [Qué es MACI y Datito](Que-es-MACI-y-Datito.md) |
+| Entender cómo se trabaja | [Procesos](Procesos.md) |
+| Leer o mover el tablero | [Cómo opera el tablero](Como-opera-el-tablero.md) |
+| Aprender el vocabulario de GitHub | [Conceptos de GitHub Projects](Conceptos-de-GitHub-Projects.md) |
+| Ver qué falta | [Pendientes y v1.0](Pendientes-y-v1.0.md) |
 
 ## Reglas que no se negocian
 
