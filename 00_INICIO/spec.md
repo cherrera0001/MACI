@@ -6,7 +6,7 @@ sí mismo cuando se equivoca.
 
 **Versión:** 2 · **Última revisión:** 2026-09-21
 
-> No es un registro de actividad. El registro vive en `07_DATITO/bitacora/`
+> No es un registro de actividad. El registro vive en `07_DATITO/07_BITACORA/`
 > (por sesión), `07_DATITO/progreso.yaml` (estado), y el historial de Git
 > (rastro auditable). Duplicarlo aquí crearía una segunda fuente de verdad que
 > se desincroniza. Esto es el contrato, no la bitácora.
@@ -33,8 +33,12 @@ auditables: explicar, aplicar en Melbourne, interpretar resultados, transferir a
 un problema nuevo.
 
 **Fuente:** `07_DATITO/historias_usuario.yaml` — 18 historias, numeradas US-01 a
-US-18, cada una con criterio de aceptación concreto. No hay historia de usuario
-sin clase; no hay clase sin historia.
+US-18, cada una con criterio de aceptación concreto. Estado real verificado el
+2026-10-27: las 18 historias cubren las clases 1–18; las clases de repaso
+19–23 aún no tienen historia, y el archivo referencia cuatro conceptos que no
+existen en `curriculum.yaml` (`particionamiento_temporal`, `metricas_regresion`,
+`interpretacion`, `transferencia`). Reconciliar historias con clases y con el
+curriculum es deuda registrada (specs/002-evolucion-app-tutor, fase de tutor).
 
 Ejemplo:
 
@@ -152,7 +156,7 @@ Los artefactos funcionan **sin conexión**: su prueba es sin Internet.
 **Una respuesta también es exposición.** Toda respuesta correcta, resolución o
 corrección que Datito da en una sesión —pedida o no— se escribe primero en
 `07_DATITO/dudas.yaml` y queda renderizada, en orden y oculta hasta que se abra,
-en el visual del tema y en `visual/index.html`. El chat lleva a lo más la frase
+en el visual del tema y en `07_DATITO/01_CONCEPTOS/visual/00_index.html`. El chat lleva a lo más la frase
 corta y la ruta. Toda pregunta de un visual trae su respuesta correcta y cómo se
 resuelve.
 
@@ -210,7 +214,7 @@ prueba que el número sea correcto. Etiquetar siempre.
 
 Los visuales se estudian como **clases en secuencia**, ordenadas por
 dependencias conceptuales y progresión cognitiva, no por nombre de archivo ni
-por fecha. El punto de entrada es `07_DATITO/visual/index.html`: la portada del
+por fecha. El punto de entrada es `07_DATITO/01_CONCEPTOS/visual/00_index.html`: la portada del
 curso.
 
 **Fuente única del orden:** `07_DATITO/clases.yaml`. Define unidades, clases,
@@ -303,11 +307,11 @@ deja de medir.
 | `07_DATITO/clases.yaml` | El curso: unidades, clases en orden, ficha Bloom y cierre de cada una | Nadie durante sesión |
 | `07_DATITO/progreso.yaml` | Estado y evidencia | Solo Datito |
 | `07_DATITO/errores_conceptuales.yaml` | Errores observados + patrones vigilados | Solo Datito |
-| `07_DATITO/bitacora/` | Una entrada por sesión | Solo Datito |
+| `07_DATITO/07_BITACORA/` | Una entrada por sesión | Solo Datito |
 | `07_DATITO/dudas.yaml` | Respuestas y resoluciones dadas en sesión, en orden; se renderizan en los visuales | Solo Datito |
-| `CLAUDE.md` | Hace que Claude Code reconozca a Datito | Manual |
-| `spec.md` | Este contrato | Manual |
-| `.mcp.json` | Conexión NotebookLM (sin secretos) | Manual |
+| `00_INICIO/CLAUDE.md` | Hace que Claude Code reconozca a Datito | Manual |
+| `00_INICIO/spec.md` | Este contrato | Manual |
+| `00_INICIO/.mcp.json` | Conexión NotebookLM (sin secretos) | Manual |
 
 `errores_conceptuales.yaml` separa `observados` (errores reales, con contador de
 reincidencia) de `patrones_vigilados` (trampas anticipadas). **No mezclarlos**:
@@ -359,7 +363,7 @@ como evaluación temporal histórica.
 | G3 | Toda corrección cita ruta de archivo y muestra el registro completo |
 | G4 | Toda afirmación sustantiva lleva etiqueta |
 | **G8** | **Toda regla de conducta está en `SKILL.md`. `grep -c "regla\|prohibido\|obligatorio" datito.config.yaml` debe ser bajo: ahí van datos, no reglas** |
-| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió.** Los visuales abren sin red y sus citas de clase se pueden comprobar: `03_SCRIPTS/verificar_visuales.py`. Desde el 2026-09-21, cada bitácora declara «**Dudas registradas:**» con ids que existen en `dudas.yaml`, y cada duda está renderizada en sus visuales |
+| **G9** | **Cada concepto enseñado tiene su artefacto en `07_DATITO/01_CONCEPTOS/visual/`. Si una explicación larga quedó solo en el chat, la garantía se incumplió.** Los visuales abren sin red y sus citas de clase se pueden comprobar: `03_SCRIPTS/verificar_visuales.py`. Desde el 2026-09-21, cada bitácora declara «**Dudas registradas:**» con ids que existen en `dudas.yaml`, y cada duda está renderizada en sus visuales |
 | G10 | Todo dataset sintético está marcado en su propio archivo y en el generador |
 | **G14** | **Toda clase de `clases.yaml` con visual tiene su barra, su ficha, su cierre y al menos tres preguntas con respuesta oculta; la portada existe y la navegación no tiene enlaces rotos** (`verificar_contrato.py`) |
 | Memoria | `DOMINADO` solo con las cuatro evidencias registradas con fecha y detalle |
