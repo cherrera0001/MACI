@@ -43,18 +43,20 @@ meta:
   tutor: Datito
   asignatura: Fundamentos de Ciencia de Datos (T2-2026), Universidad de Concepcion
   creado: 2026-09-18
-  ultima_sesion: 2026-09-21
-  sesiones_totales: 3
-  diagnostico_inicial_hecho: false
+  ultima_sesion: 2026-10-28
+  sesiones_totales: 4
+  diagnostico_inicial_hecho: true
+  fecha_diagnostico: 2026-10-28
+  diagnostico_origen: demo (alumno simulado, sprint gstack)
 
 resumen:
   DOMINADO: 0
-  COMPRENDIDO: 1
-  COMPRENSION_PARCIAL: 2
+  COMPRENDIDO: 0
+  COMPRENSION_PARCIAL: 1
   EN_ESTUDIO: 1
-  REQUIERE_REPASO: 0
+  REQUIERE_REPASO: 2
   NO_ESTUDIADO: 17
-  siguiente_recomendado: generalizacion
+  siguiente_recomendado: train_validation_test
 
 conceptos:
 
@@ -67,6 +69,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "El modelo es más rápido, supongo. El tasador sabe más de casas." [intuicion_vaga]'
 
   - id: datos_features_target
     estado: NO_ESTUDIADO
@@ -77,6 +82,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé qué es target. ¿Date no es una feature también?" [no_sabe]'
 
   - id: eda
     estado: NO_ESTUDIADO
@@ -87,6 +95,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Que subió 10.000, entonces el modelo debería sumar eso." [error_conceptual]'
 
   - id: limpieza_preparacion
     estado: NO_ESTUDIADO
@@ -97,9 +108,12 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No entiendo por qué sacarías información útil. Más datos siempre es mejor." [error_conceptual]'
 
   - id: train_validation_test
-    estado: COMPRENDIDO
+    estado: REQUIERE_REPASO
     evidencias:
       explicar:
         fecha: 2026-09-18
@@ -124,7 +138,10 @@ conceptos:
       interpretar: null
       transferir: null
     sesiones: 1
-    ultima_verificacion: 2026-09-18
+    ultima_verificacion: 2026-10-28
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "El de 81%, porque es más alto." [error_conceptual]'
     nota: >-
       Sesion 1 (2026-09-18). EXPLICAR y APLICAR cumplidos. Falta TRANSFERIR:
       debe disenar el mismo tipo de experimento en un dominio distinto de
@@ -141,6 +158,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé qué es validación cruzada." [no_sabe]'
 
   - id: generalizacion
     estado: COMPRENSION_PARCIAL
@@ -158,7 +178,10 @@ conceptos:
       interpretar: null
       transferir: null
     sesiones: 2
-    ultima_verificacion: 2026-09-19
+    ultima_verificacion: 2026-10-28
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No puede, si nunca lo vio." [intuicion_parcial]'
     nota: >-
       Cubierto el caso de distribution shift por DISPONIBILIDAD de una feature.
       2026-09-21: se le entrego la resolucion de extrapolacion (arbol de 45 cm);
@@ -169,7 +192,7 @@ conceptos:
       lugares y epocas distintas. Ver 07_DATITO/09_PERSONAL/osint_gran_concepcion.md.
 
   - id: overfitting_underfitting
-    estado: COMPRENSION_PARCIAL
+    estado: REQUIERE_REPASO
     evidencias:
       explicar:
         fecha: 2026-09-19
@@ -185,7 +208,10 @@ conceptos:
       interpretar: null
       transferir: null
     sesiones: 1
-    ultima_verificacion: 2026-09-19
+    ultima_verificacion: 2026-10-28
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "El árbol es mejor porque acierta en train. No sé qué es sobreajustar." [no_sabe]'
     nota: >-
       NIVEL 1 superado completo. Diagnostico inicial incorrecto por no calcular
       la brecha; corrigio con andamiaje. Respondio bien b) -"B memoriza pero
@@ -209,7 +235,10 @@ conceptos:
       interpretar: null
       transferir: null
     sesiones: 1
-    ultima_verificacion: null
+    ultima_verificacion: 2026-10-28
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Depende." [evasiva]'
     nota: >-
       2026-09-21: pidio la respuesta de «Tu pregunta» de clase6_regresion.html
       (arbol de 45 cm fuera del rango 8-22; theta0 frente a theta1) y Datito se
@@ -226,6 +255,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "¿Por qué no? Restas y ya." [error_conceptual]'
 
   - id: matriz_confusion
     estado: NO_ESTUDIADO
@@ -236,6 +268,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé leer la matriz." [no_sabe]'
 
   - id: metricas_clasificacion
     estado: NO_ESTUDIADO
@@ -246,6 +281,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Accuracy es el porcentaje de aciertos, eso es lo que importa." [error_conceptual]'
 
   - id: roc_auc
     estado: NO_ESTUDIADO
@@ -256,6 +294,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No es posible, si uno es mejor es mejor en todo." [error_conceptual]'
 
   - id: arboles_decision
     estado: NO_ESTUDIADO
@@ -266,6 +307,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Al azar, creo." [no_sabe]'
 
   - id: random_forest
     estado: NO_ESTUDIADO
@@ -276,6 +320,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Porque son más árboles." [intuicion_vaga]'
 
   - id: gradient_boosting
     estado: NO_ESTUDIADO
@@ -286,6 +333,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé la diferencia." [no_sabe]'
 
   - id: ensembles
     estado: NO_ESTUDIADO
@@ -296,6 +346,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Siempre supera, dos son mejor que uno." [error_conceptual]'
 
   - id: redes_neuronales
     estado: NO_ESTUDIADO
@@ -306,6 +359,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé." [no_sabe]'
 
   - id: deep_learning
     estado: NO_ESTUDIADO
@@ -316,6 +372,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No sé, pensé que deep learning siempre ganaba." [error_conceptual]'
 
   - id: llm
     estado: NO_ESTUDIADO
@@ -326,6 +385,9 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "Porque leyó todo internet y busca la respuesta." [error_conceptual]'
 
   - id: agentes_ia
     estado: NO_ESTUDIADO
@@ -336,3 +398,6 @@ conceptos:
       transferir: null
     sesiones: 0
     ultima_verificacion: null
+    diagnostico:
+      fecha: 2026-10-28
+      detalle: 'Diagnostico inicial (banco fijo): "No veo la diferencia." [no_sabe]'

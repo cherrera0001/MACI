@@ -240,6 +240,7 @@ class FixturesInvalidosTests(unittest.TestCase):
 
     def test_comprendido_sin_aplicar(self):
         doc = self.base()
+        doc["conceptos"][4]["estado"] = "COMPRENDIDO"  # no depender del estado vivo
         doc["conceptos"][4]["evidencias"]["aplicar"] = None  # COMPRENDIDO sin aplicar
         with self.assertRaisesRegex(ErrorEsquema, r"COMPRENDIDO"):
             validar_progreso(doc)

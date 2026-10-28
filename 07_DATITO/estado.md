@@ -4,17 +4,17 @@
 > El detalle completo esta en `progreso.yaml` y
 > `errores_conceptuales.yaml`; leelos solo si necesitas el historial.
 
-Alumno: **Cristobal Herrera** · sesiones: **3** · ultima: 2026-09-21
+Alumno: **Cristobal Herrera** · sesiones: **4** · ultima: 2026-10-28
 
-**COMPRENDIDO 1 · COMPRENSION_PARCIAL 2 · EN_ESTUDIO 1 · NO_ESTUDIADO 17** (de 21)
+**COMPRENSION_PARCIAL 1 · REQUIERE_REPASO 2 · EN_ESTUDIO 1 · NO_ESTUDIADO 17** (de 21)
 
 ## En curso
 
 | Concepto | Estado | Evidencia |
 |---|---|---|
-| Train / validation / test | `COMPRENDIDO` | `EA··` |
 | Generalizacion | `COMPRENSION_PARCIAL` | `E···` |
-| Overfitting y underfitting | `COMPRENSION_PARCIAL` | `E···` |
+| Train / validation / test | `REQUIERE_REPASO` | `EA··` |
+| Overfitting y underfitting | `REQUIERE_REPASO` | `E···` |
 | Regresion | `EN_ESTUDIO` | `····` |
 
 Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · **T**ransferir. `DOMINADO` exige las cuatro.
@@ -26,11 +26,6 @@ Evidencia: **E**xplicar · **A**plicar · **I**nterpretar · **T**ransferir. `DO
 
 Si el concepto a tratar aparece aqui, **anticipa la confusion**: ya la tuvo y repetir la misma explicacion no va a funcionar.
 
-## Candidatos a repaso
-
-- `train_validation_test` — `COMPRENDIDO` · hace 40 dias
-
-Re-pregunta uno de estos al abrir sesion; si falla, pasa a `REQUIERE_REPASO`.
-**Siguiente recomendado:** `generalizacion` — Generalizacion
+**Siguiente recomendado:** `train_validation_test` — Train / validation / test
 
 <!-- generado 2026-10-28 -->
