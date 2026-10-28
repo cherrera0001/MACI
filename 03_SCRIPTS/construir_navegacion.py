@@ -750,7 +750,7 @@ C1_ITEMS = [
 ]
 
 
-def indice(grafo, nombres, mapa, dudas=()):
+def indice(grafo, nombres, mapa, dudas=(), glosario_n=0):
     g = grafo["conceptos"]
     import yaml as _y
     try:
@@ -931,6 +931,12 @@ sorteo de bolillas?</a></td><td>Separar un sesgo de una predicción, calcular cu
 ver un efecto y exigir una línea base antes de creerle a un modelo</td><td>Train / validation / test ·
 Generalización · Overfitting y underfitting</td></tr></table>
 
+<h2 id="glosario">0c · Glosario del curso</h2>
+<p>{glosario_n} términos en orden alfabético, cada uno con su definición, la clase donde se enseña y su
+fuente. El cruce contra el glosario de referencia está en
+<a href="{desde_visual("07_DATITO/06_AUDITORIAS/glosario_cobertura.md")}">glosario_cobertura.md</a>.
+<a href="glosario.html">Abrir el glosario</a>.</p>
+
 <h2 id="repaso">1 · Repaso recomendado antes del certamen</h2>
 <p>El orden sigue tu pedido de repaso. El peso en el certamen viene de
 <a href="{desde_visual("07_DATITO/06_AUDITORIAS/patron_evaluacion.md")}">patron_evaluacion.md</a>: sobreajuste, generalización y validación suman el
@@ -1002,6 +1008,59 @@ y <code>05_CLASES/mapa_ensenanza.yaml</code>. No editar a mano. Funciona sin con
 """
 
 
+def cargar_glosario():
+    """Fuente única del glosario del curso (H-1.2). [] si no existe."""
+    ruta = RAIZ / "07_DATITO" / "glosario.yaml"
+    if not ruta.exists():
+        return []
+    datos = yaml.safe_load(ruta.read_text(encoding="utf-8"))
+    return (datos or {}).get("terminos", [])
+
+
+def pagina_glosario(terminos, clases):
+    """glosario.html: el glosario del curso renderizado con la piel canónica."""
+    template = (Path(VISUAL) / "_TEMPLATE_CANONICO.html").read_text(encoding="utf-8")
+    css = template.split("<style>", 1)[1].split("</style>", 1)[0]
+    por_clase = {c["n"]: c for c in clases}
+    bloques = []
+    for t in sorted(terminos, key=lambda x: x["termino"].lower()):
+        c = por_clase.get(t.get("clase"))
+        if c and c.get("visual"):
+            enlace = f'<a href="{c["visual"]}">Clase {c["n"]} · {html.escape(c["titulo"])}</a>'
+        else:
+            enlace = f'Clase {t.get("clase")}'
+        ref = (t.get("en") or "").strip()
+        if ref == "ausente":
+            ref_txt = " · sin equivalente en la referencia de Google"
+        elif ref:
+            ref_txt = f" · referencia: <i>{html.escape(ref)}</i>"
+        else:
+            ref_txt = ""
+        slug = re.sub(r"[^a-z0-9]+", "-", t["termino"].lower()).strip("-")
+        bloques.append(
+            f'<div class="bloque" id="{slug}"><div class="bloque-titulo">{html.escape(t["termino"])}</div>'
+            f'<p>{html.escape(t["definicion"])}</p>'
+            f'<p class="fuente">{enlace}{ref_txt}</p></div>'
+        )
+    return (
+        '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        '<!-- datito:template:v1 -->\n'
+        "<title>Glosario del curso · Datito</title>\n<style>"
+        + css
+        + "\n  @media(max-width:640px){body{overflow-wrap:break-word}}\n</style>\n</head>\n<body>\n<main>\n"
+        "<!-- datito:nav:inicio -->\n<!-- datito:nav:fin -->\n"
+        f'<p class="fuente"><a href="00_index.html">← Índice del curso</a></p>\n'
+        f"<h1>Glosario del curso</h1>\n"
+        f'<p class="sub">{len(terminos)} términos · fuente única: <code>07_DATITO/glosario.yaml</code> · '
+        f'cruce contra las clases en <code>07_DATITO/06_AUDITORIAS/glosario_cobertura.md</code></p>\n'
+        + "\n".join(bloques)
+        + '\n<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> desde '
+          '<code>07_DATITO/glosario.yaml</code>. No editar a mano. Funciona sin conexión.</footer>\n'
+          "</main>\n</body>\n</html>\n"
+    )
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--revisar", action="store_true", help="no escribe; dice que cambiaria")
@@ -1045,30 +1104,17 @@ def main():
     claves |= {c["visual"].split("#")[0] for c in CURSO["con_visual"]}
     claves.add(desde_visual("07_DATITO/04_EJERCICIOS/triaje_de_problemas.html"))
     claves.add(desde_visual("07_DATITO/04_EJERCICIOS/simulador_prediccion_falla.html"))
+    claves.add("glosario.html")
     for f in sorted(os.listdir(VISUAL)):
         if f.endswith(".html") and f not in claves and f not in (PORTADA, "index.html"):
             print(f"  {f:34} fuera del curso: no se toca")
 
-    for clave in sorted(claves):
-        ruta = os.path.normpath(os.path.join(VISUAL, clave))
-        f = os.path.basename(ruta)
-        esp = ESPECIALES.get(f)
-        conceptos = esp["conceptos"] if esp else cubre.get(clave, [])
-        bloque = bloque_nav(clave, conceptos if not (esp and esp["rol"] == "certamen") else [],
-                            grafo, nombres, mapa, esp)
-        if esp and esp["rol"] == "certamen":
-            # los certamenes enlazan los conceptos que evaluan, sin repetir tramos
-            links = " · ".join(enlace_concepto(c, clave, nombres) for c in esp["conceptos"])
-            antes, _, despues = bloque.rpartition("</nav>")  # solo en la barra de Datito (la ultima)
-            bloque = f'{antes}<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>{despues}'
-        cierre, dudas_b = bloque_cierre(clave), bloque_dudas(clave, dudas, nombres)
-        estado = inyectar(ruta, relinkear(bloque, ruta), a.revisar)
-        estado_c = inyectar_cierre(ruta, cierre and relinkear(cierre, ruta), a.revisar)
-        estado_d = inyectar_dudas(ruta, dudas_b and relinkear(dudas_b, ruta), a.revisar)
-        print(f"  {clave:52} {estado} · {estado_c} · {estado_d}")
-
+    # salidas primero: las paginas generadas (glosario incluido) existen cuando
+    # el bucle les inyecta la navegacion, tambien en un clone fresco
+    glosario = cargar_glosario()
     salidas = {
-        PORTADA: indice(grafo, nombres, mapa, dudas),
+        PORTADA: indice(grafo, nombres, mapa, dudas, glosario_n=len(glosario)),
+        "glosario.html": pagina_glosario(glosario, CURSO["clases"]),
         "index.html": ('<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
                        f'<meta http-equiv="refresh" content="0; url={PORTADA}">\n'
                        '<title>Fundamentos de Ciencia de Datos · el curso de Datito</title>\n'
@@ -1083,15 +1129,42 @@ def main():
                          for c in CURSO["con_visual"]],
         }, ensure_ascii=False, indent=2) + "\n",
     }
+    def sin_nav(t):
+        # la nav inyectada despues no cuenta como cambio de la salida
+        return re.sub(r"<!-- datito:nav:inicio -->.*?<!-- datito:nav:fin -->",
+                      "<!-- datito:nav:inicio -->\n<!-- datito:nav:fin -->", t, flags=re.S)
+
     for nombre, contenido in salidas.items():
         ruta_idx = os.path.join(VISUAL, nombre)
         previo = open(ruta_idx, encoding="utf-8", errors="replace").read() if os.path.exists(ruta_idx) else ""
         # la fecha del pie no cuenta como cambio
-        iguales = re.sub(r"el \d{4}-\d{2}-\d{2}", "", previo) == re.sub(r"el \d{4}-\d{2}-\d{2}", "", contenido)
+        iguales = (sin_nav(re.sub(r"el \d{4}-\d{2}-\d{2}", "", previo))
+                   == sin_nav(re.sub(r"el \d{4}-\d{2}-\d{2}", "", contenido)))
         if not iguales and not a.revisar:
             with open(ruta_idx, "w", encoding="utf-8", newline="\n") as fh:
                 fh.write(contenido)
         print(f"  {nombre:52} {'sin cambios' if iguales else ('cambiaria' if a.revisar else 'generado')}")
+
+    for clave in sorted(claves):
+        ruta = os.path.normpath(os.path.join(VISUAL, clave))
+        f = os.path.basename(ruta)
+        if not os.path.exists(ruta):
+            print(f"  {clave:52} aún no existe: se genera como salida")
+            continue
+        esp = ESPECIALES.get(f)
+        conceptos = esp["conceptos"] if esp else cubre.get(clave, [])
+        bloque = bloque_nav(clave, conceptos if not (esp and esp["rol"] == "certamen") else [],
+                            grafo, nombres, mapa, esp)
+        if esp and esp["rol"] == "certamen":
+            # los certamenes enlazan los conceptos que evaluan, sin repetir tramos
+            links = " · ".join(enlace_concepto(c, clave, nombres) for c in esp["conceptos"])
+            antes, _, despues = bloque.rpartition("</nav>")  # solo en la barra de Datito (la ultima)
+            bloque = f'{antes}<div class="fila"><span class="et">conceptos</span>{links}</div>\n</nav>{despues}'
+        cierre, dudas_b = bloque_cierre(clave), bloque_dudas(clave, dudas, nombres)
+        estado = inyectar(ruta, relinkear(bloque, ruta), a.revisar)
+        estado_c = inyectar_cierre(ruta, cierre and relinkear(cierre, ruta), a.revisar)
+        estado_d = inyectar_dudas(ruta, dudas_b and relinkear(dudas_b, ruta), a.revisar)
+        print(f"  {clave:52} {estado} · {estado_c} · {estado_d}")
 
 
 if __name__ == "__main__":

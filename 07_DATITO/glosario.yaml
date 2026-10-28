@@ -1,0 +1,218 @@
+# Glosario del curso — fuente única (H-1.2, T-1.2.2).
+# La página la genera 03_SCRIPTS/construir_navegacion.py (glosario.html).
+# en: término equivalente en el glosario de referencia de Google
+#    (11_GOOGLE/Glosario.docx, «Google Data Analytics»). «ausente» = la
+#    referencia no lo trae; «parcial» = lo toca pero con otro alcance.
+# Cobertura cruzada contra las 23 clases: 07_DATITO/06_AUDITORIAS/glosario_cobertura.md
+
+fuente_referencia: "Glosario de referencia (Google Data Analytics, 11_GOOGLE/Glosario.docx)"
+terminos:
+  - termino: "Ciencia de datos"
+    en: "Data analysis"
+    clase: 1
+    definicion: "Usar datos para responder preguntas y decidir: el criterio no es «usan datos», sino ¿los datos guían la decisión?"
+
+  - termino: "Escala data-driven"
+    en: "ausente"
+    clase: 1
+    definicion: "Cinco etapas desde decidir por intuición hasta que los datos deciden solos; ubicar a alguien exige el criterio de la escala."
+
+  - termino: "Feature (variable de entrada)"
+    en: "ausente"
+    clase: 2
+    definicion: "Columna que el modelo usa para predecir; las filas son observaciones."
+
+  - termino: "Target (variable objetivo)"
+    en: "ausente"
+    clase: 2
+    definicion: "Lo que se predice: una cantidad en regresión, una categoría en clasificación."
+
+  - termino: "Fuga de información (leakage)"
+    en: "ausente"
+    clase: 2
+    definicion: "Usar una columna que no existirá al momento de predecir; la prueba es temporal, no de correlación."
+
+  - termino: "Atípico (outlier)"
+    en: "Outliers"
+    clase: 3
+    definicion: "Valor lejos de la distribución; distinguir el error (se corrige) del fenómeno real (se documenta)."
+
+  - termino: "Correlación"
+    en: "Correlation"
+    clase: 3
+    definicion: "Asociación entre variables; positiva, negativa o nula. No implica causalidad."
+
+  - termino: "Distribución normal"
+    en: "Normal distribution"
+    clase: 3
+    definicion: "Campana simétrica definida por media y desviación estándar; referente para decidir si un dato es atípico."
+
+  - termino: "Binning"
+    en: "Binning"
+    clase: 4
+    definicion: "Agrupar valores continuos en intervalos; gana interpretación y pierde precisión."
+
+  - termino: "Dato faltante"
+    en: "Missing data"
+    clase: 4
+    definicion: "Celda sin valor; decide si se imputa, se marca o se excluye, y documenta el efecto en la media."
+
+  - termino: "Regresión lineal"
+    en: "Linear regression"
+    clase: 5
+    definicion: "ŷ = θ₀ + θ₁x: el modelo aprende los θ que minimizan el error; la persona decide si el problema es lineal."
+
+  - termino: "Mejor recta (best fit line)"
+    en: "Best fit line"
+    clase: 5
+    definicion: "La recta que minimiza la suma de errores al cuadrado entre predicción y dato real."
+
+  - termino: "Error cuadrático medio (MSE)"
+    en: "MSE (Mean Squared Error)"
+    clase: 6
+    definicion: "Promedio de los errores al cuadrado: castiga más los errores grandes; base del costo de la regresión."
+
+  - termino: "Error absoluto medio (MAE)"
+    en: "MAE (Mean Absolute Error)"
+    clase: 6
+    definicion: "Promedio de |y − ŷ| en las unidades del problema: en Melbourne, dólares australianos de error."
+
+  - termino: "R² (coeficiente de determinación)"
+    en: "parcial (Adjusted R²)"
+    clase: 6
+    definicion: "Cuánto mejora el modelo sobre predecir siempre la media: 0 = como la media; negativo = peor que la media."
+
+  - termino: "Train / validation / test"
+    en: "parcial (Model validation)"
+    clase: 7
+    definicion: "Tres particiones con tres decisiones: entrenar parámetros, ajustar hiperparámetros y medir una sola vez."
+
+  - termino: "Hiperparámetro"
+    en: "Hyperparameters"
+    clase: 7
+    definicion: "Lo que decide la persona antes de entrenar (profundidad del árbol, tasa de aprendizaje); se elige con validación, no con test."
+
+  - termino: "Validación cruzada"
+    en: "ausente"
+    clase: 8
+    definicion: "Repartir el train en k pliegues y rotar: cada modelo se evalúa k veces; compara modelos con la misma partición."
+
+  - termino: "Generalización"
+    en: "ausente"
+    clase: 9
+    definicion: "Rendimiento en datos no vistos; una caída se explica por decidir con esos datos o por cambio de distribución."
+
+  - termino: "A/B testing"
+    en: "A/B testing"
+    clase: 19
+    definicion: "Comparar dos versiones (A contra B) con la misma medición; en Melbourne, con y sin CouncilArea."
+
+  - termino: "Overfitting (sobreajuste)"
+    en: "Overfitting"
+    clase: 10
+    definicion: "Brecha grande entre error de train y de validación: el modelo memorizó; remedio: regularizar o simplificar."
+
+  - termino: "Underfitting (subajuste)"
+    en: "ausente"
+    clase: 10
+    definicion: "Error alto en train y en validación: el modelo es demasiado simple para la señal."
+
+  - termino: "Compromiso sesgo-varianza"
+    en: "Bias-variance trade-off"
+    clase: 10
+    definicion: "Más complejidad baja sesgo y sube varianza; el error mínimo está en el punto medio."
+
+  - termino: "Clasificación"
+    en: "ausente"
+    clase: 11
+    definicion: "Predecir una categoría; se decide por el target, no por las features. El clasificador binario usa regresión logística."
+
+  - termino: "Regresión logística"
+    en: "Logistic regression"
+    clase: 11
+    definicion: "Modelo de clasificación que estima P(y=1|x) con una sigmoide sobre una combinación lineal."
+
+  - termino: "Aprendizaje supervisado y no supervisado"
+    en: "Supervised machine learning / Unsupervised model"
+    clase: 11
+    definicion: "Supervisado: hay target y se evalúa el error. No supervisado: solo features y se busca estructura."
+
+  - termino: "Matriz de confusión"
+    en: "Confusion matrix"
+    clase: 12
+    definicion: "Tabla VP/FN/FP/VN contra la clase positiva declarada; leer rótulos de filas y columnas antes de las tasas."
+
+  - termino: "Exactitud (accuracy)"
+    en: "Accuracy"
+    clase: 13
+    definicion: "(VP+VN)/n: proporción de aciertos; engaña cuando las clases están desbalanceadas."
+
+  - termino: "Precisión"
+    en: "Precision"
+    clase: 13
+    definicion: "VP/(VP+FP): entre los que el modelo marcó positivos, cuántos lo eran."
+
+  - termino: "Sensibilidad (recall)"
+    en: "Recall"
+    clase: 13
+    definicion: "VP/(VP+FN): entre los positivos reales, cuántos encontró; complementa a la precisión."
+
+  - termino: "Teorema de Bayes"
+    en: "Bayes' theorem"
+    clase: 13
+    definicion: "P(A|B) = P(B|A)·P(A)/P(B): actualizar la creencia con evidencia; base de Naive Bayes."
+
+  - termino: "ROC y AUC"
+    en: "ausente"
+    clase: 14
+    definicion: "Curva de sensibilidad vs FPR al mover el umbral; AUC compara modelos enteros, no puntos de operación."
+
+  - termino: "Umbral (threshold)"
+    en: "ausente"
+    clase: 14
+    definicion: "El punto de corte sobre la probabilidad predicha; se elige por el costo de cada error, no por defecto en 0,5."
+
+  - termino: "Árbol de decisión"
+    en: "parcial (Tree-based learning)"
+    clase: 15
+    definicion: "Preguntas sucesivas sobre features que particionan los datos; el corte se elige por mayor ganancia (Gini)."
+
+  - termino: "Random Forest"
+    en: "Random forest"
+    clase: 16
+    definicion: "Ensamble de árboles sobre remuestras y subconjuntos de features; mejora si sus errores no están correlacionados."
+
+  - termino: "Gradient boosting"
+    en: "Gradient boosting"
+    clase: 16
+    definicion: "Cada árbol corrige los errores del conjunto anterior, en la dirección del gradiente del costo."
+
+  - termino: "Ensamble"
+    en: "Ensemble learning"
+    clase: 16
+    definicion: "Combinar modelos base: bagging (promedio independiente) o boosting (corrección secuencial)."
+
+  - termino: "Red neuronal"
+    en: "ausente"
+    clase: 17
+    definicion: "Composición de neuronas: pesos, sesgo y no linealidad; se entrena por retropropagación del gradiente."
+
+  - termino: "Deep learning"
+    en: "ausente"
+    clase: 18
+    definicion: "Redes con muchas capas entrenadas con grandes volúmenes de datos; avance por hardware y algoritmos."
+
+  - termino: "Modelo de lenguaje (LLM)"
+    en: "Large Language Model (LLM)"
+    clase: 18
+    definicion: "Red entrenada para predecir el siguiente token; genera texto pero no actúa por sí misma."
+
+  - termino: "Triaje de problemas"
+    en: "ausente"
+    clase: 22
+    definicion: "Ante un caso nuevo, identificar primero el tipo de problema (regresión, clasificación, azar puro) y la validación adecuada antes de elegir modelo."
+
+  - termino: "Agente"
+    en: "ausente"
+    clase: 18
+    definicion: "Sistema con bucle cerrado: actúa (herramienta), observa el resultado y decide el siguiente paso."

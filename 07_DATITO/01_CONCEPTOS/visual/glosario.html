@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- datito:template:v1 -->
+<title>Glosario del curso · Datito</title>
+<style>
+  :root{--tinta:#1a1a1a;--suave:#666;--linea:#d8d8d8;--fondo:#faf9f7;
+        --azul:#2563eb;--rojo:#dc2626;--verde:#059669;--ambar:#d97706;--morado:#7c3aed}
+  *{box-sizing:border-box}
+  body{margin:0;padding:2rem 1rem;background:var(--fondo);color:var(--tinta);
+       font:16px/1.7 "Segoe UI",system-ui,sans-serif}
+  main{max-width:900px;margin:0 auto}
+  h1{font-size:1.7rem;margin:0 0 .3rem}
+  h2{font-size:1.2rem;margin:2.6rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--linea)}
+  h3{font-size:1rem;margin:1.6rem 0 .4rem;color:#374151}
+  .sub{color:var(--suave);margin:0 0 2rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.9rem 0}
+  th,td{border:1px solid var(--linea);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  th{background:var(--fondo);font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:#f1f0ee;padding:.1rem .35rem;border-radius:4px;font-size:.9em}
+  .cita{border-left:3px solid var(--verde);background:#f0fdf4;padding:.9rem 1.1rem;margin:1.1rem 0;font-style:italic}
+  .cita .f{display:block;font-style:normal;font-size:.8rem;color:var(--suave);margin-top:.5rem}
+  .clave{background:#eff6ff;border-left:3px solid var(--azul);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .nota{background:#fffbeb;border-left:3px solid var(--ambar);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .peligro{background:#fef2f2;border-left:3px solid var(--rojo);padding:.85rem 1.1rem;margin:1.1rem 0}
+  .tension{background:#f5f3ff;border-left:3px solid var(--morado);padding:.85rem 1.1rem;margin:1.1rem 0;font-size:.94rem}
+  .dist{background:#eef2ff;border:1px dashed #6366f1;border-radius:7px;padding:.7rem 1rem;margin:.9rem 0}
+  .pred{background:#fffbeb;border:1px dashed var(--ambar);border-radius:8px;padding:.8rem 1.1rem;margin:1.1rem 0}
+  .pred .q{font-weight:600;margin-bottom:.5rem}
+  .pred button{background:#fff;border:1.5px solid var(--ambar);color:#92400e;border-radius:6px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .pred button:hover{background:#fef3c7}
+  .pred button.elegida{background:var(--ambar);color:#fff}
+  .pred .veredicto{margin-top:.6rem;display:none}
+  .pred .veredicto.on{display:block}
+  .simb{font-size:.88rem}
+  .simb td:first-child{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap;width:1%}
+  .rol{font-size:.68rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;white-space:nowrap}
+  .r-dato{background:#dbeafe;color:#1e40af}
+  .r-aprende{background:#d1fae5;color:#065f46}
+  .r-decide{background:#fce7f3;color:#9d174d}
+  .r-cuenta{background:#d1fae5;color:#065f46}
+  .met{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-top:1rem}
+  .met div{background:var(--fondo);border-radius:8px;padding:.75rem .5rem;text-align:center}
+  .met .n{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .met .e{font-size:.7rem;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem}
+  .lbl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--suave);margin:1.1rem 0 .25rem}
+  .repreg{background:#1a1a1a;color:#f5f5f4;border-radius:8px;padding:1rem 1.2rem;margin:1.3rem 0}
+  .repreg code{color:var(--tinta)}
+  .repreg strong{color:#fbbf24}
+  .vecino{background:#eff6ff;border-left:3px solid var(--azul);padding:.8rem 1.1rem;margin:1.1rem 0;font-size:.92rem}
+  .vecino a{color:var(--azul)}
+  .fuente{font-size:.76rem;color:var(--suave);font-family:ui-monospace,Consolas,monospace}
+  .ecu .formula{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  .grafo{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.86rem;
+         background:#f5f3ff;border-left:3px solid var(--morado);padding:.7rem 1rem;margin:1rem 0}
+  .grafo .n{background:#fff;border:1px solid #ddd6fe;border-radius:6px;padding:.25rem .6rem}
+  .grafo .n.aqui{background:var(--morado);color:#fff;border-color:var(--morado);font-weight:700}
+  .panel{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.2rem;margin:1.2rem 0}
+  .ecu{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0}
+  .ecu .f{font-family:ui-monospace,monospace;font-size:1.1rem;text-align:center;
+          padding:.8rem;background:var(--fondo);border-radius:8px;margin-bottom:.8rem}
+  canvas{width:100%;height:auto;display:block;border-radius:8px;background:#fff;border:1px solid var(--linea)}
+  button{background:var(--azul);color:#fff;border:0;border-radius:7px;padding:.5rem 1rem;
+         font-size:.88rem;cursor:pointer;font-weight:600;margin:.2rem .35rem .2rem 0}
+  button:hover{background:#1d4ed8}
+  button.alt{background:#6b7280}
+  ol.pasos{margin:.4rem 0 0 1.1rem;padding:0}
+  ol.pasos li{margin-bottom:.4rem}
+  details{background:#fff;border:1px solid var(--linea);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0}
+  summary{cursor:pointer;font-weight:600;color:var(--azul);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary:before{content:"▸ ";font-weight:700}
+  details[open] summary:before{content:"▾ "}
+  details[open] summary{margin-bottom:.7rem}
+  details.resp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.6rem 1rem;margin:.6rem 0 1rem}
+  details.resp summary{cursor:pointer;font-weight:700;color:#065f46}
+  .bloque{margin:1.2rem 0}
+  .bloque-titulo{font-weight:700;margin:0 0 .5rem;color:#374151}
+  .highlight{background:#fef08a;padding:.05rem .25rem;border-radius:3px}
+  footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--linea);color:var(--suave);font-size:.85rem}
+
+  @media(max-width:640px){body{overflow-wrap:break-word}}
+</style>
+</head>
+<body>
+<main>
+<!-- datito:nav:inicio -->
+<style>.dnav{max-width:900px;margin:0 auto 1.4rem;font:14px/1.55 "Segoe UI",system-ui,sans-serif;background:#fff;border:1px solid #d8d8d8;border-radius:10px;padding:.7rem 1rem;color:#1a1a1a}.dnav a{color:#2563eb;text-decoration:none}.dnav a:hover{text-decoration:underline}.dnav .fila{margin:.18rem 0}.dnav .et{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#666;margin-right:.4rem}.dnav .ten{color:#7c3aed;font-weight:600}.dnav details{margin-top:.35rem}.dnav summary{cursor:pointer;font-weight:600}.dnav ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.dnav li{margin:.25rem 0}.dnav .f{color:#666;font-size:.76rem;word-break:break-all}.dnav .ay{color:#92400e}.dnav .cpt{font-weight:700}.leccion{max-width:900px;margin:0 auto 1.2rem;padding:1rem;background:#eef6ff;border:1px solid #bfdbfe;border-radius:10px;font:14px/1.5 "Segoe UI",system-ui,sans-serif}.leccion-top,nav.pasos{display:flex;justify-content:space-between;gap:1rem;align-items:center}.leccion-top span{color:#475569}.barra{height:6px;background:#dbeafe;border-radius:8px;margin:.7rem 0}.barra span{display:block;height:100%;background:#2563eb;border-radius:8px}.ficha{padding:.6rem .8rem;background:#fff;border-left:3px solid #2563eb}.activacion{margin:.7rem 0;padding:.6rem .8rem;background:#fff7ed;border-left:3px solid #ea580c}.actividad{margin:.7rem 0;color:#334155}.lt{font-size:1.25rem;font-weight:700;margin:.2rem 0 .4rem}.uni{color:#475569}.fichas{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.4rem;margin:.5rem 0}.fichas .et{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;color:#64748b}.ficha ul{margin:.3rem 0 0 1.1rem;padding:0}.activ{margin:.7rem 0;padding:.6rem .8rem;background:#fffbeb;border-left:3px solid #d97706}.hecha{display:block;margin:.5rem 0;font-size:.85rem}nav.pasos{max-width:900px;margin:0 auto 1.2rem;border-top:1px solid #bfdbfe;padding-top:.7rem;font:14px/1.5 "Segoe UI",system-ui,sans-serif}nav.pasos a{color:#1d4ed8}.apagado{color:#94a3b8}@media(max-width:640px){body{overflow-wrap:break-word}table{display:block;overflow-x:auto;max-width:100%}.fuente,.cita,.f,code,pre{overflow-wrap:anywhere;word-break:break-word}pre{white-space:pre-wrap}.leccion-top,nav.pasos{flex-wrap:wrap}}</style>
+
+<nav class="dnav" aria-label="Navegación de Datito">
+<div class="fila"><a href="00_index.html">← Índice del curso</a> · <span class="et">Datito</span>sin conexión · citas con ruta y marca de tiempo</div>
+</nav>
+<!-- datito:nav:fin -->
+<p class="fuente"><a href="00_index.html">← Índice del curso</a></p>
+<h1>Glosario del curso</h1>
+<p class="sub">42 términos · fuente única: <code>07_DATITO/glosario.yaml</code> · cruce contra las clases en <code>07_DATITO/06_AUDITORIAS/glosario_cobertura.md</code></p>
+<div class="bloque" id="a-b-testing"><div class="bloque-titulo">A/B testing</div><p>Comparar dos versiones (A contra B) con la misma medición; en Melbourne, con y sin CouncilArea.</p><p class="fuente"><a href="19_repaso_integrado_melbourne.html">Clase 19 · Repaso integrado: el proyecto Melbourne</a> · referencia: <i>A/B testing</i></p></div>
+<div class="bloque" id="agente"><div class="bloque-titulo">Agente</div><p>Sistema con bucle cerrado: actúa (herramienta), observa el resultado y decide el siguiente paso.</p><p class="fuente"><a href="19_deep_learning.html">Clase 18 · Deep learning, LLM y agentes</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="aprendizaje-supervisado-y-no-supervisado"><div class="bloque-titulo">Aprendizaje supervisado y no supervisado</div><p>Supervisado: hay target y se evalúa el error. No supervisado: solo features y se busca estructura.</p><p class="fuente"><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · referencia: <i>Supervised machine learning / Unsupervised model</i></p></div>
+<div class="bloque" id="at-pico-outlier"><div class="bloque-titulo">Atípico (outlier)</div><p>Valor lejos de la distribución; distinguir el error (se corrige) del fenómeno real (se documenta).</p><p class="fuente"><a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · referencia: <i>Outliers</i></p></div>
+<div class="bloque" id="binning"><div class="bloque-titulo">Binning</div><p>Agrupar valores continuos en intervalos; gana interpretación y pierde precisión.</p><p class="fuente"><a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a> · referencia: <i>Binning</i></p></div>
+<div class="bloque" id="ciencia-de-datos"><div class="bloque-titulo">Ciencia de datos</div><p>Usar datos para responder preguntas y decidir: el criterio no es «usan datos», sino ¿los datos guían la decisión?</p><p class="fuente"><a href="01_fundamentos.html">Clase 1 · ¿Qué problema resuelve la ciencia de datos?</a> · referencia: <i>Data analysis</i></p></div>
+<div class="bloque" id="clasificaci-n"><div class="bloque-titulo">Clasificación</div><p>Predecir una categoría; se decide por el target, no por las features. El clasificador binario usa regresión logística.</p><p class="fuente"><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="compromiso-sesgo-varianza"><div class="bloque-titulo">Compromiso sesgo-varianza</div><p>Más complejidad baja sesgo y sube varianza; el error mínimo está en el punto medio.</p><p class="fuente"><a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · referencia: <i>Bias-variance trade-off</i></p></div>
+<div class="bloque" id="correlaci-n"><div class="bloque-titulo">Correlación</div><p>Asociación entre variables; positiva, negativa o nula. No implica causalidad.</p><p class="fuente"><a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · referencia: <i>Correlation</i></p></div>
+<div class="bloque" id="dato-faltante"><div class="bloque-titulo">Dato faltante</div><p>Celda sin valor; decide si se imputa, se marca o se excluye, y documenta el efecto en la media.</p><p class="fuente"><a href="04_limpieza_preparacion.html">Clase 4 · Calidad, limpieza y preparación de datos</a> · referencia: <i>Missing data</i></p></div>
+<div class="bloque" id="deep-learning"><div class="bloque-titulo">Deep learning</div><p>Redes con muchas capas entrenadas con grandes volúmenes de datos; avance por hardware y algoritmos.</p><p class="fuente"><a href="19_deep_learning.html">Clase 18 · Deep learning, LLM y agentes</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="distribuci-n-normal"><div class="bloque-titulo">Distribución normal</div><p>Campana simétrica definida por media y desviación estándar; referente para decidir si un dato es atípico.</p><p class="fuente"><a href="03_eda.html">Clase 3 · EDA: conocer los datos antes de modelar</a> · referencia: <i>Normal distribution</i></p></div>
+<div class="bloque" id="ensamble"><div class="bloque-titulo">Ensamble</div><p>Combinar modelos base: bagging (promedio independiente) o boosting (corrección secuencial).</p><p class="fuente"><a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a> · referencia: <i>Ensemble learning</i></p></div>
+<div class="bloque" id="error-absoluto-medio-mae"><div class="bloque-titulo">Error absoluto medio (MAE)</div><p>Promedio de |y − ŷ| en las unidades del problema: en Melbourne, dólares australianos de error.</p><p class="fuente"><a href="09_regresion.html">Clase 6 · Función de costo, error y R²</a> · referencia: <i>MAE (Mean Absolute Error)</i></p></div>
+<div class="bloque" id="error-cuadr-tico-medio-mse"><div class="bloque-titulo">Error cuadrático medio (MSE)</div><p>Promedio de los errores al cuadrado: castiga más los errores grandes; base del costo de la regresión.</p><p class="fuente"><a href="09_regresion.html">Clase 6 · Función de costo, error y R²</a> · referencia: <i>MSE (Mean Squared Error)</i></p></div>
+<div class="bloque" id="escala-data-driven"><div class="bloque-titulo">Escala data-driven</div><p>Cinco etapas desde decidir por intuición hasta que los datos deciden solos; ubicar a alguien exige el criterio de la escala.</p><p class="fuente"><a href="01_fundamentos.html">Clase 1 · ¿Qué problema resuelve la ciencia de datos?</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="exactitud-accuracy"><div class="bloque-titulo">Exactitud (accuracy)</div><p>(VP+VN)/n: proporción de aciertos; engaña cuando las clases están desbalanceadas.</p><p class="fuente"><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · referencia: <i>Accuracy</i></p></div>
+<div class="bloque" id="feature-variable-de-entrada"><div class="bloque-titulo">Feature (variable de entrada)</div><p>Columna que el modelo usa para predecir; las filas son observaciones.</p><p class="fuente"><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="fuga-de-informaci-n-leakage"><div class="bloque-titulo">Fuga de información (leakage)</div><p>Usar una columna que no existirá al momento de predecir; la prueba es temporal, no de correlación.</p><p class="fuente"><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="generalizaci-n"><div class="bloque-titulo">Generalización</div><p>Rendimiento en datos no vistos; una caída se explica por decidir con esos datos o por cambio de distribución.</p><p class="fuente"><a href="07_generalizacion.html">Clase 9 · Generalización, extrapolación y datos no vistos</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="gradient-boosting"><div class="bloque-titulo">Gradient boosting</div><p>Cada árbol corrige los errores del conjunto anterior, en la dirección del gradiente del costo.</p><p class="fuente"><a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a> · referencia: <i>Gradient boosting</i></p></div>
+<div class="bloque" id="hiperpar-metro"><div class="bloque-titulo">Hiperparámetro</div><p>Lo que decide la persona antes de entrenar (profundidad del árbol, tasa de aprendizaje); se elige con validación, no con test.</p><p class="fuente"><a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a> · referencia: <i>Hyperparameters</i></p></div>
+<div class="bloque" id="matriz-de-confusi-n"><div class="bloque-titulo">Matriz de confusión</div><p>Tabla VP/FN/FP/VN contra la clase positiva declarada; leer rótulos de filas y columnas antes de las tasas.</p><p class="fuente"><a href="11_matriz_confusion.html">Clase 12 · Matriz de confusión</a> · referencia: <i>Confusion matrix</i></p></div>
+<div class="bloque" id="mejor-recta-best-fit-line"><div class="bloque-titulo">Mejor recta (best fit line)</div><p>La recta que minimiza la suma de errores al cuadrado entre predicción y dato real.</p><p class="fuente"><a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · referencia: <i>Best fit line</i></p></div>
+<div class="bloque" id="modelo-de-lenguaje-llm"><div class="bloque-titulo">Modelo de lenguaje (LLM)</div><p>Red entrenada para predecir el siguiente token; genera texto pero no actúa por sí misma.</p><p class="fuente"><a href="19_deep_learning.html">Clase 18 · Deep learning, LLM y agentes</a> · referencia: <i>Large Language Model (LLM)</i></p></div>
+<div class="bloque" id="overfitting-sobreajuste"><div class="bloque-titulo">Overfitting (sobreajuste)</div><p>Brecha grande entre error de train y de validación: el modelo memorizó; remedio: regularizar o simplificar.</p><p class="fuente"><a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · referencia: <i>Overfitting</i></p></div>
+<div class="bloque" id="precisi-n"><div class="bloque-titulo">Precisión</div><p>VP/(VP+FP): entre los que el modelo marcó positivos, cuántos lo eran.</p><p class="fuente"><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · referencia: <i>Precision</i></p></div>
+<div class="bloque" id="random-forest"><div class="bloque-titulo">Random Forest</div><p>Ensamble de árboles sobre remuestras y subconjuntos de features; mejora si sus errores no están correlacionados.</p><p class="fuente"><a href="14_arboles_decision.html#random-forest">Clase 16 · Random Forest y ensambles</a> · referencia: <i>Random forest</i></p></div>
+<div class="bloque" id="red-neuronal"><div class="bloque-titulo">Red neuronal</div><p>Composición de neuronas: pesos, sesgo y no linealidad; se entrena por retropropagación del gradiente.</p><p class="fuente"><a href="18_redes_neuronales.html">Clase 17 · Redes neuronales</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="regresi-n-lineal"><div class="bloque-titulo">Regresión lineal</div><p>ŷ = θ₀ + θ₁x: el modelo aprende los θ que minimizan el error; la persona decide si el problema es lineal.</p><p class="fuente"><a href="../../02_REFERENCIA/clase6_regresion.html">Clase 5 · Regresión: predecir una cantidad</a> · referencia: <i>Linear regression</i></p></div>
+<div class="bloque" id="regresi-n-log-stica"><div class="bloque-titulo">Regresión logística</div><p>Modelo de clasificación que estima P(y=1|x) con una sigmoide sobre una combinación lineal.</p><p class="fuente"><a href="10_clasificacion.html">Clase 11 · Clasificación: cuando la etiqueta no es un número</a> · referencia: <i>Logistic regression</i></p></div>
+<div class="bloque" id="roc-y-auc"><div class="bloque-titulo">ROC y AUC</div><p>Curva de sensibilidad vs FPR al mover el umbral; AUC compara modelos enteros, no puntos de operación.</p><p class="fuente"><a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="r-coeficiente-de-determinaci-n"><div class="bloque-titulo">R² (coeficiente de determinación)</div><p>Cuánto mejora el modelo sobre predecir siempre la media: 0 = como la media; negativo = peor que la media.</p><p class="fuente"><a href="09_regresion.html">Clase 6 · Función de costo, error y R²</a> · referencia: <i>parcial (Adjusted R²)</i></p></div>
+<div class="bloque" id="sensibilidad-recall"><div class="bloque-titulo">Sensibilidad (recall)</div><p>VP/(VP+FN): entre los positivos reales, cuántos encontró; complementa a la precisión.</p><p class="fuente"><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · referencia: <i>Recall</i></p></div>
+<div class="bloque" id="target-variable-objetivo"><div class="bloque-titulo">Target (variable objetivo)</div><p>Lo que se predice: una cantidad en regresión, una categoría en clasificación.</p><p class="fuente"><a href="02_datos_features_target.html">Clase 2 · Datos, filas, columnas, features y target</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="teorema-de-bayes"><div class="bloque-titulo">Teorema de Bayes</div><p>P(A|B) = P(B|A)·P(A)/P(B): actualizar la creencia con evidencia; base de Naive Bayes.</p><p class="fuente"><a href="12_metricas_clasificacion.html">Clase 13 · Precisión, sensibilidad, exactitud y F1</a> · referencia: <i>Bayes&#x27; theorem</i></p></div>
+<div class="bloque" id="train-validation-test"><div class="bloque-titulo">Train / validation / test</div><p>Tres particiones con tres decisiones: entrenar parámetros, ajustar hiperparámetros y medir una sola vez.</p><p class="fuente"><a href="05_train_validation_test.html">Clase 7 · Train, validation y test</a> · referencia: <i>parcial (Model validation)</i></p></div>
+<div class="bloque" id="triaje-de-problemas"><div class="bloque-titulo">Triaje de problemas</div><p>Ante un caso nuevo, identificar primero el tipo de problema (regresión, clasificación, azar puro) y la validación adecuada antes de elegir modelo.</p><p class="fuente"><a href="../../04_EJERCICIOS/triaje_de_problemas.html">Clase 22 · Transferencia: ¿qué problema tengo delante?</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="umbral-threshold"><div class="bloque-titulo">Umbral (threshold)</div><p>El punto de corte sobre la probabilidad predicha; se elige por el costo de cada error, no por defecto en 0,5.</p><p class="fuente"><a href="13_roc_auc.html">Clase 14 · ROC-AUC y elección del umbral</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="underfitting-subajuste"><div class="bloque-titulo">Underfitting (subajuste)</div><p>Error alto en train y en validación: el modelo es demasiado simple para la señal.</p><p class="fuente"><a href="08_overfitting_underfitting.html">Clase 10 · Overfitting y underfitting</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="validaci-n-cruzada"><div class="bloque-titulo">Validación cruzada</div><p>Repartir el train en k pliegues y rotar: cada modelo se evalúa k veces; compara modelos con la misma partición.</p><p class="fuente"><a href="06_validacion_cruzada.html">Clase 8 · Validación cruzada y selección de modelos</a> · sin equivalente en la referencia de Google</p></div>
+<div class="bloque" id="rbol-de-decisi-n"><div class="bloque-titulo">Árbol de decisión</div><p>Preguntas sucesivas sobre features que particionan los datos; el corte se elige por mayor ganancia (Gini).</p><p class="fuente"><a href="14_arboles_decision.html#arboles">Clase 15 · Árboles de decisión</a> · referencia: <i>parcial (Tree-based learning)</i></p></div>
+<footer>Generado por <code>03_SCRIPTS/construir_navegacion.py</code> desde <code>07_DATITO/glosario.yaml</code>. No editar a mano. Funciona sin conexión.</footer>
+</main>
+</body>
+</html>
