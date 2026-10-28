@@ -52,6 +52,10 @@ auth.json
 # Presentaciones originales: se versiona el texto extraido, no los PDF de 20 MB
 11_PRESENTACIÓN/*.pdf
 
+# Material de terceros (glosario e imagen del curso de Google): no se
+# versiona en ninguna de las opciones de D-6.1 (T-6.1.2)
+11_GOOGLE/
+
 # Archivos grandes de examen (PDFs)
 *.pdf
 08_PROYECTO_FCD/Certamen3/
