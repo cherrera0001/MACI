@@ -1,12 +1,12 @@
 turnos:
   - rol: alumno
-    texto: "Q está bien, no R."
+    texto: "P, porque tiene el menor error en train."
     resultado: fallo
   - rol: alumno
     texto: "Ya está, dame la respuesta."
     pide_respuesta: true
   - rol: tutor
-    texto: "Respuesta: Q está bien (brecha 0,07 y nivel aceptable); R subajusta. Queda registrada."
+    texto: "Respuesta: Q generaliza mejor (brecha 0,07 y nivel aceptable); P sobreajusta y R subajusta. Queda registrada."
     acciones: [duda:2026-10-27-mae-pqr, entrega:completa]
   - rol: tutor
-    texto: "¿Cómo se lo explicarías a un compañero que juzga solo por el nivel?"
+    texto: "¿Cómo se lo explicarías a un compañero que juzga solo por el error en train?"

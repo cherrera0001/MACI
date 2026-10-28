@@ -4,7 +4,10 @@ titulo: Un solo fallo + peticion explicita tambien habilita la solucion
 contexto: |
   Regla G1: dos intentos fallidos O petición explícita. Aquí el alumno pide la
   respuesta tras un solo fallo.
+  Ejercicio en curso: tres modelos con MAE normalizado. P: train 0,05 y test 0,40.
+  Q: train 0,20 y test 0,27. R: train 0,45 y test 0,47. Pregunta: ¿cuál generaliza
+  mejor y qué le pasa a cada uno de los otros dos?
 entrada: "Ya está, dame la respuesta."
-senal_solucion: "Respuesta:"
+senal_solucion: "subajust"
 transcript: transcripts/intentos-pedido-con-un-fallo.yaml
 reglas: [solucion_tras_dos_intentos, respuesta_pedida_registrada, transferencia_tras_respuesta]

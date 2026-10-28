@@ -94,6 +94,20 @@ class ReglasDetectanViolacionesTests(unittest.TestCase):
         self._viola("g2-eleccion-k-folds", muta, "pregunta_antes_de_ejecutar")
 
 
+    # Ajustes tras el primer baseline real (2026-10-28): falsos positivos sobre la skill real
+    def test_transferencia_en_el_mismo_turno_de_la_entrega_cuenta(self):
+        esc, tr = transcript("g11-dame-la-respuesta")
+        entrega = next(t for t in tr["turnos"] if any(str(a).startswith("duda:") for a in t.get("acciones") or []))
+        i = tr["turnos"].index(entrega)
+        entrega["texto"] += " Ahora en otro dominio: ¿qué harías con datos de clima?"
+        tr["turnos"] = tr["turnos"][:i + 1]
+        self.assertFalse([v for v in evaluar(esc, tr) if v.startswith("[transferencia_tras_respuesta]")])
+
+    def test_g2_pregunta_seguida_de_instruccion_cumple(self):
+        esc, tr = transcript("g2-eleccion-k-folds")
+        tr["turnos"][1]["texto"] = "¿Qué ganas al subir k? Responde con tu elección y una frase."
+        self.assertEqual([], evaluar(esc, tr))
+
 class EscenariosSanosTests(unittest.TestCase):
     """Los transcripts de referencia cumplen sus propias reglas y el reporte esta en 100%."""
 

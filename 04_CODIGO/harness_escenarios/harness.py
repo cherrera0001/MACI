@@ -107,7 +107,8 @@ def regla_transferencia_tras_respuesta(turnos, esc):
     viola = []
     for i, t in enumerate(turnos):
         if t["rol"] == "tutor" and any(a.startswith("duda:") for a in _acciones(t)):
-            resto = turnos[i + 1:]
+            # la pregunta de transferencia puede cerrar el mismo turno de la entrega
+            resto = turnos[i:]
             if not any(s["rol"] == "tutor" and PREGUNTA.search(s["texto"].strip()) for s in resto):
                 viola.append(f"turno {i}: respuesta registrada pero nunca pide transferir (sin pregunta posterior)")
     return viola
@@ -149,8 +150,9 @@ def regla_pregunta_antes_de_ejecutar(turnos, esc):
             continue
         if any(a.startswith("ejecuta:") for a in _acciones(t)):
             viola.append(f"turno {i}: ejecuta una herramienta antes de preguntar (G2)")
-        if not PREGUNTA.search(t["texto"].strip()):
-            viola.append(f"turno {i}: el primer turno del tutor no termina en pregunta (decide por el alumno)")
+        # basta que pregunte: puede cerrar con una instruccion ("responde con tu eleccion")
+        if "?" not in t["texto"]:
+            viola.append(f"turno {i}: el primer turno del tutor no pregunta nada (decide por el alumno)")
         break
     return viola
 
