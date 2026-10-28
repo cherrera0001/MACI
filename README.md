@@ -112,7 +112,7 @@ Todo lo que ves en las páginas se genera desde estos archivos. No hay otra copi
 | `07_DATITO/dudas.yaml` | 6 dudas resueltas por Datito, renderizadas en sus clases |
 | `07_DATITO/progreso.yaml` | Estado de cada concepto (NO_ESTUDIADO → … → DOMINADO) con evidencia |
 | `07_DATITO/errores_conceptuales.yaml` | Errores observados y patrones vigilados |
-| `07_DATITO/historias_usuario.yaml` | 18 historias de usuario; describen una numeración anterior ([#42](https://github.com/cherrera0001/MACI/issues/42)) |
+| `07_DATITO/historias_usuario.yaml` | 23 historias de usuario, una por clase; el criterio de aceptación es el de la ficha Bloom de cada clase |
 | `05_CLASES/mapa_ensenanza.yaml` | Dónde se enseñó cada concepto en las 15 clases transcritas |
 
 ## Estructura
