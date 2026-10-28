@@ -31,7 +31,7 @@ from . import BASE, ErrorGeneracion, guion_alumno
 REPO = BASE.parent.parent
 REALES = BASE / "transcripts_reales"
 MARCA = "[ESCENARIO SINTÉTICO · G10 · alumno simulado]"
-TIMEOUT_S = 180
+TIMEOUT_S = 300  # 180 s corto: un turno real con ~9 lecturas Bash lo supero (baseline 671d3f8)
 EJECUTA = {"Bash", "NotebookEdit"}
 
 
