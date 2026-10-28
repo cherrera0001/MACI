@@ -4,7 +4,10 @@ program_loop.md manda leer `failure_patterns` primero. Si una lección de fallo
 queda archivada bajo `keep_patterns`, el agente que sigue el protocolo no la ve.
 """
 import csv
+import subprocess
+import sys
 import unittest
+from datetime import date
 from pathlib import Path
 
 import yaml
@@ -16,6 +19,9 @@ RESULTADOS = LOOP / "results.tsv"
 SKILLS = ROOT / ".claude" / "skills"
 ESPEJO = ROOT / ".agents" / "skills"
 MARCA = {"failure_patterns": "-FAIL-", "keep_patterns": "-KEEP-"}
+CORTE_LECCIONES = date(2026, 10, 1)  # T-4.2.2: lecciones 011–015 (2026-09-27) quedan exentas
+LOOP_ONCE = ROOT / "04_CODIGO" / "datito_loop_once.py"
+TEMPLATE = ROOT / "07_DATITO" / "01_CONCEPTOS" / "visual" / "_TEMPLATE_CANONICO.html"
 
 
 def lecciones():
@@ -53,6 +59,85 @@ class TestLearningLoop(unittest.TestCase):
                            if not (SKILLS / n / "SKILL.md").is_file() or not (ESPEJO / n / "SKILL.md").is_file()
                            or texto(SKILLS / n / "SKILL.md") != texto(ESPEJO / n / "SKILL.md"))
         self.assertEqual(distintos, [], ".agents/skills difiere de .claude/skills")
+
+
+class TestLessonIdObligatorio(unittest.TestCase):
+    """T-4.2.1: sin ids por defecto; registrar exige --lesson-id."""
+
+    def test_funcion_exige_id(self):
+        sys.path.insert(0, str(ROOT / "04_CODIGO"))
+        try:
+            from datito_loop_once import lesson_id_o_error
+        finally:
+            sys.path.remove(str(ROOT / "04_CODIGO"))
+        with self.assertRaises(SystemExit):
+            lesson_id_o_error("")
+        self.assertEqual(lesson_id_o_error("VIZ-KEEP-001"), "VIZ-KEEP-001")
+
+    def test_sin_lesson_id_no_registra(self):
+        antes = RESULTADOS.read_bytes()
+        r = subprocess.run(
+            [sys.executable, str(LOOP_ONCE), "--path", str(TEMPLATE),
+             "--hypothesis", "test T-4.2.1 sin id"],
+            capture_output=True, text=True, encoding="utf-8",
+        )
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertIn("--lesson-id es obligatorio", r.stderr)
+        self.assertEqual(RESULTADOS.read_bytes(), antes, "no se tocó results.tsv")
+
+    def test_con_lesson_id_registra(self):
+        antes = RESULTADOS.read_bytes()
+        try:
+            r = subprocess.run(
+                [sys.executable, str(LOOP_ONCE), "--path", str(TEMPLATE),
+                 "--hypothesis", "test T-4.2.1 con id", "--lesson-id", "VIZ-KEEP-001"],
+                capture_output=True, text=True, encoding="utf-8",
+            )
+            self.assertIn(r.returncode, (0, 1), r.stderr + r.stdout)
+            ultima = RESULTADOS.read_text(encoding="utf-8").splitlines()[-1]
+            self.assertIn("VIZ-KEEP-001", ultima)
+        finally:
+            RESULTADOS.write_bytes(antes)
+
+
+class TestGateContrato(unittest.TestCase):
+    """T-4.3.1: el gate parsea contrato_conocimiento.yaml y solo aplica a los targets con contrato."""
+
+    def _importar(self):
+        sys.path.insert(0, str(ROOT / "04_CODIGO"))
+        try:
+            import datito_loop_once as m
+        finally:
+            sys.path.remove(str(ROOT / "04_CODIGO"))
+        return m
+
+    def test_sin_contrato_gate_no_aplica(self):
+        m = self._importar()
+        self.assertIsNone(m.contrato_de(TEMPLATE))
+        self.assertIsNone(m.gate_contrato(TEMPLATE))
+
+    def test_contrato_de_clase_08(self):
+        m = self._importar()
+        contrato = m.contrato_de(ROOT / "07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html")
+        self.assertIsNotNone(contrato)
+        self.assertEqual(contrato["control"], "grado")
+        self.assertEqual(contrato["selector"], "#m-lec")
+        self.assertTrue(any("Sobreajuste" in e for e in contrato["esperados"]))
+        self.assertTrue(any("Subajuste" in e for e in contrato["esperados"]))
+
+
+class TestLeccionesRecientesConFila(unittest.TestCase):
+    """T-4.2.2: toda lección fechada después del 2026-10-01 tiene ≥1 fila en results.tsv."""
+
+    def test_cada_leccion_post_corte_tiene_fila(self):
+        datos = lecciones()
+        with RESULTADOS.open(encoding="utf-8", newline="") as f:
+            filas = [r for r in csv.DictReader(f, delimiter="\t") if not r["ts"].startswith("#")]
+        con_fila = {r["lesson_id"] for r in filas}
+        faltan = sorted(l["id"] for lista in MARCA for l in datos[lista]
+                        if date.fromisoformat(str(l["date"])) > CORTE_LECCIONES
+                        and l["id"] not in con_fila)
+        self.assertEqual(faltan, [], "lecciones post 2026-10-01 sin fila en results.tsv")
 
 
 if __name__ == "__main__":

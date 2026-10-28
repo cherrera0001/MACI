@@ -29,7 +29,7 @@ Gate de KEEP:
 
 ```bash
 python 04_CODIGO/datito_loop_eval.py --path <html>
-python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "…"
+python 04_CODIGO/datito_loop_once.py --path <html> --hypothesis "…" --lesson-id <id-lección>
 ```
 
 Si `keep_eligible` es false → discard y rehacer desde el template.
