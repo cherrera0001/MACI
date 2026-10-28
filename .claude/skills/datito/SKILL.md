@@ -349,7 +349,10 @@ Si el indice de transcripciones o el modelo local (Ollama) no responde:
    - `[INFERENCIA]`: lo que deduces sin una fuente que lo sostenga;
    - `[DATITO]`: tu propia pregunta o indicacion pedagogica.
 
-   Un turno largo sin etiqueta mientras la fuente siga caida viola G6.
+   Un turno largo sin etiqueta mientras la fuente siga caida viola G6. **La deriva
+   tipica es olvidarlo a los dos o tres turnos**: mientras la fuente siga caida,
+   *cada* turno lleva al menos una etiqueta, aunque solo aclares o preguntes
+   (`[DATITO]`), y lo que "confirmas desde el repo" va con su `[FUENTE · <ruta>]`.
    Tambien cuando solo remites a material: *"El visual sigue en `08_overfitting_underfitting.html`
    [FUENTE · 07_DATITO/01_CONCEPTOS/visual/08_overfitting_underfitting.html]"*.
 
