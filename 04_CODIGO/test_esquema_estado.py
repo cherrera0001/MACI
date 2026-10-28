@@ -27,96 +27,12 @@ RAIZ = Path(__file__).resolve().parents[1]
 DATITO = RAIZ / "07_DATITO"
 VISUAL = DATITO / "01_CONCEPTOS" / "visual"
 
-ESTADOS = {"NO_ESTUDIADO", "EN_ESTUDIO", "COMPRENSION_PARCIAL", "COMPRENDIDO",
-           "DOMINADO", "REQUIERE_REPASO"}
-EVIDENCIAS = ("explicar", "aplicar", "interpretar", "transferir")
-ESTADOS_DUDA = {"resuelta", "practica", "abierta"}
-ESTADOS_ERROR = {"abierto", "resuelto", "reincidente", "anulado"}
-FECHA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+import sys
 
-
-class ErrorEsquema(AssertionError):
-    """Un campo viola el esquema; el mensaje nombra el campo."""
-
-
-def _exige(cond, campo, mensaje):
-    if not cond:
-        raise ErrorEsquema(f"{campo}: {mensaje}")
-
-
-def _fecha_iso(valor, campo):
-    # YAML convierte las fechas sin comillas en datetime.date; ambas formas valen
-    if isinstance(valor, datetime.date):
-        return
-    _exige(isinstance(valor, str) and FECHA.match(valor), campo,
-           f"fecha '{valor}' no es ISO (AAAA-MM-DD)")
-
-
-def _evidencia(valor, campo):
-    if valor is None:
-        return
-    _exige(isinstance(valor, dict), campo, "la evidencia debe ser un mapa o null")
-    _exige(set(valor) >= {"fecha", "detalle"}, campo, "faltan claves fecha/detalle")
-    _fecha_iso(valor["fecha"], f"{campo}.fecha")
-    _exige(isinstance(valor["detalle"], str) and valor["detalle"].strip(),
-           f"{campo}.detalle", "el detalle no puede estar vacio")
-
-
-def validar_progreso(doc):
-    meta = doc.get("meta") or {}
-    for clave in ("alumno", "tutor", "asignatura"):
-        _exige(isinstance(meta.get(clave), str) and meta[clave].strip(),
-               f"meta.{clave}", "obligatorio y no vacio")
-    _exige(isinstance(meta.get("sesiones_totales"), int) and meta["sesiones_totales"] >= 0,
-           "meta.sesiones_totales", "entero >= 0")
-    _exige(isinstance(meta.get("diagnostico_inicial_hecho"), bool),
-           "meta.diagnostico_inicial_hecho", "booleano")
-
-    conceptos = doc.get("conceptos") or []
-    _exige(isinstance(conceptos, list) and conceptos, "conceptos", "lista no vacia")
-    ids = [c.get("id") for c in conceptos]
-    _exige(len(ids) == len(set(ids)), "conceptos", f"ids repetidos: {ids}")
-
-    for c in conceptos:
-        cid = f"concepto {c.get('id')}"
-        _exige(c.get("estado") in ESTADOS, f"{cid}.estado",
-               f"'{c.get('estado')}' no es un estado valido {sorted(ESTADOS)}")
-        evs = c.get("evidencias") or {}
-        _exige(set(evs) == set(EVIDENCIAS), f"{cid}.evidencias",
-               f"deben ser exactamente {list(EVIDENCIAS)}")
-        for nombre in EVIDENCIAS:
-            _evidencia(evs.get(nombre), f"{cid}.evidencias.{nombre}")
-        _exige(isinstance(c.get("sesiones"), int) and c["sesiones"] >= 0,
-               f"{cid}.sesiones", "entero >= 0")
-        if c.get("ultima_verificacion") is not None:
-            _fecha_iso(c["ultima_verificacion"], f"{cid}.ultima_verificacion")
-
-        estado, presentes = c["estado"], [n for n in EVIDENCIAS if evs.get(n)]
-        if estado == "NO_ESTUDIADO":
-            _exige(not presentes and c["sesiones"] == 0, cid,
-                   "NO_ESTUDIADO exige evidencias vacias y sesiones 0")
-        elif estado == "EN_ESTUDIO":
-            _exige(c["sesiones"] >= 1, cid, "EN_ESTUDIO exige al menos 1 sesion")
-        elif estado == "COMPRENSION_PARCIAL":
-            _exige("explicar" in presentes, cid,
-                   "COMPRENSION_PARCIAL exige evidencia de explicar")
-        elif estado == "COMPRENDIDO":
-            _exige({"explicar", "aplicar"} <= set(presentes), cid,
-                   "COMPRENDIDO exige explicar y aplicar")
-        elif estado == "DOMINADO":
-            _exige(set(presentes) == set(EVIDENCIAS), cid,
-                   "DOMINADO exige las cuatro evidencias")
-        elif estado == "REQUIERE_REPASO":
-            _exige(presentes and c.get("ultima_verificacion"), cid,
-                   "REQUIERE_REPASO exige al menos una evidencia y ultima_verificacion")
-
-    resumen = doc.get("resumen") or {}
-    for estado in ESTADOS:
-        real = sum(1 for c in conceptos if c["estado"] == estado)
-        _exige(resumen.get(estado) == real, f"resumen.{estado}",
-               f"declara {resumen.get(estado)}, hay {real}")
-    _exige(resumen.get("siguiente_recomendado") in ids,
-           "resumen.siguiente_recomendado", "debe ser el id de un concepto existente")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "15_TERMINITO" / "src"))
+from datito.esquema import (ESTADOS, ESTADOS_DUDA, ESTADOS_ERROR, EVIDENCIAS,  # noqa: E402
+                            FECHA, ErrorEsquema, exige as _exige, fecha_iso as _fecha_iso,
+                            validar_progreso)
 
 
 def validar_dudas(doc, ids_conceptos):

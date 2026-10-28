@@ -23,9 +23,11 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from .esquema import ESTADOS, EVIDENCIAS  # noqa: E402  (T032: un solo esquema)
+
 ESTADOS_CONCEPTO = ("NO_ESTUDIADO", "EN_ESTUDIO", "COMPRENSION_PARCIAL",
                     "COMPRENDIDO", "DOMINADO", "REQUIERE_REPASO")
-EVIDENCIAS = ("explicar", "aplicar", "interpretar", "transferir")
+assert set(ESTADOS_CONCEPTO) == ESTADOS
 
 PIDE_RESPUESTA = re.compile(
     r"dame la respuesta|pasa(me)? la solucion|cual es la correcta|"

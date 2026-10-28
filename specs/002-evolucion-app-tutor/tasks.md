@@ -78,20 +78,20 @@
 
 - [x] T030 [US3] Decisión de coexistencia documentada (`docs/adr/ADR-006-coexistencia-y-stack.md`, 2026-10-28): la app ¿reemplaza a la skill o coexiste? ADR corto en `docs/adr/` o nota en el plan
 - [x] T031 [US3] Portar el protocolo socrático al motor (`15_TERMINITO/src/datito/socratico.py`; además es el generador `socratico` del harness, REQ-TUT-011): REGLA CERO, cadena de 4 evidencias, G11 (obediencia de estrategia) como módulo `15_TERMINITO/src/datito/socratico/` con tests (base: `SKILL.md:44-104` + `spec.md` §3)
-- [ ] T032 [US3] Validación de esquema en el motor: reutilizar el validador de T010 como módulo compartido (sin duplicar lógica entre `03_SCRIPTS/` y `15_TERMINITO/`)
-- [ ] T033 [US3] Métricas de sesión en el motor (REQ-TUT-002) y panel de dominio existente
+- [x] T032 [US3] Validación de esquema en el motor (`15_TERMINITO/src/datito/esquema.py`, compartido por `04_CODIGO/test_esquema_estado.py` y `socratico.py`, 2026-10-28): reutilizar el validador de T010 como módulo compartido (sin duplicar lógica entre `03_SCRIPTS/` y `15_TERMINITO/`)
+- [x] T033 [US3] Métricas de sesión en el motor (REQ-TUT-002) y panel de dominio existente (`sesion.py` `metricas_sesion.yaml`, commit `b1117ac`)
 
 ### Opción B — API multiusuario: DESCARTADA mientras haya un solo usuario (ADR-006)
 
-- [ ] T034 ⛔ BLOQUEADA (Clarify 1, 2) [US3] Redactar `specs/002-evolucion-app-tutor/contracts/api.md`: endpoints de sesiones, progreso, dudas y errores con validación de esquema (REQ-APP-002)
-- [ ] T035 ⛔ BLOQUEADA (Clarify 8) [US3] `specs/002-evolucion-app-tutor/data-model.md` + `research.md`: stack concreto con justificación y costo (REQ-APP-001, REQ-APP-007)
-- [ ] T036 ⛔ BLOQUEADA (Clarify 3) [US3] Autenticación y aislamiento por usuario; test de aislamiento entre dos usuarios (REQ-APP-003, REQ-APP-008)
-- [ ] T037 ⛔ BLOQUEADA (T034) [US3] Migración idempotente YAML→app con prueba de ida y vuelta (REQ-APP-005)
-- [ ] T038 ⛔ BLOQUEADA (T035) [US3] Orquestación del tutor con LLM local en servidor y opción de nube explícita (REQ-APP-004)
+- [ ] T034 ✖ DESCARTADA (ADR-006, un solo usuario) [US3] Redactar `specs/002-evolucion-app-tutor/contracts/api.md`: endpoints de sesiones, progreso, dudas y errores con validación de esquema (REQ-APP-002)
+- [ ] T035 ✖ DESCARTADA (ADR-006, un solo usuario) [US3] `specs/002-evolucion-app-tutor/data-model.md` + `research.md`: stack concreto con justificación y costo (REQ-APP-001, REQ-APP-007)
+- [ ] T036 ✖ DESCARTADA (ADR-006, un solo usuario) [US3] Autenticación y aislamiento por usuario; test de aislamiento entre dos usuarios (REQ-APP-003, REQ-APP-008)
+- [ ] T037 ✖ DESCARTADA (ADR-006, un solo usuario) [US3] Migración idempotente YAML→app con prueba de ida y vuelta (REQ-APP-005)
+- [ ] T038 ✖ DESCARTADA (ADR-006, un solo usuario) [US3] Orquestación del tutor con LLM local en servidor y opción de nube explícita (REQ-APP-004)
 
 ### Independiente del stack
 
-- [ ] T039 [P] [US3] Prueba de independencia del curso estático: `verificar_todo.py` en verde sin levantar la app; sitio generable y servible por separado (REQ-APP-006; verificable hoy)
+- [x] T039 [P] [US3] Prueba de independencia del curso estático (2026-10-28: `verificar_todo.py` → LISTO, 105 tests, sin levantar la app): `verificar_todo.py` en verde sin levantar la app; sitio generable y servible por separado (REQ-APP-006; verificable hoy)
 
 **Checkpoint**: post-Clarify, desbloquear T034–T038 en orden; sin esas respuestas, esta fase se limita a T030–T033 + T039.
 

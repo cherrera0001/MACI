@@ -113,3 +113,14 @@ def test_degradacion_avisa_una_vez_y_etiqueta_lo_largo():
 def test_degradacion_desconocida_se_rechaza():
     with pytest.raises(ValueError):
         socratico.Politica(socratico.Concepto("x"), degradacion="notebooklm")
+
+
+def test_politica_y_validador_comparten_esquema():
+    from datito import esquema
+    assert socratico.EVIDENCIAS is esquema.EVIDENCIAS
+    c = socratico.Concepto("x")
+    for paso in esquema.EVIDENCIAS:
+        c.registrar(paso, "hecho", "2026-10-28")
+        presentes = [n for n in esquema.EVIDENCIAS if c.evidencias[n]]
+        esquema.exigir_estado(c.estado, presentes, 1, "2026-10-28", c.id)
+    assert c.estado == "DOMINADO"
