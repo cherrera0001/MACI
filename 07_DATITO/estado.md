@@ -28,9 +28,9 @@ Si el concepto a tratar aparece aqui, **anticipa la confusion**: ya la tuvo y re
 
 ## Candidatos a repaso
 
-- `train_validation_test` — `COMPRENDIDO` · hace 39 dias
+- `train_validation_test` — `COMPRENDIDO` · hace 40 dias
 
 Re-pregunta uno de estos al abrir sesion; si falla, pasa a `REQUIERE_REPASO`.
 **Siguiente recomendado:** `generalizacion` — Generalizacion
 
-<!-- generado 2026-10-27 -->
+<!-- generado 2026-10-28 -->
