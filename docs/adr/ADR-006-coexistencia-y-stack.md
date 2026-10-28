@@ -15,4 +15,4 @@
 
 ## Consecuencias
 - T030 cerrada; T034–T038 quedan fuera de alcance, no bloqueadas.
-- Hoy la política diverge del contrato solo en G6: no modela la degradación de fuentes. Es trabajo pendiente del motor, no del contrato.
+- La política modela G6 desde el 2026-10-28 (`Politica(degradacion=...)`): el oráculo pasa 18/18 escenarios del contrato.

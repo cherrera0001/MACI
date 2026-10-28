@@ -2,8 +2,7 @@
 
 Corre sin red ni LLM. Si un escenario pasa aqui y falla con `claude`, el
 defecto esta en el prompt de la skill; si falla en los dos, en el escenario o
-en la regla. La politica no conoce G6 (degradacion): esos escenarios fallan a
-proposito y quedan en el reporte de divergencia.
+en la regla. La degradacion de fuentes (G6) se le pasa desde el escenario.
 """
 import sys
 
@@ -18,7 +17,8 @@ def generar(esc, corrida=1, **_):
     senal = esc.get("senal_solucion") or "La respuesta completa"
     pol = pol_mod.Politica(pol_mod.Concepto(esc["id"]),
                            solucion=f"{senal} (solucion del escenario {esc['id']}).",
-                           pistas=["Mira que mide cada numero antes de comparar."])
+                           pistas=["Mira que mide cada numero antes de comparar."],
+                           degradacion=esc.get("degradacion"))
     if not abre_alumno:
         pol.responder(esc["entrada"])  # el tutor abre: la politica responde al tema
     for t in guion:

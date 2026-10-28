@@ -34,6 +34,16 @@ PIDE_RESPUESTA = re.compile(
 PIDE_MODO_ESTRICTO = re.compile(r"no me (la )?des|hazme pensar|quiero intentar", re.I)
 PREGUNTA = re.compile(r"\?\s*$")
 
+# G6 (ADR-005): si una fuente cae, se avisa en una linea y se etiqueta el resto.
+AVISOS_DEGRADACION = {
+    "indice_local": "El indice de transcripciones no responde; sigo con el material "
+                    "local y etiqueto lo que no tenga respaldo.",
+    "llm_externo": "El modelo local no esta disponible; quedo en modo exploracion "
+                   "con la evidencia recuperada.",
+}
+ETIQUETA = re.compile(r"\[(FUENTE|INFERENCIA|DATITO)\b")
+SUSTANTIVO_MIN = 120
+
 ACCIONES = ("PREGUNTAR", "PISTA", "DESARROLLAR_SOLUCION", "ENTREGAR_RESPUESTA",
             "EXIGIR_TRANSFERENCIA", "RE_VERIFICAR", "EXPLICAR")
 
@@ -110,6 +120,13 @@ class Politica:
     preguntas: int = 0
     esperas_reales: int = 0
     soluciones_anticipadas: int = 0
+    # G6: fuente caida en esta sesion (None = todo disponible)
+    degradacion: str | None = None
+    _avisada: bool = field(default=False, init=False, repr=False)
+
+    def __post_init__(self):
+        if self.degradacion is not None and self.degradacion not in AVISOS_DEGRADACION:
+            raise ValueError(f"degradacion desconocida: {self.degradacion}")
 
     # ---- entrada: mensaje del estudiante ---------------------------------
     def responder(self, mensaje: str, *, es_intento: bool = False,
@@ -186,8 +203,18 @@ class Politica:
         return accion
 
     # ---- transcript y validacion -----------------------------------------
+    def _etiquetar(self, texto: str) -> str:
+        if not self.degradacion:
+            return texto
+        if not self._avisada:
+            self._avisada = True
+            return f"{AVISOS_DEGRADACION[self.degradacion]} {texto}"
+        if len(texto) > SUSTANTIVO_MIN and not ETIQUETA.search(texto):
+            return f"[INFERENCIA] {texto}"
+        return texto
+
     def _turno_tutor(self, accion: Accion, pregunta: bool = False):
-        self.turnos.append({"rol": "tutor", "texto": accion.texto,
+        self.turnos.append({"rol": "tutor", "texto": self._etiquetar(accion.texto),
                             "acciones": ([f"duda:{accion.registrar_duda}"]
                                          if accion.registrar_duda else [])})
         if pregunta or PREGUNTA.search(accion.texto):

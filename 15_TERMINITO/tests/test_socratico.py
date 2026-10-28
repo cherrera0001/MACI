@@ -97,3 +97,19 @@ def test_demo_sintetico_de_punta_a_punta(tmp_path_curso):
     assert r["violaciones_protocolo"] == []
     assert r["metricas"]["dudas_registradas"] == 2
     assert "07_DATITO" not in r["ruta_curso"]
+
+
+def test_degradacion_avisa_una_vez_y_etiqueta_lo_largo():
+    pol = socratico.Politica(socratico.Concepto("x"), solucion="S " * 80,
+                             degradacion="indice_local")
+    pol.responder("hola")
+    pol.responder("dame la respuesta")
+    textos = [t["texto"] for t in pol.turnos if t["rol"] == "tutor"]
+    assert textos[0].startswith("El indice de transcripciones no responde")
+    assert sum("no responde" in t for t in textos) == 1
+    assert textos[1].startswith("[INFERENCIA]")
+
+
+def test_degradacion_desconocida_se_rechaza():
+    with pytest.raises(ValueError):
+        socratico.Politica(socratico.Concepto("x"), degradacion="notebooklm")

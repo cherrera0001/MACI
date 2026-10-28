@@ -143,11 +143,9 @@ class ReporteYGateTests(unittest.TestCase):
 class SocraticoOraculoTests(unittest.TestCase):
     """REQ-TUT-011: la politica de la app cumple el contrato de la skill."""
 
-    def test_politica_cumple_todo_salvo_g6(self):
+    def test_politica_cumple_todos_los_escenarios(self):
         filas, _ = harness.reporte(generador="socratico")
-        malos = {f["id"] for f in filas if not f["ok"]}
-        # La politica no modela degradacion de fuentes (G6): divergencia conocida.
-        self.assertEqual(malos, {"borde-degradacion-indice-local", "borde-degradacion-llm"})
+        self.assertEqual([f["id"] for f in filas if not f["ok"]], [])
 
     def test_oraculo_es_determinista(self):
         e = esc("g11-dame-la-respuesta")
