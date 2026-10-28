@@ -63,13 +63,18 @@ sequenceDiagram
 
 ## P3 Verificar y publicar
 
+Hay tres ramas y ninguna más: **`dev`** (se construye), **`qa`** (se prueba) y
+**`main`** (producción, la publica Vercel). No se crean ramas de feature: todo
+trabajo se hace en `dev`. Un cambio solo avanza hacia adelante, `dev → qa → main`,
+y si algo falla en `qa` se corrige en `dev` y vuelve a subir.
+
 ```mermaid
 flowchart TD
-    A["3.1 Verificar en local<br/>verificar_todo.py --navegador"] --> B{"¿LISTO?"}
-    B -- no --> A0["Corregir. No se publica"]
-    B -- sí --> C["3.2 Rama y pull request<br/>Closes #issue"]
-    C --> D["3.3 CI en GitHub Actions<br/>tests de 04_CODIGO"]
-    D --> E["3.4 Fusionar a main"]
+    A["3.1 Construir en dev<br/>verificar_todo.py en local"] --> B{"¿LISTO?"}
+    B -- no --> A0["Corregir en dev. No avanza"]
+    B -- sí --> C["3.2 Pull request dev → qa<br/>Closes #issue"]
+    C --> D["3.3 CI en GitHub Actions<br/>+ verificar_todo.py --navegador en qa"]
+    D --> E["3.4 Pull request qa → main"]
     E --> F["3.5 Vercel corre publicar_sitio.mjs<br/>arma public/ solo con el curso"]
     F --> G["maci.c4a.cl"]
     G --> H["3.6 Verificar en línea<br/>verificar_todo.py --en-linea"]
