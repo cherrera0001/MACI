@@ -37,8 +37,10 @@ Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
   Pruebas manuales: `docs/pruebas-manuales.md`.
 - ⏳ Pendiente: instalar **Ollama** para el modo tutor (generación con LLM local).
 - ⏳ Post-MVP (spec): familia de Datitos, exportación portable.
-- ⏳ Fusión política↔chat: que el LLM proponga y la política disponga en cada
-  turno de `datito chat` (la política ya valida; falta conmutar el chat).
+- ✅ **Política gobernando el chat** (`sesion.intercambio`): toda solución
+  revelada se registra en `dudas.yaml` antes de decirse (UNO-B), la respuesta
+  siguiente exige la transferencia (R5) y `:salir` reporta las métricas de
+  sesión (REQ-TUT-002): esperas reales, soluciones, transferencias, dudas.
 
 ## Instalación
 

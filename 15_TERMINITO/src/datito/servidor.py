@@ -203,7 +203,7 @@ class Handler(BaseHTTPRequestHandler):
                         "disponible en GET /registro.", 409)
                 d = self._body_json()
                 indice = Indice.cargar(curso.ruta(".indice"))
-                r = sesion_mod.conversar(curso, d.get("texto", ""), indice)
+                r = sesion_mod.intercambio(curso, d.get("texto", ""), indice)
                 progreso.contar_mensaje(curso, 2)
                 return self._json(self._envoltura_mensaje(r, indice))
             if recurso == "mensajes" and len(partes) == 6 \

@@ -94,10 +94,10 @@ def _hoy() -> str:
 
 def _salida(texto, citas=None, modo="exploracion", aviso="",
             estado="revision", duda=None, paso=None,
-            fuera=False) -> dict:
+            fuera=False, solucion_revelada=False) -> dict:
     return {"texto": texto, "citas": citas or [], "modo": modo, "aviso": aviso,
             "estado_interaccion": estado, "duda": duda, "paso": paso,
-            "fuera_del_curso": fuera}
+            "fuera_del_curso": fuera, "solucion_revelada": solucion_revelada}
 
 
 def _top(curso, ses, indice: Indice) -> list[tuple[str, float]]:
@@ -262,7 +262,8 @@ def conversar(curso, texto: str, indice: Indice) -> dict:
             {"tipo": "solucion", "consentido": True, "via": "chat",
              "fecha": _hoy(), "intentos": ses.get("intentos", 0)})
         guardar(curso, ses)
-        return _salida(solucion, citas=citas, estado="revision")
+        return _salida(solucion, citas=citas, estado="revision",
+                       solucion_revelada=True)
 
     if tipo == "ejercicio":
         if ses and _norm(ses.get("ejercicio", "")) == _norm(texto):
@@ -332,4 +333,86 @@ def revelar(curso, consentimiento: bool, indice: Indice) -> dict:
     guardar(curso, ses)
     return {"solucion": solucion, "citas": citas,
             "registro": ses["revelaciones"][-1],
-            "estado_interaccion": ses.get("estado", "pista")}
+            "estado_interaccion": ses.get("estado", "pista"),
+            "solucion_revelada": True}
+
+
+METRICA_CERO = {"preguntas": 0, "esperas_reales": 0, "soluciones": 0,
+                "transferencias_exigidas": 0, "transferencias_cumplidas": 0,
+                "dudas_registradas": 0}
+
+_TEXTO_TRANSFERENCIA = (
+    "—\nAhora a transferir (regla del tutor): mismo problema, OTRO dominio. "
+    "Plantea el caso analogo y respondelo; si aciertas, la evidencia cuenta.")
+
+# Las metricas y banderas son de SESION (no de ejercicio): viven en su propio
+# archivo para no depender del ciclo de sesion.yaml (un ejercicio nuevo lo
+# reemplaza). REQ-TUT-002.
+_FLAGS = ("_pregunta_pendiente", "_transferencia_pendiente")
+
+
+def _ruta_metricas(curso):
+    return curso.ruta("metricas_sesion.yaml")
+
+
+def _cargar_metricas(curso) -> dict:
+    p = _ruta_metricas(curso)
+    datos = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {}
+    met = dict(METRICA_CERO)
+    met.update((datos or {}).get("metricas") or {})
+    return {"metricas": met,
+            **{f: bool((datos or {}).get(f)) for f in _FLAGS}}
+
+
+def _guardar_metricas(curso, datos: dict):
+    _ruta_metricas(curso).write_text(
+        yaml.safe_dump(datos, allow_unicode=True, sort_keys=False),
+        encoding="utf-8")
+
+
+def metricas(curso) -> dict:
+    return _cargar_metricas(curso)["metricas"]
+
+
+def intercambio(curso, texto: str, indice: Indice) -> dict:
+    """`conversar` gobernado por el protocolo (UNO-B + R5 + metricas).
+
+    - Toda solucion revelada se registra ANTES en dudas.yaml (REGLA UNO-B).
+    - Tras revelar, la siguiente respuesta exige la transferencia (R5).
+    - Acumula las metricas de sesion del spec 002 (REQ-TUT-002), en archivo
+      propio: sobreviven a ejercicios nuevos y no fabrican sesiones fantasma.
+    """
+    from . import dudas as dudas_mod
+    estado = _cargar_metricas(curso)
+    met = estado["metricas"]
+
+    if estado.pop("_pregunta_pendiente", False):
+        met["esperas_reales"] += 1
+    transferencia_pendiente = estado.pop("_transferencia_pendiente", False)
+
+    out = conversar(curso, texto, indice)
+
+    if out.get("solucion_revelada"):
+        ses = cargar(curso) or {}
+        duda = dudas_mod.registrar(
+            curso, ses.get("ejercicio", "(ejercicio de sesion)"),
+            out["texto"], "Solucion revelada con consentimiento informado "
+            "(principio III); registrada antes de decirse (REGLA UNO-B).",
+            [f"[{c}]" for c in out["citas"]])
+        met["soluciones"] += 1
+        met["dudas_registradas"] += 1
+        estado["_transferencia_pendiente"] = True
+        out["duda"] = duda
+    elif transferencia_pendiente:
+        met["transferencias_exigidas"] += 1
+        if clasificar(texto) in ("conceptual", "ejercicio"):
+            met["transferencias_cumplidas"] += 1
+        out["texto"] = out["texto"] + "\n" + _TEXTO_TRANSFERENCIA
+
+    if out["texto"].rstrip().endswith("?"):
+        estado["_pregunta_pendiente"] = True
+        met["preguntas"] += 1
+
+    estado["metricas"] = met
+    _guardar_metricas(curso, estado)
+    return out

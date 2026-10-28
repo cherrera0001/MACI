@@ -128,6 +128,12 @@ def cmd_chat(args) -> int:
         if not pregunta:
             continue
         if pregunta == ":salir":
+            m = sesion_mod.metricas(curso)
+            print(f"[metricas de sesion] preguntas con espera real: "
+                  f"{m['esperas_reales']}/{m['preguntas']} · soluciones "
+                  f"reveladas: {m['soluciones']} · transferencias: "
+                  f"{m['transferencias_cumplidas']}/{m['transferencias_exigidas']} "
+                  f"· dudas registradas: {m['dudas_registradas']}")
             break
         if pregunta.startswith(":status"):
             print(grafo.panel(curso))
@@ -145,7 +151,7 @@ def cmd_chat(args) -> int:
             if duda.citas:
                 print(evidencia.bloque_evidencia(duda.citas, indice))
             continue
-        resp = sesion_mod.conversar(curso, pregunta, indice)
+        resp = sesion_mod.intercambio(curso, pregunta, indice)
         progreso.contar_mensaje(curso, 2)
         print(f"datito> {resp['texto']}")
         if resp["citas"]:
