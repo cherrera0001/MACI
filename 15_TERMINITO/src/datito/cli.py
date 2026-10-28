@@ -241,6 +241,20 @@ def cmd_exportar(args) -> int:
     return 0
 
 
+def cmd_demo(args) -> int:
+    import json as _json
+    from . import demo_sintetico
+    r = demo_sintetico.ejecutar()
+    if args.json:
+        print(_json.dumps(r, ensure_ascii=False, indent=2))
+    else:
+        print(f"estado final del concepto: {r['estado_final']}")
+        print(f"violaciones del protocolo: {r['violaciones_protocolo'] or 'ninguna'}")
+        print(f"metricas: {r['metricas']}")
+        print(f"curso sandbox: {r['ruta_curso']} (SINTETICO, sin tocar 07_DATITO)")
+    return 1 if r["violaciones_protocolo"] else 0
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="datito",
                                      description="Tutores agenticos disenados por el estudiante.")
@@ -293,6 +307,10 @@ def main(argv=None) -> int:
     p = sub.add_parser("exportar", help="paquete portable del curso (FR-019)")
     p.add_argument("slug")
     p.set_defaults(fn=cmd_exportar)
+
+    p = sub.add_parser("demo", help="demo sintetico de la politica socratica (G10)")
+    p.add_argument("--json", action="store_true")
+    p.set_defaults(fn=cmd_demo)
 
     args = parser.parse_args(argv)
     try:

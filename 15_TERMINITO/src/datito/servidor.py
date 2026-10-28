@@ -119,6 +119,12 @@ class Handler(BaseHTTPRequestHandler):
                     "modelo_local": llm.disponible(),
                     "version_modelo": config.MODELO if llm.disponible() else None,
                     "modo": "tutor" if llm.disponible() else "exploracion"})
+            if u.path == "/api/demo/socratico":
+                from . import demo_sintetico
+                r = demo_sintetico.ejecutar()
+                return self._json({k: r[k] for k in
+                                   ("sintetico", "estado_final", "violaciones_protocolo",
+                                    "metricas")})
             if partes[:2] == ["api", "cursos"] and len(partes) == 2:
                 return self._json({"cursos": [
                     {"slug": c.slug, "nombre": c.datos.get("nombre"),

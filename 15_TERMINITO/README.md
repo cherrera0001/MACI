@@ -22,11 +22,23 @@ Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
   con gating, contadores de adopción, versionado del prompt.
 - ✅ **Interfaz web** (5 pantallas, vanilla, responsive): home, constructor
   conversacional, chat con citas clickeables, evaluación, panel de dominio.
+- ✅ **Política socrática ejecutable** (`src/datito/socratico.py`): REGLA CERO
+  (espera de verdad), G11 (la estrategia la elige el estudiante), dos intentos
+  antes de la solución, respuesta registrada antes de decirse (UNO-B) y
+  transferencia exigida tras entregar. Emite un transcript validado con las
+  mismas cinco reglas del harness de especificación (R1–R5).
+- ✅ **Demo sintético end-to-end** (`datito demo`, G10): un estudiante de
+  juguete recorre el ciclo completo hasta DOMINADO en un curso sandbox
+  autocontenido; el transcript se autovalida y reporta métricas de sesión
+  (espera real, soluciones anticipadas, dudas registradas).
+- ✅ Endpoint `GET /api/demo/socratico` con el mismo demo.
 - ✅ **Paquete distribuible**: `python 15_TERMINITO/scripts/build_paquete.py`
   genera `dist/datito.zip` (~2.5 MB); doble clic en `start.py` y a chatear.
   Pruebas manuales: `docs/pruebas-manuales.md`.
 - ⏳ Pendiente: instalar **Ollama** para el modo tutor (generación con LLM local).
 - ⏳ Post-MVP (spec): familia de Datitos, exportación portable.
+- ⏳ Fusión política↔chat: que el LLM proponga y la política disponga en cada
+  turno de `datito chat` (la política ya valida; falta conmutar el chat).
 
 ## Instalación
 
