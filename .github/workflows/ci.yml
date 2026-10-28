@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -28,3 +27,6 @@ jobs:
 
     - name: Run tests
       run: python -m unittest discover -s 04_CODIGO -p "test_*.py" -v
+
+    - name: Verificar todo (generador, contrato, citas, tests)
+      run: python 03_SCRIPTS/verificar_todo.py

@@ -209,8 +209,10 @@ mejor material disponible para ensenar fuga de informacion.
 
 ## Convenciones del repositorio
 
-**Estructura base numerada por función:** `00_INICIO`, `01_DOCUMENTACION`, ..., `10_ARCHIVO`.
-Ningún documento suelto en la raíz excepto `.env*` y `.claude/`.
+**Estructura base numerada por función:** `00_INICIO`, `01_DOCUMENTACION`, ..., `10_ARCHIVO`,
+más módulos modernos sin numerar: `docs/`, `specs/`, `15_TERMINITO/`, `13_KAGGLE/`,
+`14_INVESTIGACION/`. En la raíz viven además `README.md`, `EVALUACION.md`,
+`courses.yaml`, `vercel.json` y los `.*` de configuración — eso es deliberado.
 
 **EXCEPCIONES (ADR-004, 2026-09-27):**
 
@@ -219,20 +221,22 @@ Los siguientes directorios NO se numeran (son módulos modernos, no funcionales)
 | Directorio | Propósito | Decisión ADR-004 |
 |---|---|---|
 | `docs/` | Gestión, ADRs, curso de gestión | Moderno, fuera de 00-10 |
-| `herramientas/` | Scripts consolidados (H-05) | Moderno, fuera de 00-10 |
-| `tests/` | Pytest suite (H-11) | Moderno, fuera de 00-10 |
+| `specs/` | Especificaciones Spec Kit | Moderno, fuera de 00-10 |
+| `15_TERMINITO/` | Motor Datito 1.0 (MVP) | Moderno, fuera de 00-10 |
 | `.github/` | Workflows, CI/CD, templates | Especial, fuera de 00-10 |
 
-Estos directorios fueron creados en Sesión 1-2 como parte de ADR-004 (Migration Plan).
-Se respeta su ubicación sin numerar como decisión arquitectónica deliberada.
+ADR-004 quedó resuelta el 2026-10-27 como **no ejecutada** (la reorganización
+total que proponía nunca ocurrió): `docs/adr/ADR-004-estructura-destino.md`. La
+tabla lista solo directorios que existen en disco; para la estructura vigente
+manda el disco y esta sección.
 
 **Regla para nuevos archivos:** Verificar que FUENTES coincidan antes de crear:
 1. Leer esta sección (Convenciones)
-2. Verificar `00_INICIO/ADR-*.md` para excepciones
+2. Verificar las ADR en `01_DOCUMENTACION/ADR-*.md` y `docs/adr/` para excepciones
 3. Observar estructura en disco (`ls -d */`)
 4. Si coinciden → crear. Si contradicen → consultar con Cristóbal.
 
 El repositorio usa etiquetas auditables en su documentación: `[EVIDENCIA]`,
 `[INFERENCIA]`, `[NO EVIDENCIADO]`. Respétalas al editar documentos existentes.
 
-Los scripts se ejecutan **desde la raíz** (`F:\MACI`), no desde `03_SCRIPTS/`.
+Los scripts se ejecutan **desde la raíz del repositorio**, no desde `03_SCRIPTS/`.

@@ -1,7 +1,12 @@
 # ADR-004: Estructura Destino del Repositorio
 
-**Estado:** PROPUESTA · **Fecha:** 2026-09-27 · **Arquitecto:** A3
-**Gate:** no aprobado. La opción A queda escrita para decidirla. No está aceptada.
+**Estado:** RECHAZADA (no ejecutada) · **Fecha:** 2026-09-27 · **Resuelta:** 2026-10-27 · **Arquitecto:** A3
+**Gate:** cerrado. La opción A (reorganización total con `curso/manifiesto.yaml`,
+`herramientas/`, `tests/`) nunca se ejecutó. El repositorio siguió el camino de
+la opción B (limpieza in-place): estructura numerada `00_`–`10_ARCHIVO` vigente
+más módulos modernos sin numerar (`docs/`, `specs/`, `15_TERMINITO/`, `13_KAGGLE/`,
+`14_INVESTIGACION/`, `.github/`). Lo que `00_INICIO/CLAUDE.md` documenta como
+"excepciones ADR-004" es esa práctica real, no esta propuesta.
 
 ---
 
@@ -121,10 +126,14 @@ El agente recomendó la opción A. Esa recomendación no es una decisión del ma
 
 ## Estado
 
-**Estado real:** propuesta sin gate. Nadie aprobó la opción A el 2026-09-27.
-**Implementación:** no empieza. El PR #21, que arrastra este ADR, no se fusiona.
-
-**Siguiente:** decidir el ADR después de releer F0 sobre `origin/main`.
+**Resolución (2026-10-27):** cerrada como no ejecutada. La opción A exigía una
+migración de ~150 `git mv` y la fusión de `03_SCRIPTS/` + `04_CODIGO/` en
+`herramientas/`; ninguna de las dos cosas ocurrió, y el plan de migración al que
+este ADR se amarraba (PR #21) no prosperó. Lo que hoy describe `00_INICIO/CLAUDE.md`
+en "EXCEPCIONES (ADR-004)" es la práctica consolidada posterior: conservar la
+estructura numerada y añadir módulos modernos sin numerar. Esta ADR se conserva
+como registro histórico; para la estructura vigente manda el disco y
+`00_INICIO/CLAUDE.md` §Convenciones.
 
 ---
 
