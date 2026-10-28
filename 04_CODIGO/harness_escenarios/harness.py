@@ -32,7 +32,8 @@ AVISO_MAX = 200
 SUSTANTIVO_MIN = 120
 
 # TutorMoments (REQ-TUT-015): exigir rigor tras un acierto, no andamiar antes de intentar.
-RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|te falta|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
+RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|te falta|de d[oó]nde|"
+                   r"\bsi [^.?!]{0,40}(tuviera|fuera|hubiera)n?\b|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
                    r"otro (caso|dominio|ejemplo|contexto)|variante|si cambi|generaliz|transfi[eé]r|sin (ayuda|mirar)",
                    re.I)
 PISTA = re.compile(r"\bpista\s*:|te doy una pista|una pista\b(?![^.?!]*\?)", re.I)
@@ -191,7 +192,7 @@ def regla_empuja_rigor(turnos, esc):
             continue
         if "?" not in sig["texto"] and not CONSIGNA.search(sig["texto"]):
             viola.append(f"turno {j}: tras el acierto del turno {i} no pregunta nada (cierra sin exigir mas)")
-        elif not RIGOR.search(sig["texto"]):
+        elif not (RIGOR.search(sig["texto"]) or CONSIGNA.search(sig["texto"])):
             viola.append(f"turno {j}: tras el acierto no pide explicar, variar ni transferir")
     return viola
 

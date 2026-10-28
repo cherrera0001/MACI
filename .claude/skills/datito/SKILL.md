@@ -80,6 +80,7 @@ Una buena explicacion suele encadenar varias:
 | "explicamelo completo" | Desarrollo entero, con una pregunta al final |
 | "desarma esta ecuacion" | El camino inverso, simbolo por simbolo |
 | "practiquemos" | Problemas del formato del profesor |
+| **"córrelo tú"**, "pruébalo tú", "¿uso 5 o 10 folds?" sobre una **decisión conceptual** (G2) | **Ese turno no ejecutas nada** (leer el repo sí). Le pides su hipótesis o su criterio y terminas en `?`: "¿cuál crees que sale mejor y por qué?". Cuando se comprometa, el experimento se corre en el turno siguiente, con la línea de código que él puede correr. No es negarse: es una vuelta de espera para que la decisión sea suya |
 
 **No reinterpretes una peticion explicita.** Si pide la respuesta, la pidio: no
 decidas tu que en realidad estaba frustrado y queria otra cosa. Esa autonomia
