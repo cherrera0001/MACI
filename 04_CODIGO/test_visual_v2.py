@@ -11,10 +11,12 @@ RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ / "03_SCRIPTS"))
 
 import generar_llm_lab  # noqa: E402
+import generar_pipeline_lab  # noqa: E402
 import sincronizar_nucleo  # noqa: E402
 from verificar_visuales import revisar_v2  # noqa: E402
 
 LLM = RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual" / "20_llm.html"
+PIPE = RAIZ / "07_DATITO" / "01_CONCEPTOS" / "visual" / "22_pipeline_melbourne.html"
 NODE = shutil.which("node")
 
 
@@ -101,7 +103,7 @@ console.log(JSON.stringify({
   at: softmax(PROF, 1)
 }));
 """
-        r = subprocess.run([NODE, "-e", prueba], capture_output=True, text=True, encoding="utf-8")
+        r = subprocess.run([NODE, "-"], input=prueba, capture_output=True, text=True, encoding="utf-8")
         if r.returncode:
             raise AssertionError(r.stderr)
         cls.r = json.loads(r.stdout)
@@ -135,6 +137,47 @@ console.log(JSON.stringify({
         self.assertAlmostEqual(1.0, sum(at), places=9)
         for i, esperado in enumerate([0.30, 0.30, 0.30, 0.10]):
             self.assertAlmostEqual(esperado, at[i], delta=0.005)
+
+
+class PipelineTests(unittest.TestCase):
+    """REQ-TUT-020: el explicador calcula en el navegador lo mismo que Python."""
+
+    def test_datos_regenerables_y_pagina_liviana(self):
+        t = PIPE.read_text(encoding="utf-8")
+        self.assertEqual(t, generar_pipeline_lab.renderizar(t))
+        self.assertLessEqual(len(t.encode("utf-8")), 400 * 1024)
+
+    def test_cifras_del_proyecto(self):
+        c = generar_pipeline_lab.corpus()
+        self.assertEqual((13580, 6336, 7244), (c["meta"]["n_crudo"], c["meta"]["n_2016"], c["meta"]["n_2017"]))
+        e = c["esperado"]
+        # el modelo le gana a predecir la mediana y la matriz cubre todo 2017 muestreado
+        self.assertLess(e["cv"], e["baseline_cv"])
+        self.assertEqual(sum(e["confusion"].values()), len(c["test"]["Price"]))
+
+    @unittest.skipUnless(NODE, "node no instalado")
+    def test_paridad_javascript_python(self):
+        js = re.search(r'<script id="pipeline-modelo">(.*?)</script>', PIPE.read_text(encoding="utf-8"), re.S).group(1)
+        prueba = js + r"""
+var E = CORPUS.esperado, cols = CORPUS.presets[E.preset], TR = CORPUS.train, TE = CORPUS.test;
+var b = ajustar(TR, cols, rango(TR.Price.length));
+var s = rango(TE.Price.length).map(function (i) { return predecir(b, TE, cols, i); });
+var e = TE.Price.map(function (x) { return x > CORPUS.meta.mediana_precio_2016 ? 1 : 0; });
+console.log(JSON.stringify({folds: cv(TR, cols, E.k), beta: b, train: mae(b, TR, cols, rango(TR.Price.length)),
+  test: mae(b, TE, cols, rango(TE.Price.length)), auc: auc(s, e),
+  confusion: confusion(s, e, CORPUS.meta.mediana_precio_2016), esperado: E}));
+"""
+        r = subprocess.run([NODE, "-"], input=prueba, capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(0, r.returncode, r.stderr)
+        js_ = json.loads(r.stdout)
+        e = js_["esperado"]
+        for a, b in zip(js_["folds"], e["folds"]):
+            self.assertAlmostEqual(a, b, delta=1e-6)
+        for a, b in zip(js_["beta"], e["beta"]):
+            self.assertAlmostEqual(a, b, delta=1e-6 * max(1, abs(b)))
+        for k in ("train", "test", "auc"):
+            self.assertAlmostEqual(js_[k], e[k], delta=1e-9, msg=k)
+        self.assertEqual(js_["confusion"], e["confusion"])
 
 
 if __name__ == "__main__":

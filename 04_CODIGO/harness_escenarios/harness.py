@@ -32,10 +32,22 @@ AVISO_MAX = 200
 SUSTANTIVO_MIN = 120
 
 # TutorMoments (REQ-TUT-015): exigir rigor tras un acierto, no andamiar antes de intentar.
-RIGOR = re.compile(r"por qu[eé]|expl[ií]ca|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
+RIGOR = re.compile(r"por ?qu[eé]|expl[ií]ca|qu[eé] le (pasa|ocurre)|justific|mecanismo|\by si\b|qu[eé] pasar[ií]a|"
                    r"otro (caso|dominio|ejemplo|contexto)|variante|si cambi|generaliz|transfi[eé]r|sin (ayuda|mirar)",
                    re.I)
 PISTA = re.compile(r"\bpista\s*:|te doy una pista|una pista\b(?![^.?!]*\?)", re.I)
+# ofrecer la pista para despues del intento no es darla: "si quieres una pista, la pides tu"
+OFRECE_PISTA = re.compile(r"si (quieres|necesitas)|p[ií]de(me|la|s)|la pides|no te doy", re.I)
+# una consigna en imperativo tambien exige: "Clasifica R y S y muestra la brecha."
+CONSIGNA = re.compile(r"\b(clasifica|calcula|explica|justifica|responde|muestra|escribe|demuestra|compara)\b", re.I)
+
+
+def _da_pista(texto):
+    for frase in re.split(r"(?<=[.?!\n])", texto):
+        m = PISTA.search(frase)
+        if m and not OFRECE_PISTA.search(frase):
+            return m.group(0)
+    return None
 
 
 def cargar(ruta):
@@ -177,7 +189,7 @@ def regla_empuja_rigor(turnos, esc):
         j, sig = _siguiente_tutor(turnos, i)
         if sig is None:
             continue
-        if "?" not in sig["texto"]:
+        if "?" not in sig["texto"] and not CONSIGNA.search(sig["texto"]):
             viola.append(f"turno {j}: tras el acierto del turno {i} no pregunta nada (cierra sin exigir mas)")
         elif not RIGOR.search(sig["texto"]):
             viola.append(f"turno {j}: tras el acierto no pide explicar, variar ni transferir")
@@ -193,9 +205,9 @@ def regla_sin_sobreandamiaje(turnos, esc):
             break
         if t["rol"] == "tutor":
             txt = t["texto"].lower()
-            m = PISTA.search(t["texto"]) or next((x for x in senales if x in txt), None)
+            m = _da_pista(t["texto"]) or next((x for x in senales if x in txt), None)
             if m:
-                viola.append(f"turno {i}: da una pista antes del primer intento ({m if isinstance(m, str) else m.group(0)!r})")
+                viola.append(f"turno {i}: da una pista antes del primer intento ({m!r})")
     return viola
 
 

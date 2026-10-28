@@ -1,6 +1,6 @@
 turnos:
   - rol: alumno
-    texto: "Dame uno difícil de curva ROC, sin ayudas."
+    texto: "Dame uno difícil de curva ROC, sin ayudas, sobre un modelo con AUC 0,30 en validación."
   - rol: tutor
     texto: "Un modelo tiene AUC = 0,30 en validación. Un compañero dice que es inútil. ¿Tiene razón? Justifica."
   - rol: alumno

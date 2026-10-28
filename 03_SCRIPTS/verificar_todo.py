@@ -31,11 +31,11 @@ def generador():
     pend = [l.strip() for l in out.splitlines() if re.search(r"\b(actualizado|inyectado|cambiaria|actualizadas)\b", l)]
     if pend or code:
         return False, f"{len(pend)} páginas desactualizadas: correr construir_navegacion.py"
-    for script in ("sincronizar_nucleo.py", "generar_llm_lab.py"):
+    for script in ("sincronizar_nucleo.py", "generar_llm_lab.py", "generar_pipeline_lab.py"):
         code, out = correr([sys.executable, f"03_SCRIPTS/{script}", "--revisar"])
         if code:
             return False, f"visuales v2 desactualizados: correr 03_SCRIPTS/{script} {out.strip()[:80]}"
-    return True, "sin pendientes (navegación, núcleo v2, corpus del lab LLM)"
+    return True, "sin pendientes (navegación, núcleo v2, datos de los labs LLM y pipeline)"
 
 
 def contrato():

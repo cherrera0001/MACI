@@ -111,7 +111,7 @@
 - [ ] T046 Skill: leer `DATITO-EVENTOS` y escenario `lab-prediccion-fallida` (REQ-TUT-013)
 - [ ] T047 Harness: `empuja_rigor` y `sin_sobreandamiaje`, 4 escenarios, tests de inyección, medición real N=3 (REQ-TUT-015)
 - [x] T048 `21_agentes.html` (REQ-TUT-019): simulador de una vuelta del bucle de Datito con y sin herramientas, piezas del profesor en archivos reales, decisión sobre un agente que escribe DOMINADO
-- [ ] T049 Explicador del pipeline Melbourne (REQ-TUT-020)
+- [x] T049 Explicador del pipeline Melbourne (REQ-TUT-020): `22_pipeline_melbourne.html` + `03_SCRIPTS/generar_pipeline_lab.py`; datos reales (13.580 ventas, muestra 1 de 2), CV en vivo con pliegues apilados, test tocado una vez, matriz/ROC con umbral y costo, estado de `progreso.yaml` en el flujo; paridad JS = Python en `test_visual_v2.py`; 184 KB
 
 ## Resumen de bloqueos
 
