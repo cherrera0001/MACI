@@ -34,6 +34,27 @@
   <!-- Pasos 1-8: componentes (se generan desde COMPONENTES) -->
   <div id="pasos-componentes"></div>
 
+  <!-- Paso distinciones: evaluación por dominio (opcional) -->
+  <section class="paso" data-paso="dist">
+    <h2 data-i18n="wz_dist_h">¿Qué distinciones debe dominar quien estudie esto?</h2>
+    <p class="sub" data-i18n-html="wz_dist_p">Una <b>distinción</b> separa dos conceptos vecinos: elige al
+    menos 2 del grafo y escribe la pregunta que los separa. Puedes crearlas ahora o después en
+    <code>evaluaciones/</code>.</p>
+    <div id="dist-conceptos" class="sub"></div>
+    <p><textarea class="grande" id="dist-pregunta" rows="2" data-i18n-ph="wz_dist_pregunta"
+       placeholder="Pregunta que obliga a separar los conceptos…"></textarea></p>
+    <p><textarea id="dist-criterios" rows="3" data-i18n-ph="wz_dist_criterios"
+       placeholder="Criterios de la rúbrica, uno por línea…"></textarea></p>
+    <p><textarea id="dist-pasos" rows="2" data-i18n-ph="wz_dist_pasos"
+       placeholder="Pasos de ayuda, uno por línea (opcional)…"></textarea></p>
+    <p><textarea id="dist-solucion" rows="2" data-i18n-ph="wz_dist_solucion"
+       placeholder="Solución modelo (opcional)…"></textarea></p>
+    <p>
+      <button class="boton" id="dist-guardar" data-i18n="wz_dist_guardar">＋ Guardar distinción</button>
+      <button class="boton alt" id="dist-saltar" data-i18n="wz_dist_saltar">Saltar →</button>
+    </p>
+  </section>
+
   <!-- Final: prompt generado -->
   <section class="paso" data-paso="final">
     <h2 data-i18n="wz_final_h">Así quedó tu Datito</h2>
@@ -131,12 +152,58 @@ async function construir() {
     document.getElementById("prompt-final").textContent = r.prompt;
     document.getElementById("avisos").innerHTML =
       `<div class="clave">${esc(t("wz_listo", { f: r.fuentes, fr: r.fragmentos }))}</div>`;
-    mostrar("final");
+    await cargarConceptos();
+    mostrar("dist");
   } catch (e) {
     aviso(e.message, "peligro");
     mostrar(1);
   }
 }
+
+let distCount = 0;
+
+async function cargarConceptos() {
+  try {
+    const r = await fetch(`/api/cursos/${slug}/conceptos`).then(x => x.json());
+    const cont = document.getElementById("dist-conceptos");
+    if (!r.conceptos.length) {
+      cont.innerHTML = `<p class="sub">${esc(t("wz_dist_faltan"))}</p>`;
+      return;
+    }
+    cont.innerHTML = r.conceptos.map(c =>
+      `<label style="display:inline-block;margin:.2rem .6rem .2rem 0">` +
+      `<input type="checkbox" value="${esc(c.id)}"> ${esc(c.nombre)}</label>`).join("");
+  } catch (e) {
+    document.getElementById("dist-conceptos").innerHTML =
+      `<p class="sub">${esc(t("wz_dist_faltan"))}</p>`;
+  }
+}
+
+document.getElementById("dist-guardar").addEventListener("click", async () => {
+  const conceptos = [...document.querySelectorAll("#dist-conceptos input:checked")]
+    .map(i => i.value);
+  const lineas = id => document.getElementById(id).value.split("\n").map(s => s.trim()).filter(Boolean);
+  const pregunta = document.getElementById("dist-pregunta").value.trim();
+  const criterios = lineas("dist-criterios");
+  if (conceptos.length < 2 || !pregunta || !criterios.length)
+    return aviso(t("wz_dist_faltan"), "peligro");
+  try {
+    await post(`/api/cursos/${slug}/evaluaciones`,
+               { conceptos, pregunta, criterios,
+                 pasos: lineas("dist-pasos"),
+                 solucion: document.getElementById("dist-solucion").value.trim() });
+    distCount += 1;
+    ["dist-pregunta", "dist-criterios", "dist-pasos", "dist-solucion"]
+      .forEach(id => document.getElementById(id).value = "");
+    document.querySelectorAll("#dist-conceptos input:checked")
+      .forEach(i => i.checked = false);
+    aviso(t("wz_dist_guardada", { n: distCount }), "clave");
+  } catch (e) {
+    aviso(e.message, "peligro");
+  }
+});
+
+document.getElementById("dist-saltar").addEventListener("click", () => mostrar("final"));
 
 document.getElementById("confirmar").addEventListener("click", () => {
   localStorage.setItem("datito-ultimo", slug);

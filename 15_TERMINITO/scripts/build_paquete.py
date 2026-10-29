@@ -57,6 +57,7 @@ def copiar_motor():
         shutil.copy2(MOTOR / f, dest / f)
     shutil.copytree(MOTOR / "docs", dest / "docs")
     shutil.copy2(RAIZ / "LICENSE", dest / "LICENSE")
+    shutil.copytree(MOTOR / "plantillas", dest / "plantillas")
 
 
 def copiar_curso():

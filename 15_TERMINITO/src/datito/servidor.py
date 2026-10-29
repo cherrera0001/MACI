@@ -146,6 +146,10 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json({"items": [
                         {"id": i.id, "conceptos": i.conceptos, "pregunta": i.pregunta}
                         for i in items]})
+                if recurso == "conceptos":
+                    nodos = grafo.cargar_grafo(cargar(slug))["nodos"]
+                    return self._json({"conceptos": [
+                        {"id": c, "nombre": n.get("nombre", c)} for c, n in nodos.items()]})
                 if recurso == "fragmento":
                     qs = parse_qs(u.query)
                     fid = qs.get("fid", [""])[0]
@@ -193,7 +197,8 @@ class Handler(BaseHTTPRequestHandler):
                 if not ok:
                     return self._error("componentes_incompletos",
                                        ", ".join(faltantes), 422)
-                resumen = _build(curso, componentes)
+                resumen = _build(curso, componentes,
+                                 regenerar_grafo=bool(d.get("regenerar_grafo")))
                 return self._json(resumen)
             if recurso == "mensajes" and len(partes) == 4:
                 if curso.estado == "cerrado":
@@ -264,6 +269,14 @@ class Handler(BaseHTTPRequestHandler):
                     "criterios": [{"criterio": c, "logrado": c in res.criterios_logrados}
                                   for c in item.criterios],
                     "sesion": {"n": n, "logradas": ok}})
+            if recurso == "evaluaciones":
+                d = self._body_json()
+                ids_grafo = set(grafo.cargar_grafo(curso)["nodos"])
+                try:
+                    item = evaluador.agregar_item(curso, d, ids_grafo)
+                except ValueError as e:
+                    return self._error("distincion_invalida", str(e), 422)
+                return self._json({"guardado": item.id}, 201)
             if recurso == "notas":
                 d = self._body_json()
                 try:
@@ -332,7 +345,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-def _build(curso, componentes: dict) -> dict:
+def _build(curso, componentes: dict, regenerar_grafo: bool = False) -> dict:
     """Parsea materiales + indice + prompt (equivalente a 'datito build')."""
     rutas = [p for p in curso.ruta("materiales").iterdir()] \
         if curso.ruta("materiales").exists() else []
@@ -349,7 +362,9 @@ def _build(curso, componentes: dict) -> dict:
         (dir_frag / f"{fuente.id}.md").write_text(
             "\n\n".join(f"<!-- {f.fid} | {f.referencia} -->\n{f.texto}" for f in lista),
             encoding="utf-8")
-    Indice().construir(frags).guardar(curso.ruta(".indice"))
+    indice = Indice().construir(frags)
+    indice.guardar(curso.ruta(".indice"))
+    grafo.generar(curso, indice, solo_si_falta=not regenerar_grafo)
     prompt = identidad.generar_prompt(curso, componentes)
     if curso.estado == "configurando":
         curso.transicionar("listo")

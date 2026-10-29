@@ -45,6 +45,13 @@ modelo `TERMITO_MODELO`, default `qwen2.5:3b`).
 - Ítems de distinción: YAML en `cursos/<slug>/evaluaciones/*.yaml` con
   `conceptos` (≥2 vecinos del grafo), `pregunta`, `criterios`, `pasos`,
   `solucion`. Sin ≥2 conceptos no es distinción (se rechaza).
+  Formato comentado de referencia: `plantillas/distincion.yaml`. Desde la web
+  también puedes crearlos en el paso de distinciones del wizard (Crear
+  Datito): valida los conceptos contra el grafo y los guarda en
+  `evaluaciones/web.yaml`.
+- Grafo: `datito build` genera `grafo/grafo.yaml` desde los encabezados de los
+  materiales si no existe (`--regenerar-grafo` lo recrea). Es un punto de
+  partida editable, no la verdad pedagógica.
 
 ## Limitaciones conocidas
 
