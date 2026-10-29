@@ -79,6 +79,12 @@ def navegador():
     return code == 0 and code2 == 0, f"{ultima.strip()} · {nucleo.strip()}"
 
 
+def comportamiento():
+    code, out = correr([sys.executable, "03_SCRIPTS/verificar_comportamiento.py"])
+    ultima = next((l for l in reversed(out.splitlines()) if l.strip()), "")
+    return code == 0, ultima.strip()[:160]
+
+
 def en_linea():
     base = "https://maci.c4a.cl"
 
@@ -128,7 +134,8 @@ def main():
     a = ap.parse_args()
     pasos = [("generador idempotente", generador), ("contrato de Datito", contrato),
              ("citas y enlaces de visuales", citas), ("rutas documentales", rutas_documentales),
-             ("tests (incluye sitio publicado)", tests)]
+             ("tests (incluye sitio publicado)", tests),
+             ("comportamiento del paquete vs referencia", comportamiento)]
     if a.navegador:
         pasos.append(("Edge real 390/1280 px", navegador))
     if a.en_linea:

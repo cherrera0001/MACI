@@ -133,5 +133,61 @@ class TestLeccionesRecientesConFila(unittest.TestCase):
         self.assertEqual(faltan, [], "lecciones post 2026-10-01 sin fila en results.tsv")
 
 
+class TestTrazaAdjuntaALaLeccion(unittest.TestCase):
+    """T-8.4.1: la evidencia ligera de la corrida queda adjunta a la lección."""
+
+    def _importar(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("datito_loop_once", LOOP_ONCE)
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+
+    def _fixture(self, tmp):
+        lecciones = tmp / "agent_lessons.yaml"
+        lecciones.write_text(
+            "# comentario de cabecera (debe sobrevivir)\n"
+            "version: 1\n"
+            "failure_patterns:\n"
+            "  - id: VIZ-FAIL-999\n"
+            "    date: '2026-10-29'\n"
+            "    summary: 'lección de prueba'\n"
+            "keep_patterns: []\n", encoding="utf-8")
+        return lecciones
+
+    def test_adjunta_traza_y_preserva_comentarios(self):
+        import tempfile
+        m = self._importar()
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            lecciones = self._fixture(tmp)
+            ruta = m.adjuntar_traza("VIZ-FAIL-999",
+                                    {"decision": "discard", "score": 0.4},
+                                    lecciones=lecciones, dir_trazas=tmp / "trazas")
+            self.assertTrue(ruta.exists())
+            self.assertIn('"decision": "discard"', ruta.read_text(encoding="utf-8"))
+            texto = lecciones.read_text(encoding="utf-8")
+            self.assertIn("# comentario de cabecera", texto, "se perdieron comentarios")
+            self.assertIn('traza: "trazas/VIZ-FAIL-999.json"', texto)
+            self.assertIn("- id: VIZ-FAIL-999", texto)
+
+    def test_idempotente_y_leccion_inexistente(self):
+        import tempfile
+        m = self._importar()
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            lecciones = self._fixture(tmp)
+            m.adjuntar_traza("VIZ-FAIL-999", {"a": 1},
+                             lecciones=lecciones, dir_trazas=tmp / "trazas")
+            m.adjuntar_traza("VIZ-FAIL-999", {"a": 2},
+                             lecciones=lecciones, dir_trazas=tmp / "trazas")
+            self.assertEqual(lecciones.read_text(encoding="utf-8").count("traza:"), 1)
+            # lección aún no archivada: la traza se guarda sin tocar el yaml
+            ruta = m.adjuntar_traza("VIZ-FAIL-000", {"b": 1},
+                                    lecciones=lecciones, dir_trazas=tmp / "trazas")
+            self.assertTrue(ruta.exists())
+            self.assertNotIn("VIZ-FAIL-000", lecciones.read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()

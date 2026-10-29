@@ -202,6 +202,7 @@ class Handler(BaseHTTPRequestHandler):
             if recurso == "componentes":
                 return self._guardar_componentes(slug)
             if recurso == "construir":
+                d = self._body_json()
                 componentes = identidad.cargar(curso)
                 ok, faltantes = identidad.completos(componentes)
                 if not ok:
