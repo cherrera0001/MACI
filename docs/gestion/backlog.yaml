@@ -477,3 +477,41 @@ epicas:
           - id: T-6.4.2
             titulo: "Borrar las ramas sin contenido propio, en local y en el remoto"
             detalle: "Con la confirmación del dueño en el issue."
+
+  # ───────────────────────────────────── E-9 Modo tutor accesible (D-7.1)
+  - id: E-9
+    titulo: "Modo tutor accesible: sin Ollama el producto guía la instalación"
+    area: datito
+    proceso: P2
+    prioridad: P1
+    v1: false
+    resultado: >-
+      Un usuario sin Ollama ve, en cada pantalla, una guía dismissible con los
+      comandos de instalación para su sistema operativo y el modelo
+      recomendado; al instalarlo, la guía desaparece sola.
+    contexto: |
+      D-7.1 (issue #102) quedó decidida por el dueño el 2026-10-29: opción
+      «guiado». GET /api/salud ya reporta modo y disponibilidad; falta la
+      superficie de usuario. La guía vive en api.js (todas las páginas la
+      muestran) y se alimenta del SO del servidor (localhost = misma máquina).
+    metricas:
+      - "Sin Ollama: toda página muestra la guía con los pasos del SO detectado"
+      - "Con Ollama: la guía no aparece"
+      - "tests de /api/salud y de i18n en verde"
+    historias:
+      - id: H-9.1
+        titulo: "Como estudiante sin Ollama, quiero que la web me muestre cómo instalarlo con los comandos de mi sistema, para pasar de modo exploración a modo tutor sin buscar en internet"
+        prioridad: P1
+        v1: false
+        contexto: |
+          Hoy el modo exploración se anuncia en una píldora sin acción. La
+          decisión D-7.1 es «guiado»: detectar la ausencia, mostrar instrucciones
+          por SO (linux/mac/windows) y el pull del modelo qwen2.5:3b.
+        criterios:
+          - "Dado un servidor sin Ollama, cuando abro cualquier página, entonces veo la guía con los pasos de mi SO"
+          - "Dado /api/salud, cuando no hay LLM, entonces incluye la guía con SO y pasos"
+          - "Dado un servidor con Ollama, cuando abro cualquier página, entonces no veo la guía"
+        tareas:
+          - id: T-9.1.1
+            titulo: "Guía de instalación: /api/salud la expone por SO y api.js la renderiza dismissible en todas las páginas"
+            detalle: "Pasos mínimos por SO (curl/brew/descarga + ollama pull qwen2.5:3b), texto vía i18n es/en, comando vía /api/salud. Cerrable con localStorage y se re-verifica en cada carga."

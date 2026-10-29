@@ -46,6 +46,26 @@ def _datos_panel(curso, mapa_completo: bool = False) -> dict:
             "mapa_completo": mapa_completo, "cadenas": cadenas}
 
 
+def _guia_instalacion() -> dict | None:
+    """Instrucciones de Ollama por SO (decisión D-7.1 «guiado»).
+
+    None cuando ya hay LLM: la guía solo aparece si hace falta. El servidor
+    es localhost, así que su plataforma es la de la máquina del estudiante.
+    """
+    if llm.disponible():
+        return None
+    so = {"linux": "linux", "darwin": "macos", "win32": "windows"}.get(sys.platform, "linux")
+    pasos = {
+        "linux": ["curl -fsSL https://ollama.com/install.sh | sh",
+                  "ollama pull qwen2.5:3b"],
+        "macos": ["brew install ollama && ollama serve",
+                  "ollama pull qwen2.5:3b"],
+        "windows": ["descarga Ollama desde https://ollama.com/download",
+                    "ollama pull qwen2.5:3b"],
+    }[so]
+    return {"so": so, "pasos": pasos}
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "datito/0.1"
 
@@ -118,7 +138,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({
                     "modelo_local": llm.disponible(),
                     "version_modelo": config.MODELO if llm.disponible() else None,
-                    "modo": "tutor" if llm.disponible() else "exploracion"})
+                    "modo": "tutor" if llm.disponible() else "exploracion",
+                    "guia": _guia_instalacion()})
             if u.path == "/api/demo/socratico":
                 from . import demo_sintetico
                 r = demo_sintetico.ejecutar()
