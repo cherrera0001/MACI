@@ -45,7 +45,7 @@
 | ✅ #99 | [H-7.2] Como estudiante, quiero crear las distinciones de mi curso desde la web con una plantilla guiada, para evaluar dominio sin conocer el formato YAML | Done | Historia · P1 · P3 Verificar y publicar |
 | ✅ #100 | [T-7.2.1] Añadir el paso de distinciones al wizard con validación contra el grafo | Done | Tarea · P1 · P3 Verificar y publicar |
 | ✅ #101 | [T-7.2.2] Incluir `evaluaciones/plantilla.yaml` comentado en el paquete y documentar el formato en USO.md | Done | Tarea · P1 · P3 Verificar y publicar |
-| ⬜ #102 | [D-7.1] ¿Cómo obtiene el usuario final un LLM: se empaqueta, se instala guiado desde la web, o se queda externo con mejor mensaje? | Todo | Decisión · P1 · P3 Verificar y publicar |
+| ✅ #102 | [D-7.1] ¿Cómo obtiene el usuario final un LLM: se empaqueta, se instala guiado desde la web, o se queda externo con mejor mensaje? | Done | Decisión · P1 · P3 Verificar y publicar |
 | ✅ #103 | [H-7.3] Como usuario del zip, quiero que los textos del paquete no se contradigan entre sí y declaren licencia, para confiar en lo que bajé | Done | Historia · P1 · P3 Verificar y publicar |
 | ✅ #104 | [T-7.3.1] Unificar marca, versión y estado del producto en LEEME.txt, USO.md y README | Done | Tarea · P1 · P3 Verificar y publicar |
 | ✅ #105 | [T-7.3.2] Elegir y agregar LICENSE al repo y al zip | Done | Tarea · P1 · P3 Verificar y publicar |
@@ -56,7 +56,7 @@
 | ✅ #118 | [H-8.2] Como estudiante, quiero que el dominio se evalúe sobre mi procedimiento real en una terminal sandbox (orden de pasos), no solo sobre mi texto, para que 'calcula la brecha antes de etiquetar' sea verificable | Done | Historia · P1 · P2 Estudiar con Datito |
 | ✅ #119 | [T-8.2.1] Implementar el sandbox de ejecución acotado (stdlib: sin red, timeout, directorio efímero, stdlib-only) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #121 | [T-8.2.3] Integrar el resultado de traza con sesion.py (lucha productiva) y grafo.actualizar_dominio | Done | Tarea · P1 · P2 Estudiar con Datito |
-| ⬜ #122 | [D-8.1] ¿REA vive solo en el pipeline de construcción/CI o también en el runtime del paquete distribuible? | Todo | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #122 | [D-8.1] ¿REA vive solo en el pipeline de construcción/CI o también en el runtime del paquete distribuible? | Done | Decisión · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -119,4 +119,4 @@
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
 
-**109 ítems · 2 abiertos.**
+**109 ítems · 0 abiertos.**
