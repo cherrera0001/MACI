@@ -125,6 +125,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({k: r[k] for k in
                                    ("sintetico", "estado_final", "violaciones_protocolo",
                                     "metricas")})
+            if u.path == "/api/demo/brecha":
+                from . import demo_brecha
+                qs = parse_qs(u.query)
+                try:
+                    semilla = int(qs.get("semilla", ["42"])[0])
+                except ValueError:
+                    semilla = 42
+                return self._json(demo_brecha.correr(semilla))
             if partes[:2] == ["api", "cursos"] and len(partes) == 2:
                 return self._json({"cursos": [
                     {"slug": c.slug, "nombre": c.datos.get("nombre"),

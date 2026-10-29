@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidencia viva — la brecha train-test</title>
+<link rel="stylesheet" href="/css/datito.css">
+<style>
+  .paso-traza { border-left: 3px solid var(--ambar, #d97706); padding: .35rem .8rem;
+                margin: .5rem 0; font-family: ui-monospace, monospace; white-space: pre-wrap; }
+  .paso-traza.ok { border-color: #16a34a; }
+  #comparacion { font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="logo">🐜 <a href="/">Datito</a></span>
+    <span class="estado estado-motor"></span>
+  </div>
+  <h1 data-i18n="evv_h1">La brecha train-test, vista en una corrida real</h1>
+  <p class="sub" data-i18n-html="evv_sub">No es un ejemplo inventado: es la ejecución real de tres modelos sobre
+  datos sintéticos (semilla 42). El formato es el del profesor: <b>primero la brecha,
+  después la etiqueta</b>.</p>
+
+  <h2 data-i18n="evv_ref_h">1 · La evidencia capturada</h2>
+  <p class="sub" data-i18n-html="evv_ref_p">Traza de referencia, capturada el 2026-10-29 con REA (evidence
+  <code>84b485dd…</code>, journal ordenado). Mírala paso a paso:</p>
+  <div id="referencia"></div>
+
+  <h2 data-i18n="evv_re_h">2 · Re-ejecutar y comprobar</h2>
+  <p class="sub" data-i18n="evv_re_p">La misma corrida vuelve a correr en tu máquina (sandbox, sin red).
+  Con la misma semilla deben reproducirse los mismos números:</p>
+  <p>
+    <button class="boton" id="reejecutar" data-i18n="evv_btn">↻ Re-ejecutar con semilla 42</button>
+    <label style="margin-left:1rem"><span data-i18n="evv_semilla">semilla</span>:
+      <input id="semilla" value="42" size="4" style="text-align:center"></label>
+  </p>
+  <div id="salida-viva"></div>
+  <p id="comparacion"></p>
+</main>
+<script src="/js/i18n.js"></script>
+<script src="/js/api.js"></script>
+<script>
+// Traza de referencia: salida real capturada (REA ev_84b485dd, semilla 42).
+const REFERENCIA = `#@paso-1-rendimiento
+  A: R2 train=1.00 test=-0.00
+  B: R2 train=0.99 test=0.99
+  C: R2 train=0.00 test=-0.00
+#@paso-2-brechas
+  A brecha=+1.00
+  B brecha=-0.00
+  C brecha=+0.00
+#@paso-3-etiquetado
+  A sobreajusta (memoriza train, falla test)
+  C subajusta (malo en ambos)
+  B generaliza (brecha ~0 con buen rendimiento)`;
+
+function pintarPasos(contenedor, texto) {
+  const divs = [];
+  texto.split(/^#@/m).slice(1).forEach((bloque, i) => {
+    const [nombre, ...resto] = bloque.split("\n");
+    const d = document.createElement("div");
+    d.className = "paso-traza";
+    d.innerHTML = `<b>#@${esc(nombre.trim())}</b>\n${esc(resto.join("\n").trim())}`;
+    contenedor.appendChild(d);
+    divs.push(d);
+  });
+  return divs;
+}
+
+const ref = document.getElementById("referencia");
+pintarPasos(ref, REFERENCIA);
+
+function normaliza(s) {  // ignora espacios finales para la comparación
+  return s.trim().replace(/[ \t]+/g, " ");
+}
+
+document.getElementById("reejecutar").onclick = async () => {
+  const cont = document.getElementById("salida-viva");
+  const comp = document.getElementById("comparacion");
+  cont.innerHTML = "";
+  comp.textContent = "corriendo…";
+  const semilla = document.getElementById("semilla").value.trim() || "42";
+  try {
+    const r = await fetch(`/api/demo/brecha?semilla=${encodeURIComponent(semilla)}`)
+      .then(x => x.json());
+    if (r.timeout || r.codigo_salida !== 0) {
+      comp.textContent = `la corrida falló (exit ${r.codigo_salida}${r.timeout ? " · timeout" : ""})`;
+      return;
+    }
+    const pasos = pintarPasos(cont, r.salida);
+    const coincide = normaliza(r.salida) === normaliza(REFERENCIA);
+    pasos.forEach(p => p.classList.add("ok"));
+    comp.textContent = coincide
+      ? "✓ Coincide con la evidencia capturada: misma semilla, mismos números."
+      : `✗ No coincide con la referencia (semilla ${semilla} ≠ 42): otros números, mismo procedimiento.`;
+    comp.style.color = coincide ? "#16a34a" : "#b91c1c";
+  } catch (e) {
+    comp.textContent = "sin servidor: el re-ejecutar necesita el Datito corriendo (start.py)";
+  }
+};
+pintarEstado();
+</script>
+</body>
+</html>
