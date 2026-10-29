@@ -47,6 +47,10 @@ const I18N = {
     "wz_dist_saltar": "Saltar →",
     "wz_dist_guardada": "Distinción guardada ({n}). Puedes agregar otra o continuar.",
     "wz_dist_faltan": "Elige al menos 2 conceptos y escribe la pregunta y un criterio.",
+    /* eval: procedural (H-8.2) */
+    "ev_procedural": "Distinción procedural: pega tu script. Los pasos se verifican por la traza de la corrida real (marca pasos con print(\"#@nombre\")).",
+    "ev_ph_codigo": "Pega aquí tu script Python. Marca los pasos con print(\"#@brecha\"), print(\"#@etiquetar\")…",
+    "ev_traza": "Traza:",
     "w_c1p": "¿Quién es tu tutor y en qué materia?",
     "w_c1s": "Tutor experto en fundamentos de ciencia de datos",
     "w_c2p": "¿Para qué existe en este curso?",
@@ -133,6 +137,10 @@ const I18N = {
     "wz_dist_saltar": "Skip →",
     "wz_dist_guardada": "Distinction saved ({n}). Add another or continue.",
     "wz_dist_faltan": "Pick at least 2 concepts and write the question and one criterion.",
+    /* eval: procedural (H-8.2) */
+    "ev_procedural": "Procedural distinction: paste your script. Steps are verified from the real run's trace (mark steps with print(\"#@name\")).",
+    "ev_ph_codigo": "Paste your Python script here. Mark steps with print(\"#@brecha\"), print(\"#@etiquetar\")…",
+    "ev_traza": "Trace:",
     "w_c1p": "Who is your tutor and in what subject?",
     "w_c1s": "Expert tutor in fundamentals of data science",
     "w_c2p": "Why does it exist in this course?",

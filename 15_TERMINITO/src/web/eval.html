@@ -55,12 +55,15 @@ async function iniciar() {
 function pintarItem() {
   const it = items[i];
   document.getElementById("nav-eval").style.display = "none";
+  const procedural = it.protocolo ? `<p class="sub" style="margin:.2rem 0">${esc(t("ev_procedural"))}</p>` : "";
   document.getElementById("item").innerHTML = `
     <div class="dist">
       <b>${i + 1} ${t("ev_de")} ${items.length}.</b>
       <p style="margin:.6rem 0">${esc(it.pregunta)}</p>
       <p class="sub" style="margin:0">${t("ev_conceptos")} <b>${esc(it.conceptos.join(" vs "))}</b></p>
-      <textarea class="grande" id="respuesta" rows="5" placeholder="${esc(t("ev_ph"))}"></textarea>
+      ${procedural}
+      <textarea class="grande" id="respuesta" rows="6"
+        placeholder="${esc(it.protocolo ? t("ev_ph_codigo") : t("ev_ph"))}"></textarea>
       <p><button class="boton" id="responder">${esc(t("ev_responder"))}</button></p>
     </div>
     <div id="feedback"></div>`;
@@ -69,20 +72,25 @@ function pintarItem() {
 }
 
 async function responder() {
-  const respuesta = document.getElementById("respuesta").value.trim();
-  if (!respuesta) return;
+  const valor = document.getElementById("respuesta").value.trim();
+  if (!valor) return;
   const it = items[i];
+  const carga = it.protocolo ? { item_id: it.id, codigo: valor }
+                             : { item_id: it.id, respuesta: valor };
   try {
-    const r = await post(`/api/cursos/${slug}/evaluacion`,
-      { item_id: it.id, respuesta });
+    const r = await post(`/api/cursos/${slug}/evaluacion`, carga);
     sesion = r.sesion;
     pintarMicro();
     const color = r.resultado === "logrado" ? "var(--verde)"
       : r.resultado === "parcial" ? "var(--ambar)" : "var(--rojo)";
+    const traza = r.traza ? `<p class="sub" style="margin:.2rem 0 0">${esc(t("ev_traza"))} ${
+      (r.traza.eventos || []).join(" → ") || "—"} · exit ${r.traza.codigo_salida}${
+      r.traza.timeout ? " · timeout" : ""}</p>` : "";
     document.getElementById("feedback").innerHTML = `
       <div class="tarjeta">
         <b style="color:${color};text-transform:uppercase">${esc(r.resultado)}</b>
         <p style="margin:.4rem 0">${esc(r.retroalimentacion)}</p>
+        ${traza}
         ${r.criterios && r.criterios.length ? `<ul class="criterios">${r.criterios.map(c =>
           `<li class="${c.logrado ? "ok" : "ko"}">${esc(c.criterio)}</li>`).join("")}</ul>` : ""}
       </div>`;

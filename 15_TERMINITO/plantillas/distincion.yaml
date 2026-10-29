@@ -20,3 +20,12 @@ items:
       - "Paso 2: otra pregunta, un poco más cerca"
     solucion: >-                          # opcional: se revela solo tras el intento
       La frontera conceptual en una frase, con la evidencia del curso.
+
+# ── Distinción procedural (opcional, H-8.2) ──────────────────────────────────
+# Si el aprendizaje exige un ORDEN de pasos («calcula la brecha ANTES de
+# etiquetar»), agrega un protocolo; el estudiante entrega un script y Datito
+# verifica la corrida real en un sandbox. Marca los pasos en el script con
+# print("#@nombre"). La traza queda en resultados.yaml como evidencia.
+#   protocolo:
+#     - {evento: brecha, antes_de: [etiquetar]}   # brecha debe preceder a etiquetar
+#     - {evento: etiquetar, requiere: true}        # debe aparecer al menos una vez

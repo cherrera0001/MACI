@@ -62,3 +62,22 @@ modelo `TERMITO_MODELO`, default `qwen2.5:3b`).
   baja confianza (ver `calificar` en `evaluador.py`).
 - La UI web (5 pantallas: home, wizard, chat, eval, panel) está operativa;
   `chat` es el punto de entrada principal y el CLI sigue siendo de primera clase.
+
+## Distinciones procedurales (evaluación por traza, H-8.2)
+
+Un ítem puede declarar un `protocolo`: reglas de orden sobre la corrida real
+del estudiante en un sandbox acotado (timeout, límites POSIX, cwd efímero;
+sin bloqueo de red — el docente no debe exigir red).
+
+- El ítem define el protocolo en YAML: `protocolo: [{evento: brecha,
+  antes_de: [etiquetar]}, {evento: etiquetar, requiere: true}]`.
+- El estudiante pega su script (web: caja de código; CLI: ruta del archivo).
+  Marca pasos con `print("#@brecha")`, `print("#@etiquetar")`, …
+- El sandbox corre el script, extrae los marcadores en orden y valida las
+  reglas: una regla falla si el evento falta (`requiere`) o si ocurrió
+  después de lo que debía preceder (`antes_de`).
+- El resultado (logrado/parcial/no_logrado) alimenta el dominio igual que una
+  distinción de texto, y la traza (eventos + salida + exit code) queda en
+  `resultados.yaml` como evidencia del procedimiento.
+- La traza verifica el ORDEN, no el razonamiento: el resultado se rotula de
+  baja confianza igual que la heurística de texto.

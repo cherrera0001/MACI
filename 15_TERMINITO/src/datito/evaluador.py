@@ -26,6 +26,9 @@ class Item:
     criterios: list[str]
     pasos: list[str] = field(default_factory=list)
     solucion: str = ""
+    # reglas de orden del procedimiento (evaluación con sandbox, H-8.2):
+    # [{evento: nombre, requiere: bool, antes_de: [nombres]}]
+    protocolo: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -36,6 +39,7 @@ class ResultadoItem:
     retroalimentacion: str
     criterios_logrados: list[str] = field(default_factory=list)
     heuristico: bool = False  # True = calificado sin LLM (baja confianza)
+    traza: object | None = None  # sandbox.Traza cuando la evaluación es procedural
 
 
 def cargar_items(curso) -> list[Item]:
@@ -48,7 +52,7 @@ def cargar_items(curso) -> list[Item]:
             items.append(Item(
                 id=raw["id"], conceptos=raw["conceptos"], pregunta=raw["pregunta"],
                 criterios=raw.get("criterios", []), pasos=raw.get("pasos", []),
-                solucion=raw.get("solucion", "")))
+                solucion=raw.get("solucion", ""), protocolo=raw.get("protocolo", [])))
     return items
 
 
@@ -116,12 +120,20 @@ def _calificar_heuristica(item: Item, respuesta: str) -> ResultadoItem:
 def guardar_resultado(curso, res: ResultadoItem):
     p = curso.ruta("evaluaciones", "resultados.yaml")
     datos = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {"resultados": []}
-    datos["resultados"].append({
+    entrada = {
         "item_id": res.item.id, "conceptos": res.item.conceptos,
         "resultado": res.resultado, "retroalimentacion": res.retroalimentacion,
         "heuristico": res.heuristico,
         "fecha": __import__("datetime").date.today().isoformat(),
-    })
+    }
+    if res.traza is not None:  # evidencia del procedimiento (H-8.2)
+        entrada["traza"] = {
+            "eventos": [e.nombre for e in res.traza.eventos],
+            "codigo_salida": res.traza.codigo_salida,
+            "timeout": res.traza.timeout,
+            "salida": res.traza.salida[-500:],
+        }
+    datos["resultados"].append(entrada)
     p.write_text(yaml.safe_dump(datos, allow_unicode=True, sort_keys=False), encoding="utf-8")
 
 
@@ -174,3 +186,40 @@ def _siguiente_id(curso, concepto: str) -> str:
     base = norm_id(concepto)[:20] or "distincion"
     n = len(cargar_items(curso)) + 1
     return f"d{n}-web-{base}"
+
+
+# ── evaluación de procedimiento con sandbox (H-8.2 / T-8.2.2) ────────────────
+
+def calificar_procedimiento(item: Item, codigo: str, timeout: int = 10) -> ResultadoItem:
+    """Corre el código del estudiante en el sandbox y valida el protocolo.
+
+    El resultado es de baja confianza en el sentido de que no evalúa el
+    razonamiento (eso sigue siendo trabajo de la rúbrica con LLM o del
+    docente): verifica el ORDEN del procedimiento, que es lo que una
+    afirmación de texto no puede demostrar («calcula la brecha ANTES de
+    etiquetar»).
+    """
+    from . import sandbox
+    traza = sandbox.ejecutar(codigo, timeout=timeout)
+    if not item.protocolo:
+        return ResultadoItem(item, codigo, "no_logrado",
+                             "el item no define protocolo procedural "
+                             "(campo 'protocolo' vacio)", heuristico=True, traza=traza)
+    cumplidas, fallidas = sandbox.validar_protocolo(traza, item.protocolo)
+    if not fallidas:
+        resultado = "logrado"
+    elif cumplidas:
+        resultado = "parcial"
+    else:
+        resultado = "no_logrado"
+    detalle = f"pasos en orden: {len(cumplidas)}/{len(item.protocolo)}"
+    if fallidas:
+        detalle += "; incumple: " + " | ".join(fallidas)
+    if traza.timeout:
+        detalle += f"; timeout ({timeout}s)"
+    elif traza.codigo_salida not in (0, None):
+        detalle += f"; el script falló (exit {traza.codigo_salida})"
+    retro = (f"{detalle} (evaluacion de PROCEDIMIENTO por traza: verifica el "
+             "orden de los pasos, no el razonamiento)")
+    return ResultadoItem(item, codigo, resultado, retro, cumplidas,
+                         heuristico=True, traza=traza)

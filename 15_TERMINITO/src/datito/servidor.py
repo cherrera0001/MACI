@@ -144,8 +144,8 @@ class Handler(BaseHTTPRequestHandler):
                     curso = cargar(slug)
                     items = evaluador.cargar_items(curso)
                     return self._json({"items": [
-                        {"id": i.id, "conceptos": i.conceptos, "pregunta": i.pregunta}
-                        for i in items]})
+                        {"id": i.id, "conceptos": i.conceptos, "pregunta": i.pregunta,
+                         "protocolo": bool(i.protocolo)} for i in items]})
                 if recurso == "conceptos":
                     nodos = grafo.cargar_grafo(cargar(slug))["nodos"]
                     return self._json({"conceptos": [
@@ -259,23 +259,33 @@ class Handler(BaseHTTPRequestHandler):
                 item = items.get(d.get("item_id"))
                 if not item:
                     return self._error("item_desconocido", d.get("item_id", ""), 404)
-                indice = Indice.cargar(curso.ruta(".indice")) \
-                    if curso.ruta(".indice").exists() else None
-                contexto = ""
-                if indice:
-                    top = indice.buscar(" ".join(item.conceptos), k=2)
-                    contexto = " ".join(indice.textos[f] for f, _ in top)
-                res = evaluador.calificar(item, d.get("respuesta", ""), contexto)
+                codigo = d.get("codigo", "")
+                if item.protocolo and codigo.strip():
+                    res = evaluador.calificar_procedimiento(item, codigo)
+                else:
+                    indice = Indice.cargar(curso.ruta(".indice")) \
+                        if curso.ruta(".indice").exists() else None
+                    contexto = ""
+                    if indice:
+                        top = indice.buscar(" ".join(item.conceptos), k=2)
+                        contexto = " ".join(indice.textos[f] for f, _ in top)
+                    res = evaluador.calificar(item, d.get("respuesta", ""), contexto)
                 evaluador.guardar_resultado(curso, res)
                 grafo.actualizar_dominio(curso, item.conceptos, res.resultado)
                 n, ok = progreso.contar_distincion(curso, res.resultado == "logrado")
-                return self._json({
+                cuerpo = {
                     "item_id": item.id, "resultado": res.resultado,
                     "retroalimentacion": res.retroalimentacion,
                     "confianza": "baja" if res.heuristico else "alta",
                     "criterios": [{"criterio": c, "logrado": c in res.criterios_logrados}
                                   for c in item.criterios],
-                    "sesion": {"n": n, "logradas": ok}})
+                    "sesion": {"n": n, "logradas": ok}}
+                if res.traza is not None:
+                    cuerpo["traza"] = {
+                        "eventos": [e.nombre for e in res.traza.eventos],
+                        "codigo_salida": res.traza.codigo_salida,
+                        "timeout": res.traza.timeout}
+                return self._json(cuerpo)
             if recurso == "evaluaciones":
                 d = self._body_json()
                 ids_grafo = set(grafo.cargar_grafo(curso)["nodos"])
