@@ -60,6 +60,11 @@ const I18N = {
     "evv_re_p": "La misma corrida vuelve a correr en tu máquina (sandbox, sin red). Con la misma semilla deben reproducirse los mismos números:",
     "evv_btn": "↻ Re-ejecutar con semilla 42",
     "evv_semilla": "semilla",
+    /* guia Ollama (D-7.1) */
+    "guia_t": "Sin Ollama, el Datito cita evidencia pero no genera explicaciones.",
+    "guia_instala": "Para el modo tutor, instala Ollama y el modelo:",
+    "guia_reinicia": "al terminar, recarga la página: la guía desaparece sola.",
+    "guia_cerrar": "entendido",
     "w_c1p": "¿Quién es tu tutor y en qué materia?",
     "w_c1s": "Tutor experto en fundamentos de ciencia de datos",
     "w_c2p": "¿Para qué existe en este curso?",
@@ -159,6 +164,11 @@ const I18N = {
     "evv_re_p": "The same run executes again on your machine (sandbox, no network). With the same seed the same numbers must reproduce:",
     "evv_btn": "↻ Re-run with seed 42",
     "evv_semilla": "seed",
+    /* guia Ollama (D-7.1) */
+    "guia_t": "Without Ollama, Datito cites evidence but doesn't generate explanations.",
+    "guia_instala": "For tutor mode, install Ollama and the model:",
+    "guia_reinicia": "when done, reload the page: the guide goes away on its own.",
+    "guia_cerrar": "got it",
     "w_c1p": "Who is your tutor and in what subject?",
     "w_c1s": "Expert tutor in fundamentals of data science",
     "w_c2p": "Why does it exist in this course?",

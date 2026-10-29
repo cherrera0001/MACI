@@ -4,6 +4,7 @@ program_loop.md manda leer `failure_patterns` primero. Si una lección de fallo
 queda archivada bajo `keep_patterns`, el agente que sigue el protocolo no la ve.
 """
 import csv
+import os
 import subprocess
 import sys
 import unittest
@@ -79,18 +80,28 @@ class TestLessonIdObligatorio(unittest.TestCase):
         self.assertEqual(RESULTADOS.read_bytes(), antes, "no se tocó results.tsv")
 
     def test_con_lesson_id_registra(self):
+        """T-4.2.1 + T-8.4.1: registra fila y traza en un loop aislado (tmp)."""
+        import shutil
+        import tempfile
         antes = RESULTADOS.read_bytes()
-        try:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_loop = Path(tmp)
+            shutil.copy2(LECCIONES, tmp_loop / "agent_lessons.yaml")
+            env = {**os.environ, "DATITO_LOOP_DIR": str(tmp_loop)}
             r = subprocess.run(
                 [sys.executable, str(LOOP_ONCE), "--path", str(TEMPLATE),
                  "--hypothesis", "test T-4.2.1 con id", "--lesson-id", "VIZ-KEEP-001"],
-                capture_output=True, text=True, encoding="utf-8",
+                capture_output=True, text=True, encoding="utf-8", env=env,
             )
             self.assertIn(r.returncode, (0, 1), r.stderr + r.stdout)
-            ultima = RESULTADOS.read_text(encoding="utf-8").splitlines()[-1]
+            ultima = (tmp_loop / "results.tsv").read_text(encoding="utf-8").splitlines()[-1]
             self.assertIn("VIZ-KEEP-001", ultima)
-        finally:
-            RESULTADOS.write_bytes(antes)
+            # T-8.4.1: la traza quedó adjunta a la lección (en el loop aislado)
+            self.assertTrue((tmp_loop / "trazas" / "VIZ-KEEP-001.json").exists())
+            self.assertIn('traza: "trazas/VIZ-KEEP-001.json"',
+                          (tmp_loop / "agent_lessons.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(RESULTADOS.read_bytes(), antes,
+                         "no se tocó results.tsv real")
 
 
 class TestGateContrato(unittest.TestCase):

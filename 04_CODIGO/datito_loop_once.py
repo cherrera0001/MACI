@@ -5,13 +5,17 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LOOP = ROOT / "07_DATITO" / "07_BITACORA" / "learning_loop"
+# DATITO_LOOP_DIR permite aislar una corrida (el test T-4.2.1 lo usa para no
+# tocar la memoria real del loop); en producción no se define.
+LOOP = Path(os.environ.get("DATITO_LOOP_DIR",
+                           ROOT / "07_DATITO" / "07_BITACORA" / "learning_loop"))
 RESULTS = LOOP / "results.tsv"
 EVAL = ROOT / "04_CODIGO" / "datito_loop_eval.py"
 
