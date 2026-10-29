@@ -26,7 +26,7 @@
     transcripciones, certámenes pasados, PDF de clases. Puedes subirlos ahora o después
     (desde la carpeta <code>materiales/</code> del curso).</p>
     <input type="file" id="archivos" multiple
-           accept=".md,.txt,.pdf,.html,.htm" style="margin:.5rem 0">
+           accept=".md,.txt,.pdf,.html,.htm,.docx,.pptx" style="margin:.5rem 0">
     <div id="subidos" class="sub"></div>
     <p><button class="boton" id="avanzar0" data-i18n="wz_siguiente">Siguiente →</button></p>
   </section>
@@ -140,8 +140,20 @@ document.getElementById("avanzar0").addEventListener("click", async () => {
   for (const f of archivos) {
     await putBlob(`/api/cursos/${slug}/materiales?nombre=${encodeURIComponent(f.name)}`, f);
   }
-  if (archivos.length)
+  if (archivos.length) {
     document.getElementById("subidos").textContent = t("wz_subidos", { n: archivos.length });
+    try {
+      await post(`/api/cursos/${slug}/indexar`);
+      const r = await fetch(`/api/cursos/${slug}/sugerencias`).then(x => x.json());
+      const s = r.sugerencias || {};
+      [["rol_dominio", 0], ["contexto_curso", 4]].forEach(([clave, i]) => {
+        if (!s[clave]) return;
+        COMPONENTES[i][2] = s[clave];
+        const campo = document.getElementById("campo-" + clave);
+        if (campo && !campo.value.trim()) campo.value = s[clave];
+      });
+    } catch (e) { /* las sugerencias son opcionales: no frenan el wizard */ }
+  }
   mostrar(1);
 });
 

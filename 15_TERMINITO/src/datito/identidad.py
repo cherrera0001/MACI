@@ -132,3 +132,38 @@ def revertir(curso, version: str) -> Path:
     versionar(curso, motivo=f"revertir a {version}")
     shutil.copy2(src, curso.ruta("prompt", "actual.md"))
     return curso.ruta("prompt", "actual.md")
+
+
+def sugerencias(curso) -> dict:
+    """Borradores editables de rol_dominio y contexto_curso desde el indice.
+
+    Devuelve {} si el curso aun no tiene indice. El estudiante siempre puede
+    sobreescribirlas: son defaults, no decisiones del sistema.
+    """
+    p = curso.ruta(".indice")
+    if not p.exists():
+        return {}
+    from .indice import Indice
+    indice = Indice.cargar(p)
+    if not indice.vectores:
+        return {}
+    acum: dict[str, float] = {}
+    for vec in indice.vectores.values():
+        for termino, peso in vec.items():
+            acum[termino] = acum.get(termino, 0.0) + peso
+    stop = {"sobre", "despues", "cuando", "entonces", "porque", "ademas",
+            "tambien", "estamos", "aqui", "hacer"}
+    terminos = [t for t in sorted(acum, key=acum.get, reverse=True)
+                if len(t) > 4 and t not in stop][:5]
+    fuentes: list[str] = []
+    for fuente, _ in indice.referencias.values():
+        if fuente not in fuentes:
+            fuentes.append(fuente)
+    nombre = curso.datos.get("nombre", curso.slug)
+    contexto = (f"Curso «{nombre}». Materiales ({len(fuentes)} fuentes): "
+                + ", ".join(f.replace("-", " ") for f in fuentes[:4])
+                + (f" y {len(fuentes) - 4} mas." if len(fuentes) > 4 else "."))
+    if terminos:
+        contexto += " Temas centrales: " + ", ".join(terminos) + "."
+    return {"rol_dominio": f"Tutor experto en {nombre}",
+            "contexto_curso": contexto}

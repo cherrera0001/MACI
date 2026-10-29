@@ -94,7 +94,8 @@ def cmd_build(args) -> int:
 def cmd_identidad(args) -> int:
     curso = cargar(args.slug)
     if args.accion == "wizard":
-        identidad.wizard(curso)
+        defaults = identidad.sugerencias(curso) or None
+        identidad.wizard(curso, defaults=defaults)
         identidad.generar_prompt(curso)
         print("prompt/actual.md generado y versionado.")
     elif args.accion == "ver":
