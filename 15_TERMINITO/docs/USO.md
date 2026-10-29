@@ -46,10 +46,12 @@ modelo `TERMITO_MODELO`, default `qwen2.5:3b`).
   `conceptos` (≥2 vecinos del grafo), `pregunta`, `criterios`, `pasos`,
   `solucion`. Sin ≥2 conceptos no es distinción (se rechaza).
 
-## Limitaciones conocidas (v0.1)
+## Limitaciones conocidas
 
 - Los `_plano.txt` duplican contenido de las transcripciones `.md` (doble
   fragmento); limpieza pendiente.
 - La heurística de calificación compara raíces de 5 caracteres (español simple);
-  con Ollama la rúbrica es la vía principal.
-- La UI web es un placeholder: el hito MVP es CLI (spec: US5–US7 post-MVP).
+  con Ollama la rúbrica es la vía principal. Sus resultados se rotulan como de
+  baja confianza (ver `calificar` en `evaluador.py`).
+- La UI web (5 pantallas: home, wizard, chat, eval, panel) está operativa;
+  `chat` es el punto de entrada principal y el CLI sigue siendo de primera clase.

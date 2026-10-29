@@ -56,6 +56,7 @@ def copiar_motor():
     for f in ("pyproject.toml", "README.md"):
         shutil.copy2(MOTOR / f, dest / f)
     shutil.copytree(MOTOR / "docs", dest / "docs")
+    shutil.copy2(RAIZ / "LICENSE", dest / "LICENSE")
 
 
 def copiar_curso():
@@ -97,6 +98,7 @@ def copiar_curso():
 def copiar_lanzadores():
     for f in ("start.py", "start.sh", "start.bat", "LEEME.txt"):
         shutil.copy2(DIST_SRC / f, PAQUETE / f)
+    shutil.copy2(RAIZ / "LICENSE", PAQUETE / "LICENSE")
     (PAQUETE / "start.sh").chmod(0o755)
 
 

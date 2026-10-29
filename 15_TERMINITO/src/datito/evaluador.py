@@ -35,6 +35,7 @@ class ResultadoItem:
     resultado: str
     retroalimentacion: str
     criterios_logrados: list[str] = field(default_factory=list)
+    heuristico: bool = False  # True = calificado sin LLM (baja confianza)
 
 
 def cargar_items(curso) -> list[Item]:
@@ -93,7 +94,9 @@ def _calificar_heuristica(item: Item, respuesta: str) -> ResultadoItem:
     n, total = len(logrados), max(1, len(item.criterios))
     resultado = "logrado" if n >= total else ("parcial" if n >= (total + 1) // 2 else "no_logrado")
     return ResultadoItem(item, respuesta, resultado,
-                         f"Criterios logrados: {n}/{total}", logrados)
+                         f"Criterios logrados: {n}/{total} (calificacion heuristica de "
+                         "BAJA CONFIANZA: compara palabras clave, no razonamiento; con "
+                         "Ollama la rubrica evalua de verdad)", logrados, heuristico=True)
 
 
 def guardar_resultado(curso, res: ResultadoItem):
@@ -102,6 +105,7 @@ def guardar_resultado(curso, res: ResultadoItem):
     datos["resultados"].append({
         "item_id": res.item.id, "conceptos": res.item.conceptos,
         "resultado": res.resultado, "retroalimentacion": res.retroalimentacion,
+        "heuristico": res.heuristico,
         "fecha": __import__("datetime").date.today().isoformat(),
     })
     p.write_text(yaml.safe_dump(datos, allow_unicode=True, sort_keys=False), encoding="utf-8")

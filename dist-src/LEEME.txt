@@ -1,4 +1,4 @@
-TERMITO — tu tutor, disenado por ti
+Datito — tu tutor, disenado por ti
 ==================================
 
 1. Descomprime este ZIP.

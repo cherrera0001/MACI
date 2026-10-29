@@ -260,6 +260,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json({
                     "item_id": item.id, "resultado": res.resultado,
                     "retroalimentacion": res.retroalimentacion,
+                    "confianza": "baja" if res.heuristico else "alta",
                     "criterios": [{"criterio": c, "logrado": c in res.criterios_logrados}
                                   for c in item.criterios],
                     "sesion": {"n": n, "logradas": ok}})

@@ -1,4 +1,4 @@
-# Datito — MACI 1.0 (MVP)
+# Datito — MACI 1.1
 
 Motor de tutores agenticos **diseñados por el estudiante** a partir de los materiales
 reales de su curso. Offline-first, sin frameworks pesados, datos en archivos legibles.
@@ -78,7 +78,7 @@ más relevantes sin generar explicaciones. Todo lo demás funciona igual.
 ```
 src/datito/    motor (fragmentos, índice TF-IDF, evidencia, llm, identidad,
                 tutor, lucha, dudas, evaluador, grafo, progreso, cli)
-src/web/        placeholder (UI en post-MVP)
+src/web/        interfaz web (5 pantallas: home, wizard, chat, eval, panel)
 tests/          pytest
 cursos/<slug>/  un curso = un directorio autocontenido (data-model.md)
 docs/USO.md     documentación de uso del engine

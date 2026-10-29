@@ -189,6 +189,9 @@ def cmd_eval(args) -> int:
         grafo.actualizar_dominio(curso, item.conceptos, res.resultado)
         n, ok = progreso.contar_distincion(curso, res.resultado == "logrado")
         print(f"  {res.resultado.upper()} — {res.retroalimentacion}")
+        if res.heuristico:
+            print("  [aviso] calificacion heuristica de BAJA CONFIANZA; con Ollama "
+                  "la rubrica evalua el razonamiento de verdad")
         print(f"  [{ok}/{n} distinciones de esta sesion]\n")
     datos = progreso.cargar(curso)
     datos["metricas"]["evaluaciones_completadas"] += 1
