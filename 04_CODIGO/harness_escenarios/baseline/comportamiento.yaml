@@ -1,0 +1,14 @@
+demo:
+  estado_final: DOMINADO
+  violaciones: 0
+  esperas: 3/4
+flujo:
+  fuentes: 1
+  fragmentos: 4
+  cadenas: 1
+  nodos: 2
+  item_guardado: d1
+  eval_procedural: logrado
+  eval_eventos:
+  - brecha
+  - etiquetar

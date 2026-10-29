@@ -33,21 +33,34 @@ def _patrones_excluir_material(nombre: str) -> list[str]:
     return p
 
 
+# Dependencias del zip distribuible (principales). docx/pptx son opcionales
+# ([docs]) y no se empaquetan: mantienen el zip bajo el límite de 10 MB del
+# contrato; los parsers degradan con aviso si faltan.
+DEPENDENCIAS = ["pyyaml", "jinja2", "markdown", "pypdf"]
+
+
 def descargar_wheels():
     # Cache persistente entre builds (dist/wheels): se descarga solo si falta.
     cache = SALIDA / "wheels"
     if not (cache.exists() and any(cache.iterdir())):
         cache.mkdir(parents=True, exist_ok=True)
         cmd = [sys.executable, "-m", "pip", "download", "--only-binary=:all:",
-               "-d", str(cache), "pyyaml", "jinja2", "markdown", "pypdf",
-               "python-docx", "python-pptx"]
+               "-d", str(cache), *DEPENDENCIAS]
         r = subprocess.run(cmd)
         if r.returncode != 0:
             # los venvs de uv no traen pip: usar el pip del sistema
             subprocess.run(["pip3", "download", "--only-binary=:all:",
-                            "-d", str(cache), "pyyaml", "jinja2", "markdown",
-                            "pypdf"], check=True)
-    shutil.copytree(cache, PAQUETE / "wheels")
+                            "-d", str(cache), *DEPENDENCIAS], check=True)
+    destino = PAQUETE / "wheels"
+    if destino.exists():
+        shutil.rmtree(destino)
+    destino.mkdir(parents=True)
+    for whl in sorted(cache.glob("*.whl")):
+        # el cache puede conservar wheels de dependencias opcionias viejas:
+        # solo empaquetamos las del distribuible
+        if whl.name.split("-")[0].lower() in {d.lower() for d in DEPENDENCIAS} \
+                or whl.name.lower().startswith(("markupsafe", "typing_extensions")):
+            shutil.copy2(whl, destino)
 
 
 def copiar_motor():

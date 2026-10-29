@@ -38,6 +38,35 @@ def lesson_id_o_error(lesson_id: str) -> str:
     return lesson_id
 
 
+def adjuntar_traza(lesson_id: str, traza: dict,
+                   lecciones=None, dir_trazas=None) -> Path:
+    """Adjunta la evidencia ligera de la corrida a la lección (T-8.4.1).
+
+    Guarda la traza (salida del eval, gate, decisión) en
+    learning_loop/trazas/<lesson_id>.json y referencia el archivo en la
+    entrada de la lección con una edición de texto mínima que PRESERVA los
+    comentarios de agent_lessons.yaml (pyyaml los destruiría).
+    """
+    import json
+
+    lecciones = Path(lecciones) if lecciones else LOOP / "agent_lessons.yaml"
+    dir_trazas = Path(dir_trazas) if dir_trazas else LOOP / "trazas"
+    dir_trazas.mkdir(parents=True, exist_ok=True)
+    destino = dir_trazas / f"{lesson_id}.json"
+    destino.write_text(json.dumps(traza, ensure_ascii=False, indent=2),
+                       encoding="utf-8")
+    lineas = lecciones.read_text(encoding="utf-8").splitlines()
+    id_linea = next((i for i, l in enumerate(lineas)
+                     if l.strip() == f"- id: {lesson_id}"), None)
+    if id_linea is None:
+        return destino  # lección aún no archivada: la traza queda en trazas/
+    siguiente = lineas[id_linea + 1] if id_linea + 1 < len(lineas) else ""
+    if "traza:" not in siguiente:
+        lineas.insert(id_linea + 1, f'    traza: "trazas/{destino.name}"')
+        lecciones.write_text("\n".join(lineas) + "\n", encoding="utf-8")
+    return destino
+
+
 def contrato_de(path: Path) -> dict | None:
     """Contrato de contrato_conocimiento.yaml que cubre este target, parseado.
 
@@ -164,6 +193,17 @@ def main() -> int:
     except SystemExit as e:
         print(e, file=sys.stderr)
         return 2
+    traza = {
+        "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "target_file": args.path,
+        "hypothesis": args.hypothesis,
+        "decision": decision,
+        "score": data.get("score"),
+        "eval": data,
+        "gate": gate if decision == "keep" else None,
+        "stderr": proc.stderr[-2000:],
+    }
+    ruta_traza = adjuntar_traza(lesson, traza)
     append_result(
         {
             "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -177,6 +217,7 @@ def main() -> int:
         }
     )
     print(f"decision={decision} logged -> {RESULTS}")
+    print(f"traza adjunta a la lección -> {ruta_traza}")
     print("Recuerda: si discard, NO dejes el diseno roto; vuelve al template v1.")
     return 0 if decision == "keep" else 1
 

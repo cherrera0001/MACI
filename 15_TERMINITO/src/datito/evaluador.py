@@ -169,13 +169,15 @@ def agregar_item(curso, raw: dict, ids_grafo: set[str] | None = None) -> Item:
     item_id = str(raw.get("id", "")).strip() or _siguiente_id(curso, conceptos[0])
     item = Item(id=item_id, conceptos=conceptos, pregunta=pregunta, criterios=criterios,
                 pasos=[str(p).strip() for p in raw.get("pasos", []) if str(p).strip()],
-                solucion=str(raw.get("solucion", "")).strip())
+                solucion=str(raw.get("solucion", "")).strip(),
+                protocolo=[dict(r) for r in raw.get("protocolo", []) if isinstance(r, dict)])
     p = curso.ruta("evaluaciones", "web.yaml")
     datos = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {"items": []}
     datos = datos or {"items": []}
     datos["items"].append({"id": item.id, "conceptos": item.conceptos,
                            "pregunta": item.pregunta, "criterios": item.criterios,
-                           "pasos": item.pasos, "solucion": item.solucion})
+                           "pasos": item.pasos, "solucion": item.solucion,
+                           "protocolo": item.protocolo})
     p.write_text(yaml.safe_dump(datos, allow_unicode=True, sort_keys=False),
                  encoding="utf-8")
     return item

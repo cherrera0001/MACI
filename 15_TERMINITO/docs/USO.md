@@ -52,6 +52,9 @@ modelo `TERMITO_MODELO`, default `qwen2.5:3b`).
 - Grafo: `datito build` genera `grafo/grafo.yaml` desde los encabezados de los
   materiales si no existe (`--regenerar-grafo` lo recrea). Es un punto de
   partida editable, no la verdad pedagógica.
+- docx/pptx: parsers opcionales (`uv pip install -e ".[docs]"`). El zip
+  distribuible no los trae (límite de 10 MB del contrato): sin ellos, los
+  archivos docx/pptx se saltan con un aviso que indica cómo instalarlos.
 
 ## Limitaciones conocidas
 
