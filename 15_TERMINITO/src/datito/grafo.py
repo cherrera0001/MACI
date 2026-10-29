@@ -4,14 +4,28 @@ grafo/grafo.yaml   — estructura (nodos, viene_de/habilita) migrada de v0.0.1
 grafo/dominio.yaml — estado por nodo (no_estudiado..dominado)
 Panel textual con colores ANSI; gating: solo se muestran nodos cuyos
 prerrequisitos estan dominados/en_estudio; escape "revelar mapa completo".
+
+`generar` construye un grafo inicial desde los encabezados de los materiales
+(H-7.1): cada fuente md/html aporta una cadena con sus encabezados en orden;
+los prerequisitos siguen ese orden. El grafo generado es un punto de partida,
+no la verdad pedagogica: el docente lo edita a mano.
 """
 from __future__ import annotations
 
+import datetime
+import re
 from pathlib import Path
 
 import yaml
 
 from .config import ESTADOS_DOMINIO
+from .fragmentos import norm_id
+
+HEAD_MD_RE = re.compile(r"^#{1,4}\s+(.+?)\s*#*\s*$", re.M)
+HEAD_HTML_RE = re.compile(r"<h[1-4][^>]*>(.*?)</h[1-4]>", re.S | re.I)
+TAG_RE = re.compile(r"<[^>]+>")
+MAX_NODOS = 20
+MAX_POR_CADENA = 8
 
 COLOR = {"no_estudiado": "\033[90m", "en_estudio": "\033[33m",
          "comprendido": "\033[36m", "dominado": "\033[32m", "fin": "\033[0m"}
@@ -112,3 +126,96 @@ def panel(curso, mapa_completo: bool = False, color: bool = True) -> str:
     if not mapa_completo:
         lineas.append("\n(mostando solo lo desbloqueado; 'datito status --mapa' revela todo)")
     return "\n".join(lineas)
+
+
+# ── generación desde materiales (H-7.1) ──────────────────────────────────────
+
+def _encabezados(ruta: Path) -> list[str]:
+    """Títulos de sección de un material md/html; [] para otros formatos."""
+    if ruta.suffix.lower() in (".html", ".htm"):
+        return [TAG_RE.sub("", m).strip() for m in HEAD_HTML_RE.findall(ruta.read_text(
+            encoding="utf-8", errors="ignore"))]
+    if ruta.suffix.lower() in (".md", ".markdown"):
+        return [m.strip() for m in HEAD_MD_RE.findall(ruta.read_text(
+            encoding="utf-8", errors="ignore"))]
+    return []
+
+
+def generar(curso, indice=None, solo_si_falta: bool = True) -> Path | None:
+    """Genera grafo/grafo.yaml desde los encabezados de los materiales.
+
+    Cada fuente con encabezados aporta una cadena (sus secciones en orden de
+    aparición, hasta MAX_POR_CADENA); los prerequisitos (viene_de/habilita)
+    siguen ese orden. Si ``solo_si_falta`` y ya existe grafo.yaml, no toca nada.
+    Devuelve la ruta escrita o None si no generó.
+    """
+    destino = curso.ruta("grafo", "grafo.yaml")
+    if solo_si_falta and destino.exists():
+        return None
+    base = curso.ruta("materiales")
+    conteo: dict[str, dict] = {}
+    orden: list[str] = []
+    cadenas: dict[str, list[str]] = {}
+    if base.exists():
+        for ruta in sorted(base.rglob("*")):
+            if not ruta.is_file() or ruta.suffix.lower() not in \
+                    (".md", ".markdown", ".html", ".htm"):
+                continue
+            titulos = _encabezados(ruta)
+            if not titulos:
+                continue
+            miembros = []
+            for titulo in titulos[:MAX_POR_CADENA]:
+                cid = norm_id(titulo)
+                if not cid or len(titulo.split()) > 10:
+                    continue
+                if cid not in conteo:
+                    conteo[cid] = {"nombre": titulo, "visto": []}
+                    orden.append(cid)
+                conteo[cid]["visto"].append(ruta.stem)
+                if cid not in miembros:
+                    miembros.append(cid)
+            if miembros:
+                cadenas[norm_id(ruta.stem)[:40] or "material"] = miembros
+    if not conteo:
+        return None
+    top = sorted(conteo, key=lambda c: (-len(conteo[c]["visto"]), orden.index(c)))[:MAX_NODOS]
+
+    nodos: dict[str, dict] = {}
+    for cadena, miembros in cadenas.items():
+        previo = None
+        for cid in miembros:
+            if cid not in top:
+                continue
+            nodo = nodos.setdefault(cid, {
+                "nombre": conteo[cid]["nombre"], "viene_de": [],
+                "habilita": [], "habilita_indirectamente": [], "evidencia": []})
+            if previo and previo != cid:
+                nodo["viene_de"].append(previo)
+            resto = [m for m in miembros[miembros.index(cid) + 1:] if m in top]
+            if resto:
+                nodo["habilita"].append(resto[0])
+                nodo["habilita_indirectamente"].extend(resto[1:])
+            previo = cid
+
+    if indice is not None:
+        for cid, nodo in nodos.items():
+            aguja = nodo["nombre"][:40]
+            nodo["evidencia"] = [fid for fid, texto in indice.textos.items()
+                                 if aguja in texto][:3]
+
+    datos = {
+        "meta": {
+            "descripcion": "Generado por datito.grafo.generar desde los encabezados "
+                           "de los materiales. Editable: es un punto de partida, no "
+                           "la verdad pedagogica.",
+            "generado": datetime.date.today().isoformat(),
+        },
+        "conceptos": nodos,
+        "cadenas": {nombre: [m for m in miembros if m in top]
+                    for nombre, miembros in cadenas.items() if any(m in top for m in miembros)},
+    }
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_text(yaml.safe_dump(datos, allow_unicode=True, sort_keys=False),
+                       encoding="utf-8")
+    return destino

@@ -1,0 +1,22 @@
+# Plantilla de distinción (H-7.2).
+# Una distinción separa dos conceptos VECINOS del grafo: no es una pregunta de
+# memoria, es la frontera entre dos ideas que se confunden.
+# Copia este bloque en cursos/<slug>/evaluaciones/<tema>.yaml (uno o más ítems
+# por archivo; todos los .yaml de esa carpeta se cargan).
+# También puedes crear ítems desde el wizard web (Crear Datito → paso de
+# distinciones), que valida los conceptos contra el grafo y los guarda en
+# evaluaciones/web.yaml.
+items:
+  - id: d1-ejemplo-brecha            # identificador único y estable
+    conceptos: [concepto_a, concepto_b]   # ≥2 ids que existan en grafo/grafo.yaml
+    pregunta: >-
+      Plantilla con datos del curso: obliga a decidir cuál es cuál y a
+      justificar con la cifra o el criterio del material.
+    criterios:                            # todos deben cumplirse para «logrado»
+      - criterio observable 1 (empieza con verbo: calcula, distingue, explica)
+      - criterio observable 2
+    pasos:                                # opcional: pistas para la lucha productiva
+      - "Paso 1: una pregunta que acerque sin resolver"
+      - "Paso 2: otra pregunta, un poco más cerca"
+    solucion: >-                          # opcional: se revela solo tras el intento
+      La frontera conceptual en una frase, con la evidencia del curso.

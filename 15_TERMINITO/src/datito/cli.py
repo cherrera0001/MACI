@@ -71,6 +71,9 @@ def cmd_build(args) -> int:
     indice = Indice().construir(frags)
     indice.guardar(curso.ruta(".indice"))
     print(f"fuentes: {len(fuentes)} · fragmentos: {len(frags)}")
+    g = grafo.generar(curso, indice, solo_si_falta=not args.regenerar_grafo)
+    if g:
+        print(f"grafo generado desde los materiales: {g} (editable; --regenerar-grafo lo recrea)")
     for a in advertencias:
         print(f"  [advertencia] sin fragmentos: {a}")
     # prompt del Datito
@@ -278,6 +281,8 @@ def main(argv=None) -> int:
 
     p = sub.add_parser("build", help="parsea materiales, construye indice y prompt")
     p.add_argument("slug")
+    p.add_argument("--regenerar-grafo", action="store_true",
+                   help="recrea grafo/grafo.yaml desde los encabezados de los materiales")
     p.set_defaults(fn=cmd_build)
 
     p = sub.add_parser("identidad", help="constructor de identidad del Datito")

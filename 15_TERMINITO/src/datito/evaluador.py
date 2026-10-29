@@ -116,3 +116,47 @@ def cargar_resultados_guardados(curso) -> list[dict]:
     if not p.exists():
         return []
     return (yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get("resultados", [])
+
+
+# ── creación de ítems desde la web (H-7.2) ───────────────────────────────────
+
+def agregar_item(curso, raw: dict, ids_grafo: set[str] | None = None) -> Item:
+    """Valida y agrega un ítem de distinción (al archivo evaluaciones/web.yaml).
+
+    Valida: ≥2 conceptos; si se pasa ids_grafo, los conceptos deben existir en
+    el grafo; pregunta y al menos un criterio no vacíos. ValueError con mensaje
+    legible si algo falla.
+    """
+    pregunta = str(raw.get("pregunta", "")).strip()
+    criterios = [str(c).strip() for c in raw.get("criterios", []) if str(c).strip()]
+    conceptos = [str(c).strip() for c in raw.get("conceptos", []) if str(c).strip()]
+    if len(conceptos) < 2:
+        raise ValueError("se requieren >=2 conceptos vecinos: sin eso no es distincion")
+    if ids_grafo is not None:
+        faltan = [c for c in conceptos if c not in ids_grafo]
+        if faltan:
+            raise ValueError(f"conceptos fuera del grafo: {', '.join(faltan)}")
+    if not pregunta:
+        raise ValueError("la pregunta no puede estar vacia")
+    if not criterios:
+        raise ValueError("se requiere al menos un criterio de rubrica")
+    item_id = str(raw.get("id", "")).strip() or _siguiente_id(curso, conceptos[0])
+    item = Item(id=item_id, conceptos=conceptos, pregunta=pregunta, criterios=criterios,
+                pasos=[str(p).strip() for p in raw.get("pasos", []) if str(p).strip()],
+                solucion=str(raw.get("solucion", "")).strip())
+    p = curso.ruta("evaluaciones", "web.yaml")
+    datos = yaml.safe_load(p.read_text(encoding="utf-8")) if p.exists() else {"items": []}
+    datos = datos or {"items": []}
+    datos["items"].append({"id": item.id, "conceptos": item.conceptos,
+                           "pregunta": item.pregunta, "criterios": item.criterios,
+                           "pasos": item.pasos, "solucion": item.solucion})
+    p.write_text(yaml.safe_dump(datos, allow_unicode=True, sort_keys=False),
+                 encoding="utf-8")
+    return item
+
+
+def _siguiente_id(curso, concepto: str) -> str:
+    from .fragmentos import norm_id
+    base = norm_id(concepto)[:20] or "distincion"
+    n = len(cargar_items(curso)) + 1
+    return f"d{n}-web-{base}"
