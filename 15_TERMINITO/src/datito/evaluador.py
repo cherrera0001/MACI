@@ -81,12 +81,26 @@ Responde SOLO una linea: RESULTADO: no_logrado|parcial|logrado | RETRO: <una fra
         return _calificar_heuristica(item, respuesta)
 
 
+VERBOS_CRITERIO = {"identifica", "menciona", "explica", "nombra", "calcula",
+                   "distingue", "describe", "reconoce", "compara", "justifica",
+                   "demuestra", "define", "enumera", "indica", "plantea",
+                   "resume", "senala", "argumenta", "explicar", "identificar",
+                   "mencionar", "calcular"}
+
+
 def _criterio_logrado(criterio: str, respuesta: str) -> bool:
-    """Heuristica: el criterio se considera logrado si su token principal (raiz
-    de 5 chars) aparece en la respuesta. Morfologia espanol simple."""
-    claves = [t for t in tokenizar(criterio) if len(t) > 4]
+    """Heuristica: el criterio se considera logrado si la MAYORIA de sus
+    tokens de contenido (raiz de 5 chars) aparece en la respuesta. Los verbos
+    de la orden ("identifica", "menciona"...) no cuentan: el estudiante cumple
+    la accion sin escribir el verbo. Exigir la mayoria (no cualquiera) frena
+    el keyword-stuffing."""
+    claves = [t for t in tokenizar(criterio)
+              if len(t) > 4 and t not in VERBOS_CRITERIO]
+    if not claves:
+        return False
     baja = respuesta.lower()
-    return any(t[:5] in baja for t in claves)
+    presentes = sum(1 for t in claves if t[:5] in baja)
+    return presentes > len(claves) / 2
 
 
 def _calificar_heuristica(item: Item, respuesta: str) -> ResultadoItem:

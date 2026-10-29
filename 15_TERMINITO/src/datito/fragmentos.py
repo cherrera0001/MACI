@@ -100,8 +100,9 @@ def _extraer_texto(ruta: Path) -> list[tuple[str, str]]:
 
 def _empaquetar(partes: list[tuple[str, str]], fid_base: str) -> list[Fragmento]:
     """Fusiona partes en fragmentos de TAMANO_MAX palabras. Una referencia de
-    seccion (prefijo '#') cierra el fragmento actual: las secciones son unidades
-    semanticas propias aunque sean cortas."""
+    seccion (prefijo '#') o de unidad direccionable (prefijo '@': diapositiva,
+    párrafo) cierra el fragmento actual: son fronteras semanticas propias
+    aunque sean cortas. El prefijo '@' no se guarda en la referencia."""
     out, buffer, ref, n = [], [], None, 0
 
     def volcar():
@@ -109,8 +110,9 @@ def _empaquetar(partes: list[tuple[str, str]], fid_base: str) -> list[Fragmento]
         if buffer:
             n += 1
             texto = " ".join(buffer)
+            referencia = (ref[1:] if str(ref).startswith("@") else ref) or "inicio"
             out.append(Fragmento(fid=f"{fid_base}#{n}", fuente_id=fid_base,
-                                 referencia=ref or "inicio", texto=texto,
+                                 referencia=referencia, texto=texto,
                                  tokens=len(texto.split())))
             buffer = []
     for referencia, texto in partes:
@@ -119,7 +121,7 @@ def _empaquetar(partes: list[tuple[str, str]], fid_base: str) -> list[Fragmento]
                   for i in range(0, len(palabras_texto), TAMANO_MAX)] or [[]]
         for trozo in trozos:
             palabras = len(trozo)
-            es_seccion = str(referencia).startswith("#")
+            es_seccion = str(referencia).startswith(("#", "@"))
             if es_seccion:
                 volcar()          # frontera semantica: cerrar lo anterior
                 ref = referencia
@@ -131,11 +133,46 @@ def _empaquetar(partes: list[tuple[str, str]], fid_base: str) -> list[Fragmento]
             if palabras >= TAMANO_MIN:
                 volcar()
                 ref = None
-        if trozos and str(referencia).startswith("#"):
+        if trozos and str(referencia).startswith(("#", "@")):
             volcar()              # la seccion completa es un fragmento propio
             ref = None
     volcar()
     return out
+
+
+def _extraer_docx(ruta: Path) -> list[tuple[str, str]]:
+    """Por párrafo no vacío. Requiere python-docx; si falta, avisa."""
+    try:
+        import docx
+    except ImportError:
+        raise RuntimeError(
+            "python-docx no instalado: pip install python-docx "
+            "(o indexa solo md/txt/html/pdf/pptx)")
+    partes = []
+    for i, parrafo in enumerate(docx.Document(str(ruta)).paragraphs, start=1):
+        if parrafo.text.strip():
+            partes.append((f"@párrafo {i}", parrafo.text.strip()))
+    return partes or [("inicio", "")]
+
+
+def _extraer_pptx(ruta: Path) -> list[tuple[str, str]]:
+    """Por diapositiva: título + cuerpos de texto. Requiere python-pptx."""
+    try:
+        from pptx import Presentation
+    except ImportError:
+        raise RuntimeError(
+            "python-pptx no instalado: pip install python-pptx "
+            "(o indexa solo md/txt/html/pdf/docx)")
+    partes = []
+    for n, diapositiva in enumerate(Presentation(str(ruta)).slides, start=1):
+        textos = []
+        for forma in diapositiva.shapes:
+            if forma.has_text_frame:
+                textos.append(forma.text_frame.text.strip())
+        cuerpo = "\n".join(t for t in textos if t)
+        if cuerpo:
+            partes.append((f"@diapositiva {n}", cuerpo))
+    return partes or [("inicio", "")]
 
 
 def parsear_fuente(ruta: Path) -> tuple[Fuente, list[Fragmento]]:
@@ -145,6 +182,10 @@ def parsear_fuente(ruta: Path) -> tuple[Fuente, list[Fragmento]]:
         partes = _extraer_pdf(ruta)
     elif tipo in ("html", "htm"):
         partes = _extraer_html(ruta)
+    elif tipo == "docx":
+        partes = _extraer_docx(ruta)
+    elif tipo == "pptx":
+        partes = _extraer_pptx(ruta)
     else:
         partes = _extraer_texto(ruta)
     return fuente, _empaquetar(partes, fuente.id)
@@ -152,7 +193,7 @@ def parsear_fuente(ruta: Path) -> tuple[Fuente, list[Fragmento]]:
 
 def parsear_materiales(rutas: list[Path]) -> tuple[list[Fuente], list[Fragmento]]:
     """Expande directorios, sigue symlinks; parsea cada archivo soportado."""
-    SOPORTADOS = {".md", ".txt", ".pdf", ".html", ".htm"}
+    SOPORTADOS = {".md", ".txt", ".pdf", ".html", ".htm", ".docx", ".pptx"}
     fuentes, fragmentos = [], []
     for ruta in rutas:
         ruta = Path(ruta)

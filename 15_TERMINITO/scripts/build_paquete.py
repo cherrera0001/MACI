@@ -39,7 +39,8 @@ def descargar_wheels():
     if not (cache.exists() and any(cache.iterdir())):
         cache.mkdir(parents=True, exist_ok=True)
         cmd = [sys.executable, "-m", "pip", "download", "--only-binary=:all:",
-               "-d", str(cache), "pyyaml", "jinja2", "markdown", "pypdf"]
+               "-d", str(cache), "pyyaml", "jinja2", "markdown", "pypdf",
+               "python-docx", "python-pptx"]
         r = subprocess.run(cmd)
         if r.returncode != 0:
             # los venvs de uv no traen pip: usar el pip del sistema

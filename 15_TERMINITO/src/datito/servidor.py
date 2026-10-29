@@ -150,6 +150,8 @@ class Handler(BaseHTTPRequestHandler):
                     nodos = grafo.cargar_grafo(cargar(slug))["nodos"]
                     return self._json({"conceptos": [
                         {"id": c, "nombre": n.get("nombre", c)} for c, n in nodos.items()]})
+                if recurso == "sugerencias":
+                    return self._json({"sugerencias": identidad.sugerencias(cargar(slug))})
                 if recurso == "fragmento":
                     qs = parse_qs(u.query)
                     fid = qs.get("fid", [""])[0]
@@ -200,6 +202,11 @@ class Handler(BaseHTTPRequestHandler):
                 resumen = _build(curso, componentes,
                                  regenerar_grafo=bool(d.get("regenerar_grafo")))
                 return self._json(resumen)
+            if recurso == "indexar":
+                try:
+                    return self._json(_indexar(curso))
+                except RuntimeError as e:
+                    return self._error("sin_contenido", str(e), 422)
             if recurso == "mensajes" and len(partes) == 4:
                 if curso.estado == "cerrado":
                     return self._error(
@@ -345,8 +352,8 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-def _build(curso, componentes: dict, regenerar_grafo: bool = False) -> dict:
-    """Parsea materiales + indice + prompt (equivalente a 'datito build')."""
+def _indexar(curso, regenerar_grafo: bool = False) -> dict:
+    """Parsea materiales + indice + grafo (sin prompt): indexación temprana."""
     rutas = [p for p in curso.ruta("materiales").iterdir()] \
         if curso.ruta("materiales").exists() else []
     fuentes, frags = frag.parsear_materiales(rutas)
@@ -365,10 +372,16 @@ def _build(curso, componentes: dict, regenerar_grafo: bool = False) -> dict:
     indice = Indice().construir(frags)
     indice.guardar(curso.ruta(".indice"))
     grafo.generar(curso, indice, solo_si_falta=not regenerar_grafo)
+    return {"fuentes": len(fuentes), "fragmentos": len(frags)}
+
+
+def _build(curso, componentes: dict, regenerar_grafo: bool = False) -> dict:
+    """Parsea materiales + indice + prompt (equivalente a 'datito build')."""
+    resumen = _indexar(curso, regenerar_grafo)
     prompt = identidad.generar_prompt(curso, componentes)
     if curso.estado == "configurando":
         curso.transicionar("listo")
-    return {"fuentes": len(fuentes), "fragmentos": len(frags),
+    return {**resumen,
             "prompt": prompt.read_text(encoding="utf-8")[:4000]}
 
 
