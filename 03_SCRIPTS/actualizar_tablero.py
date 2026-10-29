@@ -24,7 +24,8 @@ PROYECTO = "PVT_kwHOASvtSs4Bkwxr"
 Q = """query {
   node(id: "%s") {
     ... on ProjectV2 {
-      items(first: 100) {
+      items(first: 100, after: %%s) {
+        pageInfo { hasNextPage endCursor }
         nodes {
           content { ... on Issue { number title state } }
           fieldValues(first: 20) {
@@ -42,15 +43,27 @@ Q = """query {
 
 
 def _gql() -> dict:
-    r = subprocess.run(["gh", "api", "graphql", "-f", f"query={Q}"],
-                       capture_output=True, text=True, timeout=60)
-    if r.returncode != 0:
-        raise RuntimeError(r.stderr.strip()[:200])
-    return json.loads(r.stdout)
+    items, cursor, paginas = [], None, 0
+    while True:
+        r = subprocess.run(["gh", "api", "graphql", "-f",
+                            f"query={Q % json.dumps(cursor)}"],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            raise RuntimeError(r.stderr.strip()[:200])
+        nodo = json.loads(r.stdout)["data"]["node"]
+        items.extend(nodo["items"]["nodes"])
+        paginas += 1
+        info = nodo["items"]["pageInfo"]
+        if not info["hasNextPage"]:
+            break
+        cursor = info["endCursor"]
+        if paginas > 10:  # guard: el proyecto no tiene 1000 ítems
+            raise RuntimeError("paginación sin fin en el Project")
+    return {"items": items}
 
 
 def main() -> int:
-    datos = _gql()["data"]["node"]["items"]["nodes"]
+    datos = _gql()["items"]
     items = {}
     for n in datos:
         c = n.get("content") or {}

@@ -52,6 +52,11 @@
 | ✅ #106 | [T-7.3.3] Sumar un smoke test del zip: descomprimir, `datito demo`, y grep de contradicciones de marca | Done | Tarea · P1 · P3 Verificar y publicar |
 | ✅ #115 | [H-8.1] Como estudiante, quiero que las lecciones muestren corridas reales capturadas y reejecutables en vez de cifras de ejemplo, para creer lo que veo y verificarlo yo mismo | Done | Historia · P1 · P2 Estudiar con Datito |
 | ✅ #116 | [T-8.1.1] Definir el formato de lección con evidencia embebida (visual + captura REA + re-ejecución con seed fija) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #117 | [T-8.1.2] Migrar la clase de la brecha (d1) como caso piloto a evidencia viva | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #118 | [H-8.2] Como estudiante, quiero que el dominio se evalúe sobre mi procedimiento real en una terminal sandbox (orden de pasos), no solo sobre mi texto, para que 'calcula la brecha antes de etiquetar' sea verificable | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #119 | [T-8.2.1] Implementar el sandbox de ejecución acotado (stdlib: sin red, timeout, directorio efímero, stdlib-only) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #121 | [T-8.2.3] Integrar el resultado de traza con sesion.py (lucha productiva) y grafo.actualizar_dominio | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ⬜ #122 | [D-8.1] ¿REA vive solo en el pipeline de construcción/CI o también en el runtime del paquete distribuible? | Todo | Decisión · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -80,6 +85,10 @@
 | ✅ #111 | [T-7.5.1] Agregar parsers docx/pptx (python-docx, python-pptx) con referencia por diapositiva/sección | Done | Tarea · P2 · P3 Verificar y publicar |
 | ✅ #112 | [H-7.6] Como estudiante, quiero que el wizard me sugiera los 8 componentes de identidad a partir de mis materiales, para no partir de una hoja en blanco | Done | Historia · P2 · P3 Verificar y publicar |
 | ✅ #113 | [T-7.6.1] Generar sugerencias de componentes desde el índice y mostrarlas como defaults en wizard web y CLI | Done | Tarea · P2 · P3 Verificar y publicar |
+| ✅ #123 | [H-8.3] Como mantenedor, quiero que la verificación del paquete compare comportamientos capturados entre versiones, para que un refactor no cambie lo que el estudiante vive | Done | Historia · P2 · P2 Estudiar con Datito |
+| ✅ #124 | [T-8.3.1] Pipeline de captura y comparación en CI (referencia + comparación por build) | Done | Tarea · P2 · P2 Estudiar con Datito |
+| ✅ #126 | [H-8.4] Como agente constructor, quiero que las lecciones del Learning Loop incluyan la traza real del fallo, para no repetir un error que ya quedó evidenciado | Done | Historia · P2 · P2 Estudiar con Datito |
+| ✅ #127 | [T-8.4.1] Extender datito_loop_once/learning loop para adjuntar la evidencia de la corrida fallida a la lección | Done | Tarea · P2 · P2 Estudiar con Datito |
 | ✅ #2 | Once visuales se leen como texto plano | Done | Historia · P1 Construir una clase |
 | ✅ #3 | Piel de lectura: 03_eda.html | Done | Tarea · P1 Construir una clase |
 | ✅ #4 | Piel de lectura: 04_limpieza_preparacion.html | Done | Tarea · P1 Construir una clase |
@@ -110,4 +119,4 @@
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
 
-**100 ítems · 1 abiertos.**
+**109 ítems · 2 abiertos.**
