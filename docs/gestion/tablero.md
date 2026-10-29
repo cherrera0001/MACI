@@ -11,6 +11,7 @@
 | ✅ #54 | [E-4] Agents Learning Loop: cada fallo de construcción deja una lección que el siguiente agente lee | Done | Épica · P1 · P4 Aprender de fallos (ALL) |
 | ✅ #95 | [E-7] Paquete: un Datito de cualquier curso nace completo desde el wizard | Done | Épica · P1 · P3 Verificar y publicar |
 | ✅ #114 | [E-8] Evidencia viva: el aprendizaje y su verificación con trazas reales (REA) | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #134 | [E-9] Modo tutor accesible: sin Ollama el producto guía la instalación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -57,6 +58,8 @@
 | ✅ #119 | [T-8.2.1] Implementar el sandbox de ejecución acotado (stdlib: sin red, timeout, directorio efímero, stdlib-only) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #121 | [T-8.2.3] Integrar el resultado de traza con sesion.py (lucha productiva) y grafo.actualizar_dominio | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #122 | [D-8.1] ¿REA vive solo en el pipeline de construcción/CI o también en el runtime del paquete distribuible? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #135 | [H-9.1] Como estudiante sin Ollama, quiero que la web me muestre cómo instalarlo con los comandos de mi sistema, para pasar de modo exploración a modo tutor sin buscar en internet | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #136 | [T-9.1.1] Guía de instalación: /api/salud la expone por SO y api.js la renderiza dismissible en todas las páginas | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -119,4 +122,4 @@
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
 
-**109 ítems · 0 abiertos.**
+**112 ítems · 0 abiertos.**
