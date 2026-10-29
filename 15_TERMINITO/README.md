@@ -33,8 +33,22 @@ Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
   (espera real, soluciones anticipadas, dudas registradas).
 - ✅ Endpoint `GET /api/demo/socratico` con el mismo demo.
 - ✅ **Paquete distribuible**: `python 15_TERMINITO/scripts/build_paquete.py`
-  genera `dist/datito.zip` (~2.5 MB); doble clic en `start.py` y a chatear.
+  genera `dist/datito.zip` (~2.6 MB); doble clic en `start.py` y a chatear.
   Pruebas manuales: `docs/pruebas-manuales.md`.
+- ✅ **Un Datito de cualquier curso nace completo** (E-7): el wizard genera el
+  grafo desde los encabezados de los materiales, sugiere la identidad desde el
+  índice y deja crear distinciones con validación contra el grafo.
+- ✅ **Evaluación procedural por trazas** (E-8): distinciones con `protocolo`
+  corren el script del estudiante en un sandbox acotado y verifican el orden
+  de los pasos (`#@paso`); la traza queda en `resultados.yaml` como evidencia.
+- ✅ **Lección de evidencia viva** (E-8): `evidencia-brecha.html` embebe la
+  corrida real del caso del certamen y re-ejecuta con semilla fija, comparando
+  contra la referencia.
+- ✅ **Gate de comportamiento**: `03_SCRIPTS/verificar_comportamiento.py`
+  compara lo que el estudiante vive (demo + flujo HTTP real) contra una
+  referencia; integrado en `verificar_todo.py`.
+- ✅ **Parsers docx/pptx** (extra opcional `[docs]`, degradan con aviso),
+  heurística de calificación endurecida y rotulada de baja confianza.
 - ⏳ Pendiente: instalar **Ollama** para el modo tutor (generación con LLM local).
 - ⏳ Post-MVP (spec): familia de Datitos, exportación portable.
 - ✅ **Política gobernando el chat** (`sesion.intercambio`): toda solución
@@ -77,7 +91,8 @@ más relevantes sin generar explicaciones. Todo lo demás funciona igual.
 
 ```
 src/datito/    motor (fragmentos, índice TF-IDF, evidencia, llm, identidad,
-                tutor, lucha, dudas, evaluador, grafo, progreso, cli)
+                tutor, lucha, dudas, evaluador [+protocolo procedural],
+                grafo [+generador], sandbox, demo_brecha, progreso, cli)
 src/web/        interfaz web (5 pantallas: home, wizard, chat, eval, panel)
 tests/          pytest
 cursos/<slug>/  un curso = un directorio autocontenido (data-model.md)

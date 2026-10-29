@@ -9,6 +9,8 @@
 | ✅ #38 | [E-2] Datito: el tutor lleva al alumno de NO_ESTUDIADO a DOMINADO con evidencia | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #48 | [E-3] Plataforma: una fuente de datos, un generador, una verificación y una publicación | Done | Épica · P1 · P3 Verificar y publicar |
 | ✅ #54 | [E-4] Agents Learning Loop: cada fallo de construcción deja una lección que el siguiente agente lee | Done | Épica · P1 · P4 Aprender de fallos (ALL) |
+| ✅ #95 | [E-7] Paquete: un Datito de cualquier curso nace completo desde el wizard | Done | Épica · P1 · P3 Verificar y publicar |
+| ✅ #114 | [E-8] Evidencia viva: el aprendizaje y su verificación con trazas reales (REA) | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -20,7 +22,7 @@
 | ✅ #66 | [T-6.1.1] Inventariar lo personal y lo de terceros que está versionado, con ruta y tamaño | Done | Tarea · P0 · P5 Gestionar el backlog |
 | ✅ #67 | [T-6.1.2] Ignorar `11_GOOGLE/` en `.gitignore` | Done | Tarea · P0 · P5 Gestionar el backlog |
 | ✅ #68 | [T-6.1.3] Ejecutar la opción elegida | Done | Tarea · P0 · P5 Gestionar el backlog |
-| ✅ #31 | [H-1.1] Como estudiante, quiero la clase 19 «Repaso integrado: el proyecto Melbourne» construida, para cerrar el curso aplicando todo sobre un solo caso | Todo | Historia · P1 · P1 Construir una clase |
+| ✅ #31 | [H-1.1] Como estudiante, quiero la clase 19 «Repaso integrado: el proyecto Melbourne» construida, para cerrar el curso aplicando todo sobre un solo caso | Done | Historia · P1 · P1 Construir una clase |
 | ✅ #32 | [T-1.1.1] Escribir el guion del repaso: qué concepto de cada unidad se aplica en Melbourne y con qué cifra | Done | Tarea · P1 · P1 Construir una clase |
 | ✅ #33 | [T-1.1.2] Construir el visual de la clase 19 desde `_TEMPLATE_CANONICO.html` con `/datito-visual` | Done | Tarea · P1 · P1 Construir una clase |
 | ✅ #34 | [T-1.1.3] Declarar el visual en `clases.yaml`, regenerar la navegación y pasar la verificación completa | Done | Tarea · P1 · P1 Construir una clase |
@@ -37,6 +39,19 @@
 | ✅ #72 | [T-6.2.3] Decidir si el Project #3 pasa a público | Done | Tarea · P1 · P5 Gestionar el backlog |
 | ✅ #73 | [H-6.3] Como persona que llega al repo, quiero una wiki que explique qué es MACI, cómo opera el tablero y los conceptos de GitHub Projects, para orientarme sin preguntar | Done | Historia · P1 · P5 Gestionar el backlog |
 | ✅ #74 | [T-6.3.1] Guardar la primera página desde la web y publicar `docs/wiki/` con `publicar_wiki.sh` | Done | Tarea · P1 · P5 Gestionar el backlog |
+| ✅ #96 | [H-7.1] Como estudiante de otro curso, quiero que mi Datito nuevo genere su grafo de conceptos desde los materiales que subí, para ver el panel de dominio y el gating sin escribir YAML | Done | Historia · P1 · P3 Verificar y publicar |
+| ✅ #97 | [T-7.1.1] Portar el generador de grafo al paquete, derivando conceptos del índice/fragmentos | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #98 | [T-7.1.2] Integrar la generación en POST /construir (servidor.py) y comprobar el panel web con un curso nuevo | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #99 | [H-7.2] Como estudiante, quiero crear las distinciones de mi curso desde la web con una plantilla guiada, para evaluar dominio sin conocer el formato YAML | Done | Historia · P1 · P3 Verificar y publicar |
+| ✅ #100 | [T-7.2.1] Añadir el paso de distinciones al wizard con validación contra el grafo | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #101 | [T-7.2.2] Incluir `evaluaciones/plantilla.yaml` comentado en el paquete y documentar el formato en USO.md | Done | Tarea · P1 · P3 Verificar y publicar |
+| ⬜ #102 | [D-7.1] ¿Cómo obtiene el usuario final un LLM: se empaqueta, se instala guiado desde la web, o se queda externo con mejor mensaje? | Todo | Decisión · P1 · P3 Verificar y publicar |
+| ✅ #103 | [H-7.3] Como usuario del zip, quiero que los textos del paquete no se contradigan entre sí y declaren licencia, para confiar en lo que bajé | Done | Historia · P1 · P3 Verificar y publicar |
+| ✅ #104 | [T-7.3.1] Unificar marca, versión y estado del producto en LEEME.txt, USO.md y README | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #105 | [T-7.3.2] Elegir y agregar LICENSE al repo y al zip | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #106 | [T-7.3.3] Sumar un smoke test del zip: descomprimir, `datito demo`, y grep de contradicciones de marca | Done | Tarea · P1 · P3 Verificar y publicar |
+| ✅ #115 | [H-8.1] Como estudiante, quiero que las lecciones muestren corridas reales capturadas y reejecutables en vez de cifras de ejemplo, para creer lo que veo y verificarlo yo mismo | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #116 | [T-8.1.1] Definir el formato de lección con evidencia embebida (visual + captura REA + re-ejecución con seed fija) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -58,6 +73,13 @@
 | ✅ #75 | [H-6.4] Como mantenedor, quiero el repo sin ramas huérfanas, para que una rama abierta signifique trabajo en curso | Done | Historia · P2 · P5 Gestionar el backlog |
 | ✅ #76 | [T-6.4.1] Comparar las 5 ramas contra `main` y anotar qué tiene cada una | Done | Tarea · P2 · P5 Gestionar el backlog |
 | ✅ #77 | [T-6.4.2] Borrar las ramas sin contenido propio, en local y en el remoto | Done | Tarea · P2 · P5 Gestionar el backlog |
+| ✅ #107 | [H-7.4] Como estudiante sin Ollama, quiero que la calificación automática sea honesta sobre su confianza, para no confundir un keyword-match con dominio real | Done | Historia · P2 · P3 Verificar y publicar |
+| ✅ #108 | [T-7.4.1] Rotular resultados heurísticos como baja confianza en CLI y web | Done | Tarea · P2 · P3 Verificar y publicar |
+| ✅ #109 | [T-7.4.2] Endurecer la heurística: más tokens por criterio y tests con respuestas de juguete | Done | Tarea · P2 · P3 Verificar y publicar |
+| ✅ #110 | [H-7.5] Como estudiante cuyos materiales son diapositivas y documentos, quiero subir docx y pptx al wizard, para no convertirlos a mano | Done | Historia · P2 · P3 Verificar y publicar |
+| ✅ #111 | [T-7.5.1] Agregar parsers docx/pptx (python-docx, python-pptx) con referencia por diapositiva/sección | Done | Tarea · P2 · P3 Verificar y publicar |
+| ✅ #112 | [H-7.6] Como estudiante, quiero que el wizard me sugiera los 8 componentes de identidad a partir de mis materiales, para no partir de una hoja en blanco | Done | Historia · P2 · P3 Verificar y publicar |
+| ✅ #113 | [T-7.6.1] Generar sugerencias de componentes desde el índice y mostrarlas como defaults en wizard web y CLI | Done | Tarea · P2 · P3 Verificar y publicar |
 | ✅ #2 | Once visuales se leen como texto plano | Done | Historia · P1 Construir una clase |
 | ✅ #3 | Piel de lectura: 03_eda.html | Done | Tarea · P1 Construir una clase |
 | ✅ #4 | Piel de lectura: 04_limpieza_preparacion.html | Done | Tarea · P1 Construir una clase |
@@ -88,4 +110,4 @@
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
 
-**78 ítems · 0 abiertos.**
+**100 ítems · 1 abiertos.**
