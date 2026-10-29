@@ -180,6 +180,28 @@ def cmd_eval(args) -> int:
     for item in items:
         print(f"— {item.pregunta}")
         print(f"  (conceptos en juego: {' vs '.join(item.conceptos)})")
+        if item.protocolo:
+            # distinción procedural: se evalúa el orden de pasos en una corrida real
+            print("  [procedural: pega la RUTA de tu script; Enter = saltar]")
+            ruta = input("> ").strip()
+            if not ruta:
+                print("  (saltada)\n")
+                continue
+            try:
+                codigo = Path(ruta).read_text(encoding="utf-8")
+            except OSError as e:
+                print(f"  [error] no pude leer {ruta}: {e}\n")
+                continue
+            res = evaluador.calificar_procedimiento(item, codigo)
+            evaluador.guardar_resultado(curso, res)
+            grafo.actualizar_dominio(curso, item.conceptos, res.resultado)
+            n, ok = progreso.contar_distincion(curso, res.resultado == "logrado")
+            print(f"  {res.resultado.upper()} — {res.retroalimentacion}")
+            if res.traza is not None:
+                print(f"  [traza] eventos: {res.traza.nombres() or 'ninguno'} "
+                      f"· exit {res.traza.codigo_salida}")
+            print(f"  [{ok}/{n} distinciones de esta sesion]\n")
+            continue
         resp = input("> ").strip()
         if not resp:
             print("  (saltada)\n")
