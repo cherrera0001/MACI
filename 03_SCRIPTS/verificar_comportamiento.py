@@ -56,7 +56,12 @@ def _http(base: str, metodo: str, ruta: str, datos=None) -> dict:
         base + ruta, data=json.dumps(datos).encode() if datos is not None else None,
         headers={"Content-Type": "application/json"}, method=metodo)
     with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode())
+        cuerpo = r.read().decode()
+    try:
+        return json.loads(cuerpo)
+    except json.JSONDecodeError:
+        raise RuntimeError(
+            f"{metodo} {ruta} respondió un cuerpo no-JSON: {cuerpo[:200]!r}") from None
 
 
 def sonda() -> dict:
@@ -74,7 +79,12 @@ def sonda() -> dict:
                               capture_output=True, text=True, timeout=180, **kw)
 
     # 1) demo socrático
-    demo = json.loads(correr("-m", "datito.cli", "demo", "--json").stdout)
+    proc = correr("-m", "datito.cli", "demo", "--json")
+    if proc.returncode != 0 or not proc.stdout.strip():
+        raise RuntimeError(
+            f"el demo del zip falló (exit {proc.returncode}); stderr del "
+            f"proceso: {proc.stderr.strip()[:400]}")
+    demo = json.loads(proc.stdout)
 
     # 2) flujo de creación por HTTP con el servidor real del zip
     sys.path.insert(0, str(motor / "src"))
