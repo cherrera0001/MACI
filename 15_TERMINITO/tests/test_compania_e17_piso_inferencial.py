@@ -93,3 +93,42 @@ def test_eval_conversacion_marca_llm_ausente_honestamente():
     assert "ollama" in r["inconcluso_por"]
     assert r["exito_preregistrado"] is False
     assert "INCONCLUSO" in r["veredicto"]
+
+
+# ------------------------------------------------------- anti-echo en vivo
+def test_es_echo_detecta_copia_y_no_castiga_respuesta_real():
+    from datito.tutor import _es_echo
+
+    assert _es_echo("Hola, ¿me escuchas?", "Hola, ¿me escuchas?")
+    assert _es_echo("Hola, ¿me escuchas?", "¡Hola, me escuchas!")
+    assert not _es_echo("Hola, ¿me escuchas?",
+                        "¡Qué alegría! Cuénteme, ¿cómo amaneció hoy?")
+    assert not _es_echo("Cuénteme de Rufo",
+                        "Recuerdo que Rufo la esperaba en la puerta [memoria#1]")
+
+
+def test_responder_compania_no_devuelve_echo(tmp_path_curso, monkeypatch):
+    from datito import tutor
+    from datito.indice import Indice
+
+    curso = tmp_path_curso
+    curso.datos["modo"] = "compania"
+    curso.guardar()
+    ind = Indice()
+    ind.registrar_recuerdo("Su perrito Rufo la esperaba en la puerta",
+                           referencia="sesion x")
+    monkeypatch.setattr(tutor.llm, "disponible", lambda: True)
+    monkeypatch.setattr(tutor.llm, "generar", lambda prompt: "Hola, ¿me escuchas?")
+    r = tutor.responder(curso, "Hola, ¿me escuchas?", ind)
+    assert r.texto != "Hola, ¿me escuchas?", "jamás un eco a la persona"
+    assert "Anti-echo" in r.aviso
+
+
+def test_prompt_compania_termina_con_marcador_de_salida(tmp_path_curso):
+    from datito import tutor
+
+    curso = tmp_path_curso
+    curso.datos["modo"] = "compania"
+    curso.guardar()
+    p = tutor._prompt_compania("SYSTEM", "hola", [("memoria#1", "sesion", "texto")])
+    assert "Tu respuesta" in p and "NUNCA repitas" in p

@@ -133,12 +133,37 @@ MEMORIA DE NUESTRA CONVERSACION (unica fuente permitida sobre su vida):
 La persona escribe: {mensaje!r}
 
 REGLAS:
+- Eres el companero que conversa; NUNCA repitas lo que la persona escribio.
 - Escucha con empatia; responde en el mismo idioma, con frases cortas y
   calidas, a lo mas tres lineas.
 - Si afirmas algo sobre su vida o su pasado, DEBES citarlo como [fid] desde
   la memoria de arriba. PROHIBIDO inventar recuerdos.
 - Si nada de la memoria aplica, responde sin citas: solo presencia, validacion
-  y una pregunta abierta que invite a seguir conversando."""
+  y una pregunta abierta que invite a seguir conversando.
+
+Tu respuesta (maximo tres lineas, termina con una pregunta abierta y carinosa):
+"""
+
+
+def _es_echo(mensaje: str, respuesta: str) -> bool:
+    """El modelo pequeno a veces copia el mensaje de la persona. Normalizado
+    (sin tildes ni puntuacion): echo exacto o respuesta casi identica."""
+    import re as _re
+    import unicodedata
+
+    def norm(s: str) -> str:
+        s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore") \
+            .decode().lower()
+        return _re.sub(r"[^a-z0-9 ]+", " ", s).strip()
+
+    nm, nr = norm(mensaje), norm(respuesta)
+    if not nm or not nr:
+        return False
+    return nm == nr or (nm in nr and len(nr) <= len(nm) + 14)
+
+
+_TEXTO_ECHO = ("Qué gusto leerla. Ocupemos la tarde conversando: "
+               "¿cómo amaneció hoy?")
 
 def _generar_seguro(prompt: str) -> str:
     try:
@@ -155,18 +180,35 @@ def _responder_compania(curso, mensaje: str, indice: Indice, k: int = 4) -> Resp
         # escucha activa sin evocación: no afirma nada verificable
         crudo = _generar_seguro(
             f"{system}\n\nLa persona escribe: {mensaje!r}\n\n"
-            "REGLAS: escucha activa y empatia, sin afirmar hechos sobre su vida "
-            "(no hay memoria recuperada). No inventes recuerdos. Frases cortas y "
-            "calidas; termina con una pregunta abierta y afectuosa.")
-        if crudo.strip():
+            "REGLAS: eres el companero que conversa; NUNCA repitas lo escrito. "
+            "Escucha activa y empatia, sin afirmar hechos sobre su vida "
+            "(no hay memoria recuperada). No inventes recuerdos. Frases cortas "
+            "y calidas; termina con una pregunta abierta y afectuosa.\n\n"
+            "Tu respuesta (maximo tres lineas):\n")
+        if crudo.strip() and not _es_echo(mensaje, crudo):
             return Respuesta(crudo.strip(), modo=MODO_COMPANIA,
                              aviso="Escucha activa: sin afirmaciones verificables (D-10.2).")
+        if crudo.strip():
+            # el modelo repitio el mensaje: una plantilla calida, no un eco
+            return Respuesta(_TEXTO_ECHO, modo=MODO_COMPANIA,
+                             aviso="Anti-echo (D-17): el modelo copió el mensaje; "
+                                   "se responde con presencia determinista.")
         return Respuesta(_TEXTO_COMPANIA_EXPLORACION, modo=MODO_COMPANIA,
                          aviso="Modo exploracion: respuesta de compania determinista (sin LLM).")
 
     contexto = [(fid, indice.referencias[fid][0], indice.textos[fid])
                 for fid, _ in top]
     crudo = _generar_seguro(_prompt_compania(system, mensaje, contexto))
+    if crudo.strip() and _es_echo(mensaje, crudo):
+        # reintento una vez con prohibicion explicita; si insiste, plantilla
+        crudo = _generar_seguro(
+            _prompt_compania(system, mensaje, contexto)
+            + "\nIMPORTANTE: tu respuesta anterior repitió sus palabras. "
+              "No lo hagas; responde como el companero.\n")
+        if crudo.strip() and _es_echo(mensaje, crudo):
+            return Respuesta(_TEXTO_ECHO, modo=MODO_COMPANIA,
+                             aviso="Anti-echo (D-17): doble eco del modelo; "
+                                   "presencia determinista.")
     if crudo.strip():
         val = evidencia.validar(crudo, indice)
         if val.ok:
