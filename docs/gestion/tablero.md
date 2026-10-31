@@ -19,6 +19,7 @@
 | ✅ #197 | [E-14] Autonomía práctica y red de apoyo: micro-talleres guiados y panel web familiar/legado | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #211 | Épica E-15 — Un cerebro para Datito | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #228 | Épica E-16 — Oreja y boca 100% offline, medida y con amenaza modelada | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #245 | Épica E-17 — Oreja y boca 100% offline, con el piso inferencial importado | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -156,6 +157,18 @@
 | ✅ #242 | [T-16.4.2] Banco D-15.3 ampliado de 6 a 20 sondas + re-decisión del cerebro | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #243 | [T-16.5.1] tests E-16: stt, kokoro (mockeado), tokens, A/B, eval_conversacion, banco 20 | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #244 | [T-16.5.2] docs/gestion/historico/E16_*: voz medida + banco ampliado + cierre | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #246 | D-17.1 — Privacidad real del STT (verificación contra estándar) | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #247 | D-17.2 — Re-decisión del cerebro con el piso inferencial de ALL #337 | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #248 | D-17.3 — Calidad de voz medida con Ollama real | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #249 | D-17.4 — Amenaza modelada (verificación contra estándar) | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #250 | [H-17.1] Que mi voz no salga de mi casa | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #251 | [H-17.2] Saber si el cerebro ayuda de verdad, con intervalo de confianza | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #252 | [H-17.3] Un turno de voz fluido con el LLM real | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #253 | [T-17.2.1] bootstrap_ganancia importado + 8 sondas congeladas en eval_cerebro | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #254 | [T-17.2.2] Sonda de corpus denso (55 recuerdos, vocabulario compartido) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #255 | [T-17.2.3] docs/gestion/historico/E17_CEREBRO_PISO_INFERENCIAL.md | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #256 | [T-17.3.1] Ollama instalado + eval_conversacion con LLM real + docs E17_VOZ | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #257 | [T-17.4.1] tests E-17 (bootstrap, congeladas, corpus denso, voz con LLM mockeado) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -229,4 +242,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**219 ítems · 0 abiertos.**
+**232 ítems · 0 abiertos.**
