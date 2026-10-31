@@ -83,6 +83,7 @@ public/
 15_TERMINITO/cursos/*/grafo/dominio.yaml
 15_TERMINITO/cursos/*/.indice/
 15_TERMINITO/cursos/*/.cerebro/
+15_TERMINITO/.kokoro/
 15_TERMINITO/cursos/*/fuentes/
 15_TERMINITO/cursos/*/prompt/actual.md
 15_TERMINITO/cursos/*/prompt/versions/
