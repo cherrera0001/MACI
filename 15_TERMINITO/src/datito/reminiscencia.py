@@ -10,7 +10,7 @@ import datetime
 
 import yaml
 
-from . import evidencia, progreso
+from . import cerebro, evidencia, progreso
 from .lucha import LuchaProductiva
 
 
@@ -38,6 +38,11 @@ def _memorias(indice) -> list[str]:
 
 
 def _elegir_memoria(curso, indice) -> str | None:
+    # E-15: el cerebro propone la memoria más conectada (reminiscencia con
+    # mayor contexto asociativo); fallback al round-robin histórico.
+    sugerencia = cerebro.sugerir_reminiscencia(curso, indice)
+    if sugerencia:
+        return sugerencia
     memorias = _memorias(indice)
     if not memorias:
         return None

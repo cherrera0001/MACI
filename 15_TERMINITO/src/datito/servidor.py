@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlparse
 
 from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
 from . import apertura, biografia, familiar, guardian, reminiscencia, talleres
+from . import cerebro
 from . import voz
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
@@ -114,6 +115,8 @@ class Handler(BaseHTTPRequestHandler):
                                       if r.get("duda") else None)}
         if r.get("paso"):
             cuerpo["paso"] = r["paso"]
+        if r.get("asociaciones"):
+            cuerpo["asociaciones"] = r["asociaciones"]
         return cuerpo
 
     def _guardar_componentes(self, slug: str):
@@ -143,6 +146,7 @@ class Handler(BaseHTTPRequestHandler):
                     "version_modelo": config.MODELO if llm.disponible() else None,
                     "modo": "tutor" if llm.disponible() else "exploracion",
                     "voz": voz.info(),
+                    "cerebro": cerebro.info(),
                     "guia": _guia_instalacion()})
             if u.path == "/api/demo/socratico":
                 from . import demo_sintetico
@@ -317,6 +321,7 @@ class Handler(BaseHTTPRequestHandler):
                     if senal["nivel"] == "fraude":
                         # protección inmediata anclada a guía citada; el
                         # relato del engaño no se guarda como recuerdo
+                        # (D-11.3) y tampoco se consolida en el cerebro.
                         texto_p, citas_p = guardian.proteccion(
                             curso, indice, senal)
                         r["texto"], r["citas"] = texto_p, citas_p
@@ -328,6 +333,10 @@ class Handler(BaseHTTPRequestHandler):
                                       + " Senal de alerta registrada para su "
                                       "cuidador (fecha y senales, no su "
                                       "mensaje).").strip()
+                        cer = cerebro.para_curso(curso)
+                        if cer is not None:
+                            cer.ciclo(texto, r.get("texto", ""), indice=indice,
+                                      senal=senal)
                     else:
                         # la conversación de hoy es la memoria citable de mañana
                         recuerdos = memoria.detectar(texto)
@@ -339,6 +348,12 @@ class Handler(BaseHTTPRequestHandler):
                                 + datetime.date.today().isoformat())
                         if recuerdos:
                             indice.guardar(curso.ruta(".indice"))
+                        cer = cerebro.para_curso(curso)
+                        if cer is not None:
+                            asocs = cer.ciclo(texto, r.get("texto", ""),
+                                              indice=indice)
+                            if asocs:
+                                r["asociaciones"] = asocs
                 progreso.marcar_interaccion(curso)
                 progreso.contar_mensaje(curso, 2)
                 return self._json(self._envoltura_mensaje(r, indice))

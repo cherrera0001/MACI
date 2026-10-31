@@ -7,7 +7,7 @@ evidencia.validar. Determinista: funciona sin LLM.
 """
 from __future__ import annotations
 
-from . import evidencia, progreso
+from . import cerebro, evidencia, progreso
 
 UMBRAL_CALIDO = 6.0
 UMBRAL_RECUERDO = 24.0
@@ -27,6 +27,11 @@ def _saludo(horas: float | None) -> str:
 
 
 def _elegir_recuerdo(curso, indice) -> str | None:
+    # E-15: con cerebro activo, el recuerdo más vivo del grafo (y su traza)
+    # tiene prioridad; sin cerebro o sin sugerencia, round-robin de siempre.
+    sugerencia = cerebro.sugerir_apertura(curso, indice)
+    if sugerencia:
+        return sugerencia
     memorias = sorted(
         f for f in indice.textos if f.startswith("memoria#")
         and not indice.referencias.get(f, ("", ""))[1].startswith("guia"))

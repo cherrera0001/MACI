@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import datetime
 
-from . import memoria
+from . import cerebro, memoria
 
 
 def construir(curso, indice) -> dict:
@@ -16,10 +16,20 @@ def construir(curso, indice) -> dict:
                 if f.startswith("memoria#")
                 and not indice.referencias.get(f, ("", ""))[1].startswith("guia:")]
     entidades = memoria.entidades(indice)
+    # E-15: con cerebro activo, el orden de capítulos sigue la activación
+    # acumulada del grafo (temas más vivos primero); sin cerebro, recuento.
+    rango = cerebro.orden_entidades(curso)
+
+    def peso(kv):
+        ent, fids = kv
+        if rango:
+            return (rango.get(ent, len(rango)), ent)  # temas desconocidos al final
+        return (-len(fids), ent)
+
     grupos: dict[str, list] = {}
     asignadas: set[str] = set()
-    for ent, fids in sorted(entidades.items(),
-                            key=lambda kv: (-len(kv[1]), kv[0])):
+    ordenadas = sorted(entidades.items(), key=peso)
+    for ent, fids in ordenadas:
         vivos = [f for f in fids if f in memorias]
         if len(vivos) < 2:
             continue
