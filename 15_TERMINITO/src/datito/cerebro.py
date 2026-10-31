@@ -56,7 +56,10 @@ SLUG_RE = re.compile(r"[^a-z0-9]+")
 
 # Decisión D-15.3 (fijada por el experimento de eval_cerebro.py): "adoptar" si
 # el cerebro gana pareado con regresión cero; "opt_in" si empata o regresa.
-ADOPCION = "adoptar"
+# E-15 (6 sondas): adoptar. E-16 con el banco ampliado a 20 sondas: aparece
+# una regresión real en P@3 (la compuerta anti-H4 silencia memorias verdaderas
+# que co-ocurrieron con una sola alerta) → la regla honesta manda opt-in.
+ADOPCION = "opt_in"
 
 
 # -------------------------------------------------------------- utilidades

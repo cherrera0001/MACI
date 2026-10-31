@@ -7,6 +7,7 @@ ThreadingHTTPServer + routing manual. Subida de materiales como PUT binario
 from __future__ import annotations
 
 import json
+import random
 import re
 import sys
 import webbrowser
@@ -17,7 +18,7 @@ from urllib.parse import parse_qs, urlparse
 
 from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
 from . import apertura, biografia, familiar, guardian, reminiscencia, talleres
-from . import cerebro
+from . import acceso, cerebro, stt
 from . import voz
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
@@ -147,6 +148,7 @@ class Handler(BaseHTTPRequestHandler):
                     "modo": "tutor" if llm.disponible() else "exploracion",
                     "voz": voz.info(),
                     "cerebro": cerebro.info(),
+                    "stt": stt.info(),
                     "guia": _guia_instalacion()})
             if u.path == "/api/demo/socratico":
                 from . import demo_sintetico
@@ -249,8 +251,28 @@ class Handler(BaseHTTPRequestHandler):
                             "sin_panel_familiar",
                             "El panel familiar existe solo en modo compania",
                             404)
+                    denegado = acceso.verificar_o_error(curso, self.headers)
+                    if denegado is not None:
+                        return self._error(
+                            "dispositivo_no_autorizado",
+                            "Este panel requiere un dispositivo vinculado "
+                            "(token de un solo uso, D-16.3).", 401)
                     return self._json(familiar.construir(
                         curso, Indice.cargar(curso.ruta(".indice"))))
+                if recurso == "voz":
+                    # D-16.2: asignación ciega del motor de voz para este turno
+                    curso = cargar(slug)
+                    datos = progreso.cargar(curso)
+                    turno = int(datos.get("voz_turno", 0)) + 1
+                    datos["voz_turno"] = turno
+                    progreso.guardar(curso, datos)
+                    motores = [k for k, v in voz.motores_disponibles().items() if v]
+                    asignacion = (random.choice(motores) if len(motores) > 1
+                                  else (motores[0] if motores else None))
+                    return self._json({"motores": motores,
+                                       "asignacion": asignacion,
+                                       "turno": turno,
+                                       "preferencia": datos.get("voz_preferencia", {})})
             return self._estatico(u.path)
         except ErrorCurso as e:
             self._error("curso_no_encontrado", str(e), 404)
@@ -272,6 +294,16 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json(ciclo.importar(d.get("ruta", "")), 201)
                 except ErrorCurso as e:
                     return self._error("importacion_invalida", str(e), 422)
+            if partes == ["api", "stt"]:
+                # D-16.1: STT 100% local. El audio se transcribe en esta
+                # máquina y se descarta; sin motor, 404 con la guía.
+                n = int(self.headers.get("Content-Length", 0))
+                datos = self.rfile.read(n) if n else b""
+                texto = stt.transcribir(datos)
+                if texto is None:
+                    return self._json({"error": "stt_no_disponible",
+                                       "detalle": stt.info()}, 404)
+                return self._json({"texto": texto})
             slug = self._slug(partes)
             recurso = partes[3] if len(partes) > 3 else ""
             curso = cargar(slug)
@@ -294,7 +326,8 @@ class Handler(BaseHTTPRequestHandler):
                     return self._error("sin_contenido", str(e), 422)
             if recurso == "tts" and len(partes) == 4:
                 d = self._body_json()
-                audio = voz.sintetizar(d.get("texto", ""))
+                audio = voz.sintetizar(d.get("texto", ""), curso=curso,
+                                       motor=d.get("motor"))
                 if audio is None:
                     return self._json({"error": "voz_no_disponible",
                                        "detalle": voz.info()}, 404)
@@ -304,12 +337,37 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(audio)
                 return
+            if recurso == "vincular" and len(partes) == 4:
+                # D-16.3: canje del token de un solo uso → device_id persistente
+                d = self._body_json()
+                dispositivo = acceso.canjear(curso, d.get("token", ""))
+                if dispositivo is None:
+                    return self._error("token_invalido",
+                                       "Token usado o invalido.", 401)
+                return self._json({"dispositivo": dispositivo})
+            if recurso == "voz-preferencia" and len(partes) == 4:
+                # D-16.2: voto del A/B ciego de voces
+                d = self._body_json()
+                datos = progreso.cargar(curso)
+                prefs = datos.get("voz_preferencia", {})
+                eleccion = str(d.get("eleccion", ""))
+                if eleccion in ("piper", "kokoro"):
+                    prefs[eleccion] = prefs.get(eleccion, 0) + 1
+                    datos["voz_preferencia"] = prefs
+                    progreso.guardar(curso, datos)
+                return self._json({"preferencia": prefs})
             if recurso == "mensajes" and len(partes) == 4:
                 if curso.estado == "cerrado":
                     return self._error(
                         "datito_cerrado",
                         "El Datito esta cerrado (FR-016); su registro sigue "
                         "disponible en GET /registro.", 409)
+                denegado = acceso.verificar_o_error(curso, self.headers)
+                if denegado is not None:
+                    return self._error(
+                        "dispositivo_no_autorizado",
+                        "La conversacion requiere un dispositivo vinculado "
+                        "(token de un solo uso, D-16.3).", 401)
                 d = self._body_json()
                 texto = d.get("texto", "")
                 indice = Indice.cargar(curso.ruta(".indice"))

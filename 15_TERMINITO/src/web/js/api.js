@@ -1,17 +1,46 @@
 /* api.js — cliente minimo de la API local (contracts/api.md) */
 const API = "";
 
+function deviceId() {
+  return localStorage.getItem("datito_device") || "";
+}
+
 async function api(ruta, opciones = {}) {
-  const r = await fetch(API + ruta, {
-    headers: opciones.body && !(opciones.body instanceof Blob)
+  const cabeceras = Object.assign(
+    {},
+    opciones.body && !(opciones.body instanceof Blob)
       ? { "Content-Type": "application/json" } : {},
-    ...opciones,
+    opciones.headers || {},
+    deviceId() ? { "X-Device-Id": deviceId() } : {});
+  const r = await fetch(API + ruta, { ...opciones, headers: cabeceras });
+  const datos = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    if (datos.error === "dispositivo_no_autorizado" &&
+        !ruta.includes("/vincular")) {
+      await solicitarVinculo();
+      return api(ruta, opciones);  // un solo reintento tras vincular
+    }
+    throw Object.assign(new Error(datos.detalle || datos.error || r.status), {
+      codigo: datos.error, status: r.status, datos,
+    });
+  }
+  return datos;
+}
+
+/* D-16.3: el cuidador/familiar ingresa el token de un solo uso; el
+   dispositivo queda vinculado y el id vive en localStorage. */
+async function solicitarVinculo() {
+  const token = prompt("Código de vinculación (se lo entregó su cuidador):");
+  if (!token) throw new Error("vinculacion_cancelada");
+  const slug = new URLSearchParams(location.search).get("curso") || "";
+  const r = await fetch(`/api/cursos/${slug}/vincular`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
   });
   const datos = await r.json().catch(() => ({}));
-  if (!r.ok) throw Object.assign(new Error(datos.detalle || datos.error || r.status), {
-    codigo: datos.error, status: r.status, datos,
-  });
-  return datos;
+  if (!r.ok) throw new Error(datos.detalle || "token_invalido");
+  localStorage.setItem("datito_device", datos.dispositivo);
+  return datos.dispositivo;
 }
 
 const get = (ruta) => api(ruta);

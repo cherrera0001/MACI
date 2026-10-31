@@ -35,7 +35,13 @@ señuelos gracias al filtro de kind y a la compuerta de bienestar
 
 ## Decisión aplicada (regla D-15.3)
 
-`ADOPCION = "adoptar"` en `src/datito/cerebro.py`:
+> **Actualización E-16 (2026-10-31):** con el banco ampliado a 20 sondas la
+> decisión se re-evaluó y la regla honesta mandó `ADOPCION = "opt_in"`
+> (regresión real en P@3 por la compuerta anti-H4). Ver
+> `E16_CEREBRO_BANCO_AMPLIADO.md`. Lo que sigue describe el experimento E-15
+> original (6 sondas), que se mantiene como registro histórico.
+
+`ADOPCION = "adoptar"` en `src/datito/cerebro.py` (E-15, 6 sondas):
 
 - Sin regresión en MRR/P@3 y mejora estricta en rechazo de señuelos
   (0.0 → 1.0) ⇒ **default en modo compañía** cuando aal esté instalado.

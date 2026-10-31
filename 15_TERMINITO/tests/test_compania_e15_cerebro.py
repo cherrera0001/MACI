@@ -34,7 +34,8 @@ MEMORIAS = {
 
 def _curso_compania(tmp_path_curso):
     tmp_path_curso.datos["modo"] = "compania"
-    tmp_path_curso.guardar()
+    tmp_path_curso.datos["cerebro"] = "aal"  # opt-in explícito (E-16: default
+    tmp_path_curso.guardar()                 # del cerebro pasó a opt-in)
     ind = Indice()
     fids = {}
     for clave, texto in MEMORIAS.items():

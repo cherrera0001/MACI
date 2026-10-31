@@ -114,7 +114,9 @@ let modoCompania = false;
    3) silencio si no hay nada: la conversación nunca se rompe. */
 let modoCompania = false;
 let vozNeuronal = false;
+let sttActivo = false;
 let vozElegida = null;
+let asignacionCiega = null;   // D-16.2: motor del turno (A/B ciego)
 const vozDisponible = "speechSynthesis" in window;
 
 function limpiarParaVoz(s) {
@@ -140,18 +142,46 @@ async function detectarVozNeuronal() {
   try {
     const s = await get("/api/salud");
     vozNeuronal = !!(s.voz && s.voz.neuronal);
-  } catch { vozNeuronal = false; }
+    sttActivo = !!(s.stt && s.stt.activo);
+  } catch { vozNeuronal = false; sttActivo = false; }
 }
+
+/* D-16.2: el servidor asigna el motor al azar por turno; el usuario vota
+   con un toque y la preferencia queda en el servidor para elegir voz. */
+async function motorDelTurno() {
+  if (!modoCompania || !vozNeuronal) return null;
+  try {
+    if (!asignacionCiega) asignacionCiega = await get(`/api/cursos/${slug}/voz`);
+    return (asignacionCiega.motores.length > 1) ? asignacionCiega.asignacion : null;
+  } catch { return null; }
+}
+
+function votarVoz(motor) {
+  asignacionCiega = null;
+  post(`/api/cursos/${slug}/voz-preferencia`, { eleccion: motor }).catch(() => {});
+}
+
 async function hablar(s) {
   if (!modoCompania || !s) return;
   if (vozNeuronal) {
     try {
+      const motor = await motorDelTurno();
+      const cuerpo = motor ? { texto: limpiarParaVoz(s), motor }
+                           : { texto: limpiarParaVoz(s) };
       const r = await fetch(`/api/cursos/${slug}/tts`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texto: limpiarParaVoz(s) }) });
+        body: JSON.stringify(cuerpo) });
       if (r.ok) {
         const a = new Audio(URL.createObjectURL(await r.blob()));
         a.play();
+        if (motor) {
+          const b = document.createElement("button");
+          b.className = "chip";
+          b.style.borderColor = "var(--salvia)";
+          b.textContent = "🗳️ Me gustó esta voz";
+          b.onclick = () => { b.disabled = true; votarVoz(motor); };
+          document.querySelector("#chat > :last-child")?.appendChild(b);
+        }
         return;
       }
     } catch { /* cae a voz del navegador */ }
@@ -168,25 +198,53 @@ async function hablar(s) {
   }
 }
 function configurarBotonVoz() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const boton = document.getElementById("voz");
   if (!modoCompania) return;
-  if (!SR) { boton.textContent = "🎤 (voz no disponible: escriba abajo)"; return; }
-  const rec = new SR();
-  rec.lang = "es-ES"; rec.interimResults = false;
-  boton.onclick = () => {
-    boton.classList.add("escuchando"); boton.textContent = "🎤 Escuchando…";
-    rec.start();
+  // D-16.1: grabación local con MediaRecorder → POST /api/stt. El audio del
+  // usuario NO sale de la máquina nunca (adiós SpeechRecognition del
+  // navegador, que enviaba audio a los servicios del SO/nube).
+  if (!sttActivo) {
+    boton.textContent = "🎤 (transcripción local no instalada: escriba abajo)";
+    boton.disabled = true;
+    return;
+  }
+  if (!navigator.mediaDevices?.getUserMedia
+      || typeof MediaRecorder === "undefined") {
+    boton.textContent = "🎤 (micrófono no disponible: escriba abajo)";
+    return;
+  }
+  let grabando = false, recorder = null;
+  boton.onclick = async () => {
+    if (grabando) { recorder.stop(); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recorder = new MediaRecorder(stream);
+      const partes = [];
+      recorder.ondataavailable = (e) => partes.push(e.data);
+      recorder.onstop = async () => {
+        grabando = false;
+        boton.classList.remove("escuchando");
+        boton.textContent = "🎤 Hablar (o escriba abajo)";
+        stream.getTracks().forEach((t) => t.stop());
+        try {
+          const r = await fetch("/api/stt", { method: "POST",
+                                              body: new Blob(partes) });
+          if (!r.ok) {
+            boton.textContent = "🎤 (transcripción ocupada: escriba abajo)";
+            return;
+          }
+          const d = await r.json();
+          if (d.texto) { texto.value = d.texto; enviar(); }
+        } catch { /* silencio: la conversación nunca se rompe */ }
+      };
+      recorder.start();
+      grabando = true;
+      boton.classList.add("escuchando");
+      boton.textContent = "🎤 Escuchando… (toque para enviar)";
+    } catch {
+      boton.textContent = "🎤 (sin permiso de micrófono: escriba abajo)";
+    }
   };
-  rec.onresult = (e) => {
-    texto.value = e.results[0][0].transcript;
-    enviar();
-  };
-  rec.onend = () => {
-    boton.classList.remove("escuchando");
-    boton.textContent = "🎤 Hablar (o escriba abajo)";
-  };
-  rec.onerror = rec.onend;
 }
 async function recordarJuntos() {
   if (!modoCompania) return;

@@ -42,6 +42,7 @@ def _curso_compania(tmp_path_curso):
 
 def test_tts_degradacion_limpia_sin_motor(tmp_path_curso, monkeypatch):
     monkeypatch.setattr(voz, "_MOTOR", False)
+    monkeypatch.setattr(voz, "_kokoro_listo", lambda: False)  # E-16: 2 motores
     curso, _ = _curso_compania(tmp_path_curso)
     curso.transicionar("listo")
     info = voz.info()
@@ -50,7 +51,8 @@ def test_tts_degradacion_limpia_sin_motor(tmp_path_curso, monkeypatch):
 
 def test_tts_con_motor_mockeado(tmp_path_curso, monkeypatch):
     monkeypatch.setattr(voz, "_MOTOR", ("piper", "/usr/bin/piper"))
-    monkeypatch.setattr(voz, "sintetizar", lambda t: b"RIFFfake-wav")
+    monkeypatch.setattr(voz, "sintetizar",
+                        lambda t, **kw: b"RIFFfake-wav")
     curso, _ = _curso_compania(tmp_path_curso)
     curso.transicionar("listo")
     server = ThreadingHTTPServer(("127.0.0.1", 0), servidor.Handler)
@@ -71,6 +73,7 @@ def test_tts_con_motor_mockeado(tmp_path_curso, monkeypatch):
 def test_tts_sin_motor_responde_404(tmp_path_curso, monkeypatch):
     monkeypatch.setattr(voz, "_MOTOR", False)
     monkeypatch.setattr(servidor.voz, "_MOTOR", False)
+    monkeypatch.setattr(voz, "_kokoro_listo", lambda: False)  # E-16: 2 motores
     _curso_compania(tmp_path_curso)[0].transicionar("listo")
     server = ThreadingHTTPServer(("127.0.0.1", 0), servidor.Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
