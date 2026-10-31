@@ -16,6 +16,7 @@
 | ✅ #154 | [E-11] Compañía activa: apertura proactiva por vínculo, voz accesible y guardián anti-fraude/bienestar | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #168 | [E-12] Compañía humana y memoria consolidada: voz neuronal/prosódica, deduplicación hipocampal, reminiscencia guiada y bitácora de vida | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #183 | [E-13] Ergonomía y calidez humana: layout de entrada desacoplado, supresión de jerga escolar, trato en segunda persona y lector de biografía | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #197 | [E-14] Autonomía práctica y red de apoyo: micro-talleres guiados y panel web familiar/legado | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -108,6 +109,19 @@
 | ✅ #194 | [T-13.3.1] chat.html: botón Mi historia de vida conectado a GET /biografia | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #195 | [T-13.3.2] voz.py: autodescubrimiento .onnx y --instalar-modelo desde HuggingFace | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #196 | [T-13.4.1] tests E-13 (ergonomía, trato, voz) + regresión 160 en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #198 | [D-14.1] Micro-talleres prácticos de 3 pasos sobre LuchaProductiva anclados a guías [fid] validadas | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #199 | [D-14.2] GET /familiar y vista familiar.html: pulso de vínculo, alertas éticas y libro imprimible | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #200 | [D-14.3] Integración en chat.html modo compañía: botón «Aprender paso a paso» y acceso a vista familiar | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #201 | [H-14.1] Practicar una habilidad cotidiana paso a paso sin miedo a equivocarme | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #202 | [H-14.2] Consultar el Panel Familiar y de Legado con privacidad garantizada | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #203 | [H-14.3] Exportar/imprimir la Bitácora de Historias de Vida para la familia | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #204 | [T-14.1.1] talleres.py: motor de micro-talleres de 3 pasos con guías validadas y celebración | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #205 | [T-14.1.2] servidor.py: GET/POST /api/cursos/<slug>/taller (solo modo compañía) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #206 | [T-14.1.3] semilla_compania.py: guías prácticas nuevas + talleres.yaml (3 talleres) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #207 | [T-14.2.1] familiar.py + GET /api/cursos/<slug>/familiar con privacidad por diseño | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #208 | [T-14.2.2] familiar.html: vista cálida del panel familiar y Libro imprimible (@media print) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #209 | [T-14.3.1] chat.html: botón «🛠️ Aprender paso a paso» y «🏡 Vista familiar» en modo compañía | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #210 | [T-14.3.2] tests E-14: talleres, /familiar sin filtración, UI y regresión en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -181,4 +195,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**171 ítems · 0 abiertos.**
+**185 ítems · 0 abiertos.**
