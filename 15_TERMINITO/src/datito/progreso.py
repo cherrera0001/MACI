@@ -58,6 +58,26 @@ def contar_mensaje(curso, n: int = 1):
     guardar(curso, datos)
 
 
+def marcar_interaccion(curso):
+    """Reloj de vínculo (D-11.1): stamp ISO de la última interacción real."""
+    datos = cargar(curso)
+    datos["ultima_interaccion"] = datetime.datetime.now().isoformat(
+        timespec="seconds")
+    guardar(curso, datos)
+
+
+def horas_de_ausencia(curso) -> float | None:
+    """Horas desde la última interacción; None si aún no hay ninguna."""
+    u = cargar(curso).get("ultima_interaccion")
+    if not u:
+        return None
+    try:
+        ultima = datetime.datetime.fromisoformat(u)
+    except ValueError:
+        return None
+    return max(0.0, (datetime.datetime.now() - ultima).total_seconds() / 3600)
+
+
 def contar_distincion(curso, lograda: bool):
     """Micro-progreso visible: 'N distinciones de esta sesion'."""
     datos = cargar(curso)

@@ -118,9 +118,11 @@ def cerrar(curso) -> dict:
 # --- Registro (SC-005) --------------------------------------------------------
 
 def resumen_registro(curso) -> dict:
+    from . import guardian
     datos = progreso.cargar(curso)
     m = datos.get("metricas", {})
     ses = sesion.cargar(curso) or {}
+    n_alertas, ultima = guardian.contar_alertas(curso)
     return {"dudas": len(dudas.cargar(curso)),
             "evaluaciones": len(cargar_resultados_guardados(curso)),
             "notas": len(cargar_notas(curso)),
@@ -128,6 +130,8 @@ def resumen_registro(curso) -> dict:
             "mensajes": m.get("mensajes", 0),
             "revelaciones": len(ses.get("revelaciones", [])),
             "distinciones_sesion": datos.get("distinciones_sesion", 0),
+            "alertas": n_alertas,
+            "ultima_alerta": ultima,
             "estado": curso.estado}
 
 

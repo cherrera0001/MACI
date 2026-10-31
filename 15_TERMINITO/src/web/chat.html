@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chat con tu Datito</title>
 <link rel="stylesheet" href="/css/datito.css">
+<style>
+/* Modo compañía (D-11.2): alto contraste, tipografía grande, botón único.
+   Solo se activa cuando el curso es modo == "compania". */
+body.compania { font-size: 22px; background: #101418; color: #f2f5f7; }
+body.compania .sub, body.compania p { color: #d7dee4; }
+body.compania .msg { font-size: 22px; line-height: 1.5; }
+body.compania .msg.tutor { background: #1d2b36; border-left: .5rem solid #4db6ff; }
+body.compania .msg.estudiante { background: #243227; border-left: .5rem solid #7bd88a; }
+body.compania .boton { font-size: 22px; padding: 1rem 1.6rem; }
+body.compania textarea { font-size: 22px; }
+#voz { display: none; font-size: 28px; padding: 1.2rem; border-radius: 1rem;
+  border: 3px solid #4db6ff; background: #10344d; color: #fff; cursor: pointer; }
+body.compania #voz { display: block; width: 100%; margin-bottom: .8rem; }
+#voz:active, #voz.escuchando { background: #7a1f1f; border-color: #ff6b6b; }
+</style>
 </head>
 <body>
 <main>
@@ -22,6 +37,7 @@
   <div id="mensajes"></div>
 
   <div class="entrada">
+    <button id="voz" type="button">🎤 Hablar (o escriba abajo)</button>
     <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
     <button class="boton" id="enviar" data-i18n="ch_enviar">Enviar</button>
   </div>
@@ -44,6 +60,40 @@ const slug = new URLSearchParams(location.search).get("curso")
   || localStorage.getItem("datito-ultimo");
 const caja = document.getElementById("mensajes");
 const texto = document.getElementById("texto");
+let modoCompania = false;
+
+/* Voz zero-dependency (D-11.2): TTS con speechSynthesis, STT con
+   SpeechRecognition. Si el navegador no las trae, la vista degrada a
+   texto sin romper nada. */
+const vozDisponible = "speechSynthesis" in window;
+function hablar(s) {
+  if (!modoCompania || !vozDisponible || !s) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(s.replace(/\[\w+#\d+\]/g, ""));
+  u.lang = "es-ES"; u.rate = 0.95;
+  window.speechSynthesis.speak(u);
+}
+function configurarBotonVoz() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const boton = document.getElementById("voz");
+  if (!modoCompania) return;
+  if (!SR) { boton.textContent = "🎤 (voz no disponible: escriba abajo)"; return; }
+  const rec = new SR();
+  rec.lang = "es-ES"; rec.interimResults = false;
+  boton.onclick = () => {
+    boton.classList.add("escuchando"); boton.textContent = "🎤 Escuchando…";
+    rec.start();
+  };
+  rec.onresult = (e) => {
+    texto.value = e.results[0][0].transcript;
+    enviar();
+  };
+  rec.onend = () => {
+    boton.classList.remove("escuchando");
+    boton.textContent = "🎤 Hablar (o escriba abajo)";
+  };
+  rec.onerror = rec.onend;
+}
 
 function burbuja(quien, html, extra = "") {
   const div = document.createElement("div");
@@ -71,6 +121,7 @@ async function enviar() {
     const r = await post(`/api/cursos/${slug}/mensajes`, { texto: pregunta });
     espera.remove();
     const div = burbuja("tutor", esc(r.respuesta), chipsDeEvidencia(r.evidencia));
+    hablar(r.respuesta);
     if (r.aviso) {
       const a = document.createElement("div");
       a.className = "aviso";
@@ -136,6 +187,21 @@ caja.addEventListener("click", async (e) => {
     const c = await get(`/api/cursos/${slug}`);
     document.getElementById("titulo").textContent = c.curso.nombre;
     document.title = "Datito · " + c.curso.nombre;
+    if (c.curso.modo === "compania") {
+      // Presencia activa (D-11.1 + D-11.2): el compañero abre la conversación
+      document.body.classList.add("compania");
+      modoCompania = true;
+      configurarBotonVoz();
+      try {
+        const a = await get(`/api/cursos/${slug}/apertura`);
+        let bienvenida = a.saludo;
+        if (a.recuerdo) {
+          bienvenida += " " + a.recuerdo.texto + " ¿Cómo sigue eso hoy?";
+        }
+        burbuja("tutor", esc(bienvenida));
+        hablar(bienvenida);
+      } catch { /* sin apertura no pasa nada: la conversación sigue normal */ }
+    }
   } catch {
     burbuja("tutor", t("ch_no_curso"));
   }

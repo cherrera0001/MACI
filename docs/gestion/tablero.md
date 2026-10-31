@@ -13,6 +13,7 @@
 | ✅ #114 | [E-8] Evidencia viva: el aprendizaje y su verificación con trazas reales (REA) | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #134 | [E-9] Modo tutor accesible: sin Ollama el producto guía la instalación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #138 | [E-10] Compañía: memoria verificable, escucha empática y estimulación sin evaluación | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #154 | [E-11] Compañía activa: apertura proactiva por vínculo, voz accesible y guardián anti-fraude/bienestar | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -76,6 +77,8 @@
 | ✅ #151 | [T-10.3.1] servidor.py: registro automático de recuerdos en POST mensajes (modo compañía) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #152 | [T-10.4.1] Script semilla_compania.py + instancia cursos/compania/ | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #153 | [T-10.4.2] Suite tests test_compania_* y regresión cero (122 + n en verde) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #155 | [D-11.1] ¿Cómo abre la conversación el compañero sin que el usuario escriba primero? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #156 | [D-11.2] ¿Cómo se logra voz y alto contraste sin dependencias ni servidores de audio? | Done | Decisión · P1 |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -137,5 +140,16 @@
 | ✅ #91 | [LB-1] Merge fase 2 (sdd/planificacion-maci) a main: docs canonicos, ADR-004, evidencia 4 pasos, tests esquema/docs, CI, privacidad | Done | — |
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
+| ✅ #157 | [D-11.3] ¿Cómo se detecta riesgo (estafa/bienestar) sin ML invasivo y con traza ética para el cuidador? | Done | — |
+| ✅ #158 | [H-11.1] Como persona mayor que vive sola, quiero que mi Datito me hable primero al abrir la app, recordando algo de mi vida si llevo tiempo sin conectarme | Done | P2 Estudiar con Datito |
+| ✅ #159 | [H-11.2] Como adulto mayor con baja visión, quiero conversar por voz con botón grande y alto contraste | Done | — |
+| ✅ #160 | [H-11.3] Como cuidador, quiero que el sistema proteja ante estafas y deje alertas legibles de emergencia sin espiar | Done | — |
+| ✅ #161 | [T-11.1.1] progreso.py: ultima_interaccion, horas_de_ausencia y marcar_interaccion | Done | — |
+| ✅ #162 | [T-11.1.2] apertura.py + GET /apertura: saludo por umbral y evocación citada | Done | — |
+| ✅ #163 | [T-11.2.1] guardian.py: evaluar() determinista con señales auditables | Done | — |
+| ✅ #164 | [T-11.2.2] servidor.py: integración guardián (protección citada + alertas.yaml + /registro) | Done | — |
+| ✅ #165 | [T-11.3.1] semilla_compania.py: guías anti-estafa y bienestar; regenerar cursos/compania/ | Done | — |
+| ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
+| ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**128 ítems · 0 abiertos.**
+**142 ítems · 0 abiertos.**

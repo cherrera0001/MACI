@@ -48,6 +48,15 @@ MEMORIAS_SEMILLA = [
      "compraron juntas en el centro.", "semilla:telefono"),
     ("La persona guarda las fotos de sus nietas en el telefono nuevo para "
      "ensenarselas cuando la visitan.", "semilla:fotos"),
+    ("Si un mensaje o llamada pide claves, contraseñas o dinero con "
+     "urgencia, es estafa: cortar, no compartir nada y consultar con "
+     "alguien de confianza.", "guia:anti-estafa-1"),
+    ("Los bancos nunca piden claves por telefono ni por mensaje; un "
+     "premio inesperado es señal de engaño, verificar siempre con la "
+     "familia antes de responder.", "guia:anti-estafa-2"),
+    ("La rutina de la persona: te en las tardes, caminar un poco por la "
+     "casa y llamar a su hermana los domingos; la rutina la mantiene "
+     "tranquila.", "guia:bienestar"),
 ]
 
 

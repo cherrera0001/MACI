@@ -20,7 +20,7 @@ def _cargar_script():
 def test_semilla_construye_instancia_funcional(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "DIR_CURSOS", tmp_path / "cursos")
     info = _cargar_script().construir()
-    assert info["slug"] == "compania" and info["memorias"] == 6
+    assert info["slug"] == "compania" and info["memorias"] == 9
 
     curso = cargar("compania")
     assert identidad.es_compania(curso)

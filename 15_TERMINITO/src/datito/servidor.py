@@ -16,6 +16,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
+from . import apertura, guardian
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
 from . import fragmentos as frag
@@ -197,6 +198,15 @@ class Handler(BaseHTTPRequestHandler):
                     p = cargar(slug).ruta("prompt", "actual.md")
                     return self._json({"prompt": p.read_text(encoding="utf-8")
                                        if p.exists() else ""})
+                if recurso == "apertura":
+                    curso = cargar(slug)
+                    if not identidad.es_compania(curso):
+                        return self._error(
+                            "sin_apertura",
+                            "La apertura proactiva existe solo en modo compania",
+                            404)
+                    return self._json(apertura.calcular(
+                        curso, Indice.cargar(curso.ruta(".indice"))))
             return self._estatico(u.path)
         except ErrorCurso as e:
             self._error("curso_no_encontrado", str(e), 404)
@@ -247,16 +257,35 @@ class Handler(BaseHTTPRequestHandler):
                 d = self._body_json()
                 texto = d.get("texto", "")
                 indice = Indice.cargar(curso.ruta(".indice"))
+                compania = identidad.es_compania(curso)
+                senal = guardian.evaluar(texto) if compania \
+                    else {"nivel": "ok", "senales": []}
                 r = sesion_mod.intercambio(curso, texto, indice)
-                if identidad.es_compania(curso):
-                    # la conversación de hoy es la memoria citable de mañana
-                    recuerdos = memoria.detectar(texto)
-                    for rec in recuerdos:
-                        indice.registrar_recuerdo(
-                            rec, referencia="sesion "
-                            + datetime.date.today().isoformat())
-                    if recuerdos:
-                        indice.guardar(curso.ruta(".indice"))
+                if compania:
+                    if senal["nivel"] == "fraude":
+                        # protección inmediata anclada a guía citada; el
+                        # relato del engaño no se guarda como recuerdo
+                        texto_p, citas_p = guardian.proteccion(
+                            curso, indice, senal)
+                        r["texto"], r["citas"] = texto_p, citas_p
+                        r["aviso"] = ("Guardian anti-fraude (D-11.3): "
+                                      "respuesta anclada a guia.")
+                    elif senal["nivel"] == "alerta":
+                        guardian.registrar_alerta(curso, senal)
+                        r["aviso"] = ((r.get("aviso") or "")
+                                      + " Senal de alerta registrada para su "
+                                      "cuidador (fecha y senales, no su "
+                                      "mensaje).").strip()
+                    else:
+                        # la conversación de hoy es la memoria citable de mañana
+                        recuerdos = memoria.detectar(texto)
+                        for rec in recuerdos:
+                            indice.registrar_recuerdo(
+                                rec, referencia="sesion "
+                                + datetime.date.today().isoformat())
+                        if recuerdos:
+                            indice.guardar(curso.ruta(".indice"))
+                progreso.marcar_interaccion(curso)
                 progreso.contar_mensaje(curso, 2)
                 return self._json(self._envoltura_mensaje(r, indice))
             if recurso == "mensajes" and len(partes) == 6 \
