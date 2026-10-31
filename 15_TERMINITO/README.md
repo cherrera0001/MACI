@@ -3,6 +3,12 @@
 Motor de tutores agenticos **diseñados por el estudiante** a partir de los materiales
 reales de su curso. Offline-first, sin frameworks pesados, datos en archivos legibles.
 
+> **Nueva vertical (2026-10): Compañía y estimulación cognitiva** — compañero
+> conversacional de voz para personas mayores que viven solas: memoria
+> verificable (jamás inventa recuerdos), voz neuronal 100% local, guardián
+> anti-fraude, reminiscencia guiada, panel familiar y legado. Construida en
+> las épocas E-10 a E-17. **Todo en [`COMPANIA.md`](COMPANIA.md)**.
+
 Ver: `specs/001-termito-platform/` (spec/plan/contratos) y la constitución en
 `.specify/memory/constitution.md`.
 

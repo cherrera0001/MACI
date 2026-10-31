@@ -78,6 +78,8 @@ public/
 15_TERMINITO/cursos/*/sesion*.yaml
 15_TERMINITO/cursos/*/progreso.yaml
 15_TERMINITO/cursos/*/metricas_sesion.yaml
+15_TERMINITO/cursos/*/reminiscencia.yaml
+15_TERMINITO/cursos/*/taller_estado.yaml
 15_TERMINITO/cursos/*/dudas.yaml
 15_TERMINITO/cursos/*/evaluaciones/resultados.yaml
 15_TERMINITO/cursos/*/grafo/dominio.yaml
