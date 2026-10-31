@@ -87,7 +87,7 @@ public/
 15_TERMINITO/cursos/*/.cerebro/
 15_TERMINITO/.kokoro/
 15_TERMINITO/tests/e2e/node_modules/
-15_TERMINITO/tests/e2e/root/
+15_TERMINITO/tests/e2e/root
 15_TERMINITO/tests/e2e/debs/
 15_TERMINITO/tests/e2e/ultima-corrida.png
 15_TERMINITO/cursos/*/fuentes/
