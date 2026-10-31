@@ -5,6 +5,17 @@ from datito import config
 from datito.modelo import crear
 
 
+@pytest.fixture(autouse=True)
+def _ambiente_sin_llm(monkeypatch):
+    """Hermeticidad: el LLM real del entorno (Ollama instalado en la máquina
+    de desarrollo, E-17) no debe filtrarse a los tests. Los tests que
+    simulan el LLM lo mockean explícitamente sobre esta base."""
+    from datito import llm
+
+    monkeypatch.setattr(llm, "disponible", lambda: False)
+    monkeypatch.setattr(llm, "modelo_instalado", lambda *a, **k: False)
+
+
 @pytest.fixture
 def tmp_path_curso(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "DIR_CURSOS", tmp_path / "cursos")
