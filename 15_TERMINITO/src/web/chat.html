@@ -112,7 +112,6 @@ let modoCompania = false;
    2) speechSynthesis con la mejor voz en español (Natural/Neural/es-CL…),
    frase a frase con pausas (rate 0.92);
    3) silencio si no hay nada: la conversación nunca se rompe. */
-let modoCompania = false;
 let vozNeuronal = false;
 let sttActivo = false;
 let vozElegida = null;
@@ -173,7 +172,7 @@ async function hablar(s) {
         body: JSON.stringify(cuerpo) });
       if (r.ok) {
         const a = new Audio(URL.createObjectURL(await r.blob()));
-        a.play();
+        a.play().catch(() => {});   // sin interacción previa: silencio, no error
         if (motor) {
           const b = document.createElement("button");
           b.className = "chip";
@@ -465,7 +464,8 @@ caja.addEventListener("click", async (e) => {
       // Presencia activa (D-11.1 + D-11.2): el compañero abre la conversación
       document.body.classList.add("compania");
       modoCompania = true;
-      configurarBotonVoz();
+      await detectarVozNeuronal();   // antes que nada de voz: sin este await
+      configurarBotonVoz();          // el mic quedaba deshabilitado (race)
       document.getElementById("recordar").style.display = "block";
       document.getElementById("recordar").onclick = recordarJuntos;
       document.getElementById("btn-biografia").style.display = "block";
@@ -475,7 +475,6 @@ caja.addEventListener("click", async (e) => {
       const fam = document.getElementById("btn-familiar");
       fam.href = `/familiar.html?curso=${encodeURIComponent(slug)}`;
       fam.style.display = "block";
-      detectarVozNeuronal();
       try {
         const a = await get(`/api/cursos/${slug}/apertura`);
         let bienvenida = a.saludo;

@@ -268,3 +268,19 @@ def test_threat_model_existe_con_matriz():
     texto = doc.read_text(encoding="utf-8")
     assert "quién-puede-leer-qué" in texto or "quién puede leer qué" in texto
     assert "X-Device-Id" in texto and "seguridad.yaml" in texto
+
+
+def test_chat_html_sin_doble_declaracion_ni_race_de_voz():
+    """Regresión del bug real del usuario: un 'let' duplicado mataba TODO el
+    script inline (página muerta: ningún botón funcionaba), y el mic se
+    configuraba antes de conocer el estado del STT (race)."""
+    import re
+
+    html = (__import__("pathlib").Path(servidor.__file__).parent.parent
+            / "web" / "chat.html").read_text(encoding="utf-8")
+    for ident in ("modoCompania", "vozNeuronal", "sttActivo", "vozElegida",
+                  "asignacionCiega", "vozDisponible"):
+        n = len(re.findall(rf"^\s*(?:let|const|var)\s+{ident}\b", html, re.M))
+        assert n == 1, f"{ident}: {n} declaraciones (SyntaxError en el navegador)"
+    assert html.index("await detectarVozNeuronal()") \
+        < html.index("configurarBotonVoz();"), "race: mic antes del STT"
