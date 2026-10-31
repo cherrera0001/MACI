@@ -17,6 +17,7 @@
 | ✅ #168 | [E-12] Compañía humana y memoria consolidada: voz neuronal/prosódica, deduplicación hipocampal, reminiscencia guiada y bitácora de vida | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #183 | [E-13] Ergonomía y calidez humana: layout de entrada desacoplado, supresión de jerga escolar, trato en segunda persona y lector de biografía | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #197 | [E-14] Autonomía práctica y red de apoyo: micro-talleres guiados y panel web familiar/legado | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #211 | Épica E-15 — Un cerebro para Datito | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -122,6 +123,22 @@
 | ✅ #208 | [T-14.2.2] familiar.html: vista cálida del panel familiar y Libro imprimible (@media print) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #209 | [T-14.3.1] chat.html: botón «🛠️ Aprender paso a paso» y «🏡 Vista familiar» en modo compañía | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #210 | [T-14.3.2] tests E-14: talleres, /familiar sin filtración, UI y regresión en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #212 | D-15.1 — Dependencia opcional zero-lock-in | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #213 | D-15.2 — Alcance del cerebro y garantías no negociables | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #214 | D-15.3 — Adopción condicional por evidencia medida | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #215 | H-15.1 — "¿Por qué recuerdas eso?" | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #216 | H-15.2 — Que no mezcle mundos | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #217 | H-15.3 — Que contar lo mismo muchas veces no llene su memoria de copias | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #218 | H-15.4 — Honestidad sobre cuándo el cerebro ayuda | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #219 | [T-15.1.1] cerebro.py: fachada aal + ciclo episódico PLAN→RETRIEVE→ACT→OBSERVE→CONSOLIDATE con grafo atómico en .cerebro/ | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #220 | [T-15.1.2] servidor.py: ciclo en POST /mensajes (compañía), asociaciones validadas en envoltura y campo cerebro en /api/salud | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #221 | [T-15.2.1] Trazas explicativas: camino semilla→puente→recuerdo en recuperación y API | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #222 | [T-15.2.2] Valencia contextual y aislamiento por dominio/kind (anti H7/H8) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #223 | [T-15.2.3] Olvido controlado: decaimiento por arista, poda determinista y protección nuclear | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #224 | [T-15.3.1] eval_cerebro.py: arnés pareado con señuelos H4, contaminación H7, repetición y validación | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #225 | [T-15.3.2] tests/test_compania_e15_cerebro.py: suite E-15 completa | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #226 | [T-15.4.1] Decisión de adopción medida: default si gana pareado, opt-in cerebro: aal si empata/regresa | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #227 | [T-15.4.2] Documentación D-15.3 con cifras exactas del experimento | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -195,4 +212,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**185 ítems · 0 abiertos.**
+**202 ítems · 0 abiertos.**
