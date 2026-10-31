@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
-from . import apertura, guardian
+from . import apertura, biografia, guardian, reminiscencia, voz
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
 from . import fragmentos as frag
@@ -141,6 +141,7 @@ class Handler(BaseHTTPRequestHandler):
                     "modelo_local": llm.disponible(),
                     "version_modelo": config.MODELO if llm.disponible() else None,
                     "modo": "tutor" if llm.disponible() else "exploracion",
+                    "voz": voz.info(),
                     "guia": _guia_instalacion()})
             if u.path == "/api/demo/socratico":
                 from . import demo_sintetico
@@ -207,6 +208,26 @@ class Handler(BaseHTTPRequestHandler):
                             404)
                     return self._json(apertura.calcular(
                         curso, Indice.cargar(curso.ruta(".indice"))))
+                if recurso == "reminiscencia":
+                    curso = cargar(slug)
+                    if not identidad.es_compania(curso):
+                        return self._error(
+                            "sin_reminiscencia",
+                            "La reminiscencia guiada existe solo en modo compania",
+                            404)
+                    qs = parse_qs(u.query)
+                    return self._json(reminiscencia.siguiente(
+                        curso, Indice.cargar(curso.ruta(".indice")),
+                        nueva=qs.get("nueva", ["0"])[0] == "1"))
+                if recurso == "biografia":
+                    curso = cargar(slug)
+                    if not identidad.es_compania(curso):
+                        return self._error(
+                            "sin_biografia",
+                            "La bitacora de vida existe solo en modo compania",
+                            404)
+                    return self._json(biografia.construir(
+                        curso, Indice.cargar(curso.ruta(".indice"))))
             return self._estatico(u.path)
         except ErrorCurso as e:
             self._error("curso_no_encontrado", str(e), 404)
@@ -248,6 +269,18 @@ class Handler(BaseHTTPRequestHandler):
                     return self._json(_indexar(curso))
                 except RuntimeError as e:
                     return self._error("sin_contenido", str(e), 422)
+            if recurso == "tts" and len(partes) == 4:
+                d = self._body_json()
+                audio = voz.sintetizar(d.get("texto", ""))
+                if audio is None:
+                    return self._json({"error": "voz_no_disponible",
+                                       "detalle": voz.info()}, 404)
+                self.send_response(200)
+                self.send_header("Content-Type", "audio/wav")
+                self.send_header("Content-Length", str(len(audio)))
+                self.end_headers()
+                self.wfile.write(audio)
+                return
             if recurso == "mensajes" and len(partes) == 4:
                 if curso.estado == "cerrado":
                     return self._error(
@@ -280,7 +313,9 @@ class Handler(BaseHTTPRequestHandler):
                         # la conversación de hoy es la memoria citable de mañana
                         recuerdos = memoria.detectar(texto)
                         for rec in recuerdos:
-                            indice.registrar_recuerdo(
+                            # consolidación hipocampal (D-12.2): la misma
+                            # anécdota contada dos veces no infla el índice
+                            indice.consolidar_recuerdo(
                                 rec, referencia="sesion "
                                 + datetime.date.today().isoformat())
                         if recuerdos:

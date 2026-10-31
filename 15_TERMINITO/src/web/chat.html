@@ -38,6 +38,7 @@ body.compania #voz { display: block; width: 100%; margin-bottom: .8rem; }
 
   <div class="entrada">
     <button id="voz" type="button">🎤 Hablar (o escriba abajo)</button>
+    <button id="recordar" class="boton alt" type="button" style="display:none">🧠 Recordar juntos</button>
     <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
     <button class="boton" id="enviar" data-i18n="ch_enviar">Enviar</button>
   </div>
@@ -62,16 +63,64 @@ const caja = document.getElementById("mensajes");
 const texto = document.getElementById("texto");
 let modoCompania = false;
 
-/* Voz zero-dependency (D-11.2): TTS con speechSynthesis, STT con
-   SpeechRecognition. Si el navegador no las trae, la vista degrada a
-   texto sin romper nada. */
+/* Voz zero-dependency (D-11.2) con prioridad neuronal (D-12.1):
+   1) POST /api/tts con motor neuronal local (piper) si existe;
+   2) speechSynthesis con la mejor voz en español (Natural/Neural/es-CL…),
+   frase a frase con pausas (rate 0.92);
+   3) silencio si no hay nada: la conversación nunca se rompe. */
+let modoCompania = false;
+let vozNeuronal = false;
+let vozElegida = null;
 const vozDisponible = "speechSynthesis" in window;
-function hablar(s) {
-  if (!modoCompania || !vozDisponible || !s) return;
+
+function limpiarParaVoz(s) {
+  return String(s || "").replace(/\[\w+#\d+\]/g, "").replace(/\s+/g, " ").trim();
+}
+function segmentar(s) {
+  return limpiarParaVoz(s).match(/[^.!?;:]+[.!?;:]+["'”’]?|[^.!?;:]+$/g)
+    ?.map(x => x.trim()).filter(Boolean) || [limpiarParaVoz(s)];
+}
+function elegirVoz() {
+  if (!vozDisponible) return;
+  const es = window.speechSynthesis.getVoices()
+    .filter(v => v.lang.toLowerCase().startsWith("es"));
+  const puntos = v => (/natural|neural|google|microsoft/i.test(v.name) ? 2 : 0)
+    + (/es-cl|es-mx|es-ar/i.test(v.lang.toLowerCase()) ? 1 : 0);
+  vozElegida = es.sort((a, b) => puntos(b) - puntos(a))[0] || null;
+}
+if (vozDisponible) {
+  elegirVoz();
+  window.speechSynthesis.onvoiceschanged = elegirVoz;
+}
+async function detectarVozNeuronal() {
+  try {
+    const s = await get("/api/salud");
+    vozNeuronal = !!(s.voz && s.voz.neuronal);
+  } catch { vozNeuronal = false; }
+}
+async function hablar(s) {
+  if (!modoCompania || !s) return;
+  if (vozNeuronal) {
+    try {
+      const r = await fetch(`/api/cursos/${slug}/tts`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto: limpiarParaVoz(s) }) });
+      if (r.ok) {
+        const a = new Audio(URL.createObjectURL(await r.blob()));
+        a.play();
+        return;
+      }
+    } catch { /* cae a voz del navegador */ }
+  }
+  if (!vozDisponible) return;
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(s.replace(/\[\w+#\d+\]/g, ""));
-  u.lang = "es-ES"; u.rate = 0.95;
-  window.speechSynthesis.speak(u);
+  for (const frase of segmentar(s)) {
+    const u = new SpeechSynthesisUtterance(frase);
+    u.lang = vozElegida?.lang || "es-ES";
+    if (vozElegida) u.voice = vozElegida;
+    u.rate = 0.92;   // prosodia pausada para adulto mayor
+    window.speechSynthesis.speak(u);
+  }
 }
 function configurarBotonVoz() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -93,6 +142,23 @@ function configurarBotonVoz() {
     boton.textContent = "🎤 Hablar (o escriba abajo)";
   };
   rec.onerror = rec.onend;
+}
+async function recordarJuntos() {
+  if (!modoCompania) return;
+  const b = document.getElementById("recordar");
+  b.disabled = true;
+  try {
+    const avance = document.querySelector("#recordar").dataset.abierto === "1";
+    const r = await get(`/api/cursos/${slug}/reminiscencia${avance ? "" : "?nueva=1"}`);
+    document.getElementById("recordar").dataset.abierto = "1";
+    const div = burbuja("tutor", esc(r.pista));
+    hablar(r.pista);
+    if (r.completa) document.getElementById("recordar").dataset.abierto = "0";
+  } catch (e) {
+    burbuja("tutor", "⚠ " + esc(e.message));
+  } finally {
+    b.disabled = false;
+  }
 }
 
 function burbuja(quien, html, extra = "") {
@@ -192,6 +258,9 @@ caja.addEventListener("click", async (e) => {
       document.body.classList.add("compania");
       modoCompania = true;
       configurarBotonVoz();
+      document.getElementById("recordar").style.display = "block";
+      document.getElementById("recordar").onclick = recordarJuntos;
+      detectarVozNeuronal();
       try {
         const a = await get(`/api/cursos/${slug}/apertura`);
         let bienvenida = a.saludo;

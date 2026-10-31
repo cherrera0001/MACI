@@ -14,6 +14,7 @@
 | ✅ #134 | [E-9] Modo tutor accesible: sin Ollama el producto guía la instalación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #138 | [E-10] Compañía: memoria verificable, escucha empática y estimulación sin evaluación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #154 | [E-11] Compañía activa: apertura proactiva por vínculo, voz accesible y guardián anti-fraude/bienestar | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #168 | [E-12] Compañía humana y memoria consolidada: voz neuronal/prosódica, deduplicación hipocampal, reminiscencia guiada y bitácora de vida | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -79,6 +80,20 @@
 | ✅ #153 | [T-10.4.2] Suite tests test_compania_* y regresión cero (122 + n en verde) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #155 | [D-11.1] ¿Cómo abre la conversación el compañero sin que el usuario escriba primero? | Done | Decisión · P1 · P2 Estudiar con Datito |
 | ✅ #156 | [D-11.2] ¿Cómo se logra voz y alto contraste sin dependencias ni servidores de audio? | Done | Decisión · P1 |
+| ✅ #169 | [D-12.1] ¿Cómo logramos voz cálida sin encadenar el producto a un proveedor de audio? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #170 | [D-12.2] ¿Cómo evitamos que 30 días de charla conviertan .indice/ en 500 fragmentos redundantes? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #171 | [D-12.3] ¿Cómo estimulamos la memoria biográfica y construimos el legado sin examen ni exposición de alertas? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #172 | [H-12.1] Como adulto mayor, quiero que mi compañero tenga voz cálida y pausada, para escucharlo con comodidad | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #173 | [H-12.2] Como usuario, quiero contar la misma anécdota sin llenar la memoria de copias | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #174 | [H-12.3] Como persona mayor, quiero ejercicios suaves de memoria con pistas progresivas, sin calificaciones | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #175 | [H-12.4] Como familia, quiero una bitácora de historias de vida verificable y sin datos sensibles | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #176 | [T-12.1.1] voz.py + POST /api/tts + voz en /api/salud | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #177 | [T-12.1.2] chat.html: selector neuronal + prosodia pausada + reproducción /api/tts | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #178 | [T-12.2.1] indice.py: consolidar_recuerdo() deduplica y enriquece; hook en servidor | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #179 | [T-12.2.2] memoria.py: mapa de entidades recurrentes | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #180 | [T-12.3.1] reminiscencia.py + GET /reminiscencia + botón Recordar juntos | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #181 | [T-12.4.1] biografia.py + GET /biografia con citas y sin alertas | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #182 | [T-12.5.1] tests E-12 (voz, consolidación, reminiscencia, legado) + regresión 153 en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -152,4 +167,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**142 ítems · 0 abiertos.**
+**157 ítems · 0 abiertos.**

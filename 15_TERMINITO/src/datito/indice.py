@@ -74,6 +74,52 @@ class Indice:
 
     # --- memoria episodica en caliente (modo compania, E-10) ---------------
 
+    def consolidar_recuerdo(self, texto: str, referencia: str = "",
+                            umbral: float = 0.55) -> str:
+        """Consolidación hipocampal (D-12.2): deduplica antes de registrar.
+
+        Si el relato entrante es casi el mismo (Jaccard de tokens de
+        contenido >= umbral) que una memoria existente, fusiona en esa: no
+        se crea un memoria#<n> redundante y la memoria se enriquece con la
+        versión más informativa. Devuelve el fid consolidado (o nuevo).
+        """
+        tokens_n = set(tokenizar(texto))
+        mejor, sim = None, 0.0
+        for f in list(self.textos):
+            if not f.startswith("memoria#") \
+                    or self.referencias.get(f, ("", ""))[1].startswith("guia:"):
+                continue
+            existentes = set(tokenizar(self.textos[f]))
+            if not existentes:
+                continue
+            j = len(tokens_n & existentes) / len(tokens_n | existentes)
+            if j > sim:
+                sim, mejor = j, f
+        if mejor and sim >= umbral:
+            if len(texto) > len(self.textos[mejor]):
+                self.textos[mejor] = texto
+                if referencia:
+                    self.referencias[mejor] = ("memoria", referencia)
+                self._revectorizar(mejor)
+            return mejor
+        return self.registrar_recuerdo(texto, referencia)
+
+    def _revectorizar(self, fid: str):
+        """Reconstruye el vector de un fid tras enriquecer su texto."""
+        tf: dict[str, int] = {}
+        for tok in tokenizar(self.textos[fid]):
+            tf[tok] = tf.get(tok, 0) + 1
+        self.vectores[fid] = tf  # provisional, para el df
+        n = len(self.vectores)
+        df: dict[str, int] = {}
+        for vec in self.vectores.values():
+            for t in vec:
+                df[t] = df.get(t, 0) + 1
+        self.idf = {t: math.log((1 + n) / (1 + d)) + 1.0 for t, d in df.items()}
+        vec = {t: (1.0 + math.log(c)) * self.idf[t] for t, c in tf.items()}
+        norm = math.sqrt(sum(v * v for v in vec.values())) or 1.0
+        self.vectores[fid] = {t: v / norm for t, v in vec.items()}
+
     def _df(self, termino: str) -> int:
         """Frecuencia de documento reconstruida del IDF (bijection con n fijo)."""
         n = len(self.vectores)
