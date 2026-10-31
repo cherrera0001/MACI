@@ -1,0 +1,13 @@
+{
+  "name": "datito-e2e",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Validacion E2E real del chat: la pagina en Chromium, viajes del usuario",
+  "type": "module",
+  "scripts": {
+    "validar": "node validar.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.49.0"
+  }
+}
