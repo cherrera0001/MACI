@@ -6,19 +6,33 @@
 <title>Chat con tu Datito</title>
 <link rel="stylesheet" href="/css/datito.css">
 <style>
-/* Modo compañía (D-11.2): alto contraste, tipografía grande, botón único.
-   Solo se activa cuando el curso es modo == "compania". */
-body.compania { font-size: 22px; background: #101418; color: #f2f5f7; }
-body.compania .sub, body.compania p { color: #d7dee4; }
-body.compania .msg { font-size: 22px; line-height: 1.5; }
-body.compania .msg.tutor { background: #1d2b36; border-left: .5rem solid #4db6ff; }
-body.compania .msg.estudiante { background: #243227; border-left: .5rem solid #7bd88a; }
-body.compania .boton { font-size: 22px; padding: 1rem 1.6rem; }
-body.compania textarea { font-size: 22px; }
+/* Modo compañía (D-11.2 + D-12.1): paleta cálida y luminosa "Papel y
+   Salvia" (diseño gerontológico). Crema #FAF7F2 de fondo, carbón cálido
+   #252320 de texto (>12:1, WCAG AAA sin negro puro), salvia #2E6F5E y
+   terracota #B85D3B de acento: naturaleza, calma y hogar. Nada de fondos
+   oscuros ni amarillos de alerta. Solo aplica con body.compania. */
+body.compania { font-size: 22px; background: #FAF7F2; color: #252320; }
+body.compania a { color: #2E6F5E; }
+body.compania .sub, body.compania p { color: #4A4440; }
+body.compania .msg { font-size: 22px; line-height: 1.5; color: #252320;
+  border-radius: 14px; }
+body.compania .msg.tutor { background: #F2ECE1;
+  border-left: .5rem solid #2E6F5E; }
+body.compania .msg.estudiante { background: #EDE7DA;
+  border-left: .5rem solid #B85D3B; }
+body.compania .citas .chip { border-color: #2E6F5E; color: #2E6F5E; }
+body.compania .aviso { color: #6B3A2A; border-color: #B85D3B; }
+body.compania .boton { font-size: 22px; padding: 1rem 1.6rem;
+  background: #2E6F5E; color: #FAF7F2; border-color: #2E6F5E; }
+body.compania .boton.alt { background: transparent; color: #B85D3B;
+  border-color: #B85D3B; }
+body.compania textarea { font-size: 22px; background: #FFFDF9;
+  color: #252320; border: 2px solid #DED6C6; border-radius: 10px; }
 #voz { display: none; font-size: 28px; padding: 1.2rem; border-radius: 1rem;
-  border: 3px solid #4db6ff; background: #10344d; color: #fff; cursor: pointer; }
+  border: 3px solid #2E6F5E; background: #2E6F5E; color: #FAF7F2;
+  cursor: pointer; }
 body.compania #voz { display: block; width: 100%; margin-bottom: .8rem; }
-#voz:active, #voz.escuchando { background: #7a1f1f; border-color: #ff6b6b; }
+#voz:active, #voz.escuchando { background: #B85D3B; border-color: #B85D3B; }
 </style>
 </head>
 <body>
@@ -119,6 +133,7 @@ async function hablar(s) {
     u.lang = vozElegida?.lang || "es-ES";
     if (vozElegida) u.voice = vozElegida;
     u.rate = 0.92;   // prosodia pausada para adulto mayor
+    u.pitch = 1.0;   // tono natural, sin efectos
     window.speechSynthesis.speak(u);
   }
 }

@@ -147,3 +147,17 @@ def test_biografia_agrupa_por_entidades_sin_alertas(tmp_path_curso):
     texto = json.dumps(bio, ensure_ascii=False)
     assert "guia:" not in texto and "caida" not in texto, \
         "ni guías ni alertas filtradas entran al legado"
+
+
+# --- paleta cálida gerontológica (D-12.1) -----------------------------------
+
+def test_paleta_calida_luminosa_y_sin_oscuros():
+    from pathlib import Path
+    html = (Path(servidor.DIR_WEB) / "chat.html").read_text(encoding="utf-8")
+    for calido in ("#FAF7F2", "#F2ECE1", "#252320", "#2E6F5E", "#B85D3B",
+                   "#DED6C6"):
+        assert calido in html, f"falta el color cálido {calido}"
+    for oscuro in ("#101418", "#1d2b36", "#10344d", "#4db6ff", "#7bd88a",
+                   "#7a1f1f"):
+        assert oscuro not in html, f"queda color oscuro/frío {oscuro}"
+    assert "body.compania" in html, "la paleta sigue atada al modo compañía"
