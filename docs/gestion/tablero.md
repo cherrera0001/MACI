@@ -18,6 +18,7 @@
 | ✅ #183 | [E-13] Ergonomía y calidez humana: layout de entrada desacoplado, supresión de jerga escolar, trato en segunda persona y lector de biografía | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #197 | [E-14] Autonomía práctica y red de apoyo: micro-talleres guiados y panel web familiar/legado | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #211 | Épica E-15 — Un cerebro para Datito | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #228 | Épica E-16 — Oreja y boca 100% offline, medida y con amenaza modelada | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -139,6 +140,22 @@
 | ✅ #225 | [T-15.3.2] tests/test_compania_e15_cerebro.py: suite E-15 completa | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #226 | [T-15.4.1] Decisión de adopción medida: default si gana pareado, opt-in cerebro: aal si empata/regresa | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #227 | [T-15.4.2] Documentación D-15.3 con cifras exactas del experimento | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #229 | D-16.1 — STT local vía /api/stt con degradación limpia | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #230 | D-16.2 — Kokoro-82M como segundo motor de voz + A/B ciego | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #231 | D-16.3 — Amenaza modelada: matriz quién-puede-leer-qué + token por dispositivo | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #232 | [H-16.1] Que mi voz no salga de mi casa | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #233 | [H-16.2] Una voz que me resulte cálida y natural | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #234 | [H-16.3] Que solo mi familia pueda ver mi panel | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #235 | [T-16.1.1] stt.py: adaptador faster-whisper + POST /api/stt + campo stt en /api/salud | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #236 | [T-16.1.2] chat.html: MediaRecorder → /api/stt; quitar webkitSpeechRecognition | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #237 | [T-16.2.1] voz.py: motor kokoro seleccionable por curso.yaml | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #238 | [T-16.2.2] A/B ciego de voz en chat.html + registro de preferencia | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #239 | [T-16.3.1] acceso.py: tokens un solo uso + middleware /familiar y /mensajes | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #240 | [T-16.3.2] docs/gestion/THREAT_MODEL.md: matriz quién-puede-leer-qué | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #241 | [T-16.4.1] eval_conversacion.py: 20 turnos guionizados, latencia p50/p95 por componente | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #242 | [T-16.4.2] Banco D-15.3 ampliado de 6 a 20 sondas + re-decisión del cerebro | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #243 | [T-16.5.1] tests E-16: stt, kokoro (mockeado), tokens, A/B, eval_conversacion, banco 20 | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #244 | [T-16.5.2] docs/gestion/historico/E16_*: voz medida + banco ampliado + cierre | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -212,4 +229,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**202 ítems · 0 abiertos.**
+**219 ítems · 0 abiertos.**
