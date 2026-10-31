@@ -16,7 +16,8 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
-from . import apertura, biografia, guardian, reminiscencia, voz
+from . import apertura, biografia, familiar, guardian, reminiscencia, talleres
+from . import voz
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
 from . import fragmentos as frag
@@ -228,6 +229,24 @@ class Handler(BaseHTTPRequestHandler):
                             404)
                     return self._json(biografia.construir(
                         curso, Indice.cargar(curso.ruta(".indice"))))
+                if recurso == "taller":
+                    curso = cargar(slug)
+                    if not identidad.es_compania(curso):
+                        return self._error(
+                            "sin_taller",
+                            "Los micro-talleres existen solo en modo compania",
+                            404)
+                    return self._json(talleres.estado(
+                        curso, Indice.cargar(curso.ruta(".indice"))))
+                if recurso == "familiar":
+                    curso = cargar(slug)
+                    if not identidad.es_compania(curso):
+                        return self._error(
+                            "sin_panel_familiar",
+                            "El panel familiar existe solo en modo compania",
+                            404)
+                    return self._json(familiar.construir(
+                        curso, Indice.cargar(curso.ruta(".indice"))))
             return self._estatico(u.path)
         except ErrorCurso as e:
             self._error("curso_no_encontrado", str(e), 404)
@@ -344,6 +363,22 @@ class Handler(BaseHTTPRequestHandler):
                                    "registro": res["registro"],
                                    "estado_interaccion":
                                        res["estado_interaccion"]})
+            if recurso == "taller" and len(partes) == 4:
+                curso = cargar(slug)
+                if not identidad.es_compania(curso):
+                    return self._error(
+                        "sin_taller",
+                        "Los micro-talleres existen solo en modo compania",
+                        404)
+                d = self._body_json()
+                indice = Indice.cargar(curso.ruta(".indice"))
+                accion = d.get("accion", "avanzar")
+                if accion == "elegir":
+                    return self._json(talleres.elegir(
+                        curso, indice, taller_id=d.get("taller_id")))
+                if accion == "ayuda":
+                    return self._json(talleres.ayuda(curso, indice))
+                return self._json(talleres.avanzar(curso, indice))
             if recurso == "mensajes":
                 return self._error("ruta_desconocida", u.path, 404)
             if recurso == "dudas":

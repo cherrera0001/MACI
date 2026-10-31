@@ -2,6 +2,8 @@
 import importlib.util
 from pathlib import Path
 
+import yaml
+
 from datito import config, identidad
 from datito.indice import Indice
 from datito.modelo import cargar
@@ -20,7 +22,7 @@ def _cargar_script():
 def test_semilla_construye_instancia_funcional(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "DIR_CURSOS", tmp_path / "cursos")
     info = _cargar_script().construir()
-    assert info["slug"] == "compania" and info["memorias"] == 9
+    assert info["slug"] == "compania" and info["memorias"] == 11
 
     curso = cargar("compania")
     assert identidad.es_compania(curso)
@@ -29,6 +31,13 @@ def test_semilla_construye_instancia_funcional(tmp_path, monkeypatch):
     assert "memoria#6" in indice.textos
     salto = [f for f, _, _ in indice.buscar_asociativo("mi hermana", k=6, saltos=2)]
     assert "memoria#6" in salto            # la semilla conecta el grafo asociativo
+
+    # micro-talleres prácticos (D-14.1): 3 talleres con guías resueltas
+    talleres = yaml.safe_load(curso.ruta("talleres.yaml").read_text(
+        encoding="utf-8"))["talleres"]
+    assert len(talleres) == 3
+    assert all(t["guia_fid"] in indice.textos for t in talleres)
+    assert all(len(t["pasos"]) == 3 for t in talleres)
 
     prompt = curso.ruta("prompt", "actual.md").read_text(encoding="utf-8")
     assert "JAMAS inventes recuerdos" in prompt

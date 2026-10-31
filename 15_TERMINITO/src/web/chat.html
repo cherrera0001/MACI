@@ -52,6 +52,10 @@ body.compania .estado-motor,
 body.compania #guia-ollama,
 body.compania .sub,
 body.compania [data-i18n-html="ch_ayuda"] { display: none !important; }
+
+/* Micro-talleres y vista familiar (D-14.3): el enlace al panel del
+   cuidador se comporta como botón ancho en la fila de acciones. */
+body.compania .fila-botones > a.boton { text-align: center; }
 </style>
 </head>
 <body>
@@ -72,8 +76,10 @@ body.compania [data-i18n-html="ch_ayuda"] { display: none !important; }
   <div class="entrada">
     <div class="fila-botones">
       <button id="voz" type="button">🎤 Hablar (o escriba abajo)</button>
+      <button id="btn-taller" class="boton alt" type="button" style="display:none">🛠️ Aprender paso a paso</button>
       <button id="recordar" class="boton alt" type="button" style="display:none">🧠 Recordar juntos</button>
       <button id="btn-biografia" class="boton alt" type="button" style="display:none">📖 Mi historia de vida</button>
+      <a id="btn-familiar" class="boton alt" href="#" target="_blank" rel="noopener" style="display:none">🏡 Vista familiar</a>
     </div>
     <div class="fila-escritura">
       <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
@@ -226,6 +232,85 @@ async function verBiografia() {
   }
 }
 
+/* Micro-taller práctico (D-14.1/D-14.3): un solo gesto guía el taller
+   completo. El paso se muestra con dos botones: «Lo hice» avanza y
+   «Necesito ayuda» acerca la pista sin penalizar. */
+function mostrarPasoTaller(r) {
+  let html = "";
+  let extra = "";
+  if (r.anclaje) {
+    html = esc(r.paso.texto) + '<br><small style="color:#4A4440">'
+      + esc(r.anclaje) + "</small>";
+  } else if (r.paso) {
+    html = esc(r.paso.texto);
+  }
+  if (r.completado) {
+    extra = chipsDeEvidencia(r.evidencia);
+    const div = burbuja("tutor", esc(r.celebracion), extra);
+    hablar(r.celebracion);
+    return;
+  }
+  const div = burbuja("tutor", html);
+  if (r.celebracion) {
+    const c = document.createElement("div");
+    c.className = "aviso";
+    c.style.borderColor = "#2E6F5E";
+    c.style.color = "#2E6F5E";
+    c.textContent = "🎉 " + r.celebracion;
+    div.appendChild(c);
+  }
+  const hecho = document.createElement("button");
+  hecho.className = "boton";
+  hecho.style.fontSize = "20px";
+  hecho.textContent = "✅ Lo hice, siguiente paso";
+  hecho.onclick = async () => {
+    hecho.disabled = true;
+    try {
+      const sig = await post(`/api/cursos/${slug}/taller`, { accion: "avanzar" });
+      mostrarPasoTaller(sig);
+    } catch (e) { burbuja("tutor", "⚠ " + esc(e.message)); }
+  };
+  const ayudaB = document.createElement("button");
+  ayudaB.className = "boton alt";
+  ayudaB.style.fontSize = "20px";
+  ayudaB.textContent = "🤔 Necesito ayuda";
+  ayudaB.onclick = async () => {
+    ayudaB.disabled = true;
+    try {
+      const a = await post(`/api/cursos/${slug}/taller`, { accion: "ayuda" });
+      if (a.pista) {
+        burbuja("tutor", esc(a.pista));
+        hablar(a.pista);
+      }
+    } catch (e) { burbuja("tutor", "⚠ " + esc(e.message)); }
+    ayudaB.disabled = false;
+  };
+  div.appendChild(hecho);
+  div.appendChild(ayudaB);
+  hablar(r.paso ? r.paso.texto : r.celebracion);
+}
+
+async function aprenderPasoAPaso() {
+  if (!modoCompania) return;
+  const b = document.getElementById("btn-taller");
+  b.disabled = true;
+  try {
+    let r = await get(`/api/cursos/${slug}/taller`);
+    if (!r.activo) {
+      r = await post(`/api/cursos/${slug}/taller`, { accion: "elegir" });
+    }
+    if (!r.paso && !r.completado) {
+      burbuja("tutor", "Hoy no hay talleres disponibles; conversamos, que también estimula.");
+      return;
+    }
+    mostrarPasoTaller(r);
+  } catch (e) {
+    burbuja("tutor", "⚠ " + esc(e.message));
+  } finally {
+    b.disabled = false;
+  }
+}
+
 function burbuja(quien, html, extra = "") {
   const div = document.createElement("div");
   div.className = "msg " + quien;
@@ -327,6 +412,11 @@ caja.addEventListener("click", async (e) => {
       document.getElementById("recordar").onclick = recordarJuntos;
       document.getElementById("btn-biografia").style.display = "block";
       document.getElementById("btn-biografia").onclick = verBiografia;
+      document.getElementById("btn-taller").style.display = "block";
+      document.getElementById("btn-taller").onclick = aprenderPasoAPaso;
+      const fam = document.getElementById("btn-familiar");
+      fam.href = `/familiar.html?curso=${encodeURIComponent(slug)}`;
+      fam.style.display = "block";
       detectarVozNeuronal();
       try {
         const a = await get(`/api/cursos/${slug}/apertura`);
