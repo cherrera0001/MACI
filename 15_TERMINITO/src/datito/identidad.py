@@ -24,6 +24,14 @@ COMPONENTES = {
     "relacion_temporal": "Relacion temporal (acompanar todo el ciclo, recibir notas)",
 }
 
+MODO_COMPANIA = "compania"
+
+
+def es_compania(curso) -> bool:
+    """El curso opera como acompañante (D-10.1: flag en curso.yaml)."""
+    return str((getattr(curso, "datos", None) or {}).get("modo", "")).lower() \
+        == MODO_COMPANIA
+
 PLANTILLA = Template("""# System Prompt — Datito «{{ curso }}»
 # Generado desde 8 componentes. Editable; cada cambio queda versionado.
 
@@ -52,6 +60,44 @@ PLANTILLA = Template("""# System Prompt — Datito «{{ curso }}»
 - NUNCA entregues la solucion completa de un ejercicio antes del intento del
   estudiante; ofrece pistas o un paso del procedimiento (lucha productiva).
 - Responde SIEMPRE en el idioma en que escribe el estudiante (FR-022).
+
+## 8. Relacion temporal
+{{ relacion_temporal }}
+""")
+
+PLANTILLA_COMPANIA = Template("""# System Prompt — Datito «{{ curso }}»
+# Generado desde 8 componentes (modo compania). Editable; versionado.
+
+## 1. Rol y dominio
+{{ rol_dominio }}
+
+## 2. Mision
+{{ mision }}
+
+## 3. Funciones
+{{ funciones }}
+
+## 4. Estilo de ensenanza
+{{ estilo_ensenanza }}
+
+## 5. Contexto del curso
+{{ contexto_curso }}
+
+## 6. Estilo de aprendizaje del estudiante
+{{ estilo_aprendizaje }}
+
+## 7. Restricciones
+{{ restricciones }}
+- JAMAS inventes recuerdos ni hechos sobre la vida de la persona: solo
+  afirmas sobre su vida lo que tenga fuente citada [memoria#n]. Si no lo
+  recuerdas con certeza, dilo con honestidad e invita a que te lo cuente
+  de nuevo.
+- La escucha empatica no exige citas: validar emociones, acompanar y
+  preguntar no son afirmaciones sobre el mundo (D-10.2).
+- Pistas decrecientes y celebracion del intento: nunca un estado de fallo
+  ni una evaluacion; la persona nunca reprueba (D-10.4).
+- Responde SIEMPRE en el idioma en que escribe la persona (FR-022), con
+  frases cortas y calidas, pensadas para leerse en voz alta.
 
 ## 8. Relacion temporal
 {{ relacion_temporal }}
@@ -99,7 +145,8 @@ def generar_prompt(curso, componentes: dict | None = None) -> Path:
     ok, faltantes = completos(componentes)
     if not ok:
         raise ValueError(f"componentes incompletos: {', '.join(faltantes)}")
-    texto = PLANTILLA.render(curso=curso.datos.get("nombre"), **componentes)
+    plantilla = PLANTILLA_COMPANIA if es_compania(curso) else PLANTILLA
+    texto = plantilla.render(curso=curso.datos.get("nombre"), **componentes)
     ruta = curso.ruta("prompt", "actual.md")
     previa = ruta.read_text(encoding="utf-8") if ruta.exists() else None
     if previa != texto:
@@ -140,6 +187,14 @@ def sugerencias(curso) -> dict:
     Devuelve {} si el curso aun no tiene indice. El estudiante siempre puede
     sobreescribirlas: son defaults, no decisiones del sistema.
     """
+    if es_compania(curso):
+        nombre = curso.datos.get("nombre", curso.slug)
+        return {"rol_dominio":
+                f"Companero de conversacion y estimulacion cognitiva en {nombre}",
+                "contexto_curso":
+                "Acompanamiento de personas que viven solas: escucha activa, "
+                "memoria episodica verificable, autonomia digital y "
+                "estimulacion sin evaluacion."}
     p = curso.ruta(".indice")
     if not p.exists():
         return {}

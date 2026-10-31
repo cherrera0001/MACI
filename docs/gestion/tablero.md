@@ -12,6 +12,7 @@
 | ✅ #95 | [E-7] Paquete: un Datito de cualquier curso nace completo desde el wizard | Done | Épica · P1 · P3 Verificar y publicar |
 | ✅ #114 | [E-8] Evidencia viva: el aprendizaje y su verificación con trazas reales (REA) | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #134 | [E-9] Modo tutor accesible: sin Ollama el producto guía la instalación | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #138 | [E-10] Compañía: memoria verificable, escucha empática y estimulación sin evaluación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -60,6 +61,21 @@
 | ✅ #122 | [D-8.1] ¿REA vive solo en el pipeline de construcción/CI o también en el runtime del paquete distribuible? | Done | Decisión · P1 · P2 Estudiar con Datito |
 | ✅ #135 | [H-9.1] Como estudiante sin Ollama, quiero que la web me muestre cómo instalarlo con los comandos de mi sistema, para pasar de modo exploración a modo tutor sin buscar en internet | Done | Historia · P1 · P2 Estudiar con Datito |
 | ✅ #136 | [T-9.1.1] Guía de instalación: /api/salud la expone por SO y api.js la renderiza dismissible en todas las páginas | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #139 | [D-10.1] ¿El modo compañía vive como flag en curso.yaml o como entidad nueva? | Done | Decisión · P1 · P3 Verificar y publicar |
+| ✅ #140 | [D-10.2] ¿Cómo garantiza el motor que el tutor jamás invente un recuerdo a un adulto mayor? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #141 | [D-10.3] ¿La propagación asociativa (HippoRAG ligero) es módulo aparte o método del índice? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #142 | [D-10.4] ¿Qué modelo de progreso reemplaza a los estados de dominio en modo compañía? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #143 | [H-10.1] Como persona que vive sola, quiero contarle mi día a mi Datito y que me escuche con empatía, para sentirme acompañada | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #144 | [H-10.2] Como adulto mayor, quiero que mi Datito recuerde lo que le conté citándolo de verdad, para poder confiar en que no inventa | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #145 | [H-10.3] Como usuario, quiero que el sistema conecte recuerdos por asociaciones, para conversar como con la memoria humana | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #146 | [H-10.4] Como cuidador, quiero una instancia semilla cursos/compania/ funcional sin Ollama, para probar el flujo hoy | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #147 | [T-10.1.1] indice.py: registrar_recuerdo() en caliente con fid memoria#<n> persistido en .indice/ | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #148 | [T-10.1.2] indice.py: buscar_asociativo() con propagación por nodos puente de alto IDF | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #149 | [T-10.2.1] tutor.py: política de modo compañía (escucha sin cita / recuerdo citado y validado) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #150 | [T-10.2.2] identidad.py: prompt y defaults de compañía en el wizard | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #151 | [T-10.3.1] servidor.py: registro automático de recuerdos en POST mensajes (modo compañía) | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #152 | [T-10.4.1] Script semilla_compania.py + instancia cursos/compania/ | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #153 | [T-10.4.2] Suite tests test_compania_* y regresión cero (122 + n en verde) | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -122,4 +138,4 @@
 | ✅ #92 | [LB-2] Merge de plataforma/tests-p2 a main: historias reconciliadas con 23 clases y 21 conceptos (H-2.2) | Done | — |
 | ✅ #93 | [LB-3] Linea base verificada: verificar_todo en verde desde main (suite + contrato + generador) | Done | — |
 
-**112 ítems · 0 abiertos.**
+**128 ítems · 0 abiertos.**

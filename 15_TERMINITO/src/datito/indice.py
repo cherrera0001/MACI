@@ -72,6 +72,107 @@ class Indice:
         puntajes.sort(key=lambda x: -x[1])
         return puntajes[:k]
 
+    # --- memoria episodica en caliente (modo compania, E-10) ---------------
+
+    def _df(self, termino: str) -> int:
+        """Frecuencia de documento reconstruida del IDF (bijection con n fijo)."""
+        n = len(self.vectores)
+        v = self.idf.get(termino)
+        if v is None or n == 0:
+            return 0
+        return max(0, int(round((1 + n) / math.exp(v - 1.0) - 1)))
+
+    def registrar_recuerdo(self, texto: str, referencia: str = "") -> str:
+        """Registra un recuerdo episódico en caliente con fid ``memoria#<n>``.
+
+        El fid cumple CITA_RE, así que el recuerdo queda citable de inmediato
+        y valida con evidencia.validar. Recalcula IDF y normaliza el vector
+        nuevo; el formato persistido en .indice/ es el de siempre.
+        """
+        numeros = [int(f.split("#", 1)[1]) for f in self.textos
+                   if f.startswith("memoria#")]
+        fid = f"memoria#{1 + max(numeros or [0])}"
+        tf: dict[str, int] = {}
+        for tok in tokenizar(texto):
+            tf[tok] = tf.get(tok, 0) + 1
+        self.vectores[fid] = tf  # provisional, solo para contar df
+        n = len(self.vectores)
+        df: dict[str, int] = {}
+        for vec in self.vectores.values():
+            for t in vec:
+                df[t] = df.get(t, 0) + 1
+        self.idf = {t: math.log((1 + n) / (1 + d)) + 1.0 for t, d in df.items()}
+        vec = {t: (1.0 + math.log(c)) * self.idf[t] for t, c in tf.items()}
+        norm = math.sqrt(sum(v * v for v in vec.values())) or 1.0
+        self.vectores[fid] = {t: v / norm for t, v in vec.items()}
+        self.textos[fid] = texto
+        self.referencias[fid] = ("memoria", referencia or fid)
+        return fid
+
+    def _puentes(self, fids: list[str], top_m: int = 6) -> list[str]:
+        """Términos puente: altos en IDF y compartidos (2 <= df <= n/2).
+
+        Un término que aparece en un solo documento es un callejón sin
+        salida para la propagación; uno que aparece en casi todos es ruido.
+        Los puentes son las entidades que conectan recuerdos (HippoRAG ligero).
+        """
+        n = len(self.vectores)
+        scores: dict[str, float] = {}
+        for fid in fids:
+            for t in (self.vectores.get(fid) or {}):
+                d = self._df(t)
+                if 2 <= d <= max(2, n // 2):
+                    scores[t] = max(scores.get(t, 0.0), self.idf.get(t, 1.0))
+        if scores:
+            return sorted(scores, key=lambda t: -scores[t])[:top_m]
+        # índice pequeño: caer a los términos más raros de la frontera
+        raros: dict[str, float] = {}
+        for fid in fids:
+            for t in (self.vectores.get(fid) or {}):
+                raros[t] = max(raros.get(t, 0.0), self.idf.get(t, 1.0))
+        return sorted(raros, key=lambda t: -raros[t])[:top_m]
+
+    def buscar_asociativo(self, consulta: str, k: int = 4, saltos: int = 2,
+                          por_salto: int = 8, decaimiento: float = 0.5
+                          ) -> list[tuple[str, float, list[str]]]:
+        """Propagación de activación por nodos puente de alto IDF.
+
+        Semillas por coseno; en cada salto, los términos puente de la
+        frontera expanden a fragmentos que los comparten, con decaimiento.
+        Devuelve (fid, activación, puentes) ordenado; todo fid existe en
+        self.textos: la asociatividad cambia la recuperación, no la verdad.
+        """
+        semillas = self.buscar(consulta, k=por_salto)
+        if not semillas:
+            return []
+        activacion = {fid: score for fid, score in semillas}
+        traza = {fid: [] for fid, _ in semillas}
+        frontera = [fid for fid, _ in semillas]
+        vistos = set(activacion)
+        for salto in range(1, saltos + 1):
+            puentes = self._puentes(frontera)
+            if not puentes:
+                break
+            candidatos: dict[str, float] = {}
+            for t in puentes:
+                peso = self.idf.get(t, 1.0)
+                for fid, vec in self.vectores.items():
+                    if fid in vistos or t not in vec:
+                        continue
+                    candidatos[fid] = candidatos.get(fid, 0.0) + peso * vec[t]
+            if not candidatos:
+                break
+            escala = decaimiento ** salto
+            nuevos = []
+            for fid, a in sorted(candidatos.items(), key=lambda kv: -kv[1])[:por_salto]:
+                activacion[fid] = a * escala
+                traza[fid] = list(puentes)
+                vistos.add(fid)
+                nuevos.append(fid)
+            frontera = nuevos
+        ordenados = sorted(activacion, key=lambda f: -activacion[f])
+        return [(fid, activacion[fid], traza[fid]) for fid in ordenados[:k]]
+
     def guardar(self, dir_indice: Path):
         dir_indice.mkdir(parents=True, exist_ok=True)
         (dir_indice / "manifest.json").write_text(json.dumps({

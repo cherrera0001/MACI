@@ -10,11 +10,12 @@ import json
 import re
 import sys
 import webbrowser
+import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import config, evaluador, evidencia, grafo, identidad, llm, progreso
+from . import config, evaluador, evidencia, grafo, identidad, llm, memoria, progreso
 from . import ciclo, sesion as sesion_mod
 from . import dudas as dudas_mod
 from . import fragmentos as frag
@@ -244,8 +245,18 @@ class Handler(BaseHTTPRequestHandler):
                         "El Datito esta cerrado (FR-016); su registro sigue "
                         "disponible en GET /registro.", 409)
                 d = self._body_json()
+                texto = d.get("texto", "")
                 indice = Indice.cargar(curso.ruta(".indice"))
-                r = sesion_mod.intercambio(curso, d.get("texto", ""), indice)
+                r = sesion_mod.intercambio(curso, texto, indice)
+                if identidad.es_compania(curso):
+                    # la conversación de hoy es la memoria citable de mañana
+                    recuerdos = memoria.detectar(texto)
+                    for rec in recuerdos:
+                        indice.registrar_recuerdo(
+                            rec, referencia="sesion "
+                            + datetime.date.today().isoformat())
+                    if recuerdos:
+                        indice.guardar(curso.ruta(".indice"))
                 progreso.contar_mensaje(curso, 2)
                 return self._json(self._envoltura_mensaje(r, indice))
             if recurso == "mensajes" and len(partes) == 6 \
