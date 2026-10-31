@@ -36,27 +36,27 @@ COMPONENTES_COMPANIA = {
 }
 
 MEMORIAS_SEMILLA = [
-    ("Rufo es el perro de la persona; vive con ella desde cachorro y le "
-     "hace compania en las mananas.", "semilla:rufo"),
-    ("La hermana de la persona se llama Carmen y vive en Temuco; se ven "
-     "juntas cada vacaciones de verano.", "semilla:carmen"),
-    ("El veterinario del Dr. Fuentes atiende a Rufo cuando esta enfermo; "
+    ("Su perro Rufo vive con usted desde que era cachorro y le hace "
+     "compañía en las mañanas.", "semilla:rufo"),
+    ("Su hermana Carmen vive en Temuco; se ven juntas en las vacaciones "
+     "de verano.", "semilla:carmen"),
+    ("El veterinario del Dr. Fuentes atiende a Rufo cuando está enfermo; "
      "queda cerca de la plaza.", "semilla:veterinario"),
-    ("A la persona le gusta tejer bufandas para sus nietas en las tardes "
-     "de invierno.", "semilla:tejido"),
-    ("Carmen recomendo el telefono nuevo que la persona usa ahora; lo "
-     "compraron juntas en el centro.", "semilla:telefono"),
-    ("La persona guarda las fotos de sus nietas en el telefono nuevo para "
-     "ensenarselas cuando la visitan.", "semilla:fotos"),
+    ("Le gusta tejer bufandas para sus nietas en las tardes de invierno.",
+     "semilla:tejido"),
+    ("Carmen le recomendó el teléfono nuevo que usa ahora; lo compraron "
+     "juntas en el centro.", "semilla:telefono"),
+    ("Guarda las fotos de sus nietas en el teléfono nuevo para "
+     "enséñárselas cuando la visitan.", "semilla:fotos"),
     ("Si un mensaje o llamada pide claves, contraseñas o dinero con "
-     "urgencia, es estafa: cortar, no compartir nada y consultar con "
-     "alguien de confianza.", "guia:anti-estafa-1"),
-    ("Los bancos nunca piden claves por telefono ni por mensaje; un "
-     "premio inesperado es señal de engaño, verificar siempre con la "
+     "urgencia, es estafa: corte, no comparta nada y consulte con alguien "
+     "de confianza.", "guia:anti-estafa-1"),
+    ("Los bancos nunca piden claves por teléfono ni por mensaje; un "
+     "premio inesperado es señal de engaño, verifíquelo siempre con su "
      "familia antes de responder.", "guia:anti-estafa-2"),
-    ("La rutina de la persona: te en las tardes, caminar un poco por la "
-     "casa y llamar a su hermana los domingos; la rutina la mantiene "
-     "tranquila.", "guia:bienestar"),
+    ("Su rutina: té en las tardes, caminar un poco por la casa y llamar a "
+     "su hermana los domingos; la rutina la mantiene tranquila.",
+     "guia:bienestar"),
 ]
 
 

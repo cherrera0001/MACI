@@ -15,6 +15,7 @@
 | ✅ #138 | [E-10] Compañía: memoria verificable, escucha empática y estimulación sin evaluación | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #154 | [E-11] Compañía activa: apertura proactiva por vínculo, voz accesible y guardián anti-fraude/bienestar | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #168 | [E-12] Compañía humana y memoria consolidada: voz neuronal/prosódica, deduplicación hipocampal, reminiscencia guiada y bitácora de vida | Done | Épica · P1 · P2 Estudiar con Datito |
+| ✅ #183 | [E-13] Ergonomía y calidez humana: layout de entrada desacoplado, supresión de jerga escolar, trato en segunda persona y lector de biografía | Done | Épica · P1 · P2 Estudiar con Datito |
 | ✅ #62 | [E-5] Proyecto semestral FCD: Melbourne, Galaxy Zoo y certámenes | Done | Épica · P2 · P6 Proyecto semestral |
 | ✅ #1 | Épica: cualquier alumno puede estudiar FCD con Datito | Done | Épica · P1 Construir una clase |
 
@@ -94,6 +95,19 @@
 | ✅ #180 | [T-12.3.1] reminiscencia.py + GET /reminiscencia + botón Recordar juntos | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #181 | [T-12.4.1] biografia.py + GET /biografia con citas y sin alertas | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #182 | [T-12.5.1] tests E-12 (voz, consolidación, reminiscencia, legado) + regresión 153 en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #184 | [D-13.1] ¿Cómo reorganizamos la entrada y limpiamos la pantalla sin tocar el modo académico? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #185 | [D-13.2] ¿Cómo reescribimos memorias y evocaciones sin perder la tokenización del índice? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #186 | [D-13.3] ¿Cómo mostramos la bitácora y dejamos la voz neuronal usable sin configuración manual? | Done | Decisión · P1 · P2 Estudiar con Datito |
+| ✅ #187 | [H-13.1] Como adulto mayor, quiero una caja de escritura grande y una pantalla sin palabras técnicas | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #188 | [H-13.2] Como usuario, quiero que mi compañero me hable de usted y recuerde mi perro Rufo, con palabras bien escritas | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #189 | [H-13.3] Como usuario, quiero un botón Mi historia de vida y voz humana sin configurar rutas | Done | Historia · P1 · P2 Estudiar con Datito |
+| ✅ #190 | [T-13.1.1] chat.html: entrada en dos filas con textarea protegido | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #191 | [T-13.1.2] chat.html: ocultamiento de jerga escolar en body.compania | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #192 | [T-13.2.1] semilla_compania.py: memorias en segunda persona con tildes; regenerar instancia | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #193 | [T-13.2.2] Plantillas de apertura/reminiscencia/tutor/guardian en segunda persona, garantizado por test | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #194 | [T-13.3.1] chat.html: botón Mi historia de vida conectado a GET /biografia | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #195 | [T-13.3.2] voz.py: autodescubrimiento .onnx y --instalar-modelo desde HuggingFace | Done | Tarea · P1 · P2 Estudiar con Datito |
+| ✅ #196 | [T-13.4.1] tests E-13 (ergonomía, trato, voz) + regresión 160 en verde | Done | Tarea · P1 · P2 Estudiar con Datito |
 | ✅ #35 | [H-1.2] Como estudiante, quiero un glosario del curso, para encontrar cada término en la clase donde se enseña | Done | Historia · P2 · P1 Construir una clase |
 | ✅ #36 | [T-1.2.1] Cruzar el glosario de referencia contra las 23 clases y listar cobertura y ausencias | Done | Tarea · P2 · P1 Construir una clase |
 | ✅ #37 | [T-1.2.2] Redactar el glosario del curso con enlace a clase y fuente, y sumarlo al generador | Done | Tarea · P2 · P1 Construir una clase |
@@ -167,4 +181,4 @@
 | ✅ #166 | [T-11.3.2] chat.html: modo compañía con voz (STT/TTS), alto contraste y apertura automática | Done | — |
 | ✅ #167 | [T-11.4.1] tests test_compania_proactivo_y_guardian.py + regresión 136+n en verde | Done | — |
 
-**157 ítems · 0 abiertos.**
+**171 ítems · 0 abiertos.**

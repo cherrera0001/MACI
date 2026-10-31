@@ -31,8 +31,27 @@ body.compania textarea { font-size: 22px; background: #FFFDF9;
 #voz { display: none; font-size: 28px; padding: 1.2rem; border-radius: 1rem;
   border: 3px solid #2E6F5E; background: #2E6F5E; color: #FAF7F2;
   cursor: pointer; }
-body.compania #voz { display: block; width: 100%; margin-bottom: .8rem; }
+body.compania #voz { display: block; width: 100%; margin-bottom: 0; }
 #voz:active, #voz.escuchando { background: #B85D3B; border-color: #B85D3B; }
+
+/* Entrada en dos filas (D-13.1): arriba las acciones, abajo escribir.
+   Los envoltorios son transparentes para el layout académico. */
+.fila-botones, .fila-escritura { display: contents; }
+body.compania .entrada { display: flex; flex-direction: column; gap: .8rem; }
+body.compania .fila-botones { display: flex; gap: .8rem; }
+body.compania .fila-botones > * { flex: 1; }
+body.compania .fila-escritura { display: flex; gap: .8rem; align-items: stretch; }
+body.compania .entrada textarea { flex: 1; min-width: 70%; min-height: 68px;
+  font-size: 20px; }
+
+/* Pantalla libre de jerga escolar (D-13.1): en compañía no hay examen,
+   panel de dominio ni píldoras técnicas. */
+body.compania a[data-i18n="c_eval"],
+body.compania a[data-i18n="c_dominio"],
+body.compania .estado-motor,
+body.compania #guia-ollama,
+body.compania .sub,
+body.compania [data-i18n-html="ch_ayuda"] { display: none !important; }
 </style>
 </head>
 <body>
@@ -51,10 +70,15 @@ body.compania #voz { display: block; width: 100%; margin-bottom: .8rem; }
   <div id="mensajes"></div>
 
   <div class="entrada">
-    <button id="voz" type="button">🎤 Hablar (o escriba abajo)</button>
-    <button id="recordar" class="boton alt" type="button" style="display:none">🧠 Recordar juntos</button>
-    <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
-    <button class="boton" id="enviar" data-i18n="ch_enviar">Enviar</button>
+    <div class="fila-botones">
+      <button id="voz" type="button">🎤 Hablar (o escriba abajo)</button>
+      <button id="recordar" class="boton alt" type="button" style="display:none">🧠 Recordar juntos</button>
+      <button id="btn-biografia" class="boton alt" type="button" style="display:none">📖 Mi historia de vida</button>
+    </div>
+    <div class="fila-escritura">
+      <textarea id="texto" rows="2" data-i18n-ph="ch_ph" placeholder="Pregunta lo que quieras del curso…"></textarea>
+      <button class="boton" id="enviar" data-i18n="ch_enviar">Enviar</button>
+    </div>
   </div>
   <p style="font-size:.82rem;color:var(--suave)" data-i18n-html="ch_ayuda">
     <b>Registrar duda:</b> escríbela y usa el botón ✏️ que aparece junto a cada
@@ -176,6 +200,32 @@ async function recordarJuntos() {
   }
 }
 
+/* Lector de la bitácora de vida (D-13.3): /biografia en pantalla, por
+   temas/entidades, con citas; nada de alertas ni jerga. */
+async function verBiografia() {
+  if (!modoCompania) return;
+  const b = document.getElementById("btn-biografia");
+  b.disabled = true;
+  try {
+    const bio = await get(`/api/cursos/${slug}/biografia`);
+    const partes = ["📖 <b>Su historia de vida</b>"];
+    for (const [ent, items] of Object.entries(bio.entidades)) {
+      partes.push(`<b>Sobre ${esc(ent)}</b>`);
+      for (const it of items) partes.push("• " + esc(it.texto));
+    }
+    for (const it of bio.otras) partes.push("• " + esc(it.texto));
+    const texto = partes.join("<br>");
+    burbuja("tutor", texto);
+    const resumen = "Esta es su historia de vida, con todo lo que usted me ha "
+      + "contado. Puede compartirla con su familia cuando quiera.";
+    hablar(resumen);
+  } catch (e) {
+    burbuja("tutor", "⚠ " + esc(e.message));
+  } finally {
+    b.disabled = false;
+  }
+}
+
 function burbuja(quien, html, extra = "") {
   const div = document.createElement("div");
   div.className = "msg " + quien;
@@ -275,6 +325,8 @@ caja.addEventListener("click", async (e) => {
       configurarBotonVoz();
       document.getElementById("recordar").style.display = "block";
       document.getElementById("recordar").onclick = recordarJuntos;
+      document.getElementById("btn-biografia").style.display = "block";
+      document.getElementById("btn-biografia").onclick = verBiografia;
       detectarVozNeuronal();
       try {
         const a = await get(`/api/cursos/${slug}/apertura`);
